@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="3411" status="C++23">
+<issue num="3411" status="WP">
 <title>[fund.ts.v3] Contradictory namespace rules in the Library Fundamentals TS</title>
 <section><sref ref="[memory.resource.syn]"/></section>
 <submitter>Thomas K&ouml;ppe</submitter>

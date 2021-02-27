@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="3020" status="C++23">
+<issue num="3020" status="WP">
 <title>[networking.ts] Remove spurious nested <tt>value_type</tt> buffer sequence requirement</title>
 <section><sref ref="[buffer.reqmts]"/></section>
 <submitter>Vinnie Falco</submitter>

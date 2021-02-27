@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="3414" status="C++23">
+<issue num="3414" status="WP">
 <title>[networking.ts] <tt>service_already_exists</tt> has no usable constructors</title>
 <section><sref ref="[async.exec.ctx]"/></section>
 <submitter>Jonathan Wakely</submitter>

@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="3136" status="C++23">
+<issue num="3136" status="WP">
 <title>[fund.ts.v3] LFTSv3 awkward wording in <tt>propagate_const</tt> requirements</title>
 <section><sref ref="[propagate_const.class_type_requirements]"/></section>
 <submitter>Thomas K&ouml;ppe</submitter>

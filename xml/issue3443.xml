@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="3443" status="C++23">
+<issue num="3443" status="WP">
 <title>[networking.ts] <tt>net::basic_socket_iostream</tt> should use <tt>addressof</tt></title>
 <section><sref ref="[socket.iostream.cons]"/></section>
 <submitter>Jonathan Wakely</submitter>

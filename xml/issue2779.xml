@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="2779" status="C++23">
+<issue num="2779" status="WP">
 <title>[networking.ts] Relax requirements on buffer sequence iterators</title>
 <section><sref ref="[buffer.reqmts.mutablebuffersequence]"/></section>
 <submitter>Vinnie Falco</submitter>
