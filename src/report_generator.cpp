@@ -63,6 +63,23 @@ private:
    lwg::section_map& section_db;
 };
 
+// Create a LessThanComparable object that defines an ordering based on date,
+// with newer dates first.
+auto ordered_date(lwg::issue const & issue) {
+   std::chrono::sys_days date(issue.mod_date);
+   return -date.time_since_epoch().count();
+}
+
+// Create a LessThanComparable object that defines an ordering that depends on
+// the section number (e.g. 23.5.1) first and then on the section stable tag.
+// Using both is not redundant, because we use section 99 for all sections of some TS's.
+// Including the tag in the order gives a total order for sections in those TS's,
+// e.g., {99,[arrays.ts::dynarray]} < {99,[arrays.ts::dynarraconstructible_from.cons]}.
+auto ordered_section(lwg::section_map & section_db, lwg::issue const & issue) {
+   assert(!issue.tags.empty());
+   return std::tie(section_db[issue.tags.front()], issue.tags.front());
+}
+
 struct order_by_section {
    explicit order_by_section(lwg::section_map &sections)
       : section_db(sections)
@@ -70,12 +87,7 @@ struct order_by_section {
       }
 
    auto operator()(lwg::issue const & x, lwg::issue const & y) const -> bool {
-      assert(!x.tags.empty());
-      assert(!y.tags.empty());
-      // This sorts by the section number (e.g. 23.5.1) then by the section stable tag.
-      // This is not redundant, because for e.g. Arrays TS the entire paper has section num 99,
-      // so including the tag orders [arrays.ts::dynarray] before [arrays.ts::dynarray.cons].
-      return std::tie(section_db[x.tags.front()], x.tags.front()) < std::tie(section_db[y.tags.front()], y.tags.front());
+      return ordered_section(section_db, x) < ordered_section(section_db, y);
    }
 
 private:
@@ -696,10 +708,10 @@ sorted by priority.</p>
 
 
 void report_generator::make_sort_by_status(std::vector<issue>& issues, fs::path const & filename) {
-   sort(issues.begin(), issues.end(), order_by_issue_number{});
-   stable_sort(issues.begin(), issues.end(), [](issue const & x, issue const & y) { return x.mod_date > y.mod_date; } );
-   stable_sort(issues.begin(), issues.end(), order_by_section{section_db});
-   stable_sort(issues.begin(), issues.end(), order_by_status{});
+   auto proj = [this](const auto& i) {
+      return std::make_tuple(lwg::get_status_priority(i.stat), ordered_section(section_db, i), ordered_date(i), i.num);
+   };
+   std::ranges::sort(issues, {}, proj);
 
    std::ofstream out{filename};
    if (!out)
@@ -733,10 +745,10 @@ This document is the Index by Status and Section for the <a href="lwg-active.htm
 
 
 void report_generator::make_sort_by_status_mod_date(std::vector<issue> & issues, fs::path const & filename) {
-   sort(issues.begin(), issues.end(), order_by_issue_number{});
-   stable_sort(issues.begin(), issues.end(), order_by_section{section_db});
-   stable_sort(issues.begin(), issues.end(), [](issue const & x, issue const & y) { return x.mod_date > y.mod_date; } );
-   stable_sort(issues.begin(), issues.end(), order_by_status{});
+   auto proj = [this](const auto& i) {
+      return std::make_tuple(lwg::get_status_priority(i.stat), ordered_date(i), ordered_section(section_db, i), i.num);
+   };
+   std::ranges::sort(issues, {}, proj);
 
    std::ofstream out{filename};
    if (!out)
@@ -769,9 +781,11 @@ This document is the Index by Status and Date for the <a href="lwg-active.html">
 
 
 void report_generator::make_sort_by_section(std::vector<issue>& issues, fs::path const & filename, bool active_only) {
-   sort(issues.begin(), issues.end(), order_by_issue_number{});
-   stable_sort(issues.begin(), issues.end(), [](issue const & x, issue const & y) { return x.mod_date > y.mod_date; } );
-   stable_sort(issues.begin(), issues.end(), order_by_status{});
+   auto proj = [](const auto& i) {
+      return std::make_tuple(lwg::get_status_priority(i.stat), ordered_date(i), i.num);
+   };
+   std::ranges::sort(issues, {}, proj);
+
    auto b = issues.begin();
    auto e = issues.end();
    if(active_only) {
