@@ -10,6 +10,8 @@ struct section_num
 {
     std::string prefix;
     std::vector<int> num;
+
+    auto operator<=>(const section_num&) const = default;
 };
 
 std::istream&
@@ -80,30 +82,6 @@ operator << (std::ostream& os, const section_num& sn)
         }
     }
     return os;
-}
-
-bool
-operator<(const section_num& x, const section_num& y)
-{
-    if (x.prefix < y.prefix)
-        return true;
-    else if (y.prefix < x.prefix)
-        return false;
-    return x.num < y.num;
-}
-
-bool
-operator==(const section_num& x, const section_num& y)
-{
-    if (x.prefix != y.prefix)
-        return false;
-    return x.num == y.num;
-}
-
-bool
-operator!=(const section_num& x, const section_num& y)
-{
-    return !(x == y);
 }
 
 typedef std::string section_tag;
