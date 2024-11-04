@@ -95,25 +95,6 @@ struct order_by_status {
 };
 
 
-struct order_by_priority {
-   explicit order_by_priority(lwg::section_map &sections)
-      : section_db(sections)
-      {
-      }
-
-   auto operator()(lwg::issue const & x, lwg::issue const & y) const -> bool {
-      assert(!x.tags.empty());
-      assert(!y.tags.empty());
-      auto tie = [this](auto& i) {
-         return std::tie(i.priority, section_db[i.tags.front()], i.num);
-      };
-      return tie(x) < tie(y);
-   }
-
-private:
-   lwg::section_map& section_db;
-};
-
 // Replace spaces to make a string usable as an 'id' attribute,
 // or as an URL fragment (#foo) that links to an 'id' attribute.
 inline std::string spaces_to_underscores(std::string s) {
@@ -673,7 +654,10 @@ R"(<h1>C++ Standard Library Issues List (Revision )" << lwg_issues_xml.get_revis
 
 
 void report_generator::make_sort_by_priority(std::vector<issue>& issues, fs::path const & filename) {
-   sort(issues.begin(), issues.end(), order_by_priority{section_db});
+   auto proj = [this](const auto& i) {
+      return std::tie(i.priority, section_db[i.tags.front()], i.num);
+   };
+   std::ranges::sort(issues, {}, proj);
 
    std::ofstream out{filename};
    if (!out)
