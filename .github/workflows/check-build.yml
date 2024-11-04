@@ -23,7 +23,7 @@ jobs:
         fetch-depth: 1
 
     - name: Compile binary programs
-      run: make pgms -j $(getconf _NPROCESSORS_ONLN)
+      run: make CXX=g++-14 pgms -j $(getconf _NPROCESSORS_ONLN)
 
     - name: Check for carriage returns
       run: |

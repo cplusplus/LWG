@@ -51,7 +51,7 @@ jobs:
       run: make dates
 
     - name: Build programs
-      run: make pgms -j $(getconf _NPROCESSORS_ONLN)
+      run: make CXX=g++-14 pgms -j $(getconf _NPROCESSORS_ONLN)
 
     - name: Generate HTML lists
       run: make lists
