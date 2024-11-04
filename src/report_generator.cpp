@@ -10,6 +10,8 @@
 
 #include <algorithm>
 #include <cassert>
+#include <chrono>
+#include <format>
 #include <fstream>
 #include <memory>
 #include <sstream>
@@ -23,28 +25,11 @@ namespace
 // Generic utilities that are useful and do not rely on context or types from our domain (issue-list processing)
 // =============================================================================================================
 
-auto format_time(std::string const & format, std::tm const & t) -> std::string {
-   std::string s;
-   std::size_t maxsize{format.size() + 256};
-  //for (std::size_t maxsize = format.size() + 64; s.size() == 0 ; maxsize += 64)
-  //{
-      std::unique_ptr<char[]> buf{new char[maxsize]};
-      std::size_t size{std::strftime( buf.get(), maxsize, format.c_str(), &t ) };
-      if(size > 0) {
-         s += buf.get();
-      }
- // }
-   return s;
-}
-
-auto utc_timestamp() -> std::tm const & {
-   static std::time_t t{ std::time(nullptr) };
-   static std::tm utc = *std::gmtime(&t);
-   return utc;
-}
+auto const timestamp{std::chrono::floor<std::chrono::seconds>(std::chrono::system_clock::now())};
 
 // global data - would like to do something about that.
-std::string const build_timestamp{format_time("Revised %Y-%m-%d at %H:%M:%S UTC\n", utc_timestamp())};
+std::string const build_date{std::format("{:%F}", timestamp)};
+std::string const build_timestamp{std::format("Revised {} at {:%T} UTC\n", build_date, timestamp)};
 
 std::string const maintainer_email{"lwgchair@gmail.com"};
 
@@ -150,14 +135,6 @@ auto major_section(lwg::section_num const & sn) -> std::string {
       out << char(sn.num[0] - 100 + 'A');
    }
    return out.str();
-}
-
-void print_date(std::ostream & out, gregorian::date const & mod_date) {
-   out << mod_date.year() << '-';
-   if (mod_date.month() < 10) { out << '0'; }
-   out << mod_date.month() << '-';
-   if (mod_date.day() < 10) { out << '0'; }
-   out << mod_date.day();
 }
 
 template<typename Container>
@@ -363,11 +340,9 @@ void print_issue(std::ostream & out, lwg::issue const & iss, lwg::section_map & 
 
          out << " <b>Status:</b> <a href=\"lwg-active.html#" << status_idattr << "\">" << iss.stat << "</a>\n";
          out << " <b>Submitter:</b> " << iss.submitter
-             << " <b>Opened:</b> ";
-         print_date(out, iss.date);
-         out << " <b>Last modified:</b> ";
-         print_date(out, iss.mod_date);
-         out << "</p>\n";
+             << " <b>Opened:</b> " << iss.date
+             << " <b>Last modified:</b> " << iss.mod_date
+             << "</p>\n";
 
          // priority
          out << "<p><b>Priority: </b>";
@@ -459,7 +434,7 @@ R"(<table>
 </tr>
 <tr>
   <td align="left">Date:</td>
-  <td align="left">)" << format_time("%Y-%m-%d", utc_timestamp()) << R"(</td>
+  <td align="left">)" << build_date << R"(</td>
 </tr>
 <tr>
   <td align="left">Project:</td>

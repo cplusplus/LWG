@@ -18,7 +18,7 @@
 // .  sort-by-last-modified-date should offer some filter or separation to see only the issues modified since the last meeting
 
 // Missing standard facilities that we work around
-// . Date
+// . (none at present)
 
 // Missing standard library facilities that would probably not change this program
 // . XML parser

@@ -26,25 +26,13 @@
 namespace fs = std::filesystem;
 
 namespace {
-// date utilites may factor out again
-auto parse_month(std::string const & m) -> gregorian::month {
-   // This could be turned into an efficient map lookup with a suitable indexed container
-   return (m == "Jan") ? gregorian::jan
-        : (m == "Feb") ? gregorian::feb
-        : (m == "Mar") ? gregorian::mar
-        : (m == "Apr") ? gregorian::apr
-        : (m == "May") ? gregorian::may
-        : (m == "Jun") ? gregorian::jun
-        : (m == "Jul") ? gregorian::jul
-        : (m == "Aug") ? gregorian::aug
-        : (m == "Sep") ? gregorian::sep
-        : (m == "Oct") ? gregorian::oct
-        : (m == "Nov") ? gregorian::nov
-        : (m == "Dec") ? gregorian::dec
-        : throw std::runtime_error{"unknown month abbreviation " + m};
-}
-
-auto parse_date(std::istream & temp) -> gregorian::date {
+auto parse_date(std::istream & temp) -> std::chrono::year_month_day {
+#if __cpp_lib_chrono >= 201803L
+   std::chrono::year_month_day date{};
+   if (temp >> std::chrono::parse(" %d %b %Y", date))
+      return date;
+   throw std::runtime_error{"date format error"};
+#else
    int d;
    temp >> d;
    if (temp.fail()) {
@@ -54,29 +42,34 @@ auto parse_date(std::istream & temp) -> gregorian::date {
    std::string month;
    temp >> month;
 
-   auto m = parse_month(month);
+   std::map<std::string_view, int> months{
+      {"Jan", 1}, {"Feb", 2}, {"Mar", 3}, {"Apr", 4}, {"May", 5}, {"Jun", 6},
+      {"Jul", 7}, {"Aug", 8}, {"Sep", 9}, {"Oct",10}, {"Nov",11}, {"Dec",12}
+   };
+
    int y{ 0 };
    temp >> y;
-   return m/gregorian::day{d}/y;
+   return std::chrono::year{y}/months[month]/d;
+#endif
 }
 
-auto make_date(std::tm const & mod) -> gregorian::date {
-   return gregorian::year((unsigned short)(mod.tm_year+1900)) / (mod.tm_mon+1) / mod.tm_mday;
-}
-
-auto report_date_file_last_modified(std::filesystem::path const & filename, lwg::metadata const& meta) -> gregorian::date {
-   std::time_t mtime;
+auto report_date_file_last_modified(std::filesystem::path const & filename, lwg::metadata const& meta) -> std::chrono::year_month_day {
+   using namespace std::chrono;
+   system_clock::time_point t;
    int id = std::stoi(filename.filename().stem().native().substr(5));
    if (auto it = meta.git_commit_times.find(id); it !=  meta.git_commit_times.end())
-      mtime = it->second;
-   else
-   {
-      auto file_mtime = fs::last_write_time(filename);
-      auto sys_mtime = std::chrono::system_clock::now() - (fs::file_time_type::clock::now() - file_mtime);
-      mtime = std::chrono::duration_cast<std::chrono::seconds>(sys_mtime.time_since_epoch()).count();
+      t = system_clock::from_time_t(it->second);
+   else {
+      auto mtime = fs::last_write_time(filename);
+#if __cpp_lib_chrono >= 201803L
+      t = clock_cast<system_clock>(mtime);
+#else
+      auto fnow = fs::file_time_type::clock::now();
+      t = system_clock::now() - round<seconds>(fnow - mtime);
+#endif
    }
 
-   return make_date(*std::gmtime(&mtime));
+   return year_month_day(floor<days>(t));
 }
 
 // Replace '<' and '>' and '&' with HTML character references.
@@ -255,13 +248,13 @@ auto lwg::parse_issue_from_file(std::string tx, std::string const & filename,
    try {
       std::istringstream temp{tx.substr(k, l-k)};
       is.date = parse_date(temp);
-
-      // Get modification date
-      is.mod_date = report_date_file_last_modified(filename, meta);
    }
    catch(std::exception const & ex) {
-      throw bad_issue_file{filename, ex.what()};
+      throw bad_issue_file{filename, "date format error"};
    }
+
+   // Get modification date
+   is.mod_date = report_date_file_last_modified(filename, meta);
 
    // Get priority - this element is optional
    match = "<priority>";
