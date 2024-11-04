@@ -180,7 +180,7 @@ auto lwg::format_section_tag_as_link(section_map & section_db, section_tag const
    std::string url;
    if  (!tag.prefix.empty()) {
       std::string_view fund_ts = "fund.ts";
-      if (tag.prefix.compare(0, fund_ts.size(), fund_ts) == 0) {
+      if (tag.prefix.starts_with(fund_ts)) {
          std::string_view version = tag.prefix;
          version.remove_prefix(fund_ts.size());
          if (version.empty())

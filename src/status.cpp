@@ -73,9 +73,7 @@ auto lwg::is_closed(std::string_view stat) -> bool {
 }
 
 auto lwg::is_tentative(std::string_view stat) -> bool {
-   // a more efficient implementation will use some variation of strcmp
-   std::string_view tent{"Tentatively"};
-   return 0 == stat.compare(0, tent.size(), tent);
+   return stat.starts_with("Tentatively");
 }
 
 auto lwg::is_assigned_to_another_group(std::string_view stat) -> bool {
@@ -104,7 +102,7 @@ auto lwg::is_ready(std::string_view stat) -> bool {
 // Functions to "normalize" a status string
 namespace {
 auto remove_prefix(std::string_view str, std::string_view prefix) -> std::string_view {
-   if (0 == str.compare(0, prefix.size(), prefix)) {
+   if (str.starts_with(prefix)) {
       str.remove_prefix(prefix.size() + 1);
    }
    return str;
