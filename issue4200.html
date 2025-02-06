@@ -64,7 +64,7 @@
 <p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#New">New</a> status.</em></p>
 <h3 id="4200"><a href="lwg-active.html#4200">4200</a>. The <code class='backtick'>operation_state</code> concept can be simplified</h3>
 <p><b>Section:</b> 33.8.1 <a href="https://wg21.link/exec.opstate.general">[exec.opstate.general]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Eric Niebler <b>Opened:</b> 2025-02-03 <b>Last modified:</b> 2025-02-03</p>
+ <b>Submitter:</b> Eric Niebler <b>Opened:</b> 2025-02-03 <b>Last modified:</b> 2025-02-06</p>
 <p><b>Priority: </b>Not Prioritized
 </p>
 <p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
@@ -79,6 +79,7 @@ The current defn of the <code class='backtick'>operation_state</code> concept is
 template&lt;class O&gt;
   concept operation_state =
     derived_from&lt;typename O::operation_state_concept, operation_state_t&gt; &amp;&amp;
+    is_object_v&lt;O&gt; &amp;&amp;
     requires (O&amp; o) {
       { start(o) } noexcept;
     };
@@ -107,7 +108,7 @@ template&lt;class O&gt;
     derived_from&lt;typename O::operation_state_concept, operation_state_t&gt; &amp;&amp;
     <del>is_object_v&lt;O&gt; &amp;&amp;</del>
     requires (O&amp; o) {
-      <del>{</del> start(o) <del>} noexcept;</del>
+      <del>{</del> start(o) <del>} noexcept</del>;
     };
 </code></pre></blockquote>
 </li>

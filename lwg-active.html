@@ -67,7 +67,7 @@
 </tr>
 <tr>
   <td align="left">Date:</td>
-  <td align="left">2025-02-05</td>
+  <td align="left">2025-02-06</td>
 </tr>
 <tr>
   <td align="left">Project:</td>
@@ -79,7 +79,7 @@
 </tr>
 </table>
 <h1>C++ Standard Library Active Issues List (Revision D125)</h1>
-<p>Revised 2025-02-05 at 01:06:23 UTC
+<p>Revised 2025-02-06 at 17:05:02 UTC
 </p>
   <p>Reference ISO/IEC IS 14882:2020(E)</p>
   <p>Also see:</p>
@@ -69092,7 +69092,7 @@ Then we can express <code class='backtick'>get_completion_signatures</code> in t
 <hr>
 <h3 id="4200"><a href="#4200">4200</a><sup><a href="https://cplusplus.github.io/LWG/issue4200">(i)</a></sup>. The <code class='backtick'>operation_state</code> concept can be simplified</h3>
 <p><b>Section:</b> 33.8.1 <a href="https://wg21.link/exec.opstate.general">[exec.opstate.general]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Eric Niebler <b>Opened:</b> 2025-02-03 <b>Last modified:</b> 2025-02-03</p>
+ <b>Submitter:</b> Eric Niebler <b>Opened:</b> 2025-02-03 <b>Last modified:</b> 2025-02-06</p>
 <p><b>Priority: </b>Not Prioritized
 </p>
 <p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
@@ -69107,6 +69107,7 @@ The current defn of the <code class='backtick'>operation_state</code> concept is
 template&lt;class O&gt;
   concept operation_state =
     derived_from&lt;typename O::operation_state_concept, operation_state_t&gt; &amp;&amp;
+    is_object_v&lt;O&gt; &amp;&amp;
     requires (O&amp; o) {
       { start(o) } noexcept;
     };
@@ -69135,7 +69136,7 @@ template&lt;class O&gt;
     derived_from&lt;typename O::operation_state_concept, operation_state_t&gt; &amp;&amp;
     <del>is_object_v&lt;O&gt; &amp;&amp;</del>
     requires (O&amp; o) {
-      <del>{</del> start(o) <del>} noexcept;</del>
+      <del>{</del> start(o) <del>} noexcept</del>;
     };
 </code></pre></blockquote>
 </li>
