@@ -79,7 +79,7 @@
 </tr>
 </table>
 <h1>C++ Standard Library Active Issues List (Revision D125)</h1>
-<p>Revised 2025-02-07 at 21:11:19 UTC
+<p>Revised 2025-02-07 at 21:22:17 UTC
 </p>
   <p>Reference ISO/IEC IS 14882:2020(E)</p>
   <p>Also see:</p>
@@ -63069,7 +63069,7 @@ the number of elements after the erased elements.
 <hr>
 <h3 id="4125"><a href="#4125">4125</a><sup><a href="https://cplusplus.github.io/LWG/issue4125">(i)</a></sup>. <code>move_iterator</code>'s default constructor should be constrained</h3>
 <p><b>Section:</b> 24.5.4.2 <a href="https://wg21.link/move.iterator">[move.iterator]</a>, 24.5.4.4 <a href="https://wg21.link/move.iter.cons">[move.iter.cons]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Hewill Kang <b>Opened:</b> 2024-07-22 <b>Last modified:</b> 2024-08-02</p>
+ <b>Submitter:</b> Hewill Kang <b>Opened:</b> 2024-07-22 <b>Last modified:</b> 2025-02-07</p>
 <p><b>Priority: </b>3
 </p>
 <p><b>View other</b> <a href="lwg-index-open.html#move.iterator">active issues</a> in [move.iterator].</p>
@@ -63101,10 +63101,14 @@ only requires the underlying iterator to be <code>input_iterator</code> which ma
 
 <p>
 Set priority to 3 after reflector poll.
-Five P0 (tentatively rady) votes but one for NAD:
+Six P0 (tentatively ready) votes but one for NAD:
 "design change, needs paper. Not constraining this seems to be intended by
 <a href="https://wg21.link/P2325R3" title=" Views should not be required to be default constructible">P2325R3</a>. Even if we want to constrain it,
 why <code class='backtick'>default_initializable</code> rather than just <code class='backtick'>is_constructible_v</code>?"
+Author of <a href="https://wg21.link/P2325R3" title=" Views should not be required to be default constructible">P2325R3</a> had no such intent and voted P0.
+Issue submitter used <code class='backtick'>default_initializable</code> to align with <code class='backtick'>forward_iterator</code>
+requirements, but would not object to implementers using <code class='backtick'>is_constructible_v</code>
+for backported DRs.
 </p>
 
 
