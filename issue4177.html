@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <title>Issue 4177: &sect;[atomics.order] p8 "circularly depend on their own computation" is unclear for loop</title>
 <meta property="og:title" content="Issue 4177: &sect;[atomics.order] p8 &quot;circularly depend on their own computation&quot; is unclear for loop">
-<meta property="og:description" content="C++ library issue. Status: New">
+<meta property="og:description" content="C++ library issue. Status: SG1">
 <meta property="og:url" content="https://cplusplus.github.io/LWG/issue4177.html">
 <meta property="og:type" content="website">
 <meta property="og:image" content="http://cplusplus.github.io/LWG/images/cpp_logo.png">
@@ -61,15 +61,15 @@
 </head>
 <body>
 <hr>
-<p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#New">New</a> status.</em></p>
+<p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#SG1">SG1</a> status.</em></p>
 <h3 id="4177"><a href="lwg-active.html#4177">4177</a>. &sect;[atomics.order] p8 "circularly depend on their own computation" is unclear for loop</h3>
-<p><b>Section:</b> 32.5.4 <a href="https://wg21.link/atomics.order">[atomics.order]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> jim x <b>Opened:</b> 2024-11-29 <b>Last modified:</b> 2024-11-30</p>
-<p><b>Priority: </b>Not Prioritized
+<p><b>Section:</b> 32.5.4 <a href="https://wg21.link/atomics.order">[atomics.order]</a> <b>Status:</b> <a href="lwg-active.html#SG1">SG1</a>
+ <b>Submitter:</b> jim x <b>Opened:</b> 2024-11-29 <b>Last modified:</b> 2025-02-07</p>
+<p><b>Priority: </b>4
 </p>
 <p><b>View other</b> <a href="lwg-index-open.html#atomics.order">active issues</a> in [atomics.order].</p>
 <p><b>View all other</b> <a href="lwg-index.html#atomics.order">issues</a> in [atomics.order].</p>
-<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#SG1">SG1</a> status.</p>
 <p><b>Discussion:</b></p>
 <p>
 32.5.4 <a href="https://wg21.link/atomics.order">[atomics.order]</a> p8 and p9 gave two paradigmatic examples of how "circularly depend on 
@@ -113,6 +113,57 @@ if the loop doesn't exit.
  Either accurately specify what "circularly depend on their own computation" means, or add a paradigmatic 
  example regarding loop to indicate what it means.
 </p>
+
+<p><i>[Additional discussion from submitter:]</i></p>
+
+<p>
+I meant, that for a classic spin-lock, the code after the loop won't be
+executed until the loop exits, and the operation is just a pure load with
+relaxed memory order during the busy wait.
+The loop for a spin-lock can have three possible cases:
+<ol>
+<li>CAS immediately succeeds </li>
+<li>the loop exits after certain times of iterations</li>
+<li>the loop cannot be exited(e.g. the lock is not released)</li>
+</ol>
+</p>
+<p>
+The compiler cannot assume which case the loop for the spin-lock is.
+The code after the loop won't be reordered(during the busy waiting with
+a relaxed memory order); otherwise, implementing the spin-lock would be
+an issue based on the assumption that the codes after the loop wouldn't
+be reached when the loop was busy waiting.
+</p>
+<p>
+In this example, the loop has the same possible cases as the loop
+in the spin-lock. So, the execution of <code class='backtick'>#5</code> seems to depend on the loop
+and the loop depends on the <code class='backtick'>pre</code>. why I mention the spin-lock just is to
+justify that the code after the loop won't be reordered in both compile-time
+and runtime even though the condition of the loop is a pure load with a relaxed
+memory order(otherwise, the foundation for which the busy-waiting of a
+spink-lock is based on won't be true.). So, the loop has a similar effect
+to the <code class='backtick'>if</code> statement on the control flow: the code in the block of
+the <code class='backtick'>if</code> statement won't be executed if the condition is false, as well,
+the code after the loop won't be executed if the loop hasn't yet exited.
+</p>
+
+<p><i>[2025-02-07; Reflector poll]</i></p>
+
+<p>
+Set priority to 4 after reflector poll. Send to SG1.
+</p>
+<p>
+"Should the example use <code class='backtick'>unsigned</code> so there's no chance of UB due to <code class='backtick'>int</code>
+overflowing?"
+</p>
+<p>
+"Contrived example showing well-known fact that OOTA prohibition is just
+hand-waving. <a href="https://wg21.link/N3786" title=" Prohibiting &quot;out of thin air&quot; results in C++14">N3786</a> introduced the current wording and made
+no secret of that. <a href="https://wg21.link/P1217" title=" Out-of-thin-air, revisited, again">P1217</a> explored the issue further,
+as have other SG1 papers. Hard problems. Solutions welcome. Don't think this
+is the place to focus however."
+</p>
+
 
 
 <p id="res-4177"><b>Proposed resolution:</b></p>

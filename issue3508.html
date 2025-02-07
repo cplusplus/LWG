@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <title>Issue 3508: atomic_ref&lt;cv T&gt; is not well-specified</title>
 <meta property="og:title" content="Issue 3508: atomic_ref&lt;cv T&gt; is not well-specified">
-<meta property="og:description" content="C++ library issue. Status: Open">
+<meta property="og:description" content="C++ library issue. Status: Resolved">
 <meta property="og:url" content="https://cplusplus.github.io/LWG/issue3508.html">
 <meta property="og:type" content="website">
 <meta property="og:image" content="http://cplusplus.github.io/LWG/images/cpp_logo.png">
@@ -61,13 +61,13 @@
 </head>
 <body>
 <hr>
-<p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#Open">Open</a> status.</em></p>
-<h3 id="3508"><a href="lwg-active.html#3508">3508</a>. <code>atomic_ref&lt;<i>cv</i> T&gt;</code> is not well-specified</h3>
-<p><b>Section:</b> 32.5.7.1 <a href="https://wg21.link/atomics.ref.generic.general">[atomics.ref.generic.general]</a> <b>Status:</b> <a href="lwg-active.html#Open">Open</a>
- <b>Submitter:</b> Casey Carter <b>Opened:</b> 2020-12-02 <b>Last modified:</b> 2024-06-28</p>
+<p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#Resolved">Resolved</a> status.</em></p>
+<h3 id="3508"><a href="lwg-defects.html#3508">3508</a>. <code>atomic_ref&lt;<i>cv</i> T&gt;</code> is not well-specified</h3>
+<p><b>Section:</b> 32.5.7.1 <a href="https://wg21.link/atomics.ref.generic.general">[atomics.ref.generic.general]</a> <b>Status:</b> <a href="lwg-active.html#Resolved">Resolved</a>
+ <b>Submitter:</b> Casey Carter <b>Opened:</b> 2020-12-02 <b>Last modified:</b> 2025-02-07</p>
 <p><b>Priority: </b>2
 </p>
-<p><b>View all issues with</b> <a href="lwg-status.html#Open">Open</a> status.</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#Resolved">Resolved</a> status.</p>
 <p><b>Discussion:</b></p>
 <p>
 <code>atomic_ref&lt;T&gt;</code> requires only that its template parameter <code>T</code> is trivially copyable,
@@ -104,15 +104,19 @@ deprecations).
 Set priority to 2 during reflector discussions. 
 </p>
 
-<p><i>[2024-06; Related to issue <a href="lwg-active.html#4069" title="std::atomic&lt;volatile T&gt; should be ill-formed (Status: Open)">4069</a><sup><a href="https://cplusplus.github.io/LWG/issue4069" title="Latest snapshot">(i)</a></sup>.]</i></p>
+<p><i>[2024-06; Related to issue <a href="lwg-defects.html#4069" title="std::atomic&lt;volatile T&gt; should be ill-formed (Status: Resolved)">4069</a><sup><a href="https://cplusplus.github.io/LWG/issue4069" title="Latest snapshot">(i)</a></sup>.]</i></p>
 
 
 <p><i>[St. Louis 2024-06-28; SG1 feedback]</i></p>
 
 <p>
 SG1 forwarded <a href="https://wg21.link/P3323R0" title=" cv-qualified types in atomic and atomic_ref">P3323R0</a> to LEWG to resolve LWG issues
-<a href="lwg-active.html#3508" title="atomic_ref&lt;cv T&gt; is not well-specified (Status: Open)">3508</a><sup><a href="https://cplusplus.github.io/LWG/issue3508" title="Latest snapshot">(i)</a></sup> and <a href="lwg-active.html#4069" title="std::atomic&lt;volatile T&gt; should be ill-formed (Status: Open)">4069</a><sup><a href="https://cplusplus.github.io/LWG/issue4069" title="Latest snapshot">(i)</a></sup>.
+<a href="lwg-defects.html#3508" title="atomic_ref&lt;cv T&gt; is not well-specified (Status: Resolved)">3508</a><sup><a href="https://cplusplus.github.io/LWG/issue3508" title="Latest snapshot">(i)</a></sup> and <a href="lwg-defects.html#4069" title="std::atomic&lt;volatile T&gt; should be ill-formed (Status: Resolved)">4069</a><sup><a href="https://cplusplus.github.io/LWG/issue4069" title="Latest snapshot">(i)</a></sup>.
 </p>
+
+<p><i>[2025-02-07 Status changed: Open &rarr; Resolved.]</i></p>
+
+<p>Resolved by <a href="https://wg21.link/P3323R0" title=" cv-qualified types in atomic and atomic_ref">P3323R0</a> in Wrocław.</p>
 
 
 

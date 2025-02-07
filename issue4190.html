@@ -64,8 +64,8 @@
 <p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#New">New</a> status.</em></p>
 <h3 id="4190"><a href="lwg-active.html#4190">4190</a>. Specification of <i>completion-signatures-for</i> in [exec.snd.expos]/p39 is recursive</h3>
 <p><b>Section:</b> 33.9.2 <a href="https://wg21.link/exec.snd.expos">[exec.snd.expos]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Eric Niebler <b>Opened:</b> 2025-01-02 <b>Last modified:</b> 2025-01-18</p>
-<p><b>Priority: </b>Not Prioritized
+ <b>Submitter:</b> Eric Niebler <b>Opened:</b> 2025-01-02 <b>Last modified:</b> 2025-02-07</p>
+<p><b>Priority: </b>2
 </p>
 <p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
 <p><b>Discussion:</b></p>
@@ -91,6 +91,17 @@ The <code>sender_in&lt;Sndr, Env&gt;</code> concept requires that <code>get_comp
 well-formed and that its type is a specialization of <code>completion_signatures</code>. But the return type of 
 <code class='backtick'>get_completion_signatures(sndr, env)</code> is exactly the thing this para is trying to define!
 </p>
+
+<p><i>[2025-02-07; Reflector poll]</i></p>
+
+<p>
+Set priority to 2 after reflector poll.
+</p>
+<p>
+First sentence of p39 should be either "Let the type <code class='backtick'>Sndr</code> be ..." or
+"Let <code class='backtick'>Sndr</code> be ...", but not "Let type <code class='backtick'>Sndr</code> be ...".
+</p>
+
 
 
 <p id="res-4190"><b>Proposed resolution:</b></p>

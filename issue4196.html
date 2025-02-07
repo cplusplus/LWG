@@ -64,8 +64,8 @@
 <p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#New">New</a> status.</em></p>
 <h3 id="4196"><a href="lwg-active.html#4196">4196</a>. Complexity of <code class='backtick'>inplace_merge()</code> is incorrect</h3>
 <p><b>Section:</b> 26.8.6 <a href="https://wg21.link/alg.merge">[alg.merge]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Stephen Howe <b>Opened:</b> 2025-01-22 <b>Last modified:</b> 2025-01-25</p>
-<p><b>Priority: </b>Not Prioritized
+ <b>Submitter:</b> Stephen Howe <b>Opened:</b> 2025-01-22 <b>Last modified:</b> 2025-02-07</p>
+<p><b>Priority: </b>4
 </p>
 <p><b>View other</b> <a href="lwg-index-open.html#alg.merge">active issues</a> in [alg.merge].</p>
 <p><b>View all other</b> <a href="lwg-index.html#alg.merge">issues</a> in [alg.merge].</p>
@@ -124,6 +124,17 @@ sequence is over, so the 2nd sequence is copied. Only 1 comparison is done, not 
 <p>
 The <a href="https://sgistl.github.io/inplace_merge.html">SGI STL archive</a> correctly says "at most" as well.
 </p>
+
+<p><i>[2025-02-07; Reflector poll]</i></p>
+
+<p>
+Set priority to 4 after reflector poll.
+There were nine votes for P0 (Tentatively Ready), but also several for
+NAD Editorial, because 16.3.2.4 <a href="https://wg21.link/structure.specifications">[structure.specifications]</a>/7 explicitly
+says that all complexity requirements are upper bounds and it's conforming to
+do less work. The consensus was that this is still a clarifying improvement.
+</p>
+
 
 
 <p id="res-4196"><b>Proposed resolution:</b></p>

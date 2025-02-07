@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <title>Issue 4174: How does [atomics.order] p3 apply when then modification is an initialization?</title>
 <meta property="og:title" content="Issue 4174: How does [atomics.order] p3 apply when then modification is an initialization?">
-<meta property="og:description" content="C++ library issue. Status: New">
+<meta property="og:description" content="C++ library issue. Status: SG1">
 <meta property="og:url" content="https://cplusplus.github.io/LWG/issue4174.html">
 <meta property="og:type" content="website">
 <meta property="og:image" content="http://cplusplus.github.io/LWG/images/cpp_logo.png">
@@ -61,15 +61,15 @@
 </head>
 <body>
 <hr>
-<p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#New">New</a> status.</em></p>
+<p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#SG1">SG1</a> status.</em></p>
 <h3 id="4174"><a href="lwg-active.html#4174">4174</a>. How does [atomics.order] p3 apply when then modification is an initialization?</h3>
-<p><b>Section:</b> 32.5.4 <a href="https://wg21.link/atomics.order">[atomics.order]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> jim x <b>Opened:</b> 2024-11-13 <b>Last modified:</b> 2024-11-24</p>
-<p><b>Priority: </b>Not Prioritized
+<p><b>Section:</b> 32.5.4 <a href="https://wg21.link/atomics.order">[atomics.order]</a> <b>Status:</b> <a href="lwg-active.html#SG1">SG1</a>
+ <b>Submitter:</b> jim x <b>Opened:</b> 2024-11-13 <b>Last modified:</b> 2025-02-07</p>
+<p><b>Priority: </b>3
 </p>
 <p><b>View other</b> <a href="lwg-index-open.html#atomics.order">active issues</a> in [atomics.order].</p>
 <p><b>View all other</b> <a href="lwg-index.html#atomics.order">issues</a> in [atomics.order].</p>
-<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#SG1">SG1</a> status.</p>
 <p><b>Discussion:</b></p>
 <p>
 Consider this example
@@ -108,6 +108,66 @@ According to 32.5.8.2 <a href="https://wg21.link/atomics.types.operations">[atom
 So, how does 32.5.4 <a href="https://wg21.link/atomics.order">[atomics.order]</a> p3 apply to this example such that the load operation precedes 
 the store operation in the single total order <i>S</i>?
 </p>
+
+<p><i>[2025-02-07; Reflector poll]</i></p>
+
+<p>
+Set priority to 3 after reflector poll. Send to SG1.
+</p>
+<p>
+LWG found the issue unclear and felt it was missing context that would
+help understand it properly.
+</p>
+<p>
+In
+<a href="https://github.com/cplusplus/CWG/issues/641">cplusplus/CWG/issues/641</a>
+the following example was given:
+<blockquote>
+<pre>
+std::atomic&lt;bool&gt; a = false;
+std::atomic&lt;bool&gt; b = false;
+int v = 0;
+// thread 1:
+a.store(true, seq_cst);
+if(b.load(seq_cst)== false){
+   v = 1;  // #1
+}
+//thread 2:
+b.store(true, seq_cst);
+if(a.load(seq_cst)== false){
+   v = 2; // #2
+}
+</pre>
+To prove whether #1 and #2 can have data race, we should prove whether
+it's possible that <code class='backtick'>a</code> and <code class='backtick'>b</code> simultaneously read <code class='backtick'>false</code>.
+This proof equals whether there can be a valid single total order in this case.
+To determine the order of <code class='backtick'>b.load</code> and <code class='backtick'>b.store</code> when <code class='backtick'>b.load</code> reads
+the initialization value <code class='backtick'>false</code>, 32.5.4 <a href="https://wg21.link/atomics.order">[atomics.order]</a> p3.3
+should apply here.
+However, the initialization is not an atomic modification
+such that <code class='backtick'>X</code> cannot be that value.
+</blockquote>
+</p>
+
+<p>
+A possible fix is to amend 32.5.4 <a href="https://wg21.link/atomics.order">[atomics.order]</a>/3.3 to say something
+like this:
+<blockquote>
+(3.3) A and B are not the same atomic read-modify-write operation, and
+<ins>either</ins>
+<ol style="list-style-type: none">
+<li><ins>(3.3.1)</ins>
+there exists an atomic modification X of M such that A reads
+the value stored by X and X precedes B in the modification order of M<ins>,
+or</ins>
+</li>
+<li><ins>(3.3.2)
+A reads the initial value of X and B modifies M</ins>, or
+</li>
+</ol>
+</blockquote>
+</p>
+
 
 
 <p id="res-4174"><b>Proposed resolution:</b></p>

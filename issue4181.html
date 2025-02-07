@@ -64,8 +64,8 @@
 <p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#New">New</a> status.</em></p>
 <h3 id="4181"><a href="lwg-active.html#4181">4181</a>. Some ranges have negative <code class='backtick'>ssize</code></h3>
 <p><b>Section:</b> 24.7 <a href="https://wg21.link/iterator.range">[iterator.range]</a>, 25.3.11 <a href="https://wg21.link/range.prim.ssize">[range.prim.ssize]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Casey Carter <b>Opened:</b> 2024-12-13 <b>Last modified:</b> 2024-12-14</p>
-<p><b>Priority: </b>Not Prioritized
+ <b>Submitter:</b> Casey Carter <b>Opened:</b> 2024-12-13 <b>Last modified:</b> 2025-02-07</p>
+<p><b>Priority: </b>3
 </p>
 <p><b>View other</b> <a href="lwg-index-open.html#iterator.range">active issues</a> in [iterator.range].</p>
 <p><b>View all other</b> <a href="lwg-index.html#iterator.range">issues</a> in [iterator.range].</p>
@@ -80,6 +80,20 @@ Perhaps the <code class='backtick'>ssize</code> overloads should return
 <code>static_cast&lt;common_type_t&lt;ptrdiff_t, iter_difference_t&lt;decltype(<i>meow</i>.begin())&gt;&gt;&gt;(<i>meow</i>.size())</code> 
 instead when the argument <code><i>meow</i></code> models <code class='backtick'>range</code>?
 </p>
+
+<p><i>[2025-02-07; Reflector poll]</i></p>
+
+<p>
+Set priority to 3 after reflector poll.
+</p>
+<p>
+"The behaviour for Ranges regressed due to LWG <a href="lwg-defects.html#3403" title="Domain of ranges::ssize(E) doesn't match ranges::size(E) (Status: C++23)">3403</a><sup><a href="https://cplusplus.github.io/LWG/issue3403" title="Latest snapshot">(i)</a></sup>.
+It might have been a mistake to broaden the domain of <code class='backtick'>ranges::ssize</code> to match
+that of <code class='backtick'>ranges::size</code>.  The latter includes some non-Range arguments to ease
+the transition from <code class='backtick'>std::size</code>, but thjere was no existing body of pre-C++20
+code calling <code class='backtick'>std::ssize</code> that needed a transition path."
+</p>
+
 
 
 <p id="res-4181"><b>Proposed resolution:</b></p>

@@ -64,8 +64,8 @@
 <p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#New">New</a> status.</em></p>
 <h3 id="4173"><a href="lwg-active.html#4173">4173</a>. Better term for "references, pointers and iterators to elements"</h3>
 <p><b>Section:</b> 23 <a href="https://wg21.link/containers">[containers]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Jonathan Wakely <b>Opened:</b> 2024-11-21 <b>Last modified:</b> 2024-11-21</p>
-<p><b>Priority: </b>Not Prioritized
+ <b>Submitter:</b> Jonathan Wakely <b>Opened:</b> 2024-11-21 <b>Last modified:</b> 2025-02-07</p>
+<p><b>Priority: </b>4
 </p>
 <p><b>View other</b> <a href="lwg-index-open.html#containers">active issues</a> in [containers].</p>
 <p><b>View all other</b> <a href="lwg-index.html#containers">issues</a> in [containers].</p>
@@ -81,6 +81,36 @@ could be confused with node handles for associative containers, and
 (based on Wikipedia) has connotations of additional indirection, and something
 which would <i>not</i> be invalidated when the underlying storage changes.
 </p>
+
+<p><i>[2025-02-07; Reflector poll]</i></p>
+
+<p>
+Set priority to 4 after reflector poll.
+</p>
+<p>
+"Maybe 'pointer to elements' or a longer phrase that includes the verb
+'invalidates', which has special meaning in this section."
+</p>
+<p>
+"Note that there are cases where we invalidate iterators but not pointers/references."
+</p>
+<p>
+"Maybe define 'addresses' to mean 'pointers and references' since they're
+always invalidated at the same time, but iterators are sometimes separate."
+</p>
+<p>
+"Referential element accessors"
+</p>
+<p>
+"Define 'pointer-invalidating' (for both pointers and references) and
+'iterator-invalidating', and say that the former always implies the latter.
+Maybe also introduce antonyms 'pointer-preserving' and 'iterator-preserving'."
+</p>
+<p>
+"Should be defined in terms of affected elements, e.g.
+'pointer-invalidating for any erased elements'."
+</p>
+
 
 
 <p id="res-4173"><b>Proposed resolution:</b></p>
