@@ -62,7 +62,7 @@
 </tr>
 <tr>
 <td align="left">Date:</td>
-<td align="left">Revised 2025-02-07 at 22:40:38 UTC
+<td align="left">Revised 2025-02-07 at 22:54:55 UTC
 </td>
 </tr>
 <tr>
@@ -76,189 +76,47 @@
 </table>
 <h2>Ready Issues</h2>
 <hr>
-<h3 id="3578"><a href="#3578">3578</a><sup><a href="https://cplusplus.github.io/LWG/issue3578">(i)</a></sup>. Iterator SCARYness in the context of associative container merging</h3>
-<p><b>Section:</b> 23.2.7.1 <a href="https://wg21.link/associative.reqmts.general">[associative.reqmts.general]</a> <b>Status:</b> <a href="lwg-active.html#Ready">Tentatively Ready</a>
- <b>Submitter:</b> Joaqu&iacute;n M L&oacute;pez Mu&ntilde;oz <b>Opened:</b> 2021-08-04 <b>Last modified:</b> 2024-12-09</p>
-<p><b>Priority: </b>3
+<h3 id="4188"><a href="#4188">4188</a><sup><a href="https://cplusplus.github.io/LWG/issue4188">(i)</a></sup>. <code>ostream::sentry</code> destructor should handle exceptions</h3>
+<p><b>Section:</b> 31.7.6.2.4 <a href="https://wg21.link/ostream.sentry">[ostream.sentry]</a> <b>Status:</b> <a href="lwg-active.html#Ready">Tentatively Ready</a>
+ <b>Submitter:</b> Jonathan Wakely <b>Opened:</b> 2025-01-14 <b>Last modified:</b> 2025-02-07</p>
+<p><b>Priority: </b>Not Prioritized
 </p>
-<p><b>View other</b> <a href="lwg-index-open.html#associative.reqmts.general">active issues</a> in [associative.reqmts.general].</p>
-<p><b>View all other</b> <a href="lwg-index.html#associative.reqmts.general">issues</a> in [associative.reqmts.general].</p>
+<p><b>View other</b> <a href="lwg-index-open.html#ostream.sentry">active issues</a> in [ostream.sentry].</p>
+<p><b>View all other</b> <a href="lwg-index.html#ostream.sentry">issues</a> in [ostream.sentry].</p>
 <p><b>View all issues with</b> <a href="lwg-status.html#Tentatively Ready">Tentatively Ready</a> status.</p>
 <p><b>Discussion:</b></p>
 <p>
-For the expression <code>a.merge(a2)</code>, postconditions say that "iterators referring to the transferred elements 
-[&hellip;] now behave as iterators into <code>a</code> [&hellip;]". When <code>a</code> and <code>a2</code> are of different 
-types, this seems to imply, under the widest interpretation for "behaving as", that <code>a</code>-iterators and 
-<code>a2</code>-iterators are actually of the same type, that is, that associative containers have SCARY iterators,
- which is, to the best of my knowledge, not currently mandated by the standard.
-<p/>
-There are (at least) three possible resolutions to this ambiguity, ordered by intrusiveness:
-</p>
-<ul>
-<li><p>Indicate that "behaving as" only applies to the case where <code>a</code> and <code>a2</code> are of the same type.</p></li>
-<li><p>Clarify what "behaving as" means. A non-SCARY interpretation is that an <code>a2</code>-iterator to a transferred 
-element can still be dereferenced, incremented (if not past the last element of <code>a</code>) and decremented (if 
-not pointing to the first element of <code>a</code>), while comparison with <code>a</code>-iterators and use in the 
-interface of <code>a</code> is not guaranteed.</p></li>
-<li><p>Mandate SCARY iterators by, for instance, requiring that associative containers with compatible nodes 
-(23.2.5.1 <a href="https://wg21.link/container.node.overview">[container.node.overview]</a>/1) have the same iterator types.</p></li>
-</ul>
-<p>
-Note that this issue does not extend to unordered associative containers, as there (23.2.8.1 <a href="https://wg21.link/unord.req.general">[unord.req.general]</a>) 
-iterators to transferred elements are invalidated, which makes the point of SCARYness irrelevant. That said, 
-if SCARY iterators are finally required for associative containers, it makes much sense to extend the requirement 
-to unordered associative containers as well.
-</p>
-
-<p><i>[2021-08-20; Reflector poll]</i></p>
-
-<p>
-Set priority to 3 after reflector poll.
-</p>
-
-<p><i>[2024-12-04; Jonathan provides wording]</i></p>
-
-<p>
-If we want to require <a href="https://www.stroustrup.com/SCARY.pdf">SCARY</a>
-iterators then that should be a proposal that goes through LEWG design review.
-I propose an almost minimal change to make the spec consistent without
-imposing any new requirements on implementations.
-</p>
-<p>
-The minimal change would be to say that iterators remain valid if <code class='backtick'>a</code> and <code class='backtick'>a2</code>
-have the same type, which is the minimum portable guarantee that always holds.
-However what matters in practice is whether the iterator types are the same.
-That would not be a portable guarantee, because it depends on whether the
-implementation uses SCARY iterators for its maps and sets, so users could
-write code that works on one implementation and fails to compile when moved
-to a different implementation. But that portability trap would be present
-even if we only say iterators remain valid when <code class='backtick'>a</code> and <code class='backtick'>a2</code> are the same type.
-If the code compiles and works on an implementation with SCARY iterators,
-then users will rely on that, even if unintentionally. Leaving that case
-unspecified or undefined in the standard doesn't prevent users from relying
-on it. It doesn't seem to serve any benefit to pretend it doesn't work when
-it actually does on some implementations.
-</p>
-<p>
-N.B. Libstdc++ associative container iterators are SCARY by default,
-but non-SCARY when <code class='backtick'>-D_GLIBCXX_DEBUG</code> is used to enable Debug Mode
-(see <a href="https://gcc.gnu.org/PR62169">Bug 62169</a>).
-I believe libc++ iterators are SCARY even when
-<code class='backtick'>-D_LIBCPP_HARDENING_MODE=_LIBCPP_HARDENING_MODE_DEBUG</code> is used,
-and MSVC STL iterators are SCARY even when <code class='backtick'>/D_ITERATOR_DEBUG_LEVEL</code> is used.
-</p>
-
-
-<p><i>[2024-12-09; Reflector poll]</i></p>
-
-<p>
-Set status to Tentatively Ready after eight votes in favour during reflector poll.
-</p>
-
-
-
-<p id="res-3578"><b>Proposed resolution:</b></p>
-<p>
-This wording is relative to <a href="https://wg21.link/N4993" title=" Working Draft, Programming Languages — C++">N4993</a>.
-</p>
-
-<ol>
-<li>
-<p>
-Modify 23.2.7.1 <a href="https://wg21.link/associative.reqmts.general">[associative.reqmts.general]</a> as indicated:
-</p>
-
-<blockquote>
-<pre><code>a.merge(a2)</code></pre>
-<p>-112-
-<i>Result</i>: <code class='backtick'>void</code>
-</p>
-<p>-113-
-<i>Preconditions</i>:
-<code class='backtick'>a.get_allocator() == a2.get_allocator()</code><ins> is <code class='backtick'>true</code></ins>.
-</p>
-<p>-114-
-<i>Effects</i>:
-Attempts to extract each element in <code class='backtick'>a2</code> and insert it into <code class='backtick'>a</code>
-using the comparison object of <code class='backtick'>a</code>.
-In containers with unique keys,
-if there is an element in <code class='backtick'>a</code> with key equivalent to
-the key of an element from <code class='backtick'>a2</code>,
-then that element is not extracted from <code class='backtick'>a2</code>.
-</p>
-<p>-115-
-<i>Postconditions</i>:
-Pointers and references to the transferred elements of <code class='backtick'>a2</code>
-refer to those same elements but as members of <code class='backtick'>a</code>.
-<ins>If <code class='backtick'>a.begin()</code> and <code class='backtick'>a2.begin()</code> have the same type, iterators</ins>
-<del>Iterators</del>
-referring to the transferred elements will continue to refer to their elements,
-but they now behave as iterators into <code class='backtick'>a</code>, not into <code class='backtick'>a2</code>.
-</p>
-<p>-116-
-<i>Throws</i>:
-Nothing unless the comparison objects throws.
-</p>
-<p>-117-
-<i>Complexity</i>:
-<i>N</i> log(<code class='backtick'>a.size()</code>+<i>N</i>), where <i>N</i> has the value <code class='backtick'>a2.size()</code>.
-</p>
-
-</blockquote>
-</li>
-</ol>
-
-
-
-
-
-
-<hr>
-<h3 id="3956"><a href="#3956">3956</a><sup><a href="https://cplusplus.github.io/LWG/issue3956">(i)</a></sup>. <code>chrono::parse</code> uses <code>from_stream</code> as a customization point</h3>
-<p><b>Section:</b> 30.13 <a href="https://wg21.link/time.parse">[time.parse]</a> <b>Status:</b> <a href="lwg-active.html#Ready">Tentatively Ready</a>
- <b>Submitter:</b> Jonathan Wakely <b>Opened:</b> 2023-07-15 <b>Last modified:</b> 2024-12-09</p>
-<p><b>Priority: </b>3
-</p>
-<p><b>View other</b> <a href="lwg-index-open.html#time.parse">active issues</a> in [time.parse].</p>
-<p><b>View all other</b> <a href="lwg-index.html#time.parse">issues</a> in [time.parse].</p>
-<p><b>View all issues with</b> <a href="lwg-status.html#Tentatively Ready">Tentatively Ready</a> status.</p>
-<p><b>Discussion:</b></p>
-<p>
-30.13 <a href="https://wg21.link/time.parse">[time.parse]</a> says: "Each <code>parse</code> overload specified
-in this subclause calls <code>from_stream</code> unqualified,
-so as to enable argument dependent lookup (6.5.4 <a href="https://wg21.link/basic.lookup.argdep">[basic.lookup.argdep]</a>)."
-That name should be added to 16.4.2.2 <a href="https://wg21.link/contents">[contents]</a> along with
-<code>swap</code>,
-<code>make_error_code</code>, and
-<code>make_error_condition</code>.
+LWG <a href="lwg-closed.html#397" title="ostream::sentry dtor throws exceptions (Status: NAD Editorial)">397</a><sup><a href="https://cplusplus.github.io/LWG/issue397" title="Latest snapshot">(i)</a></sup> suggested changing 31.7.6.2.4 <a href="https://wg21.link/ostream.sentry">[ostream.sentry]</a> to
+say that the <code class='backtick'>ostream::sentry</code> destructor doesn't throw any exceptions.
+That issue was closed as resolved by LWG <a href="lwg-defects.html#835" title="Tying two streams together (correction to DR 581) (Status: C++11)">835</a><sup><a href="https://cplusplus.github.io/LWG/issue835" title="Latest snapshot">(i)</a></sup> which included
+the "Throws: Nothing" change to the <code class='backtick'>sentry</code> destructor.
+However, that part of the resolution never seems to have been applied to
+the working draft. <a href="https://wg21.link/N3091" title=" Editor's Report">N3091</a> mentions applying LWG 835 for
+<a href="https://wg21.link/N3090" title=" Working Draft, Standard for Programming Language C++">N3090</a> but the destructor change is missing, maybe because
+the paragraph for the sentry destructor had been renumbered from p17 to p4
+and LWG 835 didn't show sufficient context to indicate the intended location.
 </p>
 
 <p>
-We should decide whether calls to <code>from_stream</code> should use normal
-lookup (i.e. unqualified lookup plus ADL) or just ADL, as was done for
-<code>make_error_code</code> and <code>make_error_condition</code>
-(see LWG <a href="lwg-defects.html#3629" title="make_error_code and make_error_condition are customization points (Status: C++23)">3629</a><sup><a href="https://cplusplus.github.io/LWG/issue3629" title="Latest snapshot">(i)</a></sup>).
+The problem described in LWG <a href="lwg-closed.html#397" title="ostream::sentry dtor throws exceptions (Status: NAD Editorial)">397</a><sup><a href="https://cplusplus.github.io/LWG/issue397" title="Latest snapshot">(i)</a></sup> is still present:
+the streambuf operations can fail, and the sentry needs to handle that.
+The changes for LWG <a href="lwg-defects.html#835" title="Tying two streams together (correction to DR 581) (Status: C++11)">835</a><sup><a href="https://cplusplus.github.io/LWG/issue835" title="Latest snapshot">(i)</a></sup> ensure no exception is thrown if
+<code>rdbuf()-&gt;pubsync()</code> returns -1 on failure, but do nothing for
+the case where it throws an exception (the original topic of LWG 397!).
+Because C++11 made <code class='backtick'>~sentry</code> implicitly <code class='backtick'>noexcept</code>,
+an exception from <code class='backtick'>rdbuf()-&gt;pubsync()</code> will terminate the process.
+That needs to be fixed.
 </p>
-
-<p><i>[2023-10-30; Reflector poll]</i></p>
 
 <p>
-Set priority to 3 after reflector poll.
-</p>
-
-<p><i>[2024-12-02; Jonathan provides wording]</i></p>
-
-<p>
-I suggest that <code class='backtick'>from_stream</code> should only be found via ADL,
-not unqualified lookup. This is consistent with what we did for
-<code class='backtick'>make_error_code</code> and <code class='backtick'>make_error_condition</code>, and more recently for
-<code class='backtick'>submdspan_mapping</code>.  I see no reason to treat <code class='backtick'>from_stream</code> differently.
-This implies that implementations might need a poison poll in <code class='backtick'>std::chrono</code>
-so that unqualified lookup stops as soon as those are found.
+Libstdc++ does terminate if <code class='backtick'>pubsync()</code> throws when called by <code class='backtick'>~sentry</code>.
+Both MSVC and Libc++ silently swallow exceptions.
+It seems preferable to handle the exception and report an error,
+just as we do when <code class='backtick'>pubsync()</code> returns -1.
 </p>
 
 
-<p><i>[2024-12-09; Reflector poll]</i></p>
+<p><i>[2025-02-07; Reflector poll]</i></p>
 
 <p>
 Set status to Tentatively Ready after six votes in favour during reflector poll.
@@ -266,58 +124,23 @@ Set status to Tentatively Ready after six votes in favour during reflector poll.
 
 
 
-<p id="res-3956"><b>Proposed resolution:</b></p>
+<p id="res-4188"><b>Proposed resolution:</b></p>
 <p>
-This wording is relative to <a href="https://wg21.link/N4993" title=" Working Draft, Programming Languages — C++">N4993</a>.
+This wording is relative to <a href="https://wg21.link/N5001">N5001</a>.
 </p>
 
 <ol>
-<li><p>Modify 16.4.2.2 <a href="https://wg21.link/contents">[contents]</a> as indicated:</p>
+<li><p>Modify 31.7.6.2.4 <a href="https://wg21.link/ostream.sentry">[ostream.sentry]</a> as indicated:</p>
 
 <blockquote>
-<p>
--3-
-Whenever an unqualified name other than
-<code class='backtick'>swap</code>, <code class='backtick'>make_error_code</code>, <code class='backtick'>make_error_condition</code>,
-<ins><code class='backtick'>from_stream</code>,</ins>
-or <code class='backtick'>submdspan_mapping</code>
-is used in the specification of a declaration <code class='backtick'>D</code>
-in Clause 17 through Clause 33 or Annex D,
-its meaning is established as-if by performing unqualified name lookup
-(6.5.3 <a href="https://wg21.link/basic.lookup.unqual">[basic.lookup.unqual]</a>)
-in the context of <code class='backtick'>D</code>.
-</p>
-<p>
-[<i>Note 1</i>:
-Argument-dependent lookup is not performed. &mdash; <i>end note</i>]
-</p>
-<p>
-Similarly, the meaning of a <i>qualified-id</i> is established as-if
-by performing qualified name lookup (6.5.5 <a href="https://wg21.link/basic.lookup.qual">[basic.lookup.qual]</a>)
-in the context of <code class='backtick'>D</code>.
-</p>
-<p>
-[<i>Example 1</i>:
-The reference to <code class='backtick'>is_array_v</code> in the specification of <code class='backtick'>std::to_array</code>
-(23.3.3.6 <a href="https://wg21.link/array.creation">[array.creation]</a>) refers to <code class='backtick'>::std::is_array_v</code>.
-&mdash; <i>end example</i>]
-</p>
-<p>
-[<i>Note 2</i>: Operators in expressions (12.2.2.3 <a href="https://wg21.link/over.match.oper">[over.match.oper]</a>)
-are not so constrained; see 16.4.6.4 <a href="https://wg21.link/global.functions">[global.functions]</a>.
-&mdash; <i>end note</i>]
-</p>
-<p>
-The meaning of the unqualified name <code class='backtick'>swap</code> is established
-in an overload resolution context for swappable values
-(16.4.4.3 <a href="https://wg21.link/swappable.requirements">[swappable.requirements]</a>).
-The meanings of the unqualified names
-<code class='backtick'>make_error_code</code>, <code class='backtick'>make_error_condition</code>,
-<ins><code class='backtick'>from_stream</code>,</ins>
-and <code class='backtick'>submdspan_mapping</code>
-are established as-if by performing argument-dependent lookup
-(6.5.4 <a href="https://wg21.link/basic.lookup.argdep">[basic.lookup.argdep]</a>).
-</p>
+<pre><code>~sentry();</code></pre>
+<blockquote>
+-4- If
+<code>(os.flags() &amp; ios_base::unitbuf) &amp;&amp; !uncaught_exceptions() &amp;&amp; os.good()</code> is <code class='backtick'>true</code>, calls <code>os.rdbuf()-&gt;pubsync()</code>.
+If that function returns −1
+<ins> or exits via an exception</ins>,
+sets <code class='backtick'>badbit</code> in <code class='backtick'>os.rdstate()</code> without propagating an exception.
+</blockquote>
 </blockquote>
 </li>
 </ol>
@@ -328,38 +151,36 @@ are established as-if by performing argument-dependent lookup
 
 
 <hr>
-<h3 id="4172"><a href="#4172">4172</a><sup><a href="https://cplusplus.github.io/LWG/issue4172">(i)</a></sup>. unique_lock self-move-assignment is broken</h3>
-<p><b>Section:</b> 32.6.5.4.2 <a href="https://wg21.link/thread.lock.unique.cons">[thread.lock.unique.cons]</a>, 32.6.5.5.2 <a href="https://wg21.link/thread.lock.shared.cons">[thread.lock.shared.cons]</a> <b>Status:</b> <a href="lwg-active.html#Ready">Tentatively Ready</a>
- <b>Submitter:</b> Casey Carter <b>Opened:</b> 2024-11-13 <b>Last modified:</b> 2025-02-07</p>
+<h3 id="4200"><a href="#4200">4200</a><sup><a href="https://cplusplus.github.io/LWG/issue4200">(i)</a></sup>. The <code class='backtick'>operation_state</code> concept can be simplified</h3>
+<p><b>Section:</b> 33.8.1 <a href="https://wg21.link/exec.opstate.general">[exec.opstate.general]</a> <b>Status:</b> <a href="lwg-active.html#Ready">Tentatively Ready</a>
+ <b>Submitter:</b> Eric Niebler <b>Opened:</b> 2025-02-03 <b>Last modified:</b> 2025-02-07</p>
 <p><b>Priority: </b>Not Prioritized
 </p>
-<p><b>View all other</b> <a href="lwg-index.html#thread.lock.unique.cons">issues</a> in [thread.lock.unique.cons].</p>
 <p><b>View all issues with</b> <a href="lwg-status.html#Tentatively Ready">Tentatively Ready</a> status.</p>
 <p><b>Discussion:</b></p>
 <p>
-The postconditions in 32.6.5.4.2 <a href="https://wg21.link/thread.lock.unique.cons">[thread.lock.unique.cons]</a> paragraph 19:
-
-<blockquote>
-<i>Postconditions</i>:
-<code class='backtick'>pm == u_p.pm</code> and <code class='backtick'>owns == u_p.owns</code>
-(where <code class='backtick'>u_p</code> is the state of <code class='backtick'>u</code> just prior to this construction),
-<code class='backtick'>u.pm == 0</code> and <code class='backtick'>u.owns == false</code>.
-</blockquote>
-
-contradict themselves if <code class='backtick'>*this</code> and the parameter <code class='backtick'>u</code> refer to the same object.
-(Presumably "this construction" means the assignment, and it is copy-pasta from
-the move constructor postconditions.) Apparently
-<code class='backtick'>unique_lock</code> didn't get the memo that we require well-defined behavior
-from self-move-assignment as of LWG <a href="lwg-defects.html#2839" title="Self-move-assignment of library types, again (Status: C++23)">2839</a><sup><a href="https://cplusplus.github.io/LWG/issue2839" title="Latest snapshot">(i)</a></sup>.
+Imported from <a href="https://github.com/cplusplus/sender-receiver/issues/312">cplusplus/sender-receiver #312</a>.
 </p>
 <p>
-Also, the move assignment operator doesn't specify what it returns.
+The current defn of the <code class='backtick'>operation_state</code> concept is:
+
+<pre><code>
+template&lt;class O&gt;
+  concept operation_state =
+    derived_from&lt;typename O::operation_state_concept, operation_state_t&gt; &amp;&amp;
+    is_object_v&lt;O&gt; &amp;&amp;
+    requires (O&amp; o) {
+      { start(o) } noexcept;
+    };
+</code></pre>
+
+I think the <code>is_object_v&lt;O&gt;</code> constraint is not needed
+because the <code>derived_from</code> constraint has already established that
+<code>O</code> is a class type.
 </p>
-
-<p><i>[2024-11-18; Casey expands the PR to cover <code class='backtick'>shared_lock</code>]</i></p>
-
 <p>
-<code class='backtick'>shared_lock</code> has the same problems, and can be fixed in the same way.
+And <code class='backtick'>start(o)</code> is always <code class='backtick'>noexcept</code> now that <code class='backtick'>start</code> mandates the
+<code class='backtick'>noexcept</code>-ness of <code class='backtick'>op.start()</code>.
 </p>
 
 <p><i>[2025-02-07; Reflector poll]</i></p>
@@ -367,108 +188,25 @@ Also, the move assignment operator doesn't specify what it returns.
 <p>
 Set status to Tentatively Ready after seven votes in favour during reflector poll.
 </p>
+
+
+
+<p id="res-4200"><b>Proposed resolution:</b></p>
 <p>
-"Should use parentheses not braces for the initializations."
-Jonathan volunteers to do that editorially after this gets approved.
+This wording is relative to <a href="https://wg21.link/N5001">N5001</a>.
 </p>
-
-
-
-<p id="res-4172"><b>Proposed resolution:</b></p>
-<p>
-This wording is relative to <a href="https://wg21.link/N4993" title=" Working Draft, Programming Languages — C++">N4993</a>.
-</p>
-
-<blockquote class="note">
-Drafting Note: I've chosen to use the move-into-temporary-and-swap idiom here
-to keep things short and sweet.
-Since move construction, swap, and destruction are all <code class='backtick'>noexcept</code>,
-I've promoted move assignment from "<i>Throws</i>: Nothing" to <code class='backtick'>noexcept</code> as well.
-This is consistent with eliminating the implicit narrow contract condition
-that <code class='backtick'>*this</code> and <code class='backtick'>u</code> refer to distinct objects.
-</blockquote>
-
 <ol>
 <li>
-<p>
-In the class synopsis in 32.6.5.4.1 <a href="https://wg21.link/thread.lock.unique.general">[thread.lock.unique.general]</a>,
-annotate the move assignment operator as <code class='backtick'>noexcept</code>:
-</p>
-
+Modify 33.8.1 <a href="https://wg21.link/exec.opstate.general">[exec.opstate.general]</a> as indicated:
 <blockquote><pre><code>
-  namespace std {
-    template&lt;class Mutex&gt;
-    class unique_lock {
-      [...]
-      unique_lock&amp; operator=(unique_lock&amp;&amp; u) <ins>noexcept</ins>;
-      [...]
+template&lt;class O&gt;
+  concept operation_state =
+    derived_from&lt;typename O::operation_state_concept, operation_state_t&gt; &amp;&amp;
+    <del>is_object_v&lt;O&gt; &amp;&amp;</del>
+    requires (O&amp; o) {
+      <del>{</del> start(o) <del>} noexcept</del>;
     };
-  }
 </code></pre></blockquote>
-</li>
-
-<li>
-<p>
-Modify 32.6.5.4.2 <a href="https://wg21.link/thread.lock.unique.cons">[thread.lock.unique.cons]</a> as follows:
-</p>
-
-<blockquote>
-<pre><code>
-unique_lock&amp; operator=(unique_lock&amp;&amp; u) <ins>noexcept</ins>;
-</code></pre>
-<p>
--18- <i>Effects</i>:
-<del>If <code class='backtick'>owns</code> calls <code class='backtick'>pm-&gt;unlock()</code>.</del>
-<ins>Equivalent to: <code class='backtick'>unique_lock{std::move(u)}.swap(*this)</code>.</ins>
-</p>
-<p>
-<ins>-?- <i>Returns</i>: <code class='backtick'>*this</code>.</ins>
-</p>
-<p>
-<del>-19- <i>Postconditions</i>:
-<code class='backtick'>pm == u_p.pm</code> and <code class='backtick'>owns == u_p.owns</code>
-(where <code class='backtick'>u_p</code> is the state of <code class='backtick'>u</code> just prior to this construction),
-<code class='backtick'>u.pm == 0</code> and <code class='backtick'>u.owns == false</code>.
-</del>
-</p>
-<p>
-<del>-20- [<i>Note 1</i>:
-With a recursive mutex it is possible for both <code class='backtick'>*this</code> and u to own
-the same mutex before the assignment.
-In this case, *this will own the mutex after the assignment and u will not.
-&mdash; <i>end note</i>]</del>
-</p>
-<p>
-<del>-21- Throws: Nothing.</del>
-</p>
-</blockquote>
-</li>
-
-<li>
-<p>
-Modify 32.6.5.5.2 <a href="https://wg21.link/thread.lock.shared.cons">[thread.lock.shared.cons]</a> as follows:
-</p>
-
-<blockquote>
-<pre><code>
-shared_lock&amp; operator=(shared_lock&amp;&amp; sl) noexcept;
-</code></pre>
-<p>
--17- <i>Effects</i>:
-<del>If <code class='backtick'>owns</code> calls <code class='backtick'>pm-&gt;unlock_shared()</code>.</del>
-<ins>Equivalent to: <code class='backtick'>shared_lock{std::move(sl)}.swap(*this)</code>.</ins>
-</p>
-<p>
-<ins>-?- <i>Returns</i>: <code class='backtick'>*this</code>.</ins>
-</p>
-<p>
-<del>-18- <i>Postconditions</i>:
-<code class='backtick'>pm == sl_p.pm</code> and <code class='backtick'>owns == sl_p.owns</code>
-(where <code class='backtick'>sl_p</code> is the state of <code class='backtick'>sl</code> just prior to this assignment),
-<code class='backtick'>sl.pm == nullptr</code> and <code class='backtick'>sl.owns == false</code>.
-</del>
-</p>
-</blockquote>
 </li>
 </ol>
 
@@ -478,720 +216,72 @@ shared_lock&amp; operator=(shared_lock&amp;&amp; sl) noexcept;
 
 
 <hr>
-<h3 id="4175"><a href="#4175">4175</a><sup><a href="https://cplusplus.github.io/LWG/issue4175">(i)</a></sup>. <code class='backtick'>get_env()</code> specified in terms of <code class='backtick'>as_const()</code> but this doesn't work with rvalue senders</h3>
-<p><b>Section:</b> 33.5.2 <a href="https://wg21.link/exec.get.allocator">[exec.get.allocator]</a>, 33.5.3 <a href="https://wg21.link/exec.get.stop.token">[exec.get.stop.token]</a>, 33.5.4 <a href="https://wg21.link/exec.get.env">[exec.get.env]</a>, 33.5.5 <a href="https://wg21.link/exec.get.domain">[exec.get.domain]</a>, 33.5.6 <a href="https://wg21.link/exec.get.scheduler">[exec.get.scheduler]</a>, 33.5.7 <a href="https://wg21.link/exec.get.delegation.scheduler">[exec.get.delegation.scheduler]</a>, 33.5.8 <a href="https://wg21.link/exec.get.fwd.progress">[exec.get.fwd.progress]</a>, 33.5.9 <a href="https://wg21.link/exec.get.compl.sched">[exec.get.compl.sched]</a> <b>Status:</b> <a href="lwg-active.html#Ready">Tentatively Ready</a>
- <b>Submitter:</b> Lewis Baker <b>Opened:</b> 2024-11-10 <b>Last modified:</b> 2025-02-07</p>
+<h3 id="4201"><a href="#4201">4201</a><sup><a href="https://cplusplus.github.io/LWG/issue4201">(i)</a></sup>. <code class='backtick'>with-await-transform::await_transform</code> should not use a deduced return type</h3>
+<p><b>Section:</b> 33.9.4 <a href="https://wg21.link/exec.awaitable">[exec.awaitable]</a> <b>Status:</b> <a href="lwg-active.html#Ready">Tentatively Ready</a>
+ <b>Submitter:</b> Brian Bi <b>Opened:</b> 2025-02-03 <b>Last modified:</b> 2025-02-07</p>
 <p><b>Priority: </b>Not Prioritized
 </p>
 <p><b>View all issues with</b> <a href="lwg-status.html#Tentatively Ready">Tentatively Ready</a> status.</p>
 <p><b>Discussion:</b></p>
 <p>
-The current specification of <code class='backtick'>std::execution::get_env()</code> defines <code class='backtick'>get_env(o)</code> as <code class='backtick'>as_const(o).get_env()</code>. 
-However, the <code class='backtick'>as_const()</code> function has a deleted rvalue-taking overload, meaning that you cannot pass temporaries to it.  
-<p/>
-This means that several uses of <code class='backtick'>get_env()</code> which pass expressions which are either potentially rvalues 
-(e.g. in definition of <code class='backtick'>connect(sndr, rcvr)</code> it uses the expression <code class='backtick'>get_env(rcvr)</code>, but <code class='backtick'>rcvr</code> could be, 
-and usually is, a prvalue) or always rvalues (e.g. <code class='backtick'>scheduler</code> concept has the expression 
-<code>get_env(schedule(std::forward&lt;Sch&gt;(sch)))</code>).  
-<p/>
-The intent here was that <code class='backtick'>get_env()</code> is a function that takes as an argument a <code>const T&amp;</code> and thus 
-allows prvalues to bind to it. We basically just want to require that <code class='backtick'>get_env()</code> finds a const-qualified 
-member-function. The use of <code class='backtick'>as_const()</code> does not seem to mirror the semantics of a function with a 
-<code>const T&amp;</code> parameter, so I suggest we change it to something else that expresses the intent.
+Imported from <a href="https://github.com/cplusplus/sender-receiver/issues/309">cplusplus/sender-receiver #309</a>.
 </p>
+<p>
+33.9.4 <a href="https://wg21.link/exec.awaitable">[exec.awaitable]</a>/p5
+</p>
+<p>
+The use of the deduced return type causes the definition of the sender's
+<code class='backtick'>as_awaitable</code> method to be instantiated too early,
+e.g., when the sender is passed to <code class='backtick'>get_completion_signatures</code>.
+</p>
+
+<p><i>[Eric provides wording]</i></p>
+
+
 
 <p><i>[2025-02-07; Reflector poll]</i></p>
 
 <p>
 Set status to Tentatively Ready after five votes in favour during reflector poll.
 </p>
-<p>
-This could use the "reified object" idea from 25.3 <a href="https://wg21.link/range.access">[range.access]</a>.
-</p>
 
 
 
-<p id="res-4175"><b>Proposed resolution:</b></p>
-<p>
-This wording is relative to <a href="https://wg21.link/N4993" title=" Working Draft, Programming Languages — C++">N4993</a>.
-</p>
-
-<ol>
-<li><p>Add to the end of 33.1 <a href="https://wg21.link/exec.general">[exec.general]</a> as indicated:</p>
-
-<blockquote>
-<p>
-<ins>-?- For a subexpression <code class='backtick'>expr</code>, let <code><i>AS-CONST</i>(expr)</code> be expression-equivalent to</ins> 
-</p>
-<blockquote><pre>
-<ins>[](const auto&amp; x) noexcept -&gt; const auto&amp; { return x; }(expr)</ins>
-</pre></blockquote>
-</blockquote>
-
-</li>
-
-<li><p>Modify 33.5.2 <a href="https://wg21.link/exec.get.allocator">[exec.get.allocator]</a> as indicated:</p>
-
-<blockquote>
-<p>
--1- <code class='backtick'>get_allocator</code> asks a queryable object for its associated allocator.
-<p/>
--2- The name <code class='backtick'>get_allocator</code> denotes a query object. For a subexpression <code class='backtick'>env</code>, <code class='backtick'>get_allocator(env)</code> is
-expression-equivalent to <code><i>MANDATE-NOTHROW</i>(<del>as_const</del><ins><i>AS-CONST</i></ins>(env).query(get_allocator))</code>.
-</p>
-</blockquote>
-
-</li>
-
-<li><p>Modify 33.5.3 <a href="https://wg21.link/exec.get.stop.token">[exec.get.stop.token]</a> as indicated:</p>
-
-<blockquote>
-<p>
--2- The name <code class='backtick'>get_stop_token</code> denotes a query object. For a subexpression <code class='backtick'>env</code>, <code class='backtick'>get_stop_token(env)</code> is
-expression-equivalent to:
-</p>
-<ol style="list-style-type: none">
-<li><p>(2.1) &mdash; <code><i>MANDATE-NOTHROW</i>(<del>as_const</del><ins><i>AS-CONST</i></ins>(env).query(get_stop_token))</code> 
-if that expression is well-formed.</p></li>
-</ol>
-</blockquote>
-
-</li>
-
-<li><p>Modify 33.5.4 <a href="https://wg21.link/exec.get.env">[exec.get.env]</a> as indicated:</p>
-
-<blockquote>
-<p>
--1- <code class='backtick'>execution::get_env</code> is a customization point object. For a subexpression <code class='backtick'>o</code>, <code class='backtick'>execution::get_env(o)</code> is
-expression-equivalent to:
-</p>
-<ol style="list-style-type: none">
-<li><p>(1.1) &mdash; <code><i>MANDATE-NOTHROW</i>(<del>as_const</del><ins><i>AS-CONST</i></ins>(o).get_env())</code> 
-if that expression is well-formed.</p></li>
-</ol>
-</blockquote>
-
-</li>
-
-<li><p>Modify 33.5.5 <a href="https://wg21.link/exec.get.domain">[exec.get.domain]</a> as indicated:</p>
-
-<blockquote>
-<p>
--2- The name <code class='backtick'>get_domain</code> denotes a query object. For a subexpression <code class='backtick'>env</code>, <code class='backtick'>get_domain(env)</code> is expression-equivalent
-to <code><i>MANDATE-NOTHROW</i>(<del>as_const</del><ins><i>AS-CONST</i></ins>(env).query(get_domain))</code>.
-</p>
-
-</blockquote>
-
-</li>
-
-<li><p>Modify 33.5.6 <a href="https://wg21.link/exec.get.scheduler">[exec.get.scheduler]</a> as indicated:</p>
-
-<blockquote>
-<p>
--2- The name <code class='backtick'>get_scheduler</code> denotes a query object. For a subexpression <code class='backtick'>env</code>, <code class='backtick'>get_scheduler(env)</code> is
-expression-equivalent to <code><i>MANDATE-NOTHROW</i>(<del>as_const</del><ins><i>AS-CONST</i></ins>(env).query(get_scheduler))</code>.
-</p>
-</blockquote>
-
-</li>
-
-<li><p>Modify 33.5.7 <a href="https://wg21.link/exec.get.delegation.scheduler">[exec.get.delegation.scheduler]</a> as indicated:</p>
-
-<blockquote>
-<p>
--2- The name <code class='backtick'>get_delegation_scheduler</code> denotes a query object. For a subexpression <code class='backtick'>env</code>, 
-<code class='backtick'>get_delegation_scheduler(env)</code> is expression-equivalent to 
-<code><i>MANDATE-NOTHROW</i>(<del>as_const</del><ins><i>AS-CONST</i></ins>(env).query(get_delegation_scheduler))</code>.
-</p>
-</blockquote>
-
-</li>
-
-<li><p>Modify 33.5.8 <a href="https://wg21.link/exec.get.fwd.progress">[exec.get.fwd.progress]</a> as indicated:</p>
-
-<blockquote>
-<p>
--2- The name <code class='backtick'>get_forward_progress_guarantee</code> denotes a query object. For a subexpression <code class='backtick'>sch</code>, let 
-<code class='backtick'>Sch</code> be <code class='backtick'>decltype((sch))</code>. If <code class='backtick'>Sch</code> does not satisfy <code class='backtick'>scheduler</code>, <code class='backtick'>get_forward_progress_guarantee</code> is ill-formed.
-Otherwise, <code class='backtick'>get_forward_progress_guarantee(sch)</code> is expression-equivalent to:
-</p>
-<ol style="list-style-type: none">
-<li><p>(2.1) &mdash; <code><i>MANDATE-NOTHROW</i>(<del>as_const</del><ins><i>AS-CONST</i></ins>(sch).query(get_forward_progress_guarantee))</code> 
-if that expression is well-formed.</p></li>
-</ol>
-</blockquote>
-
-</li>
-
-<li><p>Modify 33.5.9 <a href="https://wg21.link/exec.get.compl.sched">[exec.get.compl.sched]</a> as indicated:</p>
-
-<blockquote>
-<p>
--2- The name <code class='backtick'>get_completion_scheduler</code> denotes a query object template. For a subexpression <code class='backtick'>q</code>, the expression
-<code>get_completion_scheduler&lt;<i>completion-tag</i>&gt;(q)</code> is ill-formed if <code><i>completion-tag</i></code> 
-is not one of <code class='backtick'>set_value_t</code>, <code class='backtick'>set_error_t</code>, or <code class='backtick'>set_stopped_t</code>. Otherwise, 
-<code>get_completion_scheduler&lt;<i>completion-tag</i>&gt;(q)</code> is expression-equivalent to
-</p>
-<blockquote><pre>
-<i>MANDATE-NOTHROW</i>(<del>as_const</del><ins><i>AS-CONST</i></ins>(q).query(get_completion_scheduler&lt;<i>completion-tag</i>&gt;))
-</pre></blockquote>
-</blockquote>
-
-</li>
-
-</ol>
-
-
-
-
-
-<hr>
-<h3 id="4179"><a href="#4179">4179</a><sup><a href="https://cplusplus.github.io/LWG/issue4179">(i)</a></sup>. Wrong range in [alg.search]</h3>
-<p><b>Section:</b> 26.6.15 <a href="https://wg21.link/alg.search">[alg.search]</a> <b>Status:</b> <a href="lwg-active.html#Ready">Tentatively Ready</a>
- <b>Submitter:</b> Oscar Slotosch <b>Opened:</b> 2024-12-05 <b>Last modified:</b> 2025-02-07</p>
-<p><b>Priority: </b>Not Prioritized
-</p>
-<p><b>View all other</b> <a href="lwg-index.html#alg.search">issues</a> in [alg.search].</p>
-<p><b>View all issues with</b> <a href="lwg-status.html#Tentatively Ready">Tentatively Ready</a> status.</p>
-<p><b>Discussion:</b></p>
-<p>
-Originally reported as editorial request <a href="https://github.com/cplusplus/draft/issues/7474">#7474</a>:
-<p/>
-During the qualification of the C++ STL Validas has pointed me to the following issue:
-<p/>
-The specification of 26.6.15 <a href="https://wg21.link/alg.search">[alg.search]</a> has a wrong range. Currently the range is 
-"<code>[first1, last1 - (last2 - first2))</code>" (exclusive) but should be 
-"<code>[first1, last1 - (last2 - first2)]</code>" (inclusive). So please correct the closing ")" to "]". 
-Otherwise the last occurrence will not be found. We observed the issue in C++14 and C++17 
-and cppreference.com.
-<p/>
-The implementations do the right thing and work correctly and find even the last occurrence.
-<p/>
-For example in the list <code class='backtick'>{1, 2, 3, 4, 5}</code> the pattern <code class='backtick'>{4, 5}</code> should be found (obviously).
-In the case the last element is not included it will not be found.
-<p/>
-<a href="https://godbolt.org/z/daMa5nTY9">Demonstration on godbolt</a> shows that the implementation 
-is working and finds the pattern.
-</p>
-
-<p><i>[2024-12-07; Daniel comments and provides wording]</i></p>
-
-<p>
-The mentioned wording issue is present in all previous standard versions, including the 
-<a href="https://sgistl.github.io/search.html">SGI STL</a>. It needs to be fixed in all search 
-variants specified in 26.6.15 <a href="https://wg21.link/alg.search">[alg.search]</a> (except for the form using a <code class='backtick'>Searcher</code>).
-</p>
-
-<p><i>[2025-02-07; Reflector poll]</i></p>
-
-<p>
-Set status to Tentatively Ready after ten votes in favour during reflector poll.
-</p>
-
-
-
-<p id="res-4179"><b>Proposed resolution:</b></p>
-<p>
-This wording is relative to <a href="https://wg21.link/N4993" title=" Working Draft, Programming Languages — C++">N4993</a>.
-</p>
-
-<ol>
-<li><p>Modify 26.6.15 <a href="https://wg21.link/alg.search">[alg.search]</a> as indicated:</p>
-
-<blockquote>
-<pre>
-template&lt;class ForwardIterator1, class ForwardIterator2&gt;
-  constexpr ForwardIterator1
-    search(ForwardIterator1 first1, ForwardIterator1 last1,
-           ForwardIterator2 first2, ForwardIterator2 last2);
-[&hellip;]
-template&lt;class ExecutionPolicy, class ForwardIterator1, class ForwardIterator2,
-         class BinaryPredicate&gt;
-ForwardIterator1
-  search(ExecutionPolicy&amp;&amp; exec,
-         ForwardIterator1 first1, ForwardIterator1 last1,
-         ForwardIterator2 first2, ForwardIterator2 last2,
-         BinaryPredicate pred);
-</pre>
-<blockquote>
-<p>
--1- <i>Returns</i>: The first iterator <code class='backtick'>i</code> in the range <code>[first1, last1 - (last2 - first2)<ins>]</ins><del>)</del></code> 
-such that for every nonnegative integer <code class='backtick'>n</code> less than <code class='backtick'>last2 - first2</code> the following 
-corresponding conditions hold: <code class='backtick'>*(i + n) == *(first2 + n), pred(*(i + n)</code>, <code class='backtick'>*(first2 + n)) != false</code>. 
-Returns <code class='backtick'>first1</code> if <code class='backtick'>[first2, last2)</code> is empty, otherwise returns <code class='backtick'>last1</code> if no such iterator is found.
-<p/>
--2- [&hellip;]
-</p>
-</blockquote>
-<pre>
-template&lt;forward_iterator I1, sentinel_for&lt;I1&gt; S1, forward_iterator I2,
-         sentinel_for&lt;I2&gt; S2, class Pred = ranges::equal_to,
-         class Proj1 = identity, class Proj2 = identity&gt;
-  requires indirectly_comparable&lt;I1, I2, Pred, Proj1, Proj2&gt;
-  constexpr subrange&lt;I1&gt;
-    ranges::search(I1 first1, S1 last1, I2 first2, S2 last2, Pred pred = {},
-                   Proj1 proj1 = {}, Proj2 proj2 = {});
-template&lt;forward_range R1, forward_range R2, class Pred = ranges::equal_to,
-         class Proj1 = identity, class Proj2 = identity&gt;
-  requires indirectly_comparable&lt;iterator_t&lt;R1&gt;, iterator_t&lt;R2&gt;, Pred, Proj1, Proj2&gt;
-  constexpr borrowed_subrange_t&lt;R1&gt;
-    ranges::search(R1&amp;&amp; r1, R2&amp;&amp; r2, Pred pred = {},
-                   Proj1 proj1 = {}, Proj2 proj2 = {});
-</pre>
-<blockquote>
-<p>
--3- <i>Returns</i>:
-</p>
-<ol style="list-style-type: none">
-<li><p>(3.1) &mdash; <code class='backtick'>{i, i + (last2 - first2)}</code>, where <code class='backtick'>i</code> is the first iterator in the range 
-<code>[first1, last1 - (last2 - first2)<ins>]</ins><del>)</del></code> such that for every non-negative integer <code class='backtick'>n</code> 
-less than <code class='backtick'>last2 - first2</code> the condition</p>
-<blockquote><pre>
-bool(invoke(pred, invoke(proj1, *(i + n)), invoke(proj2, *(first2 + n))))
-</pre></blockquote>
-<p>is <code class='backtick'>true</code>.</p>
-</li>
-<li><p>(3.2) &mdash; Returns <code class='backtick'>{last1, last1}</code> if no such iterator exists.</p></li>
-</ol>
-<p>
--4- [&hellip;]
-</p>
-</blockquote>
-<pre>
-template&lt;class ForwardIterator, class Size, class T = iterator_traits&lt;ForwardIterator&gt;::value_type&gt;
-  constexpr ForwardIterator
-    search_n(ForwardIterator first, ForwardIterator last,
-             Size count, const T&amp; value);
-[&hellip;]
-template&lt;class ExecutionPolicy, class ForwardIterator, class Size,
-         class T = iterator_traits&lt;ForwardIterator&gt;::value_type,
-         class BinaryPredicate&gt;
-  ForwardIterator
-    search_n(ExecutionPolicy&amp;&amp; exec,
-             ForwardIterator first, ForwardIterator last,
-             Size count, const T&amp; value,
-             BinaryPredicate pred);
-</pre>
-<blockquote>
-<p>
--5- [&hellip;]
-<p/>
--6- [&hellip;]
-<p/>
--7- <i>Returns</i>: The first iterator <code class='backtick'>i</code> in the range <code>[first, last-count<ins>]</ins><del>)</del></code> 
-such that for every non-negative integer <code class='backtick'>n</code> less than <code class='backtick'>count</code> the condition <code><i>E</i></code> is <code class='backtick'>true</code>. 
-Returns <code class='backtick'>last</code> if no such iterator is found.
-<p/>
--8- [&hellip;]
-</p>
-</blockquote>
-<pre>
-template&lt;forward_iterator I, sentinel_for&lt;I&gt; S,
-         class Pred = ranges::equal_to, class Proj = identity,
-         class T = projected_value_t&lt;I, Proj&gt;&gt;
-  requires indirectly_comparable&lt;I, const T*, Pred, Proj&gt;
-  constexpr subrange&lt;I&gt;
-    ranges::search_n(I first, S last, iter_difference_t&lt;I&gt; count,
-                     const T&amp; value, Pred pred = {}, Proj proj = {});
-template&lt;forward_range R, class Pred = ranges::equal_to,
-         class Proj = identity, class T = projected_value_t&lt;iterator_t&lt;R&gt;, Proj&gt;&gt;
-  requires indirectly_comparable&lt;iterator_t&lt;R&gt;, const T*, Pred, Proj&gt;
-  constexpr borrowed_subrange_t&lt;R&gt;
-    ranges::search_n(R&amp;&amp; r, range_difference_t&lt;R&gt; count,
-                     const T&amp; value, Pred pred = {}, Proj proj = {});
-</pre>
-<blockquote>
-<p>
--9- <i>Returns</i>: <code class='backtick'>{i, i + count}</code> where <code class='backtick'>i</code> is the first iterator in the range 
-<code>[first, last - count<ins>]</ins><del>)</del></code> such that for every non-negative integer 
-<code class='backtick'>n</code> less than <code class='backtick'>count</code>, the following condition holds: <code class='backtick'>invoke(pred, invoke(proj, *(i + n)), value)</code>. 
-Returns <code class='backtick'>{last, last}</code> if no such iterator is found.
-<p/>
--10- [&hellip;]
-</p>
-</blockquote>
-</blockquote>
-
-</li>
-
-</ol>
-
-
-
-
-
-<hr>
-<h3 id="4186"><a href="#4186">4186</a><sup><a href="https://cplusplus.github.io/LWG/issue4186">(i)</a></sup>. <code class='backtick'>regex_traits::transform_primary</code> mistakenly detects <code class='backtick'>typeid</code> of a function</h3>
-<p><b>Section:</b> 28.6.6 <a href="https://wg21.link/re.traits">[re.traits]</a> <b>Status:</b> <a href="lwg-active.html#Ready">Tentatively Ready</a>
- <b>Submitter:</b> Jiang An <b>Opened:</b> 2024-12-18 <b>Last modified:</b> 2025-02-07</p>
-<p><b>Priority: </b>Not Prioritized
-</p>
-<p><b>View other</b> <a href="lwg-index-open.html#re.traits">active issues</a> in [re.traits].</p>
-<p><b>View all other</b> <a href="lwg-index.html#re.traits">issues</a> in [re.traits].</p>
-<p><b>View all issues with</b> <a href="lwg-status.html#Tentatively Ready">Tentatively Ready</a> status.</p>
-<p><b>Discussion:</b></p>
-<p>
-28.6.6 <a href="https://wg21.link/re.traits">[re.traits]</a>/7 currently says <code>typeid(use_facet&lt;collate&lt;charT&gt;&gt;) == 
-typeid(collate_byname&lt;charT&gt;)</code>, which is always <code class='backtick'>false</code> because 
-<code>use_facet&lt;collate&lt;charT&gt;&gt;</code> is a function template specialization while 
-<code>collate_byname&lt;charT&gt;</code> is a class template specialization. This looks like 
-misuse, and has been present in TR1 (<a href="https://wg21.link/N1836" title=" Draft Technical Report on C++ Library Extensions">N1836</a>).
-<p/>
-Presumably the intended operand is <code>use_facet&lt;collate&lt;charT&gt;&gt;(getloc())</code>.
-</p>
-
-<p><i>[2025-02-07; Reflector poll]</i></p>
-
-<p>
-Set status to Tentatively Ready after seven votes in favour during reflector poll.
-</p>
-
-
-
-<p id="res-4186"><b>Proposed resolution:</b></p>
+<p id="res-4201"><b>Proposed resolution:</b></p>
 <p>
 This wording is relative to <a href="https://wg21.link/N5001">N5001</a>.
 </p>
-
 <ol>
-<li><p>Modify 28.6.6 <a href="https://wg21.link/re.traits">[re.traits]</a> as indicated:</p>
-
+<li>
+Modify 33.9.4 <a href="https://wg21.link/exec.awaitable">[exec.awaitable]</a> as indicated:
 <blockquote>
-<pre>
-template&lt;class ForwardIterator&gt;
-  string_type transform_primary(ForwardIterator first, ForwardIterator last) const;
-</pre>
-<blockquote>
-<p>
--7- <i>Effects</i>: If
-</p>
-<blockquote><pre>
-typeid(use_facet&lt;collate&lt;charT&gt;&gt;<ins>(getloc())</ins>) == typeid(collate_byname&lt;charT&gt;)
-</pre></blockquote>
-<p>
-and the form of the sort key returned by <code>collate_byname&lt;charT&gt;::transform(first, last)</code> 
-is known and can be converted into a primary sort key then returns that key, otherwise returns an empty
-string.
-</p>
-</blockquote>
-</blockquote>
+-5-
+Let <i><code>with-await-transform</code></i> be the exposition-only class template:
 
+<pre><code>
+namespace std::execution {
+  template&lt;class T, class Promise&gt;
+    concept <i>has-as-awaitable</i> =                                  <i>// exposition only</i>
+      requires (T&amp;&amp; t, Promise&amp; p) {
+        { std::forward&lt;T&gt;(t).as_awaitable(p) } -&gt; is-awaitable&lt;Promise&amp;&gt;;
+      };
 
-</li>
+  template&lt;class Derived&gt;
+    struct <i>with-await-transform</i> {                               <i>// exposition only</i>
+      template&lt;class T&gt;
+        T&amp;&amp; await_transform(T&amp;&amp; value) noexcept {
+          return std::forward&lt;T&gt;(value);
+        }
 
-</ol>
-
-
-
-
-
-<hr>
-<h3 id="4189"><a href="#4189">4189</a><sup><a href="https://cplusplus.github.io/LWG/issue4189">(i)</a></sup>. <code class='backtick'>cache_latest_view</code> should be freestanding</h3>
-<p><b>Section:</b> 17.3.2 <a href="https://wg21.link/version.syn">[version.syn]</a>, 25.2 <a href="https://wg21.link/ranges.syn">[ranges.syn]</a> <b>Status:</b> <a href="lwg-active.html#Ready">Tentatively Ready</a>
- <b>Submitter:</b> Hewill Kang <b>Opened:</b> 2024-12-23 <b>Last modified:</b> 2025-02-07</p>
-<p><b>Priority: </b>Not Prioritized
-</p>
-<p><b>View other</b> <a href="lwg-index-open.html#version.syn">active issues</a> in [version.syn].</p>
-<p><b>View all other</b> <a href="lwg-index.html#version.syn">issues</a> in [version.syn].</p>
-<p><b>View all issues with</b> <a href="lwg-status.html#Tentatively Ready">Tentatively Ready</a> status.</p>
-<p><b>Discussion:</b></p>
-<p>
-<code class='backtick'>cache_latest_view</code> can be freestanding, but this never comes up in the discussion, which seems to be an oversight.
-</p>
-
-<p><strong>Previous resolution [SUPERSEDED]:</strong></p>
-<blockquote class="note">
-
-<p>
-This wording is relative to <a href="https://wg21.link/N5001">N5001</a>.
-</p>
-
-<ol>
-<li><p>Modify 17.3.2 <a href="https://wg21.link/version.syn">[version.syn]</a> as indicated:</p>
-
-<blockquote><pre>
-#define __cpp_lib_ranges_cache_latest 202411L // <ins><i>freestanding</i>,</ins> <i>also in</i> &lt;ranges&gt;
-</pre></blockquote>
-
-</li>
-
-<li><p>Modify 25.2 <a href="https://wg21.link/ranges.syn">[ranges.syn]</a> as indicated:</p>
-
-<blockquote><pre>
-#include &lt;compare&gt;              // <i>see 17.11.1 <a href="https://wg21.link/compare.syn">[compare.syn]</a></i>
-#include &lt;initializer_list&gt;     // <i>see 17.10.2 <a href="https://wg21.link/initializer.list.syn">[initializer.list.syn]</a></i>
-#include &lt;iterator&gt;             // <i>see 24.2 <a href="https://wg21.link/iterator.synopsis">[iterator.synopsis]</a></i>
-
-namespace std::ranges {
-  [&hellip;]
-  // <i>25.7.34 <a href="https://wg21.link/range.cache.latest">[range.cache.latest]</a>, cache latest view</i>
-  template&lt;input_range V&gt;
-    requires view&lt;V&gt;
-  class cache_latest_view;                                                                <ins>// <i>freestanding</i></ins>
-  
-  namespace views { inline constexpr <i>unspecified</i> cache_latest = <i>unspecified</i>; }            <ins>// <i>freestanding</i></ins>
-  [&hellip;]
+      template&lt;has-as-awaitable&lt;Derived&gt; T&gt;
+        <del>decltype(auto)</del><ins>auto</ins> await_transform(T&amp;&amp; value)
+          noexcept(noexcept(std::forward&lt;T&gt;(value).as_awaitable(declval&lt;Derived&amp;&gt;())))
+        <ins>-&gt; decltype(std::forward&lt;T&gt;(value).as_awaitable(declval&lt;Derived&amp;&gt;()))</ins> {
+          return std::forward&lt;T&gt;(value).as_awaitable(static_cast&lt;Derived&amp;&gt;(*this));
+        }
+    };
 }
-</pre></blockquote>
-</li>
-</ol>
-</blockquote>
-
-<p><i>[2025-01-04; Tim Song suggests alternative wording]</i></p>
-
-<p>
-While we are here, we can use the new convention from <a href="https://wg21.link/P2407" title=" Freestanding Library: Partial Classes">P2407</a> to dramatically simplify 
-<code>&lt;ranges&gt;</code>. Most future additions to this header should have no problem being freestanding, 
-so that is the right default.
-</p>
-
-<p><i>[2025-02-07; Reflector poll]</i></p>
-
-<p>
-Set status to Tentatively Ready after nine votes in favour during reflector poll.
-</p>
-
-
-
-<p id="res-4189"><b>Proposed resolution:</b></p>
-<p>
-This wording is relative to <a href="https://wg21.link/N5001">N5001</a>.
-</p>
-
-<ol>
-<li><p>Modify 17.3.2 <a href="https://wg21.link/version.syn">[version.syn]</a> as indicated:</p>
-
-<blockquote><pre>
-#define __cpp_lib_ranges_cache_latest 202411L // <ins><i>freestanding</i>,</ins> <i>also in</i> &lt;ranges&gt;
-</pre></blockquote>
-
-</li>
-
-<li><p>Delete all "// <i>freestanding</i>" comments in 25.2 <a href="https://wg21.link/ranges.syn">[ranges.syn]</a>, header <code>&lt;ranges&gt;</code> 
-synopsis, and then modify as indicated:</p>
-
-<blockquote><pre>
-<ins>// <i>mostly freestanding</i></ins>
-#include &lt;compare&gt;              // <i>see 17.11.1 <a href="https://wg21.link/compare.syn">[compare.syn]</a></i>
-#include &lt;initializer_list&gt;     // <i>see 17.10.2 <a href="https://wg21.link/initializer.list.syn">[initializer.list.syn]</a></i>
-#include &lt;iterator&gt;             // <i>see 24.2 <a href="https://wg21.link/iterator.synopsis">[iterator.synopsis]</a></i>
-
-[&hellip;]
-namespace std::ranges {
-  // <i>25.5.6 <a href="https://wg21.link/range.elementsof">[range.elementsof]</a>, class template elements_of</i>
-  template&lt;range R, class Allocator = allocator&lt;byte&gt;&gt;
-    struct elements_of;  <ins>// <i>hosted</i></ins>
-  [&hellip;]
-
-  // <i>25.6.6 <a href="https://wg21.link/range.istream">[range.istream]</a>, istream view</i>
-  template&lt;movable Val, class CharT, class Traits = char_traits&lt;CharT&gt;&gt;
-    requires <i>see below</i>
-  class basic_istream_view;  <ins>// <i>hosted</i></ins>
-  template&lt;class Val&gt;
-    using istream_view = basic_istream_view&lt;Val, char&gt;;   <ins>// <i>hosted</i></ins>
-  template&lt;class Val&gt;
-    using wistream_view = basic_istream_view&lt;Val, wchar_t&gt;;   <ins>// <i>hosted</i></ins>
-
-  namespace views {
-    template&lt;class T&gt; constexpr <i>unspecified</i> istream = <i>unspecified</i>; <ins>// <i>hosted</i></ins>
-  }
-  [&hellip;]
-}
-[&hellip;]
-</pre></blockquote>
-</li>
-</ol>
-
-
-
-
-
-
-<hr>
-<h3 id="4191"><a href="#4191">4191</a><sup><a href="https://cplusplus.github.io/LWG/issue4191">(i)</a></sup>. P1467 changed the return type of <code>pow(complex&lt;float&gt;, int)</code></h3>
-<p><b>Section:</b> 29.4.10 <a href="https://wg21.link/cmplx.over">[cmplx.over]</a> <b>Status:</b> <a href="lwg-active.html#Ready">Tentatively Ready</a>
- <b>Submitter:</b> Tim Song <b>Opened:</b> 2025-01-10 <b>Last modified:</b> 2025-02-07</p>
-<p><b>Priority: </b>Not Prioritized
-</p>
-<p><b>View other</b> <a href="lwg-index-open.html#cmplx.over">active issues</a> in [cmplx.over].</p>
-<p><b>View all other</b> <a href="lwg-index.html#cmplx.over">issues</a> in [cmplx.over].</p>
-<p><b>View all issues with</b> <a href="lwg-status.html#Tentatively Ready">Tentatively Ready</a> status.</p>
-<p><b>Discussion:</b></p>
-<p>
-Before C++20, 29.4.10 <a href="https://wg21.link/cmplx.over">[cmplx.over]</a> says that this produces a <code>complex&lt;double&gt;</code>. 
-This was confirmed by LWG <a href="lwg-defects.html#844" title="complex pow return type is ambiguous (Status: CD1)">844</a><sup><a href="https://cplusplus.github.io/LWG/issue844" title="Latest snapshot">(i)</a></sup> and consistent with C99.
-<p/>
-<a href="https://wg21.link/P1467" title=" Extended floating-point types and standard names">P1467</a> changed the return type to <code>complex&lt;common_type_t&lt;float, int&gt;&gt;</code>, 
-which is <code>complex&lt;float&gt;</code>. This is a breaking change that does not appear to have been 
-intentional.
-</p>
-
-<p><i>[2025-02-07; Reflector poll]</i></p>
-
-<p>
-Set status to Tentatively Ready after eight votes in favour during reflector poll.
-</p>
-
-
-
-<p id="res-4191"><b>Proposed resolution:</b></p>
-<p>
-This wording is relative to <a href="https://wg21.link/N5001">N5001</a>.
-</p>
-
-<ol>
-
-<li><p>Modify 29.4.10 <a href="https://wg21.link/cmplx.over">[cmplx.over]</a> as indicated:</p>
-
-<blockquote><p>
--3- Function template <code class='backtick'>pow</code> has additional constexpr overloads sufficient to ensure, for a call with one argument of
-type <code>complex&lt;T1&gt;</code> and the other argument of type <code class='backtick'>T2</code> or <code>complex&lt;T2&gt;</code>, both arguments 
-are effectively cast to <code>complex&lt;common_type_t&lt;T1, <ins>T3</ins><del>T2</del>&gt;&gt;</code><ins>, where 
-<code class='backtick'>T3</code> is <code class='backtick'>double</code> if <code class='backtick'>T2</code> is an integer type and <code class='backtick'>T2</code> otherwise</ins>. If <code>common_type_t&lt;T1, <ins>T3</ins><del>T2</del>&gt;</code> 
-is not well-formed, then the program is ill-formed.
-</p></blockquote>
-</li>
-</ol>
-
-
-
-
-
-
-<hr>
-<h3 id="4196"><a href="#4196">4196</a><sup><a href="https://cplusplus.github.io/LWG/issue4196">(i)</a></sup>. Complexity of <code class='backtick'>inplace_merge()</code> is incorrect</h3>
-<p><b>Section:</b> 26.8.6 <a href="https://wg21.link/alg.merge">[alg.merge]</a> <b>Status:</b> <a href="lwg-active.html#Ready">Tentatively Ready</a>
- <b>Submitter:</b> Stephen Howe <b>Opened:</b> 2025-01-22 <b>Last modified:</b> 2025-02-07</p>
-<p><b>Priority: </b>4
-</p>
-<p><b>View other</b> <a href="lwg-index-open.html#alg.merge">active issues</a> in [alg.merge].</p>
-<p><b>View all other</b> <a href="lwg-index.html#alg.merge">issues</a> in [alg.merge].</p>
-<p><b>View all issues with</b> <a href="lwg-status.html#Tentatively Ready">Tentatively Ready</a> status.</p>
-<p><b>Discussion:</b></p>
-<p>
-For <a href="https://wg21.link/N5001">N5001</a>, section 26.8.6 <a href="https://wg21.link/alg.merge">[alg.merge]</a> p5, it says for <code class='backtick'>merge()</code> <i>Complexity</i> (emphasis mine):
-</p>
-<blockquote style="border-left: 3px solid #ccc;padding-left: 15px;">
-<p>
-For the overloads with no <code class='backtick'>ExecutionPolicy</code>, <b>at most</b> <code><i>N</i> - 1</code> comparisons and applications of each
-projection
-</p>
-</blockquote>
-<p>
-For <a href="https://wg21.link/N5001">N5001</a>, section 26.8.6 <a href="https://wg21.link/alg.merge">[alg.merge]</a> p11, it says from <code class='backtick'>inplace_merge()</code> <i>Complexity</i> (emphasis mine):
-</p>
-<blockquote style="border-left: 3px solid #ccc;padding-left: 15px;">
-<p>
-<i>Complexity</i>: Let <code><i>N</i> = last - first</code>:
-</p>
-<ol style="list-style-type: none">
-<li><p>(11.1) &mdash; For the overloads with no <code class='backtick'>ExecutionPolicy</code>, and if enough additional memory is available, <b>exactly</b>
-<code><i>N</i> - 1</code> comparisons.</p></li>
-<li><p>(11.2) &mdash; Otherwise, <code>&#x1d4aa;(<i>N</i> log <i>N</i>)</code> comparisons.</p></li>
-</ol>
-</blockquote>
-<p>
-This wording should be (emphasis mine)
-</p>
-<blockquote>
-<p>
-<i>Complexity</i>: Let <code><i>N</i> = last - first</code>:
-</p>
-<ol style="list-style-type: none">
-<li><p>(11.1) &mdash; For the overloads with no <code class='backtick'>ExecutionPolicy</code>, and if enough additional memory is available, <b>at most</b>
-<code><i>N</i> - 1</code> comparisons.</p></li>
-<li><p>(11.2) &mdash; Otherwise, <code>&#x1d4aa;(<i>N</i> log <i>N</i>)</code> comparisons.</p></li>
-</ol>
-</blockquote>
-<p>
-Consider the 2 sequences in a <code class='backtick'>std::vector</code> of <code class='backtick'>int</code>s and assume that <code class='backtick'>inplace_merge</code> has enough memory:
-</p>
-<blockquote><pre>
-{ 1 }, { 2, 3, 4, 5, 6, 7 )
-</pre></blockquote>
-<p>
-<code><i>N</i></code> is <code class='backtick'>7</code>, 7 elements. So <code><i>N</i> - 1</code> is <code class='backtick'>6</code>
-<p/>
-If you <code class='backtick'>inplace_merge()</code> the two sequences, the <code class='backtick'>1</code> is compared with <code class='backtick'>2</code> and <code class='backtick'>1</code> is output. But now the 1st 
-sequence is over, so the 2nd sequence is copied. Only 1 comparison is done, not 6.
-</p>
-
-<p><i>[2025-01-25; Daniel comments]</i></p>
-
-<p>
-The <a href="https://sgistl.github.io/inplace_merge.html">SGI STL archive</a> correctly says "at most" as well.
-</p>
-
-<p><i>[2025-02-07; Reflector poll]</i></p>
-
-<p>
-Set status to Tentatively Ready after seven votes in favour during reflector poll.
-There were nine votes for P0 (Tentatively Ready), but also several for
-NAD Editorial, because 16.3.2.4 <a href="https://wg21.link/structure.specifications">[structure.specifications]</a>/7 explicitly
-says that all complexity requirements are upper bounds and it's conforming to
-do less work. The consensus was that this is still a clarifying improvement.
-</p>
-
-
-
-<p id="res-4196"><b>Proposed resolution:</b></p>
-<p>
-This wording is relative to <a href="https://wg21.link/N5001">N5001</a>.
-</p>
-
-<ol>
-
-<li><p>Modify 26.8.6 <a href="https://wg21.link/alg.merge">[alg.merge]</a> as indicated:</p>
-
-<blockquote>
-<pre>
-template&lt;class BidirectionalIterator&gt;
-  constexpr void inplace_merge(BidirectionalIterator first,
-                               BidirectionalIterator middle,
-                               BidirectionalIterator last);
-template&lt;class ExecutionPolicy, class BidirectionalIterator&gt;
-  void inplace_merge(ExecutionPolicy&amp;&amp; exec,
-                     BidirectionalIterator first,
-                     BidirectionalIterator middle,
-                     BidirectionalIterator last);
-template&lt;class BidirectionalIterator, class Compare&gt;
-  constexpr void inplace_merge(BidirectionalIterator first,
-                               BidirectionalIterator middle,
-                               BidirectionalIterator last, Compare comp);
-template&lt;class ExecutionPolicy, class BidirectionalIterator, class Compare&gt;
-  void inplace_merge(ExecutionPolicy&amp;&amp; exec,
-                     BidirectionalIterator first,
-                     BidirectionalIterator middle,
-                     BidirectionalIterator last, Compare comp);
-template&lt;bidirectional_iterator I, sentinel_for&lt;I&gt; S, class Comp = ranges::less,
-         class Proj = identity&gt;
-  requires sortable&lt;I, Comp, Proj&gt;
-  constexpr I ranges::inplace_merge(I first, I middle, S last, Comp comp = {}, Proj proj = {});
-</pre>
-<blockquote>
-<p>
--7- [&hellip;]
-<p/>
--8- <i>Preconditions</i>: [&hellip;]
-<p/>
--9- <i>Effects</i>: Merges two sorted consecutive ranges <code class='backtick'>[first, middle)</code> and <code class='backtick'>[middle, last)</code>, 
-putting the result of the merge into the range <code class='backtick'>[first, last)</code>. The resulting range is sorted 
-with respect to <code class='backtick'>comp</code> and <code class='backtick'>proj</code>.
-<p/>
--10- <i>Returns</i>: <code class='backtick'>last</code> for the overload in namespace <code class='backtick'>ranges</code>.
-<p/>
--11- <i>Complexity</i>: Let <code><i>N</i> = last - first</code>:
-</p>
-<ol style="list-style-type: none">
-<li><p>(11.1) &mdash; For the overloads with no <code class='backtick'>ExecutionPolicy</code>, and if enough additional memory is available, 
-<del>exactly</del><ins>at most</ins> <code><i>N</i> - 1</code> comparisons.</p></li>
-<li><p>(11.2) &mdash; Otherwise, <code>&#x1d4aa;(<i>N</i> log <i>N</i>)</code> comparisons.</p></li>
-</ol>
-<p>
-In either case, twice as many projections as comparisons.
-</p>
-</blockquote>
+</code></pre>
 </blockquote>
 </li>
 </ol>

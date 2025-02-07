@@ -54,7 +54,7 @@
 </style>
 </head>
 <body>
-<p>Revised 2025-02-07 at 22:40:38 UTC
+<p>Revised 2025-02-07 at 22:54:55 UTC
 </p><h2>Unresolved Issues</h2>
 <hr>
 <h3 id="423"><a href="#423">423</a><sup><a href="https://cplusplus.github.io/LWG/issue423">(i)</a></sup>. Effects of negative <code>streamsize</code> in iostreams</h3>
@@ -64986,74 +64986,6 @@ namespace std {
 
 
 <hr>
-<h3 id="4188"><a href="#4188">4188</a><sup><a href="https://cplusplus.github.io/LWG/issue4188">(i)</a></sup>. <code>ostream::sentry</code> destructor should handle exceptions</h3>
-<p><b>Section:</b> 31.7.6.2.4 <a href="https://wg21.link/ostream.sentry">[ostream.sentry]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Jonathan Wakely <b>Opened:</b> 2025-01-14 <b>Last modified:</b> 2025-01-14</p>
-<p><b>Priority: </b>Not Prioritized
-</p>
-<p><b>View other</b> <a href="lwg-index-open.html#ostream.sentry">active issues</a> in [ostream.sentry].</p>
-<p><b>View all other</b> <a href="lwg-index.html#ostream.sentry">issues</a> in [ostream.sentry].</p>
-<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
-<p><b>Discussion:</b></p>
-<p>
-LWG <a href="lwg-closed.html#397" title="ostream::sentry dtor throws exceptions (Status: NAD Editorial)">397</a><sup><a href="https://cplusplus.github.io/LWG/issue397" title="Latest snapshot">(i)</a></sup> suggested changing 31.7.6.2.4 <a href="https://wg21.link/ostream.sentry">[ostream.sentry]</a> to
-say that the <code class='backtick'>ostream::sentry</code> destructor doesn't throw any exceptions.
-That issue was closed as resolved by LWG <a href="lwg-defects.html#835" title="Tying two streams together (correction to DR 581) (Status: C++11)">835</a><sup><a href="https://cplusplus.github.io/LWG/issue835" title="Latest snapshot">(i)</a></sup> which included
-the "Throws: Nothing" change to the <code class='backtick'>sentry</code> destructor.
-However, that part of the resolution never seems to have been applied to
-the working draft. <a href="https://wg21.link/N3091" title=" Editor's Report">N3091</a> mentions applying LWG 835 for
-<a href="https://wg21.link/N3090" title=" Working Draft, Standard for Programming Language C++">N3090</a> but the destructor change is missing, maybe because
-the paragraph for the sentry destructor had been renumbered from p17 to p4
-and LWG 835 didn't show sufficient context to indicate the intended location.
-</p>
-
-<p>
-The problem described in LWG <a href="lwg-closed.html#397" title="ostream::sentry dtor throws exceptions (Status: NAD Editorial)">397</a><sup><a href="https://cplusplus.github.io/LWG/issue397" title="Latest snapshot">(i)</a></sup> is still present:
-the streambuf operations can fail, and the sentry needs to handle that.
-The changes for LWG <a href="lwg-defects.html#835" title="Tying two streams together (correction to DR 581) (Status: C++11)">835</a><sup><a href="https://cplusplus.github.io/LWG/issue835" title="Latest snapshot">(i)</a></sup> ensure no exception is thrown if
-<code>rdbuf()-&gt;pubsync()</code> returns -1 on failure, but do nothing for
-the case where it throws an exception (the original topic of LWG 397!).
-Because C++11 made <code class='backtick'>~sentry</code> implicitly <code class='backtick'>noexcept</code>,
-an exception from <code class='backtick'>rdbuf()-&gt;pubsync()</code> will terminate the process.
-That needs to be fixed.
-</p>
-
-<p>
-Libstdc++ does terminate if <code class='backtick'>pubsync()</code> throws when called by <code class='backtick'>~sentry</code>.
-Both MSVC and Libc++ silently swallow exceptions.
-It seems preferable to handle the exception and report an error,
-just as we do when <code class='backtick'>pubsync()</code> returns -1.
-</p>
-
-
-
-<p id="res-4188"><b>Proposed resolution:</b></p>
-<p>
-This wording is relative to <a href="https://wg21.link/N5001">N5001</a>.
-</p>
-
-<ol>
-<li><p>Modify 31.7.6.2.4 <a href="https://wg21.link/ostream.sentry">[ostream.sentry]</a> as indicated:</p>
-
-<blockquote>
-<pre><code>~sentry();</code></pre>
-<blockquote>
--4- If
-<code>(os.flags() &amp; ios_base::unitbuf) &amp;&amp; !uncaught_exceptions() &amp;&amp; os.good()</code> is <code class='backtick'>true</code>, calls <code>os.rdbuf()-&gt;pubsync()</code>.
-If that function returns −1
-<ins> or exits via an exception</ins>,
-sets <code class='backtick'>badbit</code> in <code class='backtick'>os.rdstate()</code> without propagating an exception.
-</blockquote>
-</blockquote>
-</li>
-</ol>
-
-
-
-
-
-
-<hr>
 <h3 id="4190"><a href="#4190">4190</a><sup><a href="https://cplusplus.github.io/LWG/issue4190">(i)</a></sup>. Specification of <i>completion-signatures-for</i> in [exec.snd.expos]/p39 is recursive</h3>
 <p><b>Section:</b> 33.9.2 <a href="https://wg21.link/exec.snd.expos">[exec.snd.expos]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
  <b>Submitter:</b> Eric Niebler <b>Opened:</b> 2025-01-02 <b>Last modified:</b> 2025-02-07</p>
@@ -65675,132 +65607,6 @@ Set priority to 1 after reflector poll.
 <p id="res-4199"><b>Proposed resolution:</b></p>
 <p>
 </p>
-
-
-
-
-
-<hr>
-<h3 id="4200"><a href="#4200">4200</a><sup><a href="https://cplusplus.github.io/LWG/issue4200">(i)</a></sup>. The <code class='backtick'>operation_state</code> concept can be simplified</h3>
-<p><b>Section:</b> 33.8.1 <a href="https://wg21.link/exec.opstate.general">[exec.opstate.general]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Eric Niebler <b>Opened:</b> 2025-02-03 <b>Last modified:</b> 2025-02-06</p>
-<p><b>Priority: </b>Not Prioritized
-</p>
-<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
-<p><b>Discussion:</b></p>
-<p>
-Imported from <a href="https://github.com/cplusplus/sender-receiver/issues/312">cplusplus/sender-receiver #312</a>.
-</p>
-<p>
-The current defn of the <code class='backtick'>operation_state</code> concept is:
-
-<pre><code>
-template&lt;class O&gt;
-  concept operation_state =
-    derived_from&lt;typename O::operation_state_concept, operation_state_t&gt; &amp;&amp;
-    is_object_v&lt;O&gt; &amp;&amp;
-    requires (O&amp; o) {
-      { start(o) } noexcept;
-    };
-</code></pre>
-
-I think the <code>is_object_v&lt;O&gt;</code> constraint is not needed
-because the <code>derived_from</code> constraint has already established that
-<code>O</code> is a class type.
-</p>
-<p>
-And <code class='backtick'>start(o)</code> is always <code class='backtick'>noexcept</code> now that <code class='backtick'>start</code> mandates the
-<code class='backtick'>noexcept</code>-ness of <code class='backtick'>op.start()</code>.
-</p>
-
-
-<p id="res-4200"><b>Proposed resolution:</b></p>
-<p>
-This wording is relative to <a href="https://wg21.link/N5001">N5001</a>.
-</p>
-<ol>
-<li>
-Modify 33.8.1 <a href="https://wg21.link/exec.opstate.general">[exec.opstate.general]</a> as indicated:
-<blockquote><pre><code>
-template&lt;class O&gt;
-  concept operation_state =
-    derived_from&lt;typename O::operation_state_concept, operation_state_t&gt; &amp;&amp;
-    <del>is_object_v&lt;O&gt; &amp;&amp;</del>
-    requires (O&amp; o) {
-      <del>{</del> start(o) <del>} noexcept</del>;
-    };
-</code></pre></blockquote>
-</li>
-</ol>
-
-
-
-
-
-
-<hr>
-<h3 id="4201"><a href="#4201">4201</a><sup><a href="https://cplusplus.github.io/LWG/issue4201">(i)</a></sup>. <code class='backtick'>with-await-transform::await_transform</code> should not use a deduced return type</h3>
-<p><b>Section:</b> 33.9.4 <a href="https://wg21.link/exec.awaitable">[exec.awaitable]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Brian Bi <b>Opened:</b> 2025-02-03 <b>Last modified:</b> 2025-02-03</p>
-<p><b>Priority: </b>Not Prioritized
-</p>
-<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
-<p><b>Discussion:</b></p>
-<p>
-Imported from <a href="https://github.com/cplusplus/sender-receiver/issues/309">cplusplus/sender-receiver #309</a>.
-</p>
-<p>
-33.9.4 <a href="https://wg21.link/exec.awaitable">[exec.awaitable]</a>/p5
-</p>
-<p>
-The use of the deduced return type causes the definition of the sender's
-<code class='backtick'>as_awaitable</code> method to be instantiated too early,
-e.g., when the sender is passed to <code class='backtick'>get_completion_signatures</code>.
-</p>
-
-<p><i>[Eric provides wording]</i></p>
-
-
-
-
-<p id="res-4201"><b>Proposed resolution:</b></p>
-<p>
-This wording is relative to <a href="https://wg21.link/N5001">N5001</a>.
-</p>
-<ol>
-<li>
-Modify 33.9.4 <a href="https://wg21.link/exec.awaitable">[exec.awaitable]</a> as indicated:
-<blockquote>
--5-
-Let <i><code>with-await-transform</code></i> be the exposition-only class template:
-
-<pre><code>
-namespace std::execution {
-  template&lt;class T, class Promise&gt;
-    concept <i>has-as-awaitable</i> =                                  <i>// exposition only</i>
-      requires (T&amp;&amp; t, Promise&amp; p) {
-        { std::forward&lt;T&gt;(t).as_awaitable(p) } -&gt; is-awaitable&lt;Promise&amp;&gt;;
-      };
-
-  template&lt;class Derived&gt;
-    struct <i>with-await-transform</i> {                               <i>// exposition only</i>
-      template&lt;class T&gt;
-        T&amp;&amp; await_transform(T&amp;&amp; value) noexcept {
-          return std::forward&lt;T&gt;(value);
-        }
-
-      template&lt;has-as-awaitable&lt;Derived&gt; T&gt;
-        <del>decltype(auto)</del><ins>auto</ins> await_transform(T&amp;&amp; value)
-          noexcept(noexcept(std::forward&lt;T&gt;(value).as_awaitable(declval&lt;Derived&amp;&gt;())))
-        <ins>-&gt; decltype(std::forward&lt;T&gt;(value).as_awaitable(declval&lt;Derived&amp;&gt;()))</ins> {
-          return std::forward&lt;T&gt;(value).as_awaitable(static_cast&lt;Derived&amp;&gt;(*this));
-        }
-    };
-}
-</code></pre>
-</blockquote>
-</li>
-</ol>
 
 
 
