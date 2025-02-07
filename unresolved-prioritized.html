@@ -60,8 +60,8 @@
 <p>This document is the Table of Contents for the <a href="lwg-active.html">Library Active Issues List</a>,
 <a href="lwg-defects.html">Library Defect Reports and Accepted Issues</a>, and <a href="lwg-closed.html">Library Closed Issues List</a>,
 sorted by priority.</p>
-<p>Revised 2025-02-07 at 21:22:17 UTC
-</p><h2 id="Priority_1">Priority 1 (3 issues)</h2>
+<p>Revised 2025-02-07 at 22:26:12 UTC
+</p><h2 id="Priority_1">Priority 1 (9 issues)</h2>
 <table class="issues-index">
 <tr>
   <th><a href="lwg-toc.html">Issue</a></th>
@@ -82,10 +82,55 @@ sorted by priority.</p>
 <td></td>
 </tr>
 <tr>
+<td id="4199"><a href="lwg-active.html#4199" title="constraints on user customizations of standard sender algorithms are incorrectly specified (Status: New)">4199</a><sup><a href="https://cplusplus.github.io/LWG/issue4199">(i)</a></sup></td>
+<td><a href="lwg-active.html#New">New</a></td>
+<td>33.9.1 [exec.snd.general]</td>
+<td>constraints on user customizations of standard sender algorithms are incorrectly specified</td>
+<td><span class="no-pr">No</span></td>
+<td>1</td>
+<td></td>
+</tr>
+<tr>
 <td id="4202"><a href="lwg-active.html#4202" title="enable-sender should be a variable template (Status: New)">4202</a><sup><a href="https://cplusplus.github.io/LWG/issue4202">(i)</a></sup></td>
 <td><a href="lwg-active.html#New">New</a></td>
 <td>33.9.3 [exec.snd.concepts]</td>
 <td><i><code>enable-sender</code></i> should be a variable template</td>
+<td>Yes</td>
+<td>1</td>
+<td></td>
+</tr>
+<tr>
+<td id="4198"><a href="lwg-active.html#4198" title="schedule_from isn't starting the schedule sender if decay-copying results throws (Status: New)">4198</a><sup><a href="https://cplusplus.github.io/LWG/issue4198">(i)</a></sup></td>
+<td><a href="lwg-active.html#New">New</a></td>
+<td>33.9.12.5 [exec.schedule.from]</td>
+<td><code class='backtick'>schedule_from</code> isn't starting the schedule sender if decay-copying results throws</td>
+<td><span class="no-pr">No</span></td>
+<td>1</td>
+<td></td>
+</tr>
+<tr>
+<td id="4203"><a href="lwg-active.html#4203" title="Constraints on get-state functions are incorrect (Status: New)">4203</a><sup><a href="https://cplusplus.github.io/LWG/issue4203">(i)</a></sup></td>
+<td><a href="lwg-active.html#New">New</a></td>
+<td>33.9.12.5 [exec.schedule.from]</td>
+<td>Constraints on <i><code class='backtick'>get-state</code></i> functions are incorrect</td>
+<td>Yes</td>
+<td>1</td>
+<td></td>
+</tr>
+<tr>
+<td id="4204"><a href="lwg-active.html#4204" title="specification of as-sndr2(Sig) in [exec.let] is incomplete (Status: New)">4204</a><sup><a href="https://cplusplus.github.io/LWG/issue4204">(i)</a></sup></td>
+<td><a href="lwg-active.html#New">New</a></td>
+<td>33.9.12.8 [exec.let]</td>
+<td>specification of <code><i>as-sndr2</i>(Sig)</code> in [exec.let] is incomplete</td>
+<td>Yes</td>
+<td>1</td>
+<td></td>
+</tr>
+<tr>
+<td id="4205"><a href="lwg-active.html#4205" title="let_[*].transform_env is specified in terms of the let_* sender itself instead of its child (Status: New)">4205</a><sup><a href="https://cplusplus.github.io/LWG/issue4205">(i)</a></sup></td>
+<td><a href="lwg-active.html#New">New</a></td>
+<td>33.9.12.8 [exec.let]</td>
+<td><code class='backtick'>let_[*].transform_env</code> is specified in terms of the <code class='backtick'>let_*</code> sender itself instead of its child</td>
 <td>Yes</td>
 <td>1</td>
 <td></td>
@@ -96,6 +141,15 @@ sorted by priority.</p>
 <td>33.13.1 [exec.as.awaitable]</td>
 <td><code><i>awaitable-receiver</i></code>'s members are potentially throwing</td>
 <td><span class="no-pr">No</span></td>
+<td>1</td>
+<td></td>
+</tr>
+<tr>
+<td id="4206"><a href="lwg-active.html#4206" title="Alias template connect_result_t should be constrained with sender_to (Status: New)">4206</a><sup><a href="https://cplusplus.github.io/LWG/issue4206">(i)</a></sup></td>
+<td><a href="lwg-active.html#New">New</a></td>
+<td>99 [exec.syn]</td>
+<td>Alias template <code class='backtick'>connect_result_t</code> should be constrained with <code class='backtick'>sender_to</code></td>
+<td>Yes</td>
 <td>1</td>
 <td></td>
 </tr>
@@ -546,7 +600,7 @@ specified to make <code><i>N</i></code> copies of <code>T</code> into the destin
 <td></td>
 </tr>
 </table>
-<h2 id="Priority_3">Priority 3 (383 issues)</h2>
+<h2 id="Priority_3">Priority 3 (385 issues)</h2>
 <table class="issues-index">
 <tr>
   <th><a href="lwg-toc.html">Issue</a></th>
@@ -1692,6 +1746,15 @@ the evaluation of type traits</td>
 <td><a href="lwg-active.html#Open">Open</a></td>
 <td>22.9.2 [template.bitset]</td>
 <td><code>charT('1')</code> is not the wide equivalent of <code>'1'</code></td>
+<td>Yes</td>
+<td>3</td>
+<td></td>
+</tr>
+<tr>
+<td id="4187"><a href="lwg-active.html#4187" title="bitset::reference should be const-assignable (Status: New)">4187</a><sup><a href="https://cplusplus.github.io/LWG/issue4187">(i)</a></sup></td>
+<td><a href="lwg-active.html#New">New</a></td>
+<td>22.9.2 [template.bitset]</td>
+<td><code class='backtick'>bitset::reference</code> should be const-assignable</td>
 <td>Yes</td>
 <td>3</td>
 <td></td>
@@ -3166,6 +3229,15 @@ not copy) their predicate object</td>
 <td></td>
 </tr>
 <tr>
+<td id="4107"><a href="lwg-active.html#4107" title="Map formatter may conflict with user-defined specializations of pair/tuple formatters (Status: New)">4107</a><sup><a href="https://cplusplus.github.io/LWG/issue4107">(i)</a></sup></td>
+<td><a href="lwg-active.html#New">New</a></td>
+<td>28.5.7.4 [format.range.fmtmap]</td>
+<td>Map formatter may conflict with user-defined specializations of <code>pair</code>/<code>tuple</code> formatters</td>
+<td>Yes</td>
+<td>3</td>
+<td></td>
+</tr>
+<tr>
 <td id="2490"><a href="lwg-active.html#2490" title="&lt;regex&gt; needs lots of noexcept (Status: New)">2490</a><sup><a href="https://cplusplus.github.io/LWG/issue2490">(i)</a></sup></td>
 <td><a href="lwg-active.html#New">New</a></td>
 <td>28.6 [re]</td>
@@ -4412,15 +4484,6 @@ don't support <code>DynamicBuffer</code> lvalues</td>
 <td></td>
 </tr>
 <tr>
-<td id="4196"><a href="lwg-active.html#4196" title="Complexity of inplace_merge() is incorrect (Status: New)">4196</a><sup><a href="https://cplusplus.github.io/LWG/issue4196">(i)</a></sup></td>
-<td><a href="lwg-active.html#New">New</a></td>
-<td>26.8.6 [alg.merge]</td>
-<td>Complexity of <code class='backtick'>inplace_merge()</code> is incorrect</td>
-<td>Yes</td>
-<td>4</td>
-<td></td>
-</tr>
-<tr>
 <td id="4034"><a href="lwg-active.html#4034" title="Clarify specification of std::min and std::max (Status: New)">4034</a><sup><a href="https://cplusplus.github.io/LWG/issue4034">(i)</a></sup></td>
 <td><a href="lwg-active.html#New">New</a></td>
 <td>26.8.9 [alg.min.max]</td>
@@ -4488,6 +4551,15 @@ don't support <code>DynamicBuffer</code> lvalues</td>
 <td><a href="lwg-active.html#New">New</a></td>
 <td>28.5.1 [format.syn]</td>
 <td><code>std::formatter</code> specializations should be consistently restricted to supported character types</td>
+<td><span class="no-pr">No</span></td>
+<td>4</td>
+<td></td>
+</tr>
+<tr>
+<td id="4078"><a href="lwg-active.html#4078" title="What if arguments alias the output buffer in std::format_to? (Status: New)">4078</a><sup><a href="https://cplusplus.github.io/LWG/issue4078">(i)</a></sup></td>
+<td><a href="lwg-active.html#New">New</a></td>
+<td>28.5.5 [format.functions]</td>
+<td>What if arguments alias the output buffer in <code class='backtick'>std::format_to</code>?</td>
 <td><span class="no-pr">No</span></td>
 <td>4</td>
 <td></td>
@@ -4765,7 +4837,7 @@ should require the arguments to have the same length</td>
 <td></td>
 </tr>
 </table>
-<h2 id="Priority_99">Not Prioritized (68 issues)</h2>
+<h2 id="Priority_99">Not Prioritized (58 issues)</h2>
 <table class="issues-index">
 <tr>
   <th><a href="lwg-toc.html">Issue</a></th>
@@ -4948,15 +5020,6 @@ should require the arguments to have the same length</td>
 <td></td>
 </tr>
 <tr>
-<td id="4187"><a href="lwg-active.html#4187" title="bitset::reference should be const-assignable (Status: New)">4187</a><sup><a href="https://cplusplus.github.io/LWG/issue4187">(i)</a></sup></td>
-<td><a href="lwg-active.html#New">New</a></td>
-<td>22.9.2 [template.bitset]</td>
-<td><code class='backtick'>bitset::reference</code> should be const-assignable</td>
-<td>Yes</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
 <td id="2884"><a href="lwg-active.html#2884" title="Relational operators for containers should sfinae; if the underlying type is not comparable, neither should the container be (Status: LEWG)">2884</a><sup><a href="https://cplusplus.github.io/LWG/issue2884">(i)</a></sup></td>
 <td><a href="lwg-active.html#LEWG">LEWG</a></td>
 <td>23 [containers]</td>
@@ -5017,15 +5080,6 @@ types &mdash; this is inconsistent with other types in the library</td>
 <td><a href="lwg-active.html#New">New</a></td>
 <td>24.3.6.3 [indirectcallable.indirectinvocable]</td>
 <td>P2609R3 breaks code that uses <code class='backtick'>views::zip</code> and <code>get&lt;T&gt;</code></td>
-<td><span class="no-pr">No</span></td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td id="4184"><a href="lwg-active.html#4184" title="Domain of ranges::cmeow doesn't match ranges::meow (Status: New)">4184</a><sup><a href="https://cplusplus.github.io/LWG/issue4184">(i)</a></sup></td>
-<td><a href="lwg-active.html#New">New</a></td>
-<td>25.3 [range.access]</td>
-<td>Domain of <code>ranges::c<i>meow</i></code> doesn't match <code>ranges::<i>meow</i></code></td>
 <td><span class="no-pr">No</span></td>
 <td></td>
 <td></td>
@@ -5136,28 +5190,10 @@ max, and minmax is unclear (Status: New)">4167</a><sup><a href="https://cplusplu
 <td></td>
 </tr>
 <tr>
-<td id="4078"><a href="lwg-active.html#4078" title="What if arguments alias the output buffer in std::format_to? (Status: New)">4078</a><sup><a href="https://cplusplus.github.io/LWG/issue4078">(i)</a></sup></td>
-<td><a href="lwg-active.html#New">New</a></td>
-<td>28.5.5 [format.functions]</td>
-<td>What if arguments alias the output buffer in <code class='backtick'>std::format_to</code>?</td>
-<td><span class="no-pr">No</span></td>
-<td></td>
-<td></td>
-</tr>
-<tr>
 <td id="4146"><a href="lwg-active.html#4146" title="&sect;[format.formatter.spec]/3 unconditionally enables nonlocking for container adaptors (Status: New)">4146</a><sup><a href="https://cplusplus.github.io/LWG/issue4146">(i)</a></sup></td>
 <td><a href="lwg-active.html#New">New</a></td>
 <td>28.5.6.4 [format.formatter.spec]</td>
 <td>&sect;[format.formatter.spec]/3 unconditionally enables nonlocking for container adaptors</td>
-<td>Yes</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td id="4107"><a href="lwg-active.html#4107" title="Map formatter may conflict with user-defined specializations of pair/tuple formatters (Status: New)">4107</a><sup><a href="https://cplusplus.github.io/LWG/issue4107">(i)</a></sup></td>
-<td><a href="lwg-active.html#New">New</a></td>
-<td>28.5.7.4 [format.range.fmtmap]</td>
-<td>Map formatter may conflict with user-defined specializations of <code>pair</code>/<code>tuple</code> formatters</td>
 <td>Yes</td>
 <td></td>
 <td></td>
@@ -5318,64 +5354,10 @@ vprint_unicode/vprint_nonunicode (Status: New)">4039</a><sup><a href="https://cp
 <td></td>
 </tr>
 <tr>
-<td id="4199"><a href="lwg-active.html#4199" title="constraints on user customizations of standard sender algorithms are incorrectly specified (Status: New)">4199</a><sup><a href="https://cplusplus.github.io/LWG/issue4199">(i)</a></sup></td>
-<td><a href="lwg-active.html#New">New</a></td>
-<td>33.9.1 [exec.snd.general]</td>
-<td>constraints on user customizations of standard sender algorithms are incorrectly specified</td>
-<td><span class="no-pr">No</span></td>
-<td></td>
-<td></td>
-</tr>
-<tr>
 <td id="4201"><a href="lwg-active.html#4201" title="with-await-transform::await_transform should not use a deduced return type (Status: New)">4201</a><sup><a href="https://cplusplus.github.io/LWG/issue4201">(i)</a></sup></td>
 <td><a href="lwg-active.html#New">New</a></td>
 <td>33.9.4 [exec.awaitable]</td>
 <td><code class='backtick'>with-await-transform::await_transform</code> should not use a deduced return type</td>
-<td>Yes</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td id="4198"><a href="lwg-active.html#4198" title="schedule_from isn't starting the schedule sender if decay-copying results throws (Status: New)">4198</a><sup><a href="https://cplusplus.github.io/LWG/issue4198">(i)</a></sup></td>
-<td><a href="lwg-active.html#New">New</a></td>
-<td>33.9.12.5 [exec.schedule.from]</td>
-<td><code class='backtick'>schedule_from</code> isn't starting the schedule sender if decay-copying results throws</td>
-<td><span class="no-pr">No</span></td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td id="4203"><a href="lwg-active.html#4203" title="Constraints on get-state functions are incorrect (Status: New)">4203</a><sup><a href="https://cplusplus.github.io/LWG/issue4203">(i)</a></sup></td>
-<td><a href="lwg-active.html#New">New</a></td>
-<td>33.9.12.5 [exec.schedule.from]</td>
-<td>Constraints on <i><code class='backtick'>get-state</code></i> functions are incorrect</td>
-<td>Yes</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td id="4204"><a href="lwg-active.html#4204" title="specification of as-sndr2(Sig) in [exec.let] is incomplete (Status: New)">4204</a><sup><a href="https://cplusplus.github.io/LWG/issue4204">(i)</a></sup></td>
-<td><a href="lwg-active.html#New">New</a></td>
-<td>33.9.12.8 [exec.let]</td>
-<td>specification of <code><i>as-sndr2</i>(Sig)</code> in [exec.let] is incomplete</td>
-<td>Yes</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td id="4205"><a href="lwg-active.html#4205" title="let_[*].transform_env is specified in terms of the let_* sender itself instead of its child (Status: New)">4205</a><sup><a href="https://cplusplus.github.io/LWG/issue4205">(i)</a></sup></td>
-<td><a href="lwg-active.html#New">New</a></td>
-<td>33.9.12.8 [exec.let]</td>
-<td><code class='backtick'>let_[*].transform_env</code> is specified in terms of the <code class='backtick'>let_*</code> sender itself instead of its child</td>
-<td>Yes</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td id="4206"><a href="lwg-active.html#4206" title="Alias template connect_result_t should be constrained with sender_to (Status: New)">4206</a><sup><a href="https://cplusplus.github.io/LWG/issue4206">(i)</a></sup></td>
-<td><a href="lwg-active.html#New">New</a></td>
-<td>99 [exec.syn]</td>
-<td>Alias template <code class='backtick'>connect_result_t</code> should be constrained with <code class='backtick'>sender_to</code></td>
 <td>Yes</td>
 <td></td>
 <td></td>

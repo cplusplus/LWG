@@ -64,8 +64,8 @@
 <p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#New">New</a> status.</em></p>
 <h3 id="4187"><a href="lwg-active.html#4187">4187</a>. <code class='backtick'>bitset::reference</code> should be const-assignable</h3>
 <p><b>Section:</b> 22.9.2 <a href="https://wg21.link/template.bitset">[template.bitset]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Arthur O'Dwyer <b>Opened:</b> 2024-12-21 <b>Last modified:</b> 2024-12-22</p>
-<p><b>Priority: </b>Not Prioritized
+ <b>Submitter:</b> Arthur O'Dwyer <b>Opened:</b> 2024-12-21 <b>Last modified:</b> 2025-02-07</p>
+<p><b>Priority: </b>3
 </p>
 <p><b>View other</b> <a href="lwg-index-open.html#template.bitset">active issues</a> in [template.bitset].</p>
 <p><b>View all other</b> <a href="lwg-index.html#template.bitset">issues</a> in [template.bitset].</p>
@@ -106,8 +106,23 @@ we should say so in English prose.</p>
 </li>
 </ol>
 
+<p><i>[2025-02-07; Reflector poll]</i></p>
 
-<p id="res-4187"><b>Proposed resolution:</b></p>
+<p>
+Set priority to 3 after reflector poll.
+</p>
+<p>
+"Just const-quality the existing assignment operators."
+"Would need to change the return type (breaking) or use <code class='backtick'>const_cast</code> (weird)."
+"And it would be needlessly inconsistent with <code>vector&lt;bool&gt;::reference</code>."
+</p>
+<p>
+"The <code class='backtick'>swap</code> part belongs in LWG <a href="lwg-active.html#3638" title="vector&lt;bool&gt;::swap(reference, reference) is useless (Status: New)">3638</a><sup><a href="https://cplusplus.github.io/LWG/issue3638" title="Latest snapshot">(i)</a></sup>."
+</p>
+
+<p><strong>Previous resolution [SUPERSEDED]:</strong></p>
+<blockquote class="note">
+
 <p>
 This wording is relative to <a href="https://wg21.link/N5001">N5001</a>.
 </p>
@@ -146,6 +161,49 @@ namespace std {
 </li>
 
 </ol>
+</blockquote>
+
+<p><i>[2025-02-07; Jonathan provides improved wording]</i></p>
+
+<p>Moved <code class='backtick'>swap</code> changes to LWG <a href="lwg-active.html#3638" title="vector&lt;bool&gt;::swap(reference, reference) is useless (Status: New)">3638</a><sup><a href="https://cplusplus.github.io/LWG/issue3638" title="Latest snapshot">(i)</a></sup>.</p>
+
+
+
+<p id="res-4187"><b>Proposed resolution:</b></p>
+<p>
+This wording is relative to <a href="https://wg21.link/N5001">N5001</a>.
+</p>
+
+<ol>
+<li><p>Modify 22.9.2.1 <a href="https://wg21.link/template.bitset.general">[template.bitset.general]</a> as indicated:</p>
+
+<blockquote>
+<pre>
+namespace std {
+  template&lt;size_t N&gt; class bitset {
+  public:
+    // <i>bit reference</i>
+    class reference {
+    public:
+      constexpr reference(const reference&amp;) = default;
+      constexpr ~reference();
+      constexpr reference&amp; operator=(bool x) noexcept;           // <i>for b[i] = x;</i>
+      constexpr reference&amp; operator=(const reference&amp;) noexcept; // <i>for b[i] = b[j];</i>
+      <ins>constexpr const reference&amp; operator=(bool x) const noexcept;</ins>
+      constexpr bool operator~() const noexcept;                 // <i>flips the bit</i>
+      constexpr operator bool() const noexcept;                  // <i>for x = b[i];</i>
+      constexpr reference&amp; flip() noexcept;                      // <i>for b[i].flip();</i>
+    };
+    [&hellip;]
+  };
+  [&hellip;]
+}
+</pre>
+</blockquote>
+
+</li>
+</ol>
+
 
 
 

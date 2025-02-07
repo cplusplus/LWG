@@ -64,8 +64,8 @@
 <p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#New">New</a> status.</em></p>
 <h3 id="4107"><a href="lwg-active.html#4107">4107</a>. Map formatter may conflict with user-defined specializations of <code>pair</code>/<code>tuple</code> formatters</h3>
 <p><b>Section:</b> 28.5.7.4 <a href="https://wg21.link/format.range.fmtmap">[format.range.fmtmap]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Victor Zverovich <b>Opened:</b> 2024-05-18 <b>Last modified:</b> 2024-05-19</p>
-<p><b>Priority: </b>Not Prioritized
+ <b>Submitter:</b> Victor Zverovich <b>Opened:</b> 2024-05-18 <b>Last modified:</b> 2025-02-07</p>
+<p><b>Priority: </b>3
 </p>
 <p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
 <p><b>Discussion:</b></p>
@@ -124,6 +124,15 @@ and <code>tuple</code>s, and make map be responsible for its own structural form
 part of it to other formatters in an arbitrary way. This resolution has been applied to {fmt}'s implementation 
 of range formatting to address <a href="https://github.com/fmtlib/fmt/issues/3685">#3685</a>.
 </p>
+
+<p><i>[2025-02-07; Reflector poll]</i></p>
+
+<p>
+Set priority to 3 after reflector poll.
+Several votes for NAD (a specialization must provide <code class='backtick'>set_brackets</code> etc.),
+and suggestions it's a design change that LEWG should see.
+</p>
+
 
 
 <p id="res-4107"><b>Proposed resolution:</b></p>

@@ -64,8 +64,8 @@
 <p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#New">New</a> status.</em></p>
 <h3 id="4078"><a href="lwg-active.html#4078">4078</a>. What if arguments alias the output buffer in <code class='backtick'>std::format_to</code>?</h3>
 <p><b>Section:</b> 28.5.5 <a href="https://wg21.link/format.functions">[format.functions]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Jan Schultke <b>Opened:</b> 2024-04-24 <b>Last modified:</b> 2024-04-27</p>
-<p><b>Priority: </b>Not Prioritized
+ <b>Submitter:</b> Jan Schultke <b>Opened:</b> 2024-04-24 <b>Last modified:</b> 2025-02-07</p>
+<p><b>Priority: </b>4
 </p>
 <p><b>View all other</b> <a href="lwg-index.html#format.functions">issues</a> in [format.functions].</p>
 <p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
@@ -96,6 +96,16 @@ which would forbid the output range of the output iterator to overlap ranges of 
 A friend of mine has suggested to add a <i>Preconditions</i> to the <i>BasicFormatter</i> requirements 
 instead, dealing with the issue at the root (<code>f.format(u, fc)</code>).
 </p>
+
+<p><i>[2025-02-07; Reflector poll]</i></p>
+
+<p>
+Set priority to 4 after reflector poll.
+</p>
+<p>
+We should prohibit aliasing, so this is undefined.
+</p>
+
 
 
 <p id="res-4078"><b>Proposed resolution:</b></p>

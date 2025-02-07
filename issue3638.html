@@ -64,7 +64,7 @@
 <p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#New">New</a> status.</em></p>
 <h3 id="3638"><a href="lwg-active.html#3638">3638</a>. <code>vector&lt;bool&gt;::swap(reference, reference)</code> is useless</h3>
 <p><b>Section:</b> 23.3.12 <a href="https://wg21.link/vector.bool">[vector.bool]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Jonathan Wakely <b>Opened:</b> 2021-11-12 <b>Last modified:</b> 2024-08-21</p>
+ <b>Submitter:</b> Jonathan Wakely <b>Opened:</b> 2021-11-12 <b>Last modified:</b> 2025-02-07</p>
 <p><b>Priority: </b>3
 </p>
 <p><b>View other</b> <a href="lwg-index-open.html#vector.bool">active issues</a> in [vector.bool].</p>
@@ -446,14 +446,206 @@ Rebase on the current draft, change "exchanges the contents" to
 new subclauses.
 </p>
 
+<p><strong>Previous resolution [SUPERSEDED]:</strong></p>
+<blockquote class="note">
 
-
-<p id="res-3638"><b>Proposed resolution:</b></p>
 <p>
 This wording is relative to <a href="https://wg21.link/N4988" title=" Working Draft, Programming Languages — C++">N4988</a>.
 </p>
 
 <ol>
+
+<li><p>Add to the synopsis in 23.3.12.1 <a href="https://wg21.link/vector.bool.pspc">[vector.bool.pspc]</a> p1:</p>
+
+<blockquote>
+<pre>
+[&hellip;]
+<i>// bit reference</i>
+class reference {
+  friend class vector;
+  constexpr reference() noexcept;
+
+public:
+  constexpr reference(const reference&amp;) = default;
+  constexpr ~reference();
+  constexpr operator bool() const noexcept;
+  constexpr reference&amp; operator=(bool x) noexcept;
+  constexpr reference&amp; operator=(const reference&amp; x) noexcept;
+  constexpr const reference&amp; operator=(bool x) const noexcept;
+  constexpr void flip() noexcept;   <i>// flips the bit</i>
+  
+<ins>  friend constexpr void swap(reference x, reference y) noexcept;
+  friend constexpr void swap(reference x, bool&amp; y) noexcept;
+  friend constexpr void swap(bool&amp; x, reference y) noexcept;</ins>
+};
+[&hellip;]
+</pre>
+</blockquote>
+</li>
+
+<li><p>Remove the static <code>swap</code> function from the same synopsis:</p>
+
+<blockquote>
+<pre>
+[&hellip;]
+constexpr void swap(vector&amp;)
+  noexcept(allocator_traits&lt;Allocator&gt;::propagate_on_container_swap::value ||
+           allocator_traits&lt;Allocator&gt;::is_always_equal::value);
+<del>static constexpr void swap(reference x, reference y) noexcept;</del>
+constexpr void flip() noexcept;    <i>// flips all bits</i>
+constexpr void clear() noexcept;
+[&hellip;]
+</pre>
+</blockquote>
+</li>
+
+<li><p>Modify the paragraphs below the synopsis as shown:</p>
+
+<blockquote>
+<p>
+-4- <code>reference</code> is a class that simulates the behavior of references of a single bit in <code>vector&lt;bool&gt;</code>. 
+The conversion function returns <code>true</code> when the bit is set, and <code>false</code> otherwise. The assignment 
+operators set the bit when the argument
+<del>is (convertible to)</del>
+<ins>converts to</ins>
+<code>true</code> and clear it otherwise. 
+<code>flip</code> reverses the state of the bit.
+</p>
+<pre>
+<ins>constexpr void reference::flip() noexcept;</ins>
+</pre>
+<blockquote>
+<p>
+<ins>-?- <i>Effects:</i> <code>*this = !*this;</code></ins>
+</p>
+</blockquote>
+<pre><ins>
+ constexpr void swap(reference x, reference y) noexcept;
+ constexpr void swap(reference x, bool&amp; y) noexcept;
+ constexpr void swap(bool&amp; x, reference y) noexcept;
+</ins></pre>
+<blockquote>
+<p>
+<ins>-?- <i>Effects:</i> Exchanges the values denoted by <code>x</code> and <code>y</code> as if by:</ins>
+</p>
+<blockquote><pre>
+<ins>bool b = x;
+x = y;
+y = b;</ins>
+</pre></blockquote>
+</blockquote>
+
+<pre>
+constexpr void flip() noexcept;
+</pre>
+<blockquote>
+<p>
+-1- <i>Effects:</i> Replaces each element in the container with its complement.
+</p>
+</blockquote>
+<pre>
+ <del>constexpr static void swap(reference x, reference y) noexcept;</del>
+</pre>
+<blockquote>
+<p>
+<del>-6- <i>Effects:</i> Exchanges the contents of <code>x</code> and <code>y</code> as if by:</del>
+</p>
+<blockquote><pre>
+<del>bool b = x;
+x = y;
+y = b;</del>
+</pre></blockquote>
+</blockquote>
+<pre>
+template&lt;class Allocator&gt; struct hash&lt;vector&lt;bool, Allocator&gt;&gt;;
+</pre>
+<blockquote>
+<p>
+-7- The specialization is enabled (22.10.19 <a href="https://wg21.link/unord.hash">[unord.hash]</a>).
+</p>
+</blockquote>
+</blockquote>
+</li>
+
+<li><p>Create a new subclause [depr.vector.bool.swap] after D.20 <a href="https://wg21.link/depr.format">[depr.format]</a></p>
+
+<blockquote>
+<p>
+<ins><b>D.? Deprecated <code>vector&lt;bool, Allocator&gt;</code> swap [depr.vector.bool.swap]</b></ins>
+<p/>
+<ins>-?- The following member is declared in addition to those members specified in 23.3.12 <a href="https://wg21.link/vector.bool">[vector.bool]</a>:</ins>
+</p>
+<pre>
+<ins>namespace std {
+  template&lt;class Allocator&gt; class vector&lt;bool, Allocator&gt; {
+  public:
+    static constexpr void swap(reference x, reference y) noexcept;
+  };
+}</ins>
+</pre>
+<pre>
+<ins>static constexpr void swap(reference x, reference y) noexcept;</ins>
+</pre>
+<blockquote>
+<p>
+<ins>-?- <i>Effects:</i> Exchanges the values denoted by <code>x</code> and <code>y</code> as if by:</ins>
+</p>
+<blockquote><pre>
+<ins>bool b = x;
+x = y;
+y = b;</ins>
+</pre></blockquote>
+</blockquote>
+</blockquote>
+</li>
+
+</ol>
+
+</blockquote>
+
+<p><i>[2025-02-07; Jonathan provides improved wording]</i></p>
+
+<p>
+Add <code class='backtick'>swap</code> for <code class='backtick'>bitset::reference</code>, as proposed in LWG <a href="lwg-active.html#4187" title="bitset::reference should be const-assignable (Status: New)">4187</a><sup><a href="https://cplusplus.github.io/LWG/issue4187" title="Latest snapshot">(i)</a></sup>.
+</p>
+
+
+
+<p id="res-3638"><b>Proposed resolution:</b></p>
+<p>
+This wording is relative to <a href="https://wg21.link/N5001">N5001</a>.
+</p>
+
+<ol>
+
+<li><p>Modify 22.9.2.1 <a href="https://wg21.link/template.bitset.general">[template.bitset.general]</a> as indicated:</p>
+
+<blockquote>
+<pre>
+namespace std {
+  template&lt;size_t N&gt; class bitset {
+  public:
+    // <i>bit reference</i>
+    class reference {
+    public:
+      constexpr reference(const reference&amp;) = default;
+      constexpr ~reference();
+      constexpr reference&amp; operator=(bool x) noexcept;           // <i>for b[i] = x;</i>
+      constexpr reference&amp; operator=(const reference&amp;) noexcept; // <i>for b[i] = b[j];</i>
+      constexpr bool operator~() const noexcept;                 // <i>flips the bit</i>
+      constexpr operator bool() const noexcept;                  // <i>for x = b[i];</i>
+      constexpr reference&amp; flip() noexcept;                      // <i>for b[i].flip();</i>
+<ins>      friend constexpr void swap(reference x, reference y) noexcept;
+      friend constexpr void swap(reference x, bool&amp; y) noexcept;
+      friend constexpr void swap(bool&amp; x, reference y) noexcept;</ins>      
+    };
+    [&hellip;]
+  };
+  [&hellip;]
+}
+</pre>
+</blockquote>
+</li>
 
 <li><p>Add to the synopsis in 23.3.12.1 <a href="https://wg21.link/vector.bool.pspc">[vector.bool.pspc]</a> p1:</p>
 

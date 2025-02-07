@@ -54,7 +54,7 @@
 </style>
 </head>
 <body>
-<p>Revised 2025-02-07 at 21:22:17 UTC
+<p>Revised 2025-02-07 at 22:26:12 UTC
 </p><h2>Unresolved Issues</h2>
 <hr>
 <h3 id="423"><a href="#423">423</a><sup><a href="https://cplusplus.github.io/LWG/issue423">(i)</a></sup>. Effects of negative <code>streamsize</code> in iostreams</h3>
@@ -36155,7 +36155,7 @@ Set priority to 3 after reflector poll.
 <hr>
 <h3 id="3638"><a href="#3638">3638</a><sup><a href="https://cplusplus.github.io/LWG/issue3638">(i)</a></sup>. <code>vector&lt;bool&gt;::swap(reference, reference)</code> is useless</h3>
 <p><b>Section:</b> 23.3.12 <a href="https://wg21.link/vector.bool">[vector.bool]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Jonathan Wakely <b>Opened:</b> 2021-11-12 <b>Last modified:</b> 2024-08-21</p>
+ <b>Submitter:</b> Jonathan Wakely <b>Opened:</b> 2021-11-12 <b>Last modified:</b> 2025-02-07</p>
 <p><b>Priority: </b>3
 </p>
 <p><b>View other</b> <a href="lwg-index-open.html#vector.bool">active issues</a> in [vector.bool].</p>
@@ -36537,14 +36537,206 @@ Rebase on the current draft, change "exchanges the contents" to
 new subclauses.
 </p>
 
+<p><strong>Previous resolution [SUPERSEDED]:</strong></p>
+<blockquote class="note">
 
-
-<p id="res-3638"><b>Proposed resolution:</b></p>
 <p>
 This wording is relative to <a href="https://wg21.link/N4988" title=" Working Draft, Programming Languages — C++">N4988</a>.
 </p>
 
 <ol>
+
+<li><p>Add to the synopsis in 23.3.12.1 <a href="https://wg21.link/vector.bool.pspc">[vector.bool.pspc]</a> p1:</p>
+
+<blockquote>
+<pre>
+[&hellip;]
+<i>// bit reference</i>
+class reference {
+  friend class vector;
+  constexpr reference() noexcept;
+
+public:
+  constexpr reference(const reference&amp;) = default;
+  constexpr ~reference();
+  constexpr operator bool() const noexcept;
+  constexpr reference&amp; operator=(bool x) noexcept;
+  constexpr reference&amp; operator=(const reference&amp; x) noexcept;
+  constexpr const reference&amp; operator=(bool x) const noexcept;
+  constexpr void flip() noexcept;   <i>// flips the bit</i>
+  
+<ins>  friend constexpr void swap(reference x, reference y) noexcept;
+  friend constexpr void swap(reference x, bool&amp; y) noexcept;
+  friend constexpr void swap(bool&amp; x, reference y) noexcept;</ins>
+};
+[&hellip;]
+</pre>
+</blockquote>
+</li>
+
+<li><p>Remove the static <code>swap</code> function from the same synopsis:</p>
+
+<blockquote>
+<pre>
+[&hellip;]
+constexpr void swap(vector&amp;)
+  noexcept(allocator_traits&lt;Allocator&gt;::propagate_on_container_swap::value ||
+           allocator_traits&lt;Allocator&gt;::is_always_equal::value);
+<del>static constexpr void swap(reference x, reference y) noexcept;</del>
+constexpr void flip() noexcept;    <i>// flips all bits</i>
+constexpr void clear() noexcept;
+[&hellip;]
+</pre>
+</blockquote>
+</li>
+
+<li><p>Modify the paragraphs below the synopsis as shown:</p>
+
+<blockquote>
+<p>
+-4- <code>reference</code> is a class that simulates the behavior of references of a single bit in <code>vector&lt;bool&gt;</code>. 
+The conversion function returns <code>true</code> when the bit is set, and <code>false</code> otherwise. The assignment 
+operators set the bit when the argument
+<del>is (convertible to)</del>
+<ins>converts to</ins>
+<code>true</code> and clear it otherwise. 
+<code>flip</code> reverses the state of the bit.
+</p>
+<pre>
+<ins>constexpr void reference::flip() noexcept;</ins>
+</pre>
+<blockquote>
+<p>
+<ins>-?- <i>Effects:</i> <code>*this = !*this;</code></ins>
+</p>
+</blockquote>
+<pre><ins>
+ constexpr void swap(reference x, reference y) noexcept;
+ constexpr void swap(reference x, bool&amp; y) noexcept;
+ constexpr void swap(bool&amp; x, reference y) noexcept;
+</ins></pre>
+<blockquote>
+<p>
+<ins>-?- <i>Effects:</i> Exchanges the values denoted by <code>x</code> and <code>y</code> as if by:</ins>
+</p>
+<blockquote><pre>
+<ins>bool b = x;
+x = y;
+y = b;</ins>
+</pre></blockquote>
+</blockquote>
+
+<pre>
+constexpr void flip() noexcept;
+</pre>
+<blockquote>
+<p>
+-1- <i>Effects:</i> Replaces each element in the container with its complement.
+</p>
+</blockquote>
+<pre>
+ <del>constexpr static void swap(reference x, reference y) noexcept;</del>
+</pre>
+<blockquote>
+<p>
+<del>-6- <i>Effects:</i> Exchanges the contents of <code>x</code> and <code>y</code> as if by:</del>
+</p>
+<blockquote><pre>
+<del>bool b = x;
+x = y;
+y = b;</del>
+</pre></blockquote>
+</blockquote>
+<pre>
+template&lt;class Allocator&gt; struct hash&lt;vector&lt;bool, Allocator&gt;&gt;;
+</pre>
+<blockquote>
+<p>
+-7- The specialization is enabled (22.10.19 <a href="https://wg21.link/unord.hash">[unord.hash]</a>).
+</p>
+</blockquote>
+</blockquote>
+</li>
+
+<li><p>Create a new subclause [depr.vector.bool.swap] after D.20 <a href="https://wg21.link/depr.format">[depr.format]</a></p>
+
+<blockquote>
+<p>
+<ins><b>D.? Deprecated <code>vector&lt;bool, Allocator&gt;</code> swap [depr.vector.bool.swap]</b></ins>
+<p/>
+<ins>-?- The following member is declared in addition to those members specified in 23.3.12 <a href="https://wg21.link/vector.bool">[vector.bool]</a>:</ins>
+</p>
+<pre>
+<ins>namespace std {
+  template&lt;class Allocator&gt; class vector&lt;bool, Allocator&gt; {
+  public:
+    static constexpr void swap(reference x, reference y) noexcept;
+  };
+}</ins>
+</pre>
+<pre>
+<ins>static constexpr void swap(reference x, reference y) noexcept;</ins>
+</pre>
+<blockquote>
+<p>
+<ins>-?- <i>Effects:</i> Exchanges the values denoted by <code>x</code> and <code>y</code> as if by:</ins>
+</p>
+<blockquote><pre>
+<ins>bool b = x;
+x = y;
+y = b;</ins>
+</pre></blockquote>
+</blockquote>
+</blockquote>
+</li>
+
+</ol>
+
+</blockquote>
+
+<p><i>[2025-02-07; Jonathan provides improved wording]</i></p>
+
+<p>
+Add <code class='backtick'>swap</code> for <code class='backtick'>bitset::reference</code>, as proposed in LWG <a href="lwg-active.html#4187" title="bitset::reference should be const-assignable (Status: New)">4187</a><sup><a href="https://cplusplus.github.io/LWG/issue4187" title="Latest snapshot">(i)</a></sup>.
+</p>
+
+
+
+<p id="res-3638"><b>Proposed resolution:</b></p>
+<p>
+This wording is relative to <a href="https://wg21.link/N5001">N5001</a>.
+</p>
+
+<ol>
+
+<li><p>Modify 22.9.2.1 <a href="https://wg21.link/template.bitset.general">[template.bitset.general]</a> as indicated:</p>
+
+<blockquote>
+<pre>
+namespace std {
+  template&lt;size_t N&gt; class bitset {
+  public:
+    // <i>bit reference</i>
+    class reference {
+    public:
+      constexpr reference(const reference&amp;) = default;
+      constexpr ~reference();
+      constexpr reference&amp; operator=(bool x) noexcept;           // <i>for b[i] = x;</i>
+      constexpr reference&amp; operator=(const reference&amp;) noexcept; // <i>for b[i] = b[j];</i>
+      constexpr bool operator~() const noexcept;                 // <i>flips the bit</i>
+      constexpr operator bool() const noexcept;                  // <i>for x = b[i];</i>
+      constexpr reference&amp; flip() noexcept;                      // <i>for b[i].flip();</i>
+<ins>      friend constexpr void swap(reference x, reference y) noexcept;
+      friend constexpr void swap(reference x, bool&amp; y) noexcept;
+      friend constexpr void swap(bool&amp; x, reference y) noexcept;</ins>      
+    };
+    [&hellip;]
+  };
+  [&hellip;]
+}
+</pre>
+</blockquote>
+</li>
 
 <li><p>Add to the synopsis in 23.3.12.1 <a href="https://wg21.link/vector.bool.pspc">[vector.bool.pspc]</a> p1:</p>
 
@@ -56709,8 +56901,8 @@ When reviewing this we were clear this imposes requirements on users.
 <hr>
 <h3 id="4078"><a href="#4078">4078</a><sup><a href="https://cplusplus.github.io/LWG/issue4078">(i)</a></sup>. What if arguments alias the output buffer in <code class='backtick'>std::format_to</code>?</h3>
 <p><b>Section:</b> 28.5.5 <a href="https://wg21.link/format.functions">[format.functions]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Jan Schultke <b>Opened:</b> 2024-04-24 <b>Last modified:</b> 2024-04-27</p>
-<p><b>Priority: </b>Not Prioritized
+ <b>Submitter:</b> Jan Schultke <b>Opened:</b> 2024-04-24 <b>Last modified:</b> 2025-02-07</p>
+<p><b>Priority: </b>4
 </p>
 <p><b>View all other</b> <a href="lwg-index.html#format.functions">issues</a> in [format.functions].</p>
 <p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
@@ -56741,6 +56933,16 @@ which would forbid the output range of the output iterator to overlap ranges of 
 A friend of mine has suggested to add a <i>Preconditions</i> to the <i>BasicFormatter</i> requirements 
 instead, dealing with the issue at the root (<code>f.format(u, fc)</code>).
 </p>
+
+<p><i>[2025-02-07; Reflector poll]</i></p>
+
+<p>
+Set priority to 4 after reflector poll.
+</p>
+<p>
+We should prohibit aliasing, so this is undefined.
+</p>
+
 
 
 <p id="res-4078"><b>Proposed resolution:</b></p>
@@ -58489,8 +58691,8 @@ See also LWG <a href="lwg-active.html#3813" title="std::span&lt;volatile T, E&gt
 <hr>
 <h3 id="4107"><a href="#4107">4107</a><sup><a href="https://cplusplus.github.io/LWG/issue4107">(i)</a></sup>. Map formatter may conflict with user-defined specializations of <code>pair</code>/<code>tuple</code> formatters</h3>
 <p><b>Section:</b> 28.5.7.4 <a href="https://wg21.link/format.range.fmtmap">[format.range.fmtmap]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Victor Zverovich <b>Opened:</b> 2024-05-18 <b>Last modified:</b> 2024-05-19</p>
-<p><b>Priority: </b>Not Prioritized
+ <b>Submitter:</b> Victor Zverovich <b>Opened:</b> 2024-05-18 <b>Last modified:</b> 2025-02-07</p>
+<p><b>Priority: </b>3
 </p>
 <p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
 <p><b>Discussion:</b></p>
@@ -58549,6 +58751,15 @@ and <code>tuple</code>s, and make map be responsible for its own structural form
 part of it to other formatters in an arbitrary way. This resolution has been applied to {fmt}'s implementation 
 of range formatting to address <a href="https://github.com/fmtlib/fmt/issues/3685">#3685</a>.
 </p>
+
+<p><i>[2025-02-07; Reflector poll]</i></p>
+
+<p>
+Set priority to 3 after reflector poll.
+Several votes for NAD (a specialization must provide <code class='backtick'>set_brackets</code> etc.),
+and suggestions it's a design change that LEWG should see.
+</p>
+
 
 
 <p id="res-4107"><b>Proposed resolution:</b></p>
@@ -64580,55 +64791,6 @@ constexpr <i>make-unsigned-like-t</i>&lt;iter_difference_t&lt;I&gt;&gt; size() c
 
 
 <hr>
-<h3 id="4184"><a href="#4184">4184</a><sup><a href="https://cplusplus.github.io/LWG/issue4184">(i)</a></sup>. Domain of <code>ranges::c<i>meow</i></code> doesn't match <code>ranges::<i>meow</i></code></h3>
-<p><b>Section:</b> 25.3 <a href="https://wg21.link/range.access">[range.access]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Hewill Kang <b>Opened:</b> 2024-12-17 <b>Last modified:</b> 2024-12-21</p>
-<p><b>Priority: </b>Not Prioritized
-</p>
-<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
-<p><b>Discussion:</b></p>
-<p>
-<code class='backtick'>ranges::begin/rbegin/data</code> can be used on non-ranges as long as the object has a
-<code class='backtick'>begin/rbegin/data</code> member, this is also true for their const versions before C++23.
-<p/>
-However, in C++23 the const version always applied <code><i>possibly-const-range</i></code> to the object,
-which no longer worked for non-ranges due to this function requiring <code class='backtick'>input_range</code>, 
-which seems to be a breaking change (<a href="https://godbolt.org/z/KKe4nG9W8">demo</a>):
-</p>
-<blockquote><pre>
-#include &lt;ranges&gt;
-
-struct NotRange {
-        int* begin();
-  const int* begin() const;
-        int* rbegin();
-  const int* rbegin() const;
-        int* data();
-  const int* data() const;
-};
-
-int main() {
-  NotRange r;
-
-  (void) std::ranges::begin(r);
-  (void) std::ranges::rbegin(r);
-  (void) std::ranges::data(r);
-
-  // <span  style="color:#C80000;font-weight:bold">The following works in C++20, fails in C++23</span>
-  (void) std::ranges::cbegin(r);
-  (void) std::ranges::crbegin(r);
-  (void) std::ranges::cdata(r);
-}
-</pre></blockquote>
-
-
-<p id="res-4184"><b>Proposed resolution:</b></p>
-
-
-
-
-
-<hr>
 <h3 id="4185"><a href="#4185">4185</a><sup><a href="https://cplusplus.github.io/LWG/issue4185">(i)</a></sup>. Ill-formed, no diagnostic required on runtime behavior</h3>
 <p><b>Section:</b> 29.9.7 <a href="https://wg21.link/linalg.helpers">[linalg.helpers]</a>, 18.4.9 <a href="https://wg21.link/concept.swappable">[concept.swappable]</a>, 24.3.3.2 <a href="https://wg21.link/iterator.cust.swap">[iterator.cust.swap]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
  <b>Submitter:</b> Jiang An <b>Opened:</b> 2024-12-18 <b>Last modified:</b> 2024-12-21</p>
@@ -64656,8 +64818,8 @@ usage. Presumably we should say the behavior is undefined in these cases.
 <hr>
 <h3 id="4187"><a href="#4187">4187</a><sup><a href="https://cplusplus.github.io/LWG/issue4187">(i)</a></sup>. <code class='backtick'>bitset::reference</code> should be const-assignable</h3>
 <p><b>Section:</b> 22.9.2 <a href="https://wg21.link/template.bitset">[template.bitset]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Arthur O'Dwyer <b>Opened:</b> 2024-12-21 <b>Last modified:</b> 2024-12-22</p>
-<p><b>Priority: </b>Not Prioritized
+ <b>Submitter:</b> Arthur O'Dwyer <b>Opened:</b> 2024-12-21 <b>Last modified:</b> 2025-02-07</p>
+<p><b>Priority: </b>3
 </p>
 <p><b>View other</b> <a href="lwg-index-open.html#template.bitset">active issues</a> in [template.bitset].</p>
 <p><b>View all other</b> <a href="lwg-index.html#template.bitset">issues</a> in [template.bitset].</p>
@@ -64698,8 +64860,23 @@ we should say so in English prose.</p>
 </li>
 </ol>
 
+<p><i>[2025-02-07; Reflector poll]</i></p>
 
-<p id="res-4187"><b>Proposed resolution:</b></p>
+<p>
+Set priority to 3 after reflector poll.
+</p>
+<p>
+"Just const-quality the existing assignment operators."
+"Would need to change the return type (breaking) or use <code class='backtick'>const_cast</code> (weird)."
+"And it would be needlessly inconsistent with <code>vector&lt;bool&gt;::reference</code>."
+</p>
+<p>
+"The <code class='backtick'>swap</code> part belongs in LWG <a href="lwg-active.html#3638" title="vector&lt;bool&gt;::swap(reference, reference) is useless (Status: New)">3638</a><sup><a href="https://cplusplus.github.io/LWG/issue3638" title="Latest snapshot">(i)</a></sup>."
+</p>
+
+<p><strong>Previous resolution [SUPERSEDED]:</strong></p>
+<blockquote class="note">
+
 <p>
 This wording is relative to <a href="https://wg21.link/N5001">N5001</a>.
 </p>
@@ -64738,6 +64915,49 @@ namespace std {
 </li>
 
 </ol>
+</blockquote>
+
+<p><i>[2025-02-07; Jonathan provides improved wording]</i></p>
+
+<p>Moved <code class='backtick'>swap</code> changes to LWG <a href="lwg-active.html#3638" title="vector&lt;bool&gt;::swap(reference, reference) is useless (Status: New)">3638</a><sup><a href="https://cplusplus.github.io/LWG/issue3638" title="Latest snapshot">(i)</a></sup>.</p>
+
+
+
+<p id="res-4187"><b>Proposed resolution:</b></p>
+<p>
+This wording is relative to <a href="https://wg21.link/N5001">N5001</a>.
+</p>
+
+<ol>
+<li><p>Modify 22.9.2.1 <a href="https://wg21.link/template.bitset.general">[template.bitset.general]</a> as indicated:</p>
+
+<blockquote>
+<pre>
+namespace std {
+  template&lt;size_t N&gt; class bitset {
+  public:
+    // <i>bit reference</i>
+    class reference {
+    public:
+      constexpr reference(const reference&amp;) = default;
+      constexpr ~reference();
+      constexpr reference&amp; operator=(bool x) noexcept;           // <i>for b[i] = x;</i>
+      constexpr reference&amp; operator=(const reference&amp;) noexcept; // <i>for b[i] = b[j];</i>
+      <ins>constexpr const reference&amp; operator=(bool x) const noexcept;</ins>
+      constexpr bool operator~() const noexcept;                 // <i>flips the bit</i>
+      constexpr operator bool() const noexcept;                  // <i>for x = b[i];</i>
+      constexpr reference&amp; flip() noexcept;                      // <i>for b[i].flip();</i>
+    };
+    [&hellip;]
+  };
+  [&hellip;]
+}
+</pre>
+</blockquote>
+
+</li>
+</ol>
+
 
 
 
@@ -65281,147 +65501,6 @@ is_nothrow_move_assignable_v&lt;E&gt;</code>.
 
 
 <hr>
-<h3 id="4196"><a href="#4196">4196</a><sup><a href="https://cplusplus.github.io/LWG/issue4196">(i)</a></sup>. Complexity of <code class='backtick'>inplace_merge()</code> is incorrect</h3>
-<p><b>Section:</b> 26.8.6 <a href="https://wg21.link/alg.merge">[alg.merge]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Stephen Howe <b>Opened:</b> 2025-01-22 <b>Last modified:</b> 2025-02-07</p>
-<p><b>Priority: </b>4
-</p>
-<p><b>View other</b> <a href="lwg-index-open.html#alg.merge">active issues</a> in [alg.merge].</p>
-<p><b>View all other</b> <a href="lwg-index.html#alg.merge">issues</a> in [alg.merge].</p>
-<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
-<p><b>Discussion:</b></p>
-<p>
-For <a href="https://wg21.link/N5001">N5001</a>, section 26.8.6 <a href="https://wg21.link/alg.merge">[alg.merge]</a> p5, it says for <code class='backtick'>merge()</code> <i>Complexity</i> (emphasis mine):
-</p>
-<blockquote style="border-left: 3px solid #ccc;padding-left: 15px;">
-<p>
-For the overloads with no <code class='backtick'>ExecutionPolicy</code>, <b>at most</b> <code><i>N</i> - 1</code> comparisons and applications of each
-projection
-</p>
-</blockquote>
-<p>
-For <a href="https://wg21.link/N5001">N5001</a>, section 26.8.6 <a href="https://wg21.link/alg.merge">[alg.merge]</a> p11, it says from <code class='backtick'>inplace_merge()</code> <i>Complexity</i> (emphasis mine):
-</p>
-<blockquote style="border-left: 3px solid #ccc;padding-left: 15px;">
-<p>
-<i>Complexity</i>: Let <code><i>N</i> = last - first</code>:
-</p>
-<ol style="list-style-type: none">
-<li><p>(11.1) &mdash; For the overloads with no <code class='backtick'>ExecutionPolicy</code>, and if enough additional memory is available, <b>exactly</b>
-<code><i>N</i> - 1</code> comparisons.</p></li>
-<li><p>(11.2) &mdash; Otherwise, <code>&#x1d4aa;(<i>N</i> log <i>N</i>)</code> comparisons.</p></li>
-</ol>
-</blockquote>
-<p>
-This wording should be (emphasis mine)
-</p>
-<blockquote>
-<p>
-<i>Complexity</i>: Let <code><i>N</i> = last - first</code>:
-</p>
-<ol style="list-style-type: none">
-<li><p>(11.1) &mdash; For the overloads with no <code class='backtick'>ExecutionPolicy</code>, and if enough additional memory is available, <b>at most</b>
-<code><i>N</i> - 1</code> comparisons.</p></li>
-<li><p>(11.2) &mdash; Otherwise, <code>&#x1d4aa;(<i>N</i> log <i>N</i>)</code> comparisons.</p></li>
-</ol>
-</blockquote>
-<p>
-Consider the 2 sequences in a <code class='backtick'>std::vector</code> of <code class='backtick'>int</code>s and assume that <code class='backtick'>inplace_merge</code> has enough memory:
-</p>
-<blockquote><pre>
-{ 1 }, { 2, 3, 4, 5, 6, 7 )
-</pre></blockquote>
-<p>
-<code><i>N</i></code> is <code class='backtick'>7</code>, 7 elements. So <code><i>N</i> - 1</code> is <code class='backtick'>6</code>
-<p/>
-If you <code class='backtick'>inplace_merge()</code> the two sequences, the <code class='backtick'>1</code> is compared with <code class='backtick'>2</code> and <code class='backtick'>1</code> is output. But now the 1st 
-sequence is over, so the 2nd sequence is copied. Only 1 comparison is done, not 6.
-</p>
-
-<p><i>[2025-01-25; Daniel comments]</i></p>
-
-<p>
-The <a href="https://sgistl.github.io/inplace_merge.html">SGI STL archive</a> correctly says "at most" as well.
-</p>
-
-<p><i>[2025-02-07; Reflector poll]</i></p>
-
-<p>
-Set priority to 4 after reflector poll.
-There were nine votes for P0 (Tentatively Ready), but also several for
-NAD Editorial, because 16.3.2.4 <a href="https://wg21.link/structure.specifications">[structure.specifications]</a>/7 explicitly
-says that all complexity requirements are upper bounds and it's conforming to
-do less work. The consensus was that this is still a clarifying improvement.
-</p>
-
-
-
-<p id="res-4196"><b>Proposed resolution:</b></p>
-<p>
-This wording is relative to <a href="https://wg21.link/N5001">N5001</a>.
-</p>
-
-<ol>
-
-<li><p>Modify 26.8.6 <a href="https://wg21.link/alg.merge">[alg.merge]</a> as indicated:</p>
-
-<blockquote>
-<pre>
-template&lt;class BidirectionalIterator&gt;
-  constexpr void inplace_merge(BidirectionalIterator first,
-                               BidirectionalIterator middle,
-                               BidirectionalIterator last);
-template&lt;class ExecutionPolicy, class BidirectionalIterator&gt;
-  void inplace_merge(ExecutionPolicy&amp;&amp; exec,
-                     BidirectionalIterator first,
-                     BidirectionalIterator middle,
-                     BidirectionalIterator last);
-template&lt;class BidirectionalIterator, class Compare&gt;
-  constexpr void inplace_merge(BidirectionalIterator first,
-                               BidirectionalIterator middle,
-                               BidirectionalIterator last, Compare comp);
-template&lt;class ExecutionPolicy, class BidirectionalIterator, class Compare&gt;
-  void inplace_merge(ExecutionPolicy&amp;&amp; exec,
-                     BidirectionalIterator first,
-                     BidirectionalIterator middle,
-                     BidirectionalIterator last, Compare comp);
-template&lt;bidirectional_iterator I, sentinel_for&lt;I&gt; S, class Comp = ranges::less,
-         class Proj = identity&gt;
-  requires sortable&lt;I, Comp, Proj&gt;
-  constexpr I ranges::inplace_merge(I first, I middle, S last, Comp comp = {}, Proj proj = {});
-</pre>
-<blockquote>
-<p>
--7- [&hellip;]
-<p/>
--8- <i>Preconditions</i>: [&hellip;]
-<p/>
--9- <i>Effects</i>: Merges two sorted consecutive ranges <code class='backtick'>[first, middle)</code> and <code class='backtick'>[middle, last)</code>, 
-putting the result of the merge into the range <code class='backtick'>[first, last)</code>. The resulting range is sorted 
-with respect to <code class='backtick'>comp</code> and <code class='backtick'>proj</code>.
-<p/>
--10- <i>Returns</i>: <code class='backtick'>last</code> for the overload in namespace <code class='backtick'>ranges</code>.
-<p/>
--11- <i>Complexity</i>: Let <code><i>N</i> = last - first</code>:
-</p>
-<ol style="list-style-type: none">
-<li><p>(11.1) &mdash; For the overloads with no <code class='backtick'>ExecutionPolicy</code>, and if enough additional memory is available, 
-<del>exactly</del><ins>at most</ins> <code><i>N</i> - 1</code> comparisons.</p></li>
-<li><p>(11.2) &mdash; Otherwise, <code>&#x1d4aa;(<i>N</i> log <i>N</i>)</code> comparisons.</p></li>
-</ol>
-<p>
-In either case, twice as many projections as comparisons.
-</p>
-</blockquote>
-</blockquote>
-</li>
-</ol>
-
-
-
-
-
-<hr>
 <h3 id="4197"><a href="#4197">4197</a><sup><a href="https://cplusplus.github.io/LWG/issue4197">(i)</a></sup>. Complexity of <code class='backtick'>std::visit</code> with immediate functions</h3>
 <p><b>Section:</b> 22.6.7 <a href="https://wg21.link/variant.visit">[variant.visit]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
  <b>Submitter:</b> Jiang An <b>Opened:</b> 2025-01-26 <b>Last modified:</b> 2025-01-30</p>
@@ -65494,8 +65573,8 @@ the callable object has no complexity requirements.</del>
 <hr>
 <h3 id="4198"><a href="#4198">4198</a><sup><a href="https://cplusplus.github.io/LWG/issue4198">(i)</a></sup>. <code class='backtick'>schedule_from</code> isn't starting the schedule sender if decay-copying results throws</h3>
 <p><b>Section:</b> 33.9.12.5 <a href="https://wg21.link/exec.schedule.from">[exec.schedule.from]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Eric Niebler <b>Opened:</b> 2025-02-03 <b>Last modified:</b> 2025-02-03</p>
-<p><b>Priority: </b>Not Prioritized
+ <b>Submitter:</b> Eric Niebler <b>Opened:</b> 2025-02-03 <b>Last modified:</b> 2025-02-07</p>
+<p><b>Priority: </b>1
 </p>
 <p><b>View other</b> <a href="lwg-index-open.html#exec.schedule.from">active issues</a> in [exec.schedule.from].</p>
 <p><b>View all other</b> <a href="lwg-index.html#exec.schedule.from">issues</a> in [exec.schedule.from].</p>
@@ -65584,6 +65663,13 @@ except with duplicate types removed.
 <p><i>[This touches the same text as LWG <a href="lwg-active.html#4203" title="Constraints on get-state functions are incorrect (Status: New)">4203</a><sup><a href="https://cplusplus.github.io/LWG/issue4203" title="Latest snapshot">(i)</a></sup>.]</i></p>
 
 
+<p><i>[2025-02-07; Reflector poll]</i></p>
+
+<p>
+Set priority to 1 after reflector poll.
+</p>
+
+
 
 <p id="res-4198"><b>Proposed resolution:</b></p>
 <p>
@@ -65596,8 +65682,8 @@ except with duplicate types removed.
 <hr>
 <h3 id="4199"><a href="#4199">4199</a><sup><a href="https://cplusplus.github.io/LWG/issue4199">(i)</a></sup>. constraints on user customizations of standard sender algorithms are incorrectly specified</h3>
 <p><b>Section:</b> 33.9.1 <a href="https://wg21.link/exec.snd.general">[exec.snd.general]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Eric Niebler <b>Opened:</b> 2025-02-03 <b>Last modified:</b> 2025-02-03</p>
-<p><b>Priority: </b>Not Prioritized
+ <b>Submitter:</b> Eric Niebler <b>Opened:</b> 2025-02-03 <b>Last modified:</b> 2025-02-07</p>
+<p><b>Priority: </b>1
 </p>
 <p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
 <p><b>Discussion:</b></p>
@@ -65646,6 +65732,13 @@ function that does the same as <code class='backtick'>get_completion_signatures<
 except without the sender transformation.
 Then we can express <code class='backtick'>get_completion_signatures</code> in terms of that.
 </p>
+
+<p><i>[2025-02-07; Reflector poll]</i></p>
+
+<p>
+Set priority to 1 after reflector poll.
+</p>
+
 
 
 <p id="res-4199"><b>Proposed resolution:</b></p>
@@ -65875,8 +65968,8 @@ Such specializations shall be usable in constant expressions
 <hr>
 <h3 id="4203"><a href="#4203">4203</a><sup><a href="https://cplusplus.github.io/LWG/issue4203">(i)</a></sup>. Constraints on <i><code class='backtick'>get-state</code></i> functions are incorrect</h3>
 <p><b>Section:</b> 33.9.12.5 <a href="https://wg21.link/exec.schedule.from">[exec.schedule.from]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Eric Niebler <b>Opened:</b> 2025-02-03 <b>Last modified:</b> 2025-02-03</p>
-<p><b>Priority: </b>Not Prioritized
+ <b>Submitter:</b> Eric Niebler <b>Opened:</b> 2025-02-03 <b>Last modified:</b> 2025-02-07</p>
+<p><b>Priority: </b>1
 </p>
 <p><b>View other</b> <a href="lwg-index-open.html#exec.schedule.from">active issues</a> in [exec.schedule.from].</p>
 <p><b>View all other</b> <a href="lwg-index.html#exec.schedule.from">issues</a> in [exec.schedule.from].</p>
@@ -65971,6 +66064,13 @@ It should be testing its child for single-sender-ness.
 <p>
 In addition, it should be applying <i><code class='backtick'>FWD-ENV-T</code></i> to <code class='backtick'>Env</code>
 so that only forwarding queries are forwarded.
+</p>
+
+
+<p><i>[2025-02-07; Reflector poll]</i></p>
+
+<p>
+Set priority to 1 after reflector poll.
 </p>
 
 
@@ -66189,8 +66289,8 @@ is ill-formed; otherwise, it is equivalent to:
 <hr>
 <h3 id="4204"><a href="#4204">4204</a><sup><a href="https://cplusplus.github.io/LWG/issue4204">(i)</a></sup>. specification of <code><i>as-sndr2</i>(Sig)</code> in [exec.let] is incomplete</h3>
 <p><b>Section:</b> 33.9.12.8 <a href="https://wg21.link/exec.let">[exec.let]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Eric Niebler <b>Opened:</b> 2025-02-03 <b>Last modified:</b> 2025-02-03</p>
-<p><b>Priority: </b>Not Prioritized
+ <b>Submitter:</b> Eric Niebler <b>Opened:</b> 2025-02-03 <b>Last modified:</b> 2025-02-07</p>
+<p><b>Priority: </b>1
 </p>
 <p><b>View other</b> <a href="lwg-index-open.html#exec.let">active issues</a> in [exec.let].</p>
 <p><b>View all other</b> <a href="lwg-index.html#exec.let">issues</a> in [exec.let].</p>
@@ -66218,6 +66318,13 @@ but that is not at all clear from the current wording.
 I suggest making paragraphs 8, 9, and 10 sub-bullets of paragraph 7.
 </p>
 
+<p><i>[2025-02-07; Reflector poll]</i></p>
+
+<p>
+Set priority to 1 after reflector poll.
+</p>
+
+
 
 <p id="res-4204"><b>Proposed resolution:</b></p>
 <p>
@@ -66229,6 +66336,44 @@ Change 33.9.12.8 <a href="https://wg21.link/exec.let">[exec.let]</a> as indicate
 and nest paragraphs 8, 9, and 10 below paragraph 7:
 
 <blockquote>
+<p>
+-7-
+<code><i>impls-for</i>&lt;<i>decayed-typeof</i>&lt;<i>let-cpo</i>&gt;&gt;::<i>get-state</i></code>
+is initialized with a callable object equivalent to the following:
+<pre><code>
+  []&lt;class Sndr, class Rcvr&gt;(Sndr&amp;&amp; sndr, Rcvr&amp; rcvr) requires <i>see below</i> {
+    auto&amp; [_, fn, child] = sndr;
+    using fn_t = decay_t&lt;decltype(fn)&gt;;
+    using env_t = decltype(<i>let-env</i>(child));
+    using args_variant_t = <i>see below</i>;
+    using ops2_variant_t = <i>see below</i>;
+
+    struct state-type {
+      fn_t fn;                    <i>// exposition only</i>
+      env_t env;                  <i>// exposition only</i>
+      args_variant_t args;        <i>// exposition only</i>
+      ops2_variant_t ops2;        <i>// exposition only</i>
+    };
+    return <i>state-type</i>{std::forward_like&lt;Sndr&gt;(fn), <i>let-env</i>(child), {}, {}};
+  }
+</code></pre>
+</p>
+<p>
+-8-
+Let <code class='backtick'>Sigs</code> be a pack of the arguments to the <code class='backtick'>completion_signatures</code>
+specialization named by
+<code>completion_signatures_of_t&lt;<i>child-type</i>&lt;Sndr&gt;,
+env_of_t&lt;Rcvr&gt;&gt;</code>.
+Let <code class='backtick'>LetSigs</code> be a pack of those types in <code class='backtick'>Sigs</code> with a return type of
+<code><i>decayed-typeof</i>&lt;<i>set-cpo</i>&gt;</code>.
+Let <code class='backtick'>as-tuple</code> be an alias template such that
+<code><i>as-tuple</i>&lt;Tag(Args...)&gt;</code>
+denotes the type <code><i>decayed-tuple</i>&lt;Args...&gt;</code>.
+Then <code class='backtick'>args_variant_t</code> denotes the type
+<code>variant&lt;monostate, <i>as-tuple</i>&lt;LetSigs&gt;...&gt;</code>
+except with duplicate types removed.
+</p>
+<p>
 -9-
 Given a type <code class='backtick'>Tag</code> and a pack <code class='backtick'>Args</code>, let <code><i>as-sndr2</i></code>
 be an alias template such that
@@ -66239,6 +66384,12 @@ Then <code class='backtick'>ops2_variant_t</code> denotes the type
 <pre><code> variant&lt;monostate, connect_result_t&lt;<i>as-sndr2</i>&lt;LetSigs&gt;, receiver2&lt;Rcvr, <del>Env</del><ins>env_t</ins>&gt;&gt;...&gt;
 </code></pre>
 except with duplicate types removed.
+</p>
+<p>
+-10-
+The <i>requires-clause</i> constraining the above lambda is satisfied
+if and only if the types <code class='backtick'>args_variant_t</code> and <code class='backtick'>ops2_variant_t</code> are well-formed.
+</p>
 </blockquote>
 
 </li>
@@ -66251,8 +66402,8 @@ except with duplicate types removed.
 <hr>
 <h3 id="4205"><a href="#4205">4205</a><sup><a href="https://cplusplus.github.io/LWG/issue4205">(i)</a></sup>. <code class='backtick'>let_[*].transform_env</code> is specified in terms of the <code class='backtick'>let_*</code> sender itself instead of its child</h3>
 <p><b>Section:</b> 33.9.12.8 <a href="https://wg21.link/exec.let">[exec.let]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Eric Niebler <b>Opened:</b> 2025-02-04 <b>Last modified:</b> 2025-02-05</p>
-<p><b>Priority: </b>Not Prioritized
+ <b>Submitter:</b> Eric Niebler <b>Opened:</b> 2025-02-04 <b>Last modified:</b> 2025-02-07</p>
+<p><b>Priority: </b>1
 </p>
 <p><b>View other</b> <a href="lwg-index-open.html#exec.let">active issues</a> in [exec.let].</p>
 <p><b>View all other</b> <a href="lwg-index.html#exec.let">issues</a> in [exec.let].</p>
@@ -66279,6 +66430,18 @@ Otherwise, it is equal to
 The sender passed to <i><code class='backtick'>let-env</code></i> here should be the <i>child</i> of <code class='backtick'>sndr</code>.
 
 </p>
+
+<p><i>[2025-02-07; Reflector poll]</i></p>
+
+<p>
+Set priority to 1 after reflector poll.
+</p>
+<p>
+"We seem to be missing a guarantee that <code class='backtick'>auto [_,_,child] = sndr;</code> works.
+We guarantee that it can be used in a structured binding, but not that it
+must work with a size of three."
+</p>
+
 
 
 <p id="res-4205"><b>Proposed resolution:</b></p>
@@ -66316,8 +66479,8 @@ Otherwise, it is equal to
 <hr>
 <h3 id="4206"><a href="#4206">4206</a><sup><a href="https://cplusplus.github.io/LWG/issue4206">(i)</a></sup>. Alias template <code class='backtick'>connect_result_t</code> should be constrained with <code class='backtick'>sender_to</code></h3>
 <p><b>Section:</b> 99 [exec.syn] <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Eric Niebler <b>Opened:</b> 2025-02-04 <b>Last modified:</b> 2025-02-04</p>
-<p><b>Priority: </b>Not Prioritized
+ <b>Submitter:</b> Eric Niebler <b>Opened:</b> 2025-02-04 <b>Last modified:</b> 2025-02-07</p>
+<p><b>Priority: </b>1
 </p>
 <p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
 <p><b>Discussion:</b></p>
@@ -66355,6 +66518,13 @@ template&lt;class Sndr, class Rcvr&gt;
         connect(std::forward&lt;Sndr&gt;(sndr), std::forward&lt;Rcvr&gt;(rcvr));
       };
 </code></pre>
+</p>
+
+
+<p><i>[2025-02-07; Reflector poll]</i></p>
+
+<p>
+Set priority to 1 after reflector poll.
 </p>
 
 
