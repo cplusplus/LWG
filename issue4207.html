@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Issue 4207: Point of reference for source_location is not specified when used in an default template argument</title>
+<meta property="og:title" content="Issue 4207: Point of reference for source_location is not specified when used in an default template argument">
+<meta property="og:description" content="C++ library issue. Status: New">
+<meta property="og:url" content="https://cplusplus.github.io/LWG/issue4207.html">
+<meta property="og:type" content="website">
+<meta property="og:image" content="http://cplusplus.github.io/LWG/images/cpp_logo.png">
+<meta property="og:image:alt" content="C++ logo">
+<style>
+  p {text-align:justify}
+  li {text-align:justify}
+  pre code.backtick::before { content: "`" }
+  pre code.backtick::after { content: "`" }
+  blockquote.note
+  {
+    background-color:#E0E0E0;
+    padding-left: 15px;
+    padding-right: 15px;
+    padding-top: 1px;
+    padding-bottom: 1px;
+  }
+  ins {background-color:#A0FFA0}
+  del {background-color:#FFA0A0}
+  table.issues-index { border: 1px solid; border-collapse: collapse; }
+  table.issues-index th { text-align: center; padding: 4px; border: 1px solid; }
+  table.issues-index td { padding: 4px; border: 1px solid; }
+  table.issues-index td:nth-child(1) { text-align: right; }
+  table.issues-index td:nth-child(2) { text-align: left; }
+  table.issues-index td:nth-child(3) { text-align: left; }
+  table.issues-index td:nth-child(4) { text-align: left; }
+  table.issues-index td:nth-child(5) { text-align: center; }
+  table.issues-index td:nth-child(6) { text-align: center; }
+  table.issues-index td:nth-child(7) { text-align: left; }
+  table.issues-index td:nth-child(5) span.no-pr { color: red; }
+  @media (prefers-color-scheme: dark) {
+     html {
+        color: #ddd;
+        background-color: black;
+     }
+     ins {
+        background-color: #225522
+     }
+     del {
+        background-color: #662222
+     }
+     a {
+        color: #6af
+     }
+     a:visited {
+        color: #6af
+     }
+     blockquote.note
+     {
+        background-color: rgba(255, 255, 255, .10)
+     }
+  }
+</style>
+</head>
+<body>
+<hr>
+<p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#New">New</a> status.</em></p>
+<h3 id="4207"><a href="lwg-active.html#4207">4207</a>. Point of reference for <code class='backtick'>source_location</code> is not specified when used in an default template argument</h3>
+<p><b>Section:</b> 17.8.2.2 <a href="https://wg21.link/support.srcloc.cons">[support.srcloc.cons]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
+ <b>Submitter:</b> Cassio Neri <b>Opened:</b> 2025-02-07 <b>Last modified:</b> 2025-02-07</p>
+<p><b>Priority: </b>Not Prioritized
+</p>
+<p><b>View all other</b> <a href="lwg-index.html#support.srcloc.cons">issues</a> in [support.srcloc.cons].</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
+<p><b>Discussion:</b></p>
+<p>
+17.8.2.2 <a href="https://wg21.link/support.srcloc.cons">[support.srcloc.cons]</a>/2 in <a href="https://wg21.link/N5001">N5001</a> says nothing
+about using <code class='backtick'>source_location::current()</code> in an initializer of a template
+parameter. The example below suggests that gcc, clang and msvc seem to agree
+on this case. It would be nice if the Standard legitimized current practice.
+</p>
+<pre><code>
+#include &lt;source_location&gt;
+
+template &lt;int i = std::source_location::current().line()&gt; // line 3
+struct A {
+  static constexpr int value = i;
+};
+
+template &lt;int i = std::source_location::current().line()&gt; // line 8
+constexpr int f() {
+  return i;
+}
+
+static_assert(A&lt;&gt;::value == 3); // passes
+static_assert(f() == 8); // passes
+</code></pre>
+
+<p><i>[2025-02-07; Jonathan provides wording]</i></p>
+
+<p>
+For a default argument of a function parameter, <code class='backtick'>current()</code> is recommended
+to return the location of the caller that makes use of that default argument.
+For a default template argument, the location would be determined by the
+template's point of instantiation (13.8.4.1 <a href="https://wg21.link/temp.point">[temp.point]</a>) which would
+not always do what users expect. Using the location of the default template
+argument in the template declaration seems sensible and predictable,
+and matches existing practice. Arguably, this doesn't need to be stated
+because it's just "exactly where the <code class='backtick'>current()</code> call appear in the source".
+The other cases in the Remarks paragraph are situations where the preferred
+location is different, because we want to know where it's used, not defined.
+</p>
+
+
+<p id="res-4207"><b>Proposed resolution:</b></p>
+<p>
+This wording is relative to <a href="https://wg21.link/N5001">N5001</a>.
+</p>
+
+<ol>
+<li>
+Modify 17.8.2.2 <a href="https://wg21.link/support.srcloc.cons">[support.srcloc.cons]</a> as indicated:
+<blockquote>
+-2- <i>Remarks</i>:
+Any call to <code class='backtick'>current</code> that appears as a default member initializer
+(11.4 <a href="https://wg21.link/class.mem">[class.mem]</a>), or as a subexpression thereof,
+should correspond to the location of the constructor definition
+or aggregate initialization that uses the default member initializer.
+Any call to <code class='backtick'>current</code> that appears as a default argument
+(9.3.4.7 <a href="https://wg21.link/dcl.fct.default">[dcl.fct.default]</a>), or as a subexpression thereof,
+should correspond to the location of the invocation of the function that
+uses the default argument (7.6.1.3 <a href="https://wg21.link/expr.call">[expr.call]</a>).
+Any call to <code class='backtick'>current</code> that appears as a default template argument
+(13.2 <a href="https://wg21.link/temp.param">[temp.param]</a>), or as a subexpression thereof,
+should correspond to the location where the default template argument
+is specified.
+</blockquote>
+</li>
+</ol>
+
+
+
+
+
+</body>
+</html>

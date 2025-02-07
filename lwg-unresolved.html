@@ -54,7 +54,7 @@
 </style>
 </head>
 <body>
-<p>Revised 2025-02-06 at 17:05:02 UTC
+<p>Revised 2025-02-07 at 12:52:27 UTC
 </p><h2>Unresolved Issues</h2>
 <hr>
 <h3 id="423"><a href="#423">423</a><sup><a href="https://cplusplus.github.io/LWG/issue423">(i)</a></sup>. Effects of negative <code>streamsize</code> in iostreams</h3>
@@ -66886,6 +66886,84 @@ Modify 99 [exec.syn] as indicated:
 </li>
 </ol>
 
+
+
+
+
+
+<hr>
+<h3 id="4207"><a href="#4207">4207</a><sup><a href="https://cplusplus.github.io/LWG/issue4207">(i)</a></sup>. Point of reference for <code class='backtick'>source_location</code> is not specified when used in an default template argument</h3>
+<p><b>Section:</b> 17.8.2.2 <a href="https://wg21.link/support.srcloc.cons">[support.srcloc.cons]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
+ <b>Submitter:</b> Cassio Neri <b>Opened:</b> 2025-02-07 <b>Last modified:</b> 2025-02-07</p>
+<p><b>Priority: </b>Not Prioritized
+</p>
+<p><b>View all other</b> <a href="lwg-index.html#support.srcloc.cons">issues</a> in [support.srcloc.cons].</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
+<p><b>Discussion:</b></p>
+<p>
+17.8.2.2 <a href="https://wg21.link/support.srcloc.cons">[support.srcloc.cons]</a>/2 in <a href="https://wg21.link/N5001">N5001</a> says nothing
+about using <code class='backtick'>source_location::current()</code> in an initializer of a template
+parameter. The example below suggests that gcc, clang and msvc seem to agree
+on this case. It would be nice if the Standard legitimized current practice.
+</p>
+<pre><code>
+#include &lt;source_location&gt;
+
+template &lt;int i = std::source_location::current().line()&gt; // line 3
+struct A {
+  static constexpr int value = i;
+};
+
+template &lt;int i = std::source_location::current().line()&gt; // line 8
+constexpr int f() {
+  return i;
+}
+
+static_assert(A&lt;&gt;::value == 3); // passes
+static_assert(f() == 8); // passes
+</code></pre>
+
+<p><i>[2025-02-07; Jonathan provides wording]</i></p>
+
+<p>
+For a default argument of a function parameter, <code class='backtick'>current()</code> is recommended
+to return the location of the caller that makes use of that default argument.
+For a default template argument, the location would be determined by the
+template's point of instantiation (13.8.4.1 <a href="https://wg21.link/temp.point">[temp.point]</a>) which would
+not always do what users expect. Using the location of the default template
+argument in the template declaration seems sensible and predictable,
+and matches existing practice. Arguably, this doesn't need to be stated
+because it's just "exactly where the <code class='backtick'>current()</code> call appear in the source".
+The other cases in the Remarks paragraph are situations where the preferred
+location is different, because we want to know where it's used, not defined.
+</p>
+
+
+<p id="res-4207"><b>Proposed resolution:</b></p>
+<p>
+This wording is relative to <a href="https://wg21.link/N5001">N5001</a>.
+</p>
+
+<ol>
+<li>
+Modify 17.8.2.2 <a href="https://wg21.link/support.srcloc.cons">[support.srcloc.cons]</a> as indicated:
+<blockquote>
+-2- <i>Remarks</i>:
+Any call to <code class='backtick'>current</code> that appears as a default member initializer
+(11.4 <a href="https://wg21.link/class.mem">[class.mem]</a>), or as a subexpression thereof,
+should correspond to the location of the constructor definition
+or aggregate initialization that uses the default member initializer.
+Any call to <code class='backtick'>current</code> that appears as a default argument
+(9.3.4.7 <a href="https://wg21.link/dcl.fct.default">[dcl.fct.default]</a>), or as a subexpression thereof,
+should correspond to the location of the invocation of the function that
+uses the default argument (7.6.1.3 <a href="https://wg21.link/expr.call">[expr.call]</a>).
+Any call to <code class='backtick'>current</code> that appears as a default template argument
+(13.2 <a href="https://wg21.link/temp.param">[temp.param]</a>), or as a subexpression thereof,
+should correspond to the location where the default template argument
+is specified.
+</blockquote>
+</li>
+</ol>
 
 
 
