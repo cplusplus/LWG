@@ -64,8 +64,8 @@
 <p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#New">New</a> status.</em></p>
 <h3 id="4192"><a href="lwg-active.html#4192">4192</a>. &sect;[ios.base.cons] <code class='backtick'>ios_base</code> members may not have indeterminate values after construction</h3>
 <p><b>Section:</b> 31.5.2.8 <a href="https://wg21.link/ios.base.cons">[ios.base.cons]</a>, 31.5.2.4 <a href="https://wg21.link/ios.base.locales">[ios.base.locales]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> S. B. Tam <b>Opened:</b> 2025-01-12 <b>Last modified:</b> 2025-01-18</p>
-<p><b>Priority: </b>Not Prioritized
+ <b>Submitter:</b> S. B. Tam <b>Opened:</b> 2025-01-12 <b>Last modified:</b> 2025-02-07</p>
+<p><b>Priority: </b>3
 </p>
 <p><b>View all other</b> <a href="lwg-index.html#ios.base.cons">issues</a> in [ios.base.cons].</p>
 <p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
@@ -99,6 +99,17 @@ If no locale has been imbued, a copy of the global C++ locale, <code class='back
 However, according to 31.5.2.8 <a href="https://wg21.link/ios.base.cons">[ios.base.cons]</a>, the corresponding member is not initialized 
 until <code class='backtick'>basic_ios::init</code> is called.
 </p>
+
+<p><i>[2025-02-07; Reflector poll]</i></p>
+
+<p>
+Set priority to 3 after reflector poll.
+</p>
+<p>
+"First part is NAD, can use e.g. placement new to force indeterminate values,
+and it's not observable by well-defined progams anyway."
+</p>
+
 
 
 <p id="res-4192"><b>Proposed resolution:</b></p>

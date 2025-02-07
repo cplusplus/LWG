@@ -54,7 +54,7 @@
 </style>
 </head>
 <body>
-<p>Revised 2025-02-07 at 22:26:12 UTC
+<p>Revised 2025-02-07 at 22:40:38 UTC
 </p><h2>Unresolved Issues</h2>
 <hr>
 <h3 id="423"><a href="#423">423</a><sup><a href="https://cplusplus.github.io/LWG/issue423">(i)</a></sup>. Effects of negative <code>streamsize</code> in iostreams</h3>
@@ -64704,8 +64704,8 @@ but not <code class='backtick'>(void*)0</code>.</small>
 <hr>
 <h3 id="4183"><a href="#4183">4183</a><sup><a href="https://cplusplus.github.io/LWG/issue4183">(i)</a></sup>. <code class='backtick'>subrange</code> should provide <code class='backtick'>data()</code></h3>
 <p><b>Section:</b> 25.5.4.1 <a href="https://wg21.link/range.subrange.general">[range.subrange.general]</a>, 25.5.4.1 <a href="https://wg21.link/range.subrange.general">[range.subrange.general]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Hewill Kang <b>Opened:</b> 2024-12-16 <b>Last modified:</b> 2024-12-21</p>
-<p><b>Priority: </b>Not Prioritized
+ <b>Submitter:</b> Hewill Kang <b>Opened:</b> 2024-12-16 <b>Last modified:</b> 2025-02-07</p>
+<p><b>Priority: </b>4
 </p>
 <p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
 <p><b>Discussion:</b></p>
@@ -64726,6 +64726,21 @@ is more efficient.
 However, <code class='backtick'>subrange</code> does not have a <code class='backtick'>data()</code> member, which seems worth considering 
 because this function can always be <code class='backtick'>noexcept</code> given that <code class='backtick'>to_address</code> is always <code class='backtick'>noexcept</code>.
 </p>
+
+<p><i>[2025-02-07; Reflector poll]</i></p>
+
+<p>
+Set priority to 4 after reflector poll.
+</p>
+<p>
+Lots or NAD votes. "If we care about <code class='backtick'>data</code> being noexcept, we should add
+conditional noexcept to <code class='backtick'>view_interface</code> overloads. Seems like design."
+</p>
+<p>
+"I don't care about noexcept (impls can strengthen it if it matters),
+but it's a good idea to avoid the extra iterator copy."
+</p>
+
 
 
 <p id="res-4183"><b>Proposed resolution:</b></p>
@@ -64777,7 +64792,7 @@ constexpr <i>make-unsigned-like-t</i>&lt;iter_difference_t&lt;I&gt;&gt; size() c
 </pre>
 <blockquote>
 <p>
-<ins>-?- <i>Effects</i>: Equivalent to: <code>to_address(<i>begin_</i>);</code></ins>
+<ins>-?- <i>Effects</i>: Equivalent to: <code>return to_address(<i>begin_</i>);</code></ins>
 </p>
 </blockquote>
 </blockquote>
@@ -64793,8 +64808,8 @@ constexpr <i>make-unsigned-like-t</i>&lt;iter_difference_t&lt;I&gt;&gt; size() c
 <hr>
 <h3 id="4185"><a href="#4185">4185</a><sup><a href="https://cplusplus.github.io/LWG/issue4185">(i)</a></sup>. Ill-formed, no diagnostic required on runtime behavior</h3>
 <p><b>Section:</b> 29.9.7 <a href="https://wg21.link/linalg.helpers">[linalg.helpers]</a>, 18.4.9 <a href="https://wg21.link/concept.swappable">[concept.swappable]</a>, 24.3.3.2 <a href="https://wg21.link/iterator.cust.swap">[iterator.cust.swap]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Jiang An <b>Opened:</b> 2024-12-18 <b>Last modified:</b> 2024-12-21</p>
-<p><b>Priority: </b>Not Prioritized
+ <b>Submitter:</b> Jiang An <b>Opened:</b> 2024-12-18 <b>Last modified:</b> 2025-02-07</p>
+<p><b>Priority: </b>3
 </p>
 <p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
 <p><b>Discussion:</b></p>
@@ -64807,6 +64822,13 @@ the selected function returns can be completely dependent on the runtime environ
 Likewise, 18.4.9 <a href="https://wg21.link/concept.swappable">[concept.swappable]</a> and 24.3.3.2 <a href="https://wg21.link/iterator.cust.swap">[iterator.cust.swap]</a> also contain such weird 
 usage. Presumably we should say the behavior is undefined in these cases.
 </p>
+
+<p><i>[2025-02-07; Reflector poll]</i></p>
+
+<p>
+Set priority to 3 after reflector poll.
+</p>
+
 
 
 <p id="res-4185"><b>Proposed resolution:</b></p>
@@ -65032,121 +65054,6 @@ sets <code class='backtick'>badbit</code> in <code class='backtick'>os.rdstate()
 
 
 <hr>
-<h3 id="4189"><a href="#4189">4189</a><sup><a href="https://cplusplus.github.io/LWG/issue4189">(i)</a></sup>. <code class='backtick'>cache_latest_view</code> should be freestanding</h3>
-<p><b>Section:</b> 17.3.2 <a href="https://wg21.link/version.syn">[version.syn]</a>, 25.2 <a href="https://wg21.link/ranges.syn">[ranges.syn]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Hewill Kang <b>Opened:</b> 2024-12-23 <b>Last modified:</b> 2025-01-25</p>
-<p><b>Priority: </b>Not Prioritized
-</p>
-<p><b>View other</b> <a href="lwg-index-open.html#version.syn">active issues</a> in [version.syn].</p>
-<p><b>View all other</b> <a href="lwg-index.html#version.syn">issues</a> in [version.syn].</p>
-<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
-<p><b>Discussion:</b></p>
-<p>
-<code class='backtick'>cache_latest_view</code> can be freestanding, but this never comes up in the discussion, which seems to be an oversight.
-</p>
-
-<p><strong>Previous resolution [SUPERSEDED]:</strong></p>
-<blockquote class="note">
-
-<p>
-This wording is relative to <a href="https://wg21.link/N5001">N5001</a>.
-</p>
-
-<ol>
-<li><p>Modify 17.3.2 <a href="https://wg21.link/version.syn">[version.syn]</a> as indicated:</p>
-
-<blockquote><pre>
-#define __cpp_lib_ranges_cache_latest 202411L // <ins><i>freestanding</i>,</ins> <i>also in</i> &lt;ranges&gt;
-</pre></blockquote>
-
-</li>
-
-<li><p>Modify 25.2 <a href="https://wg21.link/ranges.syn">[ranges.syn]</a> as indicated:</p>
-
-<blockquote><pre>
-#include &lt;compare&gt;              // <i>see 17.11.1 <a href="https://wg21.link/compare.syn">[compare.syn]</a></i>
-#include &lt;initializer_list&gt;     // <i>see 17.10.2 <a href="https://wg21.link/initializer.list.syn">[initializer.list.syn]</a></i>
-#include &lt;iterator&gt;             // <i>see 24.2 <a href="https://wg21.link/iterator.synopsis">[iterator.synopsis]</a></i>
-
-namespace std::ranges {
-  [&hellip;]
-  // <i>25.7.34 <a href="https://wg21.link/range.cache.latest">[range.cache.latest]</a>, cache latest view</i>
-  template&lt;input_range V&gt;
-    requires view&lt;V&gt;
-  class cache_latest_view;                                                                <ins>// <i>freestanding</i></ins>
-  
-  namespace views { inline constexpr <i>unspecified</i> cache_latest = <i>unspecified</i>; }            <ins>// <i>freestanding</i></ins>
-  [&hellip;]
-}
-</pre></blockquote>
-</li>
-</ol>
-</blockquote>
-
-<p><i>[2025-01-04; Tim Song suggests alternative wording]</i></p>
-
-<p>
-While we are here, we can use the new convention from <a href="https://wg21.link/P2407" title=" Freestanding Library: Partial Classes">P2407</a> to dramatically simplify 
-<code>&lt;ranges&gt;</code>. Most future additions to this header should have no problem being freestanding, 
-so that is the right default.
-</p>
-
-
-<p id="res-4189"><b>Proposed resolution:</b></p>
-<p>
-This wording is relative to <a href="https://wg21.link/N5001">N5001</a>.
-</p>
-
-<ol>
-<li><p>Modify 17.3.2 <a href="https://wg21.link/version.syn">[version.syn]</a> as indicated:</p>
-
-<blockquote><pre>
-#define __cpp_lib_ranges_cache_latest 202411L // <ins><i>freestanding</i>,</ins> <i>also in</i> &lt;ranges&gt;
-</pre></blockquote>
-
-</li>
-
-<li><p>Delete all "// <i>freestanding</i>" comments in 25.2 <a href="https://wg21.link/ranges.syn">[ranges.syn]</a>, header <code>&lt;ranges&gt;</code> 
-synopsis, and then modify as indicated:</p>
-
-<blockquote><pre>
-<ins>// <i>mostly freestanding</i></ins>
-#include &lt;compare&gt;              // <i>see 17.11.1 <a href="https://wg21.link/compare.syn">[compare.syn]</a></i>
-#include &lt;initializer_list&gt;     // <i>see 17.10.2 <a href="https://wg21.link/initializer.list.syn">[initializer.list.syn]</a></i>
-#include &lt;iterator&gt;             // <i>see 24.2 <a href="https://wg21.link/iterator.synopsis">[iterator.synopsis]</a></i>
-
-[&hellip;]
-namespace std::ranges {
-  // <i>25.5.6 <a href="https://wg21.link/range.elementsof">[range.elementsof]</a>, class template elements_of</i>
-  template&lt;range R, class Allocator = allocator&lt;byte&gt;&gt;
-    struct elements_of;  <ins>// <i>hosted</i></ins>
-  [&hellip;]
-
-  // <i>25.6.6 <a href="https://wg21.link/range.istream">[range.istream]</a>, istream view</i>
-  template&lt;movable Val, class CharT, class Traits = char_traits&lt;CharT&gt;&gt;
-    requires <i>see below</i>
-  class basic_istream_view;  <ins>// <i>hosted</i></ins>
-  template&lt;class Val&gt;
-    using istream_view = basic_istream_view&lt;Val, char&gt;;   <ins>// <i>hosted</i></ins>
-  template&lt;class Val&gt;
-    using wistream_view = basic_istream_view&lt;Val, wchar_t&gt;;   <ins>// <i>hosted</i></ins>
-
-  namespace views {
-    template&lt;class T&gt; constexpr <i>unspecified</i> istream = <i>unspecified</i>; <ins>// <i>hosted</i></ins>
-  }
-  [&hellip;]
-}
-[&hellip;]
-</pre></blockquote>
-</li>
-</ol>
-
-
-
-
-
-
-<hr>
 <h3 id="4190"><a href="#4190">4190</a><sup><a href="https://cplusplus.github.io/LWG/issue4190">(i)</a></sup>. Specification of <i>completion-signatures-for</i> in [exec.snd.expos]/p39 is recursive</h3>
 <p><b>Section:</b> 33.9.2 <a href="https://wg21.link/exec.snd.expos">[exec.snd.expos]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
  <b>Submitter:</b> Eric Niebler <b>Opened:</b> 2025-01-02 <b>Last modified:</b> 2025-02-07</p>
@@ -65229,8 +65136,8 @@ users why.
 <hr>
 <h3 id="4192"><a href="#4192">4192</a><sup><a href="https://cplusplus.github.io/LWG/issue4192">(i)</a></sup>. &sect;[ios.base.cons] <code class='backtick'>ios_base</code> members may not have indeterminate values after construction</h3>
 <p><b>Section:</b> 31.5.2.8 <a href="https://wg21.link/ios.base.cons">[ios.base.cons]</a>, 31.5.2.4 <a href="https://wg21.link/ios.base.locales">[ios.base.locales]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> S. B. Tam <b>Opened:</b> 2025-01-12 <b>Last modified:</b> 2025-01-18</p>
-<p><b>Priority: </b>Not Prioritized
+ <b>Submitter:</b> S. B. Tam <b>Opened:</b> 2025-01-12 <b>Last modified:</b> 2025-02-07</p>
+<p><b>Priority: </b>3
 </p>
 <p><b>View all other</b> <a href="lwg-index.html#ios.base.cons">issues</a> in [ios.base.cons].</p>
 <p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
@@ -65264,6 +65171,17 @@ If no locale has been imbued, a copy of the global C++ locale, <code class='back
 However, according to 31.5.2.8 <a href="https://wg21.link/ios.base.cons">[ios.base.cons]</a>, the corresponding member is not initialized 
 until <code class='backtick'>basic_ios::init</code> is called.
 </p>
+
+<p><i>[2025-02-07; Reflector poll]</i></p>
+
+<p>
+Set priority to 3 after reflector poll.
+</p>
+<p>
+"First part is NAD, can use e.g. placement new to force indeterminate values,
+and it's not observable by well-defined progams anyway."
+</p>
+
 
 
 <p id="res-4192"><b>Proposed resolution:</b></p>
@@ -65371,8 +65289,8 @@ could race with the call to <code class='backtick'>reload_tzdb()</code> that wri
 <hr>
 <h3 id="4195"><a href="#4195">4195</a><sup><a href="https://cplusplus.github.io/LWG/issue4195">(i)</a></sup>. <code>expected&lt;int, int&gt;</code> isn't specified to be trivially assignable</h3>
 <p><b>Section:</b> 22.8.6.4 <a href="https://wg21.link/expected.object.assign">[expected.object.assign]</a>, 22.8.7.4 <a href="https://wg21.link/expected.void.assign">[expected.void.assign]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Barry Revzin <b>Opened:</b> 2025-01-21 <b>Last modified:</b> 2025-01-25</p>
-<p><b>Priority: </b>Not Prioritized
+ <b>Submitter:</b> Barry Revzin <b>Opened:</b> 2025-01-21 <b>Last modified:</b> 2025-02-07</p>
+<p><b>Priority: </b>2
 </p>
 <p><b>View other</b> <a href="lwg-index-open.html#expected.object.assign">active issues</a> in [expected.object.assign].</p>
 <p><b>View all other</b> <a href="lwg-index.html#expected.object.assign">issues</a> in [expected.object.assign].</p>
@@ -65389,6 +65307,19 @@ I'm not sure there is any reason the assignment operators should not be trivial 
 of remarks in both cases: that the copy assignment operator is trivial if <code>T</code> and <code>E</code> are trivially 
 copy assignable and the move assignment operator is trivial if <code>T</code> and <code>E</code> are trivially move assignable.
 </p>
+
+<p><i>[2025-02-07; Reflector poll]</i></p>
+
+<p>
+Set priority to 2 after reflector poll.
+</p>
+<p>
+"Needs to consider trivial constructors as well as assignment."
+</p>
+<p>
+"This is an ABI break for something that shipped in C++23, NAD."
+</p>
+
 
 
 <p id="res-4195"><b>Proposed resolution:</b></p>

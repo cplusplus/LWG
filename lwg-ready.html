@@ -62,7 +62,7 @@
 </tr>
 <tr>
 <td align="left">Date:</td>
-<td align="left">Revised 2025-02-07 at 22:26:12 UTC
+<td align="left">Revised 2025-02-07 at 22:40:38 UTC
 </td>
 </tr>
 <tr>
@@ -881,6 +881,128 @@ string.
 </li>
 
 </ol>
+
+
+
+
+
+<hr>
+<h3 id="4189"><a href="#4189">4189</a><sup><a href="https://cplusplus.github.io/LWG/issue4189">(i)</a></sup>. <code class='backtick'>cache_latest_view</code> should be freestanding</h3>
+<p><b>Section:</b> 17.3.2 <a href="https://wg21.link/version.syn">[version.syn]</a>, 25.2 <a href="https://wg21.link/ranges.syn">[ranges.syn]</a> <b>Status:</b> <a href="lwg-active.html#Ready">Tentatively Ready</a>
+ <b>Submitter:</b> Hewill Kang <b>Opened:</b> 2024-12-23 <b>Last modified:</b> 2025-02-07</p>
+<p><b>Priority: </b>Not Prioritized
+</p>
+<p><b>View other</b> <a href="lwg-index-open.html#version.syn">active issues</a> in [version.syn].</p>
+<p><b>View all other</b> <a href="lwg-index.html#version.syn">issues</a> in [version.syn].</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#Tentatively Ready">Tentatively Ready</a> status.</p>
+<p><b>Discussion:</b></p>
+<p>
+<code class='backtick'>cache_latest_view</code> can be freestanding, but this never comes up in the discussion, which seems to be an oversight.
+</p>
+
+<p><strong>Previous resolution [SUPERSEDED]:</strong></p>
+<blockquote class="note">
+
+<p>
+This wording is relative to <a href="https://wg21.link/N5001">N5001</a>.
+</p>
+
+<ol>
+<li><p>Modify 17.3.2 <a href="https://wg21.link/version.syn">[version.syn]</a> as indicated:</p>
+
+<blockquote><pre>
+#define __cpp_lib_ranges_cache_latest 202411L // <ins><i>freestanding</i>,</ins> <i>also in</i> &lt;ranges&gt;
+</pre></blockquote>
+
+</li>
+
+<li><p>Modify 25.2 <a href="https://wg21.link/ranges.syn">[ranges.syn]</a> as indicated:</p>
+
+<blockquote><pre>
+#include &lt;compare&gt;              // <i>see 17.11.1 <a href="https://wg21.link/compare.syn">[compare.syn]</a></i>
+#include &lt;initializer_list&gt;     // <i>see 17.10.2 <a href="https://wg21.link/initializer.list.syn">[initializer.list.syn]</a></i>
+#include &lt;iterator&gt;             // <i>see 24.2 <a href="https://wg21.link/iterator.synopsis">[iterator.synopsis]</a></i>
+
+namespace std::ranges {
+  [&hellip;]
+  // <i>25.7.34 <a href="https://wg21.link/range.cache.latest">[range.cache.latest]</a>, cache latest view</i>
+  template&lt;input_range V&gt;
+    requires view&lt;V&gt;
+  class cache_latest_view;                                                                <ins>// <i>freestanding</i></ins>
+  
+  namespace views { inline constexpr <i>unspecified</i> cache_latest = <i>unspecified</i>; }            <ins>// <i>freestanding</i></ins>
+  [&hellip;]
+}
+</pre></blockquote>
+</li>
+</ol>
+</blockquote>
+
+<p><i>[2025-01-04; Tim Song suggests alternative wording]</i></p>
+
+<p>
+While we are here, we can use the new convention from <a href="https://wg21.link/P2407" title=" Freestanding Library: Partial Classes">P2407</a> to dramatically simplify 
+<code>&lt;ranges&gt;</code>. Most future additions to this header should have no problem being freestanding, 
+so that is the right default.
+</p>
+
+<p><i>[2025-02-07; Reflector poll]</i></p>
+
+<p>
+Set status to Tentatively Ready after nine votes in favour during reflector poll.
+</p>
+
+
+
+<p id="res-4189"><b>Proposed resolution:</b></p>
+<p>
+This wording is relative to <a href="https://wg21.link/N5001">N5001</a>.
+</p>
+
+<ol>
+<li><p>Modify 17.3.2 <a href="https://wg21.link/version.syn">[version.syn]</a> as indicated:</p>
+
+<blockquote><pre>
+#define __cpp_lib_ranges_cache_latest 202411L // <ins><i>freestanding</i>,</ins> <i>also in</i> &lt;ranges&gt;
+</pre></blockquote>
+
+</li>
+
+<li><p>Delete all "// <i>freestanding</i>" comments in 25.2 <a href="https://wg21.link/ranges.syn">[ranges.syn]</a>, header <code>&lt;ranges&gt;</code> 
+synopsis, and then modify as indicated:</p>
+
+<blockquote><pre>
+<ins>// <i>mostly freestanding</i></ins>
+#include &lt;compare&gt;              // <i>see 17.11.1 <a href="https://wg21.link/compare.syn">[compare.syn]</a></i>
+#include &lt;initializer_list&gt;     // <i>see 17.10.2 <a href="https://wg21.link/initializer.list.syn">[initializer.list.syn]</a></i>
+#include &lt;iterator&gt;             // <i>see 24.2 <a href="https://wg21.link/iterator.synopsis">[iterator.synopsis]</a></i>
+
+[&hellip;]
+namespace std::ranges {
+  // <i>25.5.6 <a href="https://wg21.link/range.elementsof">[range.elementsof]</a>, class template elements_of</i>
+  template&lt;range R, class Allocator = allocator&lt;byte&gt;&gt;
+    struct elements_of;  <ins>// <i>hosted</i></ins>
+  [&hellip;]
+
+  // <i>25.6.6 <a href="https://wg21.link/range.istream">[range.istream]</a>, istream view</i>
+  template&lt;movable Val, class CharT, class Traits = char_traits&lt;CharT&gt;&gt;
+    requires <i>see below</i>
+  class basic_istream_view;  <ins>// <i>hosted</i></ins>
+  template&lt;class Val&gt;
+    using istream_view = basic_istream_view&lt;Val, char&gt;;   <ins>// <i>hosted</i></ins>
+  template&lt;class Val&gt;
+    using wistream_view = basic_istream_view&lt;Val, wchar_t&gt;;   <ins>// <i>hosted</i></ins>
+
+  namespace views {
+    template&lt;class T&gt; constexpr <i>unspecified</i> istream = <i>unspecified</i>; <ins>// <i>hosted</i></ins>
+  }
+  [&hellip;]
+}
+[&hellip;]
+</pre></blockquote>
+</li>
+</ol>
+
 
 
 

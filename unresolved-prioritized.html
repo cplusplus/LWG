@@ -60,7 +60,7 @@
 <p>This document is the Table of Contents for the <a href="lwg-active.html">Library Active Issues List</a>,
 <a href="lwg-defects.html">Library Defect Reports and Accepted Issues</a>, and <a href="lwg-closed.html">Library Closed Issues List</a>,
 sorted by priority.</p>
-<p>Revised 2025-02-07 at 22:26:12 UTC
+<p>Revised 2025-02-07 at 22:40:38 UTC
 </p><h2 id="Priority_1">Priority 1 (9 issues)</h2>
 <table class="issues-index">
 <tr>
@@ -154,7 +154,7 @@ sorted by priority.</p>
 <td></td>
 </tr>
 </table>
-<h2 id="Priority_2">Priority 2 (48 issues)</h2>
+<h2 id="Priority_2">Priority 2 (49 issues)</h2>
 <table class="issues-index">
 <tr>
   <th><a href="lwg-toc.html">Issue</a></th>
@@ -287,6 +287,15 @@ sorted by priority.</p>
 <td><a href="lwg-active.html#New">New</a></td>
 <td>22.8.6.4 [expected.object.assign]</td>
 <td>Assignment operators of <code>std::expected</code> should propagate triviality</td>
+<td>Yes</td>
+<td>2</td>
+<td></td>
+</tr>
+<tr>
+<td id="4195"><a href="lwg-active.html#4195" title="expected&lt;int, int&gt; isn't specified to be trivially assignable (Status: New)">4195</a><sup><a href="https://cplusplus.github.io/LWG/issue4195">(i)</a></sup></td>
+<td><a href="lwg-active.html#New">New</a></td>
+<td>22.8.6.4 [expected.object.assign]</td>
+<td><code>expected&lt;int, int&gt;</code> isn't specified to be trivially assignable</td>
 <td>Yes</td>
 <td>2</td>
 <td></td>
@@ -600,7 +609,7 @@ specified to make <code><i>N</i></code> copies of <code>T</code> into the destin
 <td></td>
 </tr>
 </table>
-<h2 id="Priority_3">Priority 3 (385 issues)</h2>
+<h2 id="Priority_3">Priority 3 (387 issues)</h2>
 <table class="issues-index">
 <tr>
   <th><a href="lwg-toc.html">Issue</a></th>
@@ -3467,6 +3476,15 @@ regards to <code>ClassAtomCollatingElement</code></td>
 <td></td>
 </tr>
 <tr>
+<td id="4185"><a href="lwg-active.html#4185" title="Ill-formed, no diagnostic required on runtime behavior (Status: New)">4185</a><sup><a href="https://cplusplus.github.io/LWG/issue4185">(i)</a></sup></td>
+<td><a href="lwg-active.html#New">New</a></td>
+<td>29.9.7 [linalg.helpers]</td>
+<td>Ill-formed, no diagnostic required on runtime behavior</td>
+<td><span class="no-pr">No</span></td>
+<td>3</td>
+<td></td>
+</tr>
+<tr>
 <td id="3090"><a href="lwg-active.html#3090" title="What is &sect;[time.duration.cons]p4's &quot;no overflow is induced in the conversion&quot; intended to mean? (Status: New)">3090</a><sup><a href="https://cplusplus.github.io/LWG/issue3090">(i)</a></sup></td>
 <td><a href="lwg-active.html#New">New</a></td>
 <td>30.5.2 [time.duration.cons]</td>
@@ -3618,6 +3636,15 @@ required to be correctly formatted?</td>
 <td>31.5.2.7 [ios.base.callback]</td>
 <td><code>register_callback</code> can fail</td>
 <td><span class="no-pr">No</span></td>
+<td>3</td>
+<td></td>
+</tr>
+<tr>
+<td id="4192"><a href="lwg-active.html#4192" title="&sect;[ios.base.cons] ios_base members may not have indeterminate values after construction (Status: New)">4192</a><sup><a href="https://cplusplus.github.io/LWG/issue4192">(i)</a></sup></td>
+<td><a href="lwg-active.html#New">New</a></td>
+<td>31.5.2.8 [ios.base.cons]</td>
+<td>&sect;[ios.base.cons] <code class='backtick'>ios_base</code> members may not have indeterminate values after construction</td>
+<td>Yes</td>
 <td>3</td>
 <td></td>
 </tr>
@@ -4121,7 +4148,7 @@ don't support <code>DynamicBuffer</code> lvalues</td>
 <td></td>
 </tr>
 </table>
-<h2 id="Priority_4">Priority 4 (78 issues)</h2>
+<h2 id="Priority_4">Priority 4 (79 issues)</h2>
 <table class="issues-index">
 <tr>
   <th><a href="lwg-toc.html">Issue</a></th>
@@ -4371,6 +4398,15 @@ don't support <code>DynamicBuffer</code> lvalues</td>
 <td><a href="lwg-active.html#New">New</a></td>
 <td>25.4.5 [range.refinements]</td>
 <td>The definition of <code>viewable_range</code> is not quite right</td>
+<td>Yes</td>
+<td>4</td>
+<td></td>
+</tr>
+<tr>
+<td id="4183"><a href="lwg-active.html#4183" title="subrange should provide data() (Status: New)">4183</a><sup><a href="https://cplusplus.github.io/LWG/issue4183">(i)</a></sup></td>
+<td><a href="lwg-active.html#New">New</a></td>
+<td>25.5.4.1 [range.subrange.general]</td>
+<td><code class='backtick'>subrange</code> should provide <code class='backtick'>data()</code></td>
 <td>Yes</td>
 <td>4</td>
 <td></td>
@@ -4837,7 +4873,7 @@ should require the arguments to have the same length</td>
 <td></td>
 </tr>
 </table>
-<h2 id="Priority_99">Not Prioritized (58 issues)</h2>
+<h2 id="Priority_99">Not Prioritized (53 issues)</h2>
 <table class="issues-index">
 <tr>
   <th><a href="lwg-toc.html">Issue</a></th>
@@ -4871,15 +4907,6 @@ should require the arguments to have the same length</td>
 <td><a href="lwg-active.html#New">New</a></td>
 <td>16.4.6.10 [res.on.data.races]</td>
 <td>Possibly incorrect wording for data race avoidance</td>
-<td>Yes</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td id="4189"><a href="lwg-active.html#4189" title="cache_latest_view should be freestanding (Status: New)">4189</a><sup><a href="https://cplusplus.github.io/LWG/issue4189">(i)</a></sup></td>
-<td><a href="lwg-active.html#New">New</a></td>
-<td>17.3.2 [version.syn]</td>
-<td><code class='backtick'>cache_latest_view</code> should be freestanding</td>
 <td>Yes</td>
 <td></td>
 <td></td>
@@ -5011,15 +5038,6 @@ should require the arguments to have the same length</td>
 <td></td>
 </tr>
 <tr>
-<td id="4195"><a href="lwg-active.html#4195" title="expected&lt;int, int&gt; isn't specified to be trivially assignable (Status: New)">4195</a><sup><a href="https://cplusplus.github.io/LWG/issue4195">(i)</a></sup></td>
-<td><a href="lwg-active.html#New">New</a></td>
-<td>22.8.6.4 [expected.object.assign]</td>
-<td><code>expected&lt;int, int&gt;</code> isn't specified to be trivially assignable</td>
-<td>Yes</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
 <td id="2884"><a href="lwg-active.html#2884" title="Relational operators for containers should sfinae; if the underlying type is not comparable, neither should the container be (Status: LEWG)">2884</a><sup><a href="https://cplusplus.github.io/LWG/issue2884">(i)</a></sup></td>
 <td><a href="lwg-active.html#LEWG">LEWG</a></td>
 <td>23 [containers]</td>
@@ -5090,15 +5108,6 @@ types &mdash; this is inconsistent with other types in the library</td>
 <td>25.3.12 [range.prim.empty]</td>
 <td><code>ranges::empty</code> has no semantic requirements for <code>forward_range</code>s</td>
 <td><span class="no-pr">No</span></td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td id="4183"><a href="lwg-active.html#4183" title="subrange should provide data() (Status: New)">4183</a><sup><a href="https://cplusplus.github.io/LWG/issue4183">(i)</a></sup></td>
-<td><a href="lwg-active.html#New">New</a></td>
-<td>25.5.4.1 [range.subrange.general]</td>
-<td><code class='backtick'>subrange</code> should provide <code class='backtick'>data()</code></td>
-<td>Yes</td>
 <td></td>
 <td></td>
 </tr>
@@ -5217,15 +5226,6 @@ max, and minmax is unclear (Status: New)">4167</a><sup><a href="https://cplusplu
 <td></td>
 </tr>
 <tr>
-<td id="4185"><a href="lwg-active.html#4185" title="Ill-formed, no diagnostic required on runtime behavior (Status: New)">4185</a><sup><a href="https://cplusplus.github.io/LWG/issue4185">(i)</a></sup></td>
-<td><a href="lwg-active.html#New">New</a></td>
-<td>29.9.7 [linalg.helpers]</td>
-<td>Ill-formed, no diagnostic required on runtime behavior</td>
-<td><span class="no-pr">No</span></td>
-<td></td>
-<td></td>
-</tr>
-<tr>
 <td id="4137"><a href="lwg-active.html#4137" title="Fix Mandates, Preconditions, and Complexity elements of [linalg] algorithms (Status: New)">4137</a><sup><a href="https://cplusplus.github.io/LWG/issue4137">(i)</a></sup></td>
 <td><a href="lwg-active.html#New">New</a></td>
 <td>29.9.14 [linalg.algs.blas2]</td>
@@ -5239,15 +5239,6 @@ max, and minmax is unclear (Status: New)">4167</a><sup><a href="https://cplusplu
 <td><a href="lwg-active.html#New">New</a></td>
 <td>30.12 [time.format]</td>
 <td>Ambiguity in the formatting of negative years with format specifier <code>%C</code></td>
-<td>Yes</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td id="4192"><a href="lwg-active.html#4192" title="&sect;[ios.base.cons] ios_base members may not have indeterminate values after construction (Status: New)">4192</a><sup><a href="https://cplusplus.github.io/LWG/issue4192">(i)</a></sup></td>
-<td><a href="lwg-active.html#New">New</a></td>
-<td>31.5.2.8 [ios.base.cons]</td>
-<td>&sect;[ios.base.cons] <code class='backtick'>ios_base</code> members may not have indeterminate values after construction</td>
 <td>Yes</td>
 <td></td>
 <td></td>

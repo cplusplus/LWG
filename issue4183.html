@@ -64,8 +64,8 @@
 <p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#New">New</a> status.</em></p>
 <h3 id="4183"><a href="lwg-active.html#4183">4183</a>. <code class='backtick'>subrange</code> should provide <code class='backtick'>data()</code></h3>
 <p><b>Section:</b> 25.5.4.1 <a href="https://wg21.link/range.subrange.general">[range.subrange.general]</a>, 25.5.4.1 <a href="https://wg21.link/range.subrange.general">[range.subrange.general]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Hewill Kang <b>Opened:</b> 2024-12-16 <b>Last modified:</b> 2024-12-21</p>
-<p><b>Priority: </b>Not Prioritized
+ <b>Submitter:</b> Hewill Kang <b>Opened:</b> 2024-12-16 <b>Last modified:</b> 2025-02-07</p>
+<p><b>Priority: </b>4
 </p>
 <p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
 <p><b>Discussion:</b></p>
@@ -86,6 +86,21 @@ is more efficient.
 However, <code class='backtick'>subrange</code> does not have a <code class='backtick'>data()</code> member, which seems worth considering 
 because this function can always be <code class='backtick'>noexcept</code> given that <code class='backtick'>to_address</code> is always <code class='backtick'>noexcept</code>.
 </p>
+
+<p><i>[2025-02-07; Reflector poll]</i></p>
+
+<p>
+Set priority to 4 after reflector poll.
+</p>
+<p>
+Lots or NAD votes. "If we care about <code class='backtick'>data</code> being noexcept, we should add
+conditional noexcept to <code class='backtick'>view_interface</code> overloads. Seems like design."
+</p>
+<p>
+"I don't care about noexcept (impls can strengthen it if it matters),
+but it's a good idea to avoid the extra iterator copy."
+</p>
+
 
 
 <p id="res-4183"><b>Proposed resolution:</b></p>
@@ -137,7 +152,7 @@ constexpr <i>make-unsigned-like-t</i>&lt;iter_difference_t&lt;I&gt;&gt; size() c
 </pre>
 <blockquote>
 <p>
-<ins>-?- <i>Effects</i>: Equivalent to: <code>to_address(<i>begin_</i>);</code></ins>
+<ins>-?- <i>Effects</i>: Equivalent to: <code>return to_address(<i>begin_</i>);</code></ins>
 </p>
 </blockquote>
 </blockquote>
