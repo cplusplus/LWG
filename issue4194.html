@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <title>Issue 4194: atomic&lt;void*&gt; should use generic class template</title>
 <meta property="og:title" content="Issue 4194: atomic&lt;void*&gt; should use generic class template">
-<meta property="og:description" content="C++ library issue. Status: New">
+<meta property="og:description" content="C++ library issue. Status: Tentatively NAD">
 <meta property="og:url" content="https://cplusplus.github.io/LWG/issue4194.html">
 <meta property="og:type" content="website">
 <meta property="og:image" content="http://cplusplus.github.io/LWG/images/cpp_logo.png">
@@ -61,15 +61,15 @@
 </head>
 <body>
 <hr>
-<p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#New">New</a> status.</em></p>
+<p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#NAD">Tentatively NAD</a> status.</em></p>
 <h3 id="4194"><a href="lwg-active.html#4194">4194</a>. <code>atomic&lt;void*&gt;</code> should use generic class template</h3>
-<p><b>Section:</b> 32.5.8.5 <a href="https://wg21.link/atomics.types.pointer">[atomics.types.pointer]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Gonzalo Brito <b>Opened:</b> 2025-01-16 <b>Last modified:</b> 2025-01-19</p>
+<p><b>Section:</b> 32.5.8.5 <a href="https://wg21.link/atomics.types.pointer">[atomics.types.pointer]</a> <b>Status:</b> <a href="lwg-active.html#NAD">Tentatively NAD</a>
+ <b>Submitter:</b> Gonzalo Brito <b>Opened:</b> 2025-01-16 <b>Last modified:</b> 2025-02-07</p>
 <p><b>Priority: </b>Not Prioritized
 </p>
 <p><b>View other</b> <a href="lwg-index-open.html#atomics.types.pointer">active issues</a> in [atomics.types.pointer].</p>
 <p><b>View all other</b> <a href="lwg-index.html#atomics.types.pointer">issues</a> in [atomics.types.pointer].</p>
-<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#Tentatively NAD">Tentatively NAD</a> status.</p>
 <p><b>Discussion:</b></p>
 <p>
 32.5.8.5 <a href="https://wg21.link/atomics.types.pointer">[atomics.types.pointer]</a> p1 states (emphasis mine):
@@ -101,6 +101,15 @@ and the proposed fix would make them compliant: see libstdc++, libc++ and MSVC S
 <a href="https://godbolt.org/z/dso3P6fKf">here</a>. These standard libraries require a 
 pointer-to-object type, <code>atomic&lt;void*&gt;</code> uses the general template. Therefore, no user 
 code seems to be impacted.
+</p>
+
+<p><i>[2025-02-07; Reflector poll: NAD]</i></p>
+
+<p>
+The <code class='backtick'>fetch_OP</code> members have "<i>Mandates</i>: <code class='backtick'>T</code> is a complete object type."
+and a note explaining that this means arithmetic on <code class='backtick'>void*</code> is ill-formed.
+So implementations are expected to use the partial specialization for <code class='backtick'>void*</code>
+but to reject attempts at arithmetic. They all do this correctly today.
 </p>
 
 

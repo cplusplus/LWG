@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <title>Issue 4172: unique_lock self-move-assignment is broken</title>
 <meta property="og:title" content="Issue 4172: unique_lock self-move-assignment is broken">
-<meta property="og:description" content="C++ library issue. Status: New">
+<meta property="og:description" content="C++ library issue. Status: Tentatively Ready">
 <meta property="og:url" content="https://cplusplus.github.io/LWG/issue4172.html">
 <meta property="og:type" content="website">
 <meta property="og:image" content="http://cplusplus.github.io/LWG/images/cpp_logo.png">
@@ -61,14 +61,14 @@
 </head>
 <body>
 <hr>
-<p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#New">New</a> status.</em></p>
+<p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#Ready">Tentatively Ready</a> status.</em></p>
 <h3 id="4172"><a href="lwg-active.html#4172">4172</a>. unique_lock self-move-assignment is broken</h3>
-<p><b>Section:</b> 32.6.5.4.2 <a href="https://wg21.link/thread.lock.unique.cons">[thread.lock.unique.cons]</a>, 32.6.5.5.2 <a href="https://wg21.link/thread.lock.shared.cons">[thread.lock.shared.cons]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Casey Carter <b>Opened:</b> 2024-11-13 <b>Last modified:</b> 2024-11-18</p>
+<p><b>Section:</b> 32.6.5.4.2 <a href="https://wg21.link/thread.lock.unique.cons">[thread.lock.unique.cons]</a>, 32.6.5.5.2 <a href="https://wg21.link/thread.lock.shared.cons">[thread.lock.shared.cons]</a> <b>Status:</b> <a href="lwg-active.html#Ready">Tentatively Ready</a>
+ <b>Submitter:</b> Casey Carter <b>Opened:</b> 2024-11-13 <b>Last modified:</b> 2025-02-07</p>
 <p><b>Priority: </b>Not Prioritized
 </p>
 <p><b>View all other</b> <a href="lwg-index.html#thread.lock.unique.cons">issues</a> in [thread.lock.unique.cons].</p>
-<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#Tentatively Ready">Tentatively Ready</a> status.</p>
 <p><b>Discussion:</b></p>
 <p>
 The postconditions in 32.6.5.4.2 <a href="https://wg21.link/thread.lock.unique.cons">[thread.lock.unique.cons]</a> paragraph 19:
@@ -95,6 +95,17 @@ Also, the move assignment operator doesn't specify what it returns.
 <p>
 <code class='backtick'>shared_lock</code> has the same problems, and can be fixed in the same way.
 </p>
+
+<p><i>[2025-02-07; Reflector poll]</i></p>
+
+<p>
+Set status to Tentatively Ready after seven votes in favour during reflector poll.
+</p>
+<p>
+"Should use parentheses not braces for the initializations."
+Jonathan volunteers to do that editorially after this gets approved.
+</p>
+
 
 
 <p id="res-4172"><b>Proposed resolution:</b></p>

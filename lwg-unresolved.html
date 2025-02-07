@@ -54,7 +54,7 @@
 </style>
 </head>
 <body>
-<p>Revised 2025-02-07 at 12:52:27 UTC
+<p>Revised 2025-02-07 at 16:59:15 UTC
 </p><h2>Unresolved Issues</h2>
 <hr>
 <h3 id="423"><a href="#423">423</a><sup><a href="https://cplusplus.github.io/LWG/issue423">(i)</a></sup>. Effects of negative <code>streamsize</code> in iostreams</h3>
@@ -63256,8 +63256,8 @@ and its base characteristic is <code>false_type</code>.</ins>
 <hr>
 <h3 id="4160"><a href="#4160">4160</a><sup><a href="https://cplusplus.github.io/LWG/issue4160">(i)</a></sup>. <code>packaged_task</code> should reject rvalue reference return types</h3>
 <p><b>Section:</b> 32.10.10.1 <a href="https://wg21.link/futures.task.general">[futures.task.general]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Casey Carter <b>Opened:</b> 2024-09-28 <b>Last modified:</b> 2024-10-03</p>
-<p><b>Priority: </b>Not Prioritized
+ <b>Submitter:</b> Casey Carter <b>Opened:</b> 2024-09-28 <b>Last modified:</b> 2025-02-07</p>
+<p><b>Priority: </b>3
 </p>
 <p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
 <p><b>Discussion:</b></p>
@@ -63274,8 +63274,18 @@ should be ill-formed when <code class='backtick'>get_future</code> is not instan
 relying on the fact that one of the basis operations is unusable.
 </p>
 
+<p><i>[2025-02-07; Reflector poll]</i></p>
 
-<p id="res-4160"><b>Proposed resolution:</b></p>
+<p>
+Set priority to 3 after reflector poll.
+</p>
+<p>
+"Shouldn't it be ill-formed only if instantiated?"
+</p>
+
+<p><strong>Previous resolution [SUPERSEDED]:</strong></p>
+<blockquote class="note">
+
 <p>
 This wording is relative to <a href="https://wg21.link/N4988" title=" Working Draft, Programming Languages — C++">N4988</a>.
 </p>
@@ -63310,6 +63320,56 @@ namespace std {
 </blockquote>
 <p>
 <ins>-?- The program is ill-formed if <code>R</code> is an rvalue reference type.</ins>
+</p>
+</blockquote>
+</li>
+</ol>
+</blockquote>
+
+<p><i>[2025-02-07; Jonathan provides improved wording]</i></p>
+
+
+
+
+<p id="res-4160"><b>Proposed resolution:</b></p>
+<p>
+This wording is relative to <a href="https://wg21.link/N5001">N5001</a>.
+</p>
+
+<ol>
+<li><p>Modify 32.10.10.1 <a href="https://wg21.link/futures.task.general">[futures.task.general]</a> as indicated:</p>
+
+<blockquote>
+<p>
+[&hellip;]
+<p/>
+-2- When the <code>packaged_task</code> object is invoked, its stored task is invoked and the result 
+(whether normal or exceptional) stored in the shared state. Any futures that share the shared state 
+will then be able to access the stored result.
+</p>
+<blockquote>
+<pre>
+namespace std {
+  template&lt;class&gt; class packaged_task; // <i>not defined</i>
+
+  template&lt;class R, class... ArgTypes&gt;
+  class packaged_task&lt;R(ArgTypes...)&gt; {
+    [&hellip;]
+  };
+
+  template&lt;class R, class... ArgTypes&gt;
+  packaged_task(R (*)(ArgTypes...)) -&gt; packaged_task&lt;R(ArgTypes...)&gt;;
+
+  template&lt;class F&gt; packaged_task(F) -&gt; packaged_task&lt;<i>see below</i>&gt;;
+}
+</pre>
+</blockquote>
+<p>
+<ins>-?-
+If the definition of a specialization
+<code>packaged_task&lt;R(Args...)&gt;</code> is instantiated for
+an rvalue reference type <code class='backtick'>R</code>, the program is ill-formed.
+</ins>
 </p>
 </blockquote>
 </li>
@@ -63423,40 +63483,6 @@ on average.</ins>
 </blockquote>
 </li>
 </ol>
-
-
-
-
-
-<hr>
-<h3 id="4163"><a href="#4163">4163</a><sup><a href="https://cplusplus.github.io/LWG/issue4163">(i)</a></sup>. Can the overload of <code>std::num_get::do_get</code> for <code>bool</code> call the overload for <code>long</code>?</h3>
-<p><b>Section:</b> 28.3.4.3.2.3 <a href="https://wg21.link/facet.num.get.virtuals">[facet.num.get.virtuals]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Jiang An <b>Opened:</b> 2024-09-29 <b>Last modified:</b> 2024-10-03</p>
-<p><b>Priority: </b>Not Prioritized
-</p>
-<p><b>View other</b> <a href="lwg-index-open.html#facet.num.get.virtuals">active issues</a> in [facet.num.get.virtuals].</p>
-<p><b>View all other</b> <a href="lwg-index.html#facet.num.get.virtuals">issues</a> in [facet.num.get.virtuals].</p>
-<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
-<p><b>Discussion:</b></p>
-<p>
-28.3.4.3.2.3 <a href="https://wg21.link/facet.num.get.virtuals">[facet.num.get.virtuals]</a>/6 currently says:
-</p>
-<blockquote style="border-left: 3px solid #ccc;padding-left: 15px;">
-<p>
-<i>Effects</i>: If <code>(str.flags()&amp;ios_base::boolalpha) == 0</code> then input proceeds as it would for a 
-<code>long</code> except that if a value is being stored into <code>val</code>, [&hellip;]
-</p>
-</blockquote>
-<p>
-It is unclear whether an implementation is allowed to call the overload for <code>long</code> in this case. 
-Currently, libc++'s version calls that overload, while libstdc++ and MSVC STL's don't 
-(<a href="https://godbolt.org/z/83M1hKThv">example</a>).
-<p/>
-As the divergence implementation strategies is observable, perhaps we should clarify on this.
-</p>
-
-
-<p id="res-4163"><b>Proposed resolution:</b></p>
 
 
 
@@ -64041,145 +64067,6 @@ Did LWG foresee this impact of <a href="https://wg21.link/P2609R3" title=" Relax
 
 
 <hr>
-<h3 id="4172"><a href="#4172">4172</a><sup><a href="https://cplusplus.github.io/LWG/issue4172">(i)</a></sup>. unique_lock self-move-assignment is broken</h3>
-<p><b>Section:</b> 32.6.5.4.2 <a href="https://wg21.link/thread.lock.unique.cons">[thread.lock.unique.cons]</a>, 32.6.5.5.2 <a href="https://wg21.link/thread.lock.shared.cons">[thread.lock.shared.cons]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Casey Carter <b>Opened:</b> 2024-11-13 <b>Last modified:</b> 2024-11-18</p>
-<p><b>Priority: </b>Not Prioritized
-</p>
-<p><b>View all other</b> <a href="lwg-index.html#thread.lock.unique.cons">issues</a> in [thread.lock.unique.cons].</p>
-<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
-<p><b>Discussion:</b></p>
-<p>
-The postconditions in 32.6.5.4.2 <a href="https://wg21.link/thread.lock.unique.cons">[thread.lock.unique.cons]</a> paragraph 19:
-
-<blockquote>
-<i>Postconditions</i>:
-<code class='backtick'>pm == u_p.pm</code> and <code class='backtick'>owns == u_p.owns</code>
-(where <code class='backtick'>u_p</code> is the state of <code class='backtick'>u</code> just prior to this construction),
-<code class='backtick'>u.pm == 0</code> and <code class='backtick'>u.owns == false</code>.
-</blockquote>
-
-contradict themselves if <code class='backtick'>*this</code> and the parameter <code class='backtick'>u</code> refer to the same object.
-(Presumably "this construction" means the assignment, and it is copy-pasta from
-the move constructor postconditions.) Apparently
-<code class='backtick'>unique_lock</code> didn't get the memo that we require well-defined behavior
-from self-move-assignment as of LWG <a href="lwg-defects.html#2839" title="Self-move-assignment of library types, again (Status: C++23)">2839</a><sup><a href="https://cplusplus.github.io/LWG/issue2839" title="Latest snapshot">(i)</a></sup>.
-</p>
-<p>
-Also, the move assignment operator doesn't specify what it returns.
-</p>
-
-<p><i>[2024-11-18; Casey expands the PR to cover <code class='backtick'>shared_lock</code>]</i></p>
-
-<p>
-<code class='backtick'>shared_lock</code> has the same problems, and can be fixed in the same way.
-</p>
-
-
-<p id="res-4172"><b>Proposed resolution:</b></p>
-<p>
-This wording is relative to <a href="https://wg21.link/N4993" title=" Working Draft, Programming Languages — C++">N4993</a>.
-</p>
-
-<blockquote class="note">
-Drafting Note: I've chosen to use the move-into-temporary-and-swap idiom here
-to keep things short and sweet.
-Since move construction, swap, and destruction are all <code class='backtick'>noexcept</code>,
-I've promoted move assignment from "<i>Throws</i>: Nothing" to <code class='backtick'>noexcept</code> as well.
-This is consistent with eliminating the implicit narrow contract condition
-that <code class='backtick'>*this</code> and <code class='backtick'>u</code> refer to distinct objects.
-</blockquote>
-
-<ol>
-<li>
-<p>
-In the class synopsis in 32.6.5.4.1 <a href="https://wg21.link/thread.lock.unique.general">[thread.lock.unique.general]</a>,
-annotate the move assignment operator as <code class='backtick'>noexcept</code>:
-</p>
-
-<blockquote><pre><code>
-  namespace std {
-    template&lt;class Mutex&gt;
-    class unique_lock {
-      [...]
-      unique_lock&amp; operator=(unique_lock&amp;&amp; u) <ins>noexcept</ins>;
-      [...]
-    };
-  }
-</code></pre></blockquote>
-</li>
-
-<li>
-<p>
-Modify 32.6.5.4.2 <a href="https://wg21.link/thread.lock.unique.cons">[thread.lock.unique.cons]</a> as follows:
-</p>
-
-<blockquote>
-<pre><code>
-unique_lock&amp; operator=(unique_lock&amp;&amp; u) <ins>noexcept</ins>;
-</code></pre>
-<p>
--18- <i>Effects</i>:
-<del>If <code class='backtick'>owns</code> calls <code class='backtick'>pm-&gt;unlock()</code>.</del>
-<ins>Equivalent to: <code class='backtick'>unique_lock{std::move(u)}.swap(*this)</code>.</ins>
-</p>
-<p>
-<ins>-?- <i>Returns</i>: <code class='backtick'>*this</code>.</ins>
-</p>
-<p>
-<del>-19- <i>Postconditions</i>:
-<code class='backtick'>pm == u_p.pm</code> and <code class='backtick'>owns == u_p.owns</code>
-(where <code class='backtick'>u_p</code> is the state of <code class='backtick'>u</code> just prior to this construction),
-<code class='backtick'>u.pm == 0</code> and <code class='backtick'>u.owns == false</code>.
-</del>
-</p>
-<p>
-<del>-20- [<i>Note 1</i>:
-With a recursive mutex it is possible for both <code class='backtick'>*this</code> and u to own
-the same mutex before the assignment.
-In this case, *this will own the mutex after the assignment and u will not.
-&mdash; <i>end note</i>]</del>
-</p>
-<p>
-<del>-21- Throws: Nothing.</del>
-</p>
-</blockquote>
-</li>
-
-<li>
-<p>
-Modify 32.6.5.5.2 <a href="https://wg21.link/thread.lock.shared.cons">[thread.lock.shared.cons]</a> as follows:
-</p>
-
-<blockquote>
-<pre><code>
-shared_lock&amp; operator=(shared_lock&amp;&amp; sl) noexcept;
-</code></pre>
-<p>
--17- <i>Effects</i>:
-<del>If <code class='backtick'>owns</code> calls <code class='backtick'>pm-&gt;unlock_shared()</code>.</del>
-<ins>Equivalent to: <code class='backtick'>shared_lock{std::move(sl)}.swap(*this)</code>.</ins>
-</p>
-<p>
-<ins>-?- <i>Returns</i>: <code class='backtick'>*this</code>.</ins>
-</p>
-<p>
-<del>-18- <i>Postconditions</i>:
-<code class='backtick'>pm == sl_p.pm</code> and <code class='backtick'>owns == sl_p.owns</code>
-(where <code class='backtick'>sl_p</code> is the state of <code class='backtick'>sl</code> just prior to this assignment),
-<code class='backtick'>sl.pm == nullptr</code> and <code class='backtick'>sl.owns == false</code>.
-</del>
-</p>
-</blockquote>
-</li>
-</ol>
-
-
-
-
-
-
-<hr>
 <h3 id="4173"><a href="#4173">4173</a><sup><a href="https://cplusplus.github.io/LWG/issue4173">(i)</a></sup>. Better term for "references, pointers and iterators to elements"</h3>
 <p><b>Section:</b> 23 <a href="https://wg21.link/containers">[containers]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
  <b>Submitter:</b> Jonathan Wakely <b>Opened:</b> 2024-11-21 <b>Last modified:</b> 2024-11-21</p>
@@ -64261,165 +64148,6 @@ the store operation in the single total order <i>S</i>?
 <p id="res-4174"><b>Proposed resolution:</b></p>
 <p>
 </p>
-
-
-
-
-
-<hr>
-<h3 id="4175"><a href="#4175">4175</a><sup><a href="https://cplusplus.github.io/LWG/issue4175">(i)</a></sup>. <code class='backtick'>get_env()</code> specified in terms of <code class='backtick'>as_const()</code> but this doesn't work with rvalue senders</h3>
-<p><b>Section:</b> 33.5.2 <a href="https://wg21.link/exec.get.allocator">[exec.get.allocator]</a>, 33.5.3 <a href="https://wg21.link/exec.get.stop.token">[exec.get.stop.token]</a>, 33.5.4 <a href="https://wg21.link/exec.get.env">[exec.get.env]</a>, 33.5.5 <a href="https://wg21.link/exec.get.domain">[exec.get.domain]</a>, 33.5.6 <a href="https://wg21.link/exec.get.scheduler">[exec.get.scheduler]</a>, 33.5.7 <a href="https://wg21.link/exec.get.delegation.scheduler">[exec.get.delegation.scheduler]</a>, 33.5.8 <a href="https://wg21.link/exec.get.fwd.progress">[exec.get.fwd.progress]</a>, 33.5.9 <a href="https://wg21.link/exec.get.compl.sched">[exec.get.compl.sched]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Lewis Baker <b>Opened:</b> 2024-11-10 <b>Last modified:</b> 2024-11-24</p>
-<p><b>Priority: </b>Not Prioritized
-</p>
-<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
-<p><b>Discussion:</b></p>
-<p>
-The current specification of <code class='backtick'>std::execution::get_env()</code> defines <code class='backtick'>get_env(o)</code> as <code class='backtick'>as_const(o).get_env()</code>. 
-However, the <code class='backtick'>as_const()</code> function has a deleted rvalue-taking overload, meaning that you cannot pass temporaries to it.  
-<p/>
-This means that several uses of <code class='backtick'>get_env()</code> which pass expressions which are either potentially rvalues 
-(e.g. in definition of <code class='backtick'>connect(sndr, rcvr)</code> it uses the expression <code class='backtick'>get_env(rcvr)</code>, but <code class='backtick'>rcvr</code> could be, 
-and usually is, a prvalue) or always rvalues (e.g. <code class='backtick'>scheduler</code> concept has the expression 
-<code>get_env(schedule(std::forward&lt;Sch&gt;(sch)))</code>).  
-<p/>
-The intent here was that <code class='backtick'>get_env()</code> is a function that takes as an argument a <code>const T&amp;</code> and thus 
-allows prvalues to bind to it. We basically just want to require that <code class='backtick'>get_env()</code> finds a const-qualified 
-member-function. The use of <code class='backtick'>as_const()</code> does not seem to mirror the semantics of a function with a 
-<code>const T&amp;</code> parameter, so I suggest we change it to something else that expresses the intent.
-</p>
-
-
-<p id="res-4175"><b>Proposed resolution:</b></p>
-<p>
-This wording is relative to <a href="https://wg21.link/N4993" title=" Working Draft, Programming Languages — C++">N4993</a>.
-</p>
-
-<ol>
-<li><p>Add to the end of 33.1 <a href="https://wg21.link/exec.general">[exec.general]</a> as indicated:</p>
-
-<blockquote>
-<p>
-<ins>-?- For a subexpression <code class='backtick'>expr</code>, let <code><i>AS-CONST</i>(expr)</code> be expression-equivalent to</ins> 
-</p>
-<blockquote><pre>
-<ins>[](const auto&amp; x) noexcept -&gt; const auto&amp; { return x; }(expr)</ins>
-</pre></blockquote>
-</blockquote>
-
-</li>
-
-<li><p>Modify 33.5.2 <a href="https://wg21.link/exec.get.allocator">[exec.get.allocator]</a> as indicated:</p>
-
-<blockquote>
-<p>
--1- <code class='backtick'>get_allocator</code> asks a queryable object for its associated allocator.
-<p/>
--2- The name <code class='backtick'>get_allocator</code> denotes a query object. For a subexpression <code class='backtick'>env</code>, <code class='backtick'>get_allocator(env)</code> is
-expression-equivalent to <code><i>MANDATE-NOTHROW</i>(<del>as_const</del><ins><i>AS-CONST</i></ins>(env).query(get_allocator))</code>.
-</p>
-</blockquote>
-
-</li>
-
-<li><p>Modify 33.5.3 <a href="https://wg21.link/exec.get.stop.token">[exec.get.stop.token]</a> as indicated:</p>
-
-<blockquote>
-<p>
--2- The name <code class='backtick'>get_stop_token</code> denotes a query object. For a subexpression <code class='backtick'>env</code>, <code class='backtick'>get_stop_token(env)</code> is
-expression-equivalent to:
-</p>
-<ol style="list-style-type: none">
-<li><p>(2.1) &mdash; <code><i>MANDATE-NOTHROW</i>(<del>as_const</del><ins><i>AS-CONST</i></ins>(env).query(get_stop_token))</code> 
-if that expression is well-formed.</p></li>
-</ol>
-</blockquote>
-
-</li>
-
-<li><p>Modify 33.5.4 <a href="https://wg21.link/exec.get.env">[exec.get.env]</a> as indicated:</p>
-
-<blockquote>
-<p>
--1- <code class='backtick'>execution::get_env</code> is a customization point object. For a subexpression <code class='backtick'>o</code>, <code class='backtick'>execution::get_env(o)</code> is
-expression-equivalent to:
-</p>
-<ol style="list-style-type: none">
-<li><p>(1.1) &mdash; <code><i>MANDATE-NOTHROW</i>(<del>as_const</del><ins><i>AS-CONST</i></ins>(o).get_env())</code> 
-if that expression is well-formed.</p></li>
-</ol>
-</blockquote>
-
-</li>
-
-<li><p>Modify 33.5.5 <a href="https://wg21.link/exec.get.domain">[exec.get.domain]</a> as indicated:</p>
-
-<blockquote>
-<p>
--2- The name <code class='backtick'>get_domain</code> denotes a query object. For a subexpression <code class='backtick'>env</code>, <code class='backtick'>get_domain(env)</code> is expression-equivalent
-to <code><i>MANDATE-NOTHROW</i>(<del>as_const</del><ins><i>AS-CONST</i></ins>(env).query(get_domain))</code>.
-</p>
-
-</blockquote>
-
-</li>
-
-<li><p>Modify 33.5.6 <a href="https://wg21.link/exec.get.scheduler">[exec.get.scheduler]</a> as indicated:</p>
-
-<blockquote>
-<p>
--2- The name <code class='backtick'>get_scheduler</code> denotes a query object. For a subexpression <code class='backtick'>env</code>, <code class='backtick'>get_scheduler(env)</code> is
-expression-equivalent to <code><i>MANDATE-NOTHROW</i>(<del>as_const</del><ins><i>AS-CONST</i></ins>(env).query(get_scheduler))</code>.
-</p>
-</blockquote>
-
-</li>
-
-<li><p>Modify 33.5.7 <a href="https://wg21.link/exec.get.delegation.scheduler">[exec.get.delegation.scheduler]</a> as indicated:</p>
-
-<blockquote>
-<p>
--2- The name <code class='backtick'>get_delegation_scheduler</code> denotes a query object. For a subexpression <code class='backtick'>env</code>, 
-<code class='backtick'>get_delegation_scheduler(env)</code> is expression-equivalent to 
-<code><i>MANDATE-NOTHROW</i>(<del>as_const</del><ins><i>AS-CONST</i></ins>(env).query(get_delegation_scheduler))</code>.
-</p>
-</blockquote>
-
-</li>
-
-<li><p>Modify 33.5.8 <a href="https://wg21.link/exec.get.fwd.progress">[exec.get.fwd.progress]</a> as indicated:</p>
-
-<blockquote>
-<p>
--2- The name <code class='backtick'>get_forward_progress_guarantee</code> denotes a query object. For a subexpression <code class='backtick'>sch</code>, let 
-<code class='backtick'>Sch</code> be <code class='backtick'>decltype((sch))</code>. If <code class='backtick'>Sch</code> does not satisfy <code class='backtick'>scheduler</code>, <code class='backtick'>get_forward_progress_guarantee</code> is ill-formed.
-Otherwise, <code class='backtick'>get_forward_progress_guarantee(sch)</code> is expression-equivalent to:
-</p>
-<ol style="list-style-type: none">
-<li><p>(2.1) &mdash; <code><i>MANDATE-NOTHROW</i>(<del>as_const</del><ins><i>AS-CONST</i></ins>(sch).query(get_forward_progress_guarantee))</code> 
-if that expression is well-formed.</p></li>
-</ol>
-</blockquote>
-
-</li>
-
-<li><p>Modify 33.5.9 <a href="https://wg21.link/exec.get.compl.sched">[exec.get.compl.sched]</a> as indicated:</p>
-
-<blockquote>
-<p>
--2- The name <code class='backtick'>get_completion_scheduler</code> denotes a query object template. For a subexpression <code class='backtick'>q</code>, the expression
-<code>get_completion_scheduler&lt;<i>completion-tag</i>&gt;(q)</code> is ill-formed if <code><i>completion-tag</i></code> 
-is not one of <code class='backtick'>set_value_t</code>, <code class='backtick'>set_error_t</code>, or <code class='backtick'>set_stopped_t</code>. Otherwise, 
-<code>get_completion_scheduler&lt;<i>completion-tag</i>&gt;(q)</code> is expression-equivalent to
-</p>
-<blockquote><pre>
-<i>MANDATE-NOTHROW</i>(<del>as_const</del><ins><i>AS-CONST</i></ins>(q).query(get_completion_scheduler&lt;<i>completion-tag</i>&gt;))
-</pre></blockquote>
-</blockquote>
-
-</li>
-
-</ol>
 
 
 
@@ -64517,174 +64245,6 @@ if the loop doesn't exit.
 <p id="res-4177"><b>Proposed resolution:</b></p>
 <p>
 </p>
-
-
-
-
-
-<hr>
-<h3 id="4179"><a href="#4179">4179</a><sup><a href="https://cplusplus.github.io/LWG/issue4179">(i)</a></sup>. Wrong range in [alg.search]</h3>
-<p><b>Section:</b> 26.6.15 <a href="https://wg21.link/alg.search">[alg.search]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Oscar Slotosch <b>Opened:</b> 2024-12-05 <b>Last modified:</b> 2024-12-07</p>
-<p><b>Priority: </b>Not Prioritized
-</p>
-<p><b>View all other</b> <a href="lwg-index.html#alg.search">issues</a> in [alg.search].</p>
-<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
-<p><b>Discussion:</b></p>
-<p>
-Originally reported as editorial request <a href="https://github.com/cplusplus/draft/issues/7474">#7474</a>:
-<p/>
-During the qualification of the C++ STL Validas has pointed me to the following issue:
-<p/>
-The specification of 26.6.15 <a href="https://wg21.link/alg.search">[alg.search]</a> has a wrong range. Currently the range is 
-"<code>[first1, last1 - (last2 - first2))</code>" (exclusive) but should be 
-"<code>[first1, last1 - (last2 - first2)]</code>" (inclusive). So please correct the closing ")" to "]". 
-Otherwise the last occurrence will not be found. We observed the issue in C++14 and C++17 
-and cppreference.com.
-<p/>
-The implementations do the right thing and work correctly and find even the last occurrence.
-<p/>
-For example in the list <code class='backtick'>{1, 2, 3, 4, 5}</code> the pattern <code class='backtick'>{4, 5}</code> should be found (obviously).
-In the case the last element is not included it will not be found.
-<p/>
-<a href="https://godbolt.org/z/daMa5nTY9">Demonstration on godbolt</a> shows that the implementation 
-is working and finds the pattern.
-</p>
-
-<p><i>[2024-12-07; Daniel comments and provides wording]</i></p>
-
-<p>
-The mentioned wording issue is present in all previous standard versions, including the 
-<a href="https://sgistl.github.io/search.html">SGI STL</a>. It needs to be fixed in all search 
-variants specified in 26.6.15 <a href="https://wg21.link/alg.search">[alg.search]</a> (except for the form using a <code class='backtick'>Searcher</code>).
-</p>
-
-
-<p id="res-4179"><b>Proposed resolution:</b></p>
-<p>
-This wording is relative to <a href="https://wg21.link/N4993" title=" Working Draft, Programming Languages — C++">N4993</a>.
-</p>
-
-<ol>
-<li><p>Modify 26.6.15 <a href="https://wg21.link/alg.search">[alg.search]</a> as indicated:</p>
-
-<blockquote>
-<pre>
-template&lt;class ForwardIterator1, class ForwardIterator2&gt;
-  constexpr ForwardIterator1
-    search(ForwardIterator1 first1, ForwardIterator1 last1,
-           ForwardIterator2 first2, ForwardIterator2 last2);
-[&hellip;]
-template&lt;class ExecutionPolicy, class ForwardIterator1, class ForwardIterator2,
-         class BinaryPredicate&gt;
-ForwardIterator1
-  search(ExecutionPolicy&amp;&amp; exec,
-         ForwardIterator1 first1, ForwardIterator1 last1,
-         ForwardIterator2 first2, ForwardIterator2 last2,
-         BinaryPredicate pred);
-</pre>
-<blockquote>
-<p>
--1- <i>Returns</i>: The first iterator <code class='backtick'>i</code> in the range <code>[first1, last1 - (last2 - first2)<ins>]</ins><del>)</del></code> 
-such that for every nonnegative integer <code class='backtick'>n</code> less than <code class='backtick'>last2 - first2</code> the following 
-corresponding conditions hold: <code class='backtick'>*(i + n) == *(first2 + n), pred(*(i + n)</code>, <code class='backtick'>*(first2 + n)) != false</code>. 
-Returns <code class='backtick'>first1</code> if <code class='backtick'>[first2, last2)</code> is empty, otherwise returns <code class='backtick'>last1</code> if no such iterator is found.
-<p/>
--2- [&hellip;]
-</p>
-</blockquote>
-<pre>
-template&lt;forward_iterator I1, sentinel_for&lt;I1&gt; S1, forward_iterator I2,
-         sentinel_for&lt;I2&gt; S2, class Pred = ranges::equal_to,
-         class Proj1 = identity, class Proj2 = identity&gt;
-  requires indirectly_comparable&lt;I1, I2, Pred, Proj1, Proj2&gt;
-  constexpr subrange&lt;I1&gt;
-    ranges::search(I1 first1, S1 last1, I2 first2, S2 last2, Pred pred = {},
-                   Proj1 proj1 = {}, Proj2 proj2 = {});
-template&lt;forward_range R1, forward_range R2, class Pred = ranges::equal_to,
-         class Proj1 = identity, class Proj2 = identity&gt;
-  requires indirectly_comparable&lt;iterator_t&lt;R1&gt;, iterator_t&lt;R2&gt;, Pred, Proj1, Proj2&gt;
-  constexpr borrowed_subrange_t&lt;R1&gt;
-    ranges::search(R1&amp;&amp; r1, R2&amp;&amp; r2, Pred pred = {},
-                   Proj1 proj1 = {}, Proj2 proj2 = {});
-</pre>
-<blockquote>
-<p>
--3- <i>Returns</i>:
-</p>
-<ol style="list-style-type: none">
-<li><p>(3.1) &mdash; <code class='backtick'>{i, i + (last2 - first2)}</code>, where <code class='backtick'>i</code> is the first iterator in the range 
-<code>[first1, last1 - (last2 - first2)<ins>]</ins><del>)</del></code> such that for every non-negative integer <code class='backtick'>n</code> 
-less than <code class='backtick'>last2 - first2</code> the condition</p>
-<blockquote><pre>
-bool(invoke(pred, invoke(proj1, *(i + n)), invoke(proj2, *(first2 + n))))
-</pre></blockquote>
-<p>is <code class='backtick'>true</code>.</p>
-</li>
-<li><p>(3.2) &mdash; Returns <code class='backtick'>{last1, last1}</code> if no such iterator exists.</p></li>
-</ol>
-<p>
--4- [&hellip;]
-</p>
-</blockquote>
-<pre>
-template&lt;class ForwardIterator, class Size, class T = iterator_traits&lt;ForwardIterator&gt;::value_type&gt;
-  constexpr ForwardIterator
-    search_n(ForwardIterator first, ForwardIterator last,
-             Size count, const T&amp; value);
-[&hellip;]
-template&lt;class ExecutionPolicy, class ForwardIterator, class Size,
-         class T = iterator_traits&lt;ForwardIterator&gt;::value_type,
-         class BinaryPredicate&gt;
-  ForwardIterator
-    search_n(ExecutionPolicy&amp;&amp; exec,
-             ForwardIterator first, ForwardIterator last,
-             Size count, const T&amp; value,
-             BinaryPredicate pred);
-</pre>
-<blockquote>
-<p>
--5- [&hellip;]
-<p/>
--6- [&hellip;]
-<p/>
--7- <i>Returns</i>: The first iterator <code class='backtick'>i</code> in the range <code>[first, last-count<ins>]</ins><del>)</del></code> 
-such that for every non-negative integer <code class='backtick'>n</code> less than <code class='backtick'>count</code> the condition <code><i>E</i></code> is <code class='backtick'>true</code>. 
-Returns <code class='backtick'>last</code> if no such iterator is found.
-<p/>
--8- [&hellip;]
-</p>
-</blockquote>
-<pre>
-template&lt;forward_iterator I, sentinel_for&lt;I&gt; S,
-         class Pred = ranges::equal_to, class Proj = identity,
-         class T = projected_value_t&lt;I, Proj&gt;&gt;
-  requires indirectly_comparable&lt;I, const T*, Pred, Proj&gt;
-  constexpr subrange&lt;I&gt;
-    ranges::search_n(I first, S last, iter_difference_t&lt;I&gt; count,
-                     const T&amp; value, Pred pred = {}, Proj proj = {});
-template&lt;forward_range R, class Pred = ranges::equal_to,
-         class Proj = identity, class T = projected_value_t&lt;iterator_t&lt;R&gt;, Proj&gt;&gt;
-  requires indirectly_comparable&lt;iterator_t&lt;R&gt;, const T*, Pred, Proj&gt;
-  constexpr borrowed_subrange_t&lt;R&gt;
-    ranges::search_n(R&amp;&amp; r, range_difference_t&lt;R&gt; count,
-                     const T&amp; value, Pred pred = {}, Proj proj = {});
-</pre>
-<blockquote>
-<p>
--9- <i>Returns</i>: <code class='backtick'>{i, i + count}</code> where <code class='backtick'>i</code> is the first iterator in the range 
-<code>[first, last - count<ins>]</ins><del>)</del></code> such that for every non-negative integer 
-<code class='backtick'>n</code> less than <code class='backtick'>count</code>, the following condition holds: <code class='backtick'>invoke(pred, invoke(proj, *(i + n)), value)</code>. 
-Returns <code class='backtick'>{last, last}</code> if no such iterator is found.
-<p/>
--10- [&hellip;]
-</p>
-</blockquote>
-</blockquote>
-
-</li>
-
-</ol>
 
 
 
@@ -64830,8 +64390,8 @@ instead when the argument <code><i>meow</i></code> models <code class='backtick'
 <hr>
 <h3 id="4182"><a href="#4182">4182</a><sup><a href="https://cplusplus.github.io/LWG/issue4182">(i)</a></sup>. Definition of <code class='backtick'>NULL</code> is too broad</h3>
 <p><b>Section:</b> 17.2.3 <a href="https://wg21.link/support.types.nullptr">[support.types.nullptr]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Janet Cobb <b>Opened:</b> 2024-12-09 <b>Last modified:</b> 2024-12-21</p>
-<p><b>Priority: </b>Not Prioritized
+ <b>Submitter:</b> Janet Cobb <b>Opened:</b> 2024-12-09 <b>Last modified:</b> 2025-02-07</p>
+<p><b>Priority: </b>3
 </p>
 <p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
 <p><b>Discussion:</b></p>
@@ -64845,6 +64405,14 @@ Together, these imply that <code class='backtick'>#define NULL (::std::unreachab
 a prvalue of type <code class='backtick'>std::nullptr_t</code>, so it is a null pointer constant. This makes it implementation-defined whether 
 any program that evaluates <code class='backtick'>NULL</code> has undefined behavior.
 </p>
+
+<p><i>[2025-02-07; Reflector poll]</i></p>
+
+<p>
+Set priority to 3 after reflector poll.
+</p>
+<p>"I'd very much like to see <code class='backtick'>nullptr</code> added to the footnote."</p>
+
 
 
 <p id="res-4182"><b>Proposed resolution:</b></p>
@@ -65031,64 +64599,6 @@ usage. Presumably we should say the behavior is undefined in these cases.
 
 
 <p id="res-4185"><b>Proposed resolution:</b></p>
-
-
-
-
-
-<hr>
-<h3 id="4186"><a href="#4186">4186</a><sup><a href="https://cplusplus.github.io/LWG/issue4186">(i)</a></sup>. <code class='backtick'>regex_traits::transform_primary</code> mistakenly detects <code class='backtick'>typeid</code> of a function</h3>
-<p><b>Section:</b> 28.6.6 <a href="https://wg21.link/re.traits">[re.traits]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Jiang An <b>Opened:</b> 2024-12-18 <b>Last modified:</b> 2024-12-21</p>
-<p><b>Priority: </b>Not Prioritized
-</p>
-<p><b>View other</b> <a href="lwg-index-open.html#re.traits">active issues</a> in [re.traits].</p>
-<p><b>View all other</b> <a href="lwg-index.html#re.traits">issues</a> in [re.traits].</p>
-<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
-<p><b>Discussion:</b></p>
-<p>
-28.6.6 <a href="https://wg21.link/re.traits">[re.traits]</a>/7 currently says <code>typeid(use_facet&lt;collate&lt;charT&gt;&gt;) == 
-typeid(collate_byname&lt;charT&gt;)</code>, which is always <code class='backtick'>false</code> because 
-<code>use_facet&lt;collate&lt;charT&gt;&gt;</code> is a function template specialization while 
-<code>collate_byname&lt;charT&gt;</code> is a class template specialization. This looks like 
-misuse, and has been present in TR1 (<a href="https://wg21.link/N1836" title=" Draft Technical Report on C++ Library Extensions">N1836</a>).
-<p/>
-Presumably the intended operand is <code>use_facet&lt;collate&lt;charT&gt;&gt;(getloc())</code>.
-</p>
-
-
-<p id="res-4186"><b>Proposed resolution:</b></p>
-<p>
-This wording is relative to <a href="https://wg21.link/N5001">N5001</a>.
-</p>
-
-<ol>
-<li><p>Modify 28.6.6 <a href="https://wg21.link/re.traits">[re.traits]</a> as indicated:</p>
-
-<blockquote>
-<pre>
-template&lt;class ForwardIterator&gt;
-  string_type transform_primary(ForwardIterator first, ForwardIterator last) const;
-</pre>
-<blockquote>
-<p>
--7- <i>Effects</i>: If
-</p>
-<blockquote><pre>
-typeid(use_facet&lt;collate&lt;charT&gt;&gt;<ins>(getloc())</ins>) == typeid(collate_byname&lt;charT&gt;)
-</pre></blockquote>
-<p>
-and the form of the sort key returned by <code>collate_byname&lt;charT&gt;::transform(first, last)</code> 
-is known and can be converted into a primary sort key then returns that key, otherwise returns an empty
-string.
-</p>
-</blockquote>
-</blockquote>
-
-
-</li>
-
-</ol>
 
 
 
@@ -65437,50 +64947,6 @@ users why.
 
 
 <hr>
-<h3 id="4191"><a href="#4191">4191</a><sup><a href="https://cplusplus.github.io/LWG/issue4191">(i)</a></sup>. P1467 changed the return type of <code>pow(complex&lt;float&gt;, int)</code></h3>
-<p><b>Section:</b> 29.4.10 <a href="https://wg21.link/cmplx.over">[cmplx.over]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Tim Song <b>Opened:</b> 2025-01-10 <b>Last modified:</b> 2025-01-18</p>
-<p><b>Priority: </b>Not Prioritized
-</p>
-<p><b>View other</b> <a href="lwg-index-open.html#cmplx.over">active issues</a> in [cmplx.over].</p>
-<p><b>View all other</b> <a href="lwg-index.html#cmplx.over">issues</a> in [cmplx.over].</p>
-<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
-<p><b>Discussion:</b></p>
-<p>
-Before C++20, 29.4.10 <a href="https://wg21.link/cmplx.over">[cmplx.over]</a> says that this produces a <code>complex&lt;double&gt;</code>. 
-This was confirmed by LWG <a href="lwg-defects.html#844" title="complex pow return type is ambiguous (Status: CD1)">844</a><sup><a href="https://cplusplus.github.io/LWG/issue844" title="Latest snapshot">(i)</a></sup> and consistent with C99.
-<p/>
-<a href="https://wg21.link/P1467" title=" Extended floating-point types and standard names">P1467</a> changed the return type to <code>complex&lt;common_type_t&lt;float, int&gt;&gt;</code>, 
-which is <code>complex&lt;float&gt;</code>. This is a breaking change that does not appear to have been 
-intentional.
-</p>
-
-
-<p id="res-4191"><b>Proposed resolution:</b></p>
-<p>
-This wording is relative to <a href="https://wg21.link/N5001">N5001</a>.
-</p>
-
-<ol>
-
-<li><p>Modify 29.4.10 <a href="https://wg21.link/cmplx.over">[cmplx.over]</a> as indicated:</p>
-
-<blockquote><p>
--3- Function template <code class='backtick'>pow</code> has additional constexpr overloads sufficient to ensure, for a call with one argument of
-type <code>complex&lt;T1&gt;</code> and the other argument of type <code class='backtick'>T2</code> or <code>complex&lt;T2&gt;</code>, both arguments 
-are effectively cast to <code>complex&lt;common_type_t&lt;T1, <ins>T3</ins><del>T2</del>&gt;&gt;</code><ins>, where 
-<code class='backtick'>T3</code> is <code class='backtick'>double</code> if <code class='backtick'>T2</code> is an integer type and <code class='backtick'>T2</code> otherwise</ins>. If <code>common_type_t&lt;T1, <ins>T3</ins><del>T2</del>&gt;</code> 
-is not well-formed, then the program is ill-formed.
-</p></blockquote>
-</li>
-</ol>
-
-
-
-
-
-
-<hr>
 <h3 id="4192"><a href="#4192">4192</a><sup><a href="https://cplusplus.github.io/LWG/issue4192">(i)</a></sup>. &sect;[ios.base.cons] <code class='backtick'>ios_base</code> members may not have indeterminate values after construction</h3>
 <p><b>Section:</b> 31.5.2.8 <a href="https://wg21.link/ios.base.cons">[ios.base.cons]</a>, 31.5.2.4 <a href="https://wg21.link/ios.base.locales">[ios.base.locales]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
  <b>Submitter:</b> S. B. Tam <b>Opened:</b> 2025-01-12 <b>Last modified:</b> 2025-01-18</p>
@@ -65565,8 +65031,8 @@ input and output operations.
 <hr>
 <h3 id="4193"><a href="#4193">4193</a><sup><a href="https://cplusplus.github.io/LWG/issue4193">(i)</a></sup>. &sect;[time.zone.db] the specification uses the undefined term "thread-safe"</h3>
 <p><b>Section:</b> 30.11.2 <a href="https://wg21.link/time.zone.db">[time.zone.db]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> S. B. Tam <b>Opened:</b> 2025-01-16 <b>Last modified:</b> 2025-01-18</p>
-<p><b>Priority: </b>Not Prioritized
+ <b>Submitter:</b> S. B. Tam <b>Opened:</b> 2025-01-16 <b>Last modified:</b> 2025-02-07</p>
+<p><b>Priority: </b>3
 </p>
 <p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
 <p><b>Discussion:</b></p>
@@ -65602,73 +65068,21 @@ total order on these operations? In either case, it should be specified clearly.
 </p>
 
 
+<p><i>[2025-02-07; Reflector poll]</i></p>
+
+<p>
+Set priority to 3 after reflector poll.
+</p>
+<p>
+"We're missing a guarantee that <code class='backtick'>reload_tzdb()</code> strongly happens before
+a call to <code class='backtick'>get_tzdb_list().front()</code> that retrieves a newly added element.
+Otherwise accessing any <code class='backtick'>time_zone</code> obtained from <code class='backtick'>get_tzdb_list().front()</code>
+could race with the call to <code class='backtick'>reload_tzdb()</code> that writes the front of the list."
+</p>
+
+
 
 <p id="res-4193"><b>Proposed resolution:</b></p>
-
-
-
-
-
-<hr>
-<h3 id="4194"><a href="#4194">4194</a><sup><a href="https://cplusplus.github.io/LWG/issue4194">(i)</a></sup>. <code>atomic&lt;void*&gt;</code> should use generic class template</h3>
-<p><b>Section:</b> 32.5.8.5 <a href="https://wg21.link/atomics.types.pointer">[atomics.types.pointer]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Gonzalo Brito <b>Opened:</b> 2025-01-16 <b>Last modified:</b> 2025-01-19</p>
-<p><b>Priority: </b>Not Prioritized
-</p>
-<p><b>View other</b> <a href="lwg-index-open.html#atomics.types.pointer">active issues</a> in [atomics.types.pointer].</p>
-<p><b>View all other</b> <a href="lwg-index.html#atomics.types.pointer">issues</a> in [atomics.types.pointer].</p>
-<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
-<p><b>Discussion:</b></p>
-<p>
-32.5.8.5 <a href="https://wg21.link/atomics.types.pointer">[atomics.types.pointer]</a> p1 states (emphasis mine):
-</p>
-<blockquote style="border-left: 3px solid #ccc;padding-left: 15px;">
-<p>
-There is a partial specialization of the <code class='backtick'>atomic</code> class template for <b>pointers</b>.
-</p>
-</blockquote>
-<p>
-which requires <code>atomic&lt;void*&gt;</code> to use the <code class='backtick'>atomic</code> class template for pointers.
-However, the <code class='backtick'>fetch_add</code>/<code class='backtick'>_sub</code> member functions add a <code class='backtick'>difference_type</code> to a <code class='backtick'>T*</code> 
-which requires a pointer-to-object type (these member functions are <code class='backtick'>constexpr</code>, 
-so trying to support this seems unimplementable).
-<p/>
-For <code class='backtick'>atomic_ref</code>, the 32.5.7.5 <a href="https://wg21.link/atomics.ref.pointer">[atomics.ref.pointer]</a> p1 states (emphasis mine):
-</p>
-<blockquote style="border-left: 3px solid #ccc;padding-left: 15px;">
-<p>
-There are specializations of the <code class='backtick'>atomic_ref</code>`  class template for all <b>pointer-to-object types</b>.
-</p>
-</blockquote>
-<p>
-which avoids this issue and applying the same form to 32.5.8.5 <a href="https://wg21.link/atomics.types.pointer">[atomics.types.pointer]</a> would make 
-<code>atomic&lt;void*&gt;</code> and <code>atomic_ref&lt;void*&gt;</code> consistent.
-<p/>
-Technically this would be a breaking change, but all C++ standard library implementations surveyed are broken, 
-and the proposed fix would make them compliant: see libstdc++, libc++ and MSVC STL errors 
-<a href="https://godbolt.org/z/dso3P6fKf">here</a>. These standard libraries require a 
-pointer-to-object type, <code>atomic&lt;void*&gt;</code> uses the general template. Therefore, no user 
-code seems to be impacted.
-</p>
-
-
-<p id="res-4194"><b>Proposed resolution:</b></p>
-<p>
-This wording is relative to <a href="https://wg21.link/N5001">N5001</a>.
-</p>
-
-<ol>
-
-<li><p>Modify 32.5.8.5 <a href="https://wg21.link/atomics.types.pointer">[atomics.types.pointer]</a> as indicated:</p>
-
-<blockquote><p>
--1- There is a partial specialization of the <code class='backtick'>atomic</code> class template for 
-<del>pointers</del><ins>pointer-to-object types</ins>. Specializations of this partial
-specialization are standard-layout structs. They each have a trivial destructor.
-</p></blockquote>
-</li>
-
-</ol>
 
 
 

@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <title>Issue 4163: Can the overload of std::num_get::do_get for bool call the overload for long?</title>
 <meta property="og:title" content="Issue 4163: Can the overload of std::num_get::do_get for bool call the overload for long?">
-<meta property="og:description" content="C++ library issue. Status: New">
+<meta property="og:description" content="C++ library issue. Status: Tentatively NAD">
 <meta property="og:url" content="https://cplusplus.github.io/LWG/issue4163.html">
 <meta property="og:type" content="website">
 <meta property="og:image" content="http://cplusplus.github.io/LWG/images/cpp_logo.png">
@@ -61,15 +61,15 @@
 </head>
 <body>
 <hr>
-<p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#New">New</a> status.</em></p>
+<p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#NAD">Tentatively NAD</a> status.</em></p>
 <h3 id="4163"><a href="lwg-active.html#4163">4163</a>. Can the overload of <code>std::num_get::do_get</code> for <code>bool</code> call the overload for <code>long</code>?</h3>
-<p><b>Section:</b> 28.3.4.3.2.3 <a href="https://wg21.link/facet.num.get.virtuals">[facet.num.get.virtuals]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Jiang An <b>Opened:</b> 2024-09-29 <b>Last modified:</b> 2024-10-03</p>
+<p><b>Section:</b> 28.3.4.3.2.3 <a href="https://wg21.link/facet.num.get.virtuals">[facet.num.get.virtuals]</a> <b>Status:</b> <a href="lwg-active.html#NAD">Tentatively NAD</a>
+ <b>Submitter:</b> Jiang An <b>Opened:</b> 2024-09-29 <b>Last modified:</b> 2025-02-07</p>
 <p><b>Priority: </b>Not Prioritized
 </p>
 <p><b>View other</b> <a href="lwg-index-open.html#facet.num.get.virtuals">active issues</a> in [facet.num.get.virtuals].</p>
 <p><b>View all other</b> <a href="lwg-index.html#facet.num.get.virtuals">issues</a> in [facet.num.get.virtuals].</p>
-<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#Tentatively NAD">Tentatively NAD</a> status.</p>
 <p><b>Discussion:</b></p>
 <p>
 28.3.4.3.2.3 <a href="https://wg21.link/facet.num.get.virtuals">[facet.num.get.virtuals]</a>/6 currently says:
@@ -87,6 +87,17 @@ Currently, libc++'s version calls that overload, while libstdc++ and MSVC STL's 
 <p/>
 As the divergence implementation strategies is observable, perhaps we should clarify on this.
 </p>
+
+<p><i>[2025-02-07; Reflector poll: NAD]</i></p>
+
+<p>
+I think this is just a libc++ bug.
+The wording says it "proceeds as it would for <code class='backtick'>long</code>", which is not the same as
+actually making a virtual call to <code class='backtick'>do_get</code> for <code class='backtick'>long</code>. It can either duplicate
+the code from <code class='backtick'>do_get</code> for <code class='backtick'>long</code>, or make a non-virtual (i.e. qualified) call
+to <code class='backtick'>num_get::do_get</code>.
+</p>
+
 
 
 <p id="res-4163"><b>Proposed resolution:</b></p>

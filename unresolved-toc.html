@@ -59,7 +59,7 @@
 <p>Reference ISO/IEC IS 14882:2024(E)</p>
 <p>This document is the Table of Contents for the <a href="lwg-active.html">Library Active Issues List</a>,
 <a href="lwg-defects.html">Library Defect Reports and Accepted Issues</a>, and <a href="lwg-closed.html">Library Closed Issues List</a>.</p>
-<p>Revised 2025-02-07 at 12:52:27 UTC
+<p>Revised 2025-02-07 at 16:59:15 UTC
 </p><table class="issues-index">
 <tr>
   <th><a href="lwg-toc.html">Issue</a></th>
@@ -5046,7 +5046,7 @@ forward_iterator (Status: New)">4120</a><sup><a href="https://cplusplus.github.i
 <td>32.10.10.1 [futures.task.general]</td>
 <td><code>packaged_task</code> should reject rvalue reference return types</td>
 <td>Yes</td>
-<td></td>
+<td>3</td>
 <td></td>
 </tr>
 <tr>
@@ -5065,15 +5065,6 @@ forward_iterator (Status: New)">4120</a><sup><a href="https://cplusplus.github.i
 <td>Worst time complexity of non-parallel versions of <code>nth_element</code> is underspecified</td>
 <td>Yes</td>
 <td>3</td>
-<td></td>
-</tr>
-<tr>
-<td id="4163"><a href="lwg-active.html#4163" title="Can the overload of std::num_get::do_get for bool call the overload for long? (Status: New)">4163</a><sup><a href="https://cplusplus.github.io/LWG/issue4163">(i)</a></sup></td>
-<td><a href="lwg-active.html#New">New</a></td>
-<td>28.3.4.3.2.3 [facet.num.get.virtuals]</td>
-<td>Can the overload of <code>std::num_get::do_get</code> for <code>bool</code> call the overload for <code>long</code>?</td>
-<td><span class="no-pr">No</span></td>
-<td></td>
 <td></td>
 </tr>
 <tr>
@@ -5124,15 +5115,6 @@ max, and minmax is unclear (Status: New)">4167</a><sup><a href="https://cplusplu
 <td></td>
 </tr>
 <tr>
-<td id="4172"><a href="lwg-active.html#4172" title="unique_lock self-move-assignment is broken (Status: New)">4172</a><sup><a href="https://cplusplus.github.io/LWG/issue4172">(i)</a></sup></td>
-<td><a href="lwg-active.html#New">New</a></td>
-<td>32.6.5.4.2 [thread.lock.unique.cons]</td>
-<td>unique_lock self-move-assignment is broken</td>
-<td>Yes</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
 <td id="4173"><a href="lwg-active.html#4173" title="Better term for &quot;references, pointers and iterators to elements&quot; (Status: New)">4173</a><sup><a href="https://cplusplus.github.io/LWG/issue4173">(i)</a></sup></td>
 <td><a href="lwg-active.html#New">New</a></td>
 <td>23 [containers]</td>
@@ -5151,15 +5133,6 @@ max, and minmax is unclear (Status: New)">4167</a><sup><a href="https://cplusplu
 <td></td>
 </tr>
 <tr>
-<td id="4175"><a href="lwg-active.html#4175" title="get_env() specified in terms of as_const() but this doesn't work with rvalue senders (Status: New)">4175</a><sup><a href="https://cplusplus.github.io/LWG/issue4175">(i)</a></sup></td>
-<td><a href="lwg-active.html#New">New</a></td>
-<td>33.5.2 [exec.get.allocator]</td>
-<td><code class='backtick'>get_env()</code> specified in terms of <code class='backtick'>as_const()</code> but this doesn't work with rvalue senders</td>
-<td>Yes</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
 <td id="4176"><a href="lwg-active.html#4176" title="Refer back to container requirements when extending them (Status: New)">4176</a><sup><a href="https://cplusplus.github.io/LWG/issue4176">(i)</a></sup></td>
 <td><a href="lwg-active.html#New">New</a></td>
 <td>23 [containers]</td>
@@ -5174,15 +5147,6 @@ max, and minmax is unclear (Status: New)">4167</a><sup><a href="https://cplusplu
 <td>32.5.4 [atomics.order]</td>
 <td>&sect;[atomics.order] p8 "circularly depend on their own computation" is unclear for loop</td>
 <td><span class="no-pr">No</span></td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td id="4179"><a href="lwg-active.html#4179" title="Wrong range in [alg.search] (Status: New)">4179</a><sup><a href="https://cplusplus.github.io/LWG/issue4179">(i)</a></sup></td>
-<td><a href="lwg-active.html#New">New</a></td>
-<td>26.6.15 [alg.search]</td>
-<td>Wrong range in [alg.search]</td>
-<td>Yes</td>
 <td></td>
 <td></td>
 </tr>
@@ -5210,7 +5174,7 @@ max, and minmax is unclear (Status: New)">4167</a><sup><a href="https://cplusplu
 <td>17.2.3 [support.types.nullptr]</td>
 <td>Definition of <code class='backtick'>NULL</code> is too broad</td>
 <td>Yes</td>
-<td></td>
+<td>3</td>
 <td></td>
 </tr>
 <tr>
@@ -5237,15 +5201,6 @@ max, and minmax is unclear (Status: New)">4167</a><sup><a href="https://cplusplu
 <td>29.9.7 [linalg.helpers]</td>
 <td>Ill-formed, no diagnostic required on runtime behavior</td>
 <td><span class="no-pr">No</span></td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td id="4186"><a href="lwg-active.html#4186" title="regex_traits::transform_primary mistakenly detects typeid of a function (Status: New)">4186</a><sup><a href="https://cplusplus.github.io/LWG/issue4186">(i)</a></sup></td>
-<td><a href="lwg-active.html#New">New</a></td>
-<td>28.6.6 [re.traits]</td>
-<td><code class='backtick'>regex_traits::transform_primary</code> mistakenly detects <code class='backtick'>typeid</code> of a function</td>
-<td>Yes</td>
 <td></td>
 <td></td>
 </tr>
@@ -5286,15 +5241,6 @@ max, and minmax is unclear (Status: New)">4167</a><sup><a href="https://cplusplu
 <td></td>
 </tr>
 <tr>
-<td id="4191"><a href="lwg-active.html#4191" title="P1467 changed the return type of pow(complex&lt;float&gt;, int) (Status: New)">4191</a><sup><a href="https://cplusplus.github.io/LWG/issue4191">(i)</a></sup></td>
-<td><a href="lwg-active.html#New">New</a></td>
-<td>29.4.10 [cmplx.over]</td>
-<td>P1467 changed the return type of <code>pow(complex&lt;float&gt;, int)</code></td>
-<td>Yes</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
 <td id="4192"><a href="lwg-active.html#4192" title="&sect;[ios.base.cons] ios_base members may not have indeterminate values after construction (Status: New)">4192</a><sup><a href="https://cplusplus.github.io/LWG/issue4192">(i)</a></sup></td>
 <td><a href="lwg-active.html#New">New</a></td>
 <td>31.5.2.8 [ios.base.cons]</td>
@@ -5309,16 +5255,7 @@ max, and minmax is unclear (Status: New)">4167</a><sup><a href="https://cplusplu
 <td>30.11.2 [time.zone.db]</td>
 <td>&sect;[time.zone.db] the specification uses the undefined term "thread-safe"</td>
 <td><span class="no-pr">No</span></td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td id="4194"><a href="lwg-active.html#4194" title="atomic&lt;void*&gt; should use generic class template (Status: New)">4194</a><sup><a href="https://cplusplus.github.io/LWG/issue4194">(i)</a></sup></td>
-<td><a href="lwg-active.html#New">New</a></td>
-<td>32.5.8.5 [atomics.types.pointer]</td>
-<td><code>atomic&lt;void*&gt;</code> should use generic class template</td>
-<td>Yes</td>
-<td></td>
+<td>3</td>
 <td></td>
 </tr>
 <tr>

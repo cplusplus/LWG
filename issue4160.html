@@ -64,8 +64,8 @@
 <p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#New">New</a> status.</em></p>
 <h3 id="4160"><a href="lwg-active.html#4160">4160</a>. <code>packaged_task</code> should reject rvalue reference return types</h3>
 <p><b>Section:</b> 32.10.10.1 <a href="https://wg21.link/futures.task.general">[futures.task.general]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Casey Carter <b>Opened:</b> 2024-09-28 <b>Last modified:</b> 2024-10-03</p>
-<p><b>Priority: </b>Not Prioritized
+ <b>Submitter:</b> Casey Carter <b>Opened:</b> 2024-09-28 <b>Last modified:</b> 2025-02-07</p>
+<p><b>Priority: </b>3
 </p>
 <p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
 <p><b>Discussion:</b></p>
@@ -82,8 +82,18 @@ should be ill-formed when <code class='backtick'>get_future</code> is not instan
 relying on the fact that one of the basis operations is unusable.
 </p>
 
+<p><i>[2025-02-07; Reflector poll]</i></p>
 
-<p id="res-4160"><b>Proposed resolution:</b></p>
+<p>
+Set priority to 3 after reflector poll.
+</p>
+<p>
+"Shouldn't it be ill-formed only if instantiated?"
+</p>
+
+<p><strong>Previous resolution [SUPERSEDED]:</strong></p>
+<blockquote class="note">
+
 <p>
 This wording is relative to <a href="https://wg21.link/N4988" title=" Working Draft, Programming Languages — C++">N4988</a>.
 </p>
@@ -118,6 +128,56 @@ namespace std {
 </blockquote>
 <p>
 <ins>-?- The program is ill-formed if <code>R</code> is an rvalue reference type.</ins>
+</p>
+</blockquote>
+</li>
+</ol>
+</blockquote>
+
+<p><i>[2025-02-07; Jonathan provides improved wording]</i></p>
+
+
+
+
+<p id="res-4160"><b>Proposed resolution:</b></p>
+<p>
+This wording is relative to <a href="https://wg21.link/N5001">N5001</a>.
+</p>
+
+<ol>
+<li><p>Modify 32.10.10.1 <a href="https://wg21.link/futures.task.general">[futures.task.general]</a> as indicated:</p>
+
+<blockquote>
+<p>
+[&hellip;]
+<p/>
+-2- When the <code>packaged_task</code> object is invoked, its stored task is invoked and the result 
+(whether normal or exceptional) stored in the shared state. Any futures that share the shared state 
+will then be able to access the stored result.
+</p>
+<blockquote>
+<pre>
+namespace std {
+  template&lt;class&gt; class packaged_task; // <i>not defined</i>
+
+  template&lt;class R, class... ArgTypes&gt;
+  class packaged_task&lt;R(ArgTypes...)&gt; {
+    [&hellip;]
+  };
+
+  template&lt;class R, class... ArgTypes&gt;
+  packaged_task(R (*)(ArgTypes...)) -&gt; packaged_task&lt;R(ArgTypes...)&gt;;
+
+  template&lt;class F&gt; packaged_task(F) -&gt; packaged_task&lt;<i>see below</i>&gt;;
+}
+</pre>
+</blockquote>
+<p>
+<ins>-?-
+If the definition of a specialization
+<code>packaged_task&lt;R(Args...)&gt;</code> is instantiated for
+an rvalue reference type <code class='backtick'>R</code>, the program is ill-formed.
+</ins>
 </p>
 </blockquote>
 </li>

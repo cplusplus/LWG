@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <title>Issue 4186: regex_traits::transform_primary mistakenly detects typeid of a function</title>
 <meta property="og:title" content="Issue 4186: regex_traits::transform_primary mistakenly detects typeid of a function">
-<meta property="og:description" content="C++ library issue. Status: New">
+<meta property="og:description" content="C++ library issue. Status: Tentatively Ready">
 <meta property="og:url" content="https://cplusplus.github.io/LWG/issue4186.html">
 <meta property="og:type" content="website">
 <meta property="og:image" content="http://cplusplus.github.io/LWG/images/cpp_logo.png">
@@ -61,15 +61,15 @@
 </head>
 <body>
 <hr>
-<p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#New">New</a> status.</em></p>
+<p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#Ready">Tentatively Ready</a> status.</em></p>
 <h3 id="4186"><a href="lwg-active.html#4186">4186</a>. <code class='backtick'>regex_traits::transform_primary</code> mistakenly detects <code class='backtick'>typeid</code> of a function</h3>
-<p><b>Section:</b> 28.6.6 <a href="https://wg21.link/re.traits">[re.traits]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Jiang An <b>Opened:</b> 2024-12-18 <b>Last modified:</b> 2024-12-21</p>
+<p><b>Section:</b> 28.6.6 <a href="https://wg21.link/re.traits">[re.traits]</a> <b>Status:</b> <a href="lwg-active.html#Ready">Tentatively Ready</a>
+ <b>Submitter:</b> Jiang An <b>Opened:</b> 2024-12-18 <b>Last modified:</b> 2025-02-07</p>
 <p><b>Priority: </b>Not Prioritized
 </p>
 <p><b>View other</b> <a href="lwg-index-open.html#re.traits">active issues</a> in [re.traits].</p>
 <p><b>View all other</b> <a href="lwg-index.html#re.traits">issues</a> in [re.traits].</p>
-<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#Tentatively Ready">Tentatively Ready</a> status.</p>
 <p><b>Discussion:</b></p>
 <p>
 28.6.6 <a href="https://wg21.link/re.traits">[re.traits]</a>/7 currently says <code>typeid(use_facet&lt;collate&lt;charT&gt;&gt;) == 
@@ -80,6 +80,13 @@ misuse, and has been present in TR1 (<a href="https://wg21.link/N1836" title=" D
 <p/>
 Presumably the intended operand is <code>use_facet&lt;collate&lt;charT&gt;&gt;(getloc())</code>.
 </p>
+
+<p><i>[2025-02-07; Reflector poll]</i></p>
+
+<p>
+Set status to Tentatively Ready after seven votes in favour during reflector poll.
+</p>
+
 
 
 <p id="res-4186"><b>Proposed resolution:</b></p>

@@ -64,8 +64,8 @@
 <p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#New">New</a> status.</em></p>
 <h3 id="4182"><a href="lwg-active.html#4182">4182</a>. Definition of <code class='backtick'>NULL</code> is too broad</h3>
 <p><b>Section:</b> 17.2.3 <a href="https://wg21.link/support.types.nullptr">[support.types.nullptr]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Janet Cobb <b>Opened:</b> 2024-12-09 <b>Last modified:</b> 2024-12-21</p>
-<p><b>Priority: </b>Not Prioritized
+ <b>Submitter:</b> Janet Cobb <b>Opened:</b> 2024-12-09 <b>Last modified:</b> 2025-02-07</p>
+<p><b>Priority: </b>3
 </p>
 <p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
 <p><b>Discussion:</b></p>
@@ -79,6 +79,14 @@ Together, these imply that <code class='backtick'>#define NULL (::std::unreachab
 a prvalue of type <code class='backtick'>std::nullptr_t</code>, so it is a null pointer constant. This makes it implementation-defined whether 
 any program that evaluates <code class='backtick'>NULL</code> has undefined behavior.
 </p>
+
+<p><i>[2025-02-07; Reflector poll]</i></p>
+
+<p>
+Set priority to 3 after reflector poll.
+</p>
+<p>"I'd very much like to see <code class='backtick'>nullptr</code> added to the footnote."</p>
+
 
 
 <p id="res-4182"><b>Proposed resolution:</b></p>
