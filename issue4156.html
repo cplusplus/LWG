@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <title>Issue 4156: error_category messages have unspecified encoding</title>
 <meta property="og:title" content="Issue 4156: error_category messages have unspecified encoding">
-<meta property="og:description" content="C++ library issue. Status: New">
+<meta property="og:description" content="C++ library issue. Status: SG16">
 <meta property="og:url" content="https://cplusplus.github.io/LWG/issue4156.html">
 <meta property="og:type" content="website">
 <meta property="og:image" content="http://cplusplus.github.io/LWG/images/cpp_logo.png">
@@ -61,13 +61,13 @@
 </head>
 <body>
 <hr>
-<p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#New">New</a> status.</em></p>
+<p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#SG16">SG16</a> status.</em></p>
 <h3 id="4156"><a href="lwg-active.html#4156">4156</a>. <code>error_category</code> messages have unspecified encoding</h3>
-<p><b>Section:</b> 19.5.3.2 <a href="https://wg21.link/syserr.errcat.virtuals">[syserr.errcat.virtuals]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Victor Zverovich <b>Opened:</b> 2024-09-18 <b>Last modified:</b> 2024-09-18</p>
-<p><b>Priority: </b>Not Prioritized
+<p><b>Section:</b> 19.5.3.2 <a href="https://wg21.link/syserr.errcat.virtuals">[syserr.errcat.virtuals]</a> <b>Status:</b> <a href="lwg-active.html#SG16">SG16</a>
+ <b>Submitter:</b> Victor Zverovich <b>Opened:</b> 2024-09-18 <b>Last modified:</b> 2025-02-07</p>
+<p><b>Priority: </b>3
 </p>
-<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#SG16">SG16</a> status.</p>
 <p><b>Discussion:</b></p>
 <p>
 19.5.3.1 <a href="https://wg21.link/syserr.errcat.overview">[syserr.errcat.overview]</a> says:
@@ -122,6 +122,20 @@ The proposed resolution is similar to the one of LWG <a href="lwg-active.html#40
 
 <p>It might make sense to stop using the word "encoding" in
 19.5.3.1 <a href="https://wg21.link/syserr.errcat.overview">[syserr.errcat.overview]</a>.
+</p>
+
+
+<p><i>[2025-02-07; Reflector poll]</i></p>
+
+<p>
+Set priority to 3 after reflector poll.
+</p>
+<p>
+"Do we need to say something about <code class='backtick'>name()</code> too? Does this requirement apply
+to user overrides? If it does, what's the consequence of a violation? UB?
+This 'encoding for strings returned by the library' questions feels like it
+should be comprehensively addressed in a paper rather than as a patchwork of
+individual issues."
 </p>
 
 

@@ -60,7 +60,7 @@
 <p>This document is the Table of Contents for the <a href="lwg-active.html">Library Active Issues List</a>,
 <a href="lwg-defects.html">Library Defect Reports and Accepted Issues</a>, and <a href="lwg-closed.html">Library Closed Issues List</a>,
 sorted by priority.</p>
-<p>Revised 2025-02-07 at 20:51:44 UTC
+<p>Revised 2025-02-07 at 21:11:19 UTC
 </p><h2 id="Priority_1">Priority 1 (3 issues)</h2>
 <table class="issues-index">
 <tr>
@@ -546,7 +546,7 @@ specified to make <code><i>N</i></code> copies of <code>T</code> into the destin
 <td></td>
 </tr>
 </table>
-<h2 id="Priority_3">Priority 3 (381 issues)</h2>
+<h2 id="Priority_3">Priority 3 (383 issues)</h2>
 <table class="issues-index">
 <tr>
   <th><a href="lwg-toc.html">Issue</a></th>
@@ -1172,6 +1172,15 @@ and user requirements</td>
 <td>18.4.4 [concept.convertible]</td>
 <td><code>convertible_to</code> and temporary-bound references</td>
 <td><span class="no-pr">No</span></td>
+<td>3</td>
+<td></td>
+</tr>
+<tr>
+<td id="4156"><a href="lwg-active.html#4156" title="error_category messages have unspecified encoding (Status: SG16)">4156</a><sup><a href="https://cplusplus.github.io/LWG/issue4156">(i)</a></sup></td>
+<td><a href="lwg-active.html#SG16">SG16</a></td>
+<td>19.5.3.2 [syserr.errcat.virtuals]</td>
+<td><code>error_category</code> messages have unspecified encoding</td>
+<td>Yes</td>
 <td>3</td>
 <td></td>
 </tr>
@@ -3305,6 +3314,15 @@ regards to <code>ClassAtomCollatingElement</code></td>
 <td></td>
 </tr>
 <tr>
+<td id="4161"><a href="lwg-active.html#4161" title="Some free functions don't automatically work for program-defined std::complex&lt;NonFloatingPoint&gt; (Status: New)">4161</a><sup><a href="https://cplusplus.github.io/LWG/issue4161">(i)</a></sup></td>
+<td><a href="lwg-active.html#New">New</a></td>
+<td>29.4 [complex.numbers]</td>
+<td>Some free functions don't automatically work for program-defined <code>std::complex&lt;<i>NonFloatingPoint</i>&gt;</code></td>
+<td><span class="no-pr">No</span></td>
+<td>3</td>
+<td></td>
+</tr>
+<tr>
 <td id="3934"><a href="lwg-active.html#3934" title="std::complex&lt;T&gt;::operator=(const T&amp;) has no specification (Status: New)">3934</a><sup><a href="https://cplusplus.github.io/LWG/issue3934">(i)</a></sup></td>
 <td><a href="lwg-active.html#New">New</a></td>
 <td>29.4.3 [complex]</td>
@@ -4031,7 +4049,7 @@ don't support <code>DynamicBuffer</code> lvalues</td>
 <td></td>
 </tr>
 </table>
-<h2 id="Priority_4">Priority 4 (77 issues)</h2>
+<h2 id="Priority_4">Priority 4 (78 issues)</h2>
 <table class="issues-index">
 <tr>
   <th><a href="lwg-toc.html">Issue</a></th>
@@ -4430,6 +4448,15 @@ don't support <code>DynamicBuffer</code> lvalues</td>
 <td></td>
 </tr>
 <tr>
+<td id="4152"><a href="lwg-active.html#4152" title="The primary template of std::char_traits is totally underspecified (Status: New)">4152</a><sup><a href="https://cplusplus.github.io/LWG/issue4152">(i)</a></sup></td>
+<td><a href="lwg-active.html#New">New</a></td>
+<td>27.2.2 [char.traits.require]</td>
+<td>The primary template of <code>std::char_traits</code> is totally underspecified</td>
+<td>Yes</td>
+<td>4</td>
+<td></td>
+</tr>
+<tr>
 <td id="2237"><a href="lwg-active.html#2237" title="&lt;cuchar&gt; macros (Status: New)">2237</a><sup><a href="https://cplusplus.github.io/LWG/issue2237">(i)</a></sup></td>
 <td><a href="lwg-active.html#New">New</a></td>
 <td>27.5 [c.strings]</td>
@@ -4738,7 +4765,7 @@ should require the arguments to have the same length</td>
 <td></td>
 </tr>
 </table>
-<h2 id="Priority_99">Not Prioritized (72 issues)</h2>
+<h2 id="Priority_99">Not Prioritized (68 issues)</h2>
 <table class="issues-index">
 <tr>
   <th><a href="lwg-toc.html">Issue</a></th>
@@ -4809,15 +4836,6 @@ should require the arguments to have the same length</td>
 <td>18.4.9 [concept.swappable]</td>
 <td>Should swapping a built-in array or <code class='backtick'>std::array</code> with itself result in UB?</td>
 <td><span class="no-pr">No</span></td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td id="4156"><a href="lwg-active.html#4156" title="error_category messages have unspecified encoding (Status: New)">4156</a><sup><a href="https://cplusplus.github.io/LWG/issue4156">(i)</a></sup></td>
-<td><a href="lwg-active.html#New">New</a></td>
-<td>19.5.3.2 [syserr.errcat.virtuals]</td>
-<td><code>error_category</code> messages have unspecified encoding</td>
-<td>Yes</td>
 <td></td>
 <td></td>
 </tr>
@@ -5107,15 +5125,6 @@ max, and minmax is unclear (Status: New)">4167</a><sup><a href="https://cplusplu
 <td></td>
 </tr>
 <tr>
-<td id="4152"><a href="lwg-active.html#4152" title="The primary template of std::char_traits is totally underspecified (Status: New)">4152</a><sup><a href="https://cplusplus.github.io/LWG/issue4152">(i)</a></sup></td>
-<td><a href="lwg-active.html#New">New</a></td>
-<td>27.2.2 [char.traits.require]</td>
-<td>The primary template of <code>std::char_traits</code> is totally underspecified</td>
-<td>Yes</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
 <td id="2883"><a href="lwg-active.html#2883" title="The standard library should provide string_view parameters instead or in addition for functions 
       defined with char const * or string const &amp; as parameter types. (Status: LEWG)">2883</a><sup><a href="https://cplusplus.github.io/LWG/issue2883">(i)</a></sup></td>
 <td><a href="lwg-active.html#LEWG">LEWG</a></td>
@@ -5150,15 +5159,6 @@ max, and minmax is unclear (Status: New)">4167</a><sup><a href="https://cplusplu
 <td>28.5.7.4 [format.range.fmtmap]</td>
 <td>Map formatter may conflict with user-defined specializations of <code>pair</code>/<code>tuple</code> formatters</td>
 <td>Yes</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td id="4161"><a href="lwg-active.html#4161" title="Some free functions don't automatically work for program-defined std::complex&lt;NonFloatingPoint&gt; (Status: New)">4161</a><sup><a href="https://cplusplus.github.io/LWG/issue4161">(i)</a></sup></td>
-<td><a href="lwg-active.html#New">New</a></td>
-<td>29.4 [complex.numbers]</td>
-<td>Some free functions don't automatically work for program-defined <code>std::complex&lt;<i>NonFloatingPoint</i>&gt;</code></td>
-<td><span class="no-pr">No</span></td>
 <td></td>
 <td></td>
 </tr>
@@ -5367,15 +5367,6 @@ vprint_unicode/vprint_nonunicode (Status: New)">4039</a><sup><a href="https://cp
 <td><a href="lwg-active.html#New">New</a></td>
 <td>33.9.12.8 [exec.let]</td>
 <td><code class='backtick'>let_[*].transform_env</code> is specified in terms of the <code class='backtick'>let_*</code> sender itself instead of its child</td>
-<td>Yes</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td id="4150"><a href="lwg-active.html#4150" title="The preconditions on run_loop::run() are too strict (Status: New)">4150</a><sup><a href="https://cplusplus.github.io/LWG/issue4150">(i)</a></sup></td>
-<td><a href="lwg-active.html#New">New</a></td>
-<td>33.12.1.4 [exec.run.loop.members]</td>
-<td>The preconditions on <code>run_loop::run()</code> are too strict</td>
 <td>Yes</td>
 <td></td>
 <td></td>

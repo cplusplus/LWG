@@ -64,8 +64,8 @@
 <p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#New">New</a> status.</em></p>
 <h3 id="4161"><a href="lwg-active.html#4161">4161</a>. Some free functions don't automatically work for program-defined <code>std::complex&lt;<i>NonFloatingPoint</i>&gt;</code></h3>
 <p><b>Section:</b> 29.4 <a href="https://wg21.link/complex.numbers">[complex.numbers]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Jiang An <b>Opened:</b> 2024-09-29 <b>Last modified:</b> 2024-10-03</p>
-<p><b>Priority: </b>Not Prioritized
+ <b>Submitter:</b> Jiang An <b>Opened:</b> 2024-09-29 <b>Last modified:</b> 2025-02-07</p>
+<p><b>Priority: </b>3
 </p>
 <p><b>View all other</b> <a href="lwg-index.html#complex.numbers">issues</a> in [complex.numbers].</p>
 <p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
@@ -84,6 +84,19 @@ floating-point type. However, it's unclear to me how to handle cases where the i
 <code>complex&lt;X&gt;</code> (where <code>X</code> is not a program-defined type) as extension, and whether <i>Mandates</i> 
 should be used.
 </p>
+
+<p><i>[2025-02-07; Reflector poll]</i></p>
+
+<p>
+Set priority to 3 after reflector poll.
+</p>
+<p>
+"Program-defined specializations of <code class='backtick'>std::complex</code>
+(i.e. explicit specializations and program-defined partial specializations)
+seem unsupportably broken. We should say so explicitly until somebody writes
+a paper to fix them."
+</p>
+
 
 
 <p id="res-4161"><b>Proposed resolution:</b></p>

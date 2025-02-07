@@ -67,8 +67,8 @@
 This document is the Index by Status and Date for the <a href="lwg-active.html">Library Active Issues List</a>,
 <a href="lwg-defects.html">Library Defect Reports and Accepted Issues</a>, and <a href="lwg-closed.html">Library Closed Issues List</a>.
 </p>
-<p>Revised 2025-02-07 at 20:51:44 UTC
-</p><h2 id="New">New (460 issues)</h2>
+<p>Revised 2025-02-07 at 21:11:19 UTC
+</p><h2 id="New">New (458 issues)</h2>
 <table class="issues-index">
 <tr>
   <th><a href="lwg-toc.html">Issue</a></th>
@@ -140,6 +140,24 @@ This document is the Index by Status and Date for the <a href="lwg-active.html">
 <td>Complexity of <code class='backtick'>inplace_merge()</code> is incorrect</td>
 <td>Yes</td>
 <td>4</td>
+<td></td>
+</tr>
+<tr>
+<td id="4152"><a href="lwg-active.html#4152" title="The primary template of std::char_traits is totally underspecified (Status: New)">4152</a><sup><a href="https://cplusplus.github.io/LWG/issue4152">(i)</a></sup></td>
+<td><a href="lwg-active.html#New">New</a></td>
+<td>27.2.2 [char.traits.require]</td>
+<td>The primary template of <code>std::char_traits</code> is totally underspecified</td>
+<td>Yes</td>
+<td>4</td>
+<td></td>
+</tr>
+<tr>
+<td id="4161"><a href="lwg-active.html#4161" title="Some free functions don't automatically work for program-defined std::complex&lt;NonFloatingPoint&gt; (Status: New)">4161</a><sup><a href="https://cplusplus.github.io/LWG/issue4161">(i)</a></sup></td>
+<td><a href="lwg-active.html#New">New</a></td>
+<td>29.4 [complex.numbers]</td>
+<td>Some free functions don't automatically work for program-defined <code>std::complex&lt;<i>NonFloatingPoint</i>&gt;</code></td>
+<td><span class="no-pr">No</span></td>
+<td>3</td>
 <td></td>
 </tr>
 <tr>
@@ -424,15 +442,6 @@ max, and minmax is unclear (Status: New)">4167</a><sup><a href="https://cplusplu
 <td></td>
 </tr>
 <tr>
-<td id="4161"><a href="lwg-active.html#4161" title="Some free functions don't automatically work for program-defined std::complex&lt;NonFloatingPoint&gt; (Status: New)">4161</a><sup><a href="https://cplusplus.github.io/LWG/issue4161">(i)</a></sup></td>
-<td><a href="lwg-active.html#New">New</a></td>
-<td>29.4 [complex.numbers]</td>
-<td>Some free functions don't automatically work for program-defined <code>std::complex&lt;<i>NonFloatingPoint</i>&gt;</code></td>
-<td><span class="no-pr">No</span></td>
-<td></td>
-<td></td>
-</tr>
-<tr>
 <td id="4158"><a href="lwg-active.html#4158" title="packaged_task::operator= should abandon its shared state (Status: New)">4158</a><sup><a href="https://cplusplus.github.io/LWG/issue4158">(i)</a></sup></td>
 <td><a href="lwg-active.html#New">New</a></td>
 <td>32.10.10.2 [futures.task.members]</td>
@@ -498,15 +507,6 @@ passed to allocator <code>construct</code> and <code>destroy</code></td>
 <td></td>
 </tr>
 <tr>
-<td id="4156"><a href="lwg-active.html#4156" title="error_category messages have unspecified encoding (Status: New)">4156</a><sup><a href="https://cplusplus.github.io/LWG/issue4156">(i)</a></sup></td>
-<td><a href="lwg-active.html#New">New</a></td>
-<td>19.5.3.2 [syserr.errcat.virtuals]</td>
-<td><code>error_category</code> messages have unspecified encoding</td>
-<td>Yes</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
 <td id="4151"><a href="lwg-active.html#4151" title="Precondition of inplace_vector::swap (Status: New)">4151</a><sup><a href="https://cplusplus.github.io/LWG/issue4151">(i)</a></sup></td>
 <td><a href="lwg-active.html#New">New</a></td>
 <td>23.3.14.5 [inplace.vector.modifiers]</td>
@@ -531,24 +531,6 @@ passed to allocator <code>construct</code> and <code>destroy</code></td>
 <td><code>generator::iterator</code>'s <code>operator*</code> is not <code>noexcept</code> when it can be</td>
 <td>Yes</td>
 <td>3</td>
-<td></td>
-</tr>
-<tr>
-<td id="4152"><a href="lwg-active.html#4152" title="The primary template of std::char_traits is totally underspecified (Status: New)">4152</a><sup><a href="https://cplusplus.github.io/LWG/issue4152">(i)</a></sup></td>
-<td><a href="lwg-active.html#New">New</a></td>
-<td>27.2.2 [char.traits.require]</td>
-<td>The primary template of <code>std::char_traits</code> is totally underspecified</td>
-<td>Yes</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td id="4150"><a href="lwg-active.html#4150" title="The preconditions on run_loop::run() are too strict (Status: New)">4150</a><sup><a href="https://cplusplus.github.io/LWG/issue4150">(i)</a></sup></td>
-<td><a href="lwg-active.html#New">New</a></td>
-<td>33.12.1.4 [exec.run.loop.members]</td>
-<td>The preconditions on <code>run_loop::run()</code> are too strict</td>
-<td>Yes</td>
-<td></td>
 <td></td>
 </tr>
 <tr>
@@ -5391,7 +5373,7 @@ types &mdash; this is inconsistent with other types in the library</td>
 <td></td>
 </tr>
 </table>
-<h2 id="SG16">SG16 (3 issues)</h2>
+<h2 id="SG16">SG16 (4 issues)</h2>
 <table class="issues-index">
 <tr>
   <th><a href="lwg-toc.html">Issue</a></th>
@@ -5401,6 +5383,15 @@ types &mdash; this is inconsistent with other types in the library</td>
   <th>Proposed Resolution</th>
   <th><a href="unresolved-prioritized.html">Priority</a></th>
   <th>Duplicates</th>
+</tr>
+<tr>
+<td id="4156"><a href="lwg-active.html#4156" title="error_category messages have unspecified encoding (Status: SG16)">4156</a><sup><a href="https://cplusplus.github.io/LWG/issue4156">(i)</a></sup></td>
+<td><a href="lwg-active.html#SG16">SG16</a></td>
+<td>19.5.3.2 [syserr.errcat.virtuals]</td>
+<td><code>error_category</code> messages have unspecified encoding</td>
+<td>Yes</td>
+<td>3</td>
+<td></td>
 </tr>
 <tr>
 <td id="4087"><a href="lwg-active.html#4087" title="Standard exception messages have unspecified encoding (Status: SG16)">4087</a><sup><a href="https://cplusplus.github.io/LWG/issue4087">(i)</a></sup></td>

@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <title>Issue 4150: The preconditions on run_loop::run() are too strict</title>
 <meta property="og:title" content="Issue 4150: The preconditions on run_loop::run() are too strict">
-<meta property="og:description" content="C++ library issue. Status: New">
+<meta property="og:description" content="C++ library issue. Status: Resolved">
 <meta property="og:url" content="https://cplusplus.github.io/LWG/issue4150.html">
 <meta property="og:type" content="website">
 <meta property="og:image" content="http://cplusplus.github.io/LWG/images/cpp_logo.png">
@@ -61,13 +61,13 @@
 </head>
 <body>
 <hr>
-<p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#New">New</a> status.</em></p>
-<h3 id="4150"><a href="lwg-active.html#4150">4150</a>. The preconditions on <code>run_loop::run()</code> are too strict</h3>
-<p><b>Section:</b> 33.12.1.4 <a href="https://wg21.link/exec.run.loop.members">[exec.run.loop.members]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Eric Niebler <b>Opened:</b> 2024-09-05 <b>Last modified:</b> 2024-09-06</p>
+<p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#Resolved">Resolved</a> status.</em></p>
+<h3 id="4150"><a href="lwg-defects.html#4150">4150</a>. The preconditions on <code>run_loop::run()</code> are too strict</h3>
+<p><b>Section:</b> 33.12.1.4 <a href="https://wg21.link/exec.run.loop.members">[exec.run.loop.members]</a> <b>Status:</b> <a href="lwg-active.html#Resolved">Resolved</a>
+ <b>Submitter:</b> Eric Niebler <b>Opened:</b> 2024-09-05 <b>Last modified:</b> 2025-02-07</p>
 <p><b>Priority: </b>Not Prioritized
 </p>
-<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#Resolved">Resolved</a> status.</p>
 <p><b>Discussion:</b></p>
 <p>
 From <a href="https://github.com/cplusplus/sender-receiver/issues/280">sender-receiver/issues #280</a>:
@@ -90,6 +90,10 @@ loop.run();
 If <code>sndr</code> completes synchronously, the <code>sync_wait_receiver</code> will call <code>finish()</code> 
 on the loop before <code>loop.run()</code> is called, violating <code>run</code>'s precondition.
 </p>
+<p><i>[2025-02-07 Status changed: New &rarr; Resolved.]</i></p>
+
+<p>Resolved by <a href="https://wg21.link/P3396R1">P3396R1</a>.</p>
+
 
 
 <p id="res-4150"><b>Proposed resolution:</b></p>
