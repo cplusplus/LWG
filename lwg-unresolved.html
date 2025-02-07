@@ -54,7 +54,7 @@
 </style>
 </head>
 <body>
-<p>Revised 2025-02-07 at 16:59:15 UTC
+<p>Revised 2025-02-07 at 17:01:31 UTC
 </p><h2>Unresolved Issues</h2>
 <hr>
 <h3 id="423"><a href="#423">423</a><sup><a href="https://cplusplus.github.io/LWG/issue423">(i)</a></sup>. Effects of negative <code>streamsize</code> in iostreams</h3>
@@ -64413,9 +64413,9 @@ Set priority to 3 after reflector poll.
 </p>
 <p>"I'd very much like to see <code class='backtick'>nullptr</code> added to the footnote."</p>
 
+<p><strong>Previous resolution [SUPERSEDED]:</strong></p>
+<blockquote class="note">
 
-
-<p id="res-4182"><b>Proposed resolution:</b></p>
 <p>
 This wording is relative to <a href="https://wg21.link/N5001">N5001</a>.
 </p>
@@ -64436,6 +64436,35 @@ This wording is relative to <a href="https://wg21.link/N5001">N5001</a>.
 </li>
 
 </ol>
+</blockquote>
+
+<p><i>[2025-02-07; Jonathan provides improved wording]</i></p>
+
+
+
+
+<p id="res-4182"><b>Proposed resolution:</b></p>
+<p>
+This wording is relative to <a href="https://wg21.link/N5001">N5001</a>.
+</p>
+
+<ol>
+<li><p>Modify 17.2.3 <a href="https://wg21.link/support.types.nullptr">[support.types.nullptr]</a> as indicated:</p>
+
+<blockquote>
+<p>
+-2- The macro <code class='backtick'>NULL</code> is an implementation-defined null pointer constant <ins>that is a literal 
+(5.13.2 <a href="https://wg21.link/lex.icon">[lex.icon]</a>, 5.13.8 <a href="https://wg21.link/lex.nullptr">[lex.nullptr]</a>)</ins>.<sup>footnote 161</sup>
+<p/>
+<small>161) Possible definitions include <ins><code class='backtick'>nullptr</code>,</ins> <code class='backtick'>0</code> and <code class='backtick'>0L</code>,
+but not <code class='backtick'>(void*)0</code>.</small>
+</p>
+</blockquote>
+
+</li>
+
+</ol>
+
 
 
 
