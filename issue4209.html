@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Issue 4209: default_domain::transform_env should be returning FWD-ENV(env)</title>
+<meta property="og:title" content="Issue 4209: default_domain::transform_env should be returning FWD-ENV(env)">
+<meta property="og:description" content="C++ library issue. Status: New">
+<meta property="og:url" content="https://cplusplus.github.io/LWG/issue4209.html">
+<meta property="og:type" content="website">
+<meta property="og:image" content="http://cplusplus.github.io/LWG/images/cpp_logo.png">
+<meta property="og:image:alt" content="C++ logo">
+<style>
+  p {text-align:justify}
+  li {text-align:justify}
+  pre code.backtick::before { content: "`" }
+  pre code.backtick::after { content: "`" }
+  blockquote.note
+  {
+    background-color:#E0E0E0;
+    padding-left: 15px;
+    padding-right: 15px;
+    padding-top: 1px;
+    padding-bottom: 1px;
+  }
+  ins {background-color:#A0FFA0}
+  del {background-color:#FFA0A0}
+  table.issues-index { border: 1px solid; border-collapse: collapse; }
+  table.issues-index th { text-align: center; padding: 4px; border: 1px solid; }
+  table.issues-index td { padding: 4px; border: 1px solid; }
+  table.issues-index td:nth-child(1) { text-align: right; }
+  table.issues-index td:nth-child(2) { text-align: left; }
+  table.issues-index td:nth-child(3) { text-align: left; }
+  table.issues-index td:nth-child(4) { text-align: left; }
+  table.issues-index td:nth-child(5) { text-align: center; }
+  table.issues-index td:nth-child(6) { text-align: center; }
+  table.issues-index td:nth-child(7) { text-align: left; }
+  table.issues-index td:nth-child(5) span.no-pr { color: red; }
+  @media (prefers-color-scheme: dark) {
+     html {
+        color: #ddd;
+        background-color: black;
+     }
+     ins {
+        background-color: #225522
+     }
+     del {
+        background-color: #662222
+     }
+     a {
+        color: #6af
+     }
+     a:visited {
+        color: #6af
+     }
+     blockquote.note
+     {
+        background-color: rgba(255, 255, 255, .10)
+     }
+  }
+</style>
+</head>
+<body>
+<hr>
+<p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#New">New</a> status.</em></p>
+<h3 id="4209"><a href="lwg-active.html#4209">4209</a>. <code>default_domain::transform_env</code> should be returning <code><i>FWD-ENV</i>(env)</code></h3>
+<p><b>Section:</b> 33.9.5 <a href="https://wg21.link/exec.domain.default">[exec.domain.default]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
+ <b>Submitter:</b> Eric Niebler <b>Opened:</b> 2025-02-07 <b>Last modified:</b> 2025-02-09</p>
+<p><b>Priority: </b>Not Prioritized
+</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
+<p><b>Discussion:</b></p>
+<p>
+Imported from <a href="https://github.com/cplusplus/sender-receiver/issues/168">cplusplus/sender-receiver #168</a>.
+</p>
+<p>
+When writing a generic recursive sender transform, you need to ability to unpack an unknown sender 
+<code class='backtick'>S</code> and recursively transform the children.
+<p/>
+For that, it can be useful to know the type of the environment that <code class='backtick'>S</code> will use when connecting its 
+child senders, which is why <code class='backtick'>transform_env</code> exists.
+<p/>
+For an environment <code class='backtick'>E</code> and a sender <code class='backtick'>S</code> with tag <code class='backtick'>T</code> child <code class='backtick'>C</code>, the expression 
+<code class='backtick'>default_domain().transform_env(S, E)</code> should return an environment <code class='backtick'>E2</code> that is identical to the 
+environment of the receiver that <code class='backtick'>S</code> uses to connect <code class='backtick'>C</code>.
+<p/>
+<code class='backtick'>default_domain().transform_env(S, E)</code> will first check whether <code class='backtick'>T().transform_env(S, E)</code> is 
+well-formed. If so, it will return that (e.g. <code class='backtick'>when_all_t</code> has a <code class='backtick'>transform_env</code> that adds a stop token 
+to the environment).
+<p/>
+If <code class='backtick'>T().transform_env(S, E)</code> is not well-formed, what should <code class='backtick'>default_domain::transform_env</code> do? At 
+present, it returns <code class='backtick'>E</code> unmodified.
+<p/>
+But 33.9.12.1 <a href="https://wg21.link/exec.adapt.general">[exec.adapt.general]</a> has this:
+</p>
+<blockquote style="border-left: 3px solid #ccc;padding-left: 15px;">
+<p>
+[unless otherwise specified, when] a parent sender is connected to a receiver <code class='backtick'>rcvr</code>, any receiver used 
+to connect a child sender has an associated environment equal to <code><i>FWD-ENV</i>(get_env(rcvr))</code>.
+</p>
+</blockquote>
+<p>
+So the correct thing for <code class='backtick'>default_domain::transform_env</code> to do is to return <code><i>FWD-ENV</i>(get_env(rcvr))</code>.
+</p>
+
+
+<p id="res-4209"><b>Proposed resolution:</b></p>
+<p>
+This wording is relative to <a href="https://wg21.link/N5001">N5001</a>.
+</p>
+
+<ol>
+<li>
+<p>Modify 33.9.5 <a href="https://wg21.link/exec.domain.default">[exec.domain.default]</a> as indicated:</p>
+
+<blockquote>
+<pre>
+template&lt;sender Sndr, <i>queryable</i> Env&gt;
+  constexpr <i>queryable</i> decltype(auto) transform_env(Sndr&amp;&amp; sndr, Env&amp;&amp; env) noexcept;
+</pre>
+<blockquote>
+<p>
+-5- Let <code class='backtick'>e</code> be the expression
+</p>
+<blockquote><pre>
+tag_of_t&lt;Sndr&gt;().transform_env(std::forward&lt;Sndr&gt;(sndr), std::forward&lt;Env&gt;(env))
+</pre></blockquote>
+<p>
+if that expression is well-formed; otherwise, <code><del>static_cast&lt;Env&gt;</del><ins><i>FWD-ENV</i></ins>(std::forward&lt;Env&gt;(env))</code>.
+<p/>
+-6- <i>Mandates</i>: <code class='backtick'>noexcept(e)</code> is <code class='backtick'>true</code>.
+<p/>
+-7- <i>Returns</i>: <code class='backtick'>e</code>.
+</p>
+</blockquote>
+</blockquote>
+</li>
+</ol>
+
+
+
+
+
+
+</body>
+</html>
