@@ -54,7 +54,7 @@
 </style>
 </head>
 <body>
-<p>Revised 2025-02-09 at 14:25:35 UTC
+<p>Revised 2025-02-09 at 16:19:37 UTC
 </p><h2>Unresolved Issues</h2>
 <hr>
 <h3 id="423"><a href="#423">423</a><sup><a href="https://cplusplus.github.io/LWG/issue423">(i)</a></sup>. Effects of negative <code>streamsize</code> in iostreams</h3>
@@ -66504,6 +66504,63 @@ if that expression is well-formed; otherwise, <code><del>static_cast&lt;Env&gt;<
 </li>
 </ol>
 
+
+
+
+
+
+<hr>
+<h3 id="4210"><a href="#4210">4210</a><sup><a href="https://cplusplus.github.io/LWG/issue4210">(i)</a></sup>. Issue with <code>cache_latest_view::<i>iterator</i></code>'s reference type </h3>
+<p><b>Section:</b> 25.7.34.3 <a href="https://wg21.link/range.cache.latest.iterator">[range.cache.latest.iterator]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
+ <b>Submitter:</b> Hewill Kang <b>Opened:</b> 2025-02-09 <b>Last modified:</b> 2025-02-09</p>
+<p><b>Priority: </b>Not Prioritized
+</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
+<p><b>Discussion:</b></p>
+<p>
+<code>cache_latest_view::<i>iterator</i></code> can be roughly regarded as an iterator that
+transforms the original iterator's reference, because its reference is <i>always</i> an lvalue 
+which is <code>range_reference_t&lt;V&gt;&amp;</code>, even if the original iterator returns 
+an rvalue.
+<p/>
+In this case, it seems a bit odd to still specialize <code>iter_move</code> and return the rvalue 
+reference type of the original iterator, because the original reference has changed, so the former 
+may not form a valid common reference with the original rvalue reference.
+<p/>
+That is, in some rare cases even if the <code>cache_latest_view</code> can be legally constructed, 
+it may not be an <code>input_range</code> as <code>indirectly_readable</code> is not satisfied.
+<p/>
+A contrived example could be:
+</p>
+<blockquote><pre>
+struct I {
+  using value_type = int;
+  using difference_type = int;
+
+  struct move_only_ref {
+    move_only_ref(const int&amp;);
+    move_only_ref(move_only_ref&amp;&amp;) = default;
+  };
+
+  move_only_ref operator*() const;
+  I&amp; operator++();
+  void operator++(int);
+};
+
+using R = ranges::cache_latest_view&lt;ranges::subrange&lt;I, unreachable_sentinel_t&gt;&gt;; // ok
+
+static_assert(input_iterator&lt;I&gt;);
+static_assert(ranges::input_range&lt;R&gt;); // failed
+</pre></blockquote>
+<p>
+It's unclear whether we should change the reference type to <code>range_reference_t&lt;V&gt;&amp;&amp;</code> 
+to preserve the original ref-qualifiers as much as possible (I don't see any discussion of this option 
+in the original paper), or not provide a specialized <code>iter_move</code>, since it's intuitive to have 
+the default <code>iter_move</code> return an rvalue when it always returns an lvalue.
+</p>
+
+
+<p id="res-4210"><b>Proposed resolution:</b></p>
 
 
 

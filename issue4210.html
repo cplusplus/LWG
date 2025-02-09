@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Issue 4210: Issue with cache_latest_view::iterator's reference type </title>
+<meta property="og:title" content="Issue 4210: Issue with cache_latest_view::iterator's reference type ">
+<meta property="og:description" content="C++ library issue. Status: New">
+<meta property="og:url" content="https://cplusplus.github.io/LWG/issue4210.html">
+<meta property="og:type" content="website">
+<meta property="og:image" content="http://cplusplus.github.io/LWG/images/cpp_logo.png">
+<meta property="og:image:alt" content="C++ logo">
+<style>
+  p {text-align:justify}
+  li {text-align:justify}
+  pre code.backtick::before { content: "`" }
+  pre code.backtick::after { content: "`" }
+  blockquote.note
+  {
+    background-color:#E0E0E0;
+    padding-left: 15px;
+    padding-right: 15px;
+    padding-top: 1px;
+    padding-bottom: 1px;
+  }
+  ins {background-color:#A0FFA0}
+  del {background-color:#FFA0A0}
+  table.issues-index { border: 1px solid; border-collapse: collapse; }
+  table.issues-index th { text-align: center; padding: 4px; border: 1px solid; }
+  table.issues-index td { padding: 4px; border: 1px solid; }
+  table.issues-index td:nth-child(1) { text-align: right; }
+  table.issues-index td:nth-child(2) { text-align: left; }
+  table.issues-index td:nth-child(3) { text-align: left; }
+  table.issues-index td:nth-child(4) { text-align: left; }
+  table.issues-index td:nth-child(5) { text-align: center; }
+  table.issues-index td:nth-child(6) { text-align: center; }
+  table.issues-index td:nth-child(7) { text-align: left; }
+  table.issues-index td:nth-child(5) span.no-pr { color: red; }
+  @media (prefers-color-scheme: dark) {
+     html {
+        color: #ddd;
+        background-color: black;
+     }
+     ins {
+        background-color: #225522
+     }
+     del {
+        background-color: #662222
+     }
+     a {
+        color: #6af
+     }
+     a:visited {
+        color: #6af
+     }
+     blockquote.note
+     {
+        background-color: rgba(255, 255, 255, .10)
+     }
+  }
+</style>
+</head>
+<body>
+<hr>
+<p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#New">New</a> status.</em></p>
+<h3 id="4210"><a href="lwg-active.html#4210">4210</a>. Issue with <code>cache_latest_view::<i>iterator</i></code>'s reference type </h3>
+<p><b>Section:</b> 25.7.34.3 <a href="https://wg21.link/range.cache.latest.iterator">[range.cache.latest.iterator]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
+ <b>Submitter:</b> Hewill Kang <b>Opened:</b> 2025-02-09 <b>Last modified:</b> 2025-02-09</p>
+<p><b>Priority: </b>Not Prioritized
+</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
+<p><b>Discussion:</b></p>
+<p>
+<code>cache_latest_view::<i>iterator</i></code> can be roughly regarded as an iterator that
+transforms the original iterator's reference, because its reference is <i>always</i> an lvalue 
+which is <code>range_reference_t&lt;V&gt;&amp;</code>, even if the original iterator returns 
+an rvalue.
+<p/>
+In this case, it seems a bit odd to still specialize <code>iter_move</code> and return the rvalue 
+reference type of the original iterator, because the original reference has changed, so the former 
+may not form a valid common reference with the original rvalue reference.
+<p/>
+That is, in some rare cases even if the <code>cache_latest_view</code> can be legally constructed, 
+it may not be an <code>input_range</code> as <code>indirectly_readable</code> is not satisfied.
+<p/>
+A contrived example could be:
+</p>
+<blockquote><pre>
+struct I {
+  using value_type = int;
+  using difference_type = int;
+
+  struct move_only_ref {
+    move_only_ref(const int&amp;);
+    move_only_ref(move_only_ref&amp;&amp;) = default;
+  };
+
+  move_only_ref operator*() const;
+  I&amp; operator++();
+  void operator++(int);
+};
+
+using R = ranges::cache_latest_view&lt;ranges::subrange&lt;I, unreachable_sentinel_t&gt;&gt;; // ok
+
+static_assert(input_iterator&lt;I&gt;);
+static_assert(ranges::input_range&lt;R&gt;); // failed
+</pre></blockquote>
+<p>
+It's unclear whether we should change the reference type to <code>range_reference_t&lt;V&gt;&amp;&amp;</code> 
+to preserve the original ref-qualifiers as much as possible (I don't see any discussion of this option 
+in the original paper), or not provide a specialized <code>iter_move</code>, since it's intuitive to have 
+the default <code>iter_move</code> return an rvalue when it always returns an lvalue.
+</p>
+
+
+<p id="res-4210"><b>Proposed resolution:</b></p>
+
+
+
+
+
+</body>
+</html>
