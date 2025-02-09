@@ -54,7 +54,7 @@
 </style>
 </head>
 <body>
-<p>Revised 2025-02-07 at 22:54:55 UTC
+<p>Revised 2025-02-09 at 13:29:26 UTC
 </p><h2>Unresolved Issues</h2>
 <hr>
 <h3 id="423"><a href="#423">423</a><sup><a href="https://cplusplus.github.io/LWG/issue423">(i)</a></sup>. Effects of negative <code>streamsize</code> in iostreams</h3>
@@ -66363,6 +66363,67 @@ is specified.
 </blockquote>
 </li>
 </ol>
+
+
+
+
+
+<hr>
+<h3 id="4208"><a href="#4208">4208</a><sup><a href="https://cplusplus.github.io/LWG/issue4208">(i)</a></sup>. Wording needs to ensure that in <code class='backtick'>connect(sndr, rcvr)</code> that <code class='backtick'>rcvr</code> expression is only evaluated once</h3>
+<p><b>Section:</b> 33.9.10 <a href="https://wg21.link/exec.connect">[exec.connect]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
+ <b>Submitter:</b> Eric Niebler <b>Opened:</b> 2025-02-07 <b>Last modified:</b> 2025-02-09</p>
+<p><b>Priority: </b>Not Prioritized
+</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
+<p><b>Discussion:</b></p>
+<p>
+Imported from <a href="https://github.com/cplusplus/sender-receiver/issues/325">cplusplus/sender-receiver #325</a>.
+</p>
+<p>
+The current wording of <code class='backtick'>connect(sndr, rcvr)</code> defines the <code class='backtick'>new_sndr</code> expression as 
+<code>transform_sender(decltype(<i>get-domain-late</i>(sndr, get_env(rcvr))){}, sndr, get_env(rcvr))</code>.
+<p/>
+It then defines <code class='backtick'>connect(sndr, rcvr)</code> as expression equivalent to <code class='backtick'>new_sndr.connect(rcvr)</code>.
+<p/>
+As currently worded, this requires evaluating the <code class='backtick'>rcvr</code> expression twice. Note that the first
+usage in the <code class='backtick'>new_sndr</code> expression is unevaluated, but the second usage in <code class='backtick'>get_env(rcvr)</code> is evaluated.
+<p/>
+I think we need to add an extra sentence at the end of this section saying "Where the expression 
+<code class='backtick'>rcvr</code> is only evaluated once." or similar.
+</p>
+
+
+<p id="res-4208"><b>Proposed resolution:</b></p>
+<p>
+This wording is relative to <a href="https://wg21.link/N5001">N5001</a>.
+</p>
+
+<ol>
+<li>
+<p>Modify 33.9.10 <a href="https://wg21.link/exec.connect">[exec.connect]</a> as indicated:</p>
+
+<blockquote>
+<p>
+-6- The expression <code class='backtick'>connect(sndr, rcvr)</code> is expression-equivalent to:
+</p>
+<ol style="list-style-type: none">
+<li><p>(6.1) &mdash; <code class='backtick'>new_sndr.connect(rcvr)</code> if that expression is well-formed.
+<p/>
+<i>Mandates</i>: The type of the expression above satisfies <code class='backtick'>operation_state</code>.
+</p>
+</li>
+<li><p>(6.2) &mdash; Otherwise, <code><i>connect-awaitable</i>(new_sndr, rcvr)</code>.</p></li>
+</ol>
+<p>
+<ins>except that <code class='backtick'>rcvr</code> is evaluated only once.</ins>
+<p/>
+<i>Mandates</i>: <code>sender&lt;Sndr&gt; &amp;&amp; receiver&lt;Rcvr&gt;</code> is <code>true</code>.
+<p/>
+</p>
+</blockquote>
+</li>
+</ol>
+
 
 
 
