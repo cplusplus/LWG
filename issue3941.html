@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <title>Issue 3941: &sect;[atomics.order] inadvertently prohibits widespread implementation techniques</title>
 <meta property="og:title" content="Issue 3941: &sect;[atomics.order] inadvertently prohibits widespread implementation techniques">
-<meta property="og:description" content="C++ library issue. Status: SG1">
+<meta property="og:description" content="C++ library issue. Status: Open">
 <meta property="og:url" content="https://cplusplus.github.io/LWG/issue3941.html">
 <meta property="og:type" content="website">
 <meta property="og:image" content="http://cplusplus.github.io/LWG/images/cpp_logo.png">
@@ -61,15 +61,15 @@
 </head>
 <body>
 <hr>
-<p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#SG1">SG1</a> status.</em></p>
+<p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#Open">Open</a> status.</em></p>
 <h3 id="3941"><a href="lwg-active.html#3941">3941</a>. &sect;[atomics.order] inadvertently prohibits widespread implementation techniques</h3>
-<p><b>Section:</b> 32.5.4 <a href="https://wg21.link/atomics.order">[atomics.order]</a> <b>Status:</b> <a href="lwg-active.html#SG1">SG1</a>
- <b>Submitter:</b> Hans Boehm <b>Opened:</b> 2023-05-27 <b>Last modified:</b> 2023-11-07</p>
+<p><b>Section:</b> 32.5.4 <a href="https://wg21.link/atomics.order">[atomics.order]</a> <b>Status:</b> <a href="lwg-active.html#Open">Open</a>
+ <b>Submitter:</b> Hans Boehm <b>Opened:</b> 2023-05-27 <b>Last modified:</b> 2025-02-10</p>
 <p><b>Priority: </b>3
 </p>
 <p><b>View other</b> <a href="lwg-index-open.html#atomics.order">active issues</a> in [atomics.order].</p>
 <p><b>View all other</b> <a href="lwg-index.html#atomics.order">issues</a> in [atomics.order].</p>
-<p><b>View all issues with</b> <a href="lwg-status.html#SG1">SG1</a> status.</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#Open">Open</a> status.</p>
 <p><b>Discussion:</b></p>
 <p>
 [Discovered by Ori Lahav, lead author of <a href="https://plv.mpi-sws.org/scfix/paper.pdf">Repairing Sequential Consistency in C/C++11</a>,
@@ -135,6 +135,13 @@ of the audience, and would definitely ease verification and reduce the probabili
 
 <p>
 Set priority to 3 after reflector poll. Send to SG1.
+</p>
+
+<p><i>[2025-02-10; SG1 reviewed the issue in March 2024 ]</i></p>
+
+<p>
+"we want to address LWG3941 in a way that preserves existing implementations
+like X86" - unanimous consent.
 </p>
 
 
