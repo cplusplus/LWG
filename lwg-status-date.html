@@ -67,7 +67,7 @@
 This document is the Index by Status and Date for the <a href="lwg-active.html">Library Active Issues List</a>,
 <a href="lwg-defects.html">Library Defect Reports and Accepted Issues</a>, and <a href="lwg-closed.html">Library Closed Issues List</a>.
 </p>
-<p>Revised 2025-02-11 at 15:49:11 UTC
+<p>Revised 2025-02-11 at 17:36:49 UTC
 </p><h2 id="Voting">Voting (9 issues)</h2>
 <table class="issues-index">
 <tr>
@@ -158,6 +158,72 @@ This document is the Index by Status and Date for the <a href="lwg-active.html">
 <td><code class='backtick'>get_env()</code> specified in terms of <code class='backtick'>as_const()</code> but this doesn't work with rvalue senders</td>
 <td>Yes</td>
 <td></td>
+<td></td>
+</tr>
+</table>
+<h2 id="Ready">Ready (6 issues)</h2>
+<table class="issues-index">
+<tr>
+  <th><a href="lwg-toc.html">Issue</a></th>
+  <th><a href="lwg-status.html">Status</a></th>
+  <th><a href="lwg-index.html">Section</a></th>
+  <th>Title</th>
+  <th>Proposed Resolution</th>
+  <th><a href="unresolved-prioritized.html">Priority</a></th>
+  <th>Duplicates</th>
+</tr>
+<tr>
+<td id="4202"><a href="lwg-active.html#4202" title="enable-sender should be a variable template (Status: Ready)">4202</a><sup><a href="https://cplusplus.github.io/LWG/issue4202">(i)</a></sup></td>
+<td><a href="lwg-active.html#Ready">Ready</a></td>
+<td>33.9.3 [exec.snd.concepts]</td>
+<td><i><code>enable-sender</code></i> should be a variable template</td>
+<td>Yes</td>
+<td>1</td>
+<td></td>
+</tr>
+<tr>
+<td id="4209"><a href="lwg-active.html#4209" title="default_domain::transform_env should be returning FWD-ENV(env) (Status: Ready)">4209</a><sup><a href="https://cplusplus.github.io/LWG/issue4209">(i)</a></sup></td>
+<td><a href="lwg-active.html#Ready">Ready</a></td>
+<td>33.9.5 [exec.domain.default]</td>
+<td><code>default_domain::transform_env</code> should be returning <code><i>FWD-ENV</i>(env)</code></td>
+<td>Yes</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td id="4208"><a href="lwg-active.html#4208" title="Wording needs to ensure that in connect(sndr, rcvr) that rcvr expression is only evaluated once (Status: Ready)">4208</a><sup><a href="https://cplusplus.github.io/LWG/issue4208">(i)</a></sup></td>
+<td><a href="lwg-active.html#Ready">Ready</a></td>
+<td>33.9.10 [exec.connect]</td>
+<td>Wording needs to ensure that in <code class='backtick'>connect(sndr, rcvr)</code> that <code class='backtick'>rcvr</code> expression is only evaluated once</td>
+<td>Yes</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td id="4203"><a href="lwg-active.html#4203" title="Constraints on get-state functions are incorrect (Status: Ready)">4203</a><sup><a href="https://cplusplus.github.io/LWG/issue4203">(i)</a></sup></td>
+<td><a href="lwg-active.html#Ready">Ready</a></td>
+<td>33.9.12.5 [exec.schedule.from]</td>
+<td>Constraints on <i><code class='backtick'>get-state</code></i> functions are incorrect</td>
+<td>Yes</td>
+<td>1</td>
+<td></td>
+</tr>
+<tr>
+<td id="4204"><a href="lwg-active.html#4204" title="specification of as-sndr2(Sig) in [exec.let] is incomplete (Status: Ready)">4204</a><sup><a href="https://cplusplus.github.io/LWG/issue4204">(i)</a></sup></td>
+<td><a href="lwg-active.html#Ready">Ready</a></td>
+<td>33.9.12.8 [exec.let]</td>
+<td>specification of <code><i>as-sndr2</i>(Sig)</code> in [exec.let] is incomplete</td>
+<td>Yes</td>
+<td>1</td>
+<td></td>
+</tr>
+<tr>
+<td id="4205"><a href="lwg-active.html#4205" title="let_[*].transform_env is specified in terms of the let_* sender itself instead of its child (Status: Ready)">4205</a><sup><a href="https://cplusplus.github.io/LWG/issue4205">(i)</a></sup></td>
+<td><a href="lwg-active.html#Ready">Ready</a></td>
+<td>33.9.12.8 [exec.let]</td>
+<td><code class='backtick'>let_[*].transform_env</code> is specified in terms of the <code class='backtick'>let_*</code> sender itself instead of its child</td>
+<td>Yes</td>
+<td>1</td>
 <td></td>
 </tr>
 </table>
@@ -320,7 +386,7 @@ This document is the Index by Status and Date for the <a href="lwg-active.html">
 <td></td>
 </tr>
 </table>
-<h2 id="New">New (455 issues)</h2>
+<h2 id="New">New (449 issues)</h2>
 <table class="issues-index">
 <tr>
   <th><a href="lwg-toc.html">Issue</a></th>
@@ -330,15 +396,6 @@ This document is the Index by Status and Date for the <a href="lwg-active.html">
   <th>Proposed Resolution</th>
   <th><a href="unresolved-prioritized.html">Priority</a></th>
   <th>Duplicates</th>
-</tr>
-<tr>
-<td id="4202"><a href="lwg-active.html#4202" title="enable-sender should be a variable template (Status: New)">4202</a><sup><a href="https://cplusplus.github.io/LWG/issue4202">(i)</a></sup></td>
-<td><a href="lwg-active.html#New">New</a></td>
-<td>33.9.3 [exec.snd.concepts]</td>
-<td><i><code>enable-sender</code></i> should be a variable template</td>
-<td>Yes</td>
-<td>1</td>
-<td></td>
 </tr>
 <tr>
 <td id="4198"><a href="lwg-active.html#4198" title="schedule_from isn't starting the schedule sender if decay-copying results throws (Status: New)">4198</a><sup><a href="https://cplusplus.github.io/LWG/issue4198">(i)</a></sup></td>
@@ -355,24 +412,6 @@ This document is the Index by Status and Date for the <a href="lwg-active.html">
 <td>25.7.34.3 [range.cache.latest.iterator]</td>
 <td>Issue with <code>cache_latest_view::<i>iterator</i></code>'s reference type </td>
 <td><span class="no-pr">No</span></td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td id="4209"><a href="lwg-active.html#4209" title="default_domain::transform_env should be returning FWD-ENV(env) (Status: New)">4209</a><sup><a href="https://cplusplus.github.io/LWG/issue4209">(i)</a></sup></td>
-<td><a href="lwg-active.html#New">New</a></td>
-<td>33.9.5 [exec.domain.default]</td>
-<td><code>default_domain::transform_env</code> should be returning <code><i>FWD-ENV</i>(env)</code></td>
-<td>Yes</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td id="4208"><a href="lwg-active.html#4208" title="Wording needs to ensure that in connect(sndr, rcvr) that rcvr expression is only evaluated once (Status: New)">4208</a><sup><a href="https://cplusplus.github.io/LWG/issue4208">(i)</a></sup></td>
-<td><a href="lwg-active.html#New">New</a></td>
-<td>33.9.10 [exec.connect]</td>
-<td>Wording needs to ensure that in <code class='backtick'>connect(sndr, rcvr)</code> that <code class='backtick'>rcvr</code> expression is only evaluated once</td>
-<td>Yes</td>
 <td></td>
 <td></td>
 </tr>
@@ -563,33 +602,6 @@ This document is the Index by Status and Date for the <a href="lwg-active.html">
 <td>Specification of <i>completion-signatures-for</i> in [exec.snd.expos]/p39 is recursive</td>
 <td>Yes</td>
 <td>2</td>
-<td></td>
-</tr>
-<tr>
-<td id="4203"><a href="lwg-active.html#4203" title="Constraints on get-state functions are incorrect (Status: New)">4203</a><sup><a href="https://cplusplus.github.io/LWG/issue4203">(i)</a></sup></td>
-<td><a href="lwg-active.html#New">New</a></td>
-<td>33.9.12.5 [exec.schedule.from]</td>
-<td>Constraints on <i><code class='backtick'>get-state</code></i> functions are incorrect</td>
-<td>Yes</td>
-<td>1</td>
-<td></td>
-</tr>
-<tr>
-<td id="4204"><a href="lwg-active.html#4204" title="specification of as-sndr2(Sig) in [exec.let] is incomplete (Status: New)">4204</a><sup><a href="https://cplusplus.github.io/LWG/issue4204">(i)</a></sup></td>
-<td><a href="lwg-active.html#New">New</a></td>
-<td>33.9.12.8 [exec.let]</td>
-<td>specification of <code><i>as-sndr2</i>(Sig)</code> in [exec.let] is incomplete</td>
-<td>Yes</td>
-<td>1</td>
-<td></td>
-</tr>
-<tr>
-<td id="4205"><a href="lwg-active.html#4205" title="let_[*].transform_env is specified in terms of the let_* sender itself instead of its child (Status: New)">4205</a><sup><a href="https://cplusplus.github.io/LWG/issue4205">(i)</a></sup></td>
-<td><a href="lwg-active.html#New">New</a></td>
-<td>33.9.12.8 [exec.let]</td>
-<td><code class='backtick'>let_[*].transform_env</code> is specified in terms of the <code class='backtick'>let_*</code> sender itself instead of its child</td>
-<td>Yes</td>
-<td>1</td>
 <td></td>
 </tr>
 <tr>
