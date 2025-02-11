@@ -79,7 +79,7 @@
 </tr>
 </table>
 <h1>C++ Standard Library Active Issues List (Revision D125)</h1>
-<p>Revised 2025-02-11 at 15:45:48 UTC
+<p>Revised 2025-02-11 at 15:49:11 UTC
 </p>
   <p>Reference ISO/IEC IS 14882:2020(E)</p>
   <p>Also see:</p>
@@ -69872,7 +69872,7 @@ Change 33.9.3 <a href="https://wg21.link/exec.snd.concepts">[exec.snd.concepts]<
     concept sender =
       <del>bool(<i>enable-sender</i></del><ins>enable_sender</ins>&lt;remove_cvref_t&lt;Sndr&gt;&gt;<del>)</del> &amp;&amp;
       requires (const remove_cvref_t&lt;Sndr&gt;&amp; sndr) {
-        { get_env(sndr) } -&gt; <i</i>queryable</i</i>;
+        { get_env(sndr) } -&gt; <i>queryable</i>;
       } &amp;&amp;
       move_constructible&lt;remove_cvref_t&lt;Sndr&gt;&gt; &amp;&amp;
       constructible_from&lt;remove_cvref_t&lt;Sndr&gt;, Sndr&gt;;
