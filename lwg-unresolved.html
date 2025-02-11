@@ -54,7 +54,7 @@
 </style>
 </head>
 <body>
-<p>Revised 2025-02-10 at 13:26:30 UTC
+<p>Revised 2025-02-11 at 15:12:23 UTC
 </p><h2>Unresolved Issues</h2>
 <hr>
 <h3 id="423"><a href="#423">423</a><sup><a href="https://cplusplus.github.io/LWG/issue423">(i)</a></sup>. Effects of negative <code>streamsize</code> in iostreams</h3>
@@ -65443,7 +65443,7 @@ the callable object has no complexity requirements.</del>
 <hr>
 <h3 id="4198"><a href="#4198">4198</a><sup><a href="https://cplusplus.github.io/LWG/issue4198">(i)</a></sup>. <code class='backtick'>schedule_from</code> isn't starting the schedule sender if decay-copying results throws</h3>
 <p><b>Section:</b> 33.9.12.5 <a href="https://wg21.link/exec.schedule.from">[exec.schedule.from]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Eric Niebler <b>Opened:</b> 2025-02-03 <b>Last modified:</b> 2025-02-07</p>
+ <b>Submitter:</b> Eric Niebler <b>Opened:</b> 2025-02-03 <b>Last modified:</b> 2025-02-11</p>
 <p><b>Priority: </b>1
 </p>
 <p><b>View other</b> <a href="lwg-index-open.html#exec.schedule.from">active issues</a> in [exec.schedule.from].</p>
@@ -65459,18 +65459,18 @@ Imported from <a href="https://github.com/cplusplus/sender-receiver/issues/304">
 <pre><code>
 []&lt;class Tag, class... Args&gt;(auto, auto&amp; state, auto&amp; rcvr, Tag, Args&amp;&amp;... args) noexcept
     -> void {
-  using result_t = decayed-tuple&lt;Tag, Args...&gt;;
+  using result_t = <i>decayed-tuple</i>&lt;Tag, Args...&gt;;
   constexpr bool nothrow = is_nothrow_constructible_v&lt;result_t, Tag, Args...&gt;;
 
   try {
-    state.async-result.template emplace&lt;result_t&gt;(Tag(), std::forward&lt;Args&gt;(args)...);
+    state.<i>async-result</i>.template emplace&lt;result_t&gt;(Tag(), std::forward&lt;Args&gt;(args)...);
   } catch (...) {
     if constexpr (!nothrow) {
       set_error(std::move(rcvr), current_exception());
       return;
     }
   }
-  start(state.op-state);
+  start(state.<i>op-state</i>);
 };
 </code></pre>
 
@@ -65483,18 +65483,17 @@ The right thing, i think, is to catch the exception, emplace the <code class='ba
 <pre><code>
 []&lt;class Tag, class... Args&gt;(auto, auto&amp; state, auto&amp; rcvr, Tag, Args&amp;&amp;... args) noexcept
     -> void {
-  using result_t = decayed-tuple&lt;Tag, Args...&gt;;
+  using result_t = <i>decayed-tuple</i>&lt;Tag, Args...&gt;;
   constexpr bool nothrow = is_nothrow_constructible_v&lt;result_t, Tag, Args...&gt;;
 
   try {
-    state.async-result.template emplace&lt;result_t&gt;(Tag(), std::forward&lt;Args&gt;(args)...);
+    state.<i>async-result</i>.template emplace&lt;result_t&gt;(Tag(), std::forward&lt;Args&gt;(args)...);
   } catch(...) {
-    if constexpr (nothrow)
-      state.async-result.template emplace&lt;tuple&lt;set_error_t, exception_ptr&gt;&gt;(set_error, current_exception());
-    }
+    if constexpr (!nothrow)
+      state.<i>async-result</i>.template emplace&lt;tuple&lt;set_error_t, exception_ptr&gt;&gt;(set_error, current_exception());
   }
 
-  start(state.op-state);
+  start(state.<i>op-state</i>);
 }
 </code></pre>
 
@@ -65537,6 +65536,12 @@ except with duplicate types removed.
 
 <p>
 Set priority to 1 after reflector poll.
+</p>
+
+<p><i>[Hagenberg 2025-02-10; LWG]</i></p>
+
+<p>
+Direction seems right. Decay-copyable is not a defined term.
 </p>
 
 
