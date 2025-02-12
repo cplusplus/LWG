@@ -64,7 +64,7 @@
 <p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#Ready">Ready</a> status.</em></p>
 <h3 id="4209"><a href="lwg-active.html#4209">4209</a>. <code>default_domain::transform_env</code> should be returning <code><i>FWD-ENV</i>(env)</code></h3>
 <p><b>Section:</b> 33.9.5 <a href="https://wg21.link/exec.domain.default">[exec.domain.default]</a> <b>Status:</b> <a href="lwg-active.html#Ready">Ready</a>
- <b>Submitter:</b> Eric Niebler <b>Opened:</b> 2025-02-07 <b>Last modified:</b> 2025-02-11</p>
+ <b>Submitter:</b> Eric Niebler <b>Opened:</b> 2025-02-07 <b>Last modified:</b> 2025-02-12</p>
 <p><b>Priority: </b>Not Prioritized
 </p>
 <p><b>View all issues with</b> <a href="lwg-status.html#Ready">Ready</a> status.</p>
@@ -102,7 +102,7 @@ to connect a child sender has an associated environment equal to <code><i>FWD-EN
 So the correct thing for <code class='backtick'>default_domain::transform_env</code> to do is to return <code><i>FWD-ENV</i>(get_env(rcvr))</code>.
 </p>
 
-<p><i>[Hagenberg 2025-02-10; move to Ready]</i></p>
+<p><i>[Hagenberg 2025-02-11; move to Ready]</i></p>
 
 
 
