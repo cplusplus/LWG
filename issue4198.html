@@ -166,11 +166,77 @@ Set priority to 1 after reflector poll.
 Direction seems right. Decay-copyable is not a defined term.
 </p>
 
+<p><i>[2025-02-12 Tim adds PR]</i></p>
+
+<p>This also corrects the issue that <code class='backtick'>nothrow</code> is currently relying
+on the unspecified exception specification of <code class='backtick'>tuple</code>'s constructor.</p>
 
 
 <p id="res-4198"><b>Proposed resolution:</b></p>
 <p>
+This wording is relative to <a href="https://wg21.link/N5001">N5001</a>.
 </p>
+
+<ol>
+<li>
+Modify 33.9.12.5 <a href="https://wg21.link/exec.schedule.from">[exec.schedule.from]</a> p8 as indicated:
+<blockquote>
+<p>
+-8- Let <code class='backtick'>Sigs</code> be a pack of the arguments to the <code class='backtick'>completion_signatures</code>
+specialization named by
+<code>completion_signatures_of_t&lt;<i>child-type</i>&lt;Sndr&gt;, env_of_t&lt;Rcvr&gt;&gt;</code>.
+Let <i><code>as-tuple</code></i> be an alias template
+<del>
+that transforms a completion signature <code class='backtick'>Tag(Args...)</code> into
+the tuple specialization <code><i>decayed-tuple</i>&lt;Tag, Args...&gt;</code>.
+</del>
+<ins>
+such that <code><i>as-tuple</i>&lt;Tag(Args...)&gt;</code> denotes
+the type <code><i>decayed-tuple</i>&lt;Tag, Args...&gt;</code>,
+and let <code><i>is-nothrow-decay-copy-sig</i></code>
+be a variable template such that
+<code>auto(<i>is-nothrow-decay-copy-sig</i>&lt;Tag(Args...)&gt;)</code>
+is a constant expression of type <code class='backtick'>bool</code> and equal to 
+<code>(is_nothrow_constructible_v&lt;decay_t&lt;Args&gt;, Args&gt; &amp;&amp; ...)</code>.
+Let <i><code>error-completion</code></i> be a pack consisting of the type
+<code class='backtick'>set_error_t(exception_ptr)</code> if
+<code>(<i>is-nothrow-decay-copy-sig</i>&lt;Sigs&gt; &amp;&amp;...)</code>
+is <code class='backtick'>false</code>, and an empty pack otherwise.
+</ins>
+Then <code class='backtick'>variant_t</code> denotes the type
+<code>variant&lt;monostate, <i>as-tuple</i>&lt;Sigs&gt;...<ins>, <i>error-completion</i>...</ins>&gt;</code>,
+except with duplicate types removed.
+</p>
+</blockquote>
+</li>
+<li>
+<p>Modify 33.9.12.5 <a href="https://wg21.link/exec.schedule.from">[exec.schedule.from]</a> p11 as indicated:</p>
+<blockquote><p>
+-11- The member <code><i>impls-for</i>&lt;schedule_from_t&gt;::<i>complete</i></code> 
+is initialized with a callable object equivalent to the following lambda:
+</p>
+<blockquote><pre><code>
+[]&lt;class Tag, class... Args&gt;(auto, auto&amp; state, auto&amp; rcvr, Tag, Args&amp;&amp;... args) noexcept
+    -&gt; void {
+  using result_t = <i>decayed-tuple</i>&lt;Tag, Args...&gt;;
+  constexpr bool nothrow = <del>is_nothrow_constructible_v&lt;result_t, Tag, Args...&gt;</del>
+                           <ins>(is_nothrow_constructible_v&lt;decay_t&lt;Args&gt;, Args&gt; &amp;&amp; ...)</ins>;
+
+  try {
+    state.<i>async-result</i>.template emplace&lt;result_t&gt;(Tag(), std::forward&lt;Args&gt;(args)...);
+  } catch (...) {
+    if constexpr (!nothrow) <del>{</del>
+      <ins>state.<i>async-result</i>.template emplace&lt;tuple&lt;set_error_t, exception_ptr&gt;&gt;(set_error, current_exception());</ins>
+      <del>set_error(std::move(rcvr), current_exception());</del>
+      <del>return;</del>
+    <del>}</del>
+  }
+  start(state.<i>op-state</i>);
+};
+</code></pre></blockquote>
+</blockquote>
+</li>
+</ol>
 
 
 
