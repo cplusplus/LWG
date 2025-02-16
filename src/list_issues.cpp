@@ -18,7 +18,7 @@
 // .  sort-by-last-modified-date should offer some filter or separation to see only the issues modified since the last meeting
 
 // Missing standard facilities that we work around
-// . Date
+// . (none at present)
 
 // Missing standard library facilities that would probably not change this program
 // . XML parser
@@ -61,7 +61,7 @@ auto read_file_into_string(fs::path const & filename) -> std::string {
 auto is_issue_xml_file(fs::directory_entry const & e) {
    if (e.is_regular_file()) {
       fs::path f = e.path().filename();
-      return f.string().compare(0, 5, "issue") == 0 && f.extension() == ".xml";
+      return f.string().starts_with("issue") && f.extension() == ".xml";
    }
    return false;
 }
