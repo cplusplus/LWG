@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <title>Issue 4186: regex_traits::transform_primary mistakenly detects typeid of a function</title>
 <meta property="og:title" content="Issue 4186: regex_traits::transform_primary mistakenly detects typeid of a function">
-<meta property="og:description" content="C++ library issue. Status: Voting">
+<meta property="og:description" content="C++ library issue. Status: WP">
 <meta property="og:url" content="https://cplusplus.github.io/LWG/issue4186.html">
 <meta property="og:type" content="website">
 <meta property="og:image" content="http://cplusplus.github.io/LWG/images/cpp_logo.png">
@@ -61,15 +61,14 @@
 </head>
 <body>
 <hr>
-<p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#Voting">Voting</a> status.</em></p>
-<h3 id="4186"><a href="lwg-active.html#4186">4186</a>. <code class='backtick'>regex_traits::transform_primary</code> mistakenly detects <code class='backtick'>typeid</code> of a function</h3>
-<p><b>Section:</b> 28.6.6 <a href="https://wg21.link/re.traits">[re.traits]</a> <b>Status:</b> <a href="lwg-active.html#Voting">Voting</a>
- <b>Submitter:</b> Jiang An <b>Opened:</b> 2024-12-18 <b>Last modified:</b> 2025-02-07</p>
+<p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#WP">WP</a> status.</em></p>
+<h3 id="4186"><a href="lwg-defects.html#4186">4186</a>. <code class='backtick'>regex_traits::transform_primary</code> mistakenly detects <code class='backtick'>typeid</code> of a function</h3>
+<p><b>Section:</b> 28.6.6 <a href="https://wg21.link/re.traits">[re.traits]</a> <b>Status:</b> <a href="lwg-active.html#WP">WP</a>
+ <b>Submitter:</b> Jiang An <b>Opened:</b> 2024-12-18 <b>Last modified:</b> 2025-02-16</p>
 <p><b>Priority: </b>Not Prioritized
 </p>
-<p><b>View other</b> <a href="lwg-index-open.html#re.traits">active issues</a> in [re.traits].</p>
 <p><b>View all other</b> <a href="lwg-index.html#re.traits">issues</a> in [re.traits].</p>
-<p><b>View all issues with</b> <a href="lwg-status.html#Voting">Voting</a> status.</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#WP">WP</a> status.</p>
 <p><b>Discussion:</b></p>
 <p>
 28.6.6 <a href="https://wg21.link/re.traits">[re.traits]</a>/7 currently says <code>typeid(use_facet&lt;collate&lt;charT&gt;&gt;) == 
@@ -86,6 +85,8 @@ Presumably the intended operand is <code>use_facet&lt;collate&lt;charT&gt;&gt;(g
 <p>
 Set status to Tentatively Ready after seven votes in favour during reflector poll.
 </p>
+
+<p><i>[Hagenberg 2025-02-16; Status changed: Voting &rarr; WP.]</i></p>
 
 
 

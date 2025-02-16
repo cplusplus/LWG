@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <title>Issue 4196: Complexity of inplace_merge() is incorrect</title>
 <meta property="og:title" content="Issue 4196: Complexity of inplace_merge() is incorrect">
-<meta property="og:description" content="C++ library issue. Status: Voting">
+<meta property="og:description" content="C++ library issue. Status: WP">
 <meta property="og:url" content="https://cplusplus.github.io/LWG/issue4196.html">
 <meta property="og:type" content="website">
 <meta property="og:image" content="http://cplusplus.github.io/LWG/images/cpp_logo.png">
@@ -61,15 +61,14 @@
 </head>
 <body>
 <hr>
-<p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#Voting">Voting</a> status.</em></p>
-<h3 id="4196"><a href="lwg-active.html#4196">4196</a>. Complexity of <code class='backtick'>inplace_merge()</code> is incorrect</h3>
-<p><b>Section:</b> 26.8.6 <a href="https://wg21.link/alg.merge">[alg.merge]</a> <b>Status:</b> <a href="lwg-active.html#Voting">Voting</a>
- <b>Submitter:</b> Stephen Howe <b>Opened:</b> 2025-01-22 <b>Last modified:</b> 2025-02-07</p>
+<p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#WP">WP</a> status.</em></p>
+<h3 id="4196"><a href="lwg-defects.html#4196">4196</a>. Complexity of <code class='backtick'>inplace_merge()</code> is incorrect</h3>
+<p><b>Section:</b> 26.8.6 <a href="https://wg21.link/alg.merge">[alg.merge]</a> <b>Status:</b> <a href="lwg-active.html#WP">WP</a>
+ <b>Submitter:</b> Stephen Howe <b>Opened:</b> 2025-01-22 <b>Last modified:</b> 2025-02-16</p>
 <p><b>Priority: </b>4
 </p>
-<p><b>View other</b> <a href="lwg-index-open.html#alg.merge">active issues</a> in [alg.merge].</p>
 <p><b>View all other</b> <a href="lwg-index.html#alg.merge">issues</a> in [alg.merge].</p>
-<p><b>View all issues with</b> <a href="lwg-status.html#Voting">Voting</a> status.</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#WP">WP</a> status.</p>
 <p><b>Discussion:</b></p>
 <p>
 For <a href="https://wg21.link/N5001">N5001</a>, section 26.8.6 <a href="https://wg21.link/alg.merge">[alg.merge]</a> p5, it says for <code class='backtick'>merge()</code> <i>Complexity</i> (emphasis mine):
@@ -134,6 +133,8 @@ NAD Editorial, because 16.3.2.4 <a href="https://wg21.link/structure.specificati
 says that all complexity requirements are upper bounds and it's conforming to
 do less work. The consensus was that this is still a clarifying improvement.
 </p>
+
+<p><i>[Hagenberg 2025-02-16; Status changed: Voting &rarr; WP.]</i></p>
 
 
 
