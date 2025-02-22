@@ -54,7 +54,7 @@
 </style>
 </head>
 <body>
-<p>Revised 2025-02-16 at 19:22:52 UTC
+<p>Revised 2025-02-22 at 22:48:07 UTC
 </p><h2>Unresolved Issues</h2>
 <hr>
 <h3 id="423"><a href="#423">423</a><sup><a href="https://cplusplus.github.io/LWG/issue423">(i)</a></sup>. Effects of negative <code>streamsize</code> in iostreams</h3>
@@ -65713,6 +65713,161 @@ the default <code>iter_move</code> return an rvalue when it always returns an lv
 
 
 <p id="res-4210"><b>Proposed resolution:</b></p>
+
+
+
+
+
+<hr>
+<h3 id="4211"><a href="#4211">4211</a><sup><a href="https://cplusplus.github.io/LWG/issue4211">(i)</a></sup>. IANA time zone database allows links to refer to links</h3>
+<p><b>Section:</b> 30.11.2.1 <a href="https://wg21.link/time.zone.db.tzdb">[time.zone.db.tzdb]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
+ <b>Submitter:</b> Jonathan Wakely <b>Opened:</b> 2025-02-22 <b>Last modified:</b> 2025-02-22</p>
+<p><b>Priority: </b>Not Prioritized
+</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
+<p><b>Discussion:</b></p>
+<p>
+Since
+<a href="https://github.com/eggert/tz/commit/4878b644b25020568d4dda346c5cea91826c0c7c">October 2022</a>
+the IANA Time Zone Database's <code class='backtick'>tzfile</code> data format allows a Link to refer
+to another Link, instead of referring directly to a Zone.
+The <a href="https://man7.org/linux/man-pages/man8/zic.8.html#FILES">zic(8)</a>
+man page says:
+<blockquote>
+The TARGET field should appear as the NAME field in some zone line
+or as the LINK-NAME field in some link line.
+The LINK-NAME  field  is  used as an alternative name for that zone;
+it has the same syntax as a zone line's NAME field.
+Links can chain together, although the behavior is unspecified if
+a chain of one or more links does not terminate in a Zone name.
+</blockquote>
+Because chains of links were introduced to <code class='backtick'>tzfile</code> after <code class='backtick'>chrono::tzdb</code>
+was standardized, C++ does not properly support chains of links.
+</p>
+<p>
+The <code class='backtick'>time_zone_link::target()</code> member function is required to return
+"The name of the <code class='backtick'>time_zone</code> for which this <code class='backtick'>time_zone_link</code> provides
+an alternative name."
+This doesn't allow returning the name of another <code class='backtick'>time_zone_link</code>,
+which implies that the implementation should flatten a series of links so
+that the target is a <code class='backtick'>time_zone</code>. However, this discards information which
+is present in the <code class='backtick'>tzdb</code>, so that the information exposed to a C++ program
+does not preserve the original structure of a chain of links.
+</p>
+<p>
+The standard could be adjusted to support chains of links by allowing
+<code class='backtick'>time_zone_link::target()</code> to refer to another link, and then altering the
+algorithm used by <code class='backtick'>tzdb::locate_zone(string_view)</code> to find a <code class='backtick'>time_zone</code> from
+a name that might be a zone or a link.
+</p>
+
+
+<p id="res-4211"><b>Proposed resolution:</b></p>
+<p>
+This wording is relative to <a href="https://wg21.link/N5001">N5001</a>.
+</p>
+
+<ol>
+<li>
+Modify 30.11.2.1 <a href="https://wg21.link/time.zone.db.tzdb">[time.zone.db.tzdb]</a> as indicated:
+<blockquote>
+<pre><code>
+const time_zone* locate_zone(string_view tz_name) const;
+</code></pre>
+<p>
+-2- <i>Returns</i>:
+<ol style="list-style-type:none">
+<li>
+(2.1) &mdash;
+If <code class='backtick'>zones</code> contains an element <code class='backtick'>tz</code> for which <code class='backtick'>tz.name() == tz_name</code>,
+a pointer to <code class='backtick'>tz</code>;
+</li>
+<li>
+(2.2) &mdash;
+otherwise, if <code class='backtick'>links</code> contains an element <code class='backtick'>tz_l</code> for which
+<code class='backtick'>tz_l.name() == tz_name</code>, then
+<del>a pointer to the element <code class='backtick'>tz</code> of zones for which
+<code class='backtick'>tz.name() == tz_l.target()</code></del>
+<ins>
+the result of <code class='backtick'>locate_zone(tz_l.target())</code>.
+</ins>.
+</li>
+</ol>
+</p>
+<p>
+[<i>Note 1</i>: A <code class='backtick'>time_zone_link</code> specifies an alternative name for a
+<code class='backtick'>time_zone</code>. &mdash; <i>end note</i>]
+</p>
+<p>
+-3- <i>Throws</i>:
+If a <code class='backtick'>const time_zone*</code> cannot be found as described in the <i>Returns</i>:
+element, throws a <code class='backtick'>runtime_error</code>.
+</p>
+<p>
+[<i>Note 2</i>: On non-exceptional return, the return value is always a
+pointer to a valid <code class='backtick'>time_zone</code>. &mdash; <i>end note</i>]
+</p>
+<p>
+<ins>
+-?- <i>Remarks</i>:
+If both <code class='backtick'>zones</code> and <code class='backtick'>links</code> contain elements that match <code class='backtick'>tz_name</code> then
+it is unspecified whether <code>&amp;tz</code>
+or <code>locate_zone(tz_l.target())</code> is returned.
+</ins>
+</p>
+<p><i>[Drafting note:
+This gives flexibility how to implement the lookup in <code class='backtick'>locate_zone</code>.
+]</i></p>
+
+</blockquote>
+</li>
+<li>
+Modify 30.11.9.1 <a href="https://wg21.link/time.zone.link.overview">[time.zone.link.overview]</a> as indicated:
+<blockquote>
+<p>
+-1-
+A <code class='backtick'>time_zone_link</code> specifies an alternative name for a <code class='backtick'>time_zone</code>.
+<code class='backtick'>time_zone_links</code> are constructed when the time zone database is initialized.
+<ins>
+The name of a <code class='backtick'>time_zone_link</code> can be used as an argument to
+<code class='backtick'>tzdb::locate_zone</code> (30.11.2.1 <a href="https://wg21.link/time.zone.db.tzdb">[time.zone.db.tzdb]</a>).
+A <code class='backtick'>time_zone_link</code> can refer directly to a <code class='backtick'>time_zone</code>,
+or to another <code class='backtick'>time_zone_link</code>, forming a chain of links.
+</ins>
+</p>
+</blockquote>
+</li>
+<li>
+Modify 30.11.9.2 <a href="https://wg21.link/time.zone.link.members">[time.zone.link.members]</a> as indicated:
+<blockquote>
+<pre><code>
+string_view name() const noexcept;
+</code></pre>
+-1- <i>Returns</i>:
+The alternative name for the time zone.
+<pre><code>
+string_view target() const noexcept;
+</code></pre>
+<p>
+-2- <i>Returns</i>:
+The name of the <code class='backtick'>time_zone</code>
+for which this <code class='backtick'>time_zone_link</code> provides an alternative name
+<ins>or the name of another <code class='backtick'>time_zone_link</code></ins>.
+</p>
+<p>
+<ins>
+[<i>Note 1</i>:
+<code class='backtick'>tzdb::locate_zone</code> follows a chain of links formed when
+a link's target is the name of a <code class='backtick'>time_zone_link</code>,
+throwing an exception if the
+chain of links does not terminate in a <code class='backtick'>time_zone</code>.
+&mdash; <i>end note</i>]
+</ins>
+</p>
+</blockquote>
+</li>
+
+</ol>
 
 
 
