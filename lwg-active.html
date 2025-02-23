@@ -79,7 +79,7 @@
 </tr>
 </table>
 <h1>C++ Standard Library Active Issues List (Revision D125)</h1>
-<p>Revised 2025-02-23 at 13:37:51 UTC
+<p>Revised 2025-02-23 at 13:43:24 UTC
 </p>
   <p>Reference ISO/IEC IS 14882:2020(E)</p>
   <p>Also see:</p>
@@ -69944,26 +69944,26 @@ the values in <math><mi>X</mi></math>. <del>A single round of the generation alg
 <math><msup><mi>X</mi><mrow>(<mn>0</mn>)</mrow></msup><mo>:=</mo><mi>X</mi></math>, and for each round
 <math><mi>q</mi></math> (with <math><mi>q</mi><mo>=</mo><mn>1</mn>, &hellip;, <mi>r</mi></math>),
 <math><msup><mi>X</mi><mrow>(<mi>q</mi>)</mrow></msup></math> is computed from
-<math><msup><mi>X</mi><mrow>(<mi>q</mi><op>-</op><mn>1</mn>)</mrow></msup></math> as follows. The output sequence
+<math><msup><mi>X</mi><mrow>(<mi>q</mi><mo>-</mo><mn>1</mn>)</mrow></msup></math> as follows. The output sequence
 is <math><msup><mi>X</mi><mrow>(<mi>r</mi>)</mrow></msup></math>.</ins>
 </p>
 <ol style="list-style-type: none">
 <li><p>(4.1) &mdash; <del>The output sequence <math><mi>X</mi><mi>'</mi></math> of the previous round (<math><mi>X</mi></math> 
 in case of the first round) is permuted to obtain the intermediate state <math><mi>V</mi></math>:</del></p>
 <blockquote><pre>
-<del><math><msub><mi>V</mi><mrow><mi>j</mi></mrow></msub><op>=</op><msub><mi>X</mi>'<mrow><msub><mi>f</mi><mrow><mi>n</mi></mrow></msub>(<mi>j</mi>)</mrow></msub></math></del>
+<del><math><msub><mi>V</mi><mrow><mi>j</mi></mrow></msub><mo>=</mo><msub><mi>X</mi>'<mrow><msub><mi>f</mi><mrow><mi>n</mi></mrow></msub>(<mi>j</mi>)</mrow></msub></math></del>
 </pre></blockquote>
 <p>
 <ins>An intermediate state <math><msup><mi>V</mi><mrow>(<mi>q</mi>)</mrow></msup></math> is obtained
 by permuting the previous output, 
-<math><msubsup><mi>V</mi><mi>j</mi><mrow>(<mi>q</mi>)</mrow></msubsup><mo>:=</mo><msubsup><mi>X</mi><mrow><msub><mi>f</mi><mrow><mi>n</mi></mrow></msub>(<mi>j</mi>)</mrow><mrow>(<mi>q</mi><op>-</op><mn>1</mn>)</mrow></msubsup></math>,</ins>
-where <math><mi>j</mi><op>=</op><mn>0</mn>, &hellip; , <mi>n</mi><op>−</op><mn>1</mn></math> and 
+<math><msubsup><mi>V</mi><mi>j</mi><mrow>(<mi>q</mi>)</mrow></msubsup><mo>:=</mo><msubsup><mi>X</mi><mrow><msub><mi>f</mi><mrow><mi>n</mi></mrow></msub>(<mi>j</mi>)</mrow><mrow>(<mi>q</mi><mo>-</mo><mn>1</mn>)</mrow></msubsup></math>,</ins>
+where <math><mi>j</mi><mo>=</mo><mn>0</mn>, &hellip; , <mi>n</mi><mo>−</mo><mn>1</mn></math> and 
 <math><msub><mi>f</mi><mrow><mi>n</mi></mrow></msub>(<mi>j</mi>)</math> is defined in Table 124.
 </p>
 </li>
 <li><p>(4.2) &mdash; <del>The following computations are applied to the elements of the <math><mi>V</mi></math> sequence:</del>
 <ins>The next output <math><msup><mi>X</mi><mrow>(<mi>q</mi>)</mrow></msup></math> is computed from the elements of the
-<math><msup><mi>V</mi><mrow>(<mi>q</mi>)</mrow></msup></math> as follows. For <math><mi>k</mi><mo>=</mo><mn>0</mn>,&hellip;,<mi>n</mi><op>/</op><mn>2</mn><mo>-</mo><mn>1</mn>,</math></ins></p>
+<math><msup><mi>V</mi><mrow>(<mi>q</mi>)</mrow></msup></math> as follows. For <math><mi>k</mi><mo>=</mo><mn>0</mn>,&hellip;,<mi>n</mi><mo>/</mo><mn>2</mn><mo>-</mo><mn>1</mn>,</math></ins></p>
 <ol style="list-style-type: none">
 <li><p><ins>(4.2.?) &mdash;</ins><math><msub><mi>X</mi><mrow><mn>2</mn><mi>k</mi><mo>+</mo><mn>0</mn></mrow></msub></math> = mulhi(<math><msub><mi>V</mi><mrow><mn>2</mn><mi>k</mi></mrow></msub></math>,<math><msub><mi>M</mi><mi>k</mi></msub></math>,<i>w</i>) xor <math><msubsup><mi style="font-style: italic">key</mi><mi>k</mi><mi>q</mi></msubsup></math> xor <math><msub><mi>V</mi><mrow><mn>2</mn><mi>k</mi><mo>+</mo><mn>1</mn></mrow></msub></math><ins>, and</ins></p></li>
 <li><p><ins>(4.2.?) &mdash;</ins><math><msub><mi>X</mi><mrow><mn>2</mn><mi>k</mi><mo>+</mo><mn>1</mn></mrow></msub></math> = mullo(<math><msub><mi>V</mi><mrow><mn>2</mn><mi>k</mi></mrow></msub></math>,<math><msub><mi>M</mi><mi>k</mi></msub></math>,<i>w</i>)<ins>,</ins></p></li>
@@ -69980,8 +69980,8 @@ where:
 <del><math><mi>k</mi><mo>=</mo><mn>0</mn>, &hellip; , <mi>n</mi><mo>/</mo><mn>2</mn><mo>−</mo><mn>1</mn></math> is the index in the sequences,</del>
 <ins><math><msubsup><mi>K</mi><mi>k</mi><mrow>(<mi>q</mi>)</mrow></msubsup></math> is the
 <math><msup><mi>k</mi><mtext>th</mtext></msup></math> round key for round <math><mi>q</mi></math>,
-<math><msubsup><mi>K</mi><mi>k</mi><mrow>(<mi>q</mi>)</mrow></msubsup><op>:=</op>(<msub><mi>K</mi><mi>k</mi></msub><mo>+</mo>(<mi>q</mi><mo>-</mo><mn>1</mn>)<mo>&#8901;</mo><msub><mi>C</mi><mi>k</mi></msub>)<mo>mod</mo><msup><mn>2</mn><mi>w</mi></msup></math>,</ins></p></li>
-<li><p>(4.2.4) &mdash; <del><math><mi>q</mi><mo>=</mo><mn>0</mn>, &hellip; , <mi>r</mi><op>−</op><mn>1</mn></math> is the index of the round,</del>
+<math><msubsup><mi>K</mi><mi>k</mi><mrow>(<mi>q</mi>)</mrow></msubsup><mo>:=</mo>(<msub><mi>K</mi><mi>k</mi></msub><mo>+</mo>(<mi>q</mi><mo>-</mo><mn>1</mn>)<mo>&#8901;</mo><msub><mi>C</mi><mi>k</mi></msub>)<mo>mod</mo><msup><mn>2</mn><mi>w</mi></msup></math>,</ins></p></li>
+<li><p>(4.2.4) &mdash; <del><math><mi>q</mi><mo>=</mo><mn>0</mn>, &hellip; , <mi>r</mi><mo>−</mo><mn>1</mn></math> is the index of the round,</del>
 <ins><math><msub><mi>K</mi><mi>k</mi></msub></math> is the <math><msup><mi>k</mi><mtext>th</mtext></msup></math> element of the key sequence
 <math><mi>K</mi></math>,</ins></p></li>
 <li><p><del>(4.2.5) &mdash; <math><msubsup><mi style="font-style: italic">key</mi><mi>k</mi><mi>q</mi></msubsup></math> is the 
