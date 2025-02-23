@@ -54,7 +54,7 @@
 </style>
 </head>
 <body>
-<p>Revised 2025-02-23 at 13:43:24 UTC
+<p>Revised 2025-02-23 at 14:26:27 UTC
 </p><h2>Unresolved Issues</h2>
 <hr>
 <h3 id="423"><a href="#423">423</a><sup><a href="https://cplusplus.github.io/LWG/issue423">(i)</a></sup>. Effects of negative <code>streamsize</code> in iostreams</h3>
@@ -65990,6 +65990,48 @@ where:
 </blockquote>
 </li>
 </ol>
+
+
+
+
+
+<hr>
+<h3 id="4213"><a href="#4213">4213</a><sup><a href="https://cplusplus.github.io/LWG/issue4213">(i)</a></sup>. Sender spec depends on unspecified order of evaluation</h3>
+<p><b>Section:</b> 33.9 <a href="https://wg21.link/exec.snd">[exec.snd]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
+ <b>Submitter:</b> Frank Birbacher <b>Opened:</b> 2025-02-14 <b>Last modified:</b> 2025-02-23</p>
+<p><b>Priority: </b>Not Prioritized
+</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
+<p><b>Discussion:</b></p>
+<p>
+In certain clauses for defining senders the unspecified order of evaluation of function arguments can 
+lead to retrieving values from a move-from state of a sender. An example is 33.9.12.4 <a href="https://wg21.link/exec.continues.on">[exec.continues.on]</a> 
+where paragraph 3 states:
+</p>
+<blockquote><pre>
+transform_sender(<i>get-domain-early</i>(sndr), <i>make-sender</i>(continues_on, sch, sndr))
+</pre></blockquote>
+<p>
+In this expression the evaluation of <code><i>get-domain-early</i>(sndr)</code> can happen before or after 
+the <code><i>make-sender</i></code>. The latter can steal the value from <code class='backtick'>sndr</code> by moving from it. So 
+<code><i>get-domain-early</i></code> may see the moved-from state of <code class='backtick'>sndr</code> and fail to obtain anything.
+<p/>
+Repetitions are at least in:
+</p>
+<ol>
+<li><p>33.9.12.7 <a href="https://wg21.link/exec.then">[exec.then]</a> p3</p></li>
+<li><p>33.9.12.8 <a href="https://wg21.link/exec.let">[exec.let]</a> p4</p></li>
+<li><p>33.9.12.9 <a href="https://wg21.link/exec.bulk">[exec.bulk]</a> p2</p></li>
+<li><p>33.9.12.10 <a href="https://wg21.link/exec.split">[exec.split]</a> p4</p></li>
+<li><p>33.9.12.11 <a href="https://wg21.link/exec.when.all">[exec.when.all]</a> p3</p></li>
+<li><p>33.9.12.12 <a href="https://wg21.link/exec.into.variant">[exec.into.variant]</a> p3</p></li>
+<li><p>33.9.12.13 <a href="https://wg21.link/exec.stopped.opt">[exec.stopped.opt]</a> p2</p></li>
+<li><p>33.9.12.14 <a href="https://wg21.link/exec.stopped.err">[exec.stopped.err]</a> p2</p></li>
+<li><p>33.9.13.2 <a href="https://wg21.link/exec.sync.wait.var">[exec.sync.wait.var]</a> p1</p></li>
+</ol>
+
+
+<p id="res-4213"><b>Proposed resolution:</b></p>
 
 
 
