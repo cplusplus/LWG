@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Issue 4212: Make the round states in [rand.eng.philox] explicit</title>
+<meta property="og:title" content="Issue 4212: Make the round states in [rand.eng.philox] explicit">
+<meta property="og:description" content="C++ library issue. Status: New">
+<meta property="og:url" content="https://cplusplus.github.io/LWG/issue4212.html">
+<meta property="og:type" content="website">
+<meta property="og:image" content="http://cplusplus.github.io/LWG/images/cpp_logo.png">
+<meta property="og:image:alt" content="C++ logo">
+<style>
+  p {text-align:justify}
+  li {text-align:justify}
+  pre code.backtick::before { content: "`" }
+  pre code.backtick::after { content: "`" }
+  blockquote.note
+  {
+    background-color:#E0E0E0;
+    padding-left: 15px;
+    padding-right: 15px;
+    padding-top: 1px;
+    padding-bottom: 1px;
+  }
+  ins {background-color:#A0FFA0}
+  del {background-color:#FFA0A0}
+  table.issues-index { border: 1px solid; border-collapse: collapse; }
+  table.issues-index th { text-align: center; padding: 4px; border: 1px solid; }
+  table.issues-index td { padding: 4px; border: 1px solid; }
+  table.issues-index td:nth-child(1) { text-align: right; }
+  table.issues-index td:nth-child(2) { text-align: left; }
+  table.issues-index td:nth-child(3) { text-align: left; }
+  table.issues-index td:nth-child(4) { text-align: left; }
+  table.issues-index td:nth-child(5) { text-align: center; }
+  table.issues-index td:nth-child(6) { text-align: center; }
+  table.issues-index td:nth-child(7) { text-align: left; }
+  table.issues-index td:nth-child(5) span.no-pr { color: red; }
+  @media (prefers-color-scheme: dark) {
+     html {
+        color: #ddd;
+        background-color: black;
+     }
+     ins {
+        background-color: #225522
+     }
+     del {
+        background-color: #662222
+     }
+     a {
+        color: #6af
+     }
+     a:visited {
+        color: #6af
+     }
+     blockquote.note
+     {
+        background-color: rgba(255, 255, 255, .10)
+     }
+  }
+</style>
+</head>
+<body>
+<hr>
+<p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#New">New</a> status.</em></p>
+<h3 id="4212"><a href="lwg-active.html#4212">4212</a>. Make the round states in [rand.eng.philox] explicit</h3>
+<p><b>Section:</b> 29.5.4.5 <a href="https://wg21.link/rand.eng.philox">[rand.eng.philox]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
+ <b>Submitter:</b> Thomas Köppe <b>Opened:</b> 2025-02-12 <b>Last modified:</b> 2025-02-23</p>
+<p><b>Priority: </b>Not Prioritized
+</p>
+<p><b>View all other</b> <a href="lwg-index.html#rand.eng.philox">issues</a> in [rand.eng.philox].</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
+<p><b>Discussion:</b></p>
+<p>
+The current wording that specifies the operation of the Philox random bit generator seems needlessly vague. 
+We can add precision by defining a few more terms, instead of requiring the reader to fill in the blanks.
+<p/>
+Concretely, the variable <math><mi>X</mi><mi>'</mi></math> is only vaguely defined at the moment, and the definition of the 
+"r-round network", "rounds", and how they fit together, is somewhat informal and imprecise. The statement 
+that <code class='backtick'>Philox</code> "returns the sequence <math><mi>Y</mi></math> = <math><mi>X</mi><mi>'</mi></math>" is needlessly 
+ambiguous (what is <math><mi>X</mi><mi>'</mi></math> here?).
+<p/>
+I propose the change that I drafted at <a href="https://github.com/cplusplus/draft/pull/7152">draft/pull/7152</a>: 
+Namely, spell out the meaning of the "rounds" and create a distinct name for every value in every round. 
+This allows us to state the result precisely, and makes it clear how each round computes a new value from the 
+values of the previous rounds.
+<p/>
+It seems convenient to change the round counter <math><mi>q</mi></math> to be 1-based (and 
+<math><msup><mi>X</mi><mrow>(<mn>0</mn>)</mrow></msup></math>
+is an alias for the initial value, <math><mi>X</mi></math>), so that the final result is 
+<math><msup><mi>X</mi><mrow>(<mi>r</mi>)</mrow></msup></math>.
+</p>
+
+
+<p id="res-4212"><b>Proposed resolution:</b></p>
+<p>
+This wording is relative to <a href="https://wg21.link/N5001">N5001</a>.
+</p>
+
+<ol>
+<li><p>Modify 29.5.4.5 <a href="https://wg21.link/rand.eng.philox">[rand.eng.philox]</a> as indicated:</p>
+
+<blockquote>
+<p>
+-2- The generation algorithm returns <math><msub><mi>Y</mi><mrow><mi>i</mi></mrow></msub></math>, the value stored in 
+the <math><mi>i</mi></math>th element of <math><mi>Y</mi></math> after applying the transition algorithm.
+<p/>
+-3- The state transition is performed as if by the following algorithm:
+</p>
+<blockquote><pre>
+<math><mi>i</mi><mo>=</mo><mi>i</mi><mo>+</mo><mn>1</mn></math>
+<code>if (<math><mi>i</mi></math> == <math><mi>n</mi></math>) {</code>
+  <math><mi>Y</mi><mo>=</mo></math><code>Philox</code>(<math><mi>K</mi></math>, <math><mi>X</mi></math>) <i>// see below</i>
+  <math><mi>Z</mi><mo>=</mo><mi>Z</mi><mo>+</mo><mn>1</mn></math> <ins><i>// this updates <math><mi>X</mi></math></i></ins>
+  <math><mi>i</mi><mo>=</mo><mn>0</mn></math>
+}
+</pre></blockquote>
+<p>
+-4- The <code>Philox</code> function maps the length-<math><mi>n</mi></math>/2 sequence <math><mi>K</mi></math> 
+and the length-<math><mi>n</mi></math> sequence <math><mi>X</mi></math> into a length-<math><mi>n</mi></math> output
+sequence <math><mi>Y</mi></math>. Philox applies an <math><mi>r</mi></math>-round substitution-permutation network to 
+the values in <math><mi>X</mi></math>. <del>A single round of the generation algorithm performs the following steps:</del>
+<ins>That is, there are intermediate values <math><msup><mi>X</mi><mrow>(<mn>0</mn>)</mrow></msup></math>,
+<math><msup><mi>X</mi><mrow>(<mn>1</mn>)</mrow></msup></math>, &hellip;,
+<math><msup><mi>X</mi><mrow>(<mi>r</mi>)</mrow></msup></math>, where 
+<math><msup><mi>X</mi><mrow>(<mn>0</mn>)</mrow></msup><mo>:=</mo><mi>X</mi></math>, and for each round
+<math><mi>q</mi></math> (with <math><mi>q</mi><mo>=</mo><mn>1</mn>, &hellip;, <mi>r</mi></math>),
+<math><msup><mi>X</mi><mrow>(<mi>q</mi>)</mrow></msup></math> is computed from
+<math><msup><mi>X</mi><mrow>(<mi>q</mi><op>-</op><mn>1</mn>)</mrow></msup></math> as follows. The output sequence
+is <math><msup><mi>X</mi><mrow>(<mi>r</mi>)</mrow></msup></math>.</ins>
+</p>
+<ol style="list-style-type: none">
+<li><p>(4.1) &mdash; <del>The output sequence <math><mi>X</mi><mi>'</mi></math> of the previous round (<math><mi>X</mi></math> 
+in case of the first round) is permuted to obtain the intermediate state <math><mi>V</mi></math>:</del></p>
+<blockquote><pre>
+<del><math><msub><mi>V</mi><mrow><mi>j</mi></mrow></msub><op>=</op><msub><mi>X</mi>'<mrow><msub><mi>f</mi><mrow><mi>n</mi></mrow></msub>(<mi>j</mi>)</mrow></msub></math></del>
+</pre></blockquote>
+<p>
+<ins>An intermediate state <math><msup><mi>V</mi><mrow>(<mi>q</mi>)</mrow></msup></math> is obtained
+by permuting the previous output, 
+<math><msubsup><mi>V</mi><mi>j</mi><mrow>(<mi>q</mi>)</mrow></msubsup><mo>:=</mo><msubsup><mi>X</mi><mrow><msub><mi>f</mi><mrow><mi>n</mi></mrow></msub>(<mi>j</mi>)</mrow><mrow>(<mi>q</mi><op>-</op><mn>1</mn>)</mrow></msubsup></math>,</ins>
+where <math><mi>j</mi><op>=</op><mn>0</mn>, &hellip; , <mi>n</mi><op>−</op><mn>1</mn></math> and 
+<math><msub><mi>f</mi><mrow><mi>n</mi></mrow></msub>(<mi>j</mi>)</math> is defined in Table 124.
+</p>
+</li>
+<li><p>(4.2) &mdash; <del>The following computations are applied to the elements of the <math><mi>V</mi></math> sequence:</del>
+<ins>The next output <math><msup><mi>X</mi><mrow>(<mi>q</mi>)</mrow></msup></math> is computed from the elements of the
+<math><msup><mi>V</mi><mrow>(<mi>q</mi>)</mrow></msup></math> as follows. For <math><mi>k</mi><mo>=</mo><mn>0</mn>,&hellip;,<mi>n</mi><op>/</op><mn>2</mn><mo>-</mo><mn>1</mn>,</math></ins></p>
+<ol style="list-style-type: none">
+<li><p><ins>(4.2.?) &mdash;</ins><math><msub><mi>X</mi><mrow><mn>2</mn><mi>k</mi><mo>+</mo><mn>0</mn></mrow></msub></math> = mulhi(<math><msub><mi>V</mi><mrow><mn>2</mn><mi>k</mi></mrow></msub></math>,<math><msub><mi>M</mi><mi>k</mi></msub></math>,<i>w</i>) xor <math><msubsup><mi style="font-style: italic">key</mi><mi>k</mi><mi>q</mi></msubsup></math> xor <math><msub><mi>V</mi><mrow><mn>2</mn><mi>k</mi><mo>+</mo><mn>1</mn></mrow></msub></math><ins>, and</ins></p></li>
+<li><p><ins>(4.2.?) &mdash;</ins><math><msub><mi>X</mi><mrow><mn>2</mn><mi>k</mi><mo>+</mo><mn>1</mn></mrow></msub></math> = mullo(<math><msub><mi>V</mi><mrow><mn>2</mn><mi>k</mi></mrow></msub></math>,<math><msub><mi>M</mi><mi>k</mi></msub></math>,<i>w</i>)<ins>,</ins></p></li>
+</ol>
+<p>
+where:
+</p>
+<ol style="list-style-type: none">
+<li><p>(4.2.1) &mdash; mullo(<math><mi>a</mi>,<mi>b</mi>,<mi>w</mi></math>) is the low half of the modular multiplication of 
+<math><mi>a</mi></math> and <math><mi>b</mi></math>: <math>(<mi>a</mi><mo>&#8901;</mo><mi>b</mi>)<mo>mod</mo><msup><mn>2</mn><mi>w</mi></msup></math>,</p></li>
+<li><p>(4.2.2) &mdash; mulhi(<math><mi>a</mi>,<mi>b</mi>,<mi>w</mi></math>) is the high half of the modular multiplication of 
+<math><mi>a</mi></math> and <math><mi>b</mi></math>: <math>(&#x230A;(<mi>a</mi><mo>&#8901;</mo><mi>b</mi>)<mo>/</mo><msup><mn>2</mn><mi>w</mi></msup>&#x230B;)</math>,</p></li>
+<li><p>(4.2.3) &mdash; 
+<del><math><mi>k</mi><mo>=</mo><mn>0</mn>, &hellip; , <mi>n</mi><mo>/</mo><mn>2</mn><mo>−</mo><mn>1</mn></math> is the index in the sequences,</del>
+<ins><math><msubsup><mi>K</mi><mi>k</mi><mrow>(<mi>q</mi>)</mrow></msubsup></math> is the
+<math><msup><mi>k</mi><mtext>th</mtext></msup></math> round key for round <math><mi>q</mi></math>,
+<math><msubsup><mi>K</mi><mi>k</mi><mrow>(<mi>q</mi>)</mrow></msubsup><op>:=</op>(<msub><mi>K</mi><mi>k</mi></msub><mo>+</mo>(<mi>q</mi><mo>-</mo><mn>1</mn>)<mo>&#8901;</mo><msub><mi>C</mi><mi>k</mi></msub>)<mo>mod</mo><msup><mn>2</mn><mi>w</mi></msup></math>,</ins></p></li>
+<li><p>(4.2.4) &mdash; <del><math><mi>q</mi><mo>=</mo><mn>0</mn>, &hellip; , <mi>r</mi><op>−</op><mn>1</mn></math> is the index of the round,</del>
+<ins><math><msub><mi>K</mi><mi>k</mi></msub></math> is the <math><msup><mi>k</mi><mtext>th</mtext></msup></math> element of the key sequence
+<math><mi>K</mi></math>,</ins></p></li>
+<li><p><del>(4.2.5) &mdash; <math><msubsup><mi style="font-style: italic">key</mi><mi>k</mi><mi>q</mi></msubsup></math> is the 
+<math><msup><mi>k</mi><mtext>th</mtext></msup></math> round key for round <math><mi>q</mi></math>, 
+<math><msubsup><mi style="font-style: italic">key</mi><mi>k</mi><mi>q</mi></msubsup><mo>:=</mo>(<msub><mi>K</mi><mi>k</mi></msub><mo>+</mo><mi>q</mi><mo>&#8901;</mo><msub><mi>C</mi><mi>k</mi></msub>)<mo>mod</mo><msup><mn>2</mn><mi>w</mi></msup></math>,</del></p></li>
+<li><p><del>(4.2.6) &mdash; <math><msub><mi>K</mi><mi>k</mi></msub></math> are the elements of the key sequence <math><mi>K</mi></math>,</del></p></li>
+<li><p>(4.2.7) &mdash; <math><msub><mi>M</mi><mi>k</mi></msub></math> is <code>multipliers[<math><mi>k</mi></math>]</code>, and</p></li>
+<li><p>(4.2.8) &mdash; <math><msub><mi>C</mi><mi>k</mi></msub></math> is <code>round_consts[<math><mi>k</mi></math>]</code>.</p></li>
+</ol>
+</li>
+
+</ol>
+</blockquote>
+</li>
+</ol>
+
+
+
+
+
+</body>
+</html>
