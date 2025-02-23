@@ -54,7 +54,7 @@
 </style>
 </head>
 <body>
-<p>Revised 2025-02-23 at 19:42:32 UTC
+<p>Revised 2025-02-23 at 19:56:23 UTC
 </p><h2>Unresolved Issues</h2>
 <hr>
 <h3 id="423"><a href="#423">423</a><sup><a href="https://cplusplus.github.io/LWG/issue423">(i)</a></sup>. Effects of negative <code>streamsize</code> in iostreams</h3>
@@ -65936,7 +65936,7 @@ the values in <math><mi>X</mi></math>. <del>A single round of the generation alg
 <math><msup><mi>X</mi><mrow><mo>(</mo><mn>1</mn><mo>)</mo></mrow></msup></math>, &hellip;,
 <math><msup><mi>X</mi><mrow><mo>(</mo><mi>r</mi><mo>)</mo></mrow></msup></math>, where 
 <math><msup><mi>X</mi><mrow><mo>(</mo><mn>0</mn><mo>)</mo></mrow></msup><mo>:=</mo><mi>X</mi></math>, and for each round
-<math><mi>q</mi></math> (with <math><mi>q</mi><mo>=</mo><mn>1</mn>,<mo>&hellip;</mo>, <mi>r</mi></math>),
+<math><mi>q</mi></math> (with <math><mi>q</mi><mo>=</mo><mn>1</mn><mo>,</mo><mo>&hellip;</mo><mo>,</mo><mi>r</mi></math>),
 <math><msup><mi>X</mi><mrow><mo>(</mo><mi>q</mi><mo>)</mo></mrow></msup></math> is computed from
 <math><msup><mi>X</mi><mrow><mo>(</mo><mi>q</mi><mo>-</mo><mn>1</mn><mo>)</mo></mrow></msup></math> as follows. The output sequence
 is <math><msup><mi>X</mi><mrow><mo>(</mo><mi>r</mi><mo>)</mo></mrow></msup></math>.</ins>
@@ -65945,19 +65945,19 @@ is <math><msup><mi>X</mi><mrow><mo>(</mo><mi>r</mi><mo>)</mo></mrow></msup></mat
 <li><p>(4.1) &mdash; <del>The output sequence <math><mi>X</mi><mi>'</mi></math> of the previous round (<math><mi>X</mi></math> 
 in case of the first round) is permuted to obtain the intermediate state <math><mi>V</mi></math>:</del></p>
 <blockquote><pre>
-<del><math><msub><mi>V</mi><mrow><mi>j</mi></mrow></msub><mo>=</mo><msub><mi>X</mi>'<mrow><msub><mi>f</mi><mrow><mi>n</mi></mrow></msub><mo>(</mo><mi>j</mi><mo>)</mo></mrow></msub></math></del>
+<del><math><msub><mi>V</mi><mrow><mi>j</mi></mrow></msub><mo>=</mo><msub><mi>X</mi><mi>'</mi><mrow><msub><mi>f</mi><mrow><mi>n</mi></mrow></msub><mo>(</mo><mi>j</mi><mo>)</mo></mrow></msub></math></del>
 </pre></blockquote>
 <p>
-<ins>An intermediate state <math><msup><mi>V</mi><mrow>(<mi>q</mi>)</mrow></msup></math> is obtained
+<ins>An intermediate state <math><msup><mi>V</mi><mrow><mo>(</mo><mi>q</mi><mo>)</mo></mrow></msup></math> is obtained
 by permuting the previous output, 
-<math><msubsup><mi>V</mi><mi>j</mi><mrow>(<mi>q</mi>)</mrow></msubsup><mo>:=</mo><msubsup><mi>X</mi><mrow><msub><mi>f</mi><mrow><mi>n</mi></mrow></msub>(<mi>j</mi>)</mrow><mrow>(<mi>q</mi><mo>-</mo><mn>1</mn>)</mrow></msubsup></math>,</ins>
-where <math><mi>j</mi><mo>=</mo><mn>0</mn>, &hellip; , <mi>n</mi><mo>−</mo><mn>1</mn></math> and 
-<math><msub><mi>f</mi><mrow><mi>n</mi></mrow></msub>(<mi>j</mi>)</math> is defined in Table 124.
+<math><msubsup><mi>V</mi><mi>j</mi><mrow><mo>(</mo><mi>q</mi><mo>)</mo></mrow></msubsup><mo>:=</mo><msubsup><mi>X</mi><mrow><msub><mi>f</mi><mrow><mi>n</mi></mrow></msub><mo>(</mo><mi>j</mi><mo>)</mo></mrow><mrow><mo>(</mo><mi>q</mi><mo>-</mo><mn>1</mn><mo>)</mo></mrow></msubsup></math>,</ins>
+where <math><mi>j</mi><mo>=</mo><mn>0</mn><mo>,</mo><mo>&hellip;</mo><mo>,</mo><mi>n</mi><mo>−</mo><mn>1</mn></math> and 
+<math><msub><mi>f</mi><mrow><mi>n</mi></mrow></msub><mo>(</mo><mi>j</mi>)</math> is defined in Table 124.
 </p>
 </li>
 <li><p>(4.2) &mdash; <del>The following computations are applied to the elements of the <math><mi>V</mi></math> sequence:</del>
-<ins>The next output <math><msup><mi>X</mi><mrow>(<mi>q</mi>)</mrow></msup></math> is computed from the elements of the
-<math><msup><mi>V</mi><mrow>(<mi>q</mi>)</mrow></msup></math> as follows. For <math><mi>k</mi><mo>=</mo><mn>0</mn>,&hellip;,<mi>n</mi><mo>/</mo><mn>2</mn><mo>-</mo><mn>1</mn>,</math></ins></p>
+<ins>The next output <math><msup><mi>X</mi><mrow><mo>(</mo><mi>q</mi><mo>)</mo></mrow></msup></math> is computed from the elements of the
+<math><msup><mi>V</mi><mrow><mo>(</mo><mi>q</mi><mo>)</mo></mrow></msup></math> as follows. For <math><mi>k</mi><mo>=</mo><mn>0</mn><mo>,</mo><mo>&hellip;</mo><mo>,</mo><mi>n</mi><mo>/</mo><mn>2</mn><mo>-</mo><mn>1</mn><mo>,</mo></math></ins></p>
 <ol style="list-style-type: none">
 <li><p><ins>(4.2.?) &mdash;</ins><math><msub><mi>X</mi><mrow><mn>2</mn><mi>k</mi><mo>+</mo><mn>0</mn></mrow></msub></math> = mulhi(<math><msub><mi>V</mi><mrow><mn>2</mn><mi>k</mi></mrow></msub></math>,<math><msub><mi>M</mi><mi>k</mi></msub></math>,<i>w</i>) xor <math><msubsup><mi style="font-style: italic">key</mi><mi>k</mi><mi>q</mi></msubsup></math> xor <math><msub><mi>V</mi><mrow><mn>2</mn><mi>k</mi><mo>+</mo><mn>1</mn></mrow></msub></math><ins>, and</ins></p></li>
 <li><p><ins>(4.2.?) &mdash;</ins><math><msub><mi>X</mi><mrow><mn>2</mn><mi>k</mi><mo>+</mo><mn>1</mn></mrow></msub></math> = mullo(<math><msub><mi>V</mi><mrow><mn>2</mn><mi>k</mi></mrow></msub></math>,<math><msub><mi>M</mi><mi>k</mi></msub></math>,<i>w</i>)<ins>,</ins></p></li>
@@ -65971,16 +65971,16 @@ where:
 <li><p>(4.2.2) &mdash; mulhi(<math><mi>a</mi>,<mi>b</mi>,<mi>w</mi></math>) is the high half of the modular multiplication of 
 <math><mi>a</mi></math> and <math><mi>b</mi></math>: <math>(&#x230A;(<mi>a</mi><mo>&#8901;</mo><mi>b</mi>)<mo>/</mo><msup><mn>2</mn><mi>w</mi></msup>&#x230B;)</math>,</p></li>
 <li><p>(4.2.3) &mdash; 
-<del><math><mi>k</mi><mo>=</mo><mn>0</mn>, &hellip; , <mi>n</mi><mo>/</mo><mn>2</mn><mo>−</mo><mn>1</mn></math> is the index in the sequences,</del>
-<ins><math><msubsup><mi>K</mi><mi>k</mi><mrow>(<mi>q</mi>)</mrow></msubsup></math> is the
+<del><math><mi>k</mi><mo>=</mo><mn>0</mn><mo>,</mo><mo>&hellip;</mo><mo>,</mo><mi>n</mi><mo>/</mo><mn>2</mn><mo>−</mo><mn>1</mn></math> is the index in the sequences,</del>
+<ins><math><msubsup><mi>K</mi><mi>k</mi><mrow><mo>(</mo><mi>q</mi><mo>)</mo></mrow></msubsup></math> is the
 <math><msup><mi>k</mi><mtext>th</mtext></msup></math> round key for round <math><mi>q</mi></math>,
-<math><msubsup><mi>K</mi><mi>k</mi><mrow>(<mi>q</mi>)</mrow></msubsup><mo>:=</mo>(<msub><mi>K</mi><mi>k</mi></msub><mo>+</mo>(<mi>q</mi><mo>-</mo><mn>1</mn>)<mo>&#8901;</mo><msub><mi>C</mi><mi>k</mi></msub>)<mo>mod</mo><msup><mn>2</mn><mi>w</mi></msup></math>,</ins></p></li>
-<li><p>(4.2.4) &mdash; <del><math><mi>q</mi><mo>=</mo><mn>0</mn>, &hellip; , <mi>r</mi><mo>−</mo><mn>1</mn></math> is the index of the round,</del>
+<math><msubsup><mi>K</mi><mi>k</mi><mrow><mo>(</mo><mi>q</mi><mo>)</mo></mrow></msubsup><mo>:=</mo><mo>(</mo><msub><mi>K</mi><mi>k</mi></msub><mo>+</mo><mo>(</mo><mi>q</mi><mo>-</mo><mn>1</mn><mo>)</mo><mo>&#8901;</mo><msub><mi>C</mi><mi>k</mi></msub><mo>)</mo><mo>mod</mo><msup><mn>2</mn><mi>w</mi></msup></math>,</ins></p></li>
+<li><p>(4.2.4) &mdash; <del><math><mi>q</mi><mo>=</mo><mn>0</mn><mo>,</mo><mo>&hellip;</mo><mo>,</mo><mi>r</mi><mo>−</mo><mn>1</mn></math> is the index of the round,</del>
 <ins><math><msub><mi>K</mi><mi>k</mi></msub></math> is the <math><msup><mi>k</mi><mtext>th</mtext></msup></math> element of the key sequence
 <math><mi>K</mi></math>,</ins></p></li>
 <li><p><del>(4.2.5) &mdash; <math><msubsup><mi style="font-style: italic">key</mi><mi>k</mi><mi>q</mi></msubsup></math> is the 
 <math><msup><mi>k</mi><mtext>th</mtext></msup></math> round key for round <math><mi>q</mi></math>, 
-<math><msubsup><mi style="font-style: italic">key</mi><mi>k</mi><mi>q</mi></msubsup><mo>:=</mo>(<msub><mi>K</mi><mi>k</mi></msub><mo>+</mo><mi>q</mi><mo>&#8901;</mo><msub><mi>C</mi><mi>k</mi></msub>)<mo>mod</mo><msup><mn>2</mn><mi>w</mi></msup></math>,</del></p></li>
+<math><msubsup><mi style="font-style: italic">key</mi><mi>k</mi><mi>q</mi></msubsup><mo>:=</mo><mo>(</mo><msub><mi>K</mi><mi>k</mi></msub><mo>+</mo><mi>q</mi><mo>&#8901;</mo><msub><mi>C</mi><mi>k</mi></msub><mo>)</mo><mo>mod</mo><msup><mn>2</mn><mi>w</mi></msup></math>,</del></p></li>
 <li><p><del>(4.2.6) &mdash; <math><msub><mi>K</mi><mi>k</mi></msub></math> are the elements of the key sequence <math><mi>K</mi></math>,</del></p></li>
 <li><p>(4.2.7) &mdash; <math><msub><mi>M</mi><mi>k</mi></msub></math> is <code>multipliers[<math><mi>k</mi></math>]</code>, and</p></li>
 <li><p>(4.2.8) &mdash; <math><msub><mi>C</mi><mi>k</mi></msub></math> is <code>round_consts[<math><mi>k</mi></math>]</code>.</p></li>
