@@ -54,7 +54,7 @@
 </style>
 </head>
 <body>
-<p>Revised 2025-02-23 at 15:38:03 UTC
+<p>Revised 2025-02-23 at 16:12:13 UTC
 </p><h2>Unresolved Issues</h2>
 <hr>
 <h3 id="423"><a href="#423">423</a><sup><a href="https://cplusplus.github.io/LWG/issue423">(i)</a></sup>. Effects of negative <code>streamsize</code> in iostreams</h3>
@@ -66114,6 +66114,130 @@ then <code>((void)F, <i>decay-copy</i>(E))</code>, except that the evaluations o
 and <code>F</code> are indeterminately sequenced.
 </p></li>
 </ol>
+</blockquote>
+</li>
+
+</ol>
+
+
+
+
+
+
+<hr>
+<h3 id="4215"><a href="#4215">4215</a><sup><a href="https://cplusplus.github.io/LWG/issue4215">(i)</a></sup>. <code class='backtick'>run_loop::finish</code> should be <code class='backtick'>noexcept</code></h3>
+<p><b>Section:</b> 33.12.1 <a href="https://wg21.link/exec.run.loop">[exec.run.loop]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
+ <b>Submitter:</b> Eric Niebler <b>Opened:</b> 2025-02-13 <b>Last modified:</b> 2025-02-23</p>
+<p><b>Priority: </b>Not Prioritized
+</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
+<p><b>Discussion:</b></p>
+<p>
+<code class='backtick'>run_loop::finish</code> puts the <code class='backtick'>run_loop</code> into the <code><i>finishing</i></code> state so that the next 
+time the work queue is empty, <code class='backtick'>run_loop::run</code> will return instead of waiting for more work.
+<p/>
+Calling <code class='backtick'>.finish()</code> on a <code class='backtick'>run_loop</code> instance can potentially throw (<code class='backtick'>finish()</code> is not marked <code class='backtick'>noexcept</code>), 
+that is because one valid implementation involves acquiring a lock on a <code class='backtick'>std::mutex</code> &mdash; a potentially throwing operation.
+<p/>
+But failing to put the <code class='backtick'>run_loop</code> into the <code><i>finishing</i></code> state is problematic in the same way 
+that a failing destructor is problematic: shutdown and clean-up code depends on it succeeding.
+<p/>
+Consider <code class='backtick'>sync_wait</code>'s use of <code class='backtick'>run_loop</code>:
+</p>
+<blockquote><pre>
+<i>sync-wait-state</i>&lt;Sndr&gt; state;
+auto op = connect(sndr, <i>sync-wait-receiver</i>&lt;Sndr&gt;{&amp;state});
+start(op);
+
+state.loop.run();
+if (state.error) {
+  rethrow_exception(std::move(state.error));
+}
+return std::move(state.result);
+</pre></blockquote>
+<p>
+It is the job of <code><i>sync-wait-receiver</i></code> to put the <code class='backtick'>run_loop</code> into the <code><i>finishing</i></code> state 
+so that the invocation of <code class='backtick'>state.loop.run()</code> will return. It does that in its completion functions, like so:
+</p>
+<blockquote><pre>
+void set_stopped() &amp;&amp; noexcept;
+</pre>
+<blockquote>
+<p>
+<i>Effects</i>: Equivalent to <code>state-&gt;loop.finish()</code>.
+</p>
+</blockquote>
+</blockquote>
+<p>
+Here we are not handling the fact that <code>state-&gt;loop.finish()</code> is potentially throwing. Given that this 
+function is <code class='backtick'>noexcept</code>, this will lead to the application getting terminated. Not good.
+<p/>
+But even if we handle the exception and save it into <code class='backtick'>state.result</code> to be rethrown later, we still have a problem. 
+Since <code class='backtick'>run_loop::finish()</code> threw, the <code class='backtick'>run_loop</code> has not been placed into the <code><i>finishing</i></code> state. 
+That means that <code class='backtick'>state.loop.run()</code> will never return, and <code class='backtick'>sync_wait</code> will hang forever.
+<p/>
+Simply put, <code class='backtick'>run_loop::finish()</code> has to be <code class='backtick'>noexcept</code>. The implementation must find a way to put the <code class='backtick'>run_loop</code> 
+into the <code><i>finishing</i></code> state. If it cannot, it should terminate. Throwing an exception and foisting the 
+problem on the caller &mdash; who has no recourse &mdash; is simply wrong.
+</p>
+
+
+<p id="res-4215"><b>Proposed resolution:</b></p>
+<p>
+This wording is relative to <a href="https://wg21.link/N5001">N5001</a>.
+</p>
+
+<ol>
+<li><p>Modify 33.12.1.1 <a href="https://wg21.link/exec.run.loop.general">[exec.run.loop.general]</a> as indicated:</p>
+
+<blockquote><pre>
+namespace std::execution {
+  class run_loop {
+    <i>// 33.12.1.2 <a href="https://wg21.link/exec.run.loop.types">[exec.run.loop.types]</a>, associated types</i>
+    class <i>run-loop-scheduler</i>; <i>// exposition only</i>
+    class <i>run-loop-sender</i>;    <i>// exposition only</i>
+    struct <i>run-loop-opstate-base</i> { <i>// exposition only</i>
+      virtual void <i>execute</i>() = 0;  <i>// exposition only</i>
+      run_loop* <i>loop</i>;              <i>// exposition only</i>
+      run-loop-opstate-base* <i>next</i>; <i>// exposition only</i>
+    };
+    template&lt;class Rcvr&gt;
+      using <i>run-loop-opstate</i> = <i>unspecified</i>; <i>// exposition only</i>
+
+    <i>// 33.12.1.4 <a href="https://wg21.link/exec.run.loop.members">[exec.run.loop.members]</a>, member functions</i>
+    <i>run-loop-opstate-base</i>* <i>pop-front</i>(); <i>// exposition only</i>
+    void <i>push-back</i>(<i>run-loop-opstate-base</i>*); <i>// exposition only</i>
+
+  public:
+    <i>// 33.12.1.3 <a href="https://wg21.link/exec.run.loop.ctor">[exec.run.loop.ctor]</a>, constructor and destructor</i>
+    run_loop() noexcept;
+    run_loop(run_loop&amp;&amp;) = delete;
+    ~run_loop();
+
+    <i>// 33.12.1.4 <a href="https://wg21.link/exec.run.loop.members">[exec.run.loop.members]</a>, member functions</i>
+    <i>run-loop-scheduler</i> get_scheduler();
+    void run();
+    void finish() <ins>noexcept</ins>;
+  };
+}
+</pre></blockquote>
+</li>
+
+<li><p>Modify 33.12.1.4 <a href="https://wg21.link/exec.run.loop.members">[exec.run.loop.members]</a> as indicated:</p>
+
+<blockquote>
+<pre>
+void finish() <ins>noexcept</ins>;
+</pre>
+<blockquote>
+<p>
+-8- <i>Preconditions</i>: <code><i>state</i></code> is either <code><i>starting</i></code> or <code><i>running</i></code>.
+<p/>
+-9- <i>Effects</i>: Changes <code><i>state</i></code> to <code><i>finishing</i></code>.
+<p/>
+-10- <i>Synchronization</i>: <code class='backtick'>finish</code> synchronizes with the <code><i>pop-front</i></code> operation that returns <code>nullptr</code>.
+</p>
+</blockquote>
 </blockquote>
 </li>
 
