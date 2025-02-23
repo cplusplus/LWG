@@ -119,14 +119,14 @@ the <math><mi>i</mi></math>th element of <math><mi>Y</mi></math> after applying 
 and the length-<math><mi>n</mi></math> sequence <math><mi>X</mi></math> into a length-<math><mi>n</mi></math> output
 sequence <math><mi>Y</mi></math>. Philox applies an <math><mi>r</mi></math>-round substitution-permutation network to 
 the values in <math><mi>X</mi></math>. <del>A single round of the generation algorithm performs the following steps:</del>
-<ins>That is, there are intermediate values <math><msup><mi>X</mi><mrow>(<mn>0</mn>)</mrow></msup></math>,
-<math><msup><mi>X</mi><mrow>(<mn>1</mn>)</mrow></msup></math>, &hellip;,
-<math><msup><mi>X</mi><mrow>(<mi>r</mi>)</mrow></msup></math>, where 
-<math><msup><mi>X</mi><mrow>(<mn>0</mn>)</mrow></msup><mo>:=</mo><mi>X</mi></math>, and for each round
+<ins>That is, there are intermediate values <math><msup><mi>X</mi><mrow><mo>(</mo><mn>0</mn><mo>)</mo></mrow></msup></math>,
+<math><msup><mi>X</mi><mrow><mo>(</mo><mn>1</mn><mo>)</mo></mrow></msup></math>, &hellip;,
+<math><msup><mi>X</mi><mrow><mo>(</mo><mi>r</mi><mo>)</mo></mrow></msup></math>, where 
+<math><msup><mi>X</mi><mrow><mo>(</mo><mn>0</mn><mo>)</mo></mrow></msup><mo>:=</mo><mi>X</mi></math>, and for each round
 <math><mi>q</mi></math> (with <math><mi>q</mi><mo>=</mo><mn>1</mn>, &hellip;, <mi>r</mi></math>),
-<math><msup><mi>X</mi><mrow>(<mi>q</mi>)</mrow></msup></math> is computed from
-<math><msup><mi>X</mi><mrow>(<mi>q</mi><mo>-</mo><mn>1</mn>)</mrow></msup></math> as follows. The output sequence
-is <math><msup><mi>X</mi><mrow>(<mi>r</mi>)</mrow></msup></math>.</ins>
+<math><msup><mi>X</mi><mrow><mo>(</mo><mi>q</mi><mo>)</mo></mrow></msup></math> is computed from
+<math><msup><mi>X</mi><mrow><mo>(</mo><mi>q</mi><mo>-</mo><mn>1</mn><mo>)</mo></mrow></msup></math> as follows. The output sequence
+is <math><msup><mi>X</mi><mrow><mo>(</mo><mi>r</mi><mo>)</mo></mrow></msup></math>.</ins>
 </p>
 <ol style="list-style-type: none">
 <li><p>(4.1) &mdash; <del>The output sequence <math><mi>X</mi><mi>'</mi></math> of the previous round (<math><mi>X</mi></math> 
