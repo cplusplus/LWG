@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Issue 4214: Missing Preconditions for take/drop adaptor</title>
+<meta property="og:title" content="Issue 4214: Missing Preconditions for take/drop adaptor">
+<meta property="og:description" content="C++ library issue. Status: New">
+<meta property="og:url" content="https://cplusplus.github.io/LWG/issue4214.html">
+<meta property="og:type" content="website">
+<meta property="og:image" content="http://cplusplus.github.io/LWG/images/cpp_logo.png">
+<meta property="og:image:alt" content="C++ logo">
+<style>
+  p {text-align:justify}
+  li {text-align:justify}
+  pre code.backtick::before { content: "`" }
+  pre code.backtick::after { content: "`" }
+  blockquote.note
+  {
+    background-color:#E0E0E0;
+    padding-left: 15px;
+    padding-right: 15px;
+    padding-top: 1px;
+    padding-bottom: 1px;
+  }
+  ins {background-color:#A0FFA0}
+  del {background-color:#FFA0A0}
+  table.issues-index { border: 1px solid; border-collapse: collapse; }
+  table.issues-index th { text-align: center; padding: 4px; border: 1px solid; }
+  table.issues-index td { padding: 4px; border: 1px solid; }
+  table.issues-index td:nth-child(1) { text-align: right; }
+  table.issues-index td:nth-child(2) { text-align: left; }
+  table.issues-index td:nth-child(3) { text-align: left; }
+  table.issues-index td:nth-child(4) { text-align: left; }
+  table.issues-index td:nth-child(5) { text-align: center; }
+  table.issues-index td:nth-child(6) { text-align: center; }
+  table.issues-index td:nth-child(7) { text-align: left; }
+  table.issues-index td:nth-child(5) span.no-pr { color: red; }
+  @media (prefers-color-scheme: dark) {
+     html {
+        color: #ddd;
+        background-color: black;
+     }
+     ins {
+        background-color: #225522
+     }
+     del {
+        background-color: #662222
+     }
+     a {
+        color: #6af
+     }
+     a:visited {
+        color: #6af
+     }
+     blockquote.note
+     {
+        background-color: rgba(255, 255, 255, .10)
+     }
+  }
+</style>
+</head>
+<body>
+<hr>
+<p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#New">New</a> status.</em></p>
+<h3 id="4214"><a href="lwg-active.html#4214">4214</a>. Missing <i>Preconditions</i> for <code>take</code>/<code>drop</code> adaptor</h3>
+<p><b>Section:</b> 25.7.10.1 <a href="https://wg21.link/range.take.overview">[range.take.overview]</a>, 25.7.12.1 <a href="https://wg21.link/range.drop.overview">[range.drop.overview]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
+ <b>Submitter:</b> Hewill Kang <b>Opened:</b> 2025-02-15 <b>Last modified:</b> 2025-02-23</p>
+<p><b>Priority: </b>Not Prioritized
+</p>
+<p><b>View other</b> <a href="lwg-index-open.html#range.take.overview">active issues</a> in [range.take.overview].</p>
+<p><b>View all other</b> <a href="lwg-index.html#range.take.overview">issues</a> in [range.take.overview].</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
+<p><b>Discussion:</b></p>
+<p>
+The <code>take</code>/<code>drop</code> adaptor does not explicitly require <i>N</i> to be non-negative (although
+the view class does), which makes it possible for some specialized cases to be well-defined when <i>N</i> is negative, 
+since no <i>Preconditions</i> are violated:</p>
+<blockquote><pre>
+auto e = std::views::empty&lt;int&gt; 
+       | std::views::take(-1);   // []
+auto i = std::views::iota(1, 5)
+       | std::views::drop(-1);   // [0, 1, 2, 3, 4]
+auto r = std::views::repeat('a', 2)
+       | std::views::drop(-1);   // ['a', 'a', 'a']
+</pre></blockquote>
+<p>
+This is not the intention, we should ban these cases.
+</p>
+
+
+<p id="res-4214"><b>Proposed resolution:</b></p>
+<p>
+This wording is relative to <a href="https://wg21.link/N5001">N5001</a>.
+</p>
+
+<ol>
+<li><p>Modify 25.7.10.1 <a href="https://wg21.link/range.take.overview">[range.take.overview]</a> as indicated:</p>
+
+<blockquote>
+<p>
+-2- The name <code>views::take</code> denotes a range adaptor object (25.7.2 <a href="https://wg21.link/range.adaptor.object">[range.adaptor.object]</a>).
+Let <code>E</code> and <code>F</code> be expressions, let <code>T</code> be
+<code>remove_cvref_t&lt;decltype((E))&gt;</code>, and let <code>D</code> be 
+<code>range_difference_t&lt;decltype((E))&gt;</code>.
+If <code>decltype((F))</code> does not model <code>convertible_to&lt;D&gt;</code>,
+<code>views::take(E, F)</code> is ill-formed. Otherwise, the expression <code>views::take(E, F)</code> 
+is expression-equivalent to:
+</p>
+<ol style="list-style-type: none">
+<li><p>(2.?) <ins>&mdash; <i>Preconditions</i>: <code>static_cast&lt;D&gt;(F) &gt;= 0</code> is <code>true</code>.</ins>
+</p></li>
+<li><p>(2.1) &mdash; if <code>T</code> is a specialization of <code>empty_view</code> (25.6.2.2 <a href="https://wg21.link/range.empty.view">[range.empty.view]</a>),
+then <code>((void)F, <i>decay-copy</i>(E))</code>, except that the evaluations of <code>E</code>
+and <code>F</code> are indeterminately sequenced.
+</p></li>
+</ol>
+</blockquote>
+</li>
+
+<li><p>Modify 25.7.12.1 <a href="https://wg21.link/range.drop.overview">[range.drop.overview]</a> as indicated:</p>
+
+<blockquote>
+<p>
+-2- The name <code>views::drop</code> denotes a range adaptor object (25.7.2 <a href="https://wg21.link/range.adaptor.object">[range.adaptor.object]</a>).
+Let <code>E</code> and <code>F</code> be expressions, let <code>T</code> be
+<code>remove_cvref_t&lt;decltype((E))&gt;</code>, and let <code>D</code> be 
+<code>range_difference_t&lt;decltype((E))&gt;</code>.
+If <code>decltype((F))</code> does not model <code>convertible_to&lt;D&gt;</code>,
+<code>views::drop(E, F)</code> is ill-formed. Otherwise, the expression <code>views::drop(E, F)</code> 
+is expression-equivalent to:
+</p>
+<ol style="list-style-type: none">
+<li><p>(2.?) <ins>&mdash; <i>Preconditions</i>: <code>static_cast&lt;D&gt;(F) &gt;= 0</code> is <code>true</code>.</ins>
+</p></li>
+<li><p>(2.1) &mdash; if <code>T</code> is a specialization of <code>empty_view</code> (25.6.2.2 <a href="https://wg21.link/range.empty.view">[range.empty.view]</a>),
+then <code>((void)F, <i>decay-copy</i>(E))</code>, except that the evaluations of <code>E</code>
+and <code>F</code> are indeterminately sequenced.
+</p></li>
+</ol>
+</blockquote>
+</li>
+
+</ol>
+
+
+
+
+
+
+</body>
+</html>
