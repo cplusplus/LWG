@@ -54,7 +54,7 @@
 </style>
 </head>
 <body>
-<p>Revised 2025-02-24 at 10:22:53 UTC
+<p>Revised 2025-02-24 at 16:44:12 UTC
 </p><h2>Unresolved Issues</h2>
 <hr>
 <h3 id="423"><a href="#423">423</a><sup><a href="https://cplusplus.github.io/LWG/issue423">(i)</a></sup>. Effects of negative <code>streamsize</code> in iostreams</h3>
@@ -65878,7 +65878,7 @@ chain of links does not terminate in a <code class='backtick'>time_zone</code>.
 <hr>
 <h3 id="4212"><a href="#4212">4212</a><sup><a href="https://cplusplus.github.io/LWG/issue4212">(i)</a></sup>. Make the round states in [rand.eng.philox] explicit</h3>
 <p><b>Section:</b> 29.5.4.5 <a href="https://wg21.link/rand.eng.philox">[rand.eng.philox]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Thomas Köppe <b>Opened:</b> 2025-02-12 <b>Last modified:</b> 2025-02-23</p>
+ <b>Submitter:</b> Thomas Köppe <b>Opened:</b> 2025-02-12 <b>Last modified:</b> 2025-02-24</p>
 <p><b>Priority: </b>Not Prioritized
 </p>
 <p><b>View all other</b> <a href="lwg-index.html#rand.eng.philox">issues</a> in [rand.eng.philox].</p>
@@ -65916,7 +65916,8 @@ This wording is relative to <a href="https://wg21.link/N5001">N5001</a>.
 <blockquote>
 <p>
 -2- The generation algorithm returns <math><msub><mi>Y</mi><mrow><mi>i</mi></mrow></msub></math>, the value stored in 
-the <math><mi>i</mi></math>th element of <math><mi>Y</mi></math> after applying the transition algorithm.
+the <math><msup><mi>i</mi><mtext>th</mtext></msup></math> element of <math><mi>Y</mi></math> after applying the 
+transition algorithm.
 <p/>
 -3- The state transition is performed as if by the following algorithm:
 </p>
@@ -65924,14 +65925,14 @@ the <math><mi>i</mi></math>th element of <math><mi>Y</mi></math> after applying 
 <math><mi>i</mi><mo>=</mo><mi>i</mi><mo>+</mo><mn>1</mn></math>
 <code>if (<math><mi>i</mi></math> == <math><mi>n</mi></math>) {</code>
   <math><mi>Y</mi><mo>=</mo></math><code>Philox</code>(<math><mi>K</mi></math>, <math><mi>X</mi></math>) <i>// see below</i>
-  <math><mi>Z</mi><mo>=</mo><mi>Z</mi><mo>+</mo><mn>1</mn></math> <ins><i>// this updates <math><mi>X</mi></math></i></ins>
+  <math><mi>Z</mi><mo>=</mo><mi>Z</mi><mo>+</mo><mn>1</mn></math>         <ins><i>// this updates <math><mi>X</mi></math></i></ins>
   <math><mi>i</mi><mo>=</mo><mn>0</mn></math>
 }
 </pre></blockquote>
 <p>
 -4- The <code>Philox</code> function maps the length-<math><mi>n</mi></math>/2 sequence <math><mi>K</mi></math> 
 and the length-<math><mi>n</mi></math> sequence <math><mi>X</mi></math> into a length-<math><mi>n</mi></math> output
-sequence <math><mi>Y</mi></math>. Philox applies an <math><mi>r</mi></math>-round substitution-permutation network to 
+sequence <del><math><mi>Y</mi></math></del>. Philox applies an <math><mi>r</mi></math>-round substitution-permutation network to 
 the values in <math><mi>X</mi></math>. <del>A single round of the generation algorithm performs the following steps:</del>
 <ins>That is, there are intermediate values <math><msup><mi>X</mi><mrow><mo>(</mo><mn>0</mn><mo>)</mo></mrow></msup></math>,
 <math><msup><mi>X</mi><mrow><mo>(</mo><mn>1</mn><mo>)</mo></mrow></msup></math>, &hellip;,
@@ -65952,7 +65953,7 @@ in case of the first round) is permuted to obtain the intermediate state <math><
 <ins>An intermediate state <math><msup><mi>V</mi><mrow><mo>(</mo><mi>q</mi><mo>)</mo></mrow></msup></math> is obtained
 by permuting the previous output, 
 <math><msubsup><mi>V</mi><mi>j</mi><mrow><mo>(</mo><mi>q</mi><mo>)</mo></mrow></msubsup><mo>:=</mo><msubsup><mi>X</mi><mrow><msub><mi>f</mi><mrow><mi>n</mi></mrow></msub><mo>(</mo><mi>j</mi><mo>)</mo></mrow><mrow><mo>(</mo><mi>q</mi><mo>-</mo><mn>1</mn><mo>)</mo></mrow></msubsup></math>,</ins>
-where <math><mi>j</mi><mo>=</mo><mn>0</mn><mo>,</mo><mo>&hellip;</mo><mo>,</mo><mi>n</mi><mo>−</mo><mn>1</mn></math> and 
+where <math><mi>j</mi><mo>=</mo><mn>0</mn><mo>,</mo><mo>&hellip;</mo><mo>,</mo><mi>n</mi><mo>−</mo><mn>1</mn></math><ins>,</ins> and 
 <math><msub><mi>f</mi><mrow><mi>n</mi></mrow></msub><mo>(</mo><mi>j</mi><mo>)</mo></math> is defined in Table 124.
 </p>
 </li>
@@ -65960,11 +65961,11 @@ where <math><mi>j</mi><mo>=</mo><mn>0</mn><mo>,</mo><mo>&hellip;</mo><mo>,</mo><
 <ins>The next output <math><msup><mi>X</mi><mrow><mo>(</mo><mi>q</mi><mo>)</mo></mrow></msup></math> is computed from the elements of the
 <math><msup><mi>V</mi><mrow><mo>(</mo><mi>q</mi><mo>)</mo></mrow></msup></math> as follows. For <math><mi>k</mi><mo>=</mo><mn>0</mn><mo>,</mo><mo>&hellip;</mo><mo>,</mo><mi>n</mi><mo>/</mo><mn>2</mn><mo>-</mo><mn>1</mn><mo>,</mo></math></ins></p>
 <ol style="list-style-type: none">
-<li><p><ins>(4.2.?) &mdash;</ins><math><msub><mi>X</mi><mrow><mn>2</mn><mi>k</mi><mo>+</mo><mn>0</mn></mrow></msub></math> = mulhi(<math><msub><mi>V</mi><mrow><mn>2</mn><mi>k</mi></mrow></msub></math>,<math><msub><mi>M</mi><mi>k</mi></msub></math>,<i>w</i>) xor <math><msubsup><mi style="font-style: italic">key</mi><mi>k</mi><mi>q</mi></msubsup></math> xor <math><msub><mi>V</mi><mrow><mn>2</mn><mi>k</mi><mo>+</mo><mn>1</mn></mrow></msub></math><ins>, and</ins></p></li>
-<li><p><ins>(4.2.?) &mdash;</ins><math><msub><mi>X</mi><mrow><mn>2</mn><mi>k</mi><mo>+</mo><mn>1</mn></mrow></msub></math> = mullo(<math><msub><mi>V</mi><mrow><mn>2</mn><mi>k</mi></mrow></msub></math>,<math><msub><mi>M</mi><mi>k</mi></msub></math>,<i>w</i>)<ins>,</ins></p></li>
+<li><p><ins>(4.2.?) &mdash; <math><msubsup><mi>X</mi><mrow><mn>2</mn><mi>k</mi><mo>+</mo><mn>0</mn></mrow><mrow><mo>(</mo><mi>q</mi><mo>)</mo></mrow></msubsup></math> = mulhi(<math><msubsup><mi>V</mi><mrow><mn>2</mn><mi>k</mi></mrow><mrow><mo>(</mo><mi>q</mi><mo>)</mo></mrow></msubsup></math>,<math><msub><mi>M</mi><mi>k</mi></msub></math>,<i>w</i>) xor <math><msubsup><mi>K</mi><mi>k</mi><mrow><mo>(</mo><mi>q</mi><mo>)</mo></mrow></msubsup></math> xor <math><msubsup><mi>V</mi><mrow><mn>2</mn><mi>k</mi><mo>+</mo><mn>1</mn></mrow><mrow><mo>(</mo><mi>q</mi><mo>)</mo></mrow></msubsup></math>, and</ins><del><math><msub><mi>X</mi><mrow><mn>2</mn><mi>k</mi><mo>+</mo><mn>0</mn></mrow></msub></math> = mulhi(<math><msub><mi>V</mi><mrow><mn>2</mn><mi>k</mi></mrow></msub></math>,<math><msub><mi>M</mi><mi>k</mi></msub></math>,<i>w</i>) xor <math><msubsup><mi style="font-style: italic">key</mi><mi>k</mi><mi>q</mi></msubsup></math> xor <math><msub><mi>V</mi><mrow><mn>2</mn><mi>k</mi><mo>+</mo><mn>1</mn></mrow></msub></math></del></p></li>
+<li><p><ins>(4.2.?) &mdash; <math><msubsup><mi>X</mi><mrow><mn>2</mn><mi>k</mi><mo>+</mo><mn>1</mn></mrow><mrow><mo>(</mo><mi>q</mi><mo>)</mo></mrow></msubsup></math> = mullo(<math><msubsup><mi>V</mi><mrow><mn>2</mn><mi>k</mi></mrow><mrow><mo>(</mo><mi>q</mi><mo>)</mo></mrow></msubsup></math>,<math><msub><mi>M</mi><mi>k</mi></msub></math>,<i>w</i>),</ins><del><math><msub><mi>X</mi><mrow><mn>2</mn><mi>k</mi><mo>+</mo><mn>1</mn></mrow></msub></math> = mullo(<math><msub><mi>V</mi><mrow><mn>2</mn><mi>k</mi></mrow></msub></math>,<math><msub><mi>M</mi><mi>k</mi></msub></math>,<i>w</i>)</del></p></li>
 </ol>
 <p>
-where:
+where<del>:</del>
 </p>
 <ol style="list-style-type: none">
 <li><p>(4.2.1) &mdash; mullo(<math><mi>a</mi><mo>,</mo><mi>b</mi><mo>,</mo><mi>w</mi></math>) is the low half of the modular multiplication of 
