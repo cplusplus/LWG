@@ -64,7 +64,7 @@
 <p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#New">New</a> status.</em></p>
 <h3 id="4207"><a href="lwg-active.html#4207">4207</a>. Point of reference for <code class='backtick'>source_location</code> is not specified when used in an default template argument</h3>
 <p><b>Section:</b> 17.8.2.2 <a href="https://wg21.link/support.srcloc.cons">[support.srcloc.cons]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Cassio Neri <b>Opened:</b> 2025-02-07 <b>Last modified:</b> 2025-02-07</p>
+ <b>Submitter:</b> Cassio Neri <b>Opened:</b> 2025-02-07 <b>Last modified:</b> 2025-02-24</p>
 <p><b>Priority: </b>Not Prioritized
 </p>
 <p><b>View all other</b> <a href="lwg-index.html#support.srcloc.cons">issues</a> in [support.srcloc.cons].</p>
@@ -127,10 +127,12 @@ Any call to <code class='backtick'>current</code> that appears as a default argu
 (9.3.4.7 <a href="https://wg21.link/dcl.fct.default">[dcl.fct.default]</a>), or as a subexpression thereof,
 should correspond to the location of the invocation of the function that
 uses the default argument (7.6.1.3 <a href="https://wg21.link/expr.call">[expr.call]</a>).
+<ins>
 Any call to <code class='backtick'>current</code> that appears as a default template argument
 (13.2 <a href="https://wg21.link/temp.param">[temp.param]</a>), or as a subexpression thereof,
 should correspond to the location where the default template argument
 is specified.
+</ins>
 </blockquote>
 </li>
 </ol>

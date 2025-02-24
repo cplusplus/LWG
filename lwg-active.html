@@ -67,7 +67,7 @@
 </tr>
 <tr>
   <td align="left">Date:</td>
-  <td align="left">2025-02-23</td>
+  <td align="left">2025-02-24</td>
 </tr>
 <tr>
   <td align="left">Project:</td>
@@ -79,7 +79,7 @@
 </tr>
 </table>
 <h1>C++ Standard Library Active Issues List (Revision D125)</h1>
-<p>Revised 2025-02-23 at 20:02:51 UTC
+<p>Revised 2025-02-24 at 10:04:11 UTC
 </p>
   <p>Reference ISO/IEC IS 14882:2020(E)</p>
   <p>Also see:</p>
@@ -69445,7 +69445,7 @@ Modify 99 [exec.syn] as indicated:
 <hr>
 <h3 id="4207"><a href="#4207">4207</a><sup><a href="https://cplusplus.github.io/LWG/issue4207">(i)</a></sup>. Point of reference for <code class='backtick'>source_location</code> is not specified when used in an default template argument</h3>
 <p><b>Section:</b> 17.8.2.2 <a href="https://wg21.link/support.srcloc.cons">[support.srcloc.cons]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Cassio Neri <b>Opened:</b> 2025-02-07 <b>Last modified:</b> 2025-02-07</p>
+ <b>Submitter:</b> Cassio Neri <b>Opened:</b> 2025-02-07 <b>Last modified:</b> 2025-02-24</p>
 <p><b>Priority: </b>Not Prioritized
 </p>
 <p><b>View all other</b> <a href="lwg-index.html#support.srcloc.cons">issues</a> in [support.srcloc.cons].</p>
@@ -69508,10 +69508,12 @@ Any call to <code class='backtick'>current</code> that appears as a default argu
 (9.3.4.7 <a href="https://wg21.link/dcl.fct.default">[dcl.fct.default]</a>), or as a subexpression thereof,
 should correspond to the location of the invocation of the function that
 uses the default argument (7.6.1.3 <a href="https://wg21.link/expr.call">[expr.call]</a>).
+<ins>
 Any call to <code class='backtick'>current</code> that appears as a default template argument
 (13.2 <a href="https://wg21.link/temp.param">[temp.param]</a>), or as a subexpression thereof,
 should correspond to the location where the default template argument
 is specified.
+</ins>
 </blockquote>
 </li>
 </ol>
