@@ -64,7 +64,7 @@
 <p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#New">New</a> status.</em></p>
 <h3 id="4214"><a href="lwg-active.html#4214">4214</a>. Missing <i>Preconditions</i> for <code>take</code>/<code>drop</code> adaptor</h3>
 <p><b>Section:</b> 25.7.10.1 <a href="https://wg21.link/range.take.overview">[range.take.overview]</a>, 25.7.12.1 <a href="https://wg21.link/range.drop.overview">[range.drop.overview]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Hewill Kang <b>Opened:</b> 2025-02-15 <b>Last modified:</b> 2025-02-23</p>
+ <b>Submitter:</b> Hewill Kang <b>Opened:</b> 2025-02-15 <b>Last modified:</b> 2025-02-24</p>
 <p><b>Priority: </b>Not Prioritized
 </p>
 <p><b>View other</b> <a href="lwg-index-open.html#range.take.overview">active issues</a> in [range.take.overview].</p>
@@ -87,8 +87,9 @@ auto r = std::views::repeat('a', 2)
 This is not the intention, we should ban these cases.
 </p>
 
+<p><strong>Previous resolution [SUPERSEDED]:</strong></p>
+<blockquote class="note">
 
-<p id="res-4214"><b>Proposed resolution:</b></p>
 <p>
 This wording is relative to <a href="https://wg21.link/N5001">N5001</a>.
 </p>
@@ -131,6 +132,70 @@ is expression-equivalent to:
 </p>
 <ol style="list-style-type: none">
 <li><p>(2.?) <ins>&mdash; <i>Preconditions</i>: <code>static_cast&lt;D&gt;(F) &gt;= 0</code> is <code>true</code>.</ins>
+</p></li>
+<li><p>(2.1) &mdash; if <code>T</code> is a specialization of <code>empty_view</code> (25.6.2.2 <a href="https://wg21.link/range.empty.view">[range.empty.view]</a>),
+then <code>((void)F, <i>decay-copy</i>(E))</code>, except that the evaluations of <code>E</code>
+and <code>F</code> are indeterminately sequenced.
+</p></li>
+</ol>
+</blockquote>
+</li>
+
+</ol>
+
+</blockquote>
+
+<p><i>[2025-02-24]</i></p>
+
+<p>
+Upon reflector discussion many preferred to use instead the new <i>Hardened preconditions:</i> element which 
+have been introduced by the recently voted in <a href="https://wg21.link/P3471R4">P3471R4</a>.
+</p>
+
+
+<p id="res-4214"><b>Proposed resolution:</b></p>
+<p>
+This wording is relative to <a href="https://wg21.link/N5001">N5001</a>.
+</p>
+
+<ol>
+<li><p>Modify 25.7.10.1 <a href="https://wg21.link/range.take.overview">[range.take.overview]</a> as indicated:</p>
+
+<blockquote>
+<p>
+-2- The name <code>views::take</code> denotes a range adaptor object (25.7.2 <a href="https://wg21.link/range.adaptor.object">[range.adaptor.object]</a>).
+Let <code>E</code> and <code>F</code> be expressions, let <code>T</code> be
+<code>remove_cvref_t&lt;decltype((E))&gt;</code>, and let <code>D</code> be 
+<code>range_difference_t&lt;decltype((E))&gt;</code>.
+If <code>decltype((F))</code> does not model <code>convertible_to&lt;D&gt;</code>,
+<code>views::take(E, F)</code> is ill-formed. Otherwise, the expression <code>views::take(E, F)</code> 
+is expression-equivalent to:
+</p>
+<ol style="list-style-type: none">
+<li><p>(2.?) <ins>&mdash; <i>Hardened preconditions</i>: <code>static_cast&lt;D&gt;(F) &gt;= 0</code> is <code>true</code>.</ins>
+</p></li>
+<li><p>(2.1) &mdash; if <code>T</code> is a specialization of <code>empty_view</code> (25.6.2.2 <a href="https://wg21.link/range.empty.view">[range.empty.view]</a>),
+then <code>((void)F, <i>decay-copy</i>(E))</code>, except that the evaluations of <code>E</code>
+and <code>F</code> are indeterminately sequenced.
+</p></li>
+</ol>
+</blockquote>
+</li>
+
+<li><p>Modify 25.7.12.1 <a href="https://wg21.link/range.drop.overview">[range.drop.overview]</a> as indicated:</p>
+
+<blockquote>
+<p>
+-2- The name <code>views::drop</code> denotes a range adaptor object (25.7.2 <a href="https://wg21.link/range.adaptor.object">[range.adaptor.object]</a>).
+Let <code>E</code> and <code>F</code> be expressions, let <code>T</code> be
+<code>remove_cvref_t&lt;decltype((E))&gt;</code>, and let <code>D</code> be 
+<code>range_difference_t&lt;decltype((E))&gt;</code>.
+If <code>decltype((F))</code> does not model <code>convertible_to&lt;D&gt;</code>,
+<code>views::drop(E, F)</code> is ill-formed. Otherwise, the expression <code>views::drop(E, F)</code> 
+is expression-equivalent to:
+</p>
+<ol style="list-style-type: none">
+<li><p>(2.?) <ins>&mdash; <i>Hardened preconditions</i>: <code>static_cast&lt;D&gt;(F) &gt;= 0</code> is <code>true</code>.</ins>
 </p></li>
 <li><p>(2.1) &mdash; if <code>T</code> is a specialization of <code>empty_view</code> (25.6.2.2 <a href="https://wg21.link/range.empty.view">[range.empty.view]</a>),
 then <code>((void)F, <i>decay-copy</i>(E))</code>, except that the evaluations of <code>E</code>
