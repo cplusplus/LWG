@@ -64,7 +64,7 @@
 <p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#New">New</a> status.</em></p>
 <h3 id="4066"><a href="lwg-active.html#4066">4066</a>. <code>ranges::to</code> should reserve when <code>sized_sentinel_for</code> is satisfied</h3>
 <p><b>Section:</b> 25.5.7.2 <a href="https://wg21.link/range.utility.conv.to">[range.utility.conv.to]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Hewill Kang <b>Opened:</b> 2024-04-13 <b>Last modified:</b> 2024-04-16</p>
+ <b>Submitter:</b> Hewill Kang <b>Opened:</b> 2024-04-13 <b>Last modified:</b> 2025-02-27</p>
 <p><b>Priority: </b>Not Prioritized
 </p>
 <p><b>View other</b> <a href="lwg-index-open.html#range.utility.conv.to">active issues</a> in [range.utility.conv.to].</p>
@@ -79,6 +79,15 @@ pair satisfies <code>sized_sentinel_for</code>.
 Given that we have specifically designed the decision tree, I see no reason not to reserve in this case, 
 since we'd be calling <code>ranges::begin(r)</code> anyway.
 </p>
+
+<p><i>[2025-02-27; post-Hagenberg status]</i></p>
+
+<p>
+The proposed resolution needs rebasing after <a href="https://wg21.link/P2846R6">P2846R6</a>
+was approved in Hagenberg.
+It also conflicts with LWG <a href="lwg-active.html#3722" title="ranges::to reserves the wrong size (Status: New)">3722</a><sup><a href="https://cplusplus.github.io/LWG/issue3722" title="Latest snapshot">(i)</a></sup>.
+</p>
+
 
 
 <p id="res-4066"><b>Proposed resolution:</b></p>

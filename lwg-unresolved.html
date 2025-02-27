@@ -54,7 +54,7 @@
 </style>
 </head>
 <body>
-<p>Revised 2025-02-27 at 16:26:02 UTC
+<p>Revised 2025-02-27 at 16:30:07 UTC
 </p><h2>Unresolved Issues</h2>
 <hr>
 <h3 id="423"><a href="#423">423</a><sup><a href="https://cplusplus.github.io/LWG/issue423">(i)</a></sup>. Effects of negative <code>streamsize</code> in iostreams</h3>
@@ -40130,8 +40130,13 @@ the "reserve" branch of the decision tree."
 </li>
 </ul>
 
-<p><i>[2025-02-27; needs rebasing after <a href="https://wg21.link/P2846R6">P2846R6</a> acceptance]</i></p>
+<p><i>[2025-02-27; post-Hagenberg status]</i></p>
 
+<p>
+The proposed resolution needs rebasing after <a href="https://wg21.link/P2846R6">P2846R6</a>
+was approved in Hagenberg.
+It also conflicts with LWG <a href="lwg-active.html#4066" title="ranges::to should reserve when sized_sentinel_for is satisfied (Status: New)">4066</a><sup><a href="https://cplusplus.github.io/LWG/issue4066" title="Latest snapshot">(i)</a></sup>.
+</p>
 
 
 
@@ -56409,7 +56414,7 @@ pointer_traits&lt;XX::pointer&gt;::pointer_to(r)
 <hr>
 <h3 id="4066"><a href="#4066">4066</a><sup><a href="https://cplusplus.github.io/LWG/issue4066">(i)</a></sup>. <code>ranges::to</code> should reserve when <code>sized_sentinel_for</code> is satisfied</h3>
 <p><b>Section:</b> 25.5.7.2 <a href="https://wg21.link/range.utility.conv.to">[range.utility.conv.to]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Hewill Kang <b>Opened:</b> 2024-04-13 <b>Last modified:</b> 2024-04-16</p>
+ <b>Submitter:</b> Hewill Kang <b>Opened:</b> 2024-04-13 <b>Last modified:</b> 2025-02-27</p>
 <p><b>Priority: </b>Not Prioritized
 </p>
 <p><b>View other</b> <a href="lwg-index-open.html#range.utility.conv.to">active issues</a> in [range.utility.conv.to].</p>
@@ -56424,6 +56429,15 @@ pair satisfies <code>sized_sentinel_for</code>.
 Given that we have specifically designed the decision tree, I see no reason not to reserve in this case, 
 since we'd be calling <code>ranges::begin(r)</code> anyway.
 </p>
+
+<p><i>[2025-02-27; post-Hagenberg status]</i></p>
+
+<p>
+The proposed resolution needs rebasing after <a href="https://wg21.link/P2846R6">P2846R6</a>
+was approved in Hagenberg.
+It also conflicts with LWG <a href="lwg-active.html#3722" title="ranges::to reserves the wrong size (Status: New)">3722</a><sup><a href="https://cplusplus.github.io/LWG/issue3722" title="Latest snapshot">(i)</a></sup>.
+</p>
+
 
 
 <p id="res-4066"><b>Proposed resolution:</b></p>
