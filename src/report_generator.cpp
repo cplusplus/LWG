@@ -10,6 +10,8 @@
 
 #include <algorithm>
 #include <cassert>
+#include <chrono>
+#include <format>
 #include <fstream>
 #include <memory>
 #include <sstream>
@@ -23,28 +25,11 @@ namespace
 // Generic utilities that are useful and do not rely on context or types from our domain (issue-list processing)
 // =============================================================================================================
 
-auto format_time(std::string const & format, std::tm const & t) -> std::string {
-   std::string s;
-   std::size_t maxsize{format.size() + 256};
-  //for (std::size_t maxsize = format.size() + 64; s.size() == 0 ; maxsize += 64)
-  //{
-      std::unique_ptr<char[]> buf{new char[maxsize]};
-      std::size_t size{std::strftime( buf.get(), maxsize, format.c_str(), &t ) };
-      if(size > 0) {
-         s += buf.get();
-      }
- // }
-   return s;
-}
-
-auto utc_timestamp() -> std::tm const & {
-   static std::time_t t{ std::time(nullptr) };
-   static std::tm utc = *std::gmtime(&t);
-   return utc;
-}
+auto const timestamp{std::chrono::floor<std::chrono::seconds>(std::chrono::system_clock::now())};
 
 // global data - would like to do something about that.
-std::string const build_timestamp{format_time("Revised %Y-%m-%d at %H:%M:%S UTC\n", utc_timestamp())};
+std::string const build_date{std::format("{:%F}", timestamp)};
+std::string const build_timestamp{std::format("Revised {} at {:%T} UTC\n", build_date, timestamp)};
 
 std::string const maintainer_email{"lwgchair@gmail.com"};
 
@@ -78,6 +63,23 @@ private:
    lwg::section_map& section_db;
 };
 
+// Create a LessThanComparable object that defines an ordering based on date,
+// with newer dates first.
+auto ordered_date(lwg::issue const & issue) {
+   std::chrono::sys_days date(issue.mod_date);
+   return -date.time_since_epoch().count();
+}
+
+// Create a LessThanComparable object that defines an ordering that depends on
+// the section number (e.g. 23.5.1) first and then on the section stable tag.
+// Using both is not redundant, because we use section 99 for all sections of some TS's.
+// Including the tag in the order gives a total order for sections in those TS's,
+// e.g., {99,[arrays.ts::dynarray]} < {99,[arrays.ts::dynarraconstructible_from.cons]}.
+auto ordered_section(lwg::section_map & section_db, lwg::issue const & issue) {
+   assert(!issue.tags.empty());
+   return std::tie(section_db[issue.tags.front()], issue.tags.front());
+}
+
 struct order_by_section {
    explicit order_by_section(lwg::section_map &sections)
       : section_db(sections)
@@ -85,12 +87,7 @@ struct order_by_section {
       }
 
    auto operator()(lwg::issue const & x, lwg::issue const & y) const -> bool {
-      assert(!x.tags.empty());
-      assert(!y.tags.empty());
-      // This sorts by the section number (e.g. 23.5.1) then by the section stable tag.
-      // This is not redundant, because for e.g. Arrays TS the entire paper has section num 99,
-      // so including the tag orders [arrays.ts::dynarray] before [arrays.ts::dynarray.cons].
-      return std::tie(section_db[x.tags.front()], x.tags.front()) < std::tie(section_db[y.tags.front()], y.tags.front());
+      return ordered_section(section_db, x) < ordered_section(section_db, y);
    }
 
 private:
@@ -109,25 +106,6 @@ struct order_by_status {
    }
 };
 
-
-struct order_by_priority {
-   explicit order_by_priority(lwg::section_map &sections)
-      : section_db(sections)
-      {
-      }
-
-   auto operator()(lwg::issue const & x, lwg::issue const & y) const -> bool {
-      assert(!x.tags.empty());
-      assert(!y.tags.empty());
-      auto tie = [this](auto& i) {
-         return std::tie(i.priority, section_db[i.tags.front()], i.num);
-      };
-      return tie(x) < tie(y);
-   }
-
-private:
-   lwg::section_map& section_db;
-};
 
 // Replace spaces to make a string usable as an 'id' attribute,
 // or as an URL fragment (#foo) that links to an 'id' attribute.
@@ -150,14 +128,6 @@ auto major_section(lwg::section_num const & sn) -> std::string {
       out << char(sn.num[0] - 100 + 'A');
    }
    return out.str();
-}
-
-void print_date(std::ostream & out, gregorian::date const & mod_date) {
-   out << mod_date.year() << '-';
-   if (mod_date.month() < 10) { out << '0'; }
-   out << mod_date.month() << '-';
-   if (mod_date.day() < 10) { out << '0'; }
-   out << mod_date.day();
 }
 
 template<typename Container>
@@ -363,11 +333,9 @@ void print_issue(std::ostream & out, lwg::issue const & iss, lwg::section_map & 
 
          out << " <b>Status:</b> <a href=\"lwg-active.html#" << status_idattr << "\">" << iss.stat << "</a>\n";
          out << " <b>Submitter:</b> " << iss.submitter
-             << " <b>Opened:</b> ";
-         print_date(out, iss.date);
-         out << " <b>Last modified:</b> ";
-         print_date(out, iss.mod_date);
-         out << "</p>\n";
+             << " <b>Opened:</b> " << iss.date
+             << " <b>Last modified:</b> " << iss.mod_date
+             << "</p>\n";
 
          // priority
          out << "<p><b>Priority: </b>";
@@ -459,7 +427,7 @@ R"(<table>
 </tr>
 <tr>
   <td align="left">Date:</td>
-  <td align="left">)" << format_time("%Y-%m-%d", utc_timestamp()) << R"(</td>
+  <td align="left">)" << build_date << R"(</td>
 </tr>
 <tr>
   <td align="left">Project:</td>
@@ -698,7 +666,10 @@ R"(<h1>C++ Standard Library Issues List (Revision )" << lwg_issues_xml.get_revis
 
 
 void report_generator::make_sort_by_priority(std::vector<issue>& issues, fs::path const & filename) {
-   sort(issues.begin(), issues.end(), order_by_priority{section_db});
+   auto proj = [this](const auto& i) {
+      return std::tie(i.priority, section_db[i.tags.front()], i.num);
+   };
+   std::ranges::sort(issues, {}, proj);
 
    std::ofstream out{filename};
    if (!out)
@@ -737,10 +708,10 @@ sorted by priority.</p>
 
 
 void report_generator::make_sort_by_status(std::vector<issue>& issues, fs::path const & filename) {
-   sort(issues.begin(), issues.end(), order_by_issue_number{});
-   stable_sort(issues.begin(), issues.end(), [](issue const & x, issue const & y) { return x.mod_date > y.mod_date; } );
-   stable_sort(issues.begin(), issues.end(), order_by_section{section_db});
-   stable_sort(issues.begin(), issues.end(), order_by_status{});
+   auto proj = [this](const auto& i) {
+      return std::make_tuple(lwg::get_status_priority(i.stat), ordered_section(section_db, i), ordered_date(i), i.num);
+   };
+   std::ranges::sort(issues, {}, proj);
 
    std::ofstream out{filename};
    if (!out)
@@ -774,10 +745,10 @@ This document is the Index by Status and Section for the <a href="lwg-active.htm
 
 
 void report_generator::make_sort_by_status_mod_date(std::vector<issue> & issues, fs::path const & filename) {
-   sort(issues.begin(), issues.end(), order_by_issue_number{});
-   stable_sort(issues.begin(), issues.end(), order_by_section{section_db});
-   stable_sort(issues.begin(), issues.end(), [](issue const & x, issue const & y) { return x.mod_date > y.mod_date; } );
-   stable_sort(issues.begin(), issues.end(), order_by_status{});
+   auto proj = [this](const auto& i) {
+      return std::make_tuple(lwg::get_status_priority(i.stat), ordered_date(i), ordered_section(section_db, i), i.num);
+   };
+   std::ranges::sort(issues, {}, proj);
 
    std::ofstream out{filename};
    if (!out)
@@ -810,9 +781,11 @@ This document is the Index by Status and Date for the <a href="lwg-active.html">
 
 
 void report_generator::make_sort_by_section(std::vector<issue>& issues, fs::path const & filename, bool active_only) {
-   sort(issues.begin(), issues.end(), order_by_issue_number{});
-   stable_sort(issues.begin(), issues.end(), [](issue const & x, issue const & y) { return x.mod_date > y.mod_date; } );
-   stable_sort(issues.begin(), issues.end(), order_by_status{});
+   auto proj = [this](const auto& i) {
+      return std::make_tuple(lwg::get_status_priority(i.stat), ordered_date(i), i.num);
+   };
+   std::ranges::sort(issues, {}, proj);
+
    auto b = issues.begin();
    auto e = issues.end();
    if(active_only) {
