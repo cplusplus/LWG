@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Issue 4216: num_put::do_put and void pointers</title>
+<meta property="og:title" content="Issue 4216: num_put::do_put and void pointers">
+<meta property="og:description" content="C++ library issue. Status: New">
+<meta property="og:url" content="https://cplusplus.github.io/LWG/issue4216.html">
+<meta property="og:type" content="website">
+<meta property="og:image" content="http://cplusplus.github.io/LWG/images/cpp_logo.png">
+<meta property="og:image:alt" content="C++ logo">
+<style>
+  p {text-align:justify}
+  li {text-align:justify}
+  pre code.backtick::before { content: "`" }
+  pre code.backtick::after { content: "`" }
+  blockquote.note
+  {
+    background-color:#E0E0E0;
+    padding-left: 15px;
+    padding-right: 15px;
+    padding-top: 1px;
+    padding-bottom: 1px;
+  }
+  ins {background-color:#A0FFA0}
+  del {background-color:#FFA0A0}
+  table.issues-index { border: 1px solid; border-collapse: collapse; }
+  table.issues-index th { text-align: center; padding: 4px; border: 1px solid; }
+  table.issues-index td { padding: 4px; border: 1px solid; }
+  table.issues-index td:nth-child(1) { text-align: right; }
+  table.issues-index td:nth-child(2) { text-align: left; }
+  table.issues-index td:nth-child(3) { text-align: left; }
+  table.issues-index td:nth-child(4) { text-align: left; }
+  table.issues-index td:nth-child(5) { text-align: center; }
+  table.issues-index td:nth-child(6) { text-align: center; }
+  table.issues-index td:nth-child(7) { text-align: left; }
+  table.issues-index td:nth-child(5) span.no-pr { color: red; }
+  @media (prefers-color-scheme: dark) {
+     html {
+        color: #ddd;
+        background-color: black;
+     }
+     ins {
+        background-color: #225522
+     }
+     del {
+        background-color: #662222
+     }
+     a {
+        color: #6af
+     }
+     a:visited {
+        color: #6af
+     }
+     blockquote.note
+     {
+        background-color: rgba(255, 255, 255, .10)
+     }
+  }
+</style>
+</head>
+<body>
+<hr>
+<p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#New">New</a> status.</em></p>
+<h3 id="4216"><a href="lwg-active.html#4216">4216</a>. <code class='backtick'>num_put::do_put</code> and <code class='backtick'>void</code> pointers</h3>
+<p><b>Section:</b> 28.3.4.3.3.3 <a href="https://wg21.link/facet.num.put.virtuals">[facet.num.put.virtuals]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
+ <b>Submitter:</b> Nikolas Klauser <b>Opened:</b> 2025-02-26 <b>Last modified:</b> 2025-03-02</p>
+<p><b>Priority: </b>Not Prioritized
+</p>
+<p><b>View other</b> <a href="lwg-index-open.html#facet.num.put.virtuals">active issues</a> in [facet.num.put.virtuals].</p>
+<p><b>View all other</b> <a href="lwg-index.html#facet.num.put.virtuals">issues</a> in [facet.num.put.virtuals].</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
+<p><b>Discussion:</b></p>
+<p>
+The <code class='backtick'>num_put::do_put</code> overloads are defined in terms of <code class='backtick'>printf</code>.
+However, it is not clear what the intended behaviour of pointers is.
+<p/>
+While the <code class='backtick'>num_put</code> wording makes a quite clear statement that it should
+be whatever <code class='backtick'>printf("%p", ptr)</code> would be, <code class='backtick'>num_get</code> is entirely silent
+on which function should be used. This makes it entirely unclear whether
+round-tripping is supposed to work. It's also not clear whether
+<code class='backtick'>num_put</code> was just simple to specify via <code class='backtick'>printf</code> or whether the intent
+was that the output matches in all cases. Round-tripping between
+<code class='backtick'>num_put</code> and <code class='backtick'>num_get</code> was broken in libc++ until recently. However, to
+fix that, the output of <code class='backtick'>num_put::do_put</code> no longer matches the libc's
+<code class='backtick'>printf</code> in all cases. libstdc++ had this behaviour since at least two
+decades, indicating that nobody seems to have a problem with
+<code class='backtick'>num_put::do_put</code> and <code class='backtick'>printf</code> having different results in some rare cases.
+</p>
+
+
+<p id="res-4216"><b>Proposed resolution:</b></p>
+<p>
+This wording is relative to <a href="https://wg21.link/N5001">N5001</a>.
+</p>
+
+<ol>
+<li><p>Modify 28.3.4.3.3.3 <a href="https://wg21.link/facet.num.put.virtuals">[facet.num.put.virtuals]</a> as indicated:</p>
+
+<blockquote>
+<pre>
+iter_type do_put(iter_type out, ios_base&amp; str, char_type fill, long val) const;
+iter_type do_put(iter_type out, ios_base&amp; str, char_type fill, long long val) const;
+iter_type do_put(iter_type out, ios_base&amp; str, char_type fill, unsigned long val) const;
+iter_type do_put(iter_type out, ios_base&amp; str, char_type fill, unsigned long long val) const;
+iter_type do_put(iter_type out, ios_base&amp; str, char_type fill, double val) const;
+iter_type do_put(iter_type out, ios_base&amp; str, char_type fill, long double val) const;
+iter_type do_put(iter_type out, ios_base&amp; str, char_type fill, const void* val) const;
+</pre>
+<blockquote>
+<p>
+-1- <i>Effects</i>: [&hellip;]
+<p/>
+-2- The details of this operation occur in several stages: [&hellip;]
+<p/>
+-3- Detailed descriptions of each stage follow.
+<p/>
+-4- <i>Returns</i>: <code>out</code>.
+<p/>
+<b>Stage 1</b>: The first action of stage 1 is to determine a conversion specifier. [&hellip;]
+<p/>
+For conversion from <code class='backtick'>void*</code> the specifier is <code class='backtick'>%p</code>.
+<p/>
+The representations at the end of stage 1 consists of the <code class='backtick'>char</code>'s that would be printed by a call of
+<code class='backtick'>printf(s, val)</code> where <code class='backtick'>s</code> is the conversion specifier determined above<ins>, except that any 
+implementation-defined behavior of <code class='backtick'>printf</code> may be different from a call to <code class='backtick'>printf</code></ins>.
+</p>
+</blockquote>
+</blockquote>
+</li>
+
+</ol>
+
+
+
+
+
+
+</body>
+</html>
