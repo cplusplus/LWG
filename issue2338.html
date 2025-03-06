@@ -64,7 +64,7 @@
 <p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#Open">Open</a> status.</em></p>
 <h3 id="2338"><a href="lwg-active.html#2338">2338</a>. &sect;[re.traits]/7 expects of locale facets something not guaranteed by [locale.facet]/4</h3>
 <p><b>Section:</b> 28.6.6 <a href="https://wg21.link/re.traits">[re.traits]</a>, 28.3.3.1.2.2 <a href="https://wg21.link/locale.facet">[locale.facet]</a> <b>Status:</b> <a href="lwg-active.html#Open">Open</a>
- <b>Submitter:</b> Sergey Zubkov <b>Opened:</b> 2013-10-15 <b>Last modified:</b> 2016-02-01</p>
+ <b>Submitter:</b> Sergey Zubkov <b>Opened:</b> 2013-10-15 <b>Last modified:</b> 2025-03-06</p>
 <p><b>Priority: </b>3
 </p>
 <p><b>View all other</b> <a href="lwg-index.html#re.traits">issues</a> in [re.traits].</p>
@@ -112,6 +112,19 @@ required to provide equivalent semantics, to the named locale's facet, not to ac
 <p>MC: Agree, [re.traits]/7 only applies to the stdlib traits.</p>
 <p>NM: Effects: doesn't make sense.</p>
 <p>JW, NM, Martin Sebor to come up with new wording.</p>
+
+<p><i>[2025-03-06; Jonathan comments]</i></p>
+
+<p>
+LWG <a href="lwg-defects.html#4186" title="regex_traits::transform_primary mistakenly detects typeid of a function (Status: WP)">4186</a><sup><a href="https://cplusplus.github.io/LWG/issue4186" title="Latest snapshot">(i)</a></sup> fixed the missing <code class='backtick'>(getloc())</code> part.
+Maybe we can resolve this differently, by changing 28.6.6 <a href="https://wg21.link/re.traits">[re.traits]</a>
+to:
+<blockquote>
+Let <code class='backtick'>C</code> be <code>use_facet&lt;collate&lt;charT&gt; &gt;(getloc())</code>.
+If <code>typeid(C) == typeid(collate_byname&lt;charT&gt;)
+|| typeid(C) == typeid(collate&lt;charT&gt;)</code> and the form of ...
+</blockquote>
+</p>
 
 
 
