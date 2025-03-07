@@ -2,18 +2,19 @@
 #define INCLUDE_LWG_ISSUES_H
 
 // standard headers
+#include <chrono>
 #include <map>
 #include <set>
 #include <string>
 #include <vector>
 
 // solution specific headers
-#include "date.h"
 #include "metadata.h"
 #include "status.h"
 
 namespace lwg
 {
+namespace chrono = std::chrono;
 
 struct issue {
    int                        num;            // ID - issue number
@@ -22,8 +23,8 @@ struct issue {
    std::string                doc_prefix;     // extracted from title; e.g. filesys.ts
    std::vector<section_tag>   tags;           // section(s) of the standard affected by the issue
    std::string                submitter;      // original submitter of the issue
-   gregorian::date            date;           // date the issue was filed
-   gregorian::date            mod_date;       // date the issue was last changed
+   chrono::year_month_day     date;           // date the issue was filed
+   chrono::year_month_day     mod_date;       // date the issue was last changed
    std::set<std::string>      duplicates;     // sorted list of duplicate issues, stored as html anchor references.
    std::string                text;           // text representing the issue
    int                        priority = 99;  // severity, 1 = critical, 4 = minor concern, 0 = trivial to resolve, 99 = not yet prioritised
