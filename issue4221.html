@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Issue 4221: Cannot format const-iterable only ranges</title>
+<meta property="og:title" content="Issue 4221: Cannot format const-iterable only ranges">
+<meta property="og:description" content="C++ library issue. Status: New">
+<meta property="og:url" content="https://cplusplus.github.io/LWG/issue4221.html">
+<meta property="og:type" content="website">
+<meta property="og:image" content="http://cplusplus.github.io/LWG/images/cpp_logo.png">
+<meta property="og:image:alt" content="C++ logo">
+<style>
+  p {text-align:justify}
+  li {text-align:justify}
+  pre code.backtick::before { content: "`" }
+  pre code.backtick::after { content: "`" }
+  blockquote.note
+  {
+    background-color:#E0E0E0;
+    padding-left: 15px;
+    padding-right: 15px;
+    padding-top: 1px;
+    padding-bottom: 1px;
+  }
+  ins {background-color:#A0FFA0}
+  del {background-color:#FFA0A0}
+  table.issues-index { border: 1px solid; border-collapse: collapse; }
+  table.issues-index th { text-align: center; padding: 4px; border: 1px solid; }
+  table.issues-index td { padding: 4px; border: 1px solid; }
+  table.issues-index td:nth-child(1) { text-align: right; }
+  table.issues-index td:nth-child(2) { text-align: left; }
+  table.issues-index td:nth-child(3) { text-align: left; }
+  table.issues-index td:nth-child(4) { text-align: left; }
+  table.issues-index td:nth-child(5) { text-align: center; }
+  table.issues-index td:nth-child(6) { text-align: center; }
+  table.issues-index td:nth-child(7) { text-align: left; }
+  table.issues-index td:nth-child(5) span.no-pr { color: red; }
+  @media (prefers-color-scheme: dark) {
+     html {
+        color: #ddd;
+        background-color: black;
+     }
+     ins {
+        background-color: #225522
+     }
+     del {
+        background-color: #662222
+     }
+     a {
+        color: #6af
+     }
+     a:visited {
+        color: #6af
+     }
+     blockquote.note
+     {
+        background-color: rgba(255, 255, 255, .10)
+     }
+  }
+</style>
+</head>
+<body>
+<hr>
+<p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#New">New</a> status.</em></p>
+<h3 id="4221"><a href="lwg-active.html#4221">4221</a>. Cannot format const-iterable only ranges</h3>
+<p><b>Section:</b> 28.5.7 <a href="https://wg21.link/format.range">[format.range]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
+ <b>Submitter:</b> Hewill Kang <b>Opened:</b> 2025-03-06 <b>Last modified:</b> 2025-03-09</p>
+<p><b>Priority: </b>Not Prioritized
+</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
+<p><b>Discussion:</b></p>
+<p>
+The standard does not explicitly prohibit ranges that are only const-iterable, i.e. a range with
+<code>const begin()</code> and deleted or invalid non-<code>const begin()</code>.
+</p>
+<p>
+Unfortunately, those ranges cannot be formatted because the <code>R</code> in
+<code>formatter&lt;R&gt;</code> is always without the <code>const</code>-qualifier,
+which makes it never satisfy the <code>range</code> concept
+(<a href="https://godbolt.org/z/68T6EjKG4">demo</a>):
+</p>
+<blockquote><pre>
+#include &lt;print&gt;
+#include &lt;ranges&gt;
+
+struct R {
+  int* begin() = delete;
+  int* end() = delete;
+  const int* begin() const;
+  const int* end() const;
+};
+
+int main() {
+  const R r;
+  static_assert(std::ranges::contiguous_range&lt;decltype(r)&gt;);
+
+  for (auto&amp;&amp; elem : r)
+    std::print("{} ", elem); // ok
+
+  std::ranges::for_each(
+    r, [](auto&amp;&amp; elem) { std::print("{} ", elem); }
+  );                         // ok
+
+  std::print("{}", r);       // <span style="color:red;font-weight:bolder">not ok</span>
+}
+</pre></blockquote>
+<p>
+Although such type might be relatively rare, it does reflect an inconsistency in the general usage of formatting
+ranges, which do not support all valid ranges.
+</p>
+
+
+<p id="res-4221"><b>Proposed resolution:</b></p>
+
+
+
+
+
+</body>
+</html>
