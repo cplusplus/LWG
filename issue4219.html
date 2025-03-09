@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Issue 4219: std::vector::erase[_if] should be based on ranges remove</title>
+<meta property="og:title" content="Issue 4219: std::vector::erase[_if] should be based on ranges remove">
+<meta property="og:description" content="C++ library issue. Status: New">
+<meta property="og:url" content="https://cplusplus.github.io/LWG/issue4219.html">
+<meta property="og:type" content="website">
+<meta property="og:image" content="http://cplusplus.github.io/LWG/images/cpp_logo.png">
+<meta property="og:image:alt" content="C++ logo">
+<style>
+  p {text-align:justify}
+  li {text-align:justify}
+  pre code.backtick::before { content: "`" }
+  pre code.backtick::after { content: "`" }
+  blockquote.note
+  {
+    background-color:#E0E0E0;
+    padding-left: 15px;
+    padding-right: 15px;
+    padding-top: 1px;
+    padding-bottom: 1px;
+  }
+  ins {background-color:#A0FFA0}
+  del {background-color:#FFA0A0}
+  table.issues-index { border: 1px solid; border-collapse: collapse; }
+  table.issues-index th { text-align: center; padding: 4px; border: 1px solid; }
+  table.issues-index td { padding: 4px; border: 1px solid; }
+  table.issues-index td:nth-child(1) { text-align: right; }
+  table.issues-index td:nth-child(2) { text-align: left; }
+  table.issues-index td:nth-child(3) { text-align: left; }
+  table.issues-index td:nth-child(4) { text-align: left; }
+  table.issues-index td:nth-child(5) { text-align: center; }
+  table.issues-index td:nth-child(6) { text-align: center; }
+  table.issues-index td:nth-child(7) { text-align: left; }
+  table.issues-index td:nth-child(5) span.no-pr { color: red; }
+  @media (prefers-color-scheme: dark) {
+     html {
+        color: #ddd;
+        background-color: black;
+     }
+     ins {
+        background-color: #225522
+     }
+     del {
+        background-color: #662222
+     }
+     a {
+        color: #6af
+     }
+     a:visited {
+        color: #6af
+     }
+     blockquote.note
+     {
+        background-color: rgba(255, 255, 255, .10)
+     }
+  }
+</style>
+</head>
+<body>
+<hr>
+<p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#New">New</a> status.</em></p>
+<h3 id="4219"><a href="lwg-active.html#4219">4219</a>. <code>std::vector::erase[_if]</code> should be based on ranges <code class='backtick'>remove</code></h3>
+<p><b>Section:</b> 23.3.11.6 <a href="https://wg21.link/vector.erasure">[vector.erasure]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
+ <b>Submitter:</b> Peter Kasting <b>Opened:</b> 2025-03-05 <b>Last modified:</b> 2025-03-09</p>
+<p><b>Priority: </b>Not Prioritized
+</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
+<p><b>Discussion:</b></p>
+<p>
+C++20 added <code>std::vector::erase[_if]</code>. Per 23.3.11.6 <a href="https://wg21.link/vector.erasure">[vector.erasure]</a>, these are equivalent 
+to a call to <code>std::remove[_if]</code> followed by an appropriate <code>erase</code>.
+<p/>
+This is unfortunate, because <code class='backtick'>std::remove_if</code> is specified (by 26.7.8 <a href="https://wg21.link/alg.remove">[alg.remove]</a>) as invoking 
+its predicate as <code class='backtick'>pred(*i)</code>, while <code class='backtick'>std::ranges::remove_if</code> uses the more flexible 
+<code class='backtick'>invoke(pred, invoke(proj, *i))</code>. Disregarding the projection, the latter allows the use of member function 
+pointers as predicates, while the former does not.
+<p/>
+I assume the committee intentionally did not change the non-ranges version to use <code class='backtick'>invoke</code> because it 
+caused a backwards-compatibility risk. (If I am mistaken and this was an oversight, perhaps this and 
+other non-ranges algorithms that take predicates should be updated to use invoke() to invoke them.)
+<p/>
+If that's true, though, it's perplexing why a new-to-c++20 function like <code class='backtick'>std::vector::erase_if</code> 
+should suffer the same drawback.
+</p>
+
+
+<p id="res-4219"><b>Proposed resolution:</b></p>
+<p>
+This wording is relative to <a href="https://wg21.link/N5001">N5001</a>.
+</p>
+
+<ol>
+
+<li><p>Modify 23.3.11.6 <a href="https://wg21.link/vector.erasure">[vector.erasure]</a> as indicated:</p>
+
+<blockquote>
+<pre>
+template&lt;class T, class Allocator, class U = T&gt;
+  constexpr typename vector&lt;T, Allocator&gt;::size_type
+    erase(vector&lt;T, Allocator&gt;&amp; c, const U&amp; value);
+</pre>
+<blockquote>
+<p>
+-1- <i>Effects</i>: Equivalent to:
+</p>
+<blockquote><pre>
+auto <ins>r</ins><del>it</del> = <ins>ranges::</ins>remove(c<del>.begin(), c.end()</del>, value);
+<del>auto r = distance(it, c.end());</del>
+c.erase(<ins>r.begin()</ins><del>it</del>, <ins>r</ins><del>c</del>.end());
+return r<ins>.size()</ins>;
+</pre></blockquote>
+</blockquote>
+<pre>
+template&lt;class T, class Allocator, class Predicate&gt;
+  constexpr typename vector&lt;T, Allocator&gt;::size_type
+    erase_if(vector&lt;T, Allocator&gt;&amp; c, Predicate pred);
+</pre>
+<blockquote>
+<p>
+-2- <i>Effects</i>: Equivalent to:
+</p>
+<blockquote><pre>
+auto <ins>r</ins><del>it</del> = <ins>ranges::</ins>remove_if(c<del>.begin(), c.end()</del>, pred);
+<del>auto r = distance(it, c.end());</del>
+c.erase(<ins>r.begin()</ins><del>it</del>, <ins>r</ins><del>c</del>.end());
+return r<ins>.size()</ins>;
+</pre></blockquote>
+</blockquote>
+</blockquote>
+</li>
+</ol>
+
+
+
+
+
+
+</body>
+</html>
