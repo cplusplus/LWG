@@ -54,7 +54,7 @@
 </style>
 </head>
 <body>
-<p>Revised 2025-03-09 at 09:21:33 UTC
+<p>Revised 2025-03-09 at 09:55:10 UTC
 </p><h2>Unresolved Issues</h2>
 <hr>
 <h3 id="423"><a href="#423">423</a><sup><a href="https://cplusplus.github.io/LWG/issue423">(i)</a></sup>. Effects of negative <code>streamsize</code> in iostreams</h3>
@@ -66487,6 +66487,148 @@ m.stride(r)
 </blockquote>
 </li>
 
+</ol>
+
+
+
+
+
+
+<hr>
+<h3 id="4218"><a href="#4218">4218</a><sup><a href="https://cplusplus.github.io/LWG/issue4218">(i)</a></sup>. Constraint recursion in <code class='backtick'>basic_const_iterator</code>'s relational operators due to ADL + CWG 2369</h3>
+<p><b>Section:</b> 24.5.3.5 <a href="https://wg21.link/const.iterators.ops">[const.iterators.ops]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
+ <b>Submitter:</b> Patrick Palka <b>Opened:</b> 2025-03-03 <b>Last modified:</b> 2025-03-09</p>
+<p><b>Priority: </b>Not Prioritized
+</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
+<p><b>Discussion:</b></p>
+<p>
+Consider the example (devised by Hewill Kang)
+</p>
+<blockquote><pre>
+using RCI = reverse_iterator&lt;basic_const_iterator&lt;vector&lt;int&gt;::iterator&gt;&gt;;
+static_assert(std::totally_ordered&lt;RCI&gt;);
+</pre></blockquote>
+<p>
+Checking <code class='backtick'>RCI</code> is <code class='backtick'>totally_ordered</code> entails checking
+</p>
+<blockquote><pre>
+requires (RCI x) { x <i>RELOP</i> x; } for each <i>RELOP</i> in {&lt;, &gt;, &lt;=, &gt;=}
+</pre></blockquote>
+<p>
+which we expect to be straightforwardly satisfied by <code class='backtick'>reverse_iterator</code>'s
+namespace-scope operators (24.5.1.8 <a href="https://wg21.link/reverse.iter.cmp">[reverse.iter.cmp]</a>):
+</p>
+<blockquote><pre>
+template&lt;class Iterator1, class Iterator2&gt;
+  constexpr bool operator&lt;(
+    const reverse_iterator&lt;Iterator1&gt;&amp; x,
+    const reverse_iterator&lt;Iterator2&gt;&amp; y);
+// etc
+</pre></blockquote>
+<p>
+But due to ADL we find ourselves also considering the <code class='backtick'>basic_const_iterator</code>
+relop friends (24.5.3.5 <a href="https://wg21.link/const.iterators.ops">[const.iterators.ops]</a>/24).
+</p>
+<blockquote><pre>
+template&lt;input_iterator Iterator&gt;
+class basic_const_iterator {
+  template&lt;<i>not-a-const-iterator</i> I&gt;
+    friend constexpr bool operator&lt;(const I&amp; x, const basic_const_iterator&amp; y)
+      requires random_access_iterator&lt;Iterator&gt; &amp;&amp; totally_ordered_with&lt;Iterator, I&gt;
+  // etc
+};
+</pre></blockquote>
+<p>
+Before <a href="https://wg21.link/cwg2369">CWG 2369</a> these candidates would quickly get 
+discarded since for the second operand RCI clearly isn't convertible to <code class='backtick'>basic_const_iterator</code>.  
+But after CWG 2369 implementations must first check these operators' constraints
+(with <code>Iterator = vector&lt;int&gt;::iterator</code> and <code>I = RCI</code>), which entails 
+checking <code>totally_ordered&lt;RCI&gt;</code> recursively, causing the example to be ill-formed.
+<p/>
+The constraint recursion is diagnosed by GCC (<a href="https://godbolt.org/z/dr1dK1dnj">See godbolt demo</a>).
+Other compilers accept the example because they don't implement CWG 2369, as
+far as I know.
+<p/>
+GCC trunk works around this issue by giving these friend relational operators
+a dependent second operand of the form <code>basic_const_iterator&lt;J&gt;</code> where <code class='backtick'>J</code> is
+constrained to match <code class='backtick'>Iterator</code>:
+</p>
+<blockquote><pre>
+template&lt;<i>not-a-const-iterator</i> I, same_as&lt;Iterator&gt; J>
+  friend constexpr bool operator&lt;(const I&amp; x, const basic_const_iterator&lt;J&gt;&amp; y)
+    requires random_access_iterator&lt;Iterator&gt; &amp;&amp; totally_ordered_with&lt;Iterator, I&gt;
+// etc
+</pre></blockquote>
+<p>
+So that deduction fails earlier, before constraints get checked, for a second
+operand that isn't a specialization of <code class='backtick'>basic_const_iterator</code> (or derived from one).
+<P/>
+LWG <a href="lwg-defects.html#3769" title="basic_const_iterator::operator== causes infinite constraint recursion (Status: C++23)">3769</a><sup><a href="https://cplusplus.github.io/LWG/issue3769" title="Latest snapshot">(i)</a></sup> is an earlier issue about constraint recursion in <code class='backtick'>basic_const_iterator</code>'s
+operators, but there the recursion was independent of CWG 2369.
+</p>
+
+
+<p id="res-4218"><b>Proposed resolution:</b></p>
+<p>
+This wording is relative to <a href="https://wg21.link/N5001">N5001</a>.
+</p>
+
+<ol>
+<li><p>Modify 24.5.3.3 <a href="https://wg21.link/const.iterators.iterator">[const.iterators.iterator]</a>, class template <code class='backtick'>basic_const_iterator</code> synopsis, as indicated:</p>
+
+<blockquote>
+<pre>
+namespace std {
+  [&hellip;]
+  template&lt;input_iterator Iterator&gt;
+  class basic_const_iterator {
+    [&hellip;]
+    template&lt;<i>not-a-const-iterator</i> I<ins>, same_as&lt;Iterator&gt; J</ins>&gt;
+      friend constexpr bool operator&lt;(const I&amp; x, const basic_const_iterator<ins>&lt;J&gt;</ins>&amp; y)
+        requires random_access_iterator&lt;Iterator&gt; &amp;&amp; totally_ordered_with&lt;Iterator, I&gt;;
+    template&lt;<i>not-a-const-iterator</i> I<ins>, same_as&lt;Iterator&gt; J</ins>&gt;
+      friend constexpr bool operator&gt;(const I&amp; x, const basic_const_iterator<ins>&lt;J&gt;</ins>&amp; y)
+        requires random_access_iterator&lt;Iterator&gt; &amp;&amp; totally_ordered_with&lt;Iterator, I&gt;;
+    template&lt;<i>not-a-const-iterator</i> I<ins>, same_as&lt;Iterator&gt; J</ins>&gt;
+      friend constexpr bool operator&lt;=(const I&amp; x, const basic_const_iterator<ins>&lt;J&gt;</ins>&amp; y)
+        requires random_access_iterator&lt;Iterator&gt; &amp;&amp; totally_ordered_with&lt;Iterator, I&gt;;
+    template&lt;<i>not-a-const-iterator</i> I<ins>, same_as&lt;Iterator&gt; J</ins>&gt;
+      friend constexpr bool operator&gt;=(const I&amp; x, const basic_const_iterator<ins>&lt;J&gt;</ins>&amp; y)
+        requires random_access_iterator&lt;Iterator&gt; &amp;&amp; totally_ordered_with&lt;Iterator, I&gt;;
+    [&hellip;]
+  };
+}
+</pre>
+</blockquote>
+</li>
+
+<li><p>Modify 24.5.3.5 <a href="https://wg21.link/const.iterators.ops">[const.iterators.ops]</a> as indicated:</p>
+
+<blockquote>
+<pre>
+template&lt;<i>not-a-const-iterator</i> I<ins>, same_as&lt;Iterator&gt; J</ins>&gt;
+  friend constexpr bool operator&lt;(const I&amp; x, const basic_const_iterator<ins>&lt;J&gt;</ins>&amp; y)
+    requires random_access_iterator&lt;Iterator&gt; &amp;&amp; totally_ordered_with&lt;Iterator, I&gt;;
+template&lt;<i>not-a-const-iterator</i> I<ins>, same_as&lt;Iterator&gt; J</ins>&gt;
+  friend constexpr bool operator&gt;(const I&amp; x, const basic_const_iterator<ins>&lt;J&gt;</ins>&amp; y)
+    requires random_access_iterator&lt;Iterator&gt; &amp;&amp; totally_ordered_with&lt;Iterator, I&gt;;
+template&lt;<i>not-a-const-iterator</i> I<ins>, same_as&lt;Iterator&gt; J</ins>&gt;
+  friend constexpr bool operator&lt;=(const I&amp; x, const basic_const_iterator<ins>&lt;J&gt;</ins>&amp; y)
+    requires random_access_iterator&lt;Iterator&gt; &amp;&amp; totally_ordered_with&lt;Iterator, I&gt;;
+template&lt;<i>not-a-const-iterator</i> I<ins>, same_as&lt;Iterator&gt; J</ins>&gt;
+  friend constexpr bool operator&gt;=(const I&amp; x, const basic_const_iterator<ins>&lt;J&gt;</ins>&amp; y)
+    requires random_access_iterator&lt;Iterator&gt; &amp;&amp; totally_ordered_with&lt;Iterator, I&gt;;
+</pre>
+<blockquote>
+<p>
+-23- Let <code><i>op</i></code> be the operator.
+<p/>
+-24- <i>Effects</i>: Equivalent to: <code>return x <i>op</i> y.<i>current_</i>;</code>
+</p>
+</blockquote>
+</blockquote>
+</li>
 </ol>
 
 
