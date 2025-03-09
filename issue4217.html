@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Issue 4217: Clarify mdspan layout mapping requirements for rank == 0</title>
+<meta property="og:title" content="Issue 4217: Clarify mdspan layout mapping requirements for rank == 0">
+<meta property="og:description" content="C++ library issue. Status: New">
+<meta property="og:url" content="https://cplusplus.github.io/LWG/issue4217.html">
+<meta property="og:type" content="website">
+<meta property="og:image" content="http://cplusplus.github.io/LWG/images/cpp_logo.png">
+<meta property="og:image:alt" content="C++ logo">
+<style>
+  p {text-align:justify}
+  li {text-align:justify}
+  pre code.backtick::before { content: "`" }
+  pre code.backtick::after { content: "`" }
+  blockquote.note
+  {
+    background-color:#E0E0E0;
+    padding-left: 15px;
+    padding-right: 15px;
+    padding-top: 1px;
+    padding-bottom: 1px;
+  }
+  ins {background-color:#A0FFA0}
+  del {background-color:#FFA0A0}
+  table.issues-index { border: 1px solid; border-collapse: collapse; }
+  table.issues-index th { text-align: center; padding: 4px; border: 1px solid; }
+  table.issues-index td { padding: 4px; border: 1px solid; }
+  table.issues-index td:nth-child(1) { text-align: right; }
+  table.issues-index td:nth-child(2) { text-align: left; }
+  table.issues-index td:nth-child(3) { text-align: left; }
+  table.issues-index td:nth-child(4) { text-align: left; }
+  table.issues-index td:nth-child(5) { text-align: center; }
+  table.issues-index td:nth-child(6) { text-align: center; }
+  table.issues-index td:nth-child(7) { text-align: left; }
+  table.issues-index td:nth-child(5) span.no-pr { color: red; }
+  @media (prefers-color-scheme: dark) {
+     html {
+        color: #ddd;
+        background-color: black;
+     }
+     ins {
+        background-color: #225522
+     }
+     del {
+        background-color: #662222
+     }
+     a {
+        color: #6af
+     }
+     a:visited {
+        color: #6af
+     }
+     blockquote.note
+     {
+        background-color: rgba(255, 255, 255, .10)
+     }
+  }
+</style>
+</head>
+<body>
+<hr>
+<p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#New">New</a> status.</em></p>
+<h3 id="4217"><a href="lwg-active.html#4217">4217</a>. Clarify <code class='backtick'>mdspan</code> layout mapping requirements for <code class='backtick'>rank == 0</code></h3>
+<p><b>Section:</b> 23.7.3.4.2 <a href="https://wg21.link/mdspan.layout.reqmts">[mdspan.layout.reqmts]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
+ <b>Submitter:</b> Mark Hoemmen <b>Opened:</b> 2025-03-03 <b>Last modified:</b> 2025-03-09</p>
+<p><b>Priority: </b>Not Prioritized
+</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
+<p><b>Discussion:</b></p>
+<p>
+23.7.3.4.2 <a href="https://wg21.link/mdspan.layout.reqmts">[mdspan.layout.reqmts]</a> p19-21 says that a layout mapping needs to
+provide <code class='backtick'>m.stride(r)</code>. However, 23.7.3.4.5.3 <a href="https://wg21.link/mdspan.layout.left.obs">[mdspan.layout.left.obs]</a> p5 constrains
+<code>layout_left::mapping&lt;Extents&gt;::stride(r)</code> on <code>Extents::rank() &gt; 0</code>
+being <code class='backtick'>true</code>. The same is true of <code class='backtick'>layout_right::mapping</code>
+(23.7.3.4.6.3 <a href="https://wg21.link/mdspan.layout.right.obs">[mdspan.layout.right.obs]</a> p5). (The other Standard mappings in
+23.7.3 <a href="https://wg21.link/views.multidim">[views.multidim]</a> and 29.9 <a href="https://wg21.link/linalg">[linalg]</a> do not have this constraint.)  
+This suggests that a rank-zero <code class='backtick'>layout_{left,right}::mapping</code> does not
+conform with the layout mapping requirements.
+<p/>
+On the other hand, other parts of 23.7.3.4.2 <a href="https://wg21.link/mdspan.layout.reqmts">[mdspan.layout.reqmts]</a> imply that
+<code class='backtick'>r</code> must be in the range [0, <code class='backtick'>rank()</code>) for the layout mapping's
+extents type. If such an <code class='backtick'>r</code> does not exist, which is the case for a
+rank-zero layout mapping, then the <code class='backtick'>m.stride(r)</code> requirement is
+vacuous. This implies that a rank-zero <code class='backtick'>layout_{left,right}::mapping</code>
+fully conforms with the layout mapping requirements.
+<p/>
+It is definitely the design intent for rank-zero <code class='backtick'>mdspan</code> to work, and
+for it to represent a view of a single element. Users can create
+rank-zero <code class='backtick'>mdspan</code> by invoking its constructor, or by using
+<code class='backtick'>submdspan</code> where all the slice arguments are convertible to
+<code class='backtick'>index_type</code>. Even though the normative wording permits this, adding
+a <i>Note</i> would clarify the design intent without making the wording
+redundant. This was the preferred change per LWG reflector
+discussion.
+</p>
+
+
+<p id="res-4217"><b>Proposed resolution:</b></p>
+<p>
+This wording is relative to <a href="https://wg21.link/N5001">N5001</a>.
+</p>
+
+<ol>
+<li><p>Modify 23.7.3.4.2 <a href="https://wg21.link/mdspan.layout.reqmts">[mdspan.layout.reqmts]</a> as indicated:</p>
+
+<blockquote>
+<pre>
+m.stride(r)
+</pre>
+<blockquote>
+<p>
+-19- <i>Preconditions</i>: <code class='backtick'>m.is_strided()</code> is <code class='backtick'>true</code>.
+<p/>
+-20- <i>Result</i>: <code class='backtick'>typename M::index_type</code>
+<p/>
+-21- <i>Returns</i>: <code class='backtick'>sr</code> as defined in <code class='backtick'>m.is_strided()</code> above.
+<p/>
+<ins>[<i>Note ?</i>: It is not required for <code class='backtick'>m.stride(r)</code> to be well-formed if
+<code class='backtick'>m.extents().rank()</code> is zero, even if <code class='backtick'>m.is_always_strided()</code> is <code class='backtick'>true</code>. &mdash; 
+<i>end note</i>]</ins>
+</p>
+</blockquote>
+</blockquote>
+</li>
+
+</ol>
+
+
+
+
+
+
+</body>
+</html>
