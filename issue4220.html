@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Issue 4220: join_view incorrectly stores inner range</title>
+<meta property="og:title" content="Issue 4220: join_view incorrectly stores inner range">
+<meta property="og:description" content="C++ library issue. Status: New">
+<meta property="og:url" content="https://cplusplus.github.io/LWG/issue4220.html">
+<meta property="og:type" content="website">
+<meta property="og:image" content="http://cplusplus.github.io/LWG/images/cpp_logo.png">
+<meta property="og:image:alt" content="C++ logo">
+<style>
+  p {text-align:justify}
+  li {text-align:justify}
+  pre code.backtick::before { content: "`" }
+  pre code.backtick::after { content: "`" }
+  blockquote.note
+  {
+    background-color:#E0E0E0;
+    padding-left: 15px;
+    padding-right: 15px;
+    padding-top: 1px;
+    padding-bottom: 1px;
+  }
+  ins {background-color:#A0FFA0}
+  del {background-color:#FFA0A0}
+  table.issues-index { border: 1px solid; border-collapse: collapse; }
+  table.issues-index th { text-align: center; padding: 4px; border: 1px solid; }
+  table.issues-index td { padding: 4px; border: 1px solid; }
+  table.issues-index td:nth-child(1) { text-align: right; }
+  table.issues-index td:nth-child(2) { text-align: left; }
+  table.issues-index td:nth-child(3) { text-align: left; }
+  table.issues-index td:nth-child(4) { text-align: left; }
+  table.issues-index td:nth-child(5) { text-align: center; }
+  table.issues-index td:nth-child(6) { text-align: center; }
+  table.issues-index td:nth-child(7) { text-align: left; }
+  table.issues-index td:nth-child(5) span.no-pr { color: red; }
+  @media (prefers-color-scheme: dark) {
+     html {
+        color: #ddd;
+        background-color: black;
+     }
+     ins {
+        background-color: #225522
+     }
+     del {
+        background-color: #662222
+     }
+     a {
+        color: #6af
+     }
+     a:visited {
+        color: #6af
+     }
+     blockquote.note
+     {
+        background-color: rgba(255, 255, 255, .10)
+     }
+  }
+</style>
+</head>
+<body>
+<hr>
+<p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#New">New</a> status.</em></p>
+<h3 id="4220"><a href="lwg-active.html#4220">4220</a>. <code>join_view</code> incorrectly stores inner range</h3>
+<p><b>Section:</b> 25.7.14.2 <a href="https://wg21.link/range.join.view">[range.join.view]</a>, 25.7.15.2 <a href="https://wg21.link/range.join.with.view">[range.join.with.view]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
+ <b>Submitter:</b> Hewill Kang <b>Opened:</b> 2025-03-06 <b>Last modified:</b> 2025-03-09</p>
+<p><b>Priority: </b>Not Prioritized
+</p>
+<p><b>View all other</b> <a href="lwg-index.html#range.join.view">issues</a> in [range.join.view].</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
+<p><b>Discussion:</b></p>
+<p>
+When the inner range is a prvalue, <code>join_view</code> removes its <i>cv</i>-qualifiers
+and stores it in the <code><i>propagating-cache</i></code>, which is not quite right as the inner range may
+only be const-iterable (<a href="https://godbolt.org/z/qY1bhExzG">demo</a>):
+</p>
+<blockquote><pre>
+#include &lt;ranges&gt;
+
+struct R {
+  int* begin() = delete;
+  int* end() = delete;
+  const int* begin() const;
+  const int* end() const;
+};
+
+int main() {
+  auto r = std::views::iota(0, 5)
+         | std::views::transform([](int) -> const R { return {}; })
+         | std::views::join;
+  auto b = r.begin(); // <span style="color:red;font-weight:bolder">hard error</span>
+}
+</pre></blockquote>
+<p>
+The proposed resolution preserves the inner range's original qualifiers, which is consistent with how
+<code>cache_latest_view</code> stores the reference when it is a prvalue.
+The same goes for <code>join_with_view</code>.
+</p>
+
+
+<p id="res-4220"><b>Proposed resolution:</b></p>
+<p>
+This wording is relative to <a href="https://wg21.link/N5001">N5001</a>.
+</p>
+
+<ol>
+
+<li><p>Modify 25.7.14.2 <a href="https://wg21.link/range.join.view">[range.join.view]</a> as indicated:</p>
+
+<blockquote>
+<pre>
+namespace std::ranges {
+  template&lt;input_range V&gt;
+    requires view&lt;V&gt; &amp;&amp; input_range&lt;range_reference_t&lt;V&gt;&gt;&gt;
+  class join_view : public view_interface&lt;join_view&lt;V&gt;&gt; {
+  private:
+    using <i>InnerRng</i> = range_reference_t&lt;V&gt;;                  // <i>exposition only</i>
+    [&hellip;]
+    <i>non-propagating-cache</i>&lt;<del>remove_cv_t&lt;</del><i>InnerRng</i><del>&gt;</del>&gt; <i>inner_</i>;    // <i>exposition only, present only</i>
+                                                            // <i>if is_reference_v&lt;<i>InnerRng</i>&gt; is false</i>
+
+  public:
+    [&hellip;]
+  };
+  [&hellip;]
+}
+</pre>
+</blockquote>
+</li>
+
+<li><p>Modify 25.7.15.2 <a href="https://wg21.link/range.join.with.view">[range.join.with.view]</a> as indicated:</p>
+
+<blockquote>
+<pre>
+namespace std::ranges {
+  [&hellip;]
+  template&lt;input_range V, forward_range Pattern&gt;
+    requires view&lt;V&gt; &amp;&amp; input_range&lt;range_reference_t&lt;V&gt;&gt;
+          &amp;&amp; view&lt;Pattern&gt;
+          &amp;&amp; <i>concatable</i>&lt;range_reference_t&lt;V&gt;, Pattern&gt;
+  class join_with_view : public view_interface&lt;join_with_view&lt;V, Pattern&gt;&gt; {
+    using <i>InnerRng</i> = range_reference_t&lt;V&gt;;                 // <i>exposition only</i>
+    [&hellip;]
+    <i>non-propagating-cache</i>&lt;<del>remove_cv_t&lt;</del><i>InnerRng</i><del>&gt;</del>&gt; <i>inner_</i>;   // <i>exposition only, present only</i>
+                                                           // <i>if is_reference_v&lt;<i>InnerRng</i>&gt; is false</i>
+
+    [&hellip;]
+  public:
+    [&hellip;]
+  };
+  [&hellip;]
+}
+
+</pre>
+</blockquote>
+</li>
+</ol>
+
+
+
+
+
+
+</body>
+</html>

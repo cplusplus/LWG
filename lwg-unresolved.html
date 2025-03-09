@@ -54,7 +54,7 @@
 </style>
 </head>
 <body>
-<p>Revised 2025-03-09 at 10:26:36 UTC
+<p>Revised 2025-03-09 at 10:46:46 UTC
 </p><h2>Unresolved Issues</h2>
 <hr>
 <h3 id="423"><a href="#423">423</a><sup><a href="https://cplusplus.github.io/LWG/issue423">(i)</a></sup>. Effects of negative <code>streamsize</code> in iostreams</h3>
@@ -66744,6 +66744,107 @@ c.erase(<ins>r.begin()</ins><del>it</del>, <ins>r</ins><del>c</del>.end());
 return r<ins>.size()</ins>;
 </pre></blockquote>
 </blockquote>
+</blockquote>
+</li>
+</ol>
+
+
+
+
+
+
+<hr>
+<h3 id="4220"><a href="#4220">4220</a><sup><a href="https://cplusplus.github.io/LWG/issue4220">(i)</a></sup>. <code>join_view</code> incorrectly stores inner range</h3>
+<p><b>Section:</b> 25.7.14.2 <a href="https://wg21.link/range.join.view">[range.join.view]</a>, 25.7.15.2 <a href="https://wg21.link/range.join.with.view">[range.join.with.view]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
+ <b>Submitter:</b> Hewill Kang <b>Opened:</b> 2025-03-06 <b>Last modified:</b> 2025-03-09</p>
+<p><b>Priority: </b>Not Prioritized
+</p>
+<p><b>View all other</b> <a href="lwg-index.html#range.join.view">issues</a> in [range.join.view].</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
+<p><b>Discussion:</b></p>
+<p>
+When the inner range is a prvalue, <code>join_view</code> removes its <i>cv</i>-qualifiers
+and stores it in the <code><i>propagating-cache</i></code>, which is not quite right as the inner range may
+only be const-iterable (<a href="https://godbolt.org/z/qY1bhExzG">demo</a>):
+</p>
+<blockquote><pre>
+#include &lt;ranges&gt;
+
+struct R {
+  int* begin() = delete;
+  int* end() = delete;
+  const int* begin() const;
+  const int* end() const;
+};
+
+int main() {
+  auto r = std::views::iota(0, 5)
+         | std::views::transform([](int) -> const R { return {}; })
+         | std::views::join;
+  auto b = r.begin(); // <span style="color:red;font-weight:bolder">hard error</span>
+}
+</pre></blockquote>
+<p>
+The proposed resolution preserves the inner range's original qualifiers, which is consistent with how
+<code>cache_latest_view</code> stores the reference when it is a prvalue.
+The same goes for <code>join_with_view</code>.
+</p>
+
+
+<p id="res-4220"><b>Proposed resolution:</b></p>
+<p>
+This wording is relative to <a href="https://wg21.link/N5001">N5001</a>.
+</p>
+
+<ol>
+
+<li><p>Modify 25.7.14.2 <a href="https://wg21.link/range.join.view">[range.join.view]</a> as indicated:</p>
+
+<blockquote>
+<pre>
+namespace std::ranges {
+  template&lt;input_range V&gt;
+    requires view&lt;V&gt; &amp;&amp; input_range&lt;range_reference_t&lt;V&gt;&gt;&gt;
+  class join_view : public view_interface&lt;join_view&lt;V&gt;&gt; {
+  private:
+    using <i>InnerRng</i> = range_reference_t&lt;V&gt;;                  // <i>exposition only</i>
+    [&hellip;]
+    <i>non-propagating-cache</i>&lt;<del>remove_cv_t&lt;</del><i>InnerRng</i><del>&gt;</del>&gt; <i>inner_</i>;    // <i>exposition only, present only</i>
+                                                            // <i>if is_reference_v&lt;<i>InnerRng</i>&gt; is false</i>
+
+  public:
+    [&hellip;]
+  };
+  [&hellip;]
+}
+</pre>
+</blockquote>
+</li>
+
+<li><p>Modify 25.7.15.2 <a href="https://wg21.link/range.join.with.view">[range.join.with.view]</a> as indicated:</p>
+
+<blockquote>
+<pre>
+namespace std::ranges {
+  [&hellip;]
+  template&lt;input_range V, forward_range Pattern&gt;
+    requires view&lt;V&gt; &amp;&amp; input_range&lt;range_reference_t&lt;V&gt;&gt;
+          &amp;&amp; view&lt;Pattern&gt;
+          &amp;&amp; <i>concatable</i>&lt;range_reference_t&lt;V&gt;, Pattern&gt;
+  class join_with_view : public view_interface&lt;join_with_view&lt;V, Pattern&gt;&gt; {
+    using <i>InnerRng</i> = range_reference_t&lt;V&gt;;                 // <i>exposition only</i>
+    [&hellip;]
+    <i>non-propagating-cache</i>&lt;<del>remove_cv_t&lt;</del><i>InnerRng</i><del>&gt;</del>&gt; <i>inner_</i>;   // <i>exposition only, present only</i>
+                                                           // <i>if is_reference_v&lt;<i>InnerRng</i>&gt; is false</i>
+
+    [&hellip;]
+  public:
+    [&hellip;]
+  };
+  [&hellip;]
+}
+
+</pre>
 </blockquote>
 </li>
 </ol>
