@@ -64,7 +64,7 @@
 <p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#New">New</a> status.</em></p>
 <h3 id="4166"><a href="lwg-active.html#4166">4166</a>. <code class='backtick'>concat_view::end()</code> should be more constrained in order to support noncopyable iterators</h3>
 <p><b>Section:</b> 25.7.18.2 <a href="https://wg21.link/range.concat.view">[range.concat.view]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Yaito Kakeyama &amp; Nana Sakisaka <b>Opened:</b> 2024-10-13 <b>Last modified:</b> 2024-10-19</p>
+ <b>Submitter:</b> Yaito Kakeyama &amp; Nana Sakisaka <b>Opened:</b> 2024-10-13 <b>Last modified:</b> 2025-03-09</p>
 <p><b>Priority: </b>Not Prioritized
 </p>
 <p><b>View other</b> <a href="lwg-index-open.html#range.concat.view">active issues</a> in [range.concat.view].</p>
@@ -123,8 +123,9 @@ A similar issue had been reported as <a href="lwg-defects.html#3385" title="comm
 DR indicates that LWG approved the decision to require <code class='backtick'>copyable</code> in order to model a <code class='backtick'>common_iterator</code>.
 </p>
 
+<p><strong>Previous resolution [SUPERSEDED]:</strong></p>
+<blockquote class="note">
 
-<p id="res-4166"><b>Proposed resolution:</b></p>
 <p>
 This wording is relative to <a href="https://wg21.link/N4993" title=" Working Draft, Programming Languages — C++">N4993</a>.
 </p>
@@ -156,6 +157,45 @@ if constexpr (<ins>(semiregular&lt;iterator_t&lt;<i>maybe-const</i>&lt;<i>is-con
 </blockquote>
 </li>
 </ol>
+</blockquote>
+
+<p><i>[2025-03-05; Hewill Kang provides improved wording]</i></p>
+
+
+
+<p id="res-4166"><b>Proposed resolution:</b></p>
+<p>
+This wording is relative to <a href="https://wg21.link/N5001">N5001</a>.
+</p>
+
+<ol>
+<li><p>Modify 25.7.18.2 <a href="https://wg21.link/range.concat.view">[range.concat.view]</a> as indicated:</p>
+
+<blockquote>
+<pre>
+constexpr auto end() const
+  requires (range&lt;const Views&gt; &amp;&amp; ...) &amp;&amp; <i>concatable</i>&lt;const Views...&gt;;
+</pre>
+<blockquote>
+<p>
+-7- <i>Effects</i>: Let <code><i>is-const</i></code> be <code class='backtick'>true</code> for the const-qualified overload, and <code class='backtick'>false</code> 
+otherwise. Equivalent to:
+</p>
+<blockquote><pre>
+constexpr auto N = sizeof...(Views);
+if constexpr (<ins><i>all-forward</i>&lt;<i>is-const</i>, Views...&gt; &amp;&amp;</ins> 
+              common_range&lt;<i>maybe-const</i>&lt;<i>is-const</i>, Views...[N - 1]&gt;&gt;) {
+  return <i>iterator</i>&lt;<i>is-const</i>&gt;(this, in_place_index&lt;N - 1&gt;,
+                            ranges::end(std::get&lt;N - 1&gt;(<i>views_</i>)));
+} else {
+  return default_sentinel;
+}
+</pre></blockquote>
+</blockquote>
+</blockquote>
+</li>
+</ol>
+
 
 
 
