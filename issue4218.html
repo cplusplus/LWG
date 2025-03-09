@@ -130,7 +130,7 @@ template&lt;<i>not-a-const-iterator</i> I, same_as&lt;Iterator&gt; J>
 <p>
 So that deduction fails earlier, before constraints get checked, for a second
 operand that isn't a specialization of <code class='backtick'>basic_const_iterator</code> (or derived from one).
-<P/>
+<p/>
 LWG <a href="lwg-defects.html#3769" title="basic_const_iterator::operator== causes infinite constraint recursion (Status: C++23)">3769</a><sup><a href="https://cplusplus.github.io/LWG/issue3769" title="Latest snapshot">(i)</a></sup> is an earlier issue about constraint recursion in <code class='backtick'>basic_const_iterator</code>'s
 operators, but there the recursion was independent of CWG 2369.
 </p>
