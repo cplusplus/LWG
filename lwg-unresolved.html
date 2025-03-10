@@ -54,7 +54,7 @@
 </style>
 </head>
 <body>
-<p>Revised 2025-03-09 at 10:56:36 UTC
+<p>Revised 2025-03-10 at 11:27:06 UTC
 </p><h2>Unresolved Issues</h2>
 <hr>
 <h3 id="423"><a href="#423">423</a><sup><a href="https://cplusplus.github.io/LWG/issue423">(i)</a></sup>. Effects of negative <code>streamsize</code> in iostreams</h3>
@@ -55008,118 +55008,6 @@ are constant subexpressions.
 <p>
 [&hellip;]
 </p>
-</blockquote>
-</li>
-</ol>
-
-
-
-
-
-<hr>
-<h3 id="4042"><a href="#4042">4042</a><sup><a href="https://cplusplus.github.io/LWG/issue4042">(i)</a></sup>. <code>std::print</code> should permit an efficient implementation</h3>
-<p><b>Section:</b> 31.7.10 <a href="https://wg21.link/print.fun">[print.fun]</a> <b>Status:</b> <a href="lwg-active.html#LEWG">LEWG</a>
- <b>Submitter:</b> Victor Zverovich <b>Opened:</b> 2024-01-20 <b>Last modified:</b> 2024-03-12</p>
-<p><b>Priority: </b>3
-</p>
-<p><b>View all other</b> <a href="lwg-index.html#print.fun">issues</a> in [print.fun].</p>
-<p><b>View all issues with</b> <a href="lwg-status.html#LEWG">LEWG</a> status.</p>
-<p><b>Discussion:</b></p>
-<p>
-<code>std::print</code>/<code>std::vprint*</code> is currently defined in terms of formatting into a temporary string, e.g. 
-31.7.10 <a href="https://wg21.link/print.fun">[print.fun]</a>:
-</p>
-<blockquote>
-<pre>
-void vprint_nonunicode(FILE* stream, string_view fmt, format_args args);
-</pre>
-<blockquote>
-<p>
-<i>Preconditions</i>: <code>stream</code> is a valid pointer to an output C stream.
-<p/>
-<i>Effects</i>: Writes the result of <code>vformat(fmt, args)</code> to <code>stream</code>.
-<p/>
-<i>Throws</i>: Any exception thrown by the call to <code>vformat</code> (28.5.3 <a href="https://wg21.link/format.err.report">[format.err.report]</a>).
- <code>system_error</code> if writing to <code>stream</code> fails. May throw <code>bad_alloc</code>.
-</p>
-</blockquote>
-</blockquote>
-<p>
-This is done to make it clear that noninterleaved output is desired while keeping specification simple and portable.
-<p/>
-Unfortunately, the current specification seems to prohibit a more efficient implementation that performs formatting 
-directly into a stream buffer under a lock (<code>flockfile</code>/<code>funlockfile</code> in POSIX) like <code>printf</code> does. 
-The difference can be observable in case of an I/O error that occurs before a custom formatter is called. In the 
-(double buffered) implementation that directly follows the spec all formatters will be called, while in a more efficient 
-(locking) implementation subsequent formatters may not be called.
-<p/>
-The easiest fix, given in the current proposed resolution, is to say that some arguments may not be formatted in 
-case of a write error. It might be a bit weird considering that the spec says that we construct a string first so an 
-alternative resolution is to replace <code>vformat</code> with <code>vformat_to</code> info some unspecified buffer iterator 
-and state noninterleaving requirement separately. 
-</p>
-
-<p><i>[2024-02-19; Feb 2024 mailing]</i></p>
-
-<p>This would be resolved by <a href="https://wg21.link/P3107" title=" Permit an efficient implementation of std::print">P3107</a>.</p>
-
-<p><i>[2024-03-12; Reflector poll]</i></p>
-
-<p>
-Set priority to 3 and status to LEWG after reflector poll in January 2024.
-</p>
-<p>
-"This loses the guarantee that if the formatting throws then there's no output."
-</p>
-
-
-
-<p id="res-4042"><b>Proposed resolution:</b></p>
-<p>
-This wording is relative to <a href="https://wg21.link/N4971" title=" Working Draft, Programming Languages — C++">N4971</a>.
-</p>
-
-<ol>
-<li><p>Modify 31.7.10 <a href="https://wg21.link/print.fun">[print.fun]</a> as indicated:</p>
-
-<blockquote>
-<pre>
-void vprint_unicode(FILE* stream, string_view fmt, format_args args);
-</pre>
-<blockquote>
-<p>
--6- <i>Preconditions</i>: <code>stream</code> is a valid pointer to an output C stream.
-<p/>
--7- <i>Effects</i>: The function initializes an automatic variable via
-</p>
-<blockquote><pre>
-string out = vformat(fmt, args);
-</pre></blockquote>
-<p>
-If <code>stream</code> refers to a terminal capable of displaying Unicode, writes out to the terminal using the
-native Unicode API; if out contains invalid code units, the behavior is undefined and implementations
-are encouraged to diagnose it. Otherwise writes <code>out</code> to <code>stream</code> unchanged. If the native 
-Unicode API is used, the function flushes <code>stream</code> before writing <code>out</code>.
-<p/>
-<ins>If writing to the terminal or <code>stream</code> fails, some arguments in <code>args</code> may not be formatted.</ins>
-<p/>
-[&hellip;]
-</p>
-</blockquote>
-[&hellip;]
-<pre>
-void vprint_nonunicode(FILE* stream, string_view fmt, format_args args);
-</pre>
-<blockquote>
-<p>
--11- <i>Preconditions</i>: <code>stream</code> is a valid pointer to an output C stream.
-<p/>
--12- <i>Effects</i>: Writes the result of <code>vformat(fmt, args)</code> to <code>stream</code>. <ins>If writing to 
-<code>stream</code> fails, some arguments in <code>args</code> may not be formatted.</ins>
-<p/>
--13- <i>Throws</i>: [&hellip;].
-</p>
-</blockquote>
 </blockquote>
 </li>
 </ol>
