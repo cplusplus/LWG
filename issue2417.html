@@ -64,7 +64,7 @@
 <p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#NAD">NAD</a> status.</em></p>
 <h3 id="2417"><a href="lwg-closed.html#2417">2417</a>. [fund.ts.v2] <code>std::experimental::optional::operator&lt;</code> and <code>LessThanComparable</code> requirement</h3>
 <p><b>Section:</b> 5.7 <a href="https://cplusplus.github.io/fundamentals-ts/v2.html#optional.relops">[fund.ts.v2::optional.relops]</a>, 5.9 <a href="https://cplusplus.github.io/fundamentals-ts/v2.html#optional.comp_with_t">[fund.ts.v2::optional.comp_with_t]</a> <b>Status:</b> <a href="lwg-active.html#NAD">NAD</a>
- <b>Submitter:</b> Daniel Kr&uuml;gler <b>Opened:</b> 2014-06-20 <b>Last modified:</b> 2023-06-17</p>
+ <b>Submitter:</b> Daniel Kr&uuml;gler <b>Opened:</b> 2014-06-20 <b>Last modified:</b> 2025-03-13</p>
 <p><b>Priority: </b>Not Prioritized
 </p>
 <p><b>View all issues with</b> <a href="lwg-status.html#NAD">NAD</a> status.</p>
@@ -88,7 +88,7 @@ requirements (see <a href="lwg-defects.html#2114" title="Incorrect &quot;context
 <p/>
 Arguably, corresponding operators for <code>pair</code> and <code>tuple</code> do not impose <code>LessThanComparable</code> (nor
 <code>EqualityComparable</code>), albeit the definition of the "derived" relation functions depend on properties ensured by
-<code>LessThanComparable</code>. According to the <a href="https://www.sgi.com/tech/stl/pair.html">SGI definition</a>, the intention was
+<code>LessThanComparable</code>. According to the <a href="https://www.boost.org/sgi/stl/pair.html">SGI definition</a>, the intention was
 to imposed both <code>EqualityComparable</code> and <code>LessThanComparable</code>. If this is not intended, the standard should clarify
 this position.
 </p>

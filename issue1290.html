@@ -64,7 +64,7 @@
 <p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#Resolved">Resolved</a> status.</em></p>
 <h3 id="1290"><a href="lwg-defects.html#1290">1290</a>. Don't require <code>[u|bi]nary_function</code> inheritance</h3>
 <p><b>Section:</b> 22.10 <a href="https://wg21.link/function.objects">[function.objects]</a> <b>Status:</b> <a href="lwg-active.html#Resolved">Resolved</a>
- <b>Submitter:</b> Daniel Kr&uuml;gler <b>Opened:</b> 2009-12-14 <b>Last modified:</b> 2017-03-21</p>
+ <b>Submitter:</b> Daniel Kr&uuml;gler <b>Opened:</b> 2009-12-14 <b>Last modified:</b> 2025-03-13</p>
 <p><b>Priority: </b>Not Prioritized
 </p>
 <p><b>View all other</b> <a href="lwg-index.html#function.objects">issues</a> in [function.objects].</p>
@@ -103,10 +103,10 @@ struct binary_function {
 which <i>may</i> be used as base classes (similarly to the iterator template),
 but were originally <i>not</i> intended as a customization point. The SGI
 documentation introduced the concept 
-<a href="http://www.sgi.com/tech/stl/AdaptableUnaryFunction.html">Adaptable Unary
+<a href="https://www.boost.org/sgi/stl/AdaptableUnaryFunction.html">Adaptable Unary
 Function</a> as function objects "with nested typedefs that define its argument
 type and result type" and a similar definition for 
-<a href="http://www.sgi.com/tech/stl/AdaptableBinaryFunction.html">Adaptable Binary
+<a href="https://www.boost.org/sgi/stl/AdaptableBinaryFunction.html">Adaptable Binary
 Function</a> related to <code>binary_function</code>. But as of TR1 a protocol was
 introduced that relies on inheritance relations based on these types. 22.10.6 <a href="https://wg21.link/refwrap">[refwrap]</a>/3 b. 3 requires that a specialization of
 <code>reference_wrapper&lt;T&gt;</code> shall derive from <code>unary_function</code>,

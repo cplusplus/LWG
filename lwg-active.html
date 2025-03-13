@@ -67,7 +67,7 @@
 </tr>
 <tr>
   <td align="left">Date:</td>
-  <td align="left">2025-03-12</td>
+  <td align="left">2025-03-13</td>
 </tr>
 <tr>
   <td align="left">Project:</td>
@@ -79,7 +79,7 @@
 </tr>
 </table>
 <h1>C++ Standard Library Active Issues List (Revision D125)</h1>
-<p>Revised 2025-03-12 at 22:42:58 UTC
+<p>Revised 2025-03-13 at 10:09:02 UTC
 </p>
   <p>Reference ISO/IEC IS 14882:2020(E)</p>
   <p>Also see:</p>
@@ -3426,7 +3426,7 @@ plus &#x1d4aa;(<code><i>N</i></code>) (average case) or &#x1d4aa;(<code><i>N</i>
 <hr>
 <h3 id="1213"><a href="#1213">1213</a><sup><a href="https://cplusplus.github.io/LWG/issue1213">(i)</a></sup>. Meaning of valid and singular iterator underspecified</h3>
 <p><b>Section:</b> 24.3 <a href="https://wg21.link/iterator.requirements">[iterator.requirements]</a> <b>Status:</b> <a href="lwg-active.html#Open">Open</a>
- <b>Submitter:</b> Daniel Kr&uuml;gler <b>Opened:</b> 2009-09-19 <b>Last modified:</b> 2016-01-28</p>
+ <b>Submitter:</b> Daniel Kr&uuml;gler <b>Opened:</b> 2009-09-19 <b>Last modified:</b> 2025-03-13</p>
 <p><b>Priority: </b>4
 </p>
 <p><b>View all other</b> <a href="lwg-index.html#iterator.requirements">issues</a> in [iterator.requirements].</p>
@@ -3464,7 +3464,7 @@ First, issue <a href="lwg-defects.html#208" title="Unnecessary restriction on pa
 values are always non-singular. The reason for this was to support null
 pointers as past-the-end iterators of e.g. empty sequences. But there
 seem to exist different views on what a singular (iterator) value is. E.g.
-according to the <a href="http://www.sgi.com/tech/stl/trivial.html">SGI definition</a>
+according to the <a href="https://www.boost.org/sgi/stl/trivial.html">SGI definition</a>
 a null pointer is <em>not</em> a singular value:
 </p>
 
@@ -3476,7 +3476,7 @@ involving null pointers) even thought it is not dereferenceable.
 </p></blockquote>
 
 <p>
-and <a href="http://www.sgi.com/tech/stl/InputIterator.html">proceeds</a>:
+and <a href="https://www.boost.org/sgi/stl/InputIterator.html">proceeds</a>:
 </p>
 
 <blockquote><p>
@@ -4234,7 +4234,7 @@ item type or members.</ins>
 <hr>
 <h3 id="2035"><a href="#2035">2035</a><sup><a href="https://cplusplus.github.io/LWG/issue2035">(i)</a></sup>. Output iterator requirements are broken</h3>
 <p><b>Section:</b> 24.3.5.4 <a href="https://wg21.link/output.iterators">[output.iterators]</a> <b>Status:</b> <a href="lwg-active.html#Open">Open</a>
- <b>Submitter:</b> Daniel Kr&uuml;gler <b>Opened:</b> 2011-02-27 <b>Last modified:</b> 2016-01-28</p>
+ <b>Submitter:</b> Daniel Kr&uuml;gler <b>Opened:</b> 2011-02-27 <b>Last modified:</b> 2025-03-13</p>
 <p><b>Priority: </b>3
 </p>
 <p><b>View other</b> <a href="lwg-index-open.html#output.iterators">active issues</a> in [output.iterators].</p>
@@ -4272,7 +4272,7 @@ ones without semantics:
 *r++ = o // output iterator
 *r--     // bidirectional iterator
 </pre></blockquote><p>
-According to the <a href="http://www.sgi.com/tech/stl/OutputIterator.html">SGI specification</a>
+According to the <a href="https://www.boost.org/sgi/stl/OutputIterator.html">SGI specification</a>
 these correspond to
 </p><blockquote><pre>
 { *r = o; ++r; }                         // output iterator
@@ -4517,7 +4517,7 @@ that are not associated with any sequence. [&hellip;]
 24.3.5.3 <a href="https://wg21.link/input.iterators">[input.iterators]</a>, as indicated [<i>Rationale</i>: The wording changes attempt
 to define a minimal "independent" set of operations, namely <code>*a</code> and <code>++r</code>, and 
 to specify the semantics of the remaining ones. This approach seems to be in agreement with the 
-original <a href="http://www.sgi.com/tech/stl/InputIterator.html">SGI specification</a> 
+original <a href="https://www.boost.org/sgi/stl/InputIterator.html">SGI specification</a>
 &mdash; <i>end rationale</i>]:</p>
 
 <blockquote>
@@ -4603,7 +4603,7 @@ return tmp; }
 24.3.5.4 <a href="https://wg21.link/output.iterators">[output.iterators]</a>, as indicated [<i>Rationale</i>: The wording changes attempt
 to define a minimal "independent" set of operations, namely <code>*r = o</code> and <code>++r</code>,
 and to specify the semantics of the remaining ones. This approach seems to be in agreement with
-the original <a href="http://www.sgi.com/tech/stl/OutputIterator.html">SGI specification</a> 
+the original <a href="https://www.boost.org/sgi/stl/OutputIterator.html">SGI specification</a>
 &mdash; <i>end rationale</i>]:</p>
 
 <blockquote>
