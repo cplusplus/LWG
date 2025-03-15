@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Issue 4223: Deduction guides for maps are mishandling tuples and references</title>
+<meta property="og:title" content="Issue 4223: Deduction guides for maps are mishandling tuples and references">
+<meta property="og:description" content="C++ library issue. Status: New">
+<meta property="og:url" content="https://cplusplus.github.io/LWG/issue4223.html">
+<meta property="og:type" content="website">
+<meta property="og:image" content="http://cplusplus.github.io/LWG/images/cpp_logo.png">
+<meta property="og:image:alt" content="C++ logo">
+<style>
+  p {text-align:justify}
+  li {text-align:justify}
+  pre code.backtick::before { content: "`" }
+  pre code.backtick::after { content: "`" }
+  blockquote.note
+  {
+    background-color:#E0E0E0;
+    padding-left: 15px;
+    padding-right: 15px;
+    padding-top: 1px;
+    padding-bottom: 1px;
+  }
+  ins {background-color:#A0FFA0}
+  del {background-color:#FFA0A0}
+  table.issues-index { border: 1px solid; border-collapse: collapse; }
+  table.issues-index th { text-align: center; padding: 4px; border: 1px solid; }
+  table.issues-index td { padding: 4px; border: 1px solid; }
+  table.issues-index td:nth-child(1) { text-align: right; }
+  table.issues-index td:nth-child(2) { text-align: left; }
+  table.issues-index td:nth-child(3) { text-align: left; }
+  table.issues-index td:nth-child(4) { text-align: left; }
+  table.issues-index td:nth-child(5) { text-align: center; }
+  table.issues-index td:nth-child(6) { text-align: center; }
+  table.issues-index td:nth-child(7) { text-align: left; }
+  table.issues-index td:nth-child(5) span.no-pr { color: red; }
+  @media (prefers-color-scheme: dark) {
+     html {
+        color: #ddd;
+        background-color: black;
+     }
+     ins {
+        background-color: #225522
+     }
+     del {
+        background-color: #662222
+     }
+     a {
+        color: #6af
+     }
+     a:visited {
+        color: #6af
+     }
+     blockquote.note
+     {
+        background-color: rgba(255, 255, 255, .10)
+     }
+  }
+</style>
+</head>
+<body>
+<hr>
+<p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#New">New</a> status.</em></p>
+<h3 id="4223"><a href="lwg-active.html#4223">4223</a>. Deduction guides for maps are mishandling tuples and references</h3>
+<p><b>Section:</b> 23.4.1 <a href="https://wg21.link/associative.general">[associative.general]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
+ <b>Submitter:</b> Tomasz Kaminski <b>Opened:</b> 2025-03-14 <b>Last modified:</b> 2025-03-15</p>
+<p><b>Priority: </b>Not Prioritized
+</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
+<p><b>Discussion:</b></p>
+<p>
+The <code class='backtick'>from_range</code> deduction guide for maps currently do not handle ranges of tuple of two elements:
+</p>
+<blockquote><pre>
+std::vector&lt;int&gt; v;
+auto zv = std::views::zip(v, v);
+std::map m4(std::from_range, zv); // <span style="color:red;font-weight:bolder">Ill-formed, no-deduction guide</span>
+</pre></blockquote>
+<p>
+This seems to be result of merge conflict between <a href="https://wg21.link/P2165" title=" Compatibility between tuple, pair and tuple-like objects">P2165</a> (Compatibility between tuple, pair and tuple-like objects) 
+and <a href="https://wg21.link/P1206R4" title=" Conversions from ranges to containers">P1206R4</a> (Conversions from ranges to containers): The helper <code><i>range-key-type</i></code> and 
+<code><i>range-mapped-type</i></code> aliases introduced by the later use the old formulation of <code class='backtick'>::first_type</code>, 
+<code class='backtick'>::second::type</code> instead of <code class='backtick'>tuple_element</code>.
+<p/>
+Furthermore, both iterator and range deduction guides do not correctly handle iterators with a pair of references as 
+value types, and deduce key or value type as reference, which is ill-formed:
+</p>
+<blockquote><pre>
+std::flat_map&lt;int, float&gt; fm; // iterator value_type is pair&lt;int, float&gt;
+std::map m1(fm.begin(), fm.end()); // OK, deduces std::map&lt;int, float&gt;
+
+auto tv = fm | std::views::transform(std::identity{}); // iterator value value_type is pair&lt;int const&amp;, float const&amp;&gt;
+std::map m3(tv.begin(), tv.end()); // <span style="color:red;font-weight:bolder">Ill-formed, deduces std::map&lt;int const&amp;, float&amp;&gt;</span>
+</pre></blockquote>
+
+
+
+<p id="res-4223"><b>Proposed resolution:</b></p>
+<p>
+This wording is relative to <a href="https://wg21.link/N5001">N5001</a>.
+</p>
+
+<blockquote class="note">
+<p>
+[<i>Drafting note</i>: The proposed change also strips <code class='backtick'>const</code> from the value type of the <code class='backtick'>map</code>, 
+changing the behavior of previously working code:
+</p>
+<blockquote><pre>
+std::pair&lt;int const, float const&gt; tp[2];
+std::map m(std::begin(tp), std::end(tp)); // Was std::map&lt;int, float const&gt;, now std::map&lt;int, float&gt;
+</pre></blockquote>
+]
+</blockquote>
+
+<ol>
+
+<li><p>Modify 23.4.1 <a href="https://wg21.link/associative.general">[associative.general]</a> as indicated:</p>
+
+<blockquote>
+<pre>
+template&lt;class InputIterator&gt;
+  using <i>iter-value-type</i> =
+    typename iterator_traits&lt;InputIterator&gt;::value_type; // <i>exposition only</i>
+
+template&lt;class InputIterator&gt;
+  using <i>iter-key-type</i> = <del>remove_const_t</del><ins>remove_cvref_t</ins>&lt;
+    tuple_element_t&lt;0, <i>iter-value-type</i>&lt;InputIterator&gt;&gt;&gt;; // <i>exposition only</i>
+
+template&lt;class InputIterator&gt;
+  using <i>iter-mapped-type</i> = <ins>remove_cvref_t&lt;</ins>
+    tuple_element_t&lt;1, <i>iter-value-type</i>&lt;InputIterator&gt;&gt;<ins>&gt;</ins>; // <i>exposition only</i>
+
+template&lt;class InputIterator&gt;
+  using <i>iter-to-alloc-type</i> = pair&lt;
+    add_const_t&lt;
+      <del>tuple_element_t&lt;0, <i>iter-value-type</i>&lt;InputIterator&gt;&gt;</del>
+      <ins><i>iter-key-type</i>&lt;InputIterator&gt;</ins>
+    &gt;,
+    <del>tuple_element_t&lt;1, <i>iter-value-type</i>&lt;InputIterator&gt;&gt;</del>
+    <ins><i>iter-mapped-type</i>&lt;InputIterator&gt;</ins>
+    &gt;; // <i>exposition only</i>
+
+template&lt;ranges::input_range Range&gt;
+  using <i>range-key-type</i> =
+    <del>remove_const_t&lt;typename ranges::range_value_t&lt;Range&gt;::first_type&gt;</del>
+    <ins>remove_cvref_t&lt;tuple_element_t&lt;0, ranges::range_value_t&lt;Range&gt;&gt;&gt;</ins>; // <i>exposition only</i>
+
+template&lt;ranges::input_range Range&gt;
+  using <i>range-mapped-type</i> = 
+    <del>typename ranges::range_value_t&lt;Range&gt;::second_type</del>
+    <ins>remove_cvref_t&lt;tuple_element_t&lt;1, ranges::range_value_t&lt;Range&gt;&gt;&gt;</ins>; // <i>exposition only</i>
+
+template&lt;ranges::input_range Range&gt;
+  using <i>range-to-alloc-type</i> =
+    pair&lt;add_const_t&lt;
+      <del>typename ranges::range_value_t&lt;Range&gt;::first_type</del>
+      <ins><i>range-key-type</i>&lt;Range&gt;</ins>
+    &gt;,
+      <del>typename ranges::range_value_t&lt;Range&gt;::second_type</del>
+      <ins><i>range-mapped-type</i>&lt;Range&gt;</ins>
+    &gt;; // <i>exposition only</i>
+</pre>
+</blockquote>
+</li>
+</ol>
+
+
+
+
+
+</body>
+</html>
