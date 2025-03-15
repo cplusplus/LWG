@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Issue 4226: to_input_view::iterator cannot be compared to its const sentinel</title>
+<meta property="og:title" content="Issue 4226: to_input_view::iterator cannot be compared to its const sentinel">
+<meta property="og:description" content="C++ library issue. Status: New">
+<meta property="og:url" content="https://cplusplus.github.io/LWG/issue4226.html">
+<meta property="og:type" content="website">
+<meta property="og:image" content="http://cplusplus.github.io/LWG/images/cpp_logo.png">
+<meta property="og:image:alt" content="C++ logo">
+<style>
+  p {text-align:justify}
+  li {text-align:justify}
+  pre code.backtick::before { content: "`" }
+  pre code.backtick::after { content: "`" }
+  blockquote.note
+  {
+    background-color:#E0E0E0;
+    padding-left: 15px;
+    padding-right: 15px;
+    padding-top: 1px;
+    padding-bottom: 1px;
+  }
+  ins {background-color:#A0FFA0}
+  del {background-color:#FFA0A0}
+  table.issues-index { border: 1px solid; border-collapse: collapse; }
+  table.issues-index th { text-align: center; padding: 4px; border: 1px solid; }
+  table.issues-index td { padding: 4px; border: 1px solid; }
+  table.issues-index td:nth-child(1) { text-align: right; }
+  table.issues-index td:nth-child(2) { text-align: left; }
+  table.issues-index td:nth-child(3) { text-align: left; }
+  table.issues-index td:nth-child(4) { text-align: left; }
+  table.issues-index td:nth-child(5) { text-align: center; }
+  table.issues-index td:nth-child(6) { text-align: center; }
+  table.issues-index td:nth-child(7) { text-align: left; }
+  table.issues-index td:nth-child(5) span.no-pr { color: red; }
+  @media (prefers-color-scheme: dark) {
+     html {
+        color: #ddd;
+        background-color: black;
+     }
+     ins {
+        background-color: #225522
+     }
+     del {
+        background-color: #662222
+     }
+     a {
+        color: #6af
+     }
+     a:visited {
+        color: #6af
+     }
+     blockquote.note
+     {
+        background-color: rgba(255, 255, 255, .10)
+     }
+  }
+</style>
+</head>
+<body>
+<hr>
+<p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#New">New</a> status.</em></p>
+<h3 id="4226"><a href="lwg-active.html#4226">4226</a>. <code>to_input_view::<i>iterator</i></code> cannot be compared to its <code class='backtick'>const</code> sentinel</h3>
+<p><b>Section:</b> 99 [range.to.input.view] <b>Status:</b> <a href="lwg-active.html#New">New</a>
+ <b>Submitter:</b> Hewill Kang <b>Opened:</b> 2025-03-15 <b>Last modified:</b> 2025-03-15</p>
+<p><b>Priority: </b>Not Prioritized
+</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
+<p><b>Discussion:</b></p>
+<p>
+<code class='backtick'>to_input_view</code> was recently added to the working draft by <a href="https://wg21.link/P3137R3">P3137R3</a>.
+<p/>
+Consider: (<a href="https://godbolt.org/z/7s1hPscrG">demo</a>):
+</p>
+<blockquote><pre>
+#include &lt;ranges&gt;
+
+int main() {
+  auto r = std::views::single(0)
+         | std::views::chunk(1)
+         | std::views::to_input;
+
+  r.begin() == std::as_const(r).end(); // <span style="color:red;font-weight:bolder">#1, error</span>
+  r.begin() ==               r.cend(); // <span style="color:red;font-weight:bolder">#2, error</span>
+}
+</pre></blockquote>
+<p>
+In <code>#1</code>, <code>r.begin()</code> returns <code>to_input_view&lt;chunk_view&gt;::<i>iterator</i>&lt;false&gt;</code>,
+while the latter returns <code>chunk_view::<i>iterator</i>&lt;true&gt;</code>.
+Since the former can only be compared with <code>chunk_view::<i>iterator</i>&lt;false&gt;</code> that cannot
+be converted from <code>chunk_view::<i>iterator</i>&lt;true&gt;</code>, the two are incomparable.
+<p/>
+This can be fixed by adding the following overload to <code>to_input_view::<i>iterator</i></code>:
+</p>
+<blockquote><pre>
+template&lt;bool OtherConst = !Const&gt;
+  requires sentinel_for&lt;sentinel_t&lt;<i>maybe-const</i>&lt;OtherConst, V&gt;&gt;, iterator_t&lt;<i>Base</i>&gt;&gt;
+friend constexpr bool operator==(const <i>iterator</i>&amp; x, const sentinel_t&lt;<i>maybe-const</i>&lt;OtherConst, V&gt;&gt;&amp; y)
+{ return x.<i>current_</i> == y; }
+</pre></blockquote>
+<p>
+Unfortunately, it still doesn't resolve <code>#2</code>, because <code>r.cend()</code> returns
+<code>basic_const_iterator&lt;chunk_view::iterator&lt;true&gt;&gt;</code>, which cannot be compared to any
+non-copyable iterators as its <code>operator==(const S&amp; s)</code> requires <code>S</code> to be a 
+sentinel type, which rules out <code>to_input_view::<i>iterator</i></code>, so the constraint is not satisfied.
+<p/>
+I believe we may need to introduce a custom sentinel class for <code>to_input_view</code>.
+</p>
+
+
+<p id="res-4226"><b>Proposed resolution:</b></p>
+
+
+
+
+
+</body>
+</html>
