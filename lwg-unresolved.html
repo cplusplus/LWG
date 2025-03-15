@@ -54,7 +54,7 @@
 </style>
 </head>
 <body>
-<p>Revised 2025-03-15 at 16:11:02 UTC
+<p>Revised 2025-03-15 at 16:34:53 UTC
 </p><h2>Unresolved Issues</h2>
 <hr>
 <h3 id="423"><a href="#423">423</a><sup><a href="https://cplusplus.github.io/LWG/issue423">(i)</a></sup>. Effects of negative <code>streamsize</code> in iostreams</h3>
@@ -67076,6 +67076,36 @@ namespace std {
 </blockquote>
 </li>
 </ol>
+
+
+
+
+
+<hr>
+<h3 id="4225"><a href="#4225">4225</a><sup><a href="https://cplusplus.github.io/LWG/issue4225">(i)</a></sup>. What should happen when an exception is thrown on resizing <code class='backtick'>std::deque</code>, <code class='backtick'>std::forward_list</code>, or <code class='backtick'>std::list</code>?</h3>
+<p><b>Section:</b> 23.3.5.3 <a href="https://wg21.link/deque.capacity">[deque.capacity]</a>, 23.3.7.5 <a href="https://wg21.link/forward.list.modifiers">[forward.list.modifiers]</a>, 23.3.9.3 <a href="https://wg21.link/list.capacity">[list.capacity]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
+ <b>Submitter:</b> Jiang An <b>Opened:</b> 2025-03-15 <b>Last modified:</b> 2025-03-15</p>
+<p><b>Priority: </b>Not Prioritized
+</p>
+<p><b>View all other</b> <a href="lwg-index.html#deque.capacity">issues</a> in [deque.capacity].</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
+<p><b>Discussion:</b></p>
+<p>
+Currently, <code class='backtick'>std::vector</code> and <code class='backtick'>std::inplace_vector</code>'s <code class='backtick'>resize</code> functions are specified to have no effects 
+on the container when an exception is throwing on appending. However, such specification seem to be missing 
+for <code class='backtick'>std::deque</code>, <code class='backtick'>std::forward_list</code>, and <code class='backtick'>std::list</code>.
+<p/>
+Is such difference intented? Do we want to roll back the status of container when the appending is partially done?
+<p/>
+<b>Daniel:</b>
+<p/>
+The specific <code class='backtick'>resize</code> exception guarantee for <code class='backtick'>std::vector</code> came from resolving LWG <a href="lwg-defects.html#2033" title="Preconditions of reserve, shrink_to_fit, and resize functions (Status: C++14)">2033</a><sup><a href="https://cplusplus.github.io/LWG/issue2033" title="Latest snapshot">(i)</a></sup> and were
+later effectively copied to <code class='backtick'>std::inplace_vector</code> because that container's specification should resemble 
+as much as possible that of <code class='backtick'>std::vector</code>.
+</p>
+
+
+<p id="res-4225"><b>Proposed resolution:</b></p>
 
 
 
