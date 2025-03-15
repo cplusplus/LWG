@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Issue 4224: Philox engines should be freestanding</title>
+<meta property="og:title" content="Issue 4224: Philox engines should be freestanding">
+<meta property="og:description" content="C++ library issue. Status: New">
+<meta property="og:url" content="https://cplusplus.github.io/LWG/issue4224.html">
+<meta property="og:type" content="website">
+<meta property="og:image" content="http://cplusplus.github.io/LWG/images/cpp_logo.png">
+<meta property="og:image:alt" content="C++ logo">
+<style>
+  p {text-align:justify}
+  li {text-align:justify}
+  pre code.backtick::before { content: "`" }
+  pre code.backtick::after { content: "`" }
+  blockquote.note
+  {
+    background-color:#E0E0E0;
+    padding-left: 15px;
+    padding-right: 15px;
+    padding-top: 1px;
+    padding-bottom: 1px;
+  }
+  ins {background-color:#A0FFA0}
+  del {background-color:#FFA0A0}
+  table.issues-index { border: 1px solid; border-collapse: collapse; }
+  table.issues-index th { text-align: center; padding: 4px; border: 1px solid; }
+  table.issues-index td { padding: 4px; border: 1px solid; }
+  table.issues-index td:nth-child(1) { text-align: right; }
+  table.issues-index td:nth-child(2) { text-align: left; }
+  table.issues-index td:nth-child(3) { text-align: left; }
+  table.issues-index td:nth-child(4) { text-align: left; }
+  table.issues-index td:nth-child(5) { text-align: center; }
+  table.issues-index td:nth-child(6) { text-align: center; }
+  table.issues-index td:nth-child(7) { text-align: left; }
+  table.issues-index td:nth-child(5) span.no-pr { color: red; }
+  @media (prefers-color-scheme: dark) {
+     html {
+        color: #ddd;
+        background-color: black;
+     }
+     ins {
+        background-color: #225522
+     }
+     del {
+        background-color: #662222
+     }
+     a {
+        color: #6af
+     }
+     a:visited {
+        color: #6af
+     }
+     blockquote.note
+     {
+        background-color: rgba(255, 255, 255, .10)
+     }
+  }
+</style>
+</head>
+<body>
+<hr>
+<p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#New">New</a> status.</em></p>
+<h3 id="4224"><a href="lwg-active.html#4224">4224</a>. Philox engines should be freestanding</h3>
+<p><b>Section:</b> 29.5.4.5 <a href="https://wg21.link/rand.eng.philox">[rand.eng.philox]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
+ <b>Submitter:</b> Jiang An <b>Opened:</b> 2025-03-15 <b>Last modified:</b> 2025-03-15</p>
+<p><b>Priority: </b>Not Prioritized
+</p>
+<p><b>View other</b> <a href="lwg-index-open.html#rand.eng.philox">active issues</a> in [rand.eng.philox].</p>
+<p><b>View all other</b> <a href="lwg-index.html#rand.eng.philox">issues</a> in [rand.eng.philox].</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
+<p><b>Discussion:</b></p>
+<p>
+Philox engines don't seem to require floating-point operations or support from the operating system, 
+so they are probably suitable for freestanding. However, as <a href="https://wg21.link/P2976R1" title=" Freestanding Library: algorithm, numeric, and random">P2976R1</a> was finished before 
+the adoption of <a href="https://wg21.link/P2075R6" title=" Philox as an extension of the C++ RNG engines">P2075R6</a>, these engines are not made freestanding yet.
+</p>
+
+
+<p id="res-4224"><b>Proposed resolution:</b></p>
+<p>
+This wording is relative to <a href="https://wg21.link/N5001">N5001</a>.
+</p>
+
+<ol>
+
+<li><p>Modify 29.5.2 <a href="https://wg21.link/rand.synopsis">[rand.synopsis]</a>, header <code>&lt;random&gt;</code> synopsis, as indicated:</p>
+
+<blockquote>
+<pre>
+[&hellip;]
+// <i>29.5.4.5 <a href="https://wg21.link/rand.eng.philox">[rand.eng.philox]</a>, class template philox_engine</i>
+template&lt;class UIntType, size_t w, size_t n, size_t r, UIntType... consts&gt;
+  class philox_engine;               <ins>// <i>partially freestanding</i></ins>
+
+[&hellip;]
+using philox4x32 = <i>see below</i>; <ins>// <i>freestanding</i></ins>
+using philox4x64 = <i>see below</i>; <ins>// <i>freestanding</i></ins>
+[&hellip;]
+</pre>
+</blockquote>
+</li>
+
+<li><p>Modify 29.5.4.5 <a href="https://wg21.link/rand.eng.philox">[rand.eng.philox]</a>, class template <code class='backtick'>philox_engine</code> synopsis, as indicated:</p>
+
+<blockquote>
+<pre>
+namespace std {
+  template&lt;class UIntType, size_t w, size_t n, size_t r, UIntType... consts&gt;
+  class philox_engine {
+    [&hellip;]  
+    // <i>inserters and extractors</i>
+    template&lt;class charT, class traits&gt;
+      friend basic_ostream&lt;charT, traits&gt;&amp;
+        operator&lt;&lt;(basic_ostream&lt;charT, traits&gt;&amp; os, const philox_engine&amp; x); <ins>// <i>hosted</i></ins>
+    template&lt;class charT, class traits&gt;
+      friend basic_istream&lt;charT, traits&gt;&amp;
+        operator&gt;&gt;(basic_istream&lt;charT, traits&gt;&amp; is, philox_engine&amp; x);       <ins>// <i>hosted</i></ins>
+  };
+}
+</pre>
+</blockquote>
+</li>
+</ol>
+
+
+
+
+
+</body>
+</html>

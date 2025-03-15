@@ -54,7 +54,7 @@
 </style>
 </head>
 <body>
-<p>Revised 2025-03-15 at 15:40:43 UTC
+<p>Revised 2025-03-15 at 16:08:42 UTC
 </p><h2>Unresolved Issues</h2>
 <hr>
 <h3 id="423"><a href="#423">423</a><sup><a href="https://cplusplus.github.io/LWG/issue423">(i)</a></sup>. Effects of negative <code>streamsize</code> in iostreams</h3>
@@ -65843,6 +65843,7 @@ chain of links does not terminate in a <code class='backtick'>time_zone</code>.
  <b>Submitter:</b> Thomas Köppe <b>Opened:</b> 2025-02-12 <b>Last modified:</b> 2025-02-24</p>
 <p><b>Priority: </b>Not Prioritized
 </p>
+<p><b>View other</b> <a href="lwg-index-open.html#rand.eng.philox">active issues</a> in [rand.eng.philox].</p>
 <p><b>View all other</b> <a href="lwg-index.html#rand.eng.philox">issues</a> in [rand.eng.philox].</p>
 <p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
 <p><b>Discussion:</b></p>
@@ -67004,6 +67005,73 @@ template&lt;ranges::input_range Range&gt;
       <del>typename ranges::range_value_t&lt;Range&gt;::second_type</del>
       <ins><i>range-mapped-type</i>&lt;Range&gt;</ins>
     &gt;; // <i>exposition only</i>
+</pre>
+</blockquote>
+</li>
+</ol>
+
+
+
+
+
+<hr>
+<h3 id="4224"><a href="#4224">4224</a><sup><a href="https://cplusplus.github.io/LWG/issue4224">(i)</a></sup>. Philox engines should be freestanding</h3>
+<p><b>Section:</b> 29.5.4.5 <a href="https://wg21.link/rand.eng.philox">[rand.eng.philox]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
+ <b>Submitter:</b> Jiang An <b>Opened:</b> 2025-03-15 <b>Last modified:</b> 2025-03-15</p>
+<p><b>Priority: </b>Not Prioritized
+</p>
+<p><b>View other</b> <a href="lwg-index-open.html#rand.eng.philox">active issues</a> in [rand.eng.philox].</p>
+<p><b>View all other</b> <a href="lwg-index.html#rand.eng.philox">issues</a> in [rand.eng.philox].</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
+<p><b>Discussion:</b></p>
+<p>
+Philox engines don't seem to require floating-point operations or support from the operating system, 
+so they are probably suitable for freestanding. However, as <a href="https://wg21.link/P2976R1" title=" Freestanding Library: algorithm, numeric, and random">P2976R1</a> was finished before 
+the adoption of <a href="https://wg21.link/P2075R6" title=" Philox as an extension of the C++ RNG engines">P2075R6</a>, these engines are not made freestanding yet.
+</p>
+
+
+<p id="res-4224"><b>Proposed resolution:</b></p>
+<p>
+This wording is relative to <a href="https://wg21.link/N5001">N5001</a>.
+</p>
+
+<ol>
+
+<li><p>Modify 29.5.2 <a href="https://wg21.link/rand.synopsis">[rand.synopsis]</a>, header <code>&lt;random&gt;</code> synopsis, as indicated:</p>
+
+<blockquote>
+<pre>
+[&hellip;]
+// <i>29.5.4.5 <a href="https://wg21.link/rand.eng.philox">[rand.eng.philox]</a>, class template philox_engine</i>
+template&lt;class UIntType, size_t w, size_t n, size_t r, UIntType... consts&gt;
+  class philox_engine;               <ins>// <i>partially freestanding</i></ins>
+
+[&hellip;]
+using philox4x32 = <i>see below</i>; <ins>// <i>freestanding</i></ins>
+using philox4x64 = <i>see below</i>; <ins>// <i>freestanding</i></ins>
+[&hellip;]
+</pre>
+</blockquote>
+</li>
+
+<li><p>Modify 29.5.4.5 <a href="https://wg21.link/rand.eng.philox">[rand.eng.philox]</a>, class template <code class='backtick'>philox_engine</code> synopsis, as indicated:</p>
+
+<blockquote>
+<pre>
+namespace std {
+  template&lt;class UIntType, size_t w, size_t n, size_t r, UIntType... consts&gt;
+  class philox_engine {
+    [&hellip;]  
+    // <i>inserters and extractors</i>
+    template&lt;class charT, class traits&gt;
+      friend basic_ostream&lt;charT, traits&gt;&amp;
+        operator&lt;&lt;(basic_ostream&lt;charT, traits&gt;&amp; os, const philox_engine&amp; x); <ins>// <i>hosted</i></ins>
+    template&lt;class charT, class traits&gt;
+      friend basic_istream&lt;charT, traits&gt;&amp;
+        operator&gt;&gt;(basic_istream&lt;charT, traits&gt;&amp; is, philox_engine&amp; x);       <ins>// <i>hosted</i></ins>
+  };
+}
 </pre>
 </blockquote>
 </li>
