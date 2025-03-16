@@ -67,7 +67,7 @@
 </tr>
 <tr>
   <td align="left">Date:</td>
-  <td align="left">2025-03-15</td>
+  <td align="left">2025-03-16</td>
 </tr>
 <tr>
   <td align="left">Project:</td>
@@ -79,7 +79,7 @@
 </tr>
 </table>
 <h1>C++ Standard Library Active Issues List (Revision D125)</h1>
-<p>Revised 2025-03-15 at 16:50:51 UTC
+<p>Revised 2025-03-16 at 09:06:23 UTC
 </p>
   <p>Reference ISO/IEC IS 14882:2020(E)</p>
   <p>Also see:</p>
@@ -71120,8 +71120,8 @@ as much as possible that of <code class='backtick'>std::vector</code>.
 
 <hr>
 <h3 id="4226"><a href="#4226">4226</a><sup><a href="https://cplusplus.github.io/LWG/issue4226">(i)</a></sup>. <code>to_input_view::<i>iterator</i></code> cannot be compared to its <code class='backtick'>const</code> sentinel</h3>
-<p><b>Section:</b> 99 [range.to.input.view] <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Hewill Kang <b>Opened:</b> 2025-03-15 <b>Last modified:</b> 2025-03-15</p>
+<p><b>Section:</b> 99 [range.to.input] <b>Status:</b> <a href="lwg-active.html#New">New</a>
+ <b>Submitter:</b> Hewill Kang <b>Opened:</b> 2025-03-15 <b>Last modified:</b> 2025-03-16</p>
 <p><b>Priority: </b>Not Prioritized
 </p>
 <p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
@@ -71168,6 +71168,211 @@ I believe we may need to introduce a custom sentinel class for <code>to_input_vi
 
 
 <p id="res-4226"><b>Proposed resolution:</b></p>
+<p>
+This wording is relative to the <a href="https://github.com/cplusplus/draft/actions/runs/13875532168/artifacts/2758179972">
+working draft just after application of the Hagenberg motions</a>.
+</p>
+
+<ol>
+
+<li><p>Modify  [range.to.input.view] as indicated:</p>
+
+<blockquote>
+<blockquote>
+<pre>
+namespace std::ranges {
+  template&lt;input_range V&gt;
+    requires view&lt;V&gt;
+  class to_input_view : public view_interface&lt;to_input_view&lt;V&gt;&gt; {
+    V <i>base_</i> = V();                          // <i>exposition only</i>
+
+    template&lt;bool Const&gt;
+    class <i>iterator</i>;                         // <i>exposition only</i>
+    <ins>template&lt;bool Const&gt;
+    class <i>sentinel</i>;                         // <i>exposition only</i></ins>
+    [&hellip;]
+  };
+  [&hellip;]
+}
+</pre>
+</blockquote>
+[&hellip;]
+<pre>
+constexpr auto end() requires (!<i>simple-view</i>&lt;V&gt;);
+</pre>
+<blockquote>
+<p>
+<ins>-?- <i>Effects</i>: Equivalent to:</ins>
+</p>
+<pre>
+<ins>return <i>sentinel</i>&lt;false&gt;(ranges::end(<i>base_</i>));</ins>
+</pre>
+</blockquote>
+<pre>
+constexpr auto end() const requires range&lt;const V&gt;;
+</pre>
+<blockquote>
+<p>
+-4- <i>Effects</i>: Equivalent to:
+</p>
+<pre>
+return <ins><i>sentinel</i>&lt;true&gt;(</ins>ranges::end(<i>base_</i>)<ins>)</ins>;
+</pre>
+</blockquote>
+</blockquote>
+</li>
+
+<li><p>Modify  [range.to.input.iterator] as indicated:</p>
+
+<blockquote>
+<blockquote>
+<pre>
+namespace std::ranges {
+  template&lt;input_range V&gt;
+    requires view&lt;V&gt;
+  template&lt;bool Const&gt;
+  class to_input_view&lt;V&gt;::<i>iterator</i> {
+    [&hellip;]
+    <del>friend constexpr bool operator==(const <i>iterator</i>&amp; x, const sentinel_t&lt;<i>Base</i>&gt;&amp; y);
+
+    friend constexpr difference_type operator-(const sentinel_t&lt;<i>Base</i>&gt;&amp; y, const <i>iterator</i>&amp; x)
+      requires sized_sentinel_for&lt;sentinel_t&lt;<i>Base</i>&gt;, iterator_t&lt;<i>Base</i>&gt;&gt;;
+    friend constexpr difference_type operator-(const <i>iterator</i>&amp; x, const sentinel_t&lt;<i>Base</i>&gt;&amp; y)
+      requires sized_sentinel_for&lt;sentinel_t&lt;<i>Base</i>&gt;, iterator_t&lt;<i>Base</i>&gt;&gt;;</del>
+    [&hellip;]
+  };
+}
+</pre>
+</blockquote>
+[&hellip;]
+<pre><del>
+friend constexpr bool operator==(const <i>iterator</i>&amp; x, const sentinel_t&lt;<i>Base</i>&gt;&amp; y);</del>
+</pre>
+<blockquote>
+<p>
+<del>-7- <i>Returns</i>: <code>x.<i>current_</i> == y</code>.</del>
+</p>
+</blockquote>
+<pre><del>
+friend constexpr difference_type operator-(const sentinel_t&lt;<i>Base</i>&gt;&amp; y, const <i>iterator</i>&amp; x)
+  requires sized_sentinel_for&lt;sentinel_t&lt;<i>Base</i>&gt;, iterator_t&lt;<i>Base</i>&gt;&gt;;</del>
+</pre>
+<blockquote>
+<p>
+<del>-8- <i>Returns</i>: <code>y - x.<i>current_</i></code>.</del>
+</p>
+</blockquote>
+<pre><del>
+friend constexpr difference_type operator-(const <i>iterator</i>&amp; x, const sentinel_t&lt;<i>Base</i>&gt;&amp; y)
+  requires sized_sentinel_for&lt;sentinel_t&lt;<i>Base</i>&gt;, iterator_t&lt;<i>Base</i>&gt;&gt;;</del>
+</pre>
+<blockquote>
+<p>
+<del>-9- <i>Returns</i>: <code>x.<i>current_</i> - y</code>.</del>
+</p>
+</blockquote>
+</blockquote>
+</li>
+
+
+<li><p>Add [range.to.input.sentinel] after [range.to.input.iterator] as indicated:</p>
+
+<blockquote>
+<blockquote>
+<pre><ins>
+namespace std::ranges {
+  template&lt;input_range V&gt;
+    requires view&lt;V&gt;
+  template&lt;bool Const&gt;
+  class to_input_view&lt;V&gt;::<i>sentinel</i> {
+    using <i>Base</i> = <i>maybe-const</i>&lt;Const, V&gt;;                         // <i>exposition only</i>
+    sentinel_t&lt;<i>Base</i>&gt; <i>end_</i> = sentinel_t&lt;<i>Base</i>&gt;();                 // <i>exposition only</i>
+    constexpr explicit <i>sentinel</i>(sentinel_t&lt;<i>Base</i>&gt; end);          // <i>exposition only</i>
+
+  public:
+    <i>sentinel</i>() = default;
+    constexpr <i>sentinel</i>(<i>sentinel</i>&lt;!Const&gt; other)
+      requires Const &amp;&amp; convertible_to&lt;sentinel_t&lt;V&gt;, sentinel_t&lt;<i>Base</i>&gt;&gt;;
+
+    constexpr sentinel_t&lt;Base&gt; base() const;
+
+    template&lt;bool OtherConst&gt;
+      requires sentinel_for&lt;sentinel_t&lt;Base&gt;, iterator_t&lt;<i>maybe-const</i>&lt;OtherConst, V&gt;&gt;&gt;
+    friend constexpr bool operator==(const <i>iterator</i>&lt;OtherConst&gt;&amp; x, const <i>sentinel</i>&amp; y);
+
+    template&lt;bool OtherConst&gt;
+      requires sized_sentinel_for&lt;sentinel_t&lt;<i>Base</i>&gt;, iterator_t&lt;<i>maybe-const</i>&lt;OtherConst, V&gt;&gt;&gt;
+    friend constexpr range_difference_t&lt;<i>maybe-const</i>&lt;OtherConst, V&gt;&gt;
+      operator-(const <i>iterator</i>&lt;OtherConst&gt;&amp; x, const <i>sentinel</i>&amp; y);
+
+    template&lt;bool OtherConst&gt;
+      requires sized_sentinel_for&lt;sentinel_t&lt;<i>Base</i>&gt;, iterator_t&lt;<i>maybe-const</i>&lt;OtherConst, V&gt;&gt;&gt;
+    friend constexpr range_difference_t&lt;<i>maybe-const</i>&lt;OtherConst, V&gt;&gt;
+      operator-(const <i>sentinel</i>&amp; x, const <i>iterator</i>&lt;OtherConst&gt;&amp; y);
+  };
+}</ins>
+</pre>
+</blockquote>
+<pre><ins>
+constexpr explicit <i>sentinel</i>(sentinel_t&lt;<i>Base</i>&gt; end);</ins>
+</pre>
+<blockquote>
+<p>
+<ins>-?- <i>Effects</i>: Initializes <code><i>end_</i></code> with <code>std::move(end)</code>.</ins>
+</p>
+</blockquote>
+<pre><ins>
+constexpr <i>sentinel</i>(<i>sentinel</i>&lt;!Const&gt; other)
+  requires Const &amp;&amp; convertible_to&lt;sentinel_t&lt;V&gt;, sentinel_t&lt;<i>Base</i>&gt;&gt;;</ins>
+</pre>
+<blockquote>
+<p>
+<ins>-?- <i>Effects</i>: Initializes <code><i>end_</i></code> with <code>std::move(other.<i>end_</i>)</code>.</ins>
+</p>
+</blockquote>
+<pre><ins>
+constexpr sentinel_t&lt;Base&gt; base() const;</ins>
+</pre>
+<blockquote>
+<p>
+<ins>-?- <i>Effects</i>: Equivalent to: <code>return <i>end_</i>;</code></ins>
+</p>
+</blockquote>
+<pre><ins>
+template&lt;bool OtherConst&gt;
+  requires sentinel_for&lt;sentinel_t&lt;Base&gt;, iterator_t&lt;<i>maybe-const</i>&lt;OtherConst, V&gt;&gt;&gt;
+friend constexpr bool operator==(const <i>iterator</i>&lt;OtherConst&gt;&amp; x, const <i>sentinel</i>&amp; y);</ins>
+</pre>
+<blockquote>
+<p>
+<ins>-?- <i>Effects</i>: Equivalent to: <code>return x.<i>current_</i> == y.<i>end_</i>;</code></ins>
+</p>
+</blockquote>
+<pre><ins>
+template&lt;bool OtherConst&gt;
+  requires sized_sentinel_for&lt;sentinel_t&lt;<i>Base</i>&gt;, iterator_t&lt;<i>maybe-const</i>&lt;OtherConst, V&gt;&gt;&gt;
+friend constexpr range_difference_t&lt;<i>maybe-const</i>&lt;OtherConst, V&gt;&gt;
+  operator-(const <i>iterator</i>&lt;OtherConst&gt;&amp; x, const <i>sentinel</i>&amp; y);</ins>
+</pre>
+<blockquote>
+<p>
+<ins>-?5- <i>Effects</i>: Equivalent to: <code>return x.<i>current_</i> - y.<i>end_</i>;</code></ins>
+</p>
+</blockquote>
+<pre><ins>
+template&lt;bool OtherConst&gt;
+  requires sized_sentinel_for&lt;sentinel_t&lt;<i>Base</i>&gt;, iterator_t&lt;<i>maybe-const</i>&lt;OtherConst, V&gt;&gt;&gt;
+friend constexpr range_difference_t&lt;<i>maybe-const</i>&lt;OtherConst, V&gt;&gt;
+  operator-(const <i>sentinel</i>&amp; x, const <i>iterator</i>&lt;OtherConst&gt;&amp; y);</ins>
+</pre>
+<blockquote>
+<p>
+<ins>-6- <i>Effects</i>: Equivalent to: <code>return x.<i>end_</i> - y.<i>current_</i>;</code></ins>
+</p>
+</blockquote>
+</blockquote>
+</li>
+</ol>
 
 
 
