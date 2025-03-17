@@ -64,7 +64,7 @@
 <p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#New">New</a> status.</em></p>
 <h3 id="4121"><a href="lwg-active.html#4121">4121</a>. <code>ranges::to</code> constructs associative containers via <code>c.emplace(c.end(), *it)</code></h3>
 <p><b>Section:</b> 25.5.7.1 <a href="https://wg21.link/range.utility.conv.general">[range.utility.conv.general]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Hewill Kang <b>Opened:</b> 2024-07-16 <b>Last modified:</b> 2024-08-02</p>
+ <b>Submitter:</b> Hewill Kang <b>Opened:</b> 2024-07-16 <b>Last modified:</b> 2025-03-17</p>
 <p><b>Priority: </b>2
 </p>
 <p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
@@ -112,9 +112,9 @@ for associative containers, because <code class='backtick'>c.end()</code> might 
 "It might be suboptimal, but it still works."
 </p>
 
+<p><strong>Previous resolution [SUPERSEDED]:</strong></p>
+<blockquote class="note">
 
-
-<p id="res-4121"><b>Proposed resolution:</b></p>
 <p>
 This wording is relative to <a href="https://wg21.link/N4986" title=" Working Draft, Programming Languages — C++">N4986</a>.
 </p>
@@ -158,6 +158,88 @@ constexpr auto <i>container-append</i>(Container&amp; c) {     <i>// exposition 
 
 </li>
 </ol>
+</blockquote>
+
+<p><i>[2025-03-13; Jonathan provides improved wording for Tim's suggestion]</i></p>
+
+<p>
+It's true that for some cases it might be optimal to use <code class='backtick'>c.emplace(ref)</code>
+instead of <code class='backtick'>c.emplace_hint(c.end(), ref)</code> but I don't think I care.
+A bad hint is not expensive, it's just an extra comparison then the hint
+is ignored.
+And this code path isn't going to be used for <code class='backtick'>std::set</code> or <code class='backtick'>std::map</code>,
+only for user-defined associative containers that don't have a <code class='backtick'>from_range_t</code>
+constructor or a <code class='backtick'>C(Iter,Sent)</code> constructor.
+I think just fixing the original issue is all we need,
+rather than trying to handle every possible way to insert elements.
+</p>
+<p>
+This is a simpler, portable reproducer that doesn't depend on the current
+implementation status of <code class='backtick'>std::set</code> in libstdc++:
+</p>
+<blockquote><pre><code>
+#include &lt;ranges&gt;
+#include &lt;set&gt;
+struct Set : std::set&lt;int&gt; {
+  Set() { }; // No other constructors
+};
+int main() {
+  int a[1];
+  auto okay = std::ranges::to&lt;std::set&lt;int&gt;&gt;(a);
+  auto ohno = std::ranges::to&lt;Set&gt;(a);
+}
+</code></pre></blockquote>
+
+
+
+<p id="res-4121"><b>Proposed resolution:</b></p>
+<p>
+This wording is relative to <a href="https://wg21.link/N5001">N5001</a>.
+</p>
+
+<ol>
+<li><p>Modify 25.5.7.1 <a href="https://wg21.link/range.utility.conv.general">[range.utility.conv.general]</a> as indicated:</p>
+
+<blockquote>
+<p>
+-4- Let <code><i>container-appendable</i></code> be defined as follows:
+</p>
+<blockquote><pre>
+template&lt;class Container, class Ref&gt;
+constexpr bool <i>container-appendable</i> =         <i>// exposition only</i>
+  requires(Container&amp; c, Ref&amp;&amp; ref) {
+           requires (requires { c.emplace_back(std::forward&lt;Ref&gt;(ref)); } ||
+                     requires { c.push_back(std::forward&lt;Ref&gt;(ref)); } ||
+                     <ins>requires { c.emplace_hint(c.end(), std::forward&lt;Ref&gt;(ref)); } ||</ins>
+                     requires { c.emplace(c.end(), std::forward&lt;Ref&gt;(ref)); } ||
+                     requires { c.insert(c.end(), std::forward&lt;Ref&gt;(ref)); });
+};
+</pre></blockquote>
+<p>
+-5- Let <code><i>container-append</i></code> be defined as follows:
+</p>
+<blockquote><pre>
+template&lt;class Container&gt;
+constexpr auto <i>container-append</i>(Container&amp; c) {     <i>// exposition only</i>
+  return [&amp;c]&lt;class Ref&gt;(Ref&amp;&amp; ref) {
+    if constexpr (requires { c.emplace_back(declval&lt;Ref&gt;()); })
+      c.emplace_back(std::forward&lt;Ref&gt;(ref));
+    else if constexpr (requires { c.push_back(declval&lt;Ref&gt;()); })
+      c.push_back(std::forward&lt;Ref&gt;(ref));
+    <ins>else if constexpr (requires { c.emplace_hint(c.end(), declval&lt;Ref&gt;()); })
+      c.emplace_hint(c.end(), std::forward&lt;Ref&gt;(ref));</ins>
+    else if constexpr (requires { c.emplace(c.end(), declval&lt;Ref&gt;()); })
+      c.emplace(c.end(), std::forward&lt;Ref&gt;(ref));
+    else
+      c.insert(c.end(), std::forward&lt;Ref&gt;(ref));
+  };
+};
+</pre></blockquote>
+</blockquote>
+
+</li>
+</ol>
+
 
 
 
