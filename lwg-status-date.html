@@ -67,7 +67,7 @@
 This document is the Index by Status and Date for the <a href="lwg-active.html">Library Active Issues List</a>,
 <a href="lwg-defects.html">Library Defect Reports and Accepted Issues</a>, and <a href="lwg-closed.html">Library Closed Issues List</a>.
 </p>
-<p>Revised 2025-03-17 at 15:39:10 UTC
+<p>Revised 2025-03-18 at 14:39:06 UTC
 </p><h2 id="Ready">Ready (7 issues)</h2>
 <table class="issues-index">
 <tr>
@@ -312,6 +312,15 @@ This document is the Index by Status and Date for the <a href="lwg-active.html">
   <th>Proposed Resolution</th>
   <th><a href="unresolved-prioritized.html">Priority</a></th>
   <th>Duplicates</th>
+</tr>
+<tr>
+<td id="2751"><a href="lwg-active.html#2751" title="shared_ptr deleter not specified to observe expired weak_ptr instances (Status: New)">2751</a><sup><a href="https://cplusplus.github.io/LWG/issue2751">(i)</a></sup></td>
+<td><a href="lwg-active.html#New">New</a></td>
+<td>20.3.2.2.3 [util.smartptr.shared.dest]</td>
+<td><code>shared_ptr</code> deleter not specified to observe expired <code>weak_ptr</code> instances</td>
+<td><span class="no-pr">No</span></td>
+<td>4</td>
+<td></td>
 </tr>
 <tr>
 <td id="4121"><a href="lwg-active.html#4121" title="ranges::to constructs associative containers via c.emplace(c.end(), *it) (Status: New)">4121</a><sup><a href="https://cplusplus.github.io/LWG/issue4121">(i)</a></sup></td>
@@ -4171,15 +4180,6 @@ specified to make <code><i>N</i></code> copies of <code>T</code> into the destin
 <td>Presentation of "program defined classes derived from <code>error_category</code>" [syserr.errcat.derived] unclear and contains mistakes</td>
 <td><span class="no-pr">No</span></td>
 <td>3</td>
-<td></td>
-</tr>
-<tr>
-<td id="2751"><a href="lwg-active.html#2751" title="shared_ptr deleter not specified to observe expired weak_ptr instances (Status: New)">2751</a><sup><a href="https://cplusplus.github.io/LWG/issue2751">(i)</a></sup></td>
-<td><a href="lwg-active.html#New">New</a></td>
-<td>20.3.2.2.3 [util.smartptr.shared.dest]</td>
-<td><code>shared_ptr</code> deleter not specified to observe expired <code>weak_ptr</code> instances</td>
-<td><span class="no-pr">No</span></td>
-<td>4</td>
 <td></td>
 </tr>
 <tr>
@@ -29111,6 +29111,15 @@ pair of T, not pair of const T&amp; (Status: NAD Editorial)">915</a><sup><a href
   <th>Duplicates</th>
 </tr>
 <tr>
+<td id="2907"><a href="lwg-closed.html#2907" title="Semantics for destroying the deleter and the control-block of a shared_ptr are unclear (Status: NAD)">2907</a><sup><a href="https://cplusplus.github.io/LWG/issue2907">(i)</a></sup></td>
+<td><a href="lwg-active.html#NAD">NAD</a></td>
+<td>20.3.2.2.3 [util.smartptr.shared.dest]</td>
+<td>Semantics for destroying the deleter and the control-block of a <code>shared_ptr</code> are unclear</td>
+<td>Yes</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
 <td id="2417"><a href="lwg-closed.html#2417" title="[fund.ts.v2] std::experimental::optional::operator&lt; and LessThanComparable requirement (Status: NAD)">2417</a><sup><a href="https://cplusplus.github.io/LWG/issue2417">(i)</a></sup></td>
 <td><a href="lwg-active.html#NAD">NAD</a></td>
 <td>5.7 [fund.ts.v2::optional.relops]</td>
@@ -30217,15 +30226,6 @@ max, and minmax (Status: NAD)">1308</a><sup><a href="https://cplusplus.github.io
 <td><a href="lwg-active.html#NAD">NAD</a></td>
 <td>16.4.6 [conforming]</td>
 <td>Relax library requirements on <code>volatile</code> types</td>
-<td>Yes</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td id="2907"><a href="lwg-closed.html#2907" title="Semantics for destroying the deleter and the control-block of a shared_ptr are unclear (Status: NAD)">2907</a><sup><a href="https://cplusplus.github.io/LWG/issue2907">(i)</a></sup></td>
-<td><a href="lwg-active.html#NAD">NAD</a></td>
-<td>20.3.2.2.3 [util.smartptr.shared.dest]</td>
-<td>Semantics for destroying the deleter and the control-block of a <code>shared_ptr</code> are unclear</td>
 <td>Yes</td>
 <td></td>
 <td></td>

@@ -54,7 +54,7 @@
 </style>
 </head>
 <body>
-<p>Revised 2025-03-17 at 15:39:10 UTC
+<p>Revised 2025-03-18 at 14:39:06 UTC
 </p><h2>Unresolved Issues</h2>
 <hr>
 <h3 id="423"><a href="#423">423</a><sup><a href="https://cplusplus.github.io/LWG/issue423">(i)</a></sup>. Effects of negative <code>streamsize</code> in iostreams</h3>
@@ -15282,7 +15282,7 @@ template&lt;size_t I, class U, class... Args&gt;
 <hr>
 <h3 id="2751"><a href="#2751">2751</a><sup><a href="https://cplusplus.github.io/LWG/issue2751">(i)</a></sup>. <code>shared_ptr</code> deleter not specified to observe expired <code>weak_ptr</code> instances</h3>
 <p><b>Section:</b> 20.3.2.2.3 <a href="https://wg21.link/util.smartptr.shared.dest">[util.smartptr.shared.dest]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Aaron Jacobs <b>Opened:</b> 2016-07-21 <b>Last modified:</b> 2017-10-08</p>
+ <b>Submitter:</b> Aaron Jacobs <b>Opened:</b> 2016-07-21 <b>Last modified:</b> 2025-03-18</p>
 <p><b>Priority: </b>4
 </p>
 <p><b>View all other</b> <a href="lwg-index.html#util.smartptr.shared.dest">issues</a> in [util.smartptr.shared.dest].</p>
@@ -15335,6 +15335,11 @@ I'd like to withdraw my NAD suggestion. The value of <code>use_count()</code> is
 <code>shared_ptr</code> and <code>weak_ptr</code> objects that share ownership, so specifying when it changes ensures correct 
 behaviour.
 </p>
+
+<p><i>[2025-03-18, Jonathan comments]</i></p>
+
+<p>See also <a href="lwg-closed.html#2907" title="Semantics for destroying the deleter and the control-block of a shared_ptr are unclear (Status: NAD)">2907</a><sup><a href="https://cplusplus.github.io/LWG/issue2907" title="Latest snapshot">(i)</a></sup>.</p>
+
 
 
 <p id="res-2751"><b>Proposed resolution:</b></p>
