@@ -67,7 +67,7 @@
 </tr>
 <tr>
   <td align="left">Date:</td>
-  <td align="left">2025-03-18</td>
+  <td align="left">2025-03-19</td>
 </tr>
 <tr>
   <td align="left">Project:</td>
@@ -79,7 +79,7 @@
 </tr>
 </table>
 <h1>C++ Standard Library Active Issues List (Revision D125)</h1>
-<p>Revised 2025-03-18 at 14:39:06 UTC
+<p>Revised 2025-03-19 at 11:58:32 UTC
 </p>
   <p>Reference ISO/IEC IS 14882:2020(E)</p>
   <p>Also see:</p>
@@ -40253,7 +40253,7 @@ longer be valid.
 <hr>
 <h3 id="3678"><a href="#3678">3678</a><sup><a href="https://cplusplus.github.io/LWG/issue3678">(i)</a></sup>. Constructors of <code>std::chrono::time_zone</code> might be overly unspecified</h3>
 <p><b>Section:</b> 30.11.5.1 <a href="https://wg21.link/time.zone.overview">[time.zone.overview]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Jiang An <b>Opened:</b> 2022-02-23 <b>Last modified:</b> 2022-03-04</p>
+ <b>Submitter:</b> Jiang An <b>Opened:</b> 2022-02-23 <b>Last modified:</b> 2025-03-19</p>
 <p><b>Priority: </b>4
 </p>
 <p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
@@ -40277,9 +40277,52 @@ and <code>constexpr</code>-ness should be left unspecified.
 Set priority to 4 after reflector poll.
 </p>
 
+<p><i>[2025-03-18; Jonathan provides wording]</i></p>
+
+<p>
+I don't think it matters whether they are trivial or constexpr, because they
+cannot be used. Users only have access to <code class='backtick'>const time_zone</code> lvalues via
+<code class='backtick'>locate_zone</code> and the <code class='backtick'>tzdb::zones</code> container.
+The move constructor and move assignment operator only need to exist so that
+the implementation can populate that container.
+</p>
+
 
 
 <p id="res-3678"><b>Proposed resolution:</b></p>
+<p>
+This wording is relative to <a href="https://wg21.link/N5001">N5001</a>.
+</p>
+
+<ol>
+<li><p>Modify 30.11.5.1 <a href="https://wg21.link/time.zone.overview">[time.zone.overview]</a> as indicated:</p>
+<blockquote><pre><code>
+namespace std::chrono {
+  class time_zone {
+    <ins>time_zone(<i>unspecified</i>);</ins>
+  public:
+    time_zone(time_zone&amp;&amp;) = default;
+    time_zone&amp; operator=(time_zone&amp;&amp;) = default;
+
+    <del><i>// unspecified additional constructors</i></del>
+
+    <i>[...]</i>
+  };
+}</code></pre></blockquote>
+<p>-1-
+A <code class='backtick'>time_zone</code> represents all time zone transitions for a specific geographic
+area.
+<code class='backtick'>time_zone</code> construction is unspecified, and performed
+<ins>only</ins>
+as part of database initialization.
+</p>
+<p>
+[<i>Note 1</i>:
+<code class='backtick'>const time_zone</code> objects can be accessed via functions such as <code class='backtick'>locate_zone</code>.
+&mdash; <i>end note</i>]
+</p>
+</li>
+</ol>
 
 
 
