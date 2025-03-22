@@ -63,7 +63,7 @@
 <hr>
 <p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#C++20">C++20</a> status.</em></p>
 <h3 id="2843"><a href="lwg-defects.html#2843">2843</a>. Unclear behavior of <code>std::pmr::memory_resource::do_allocate()</code></h3>
-<p><b>Section:</b> 20.4.2.3 <a href="https://wg21.link/mem.res.private">[mem.res.private]</a> <b>Status:</b> <a href="lwg-active.html#C++20">C++20</a>
+<p><b>Section:</b> 20.5.2.3 <a href="https://wg21.link/mem.res.private">[mem.res.private]</a> <b>Status:</b> <a href="lwg-active.html#C++20">C++20</a>
  <b>Submitter:</b> Jens Maurer <b>Opened:</b> 2016-12-13 <b>Last modified:</b> 2021-02-25</p>
 <p><b>Priority: </b>3
 </p>
@@ -71,7 +71,7 @@
 <p><b>View all issues with</b> <a href="lwg-status.html#C++20">C++20</a> status.</p>
 <p><b>Discussion:</b></p>
 <p>
-The specification of <code>do_allocate()</code> (20.4.2.3 <a href="https://wg21.link/mem.res.private">[mem.res.private]</a> p2+p3) says:
+The specification of <code>do_allocate()</code> (20.5.2.3 <a href="https://wg21.link/mem.res.private">[mem.res.private]</a> p2+p3) says:
 </p>
 <blockquote>
 <p>
@@ -125,7 +125,7 @@ the alignment parameter in <code>do_allocate()</code>.</p>
 
 
 <p id="res-2843"><b>Proposed resolution:</b></p>
-<p>Change the specification of <code>do_allocate()</code> (20.4.2.3 <a href="https://wg21.link/mem.res.private">[mem.res.private]</a> p2+p3) as follows:</p>
+<p>Change the specification of <code>do_allocate()</code> (20.5.2.3 <a href="https://wg21.link/mem.res.private">[mem.res.private]</a> p2+p3) as follows:</p>
 
 <blockquote>
   <p><i>Returns</i>: A derived class shall implement this function to

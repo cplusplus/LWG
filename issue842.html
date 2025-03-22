@@ -63,7 +63,7 @@
 <hr>
 <p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#CD1">CD1</a> status.</em></p>
 <h3 id="842"><a href="lwg-defects.html#842">842</a>. <code>ConstructibleAsElement</code> and bit containers</h3>
-<p><b>Section:</b> 23.2 <a href="https://wg21.link/container.requirements">[container.requirements]</a>, 23.3.12 <a href="https://wg21.link/vector.bool">[vector.bool]</a>, 22.9.2 <a href="https://wg21.link/template.bitset">[template.bitset]</a> <b>Status:</b> <a href="lwg-active.html#CD1">CD1</a>
+<p><b>Section:</b> 23.2 <a href="https://wg21.link/container.requirements">[container.requirements]</a>, 23.3.14 <a href="https://wg21.link/vector.bool">[vector.bool]</a>, 22.9.2 <a href="https://wg21.link/template.bitset">[template.bitset]</a> <b>Status:</b> <a href="lwg-active.html#CD1">CD1</a>
  <b>Submitter:</b> Howard Hinnant <b>Opened:</b> 2008-06-03 <b>Last modified:</b> 2016-01-28</p>
 <p><b>Priority: </b>Not Prioritized
 </p>
@@ -88,7 +88,7 @@ with a scoped allocator of type <code>A</code> (i.e., an allocator for which
 </p></blockquote>
 
 <p>
-However <code>vector&lt;bool, A&gt;</code> (23.3.12 <a href="https://wg21.link/vector.bool">[vector.bool]</a>) and <code>bitset&lt;N&gt;</code> 
+However <code>vector&lt;bool, A&gt;</code> (23.3.14 <a href="https://wg21.link/vector.bool">[vector.bool]</a>) and <code>bitset&lt;N&gt;</code> 
 (22.9.2 <a href="https://wg21.link/template.bitset">[template.bitset]</a>) store bits, not <code>bool</code>s, and <code>bitset&lt;N&gt;</code>
 does not even have an allocator.  But these containers are governed by this clause.  Clearly this
 is not implementable.
@@ -115,7 +115,7 @@ with a scoped allocator of type <code>A</code> (i.e., an allocator for which
 </p></blockquote>
 
 <p>
-Change 23.3.12 <a href="https://wg21.link/vector.bool">[vector.bool]</a>/p2:
+Change 23.3.14 <a href="https://wg21.link/vector.bool">[vector.bool]</a>/p2:
 </p>
 
 <blockquote><p>

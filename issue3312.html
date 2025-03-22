@@ -63,7 +63,7 @@
 <hr>
 <p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#Dup">Dup</a> status.</em></p>
 <h3 id="3312"><a href="lwg-closed.html#3312">3312</a>. <code>polymorphic_allocator::allocate_object</code> and <code>new_object</code> should be <code>[[nodiscard]]</code></h3>
-<p><b>Section:</b> 20.4.3 <a href="https://wg21.link/mem.poly.allocator.class">[mem.poly.allocator.class]</a> <b>Status:</b> <a href="lwg-active.html#Dup">Dup</a>
+<p><b>Section:</b> 20.5.3 <a href="https://wg21.link/mem.poly.allocator.class">[mem.poly.allocator.class]</a> <b>Status:</b> <a href="lwg-active.html#Dup">Dup</a>
  <b>Submitter:</b> United States <b>Opened:</b> 2019-11-04 <b>Last modified:</b> 2019-11-16</p>
 <p><b>Priority: </b>Not Prioritized
 </p>
@@ -92,12 +92,12 @@ This issue is related to LWG <a href="lwg-defects.html#3304" title="Allocate fun
 <p>This wording is relative to <a href="https://wg21.link/n4835">N4835</a>.</p>
 
 <ol>
-<li><p>Modify 20.4.3 <a href="https://wg21.link/mem.poly.allocator.class">[mem.poly.allocator.class]</a> p2, class template <code>polymorphic_allocator</code> synopsis, 
+<li><p>Modify 20.5.3 <a href="https://wg21.link/mem.poly.allocator.class">[mem.poly.allocator.class]</a> p2, class template <code>polymorphic_allocator</code> synopsis, 
 as indicated:</p>
 
 <blockquote>
 <pre>
-<i>// 20.4.3.3 <a href="https://wg21.link/mem.poly.allocator.mem">[mem.poly.allocator.mem]</a>, member functions</i>
+<i>// 20.5.3.3 <a href="https://wg21.link/mem.poly.allocator.mem">[mem.poly.allocator.mem]</a>, member functions</i>
 [[nodiscard]] Tp* allocate(size_t n);
 void deallocate(Tp* p, size_t n);
 
@@ -111,7 +111,7 @@ template&lt;class T&gt; void delete_object(T* p);
 </blockquote>
 </li>
 
-<li><p>Modify 20.4.3.3 <a href="https://wg21.link/mem.poly.allocator.mem">[mem.poly.allocator.mem]</a> as indicated:</p>
+<li><p>Modify 20.5.3.3 <a href="https://wg21.link/mem.poly.allocator.mem">[mem.poly.allocator.mem]</a> as indicated:</p>
 
 <blockquote>
 <pre>

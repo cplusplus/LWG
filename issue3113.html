@@ -63,7 +63,7 @@
 <hr>
 <p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#Resolved">Resolved</a> status.</em></p>
 <h3 id="3113"><a href="lwg-defects.html#3113">3113</a>. <code>polymorphic_allocator::construct()</code> should more closely match <code>scoped_allocator_adaptor::construct()</code></h3>
-<p><b>Section:</b> 20.4.3.3 <a href="https://wg21.link/mem.poly.allocator.mem">[mem.poly.allocator.mem]</a> <b>Status:</b> <a href="lwg-active.html#Resolved">Resolved</a>
+<p><b>Section:</b> 20.5.3.3 <a href="https://wg21.link/mem.poly.allocator.mem">[mem.poly.allocator.mem]</a> <b>Status:</b> <a href="lwg-active.html#Resolved">Resolved</a>
  <b>Submitter:</b> Arthur O'Dwyer <b>Opened:</b> 2018-05-14 <b>Last modified:</b> 2020-09-06</p>
 <p><b>Priority: </b>3
 </p>
@@ -75,7 +75,7 @@ Based on my new understanding of how <code>uses_allocator</code> and <code>is_co
 I think there was a minor defect in the resolution of LWG <a href="lwg-defects.html#2969" title="polymorphic_allocator::construct() shouldn't pass resource() (Status: C++20)">2969</a><sup><a href="https://cplusplus.github.io/LWG/issue2969" title="Latest snapshot">(i)</a></sup> "<code>polymorphic_allocator::construct()</code> 
 shouldn't pass <code>resource()</code>".
 <p/>
-The calls to <code>is_constructible</code> in 20.4.3.3 <a href="https://wg21.link/mem.poly.allocator.mem">[mem.poly.allocator.mem]</a> (10.2), which were added to resolve LWG 
+The calls to <code>is_constructible</code> in 20.5.3.3 <a href="https://wg21.link/mem.poly.allocator.mem">[mem.poly.allocator.mem]</a> (10.2), which were added to resolve LWG 
 <a href="lwg-defects.html#2969" title="polymorphic_allocator::construct() shouldn't pass resource() (Status: C++20)">2969</a><sup><a href="https://cplusplus.github.io/LWG/issue2969" title="Latest snapshot">(i)</a></sup>, are missing an lvalue-qualification to match the lvalue-qualification of the parallel calls in 
  [llocator.adaptor.member] (9.2).
 <p/>
@@ -83,10 +83,10 @@ The latter talks about constructibility from <code>inner_allocator_type&amp;</co
 constructibility from <code>polymorphic_allocator</code> with no ref-qualification. But since we are perfect-forwarding 
 <code>*this</code> through a tuple of references, we definitely <em>are</em> going to try to construct the target object from 
 a <code>polymorphic_allocator&amp;</code> and not from a <code>polymorphic_allocator</code>. I believe that the wording in
-20.4.3.3 <a href="https://wg21.link/mem.poly.allocator.mem">[mem.poly.allocator.mem]</a> (10.2) needs to be updated to make the program ill-formed in cases where
+20.5.3.3 <a href="https://wg21.link/mem.poly.allocator.mem">[mem.poly.allocator.mem]</a> (10.2) needs to be updated to make the program ill-formed in cases where
 that construction is going to fail.
 <p/>
-Orthogonally, I believe we need additional <code>std::move</code>'s in the sentence following 20.4.3.3 <a href="https://wg21.link/mem.poly.allocator.mem">[mem.poly.allocator.mem]</a> (10.8)
+Orthogonally, I believe we need additional <code>std::move</code>'s in the sentence following 20.5.3.3 <a href="https://wg21.link/mem.poly.allocator.mem">[mem.poly.allocator.mem]</a> (10.8)
 for two reasons:
 </p>
 <ul>
@@ -109,7 +109,7 @@ for two reasons:
 <p>This wording is relative to <a href="https://wg21.link/n4750">N4750</a>.</p>
 
 <ol>
-<li><p>Edit 20.4.3.3 <a href="https://wg21.link/mem.poly.allocator.mem">[mem.poly.allocator.mem]</a> as indicated:</p>
+<li><p>Edit 20.5.3.3 <a href="https://wg21.link/mem.poly.allocator.mem">[mem.poly.allocator.mem]</a> as indicated:</p>
 <blockquote>
 <pre>
 template&lt;class T1, class T2, class... Args1, class... Args2&gt;

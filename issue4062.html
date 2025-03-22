@@ -63,7 +63,7 @@
 <hr>
 <p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#New">New</a> status.</em></p>
 <h3 id="4062"><a href="lwg-active.html#4062">4062</a>. <code>ranges::empty</code> has no semantic requirements for <code>forward_range</code>s</h3>
-<p><b>Section:</b> 25.3.12 <a href="https://wg21.link/range.prim.empty">[range.prim.empty]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
+<p><b>Section:</b> 25.3.14 <a href="https://wg21.link/range.prim.empty">[range.prim.empty]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
  <b>Submitter:</b> Hewill Kang <b>Opened:</b> 2024-03-30 <b>Last modified:</b> 2024-03-30</p>
 <p><b>Priority: </b>Not Prioritized
 </p>
@@ -72,7 +72,7 @@
 <p>
 This is a small part of issues raised by already-closed <a href="https://wg21.link/P3156" title=" empty_checkable_range">P3156</a>.
 <p/>
-Currently, <code>ranges::empty</code> (25.3.12 <a href="https://wg21.link/range.prim.empty">[range.prim.empty]</a>) is always a valid expression when applied
+Currently, <code>ranges::empty</code> (25.3.14 <a href="https://wg21.link/range.prim.empty">[range.prim.empty]</a>) is always a valid expression when applied
 to <code>forward_range</code>s, because even if it does not have <code>.empty()</code> or <code>.size()</code> we can always
 check whether it is empty by comparing its <code>begin()</code> and <code>end()</code>, which is reflected in the 
 standard preference to use it to check whether a certain <code>forward_range</code> is empty,
@@ -85,7 +85,7 @@ of <code>ranges::contains_subrange</code> for the check.
 <p/>
 However, unlike <code>ranges::size</code>, which has a <code>sized_range</code> concept to ensure semantics,
 <code>ranges::empty</code> has no corresponding one. This makes it lack of time complexity guarantees and semantics 
-for the meaning of the returned value when using the bullets (2.2) and (2.3) of 25.3.12 <a href="https://wg21.link/range.prim.empty">[range.prim.empty]</a>
+for the meaning of the returned value when using the bullets (2.2) and (2.3) of 25.3.14 <a href="https://wg21.link/range.prim.empty">[range.prim.empty]</a>
 to check emptiness.
 <p/>
 Perhaps we need to add semantic requirements for <code>ranges::empty</code>, but this seems

@@ -63,7 +63,7 @@
 <hr>
 <p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#SG1">SG1</a> status.</em></p>
 <h3 id="2506"><a href="lwg-active.html#2506">2506</a>. Underspecification of atomics</h3>
-<p><b>Section:</b> 6.9.2 <a href="https://wg21.link/intro.multithread">[intro.multithread]</a>, 32.5.8 <a href="https://wg21.link/atomics.types.generic">[atomics.types.generic]</a>, 17.13 <a href="https://wg21.link/support.runtime">[support.runtime]</a> <b>Status:</b> <a href="lwg-active.html#SG1">SG1</a>
+<p><b>Section:</b> 6.9.2 <a href="https://wg21.link/intro.multithread">[intro.multithread]</a>, 32.5.8 <a href="https://wg21.link/atomics.types.generic">[atomics.types.generic]</a>, 17.14 <a href="https://wg21.link/support.runtime">[support.runtime]</a> <b>Status:</b> <a href="lwg-active.html#SG1">SG1</a>
  <b>Submitter:</b> Geoffrey Romer <b>Opened:</b> 2015-05-29 <b>Last modified:</b> 2018-03-15</p>
 <p><b>Priority: </b>3
 </p>
@@ -99,7 +99,7 @@ which provides the general atomic operations as specified in 29.6.1", but read i
 appears to be a loose synonym for "general operations on atomic types" as defined in  [atomics.types.operations.general], 
 rather than a use of "atomic object" as Words of Power. Incidentally, "atomic type" is never satisfactorily defined either 
 (although the <code>&lt;atomic&gt;</code> synopsis comes close).</p></li>
-<li><p>17.13 <a href="https://wg21.link/support.runtime">[support.runtime]</a>/p10 specifies exactly which operations are "plain lock-free atomic operations", but 
+<li><p>17.14 <a href="https://wg21.link/support.runtime">[support.runtime]</a>/p10 specifies exactly which operations are "plain lock-free atomic operations", but 
 in a standard where an "integral constant expression" isn't necessarily a "constant expression", I do not feel safe assuming 
 that a "plain lock-free atomic operation" is an "atomic operation".</p></li>
 <li><p>Hans Boehm tells me the operations with "atomically" in the Effects element are intended to be atomic operations, 

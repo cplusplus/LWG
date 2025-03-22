@@ -63,7 +63,7 @@
 <hr>
 <p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#C++20">C++20</a> status.</em></p>
 <h3 id="2969"><a href="lwg-defects.html#2969">2969</a>. <code>polymorphic_allocator::construct()</code> shouldn't pass <code>resource()</code></h3>
-<p><b>Section:</b> 20.4.3.3 <a href="https://wg21.link/mem.poly.allocator.mem">[mem.poly.allocator.mem]</a> <b>Status:</b> <a href="lwg-active.html#C++20">C++20</a>
+<p><b>Section:</b> 20.5.3.3 <a href="https://wg21.link/mem.poly.allocator.mem">[mem.poly.allocator.mem]</a> <b>Status:</b> <a href="lwg-active.html#C++20">C++20</a>
  <b>Submitter:</b> Pablo Halpern <b>Opened:</b> 2017-05-30 <b>Last modified:</b> 2021-02-25</p>
 <p><b>Priority: </b>2
 </p>
@@ -71,7 +71,7 @@
 <p><b>View all issues with</b> <a href="lwg-status.html#C++20">C++20</a> status.</p>
 <p><b>Discussion:</b></p>
 <p>
-Section 20.4.3.3 <a href="https://wg21.link/mem.poly.allocator.mem">[mem.poly.allocator.mem]</a> defines the effect of <code>polymorphic_allocator&lt;T&gt;::construct</code> as:
+Section 20.5.3.3 <a href="https://wg21.link/mem.poly.allocator.mem">[mem.poly.allocator.mem]</a> defines the effect of <code>polymorphic_allocator&lt;T&gt;::construct</code> as:
 </p>
 <blockquote>
 <p>
@@ -89,7 +89,7 @@ The use of <code>resource()</code> is a hold-over from the LFTS, which contains 
 
 <ol>
 <li>
-<p>Edit 20.4.3.3 <a href="https://wg21.link/mem.poly.allocator.mem">[mem.poly.allocator.mem]</a> as indicated:</p>
+<p>Edit 20.5.3.3 <a href="https://wg21.link/mem.poly.allocator.mem">[mem.poly.allocator.mem]</a> as indicated:</p>
 
 <blockquote>
 <pre>
@@ -176,7 +176,7 @@ rather than a <code>memory_resource*</code>.
 
 <ol>
 <li>
-<p>Edit 20.4.3.3 <a href="https://wg21.link/mem.poly.allocator.mem">[mem.poly.allocator.mem]</a> as indicated:</p>
+<p>Edit 20.5.3.3 <a href="https://wg21.link/mem.poly.allocator.mem">[mem.poly.allocator.mem]</a> as indicated:</p>
 
 <blockquote>
 <pre>

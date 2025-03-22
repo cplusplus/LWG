@@ -63,7 +63,7 @@
 <hr>
 <p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#C++20">C++20</a> status.</em></p>
 <h3 id="3000"><a href="lwg-defects.html#3000">3000</a>. <code>monotonic_memory_resource::do_is_equal</code> uses <code>dynamic_cast</code> unnecessarily</h3>
-<p><b>Section:</b> 20.4.6.3 <a href="https://wg21.link/mem.res.monotonic.buffer.mem">[mem.res.monotonic.buffer.mem]</a> <b>Status:</b> <a href="lwg-active.html#C++20">C++20</a>
+<p><b>Section:</b> 20.5.6.3 <a href="https://wg21.link/mem.res.monotonic.buffer.mem">[mem.res.monotonic.buffer.mem]</a> <b>Status:</b> <a href="lwg-active.html#C++20">C++20</a>
  <b>Submitter:</b> Pablo Halpern <b>Opened:</b> 2017-07-14 <b>Last modified:</b> 2021-02-25</p>
 <p><b>Priority: </b>0
 </p>
@@ -101,7 +101,7 @@ The pool resource classes appear to also have this issue.
 
 <blockquote class="note">
 <ol>
-<li><p>Edit 20.4.6.3 <a href="https://wg21.link/mem.res.monotonic.buffer.mem">[mem.res.monotonic.buffer.mem]</a> as indicated:</p>
+<li><p>Edit 20.5.6.3 <a href="https://wg21.link/mem.res.monotonic.buffer.mem">[mem.res.monotonic.buffer.mem]</a> as indicated:</p>
 
 <blockquote><pre>
 bool do_is_equal(const memory_resource&amp; other) const noexcept override;
@@ -129,7 +129,7 @@ bool do_is_equal(const memory_resource&amp; other) const noexcept override;
 <p>This resolution is relative to <a href="https://wg21.link/n4687">N4687</a>.</p>
 
 <ol>
-<li><p>Edit 20.4.5.4 <a href="https://wg21.link/mem.res.pool.mem">[mem.res.pool.mem]</a> as indicated:</p>
+<li><p>Edit 20.5.5.4 <a href="https://wg21.link/mem.res.pool.mem">[mem.res.pool.mem]</a> as indicated:</p>
 
 <blockquote><pre>
 bool <del>synchronized_pool_resource::</del>do_is_equal(<ins>const memory_resource&amp; other) const noexcept override;</ins>
@@ -143,10 +143,10 @@ bool <del>synchronized_pool_resource::</del>do_is_equal(<ins>const memory_resour
 </blockquote>
 </li>
 
-<li><p>Strike 20.4.5.4 <a href="https://wg21.link/mem.res.pool.mem">[mem.res.pool.mem]</a> paragraph 10, and the immediately preceding declaration of <code>unsynchronized_pool_resource::do_is_equal</code>.</p>
+<li><p>Strike 20.5.5.4 <a href="https://wg21.link/mem.res.pool.mem">[mem.res.pool.mem]</a> paragraph 10, and the immediately preceding declaration of <code>unsynchronized_pool_resource::do_is_equal</code>.</p>
 </li>
 
-<li><p>Edit 20.4.6.3 <a href="https://wg21.link/mem.res.monotonic.buffer.mem">[mem.res.monotonic.buffer.mem]</a> as indicated:</p>
+<li><p>Edit 20.5.6.3 <a href="https://wg21.link/mem.res.monotonic.buffer.mem">[mem.res.monotonic.buffer.mem]</a> as indicated:</p>
 
 <blockquote><pre>
 bool do_is_equal(const memory_resource&amp; other) const noexcept override;

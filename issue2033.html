@@ -63,7 +63,7 @@
 <hr>
 <p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#C++14">C++14</a> status.</em></p>
 <h3 id="2033"><a href="lwg-defects.html#2033">2033</a>. Preconditions of <code>reserve</code>, <code>shrink_to_fit</code>, and <code>resize</code> functions</h3>
-<p><b>Section:</b> 23.3.11.3 <a href="https://wg21.link/vector.capacity">[vector.capacity]</a>, 23.3.5.3 <a href="https://wg21.link/deque.capacity">[deque.capacity]</a> <b>Status:</b> <a href="lwg-active.html#C++14">C++14</a>
+<p><b>Section:</b> 23.3.13.3 <a href="https://wg21.link/vector.capacity">[vector.capacity]</a>, 23.3.5.3 <a href="https://wg21.link/deque.capacity">[deque.capacity]</a> <b>Status:</b> <a href="lwg-active.html#C++14">C++14</a>
  <b>Submitter:</b> Nikolay Ivchenkov <b>Opened:</b> 2011-02-20 <b>Last modified:</b> 2016-01-28</p>
 <p><b>Priority: </b>Not Prioritized
 </p>
@@ -117,7 +117,7 @@ with the requirements of <code>reserve</code>, which seems like a very similar f
 
 <li><p>I agree that we are currently missing to specify the preconditions of the <code>reserve</code> function.
 My interpretation of the mental model of this function is that it should work for move-only types, which
-seems to be supported by the wording used in 23.3.11.3 <a href="https://wg21.link/vector.capacity">[vector.capacity]</a> p2:
+seems to be supported by the wording used in 23.3.13.3 <a href="https://wg21.link/vector.capacity">[vector.capacity]</a> p2:
 </p>
 <blockquote><p>
 [&hellip;] If an exception is thrown other than by the move constructor of a non-CopyInsertable type, 
@@ -210,7 +210,7 @@ for implementation-specific optimizations. &mdash; <i>end note</i> ]
 </p></blockquote></blockquote>
 </li>
 
-<li><p>Edit 23.3.11.3 <a href="https://wg21.link/vector.capacity">[vector.capacity]</a> as indicated including edits that also resolve <a href="lwg-defects.html#2066" title="Missing specification of vector::resize(size_type) (Status: Resolved)">2066</a><sup><a href="https://cplusplus.github.io/LWG/issue2066" title="Latest snapshot">(i)</a></sup> 
+<li><p>Edit 23.3.13.3 <a href="https://wg21.link/vector.capacity">[vector.capacity]</a> as indicated including edits that also resolve <a href="lwg-defects.html#2066" title="Missing specification of vector::resize(size_type) (Status: Resolved)">2066</a><sup><a href="https://cplusplus.github.io/LWG/issue2066" title="Latest snapshot">(i)</a></sup> 
 [Remark: The combined listing of <code>MoveInsertable</code> and <code>CopyInsertable</code> before p12 is not redundant, 
 because <code>CopyInsertable</code> is not necessarily a refinement of <code>MoveInsertable</code> in contrast to the 
 fact that <code>CopyConstructible</code> is a refinement of <code>MoveConstructible</code>]:</p>

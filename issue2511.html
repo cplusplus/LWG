@@ -63,7 +63,7 @@
 <hr>
 <p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#Resolved">Resolved</a> status.</em></p>
 <h3 id="2511"><a href="lwg-defects.html#2511">2511</a>. <code>scoped_allocator_adaptor</code> piecewise construction does not require <code>CopyConstructible</code></h3>
-<p><b>Section:</b> 20.5.4 <a href="https://wg21.link/allocator.adaptor.members">[allocator.adaptor.members]</a> <b>Status:</b> <a href="lwg-active.html#Resolved">Resolved</a>
+<p><b>Section:</b> 20.6.4 <a href="https://wg21.link/allocator.adaptor.members">[allocator.adaptor.members]</a> <b>Status:</b> <a href="lwg-active.html#Resolved">Resolved</a>
  <b>Submitter:</b> David Krauss <b>Opened:</b> 2015-06-16 <b>Last modified:</b> 2020-09-06</p>
 <p><b>Priority: </b>3
 </p>
@@ -71,7 +71,7 @@
 <p><b>View all issues with</b> <a href="lwg-status.html#Resolved">Resolved</a> status.</p>
 <p><b>Discussion:</b></p>
 <p>
-20.5.4 <a href="https://wg21.link/allocator.adaptor.members">[allocator.adaptor.members]</a>/10 requires that the argument types in the piecewise-construction tuples 
+20.6.4 <a href="https://wg21.link/allocator.adaptor.members">[allocator.adaptor.members]</a>/10 requires that the argument types in the piecewise-construction tuples 
 all be <code>CopyConstructible</code>. These tuples are typically created by <code>std::forward_as_tuple</code>, such as in 
 &para;13. So they will be a mix of lvalue and rvalue references, the latter of which are not <code>CopyConstructible</code>.
 <p/>

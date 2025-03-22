@@ -63,14 +63,14 @@
 <hr>
 <p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#New">New</a> status.</em></p>
 <h3 id="4230"><a href="lwg-active.html#4230">4230</a>. <code>simd&lt;complex&gt;::real/imag</code> is overconstrained</h3>
-<p><b>Section:</b> 99 [simd.complex.access] <b>Status:</b> <a href="lwg-active.html#New">New</a>
+<p><b>Section:</b> 29.10.7.4 <a href="https://wg21.link/simd.complex.access">[simd.complex.access]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
  <b>Submitter:</b> Matthias Kretz <b>Opened:</b> 2025-03-18 <b>Last modified:</b> 2025-03-22</p>
 <p><b>Priority: </b>Not Prioritized
 </p>
 <p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
 <p><b>Discussion:</b></p>
 <p>
-99 [simd.complex.access] overconstrains the arguments to <code class='backtick'>real</code> and <code class='backtick'>imag</code>.
+29.10.7.4 <a href="https://wg21.link/simd.complex.access">[simd.complex.access]</a> overconstrains the arguments to <code class='backtick'>real</code> and <code class='backtick'>imag</code>.
 <code>complex&lt;T&gt;::real/imag</code> allows conversions to <code class='backtick'>T</code> whereas <code>simd&lt;complex&lt;T&gt;&gt;</code>
 requires basically an exact match (<code>same_as&lt;simd&lt;T&gt;&gt;</code> modulo ABI tag differences).
 </p>
@@ -124,7 +124,7 @@ namespace std::datapar {
     <del>template&lt;<i>simd-floating-point</i> V&gt;</del>
       constexpr explicit(<i>see below</i>) basic_simd(const <ins><i>real-type</i></ins><del>V</del>&amp; reals, const <ins><i>real-type</i></ins><del>V</del>&amp; imags = {}) noexcept;
     [&hellip;]
-    <i>// 99 [simd.complex.access], basic_simd complex-value accessors</i>
+    <i>// 29.10.7.4 <a href="https://wg21.link/simd.complex.access">[simd.complex.access]</a>, basic_simd complex-value accessors</i>
     constexpr <ins><i>real-type</i></ins><del>auto</del> real() const noexcept;
     constexpr <ins><i>real-type</i></ins><del>auto</del> imag() const noexcept;
     <del>template&lt;<i>simd-floating-point</i> V&gt;</del>
@@ -165,7 +165,7 @@ conversion rank of <code><ins><i>real-type</i></ins><del>V</del>::value_type</co
 </blockquote>
 </li>
 
-<li><p>Modify 99 [simd.complex.access] as indicated:</p>
+<li><p>Modify 29.10.7.4 <a href="https://wg21.link/simd.complex.access">[simd.complex.access]</a> as indicated:</p>
 
 <blockquote>
 <pre>

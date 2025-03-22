@@ -63,7 +63,7 @@
 <hr>
 <p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#C++23">C++23</a> status.</em></p>
 <h3 id="3143"><a href="lwg-defects.html#3143">3143</a>. <code>monotonic_buffer_resource</code> growth policy is unclear</h3>
-<p><b>Section:</b> 20.4.6 <a href="https://wg21.link/mem.res.monotonic.buffer">[mem.res.monotonic.buffer]</a> <b>Status:</b> <a href="lwg-active.html#C++23">C++23</a>
+<p><b>Section:</b> 20.5.6 <a href="https://wg21.link/mem.res.monotonic.buffer">[mem.res.monotonic.buffer]</a> <b>Status:</b> <a href="lwg-active.html#C++23">C++23</a>
  <b>Submitter:</b> Jonathan Wakely <b>Opened:</b> 2018-07-20 <b>Last modified:</b> 2023-11-22</p>
 <p><b>Priority: </b>2
 </p>
@@ -71,7 +71,7 @@
 <p><b>Discussion:</b></p>
 <p>
 During the discussion of LWG <a href="lwg-defects.html#3120" title="Unclear behavior of monotonic_buffer_resource::release() (Status: C++23)">3120</a><sup><a href="https://cplusplus.github.io/LWG/issue3120" title="Latest snapshot">(i)</a></sup> it was pointed out that the current
-wording in 20.4.6 <a href="https://wg21.link/mem.res.monotonic.buffer">[mem.res.monotonic.buffer]</a> is contradictory. The introductory text for 
+wording in 20.5.6 <a href="https://wg21.link/mem.res.monotonic.buffer">[mem.res.monotonic.buffer]</a> is contradictory. The introductory text for 
 the class says "Each additional buffer is larger than the previous one, following 
 a geometric progression" but the spec for <code>do_allocate</code> doesn't agree.
 <p/>
@@ -127,7 +127,7 @@ forbidden, the wording needs to be fixed to forbid it.
 <p><i>[2020-02-13, Prague]</i></p>
 
 <p>
-LWG looked at the issue and a suggestion was presented to eliminate most of 20.4.6 <a href="https://wg21.link/mem.res.monotonic.buffer">[mem.res.monotonic.buffer]</a>
+LWG looked at the issue and a suggestion was presented to eliminate most of 20.5.6 <a href="https://wg21.link/mem.res.monotonic.buffer">[mem.res.monotonic.buffer]</a>
 to solve the problem the current requirements impose.
 </p>
 
@@ -143,7 +143,7 @@ to solve the problem the current requirements impose.
 <p>This wording is relative to <a href="https://wg21.link/n4849">N4849</a>.</p>
 
 <ol>
-<li><p>Modify 20.4.6 <a href="https://wg21.link/mem.res.monotonic.buffer">[mem.res.monotonic.buffer]</a>, as indicated:</p>
+<li><p>Modify 20.5.6 <a href="https://wg21.link/mem.res.monotonic.buffer">[mem.res.monotonic.buffer]</a>, as indicated:</p>
 
 <blockquote>
 <p>

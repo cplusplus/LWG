@@ -92,7 +92,7 @@ dtor? Should the  dtor catch and swallow it or  should it propagate it
 to the caller?  The text doesn't  seem to provide any guidance in this
 regard  other  than  the  general  restriction on  throwing  (but  not
 propagating)  exceptions  from   destructors  of  library  classes  in
-16.4.6.13 <a href="https://wg21.link/res.on.exception.handling">[res.on.exception.handling]</a>.
+16.4.6.14 <a href="https://wg21.link/res.on.exception.handling">[res.on.exception.handling]</a>.
 
         </p>
         <p>
@@ -209,7 +209,7 @@ And to make the following edits in 31.10.3.2 <a href="https://wg21.link/filebuf.
 <code>close()</code>.    <ins>If  an   exception  occurs   during  the
 destruction of the object, including the call to <code>close()</code>,
 the     exception    is     caught    but     not     rethrown    (see
-16.4.6.13 <a href="https://wg21.link/res.on.exception.handling">[res.on.exception.handling]</a>).</ins>
+16.4.6.14 <a href="https://wg21.link/res.on.exception.handling">[res.on.exception.handling]</a>).</ins>
 
             </p>
         </blockquote>

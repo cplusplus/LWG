@@ -63,7 +63,7 @@
 <hr>
 <p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#C++20">C++20</a> status.</em></p>
 <h3 id="3237"><a href="lwg-defects.html#3237">3237</a>. LWG 3038 and 3190 have inconsistent PRs</h3>
-<p><b>Section:</b> 20.4.3.3 <a href="https://wg21.link/mem.poly.allocator.mem">[mem.poly.allocator.mem]</a> <b>Status:</b> <a href="lwg-active.html#C++20">C++20</a>
+<p><b>Section:</b> 20.5.3.3 <a href="https://wg21.link/mem.poly.allocator.mem">[mem.poly.allocator.mem]</a> <b>Status:</b> <a href="lwg-active.html#C++20">C++20</a>
  <b>Submitter:</b> Casey Carter <b>Opened:</b> 2019-07-18 <b>Last modified:</b> 2021-02-25</p>
 <p><b>Priority: </b>2
 </p>
@@ -89,7 +89,7 @@ Further, <a href="https://wg21.link/p0339r6">P0339R6</a> "<code>polymorphic_allo
 vocabulary type" recently added the function template "<code>template&lt;class T&gt; T* 
 allocate_object(size_t n = 1);</code>" to <code>std::pmr::polymorphic_allocator</code>, which is another 
 instance of the "allocate memory for <code>n</code> objects of type <code>T</code>" pattern. 
-20.4.3.3 <a href="https://wg21.link/mem.poly.allocator.mem">[mem.poly.allocator.mem]</a> paragraph 8.1 specifies that <code>allocate_object</code> throws 
+20.5.3.3 <a href="https://wg21.link/mem.poly.allocator.mem">[mem.poly.allocator.mem]</a> paragraph 8.1 specifies that <code>allocate_object</code> throws 
 <code>length_error</code> when <code>SIZE_MAX / sizeof(T) &lt; n</code>, presumably for consistency with <code>std::pmr::polymorphic_allocator::allocate</code> specified in paragraph 1. <code>allocate_object</code>'s 
 behavior should be consistent with <code>allocator::allocate</code> and 
 <code>polymorphic_allocator::allocate</code> so we have a single means of communicating "request for 
@@ -104,7 +104,7 @@ allocation of unrepresentable size" errors in the Standard Library.
 <p>This wording is relative to <a href="https://wg21.link/n4820">N4820</a>.</p>
 
 <ol>
-<li><p>Modify 20.4.3.3 <a href="https://wg21.link/mem.poly.allocator.mem">[mem.poly.allocator.mem]</a> as indicated:</p>
+<li><p>Modify 20.5.3.3 <a href="https://wg21.link/mem.poly.allocator.mem">[mem.poly.allocator.mem]</a> as indicated:</p>
 
 <blockquote>
 <pre>

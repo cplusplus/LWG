@@ -83,7 +83,7 @@ the implicitly-declared move constructor. <code>pair</code> should be move const
 ( [class.copy]&#47;7 explains that "<code>pair(pair&lt;U, V&gt;&amp;&amp; p)</code>" 
 will never be instantiated to move <code>pair&lt;T1, T2&gt;</code> to <code>pair&lt;T1, T2&gt;</code>.)<br/>
 "<code>pair&amp; operator=(pair&amp;&amp; p);</code>" is a user-provided move
-assignment operator (according to 9.5.2 <a href="https://wg21.link/dcl.fct.def.default">[dcl.fct.def.default]</a>&#47;4: "A 
+assignment operator (according to 9.6.2 <a href="https://wg21.link/dcl.fct.def.default">[dcl.fct.def.default]</a>&#47;4: "A 
 special member function is user-provided if it is user-declared and not explicitly defaulted
 on its first declaration."). According to  [class.copy]&#47;20, this inhibits
 the implicitly-declared copy assignment operator. <code>pair</code>

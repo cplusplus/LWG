@@ -70,7 +70,7 @@
 <p><b>View all issues with</b> <a href="lwg-status.html#WP">WP</a> status.</p>
 <p><b>Discussion:</b></p>
 <p>
-Currently 17.14.4 <a href="https://wg21.link/stdalign.h.syn">[stdalign.h.syn]</a> states
+Currently 17.15.4 <a href="https://wg21.link/stdalign.h.syn">[stdalign.h.syn]</a> states
 </p>
 <blockquote style="border-left: 3px solid #ccc;padding-left: 15px;">
 <p>
@@ -87,7 +87,7 @@ specified that the macro is provided in <code>&lt;stdaligh.h&gt;</code>.
 <p/>
 However, there's no explicit mentioning of <code>__alignof_is_defined</code> in the C++ standard wording.
 And D.11 <a href="https://wg21.link/depr.c.macros">[depr.c.macros]</a>/1 (added by LWG <a href="lwg-defects.html#3827" title="Deprecate &lt;stdalign.h&gt; and &lt;stdbool.h&gt; macros (Status: C++23)">3827</a><sup><a href="https://cplusplus.github.io/LWG/issue3827" title="Latest snapshot">(i)</a></sup>) seemingly contradicts with
-17.14.4 <a href="https://wg21.link/stdalign.h.syn">[stdalign.h.syn]</a> and only makes <code>__alignas_is_defined</code> deprecated.
+17.15.4 <a href="https://wg21.link/stdalign.h.syn">[stdalign.h.syn]</a> and only makes <code>__alignas_is_defined</code> deprecated.
 <p/>
 It seems that we should explicitly mention <code>__alignof_is_defined</code> in D.11 <a href="https://wg21.link/depr.c.macros">[depr.c.macros]</a>
 at this moment.

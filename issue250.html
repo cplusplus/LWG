@@ -63,7 +63,7 @@
 <hr>
 <p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#CD1">CD1</a> status.</em></p>
 <h3 id="250"><a href="lwg-defects.html#250">250</a>. splicing invalidates iterators</h3>
-<p><b>Section:</b> 23.3.9.5 <a href="https://wg21.link/list.ops">[list.ops]</a> <b>Status:</b> <a href="lwg-active.html#CD1">CD1</a>
+<p><b>Section:</b> 23.3.11.5 <a href="https://wg21.link/list.ops">[list.ops]</a> <b>Status:</b> <a href="lwg-active.html#CD1">CD1</a>
  <b>Submitter:</b> Brian Parker  <b>Opened:</b> 2000-07-14 <b>Last modified:</b> 2016-01-28</p>
 <p><b>Priority: </b>Not Prioritized
 </p>
@@ -71,7 +71,7 @@
 <p><b>View all issues with</b> <a href="lwg-status.html#CD1">CD1</a> status.</p>
 <p><b>Discussion:</b></p>
 <p>
-Section 23.3.9.5 <a href="https://wg21.link/list.ops">[list.ops]</a> states that
+Section 23.3.11.5 <a href="https://wg21.link/list.ops">[list.ops]</a> states that
 </p>
 <pre>
   void splice(iterator position, list&lt;T, Allocator&gt;&amp; x);
@@ -89,14 +89,14 @@ after <code>splice</code>.
 
 <p id="res-250"><b>Proposed resolution:</b></p>
 
-<p>Add a footnote to 23.3.9.5 <a href="https://wg21.link/list.ops">[list.ops]</a>, paragraph 1:</p>
+<p>Add a footnote to 23.3.11.5 <a href="https://wg21.link/list.ops">[list.ops]</a>, paragraph 1:</p>
 <blockquote><p>
 [<i>Footnote:</i> As specified in  [default.con.req], paragraphs
 4-5, the semantics described in this clause applies only to the case
 where allocators compare equal.  --end footnote]
 </p></blockquote>
 
-<p>In 23.3.9.5 <a href="https://wg21.link/list.ops">[list.ops]</a>, replace paragraph 4 with:</p>
+<p>In 23.3.11.5 <a href="https://wg21.link/list.ops">[list.ops]</a>, replace paragraph 4 with:</p>
 <blockquote><p>
 Effects: Inserts the contents of x before position and x becomes 
 empty.  Pointers and references to the moved elements of x now refer to 
@@ -105,7 +105,7 @@ moved elements will continue to refer to their elements, but they now
 behave as iterators into *this, not into x.
 </p></blockquote>
 
-<p>In 23.3.9.5 <a href="https://wg21.link/list.ops">[list.ops]</a>, replace paragraph 7 with:</p>
+<p>In 23.3.11.5 <a href="https://wg21.link/list.ops">[list.ops]</a>, replace paragraph 7 with:</p>
 <blockquote><p>
 Effects: Inserts an element pointed to by i from list x before 
 position and removes the element from x. The result is unchanged if 
@@ -115,7 +115,7 @@ to refer to this same element but as a member of *this.  Iterators to *i
 behave as iterators into *this, not into x.
 </p></blockquote>
 
-<p>In 23.3.9.5 <a href="https://wg21.link/list.ops">[list.ops]</a>, replace paragraph 12 with:</p>
+<p>In 23.3.11.5 <a href="https://wg21.link/list.ops">[list.ops]</a>, replace paragraph 12 with:</p>
 <blockquote><p>
 Requires: [first, last) is a valid range in x. The result is 
 undefined if position is an iterator in the range [first, last).  

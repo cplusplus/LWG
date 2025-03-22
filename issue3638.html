@@ -63,7 +63,7 @@
 <hr>
 <p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#New">New</a> status.</em></p>
 <h3 id="3638"><a href="lwg-active.html#3638">3638</a>. <code>vector&lt;bool&gt;::swap(reference, reference)</code> is useless</h3>
-<p><b>Section:</b> 23.3.12 <a href="https://wg21.link/vector.bool">[vector.bool]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
+<p><b>Section:</b> 23.3.14 <a href="https://wg21.link/vector.bool">[vector.bool]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
  <b>Submitter:</b> Jonathan Wakely <b>Opened:</b> 2021-11-12 <b>Last modified:</b> 2025-02-07</p>
 <p><b>Priority: </b>3
 </p>
@@ -108,12 +108,12 @@ This wording is relative to <a href="https://wg21.link/N4901" title=" Working Dr
 
 <ol>
 
-<li><p>Create a new subclause [vector.bool.general] below 23.3.12 <a href="https://wg21.link/vector.bool">[vector.bool]</a> and move paragraphs p1-p3 
+<li><p>Create a new subclause [vector.bool.general] below 23.3.14 <a href="https://wg21.link/vector.bool">[vector.bool]</a> and move paragraphs p1-p3 
 (including the class template <code>vector&lt;bool, Allocator&gt;</code> partial specialization synopsis) into that 
 subclause.</p>
 </li>
 
-<li><p>Add to the synopsis in [vector.bool.general] p1 (n&eacute;e 23.3.12 <a href="https://wg21.link/vector.bool">[vector.bool]</a> p1):</p>
+<li><p>Add to the synopsis in [vector.bool.general] p1 (n&eacute;e 23.3.14 <a href="https://wg21.link/vector.bool">[vector.bool]</a> p1):</p>
 
 <blockquote>
 <pre>
@@ -236,7 +236,7 @@ template&lt;class Allocator&gt; struct hash&lt;vector&lt;bool, Allocator&gt;&gt;
 <p>
 <ins><b>D.? Deprecated <code>vector&lt;bool, Allocator&gt;</code> swap [depr.vector.bool.swap]</b></ins>
 <p/>
-<ins>-?- The following member is declared in addition to those members specified in 23.3.12 <a href="https://wg21.link/vector.bool">[vector.bool]</a>:</ins>
+<ins>-?- The following member is declared in addition to those members specified in 23.3.14 <a href="https://wg21.link/vector.bool">[vector.bool]</a>:</ins>
 </p>
 <pre>
 <ins>namespace std {
@@ -281,12 +281,12 @@ This wording is relative to <a href="https://wg21.link/N4901" title=" Working Dr
 
 <ol>
 
-<li><p>Create a new subclause [vector.bool.general] below 23.3.12 <a href="https://wg21.link/vector.bool">[vector.bool]</a> and move paragraphs p1-p3 
+<li><p>Create a new subclause [vector.bool.general] below 23.3.14 <a href="https://wg21.link/vector.bool">[vector.bool]</a> and move paragraphs p1-p3 
 (including the class template <code>vector&lt;bool, Allocator&gt;</code> partial specialization synopsis) into that 
 subclause.</p>
 </li>
 
-<li><p>Add to the synopsis in [vector.bool.general] p1 (n&eacute;e 23.3.12 <a href="https://wg21.link/vector.bool">[vector.bool]</a> p1):</p>
+<li><p>Add to the synopsis in [vector.bool.general] p1 (n&eacute;e 23.3.14 <a href="https://wg21.link/vector.bool">[vector.bool]</a> p1):</p>
 
 <blockquote>
 <pre>
@@ -409,7 +409,7 @@ template&lt;class Allocator&gt; struct hash&lt;vector&lt;bool, Allocator&gt;&gt;
 <p>
 <ins><b>D.? Deprecated <code>vector&lt;bool, Allocator&gt;</code> swap [depr.vector.bool.swap]</b></ins>
 <p/>
-<ins>-?- The following member is declared in addition to those members specified in 23.3.12 <a href="https://wg21.link/vector.bool">[vector.bool]</a>:</ins>
+<ins>-?- The following member is declared in addition to those members specified in 23.3.14 <a href="https://wg21.link/vector.bool">[vector.bool]</a>:</ins>
 </p>
 <pre>
 <ins>namespace std {
@@ -455,7 +455,7 @@ This wording is relative to <a href="https://wg21.link/N4988" title=" Working Dr
 
 <ol>
 
-<li><p>Add to the synopsis in 23.3.12.1 <a href="https://wg21.link/vector.bool.pspc">[vector.bool.pspc]</a> p1:</p>
+<li><p>Add to the synopsis in 23.3.14.1 <a href="https://wg21.link/vector.bool.pspc">[vector.bool.pspc]</a> p1:</p>
 
 <blockquote>
 <pre>
@@ -573,7 +573,7 @@ template&lt;class Allocator&gt; struct hash&lt;vector&lt;bool, Allocator&gt;&gt;
 <p>
 <ins><b>D.? Deprecated <code>vector&lt;bool, Allocator&gt;</code> swap [depr.vector.bool.swap]</b></ins>
 <p/>
-<ins>-?- The following member is declared in addition to those members specified in 23.3.12 <a href="https://wg21.link/vector.bool">[vector.bool]</a>:</ins>
+<ins>-?- The following member is declared in addition to those members specified in 23.3.14 <a href="https://wg21.link/vector.bool">[vector.bool]</a>:</ins>
 </p>
 <pre>
 <ins>namespace std {
@@ -647,7 +647,7 @@ namespace std {
 </blockquote>
 </li>
 
-<li><p>Add to the synopsis in 23.3.12.1 <a href="https://wg21.link/vector.bool.pspc">[vector.bool.pspc]</a> p1:</p>
+<li><p>Add to the synopsis in 23.3.14.1 <a href="https://wg21.link/vector.bool.pspc">[vector.bool.pspc]</a> p1:</p>
 
 <blockquote>
 <pre>
@@ -765,7 +765,7 @@ template&lt;class Allocator&gt; struct hash&lt;vector&lt;bool, Allocator&gt;&gt;
 <p>
 <ins><b>D.? Deprecated <code>vector&lt;bool, Allocator&gt;</code> swap [depr.vector.bool.swap]</b></ins>
 <p/>
-<ins>-?- The following member is declared in addition to those members specified in 23.3.12 <a href="https://wg21.link/vector.bool">[vector.bool]</a>:</ins>
+<ins>-?- The following member is declared in addition to those members specified in 23.3.14 <a href="https://wg21.link/vector.bool">[vector.bool]</a>:</ins>
 </p>
 <pre>
 <ins>namespace std {

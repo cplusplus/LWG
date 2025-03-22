@@ -63,7 +63,7 @@
 <hr>
 <p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#C++20">C++20</a> status.</em></p>
 <h3 id="3087"><a href="lwg-defects.html#3087">3087</a>. One final <code>&amp;x</code> in &sect;[list.ops]</h3>
-<p><b>Section:</b> 23.3.9.5 <a href="https://wg21.link/list.ops">[list.ops]</a> <b>Status:</b> <a href="lwg-active.html#C++20">C++20</a>
+<p><b>Section:</b> 23.3.11.5 <a href="https://wg21.link/list.ops">[list.ops]</a> <b>Status:</b> <a href="lwg-active.html#C++20">C++20</a>
  <b>Submitter:</b> Tim Song <b>Opened:</b> 2018-03-19 <b>Last modified:</b> 2021-02-25</p>
 <p><b>Priority: </b>3
 </p>
@@ -71,7 +71,7 @@
 <p><b>View all issues with</b> <a href="lwg-status.html#C++20">C++20</a> status.</p>
 <p><b>Discussion:</b></p>
 <p>
-LWG <a href="lwg-defects.html#3017" title="list splice functions should use addressof (Status: C++20)">3017</a><sup><a href="https://cplusplus.github.io/LWG/issue3017" title="Latest snapshot">(i)</a></sup> missed an instance of <code>&amp;x</code> in 23.3.9.5 <a href="https://wg21.link/list.ops">[list.ops]</a> p14.
+LWG <a href="lwg-defects.html#3017" title="list splice functions should use addressof (Status: C++20)">3017</a><sup><a href="https://cplusplus.github.io/LWG/issue3017" title="Latest snapshot">(i)</a></sup> missed an instance of <code>&amp;x</code> in 23.3.11.5 <a href="https://wg21.link/list.ops">[list.ops]</a> p14.
 </p>
 
 <p><i>[2018-06-18 after reflector discussion]</i></p>
@@ -86,7 +86,7 @@ LWG <a href="lwg-defects.html#3017" title="list splice functions should use addr
 <p>This wording is relative to <a href="https://wg21.link/n4727">N4727</a>.</p>
 
 <ol>
-<li><p>Edit 23.3.9.5 <a href="https://wg21.link/list.ops">[list.ops]</a> as indicated:</p>
+<li><p>Edit 23.3.11.5 <a href="https://wg21.link/list.ops">[list.ops]</a> as indicated:</p>
 <blockquote>
 <pre>
 void splice(const_iterator position, list&amp; x, const_iterator first,

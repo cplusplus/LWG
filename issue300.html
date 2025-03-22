@@ -63,7 +63,7 @@
 <hr>
 <p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#CD1">CD1</a> status.</em></p>
 <h3 id="300"><a href="lwg-defects.html#300">300</a>. list::merge() specification incomplete</h3>
-<p><b>Section:</b> 23.3.9.5 <a href="https://wg21.link/list.ops">[list.ops]</a> <b>Status:</b> <a href="lwg-active.html#CD1">CD1</a>
+<p><b>Section:</b> 23.3.11.5 <a href="https://wg21.link/list.ops">[list.ops]</a> <b>Status:</b> <a href="lwg-active.html#CD1">CD1</a>
  <b>Submitter:</b> John Pedretti <b>Opened:</b> 2001-01-23 <b>Last modified:</b> 2016-01-28</p>
 <p><b>Priority: </b>Not Prioritized
 </p>
@@ -71,7 +71,7 @@
 <p><b>View all issues with</b> <a href="lwg-status.html#CD1">CD1</a> status.</p>
 <p><b>Discussion:</b></p>
 <p>
-The &quot;Effects&quot; clause for list::merge() (23.3.9.5 <a href="https://wg21.link/list.ops">[list.ops]</a>, p23)
+The &quot;Effects&quot; clause for list::merge() (23.3.11.5 <a href="https://wg21.link/list.ops">[list.ops]</a>, p23)
 appears to be incomplete: it doesn't cover the case where the argument
 list is identical to *this (i.e., this == &amp;x). The requirement in the
 note in p24 (below) is that x be empty after the merge which is surely
@@ -80,7 +80,7 @@ unintended in this case.
 
 
 <p id="res-300"><b>Proposed resolution:</b></p>
-<p>In 23.3.9.5 <a href="https://wg21.link/list.ops">[list.ops]</a>, replace paragraps 23-25 with:</p>
+<p>In 23.3.11.5 <a href="https://wg21.link/list.ops">[list.ops]</a>, replace paragraps 23-25 with:</p>
 <blockquote>
 <p>
 23 Effects: if (&amp;x == this) does nothing; otherwise, merges the two
@@ -109,7 +109,7 @@ effects.
 </blockquote>
 
 <p><i>[Copenhagen: The original proposed resolution did not fix all of
-the problems in 23.3.9.5 <a href="https://wg21.link/list.ops">[list.ops]</a>, p22-25.  Three different
+the problems in 23.3.11.5 <a href="https://wg21.link/list.ops">[list.ops]</a>, p22-25.  Three different
 paragraphs (23, 24, 25) describe the effects of <code>merge</code>.
 Changing p23, without changing the other two, appears to introduce
 contradictions.  Additionally, "merges the argument list into the

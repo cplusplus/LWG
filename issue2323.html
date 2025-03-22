@@ -63,7 +63,7 @@
 <hr>
 <p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#C++14">C++14</a> status.</em></p>
 <h3 id="2323"><a href="lwg-defects.html#2323">2323</a>. <code>vector::resize(n, t)</code>'s specification should be simplified</h3>
-<p><b>Section:</b> 23.3.11.3 <a href="https://wg21.link/vector.capacity">[vector.capacity]</a>, 23.3.5.3 <a href="https://wg21.link/deque.capacity">[deque.capacity]</a> <b>Status:</b> <a href="lwg-active.html#C++14">C++14</a>
+<p><b>Section:</b> 23.3.13.3 <a href="https://wg21.link/vector.capacity">[vector.capacity]</a>, 23.3.5.3 <a href="https://wg21.link/deque.capacity">[deque.capacity]</a> <b>Status:</b> <a href="lwg-active.html#C++14">C++14</a>
  <b>Submitter:</b> Stephan T. Lavavej <b>Opened:</b> 2013-09-21 <b>Last modified:</b> 2017-07-05</p>
 <p><b>Priority: </b>0
 </p>
@@ -72,7 +72,7 @@
 <p><b>View all issues with</b> <a href="lwg-status.html#C++14">C++14</a> status.</p>
 <p><b>Discussion:</b></p>
 <p>
-First, 23.3.5.3 <a href="https://wg21.link/deque.capacity">[deque.capacity]</a>/4 and 23.3.11.3 <a href="https://wg21.link/vector.capacity">[vector.capacity]</a>/16 say that <code>resize(size_type sz, const T&amp; c)</code> 
+First, 23.3.5.3 <a href="https://wg21.link/deque.capacity">[deque.capacity]</a>/4 and 23.3.13.3 <a href="https://wg21.link/vector.capacity">[vector.capacity]</a>/16 say that <code>resize(size_type sz, const T&amp; c)</code> 
 "<i>Requires:</i> <code>T</code> shall be <code>MoveInsertable</code> into <code>*this</code> and <code>CopyInsertable</code> into <code>*this</code>."  
 The <code>CopyInsertable</code> requirement is correct (because <code>sz</code> might be <code>size() + 2</code> or more), but the 
 <code>MoveInsertable</code> requirement is redundant due to 23.2.2 <a href="https://wg21.link/container.requirements.general">[container.requirements.general]</a>/13: "<code>T</code> is 
@@ -80,7 +80,7 @@ The <code>CopyInsertable</code> requirement is correct (because <code>sz</code> 
 (LWG <a href="lwg-defects.html#2033" title="Preconditions of reserve, shrink_to_fit, and resize functions (Status: C++14)">2033</a><sup><a href="https://cplusplus.github.io/LWG/issue2033" title="Latest snapshot">(i)</a></sup>'s resolution said that this was "not redundant, because <code>CopyInsertable</code> is not necessarily a refinement 
 of <code>MoveInsertable</code>" which was true at the time, but then LWG <a href="lwg-defects.html#2177" title="Requirements on Copy&#47;MoveInsertable (Status: C++14)">2177</a><sup><a href="https://cplusplus.github.io/LWG/issue2177" title="Latest snapshot">(i)</a></sup>'s resolution made it a refinement.)
 <p/>
-Second, 23.3.11.3 <a href="https://wg21.link/vector.capacity">[vector.capacity]</a>/17 says "<i>Remarks:</i> If an exception is thrown other than by the move constructor of a 
+Second, 23.3.13.3 <a href="https://wg21.link/vector.capacity">[vector.capacity]</a>/17 says "<i>Remarks:</i> If an exception is thrown other than by the move constructor of a 
 non-<code>CopyInsertable</code> <code>T</code> there are no effects." This is confusing because <code>T</code> is required to be 
 <code>CopyInsertable</code>. (/14 says the same thing for <code>resize(size_type sz)</code>, where it is correct because that overload 
 requires only <code>MoveInsertable</code> and <code>DefaultInsertable</code>.)
@@ -109,7 +109,7 @@ void resize(size_type sz, const T&amp; c);
 </blockquote></blockquote>
 </li>
 
-<li><p>Edit 23.3.11.3 <a href="https://wg21.link/vector.capacity">[vector.capacity]</a>/16+17 as indicated:</p>
+<li><p>Edit 23.3.13.3 <a href="https://wg21.link/vector.capacity">[vector.capacity]</a>/16+17 as indicated:</p>
 
 <blockquote><pre>
 void resize(size_type sz, const T&amp; c);

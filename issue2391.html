@@ -74,7 +74,7 @@
 <p>
 Regarding 27.4.3 <a href="https://wg21.link/basic.string">[basic.string]</a>, <code>std::basic_string&lt;charT&gt;::data()</code> returns a <code>const charT*</code> 
 27.4.3.8.1 <a href="https://wg21.link/string.accessors">[string.accessors]</a>. While this method is convenient, it doesn't quite match <code>std::array&lt;T&gt;::data()</code> 
- [array.data] or <code>std::vector&lt;T&gt;::data()</code> 23.3.11.4 <a href="https://wg21.link/vector.data">[vector.data]</a>, both of which provide two 
+ [array.data] or <code>std::vector&lt;T&gt;::data()</code> 23.3.13.4 <a href="https://wg21.link/vector.data">[vector.data]</a>, both of which provide two 
 versions (that return <code>T*</code> or <code>const T*</code>). An additional <code>data()</code> method can be added to 
 <code>std::basic_string</code> that returns a <code>charT*</code> so it can be used in similar situations that <code>std::array</code> and 
 <code>std::vector</code> can be used. Without a non-<code>const</code> <code>data()</code> method, <code>std::basic_string</code> has to be treated 

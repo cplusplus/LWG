@@ -63,7 +63,7 @@
 <hr>
 <p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#C++23">C++23</a> status.</em></p>
 <h3 id="3756"><a href="lwg-defects.html#3756">3756</a>. Is the <code>std::atomic_flag</code> class signal-safe?</h3>
-<p><b>Section:</b> 17.13.5 <a href="https://wg21.link/support.signal">[support.signal]</a>, 32.5.10 <a href="https://wg21.link/atomics.flag">[atomics.flag]</a> <b>Status:</b> <a href="lwg-active.html#C++23">C++23</a>
+<p><b>Section:</b> 17.14.5 <a href="https://wg21.link/support.signal">[support.signal]</a>, 32.5.10 <a href="https://wg21.link/atomics.flag">[atomics.flag]</a> <b>Status:</b> <a href="lwg-active.html#C++23">C++23</a>
  <b>Submitter:</b> Ruslan Baratov <b>Opened:</b> 2022-08-18 <b>Last modified:</b> 2023-11-22</p>
 <p><b>Priority: </b>3
 </p>
@@ -71,7 +71,7 @@
 <p><b>Discussion:</b></p>
 <p>
 Following document number <a href="https://wg21.link/N4910" title=" Working Draft, Standard for Programming Language C++">N4910</a> about signal-safe instructions
-17.13.5 <a href="https://wg21.link/support.signal">[support.signal]</a> Signal handlers, and it's unclear whether
+17.14.5 <a href="https://wg21.link/support.signal">[support.signal]</a> Signal handlers, and it's unclear whether
 <code>std::atomic_flag</code> is signal-safe.
 <p/>
 Formally it doesn't fit any of the mentioned conditions:
@@ -94,7 +94,7 @@ However, <code>std::atomic_flag</code> seem to fit well here, it's atomic, and i
 always lock-free.
 <p/>
 The suggestion is as follows: If <code>std::atomic_flag</code> is signal-safe, then it
-should be explicitly mentioned in 17.13.5 <a href="https://wg21.link/support.signal">[support.signal]</a>, e.g., the following lines
+should be explicitly mentioned in 17.14.5 <a href="https://wg21.link/support.signal">[support.signal]</a>, e.g., the following lines
 should be added:
 </p>
 <blockquote>
@@ -148,7 +148,7 @@ This wording is relative to <a href="https://wg21.link/N4917" title=" Working Dr
 </p>
 
 <ol>
-<li><p>Modify 17.13.5 <a href="https://wg21.link/support.signal">[support.signal]</a> as indicated:</p>
+<li><p>Modify 17.14.5 <a href="https://wg21.link/support.signal">[support.signal]</a> as indicated:</p>
 <blockquote>
 <p>-1-
 A call to the function <code>signal</code> synchronizes with any resulting
@@ -211,11 +211,11 @@ control entering a <i>try-block</i> or <i>function-try-block</i>;
 </li>
 <li>(3.6) &mdash;
 initialization of a variable with static storage duration requiring
-dynamic initialization (6.9.3.3 <a href="https://wg21.link/basic.start.dynamic">[basic.start.dynamic]</a>, 8.8 <a href="https://wg21.link/stmt.dcl">[stmt.dcl]</a>)<sup>206</sup>; or
+dynamic initialization (6.9.3.3 <a href="https://wg21.link/basic.start.dynamic">[basic.start.dynamic]</a>, 8.9 <a href="https://wg21.link/stmt.dcl">[stmt.dcl]</a>)<sup>206</sup>; or
 </li>
 <li>(3.7) &mdash;
 waiting for the completion of the initialization of a variable with
-static storage duration (8.8 <a href="https://wg21.link/stmt.dcl">[stmt.dcl]</a>).
+static storage duration (8.9 <a href="https://wg21.link/stmt.dcl">[stmt.dcl]</a>).
 </li>
 </ol>
 <p>
@@ -245,7 +245,7 @@ This wording is relative to <a href="https://wg21.link/N4917" title=" Working Dr
 </p>
 
 <ol>
-<li><p>Modify 17.13.5 <a href="https://wg21.link/support.signal">[support.signal]</a> as indicated:</p>
+<li><p>Modify 17.14.5 <a href="https://wg21.link/support.signal">[support.signal]</a> as indicated:</p>
 <blockquote>
 <p>-1-
 A call to the function <code>signal</code> synchronizes with any resulting
@@ -309,11 +309,11 @@ control entering a <i>try-block</i> or <i>function-try-block</i>;
 </li>
 <li>(3.6) &mdash;
 initialization of a variable with static storage duration requiring
-dynamic initialization (6.9.3.3 <a href="https://wg21.link/basic.start.dynamic">[basic.start.dynamic]</a>, 8.8 <a href="https://wg21.link/stmt.dcl">[stmt.dcl]</a>)<sup>206</sup>; or
+dynamic initialization (6.9.3.3 <a href="https://wg21.link/basic.start.dynamic">[basic.start.dynamic]</a>, 8.9 <a href="https://wg21.link/stmt.dcl">[stmt.dcl]</a>)<sup>206</sup>; or
 </li>
 <li>(3.7) &mdash;
 waiting for the completion of the initialization of a variable with
-static storage duration (8.8 <a href="https://wg21.link/stmt.dcl">[stmt.dcl]</a>).
+static storage duration (8.9 <a href="https://wg21.link/stmt.dcl">[stmt.dcl]</a>).
 </li>
 </ol>
 <p>

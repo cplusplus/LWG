@@ -63,7 +63,7 @@
 <hr>
 <p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#New">New</a> status.</em></p>
 <h3 id="3229"><a href="lwg-active.html#3229">3229</a>. &sect;[res.on.exception.handling]#3 cannot apply to types with implicitly declared destructors</h3>
-<p><b>Section:</b> 16.4.6.13 <a href="https://wg21.link/res.on.exception.handling">[res.on.exception.handling]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
+<p><b>Section:</b> 16.4.6.14 <a href="https://wg21.link/res.on.exception.handling">[res.on.exception.handling]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
  <b>Submitter:</b> Nevin Liber <b>Opened:</b> 2019-06-28 <b>Last modified:</b> 2023-01-29</p>
 <p><b>Priority: </b>3
 </p>
@@ -72,7 +72,7 @@
 <p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
 <p><b>Discussion:</b></p>
 <p>
-16.4.6.13 <a href="https://wg21.link/res.on.exception.handling">[res.on.exception.handling]</a>#3 says:
+16.4.6.14 <a href="https://wg21.link/res.on.exception.handling">[res.on.exception.handling]</a>#3 says:
 </p>
 <blockquote><p>
 Destructor operations defined in the C++ standard library shall not throw exceptions.
@@ -90,7 +90,7 @@ for any of its potentially constructed subobjects is potentially-throwing or the
 is virtual and the destructor of any virtual base class is potentially throwing.
 </p></blockquote>
 <p>
-We can relax 16.4.6.13 <a href="https://wg21.link/res.on.exception.handling">[res.on.exception.handling]</a> to only cover explicitly declared
+We can relax 16.4.6.14 <a href="https://wg21.link/res.on.exception.handling">[res.on.exception.handling]</a> to only cover explicitly declared
 destructors because if they hold a user type where the destructor throws then we get UB
 from 16.4.5.8 <a href="https://wg21.link/res.on.functions">[res.on.functions]</a>#2:
 </p>
@@ -124,7 +124,7 @@ This issue has very much overlap with LWG <a href="lwg-active.html#3854" title="
 <p>This wording is relative to <a href="https://wg21.link/n4820">N4820</a>.</p>
 
 <ol>
-<li><p>Modify 16.4.6.13 <a href="https://wg21.link/res.on.exception.handling">[res.on.exception.handling]</a> as indicated:</p>
+<li><p>Modify 16.4.6.14 <a href="https://wg21.link/res.on.exception.handling">[res.on.exception.handling]</a> as indicated:</p>
 
 <blockquote><p>
 -3- Destructor operations defined in the C++ standard library shall not throw exceptions.

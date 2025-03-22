@@ -63,7 +63,7 @@
 <hr>
 <p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#Open">Open</a> status.</em></p>
 <h3 id="2158"><a href="lwg-active.html#2158">2158</a>. Conditional copy&#47;move in <code>std::vector</code></h3>
-<p><b>Section:</b> 23.3.11.3 <a href="https://wg21.link/vector.capacity">[vector.capacity]</a> <b>Status:</b> <a href="lwg-active.html#Open">Open</a>
+<p><b>Section:</b> 23.3.13.3 <a href="https://wg21.link/vector.capacity">[vector.capacity]</a> <b>Status:</b> <a href="lwg-active.html#Open">Open</a>
  <b>Submitter:</b> Nikolay Ivchenkov <b>Opened:</b> 2012-05-08 <b>Last modified:</b> 2022-11-06</p>
 <p><b>Priority: </b>3
 </p>
@@ -79,7 +79,7 @@ argument; the choice depends on the value of <code>!is_nothrow_move_constructibl
 is_copy_constructible&lt;T&gt;::value</code>, where <code>T</code> is the element type. Thus, some operations 
 on <code>std::vector</code> (e.g. 'resize' with single parameter, 'reserve', 'emplace_back') should have 
 conditional requirements. For example, let's consider the requirement for 'reserve' in N3376 &ndash; 
-23.3.11.3 <a href="https://wg21.link/vector.capacity">[vector.capacity]</a>&#47;2:
+23.3.13.3 <a href="https://wg21.link/vector.capacity">[vector.capacity]</a>&#47;2:
 </p>
 <blockquote><p>
 <i>Requires</i>: <code>T</code> shall be <code>MoveInsertable</code> into <code>*this</code>.

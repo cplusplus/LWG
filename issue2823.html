@@ -81,7 +81,7 @@ std::array&lt;int, 1&gt; arr{{0}};
 should be fine, but isn't guaranteed, since <code>{0}</code> has no type. We should rather go for implicit conversion:
 </p>
 <blockquote><p>
-An array is an aggregate (9.4.2 <a href="https://wg21.link/dcl.init.aggr">[dcl.init.aggr]</a>) that can be list-initialized with up to <code>N</code> elements 
+An array is an aggregate (9.5.2 <a href="https://wg21.link/dcl.init.aggr">[dcl.init.aggr]</a>) that can be list-initialized with up to <code>N</code> elements 
 <del>whose types are convertible to <code>T</code></del><ins>that can be implicitly converted to <code>T</code></ins>.
 </p></blockquote>
 
@@ -113,7 +113,7 @@ This wording is relative to N4606.
 
 <blockquote>
 <p>
--2- An <code>array</code> is an aggregate (9.4.2 <a href="https://wg21.link/dcl.init.aggr">[dcl.init.aggr]</a>) that can be list-initialized with up to <code>N</code> 
+-2- An <code>array</code> is an aggregate (9.5.2 <a href="https://wg21.link/dcl.init.aggr">[dcl.init.aggr]</a>) that can be list-initialized with up to <code>N</code> 
 elements <del>whose types are convertible</del><ins>that can be implicitly converted</ins> to <code>T</code>.
 </p>
 </blockquote>

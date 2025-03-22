@@ -63,7 +63,7 @@
 <hr>
 <p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#CD1">CD1</a> status.</em></p>
 <h3 id="329"><a href="lwg-defects.html#329">329</a>. vector capacity, reserve and reallocation</h3>
-<p><b>Section:</b> 23.3.11.3 <a href="https://wg21.link/vector.capacity">[vector.capacity]</a>, 23.3.11.5 <a href="https://wg21.link/vector.modifiers">[vector.modifiers]</a> <b>Status:</b> <a href="lwg-active.html#CD1">CD1</a>
+<p><b>Section:</b> 23.3.13.3 <a href="https://wg21.link/vector.capacity">[vector.capacity]</a>, 23.3.13.5 <a href="https://wg21.link/vector.modifiers">[vector.modifiers]</a> <b>Status:</b> <a href="lwg-active.html#CD1">CD1</a>
  <b>Submitter:</b> Anthony Williams <b>Opened:</b> 2001-07-13 <b>Last modified:</b> 2016-01-28</p>
 <p><b>Priority: </b>Not Prioritized
 </p>
@@ -73,11 +73,11 @@
 <p><b>Discussion:</b></p>
 <p>
 There is an apparent contradiction about which circumstances can cause
-a reallocation of a vector in Section 23.3.11.3 <a href="https://wg21.link/vector.capacity">[vector.capacity]</a> and
-section 23.3.11.5 <a href="https://wg21.link/vector.modifiers">[vector.modifiers]</a>.
+a reallocation of a vector in Section 23.3.13.3 <a href="https://wg21.link/vector.capacity">[vector.capacity]</a> and
+section 23.3.13.5 <a href="https://wg21.link/vector.modifiers">[vector.modifiers]</a>.
 </p>
 
-<p>23.3.11.3 <a href="https://wg21.link/vector.capacity">[vector.capacity]</a>,p5 says:</p>
+<p>23.3.13.3 <a href="https://wg21.link/vector.capacity">[vector.capacity]</a>,p5 says:</p>
 <blockquote><p>
 Notes: Reallocation invalidates all the references, pointers, and iterators
 referring to the elements in the sequence. It is guaranteed that no
@@ -98,7 +98,7 @@ greater than the size specified in the most recent call to reserve().
 <p>then the implementation may reallocate the vector for the insert,
 as the size specified in the previous call to reserve was zero.</p>
 
-<p>However, the previous paragraphs (23.3.11.3 <a href="https://wg21.link/vector.capacity">[vector.capacity]</a>, p1-2) state:</p>
+<p>However, the previous paragraphs (23.3.13.3 <a href="https://wg21.link/vector.capacity">[vector.capacity]</a>, p1-2) state:</p>
 <blockquote>
 <p>
 (capacity) Returns: The total number of elements the vector
@@ -114,7 +114,7 @@ of capacity() otherwise...
 <p>
 This implies that vec.capacity() is still 23, and so the insert()
 should not require a reallocation, as vec.size() is 0. This is backed
-up by 23.3.11.5 <a href="https://wg21.link/vector.modifiers">[vector.modifiers]</a>, p1:
+up by 23.3.13.5 <a href="https://wg21.link/vector.modifiers">[vector.modifiers]</a>, p1:
 </p>
 <blockquote><p>
 (insert) Notes: Causes reallocation if the new size is greater than the old
@@ -129,7 +129,7 @@ than the old capacity, I think the intent is clear.
 
 
 <p id="res-329"><b>Proposed resolution:</b></p>
-<p>Change the wording of 23.3.11.3 <a href="https://wg21.link/vector.capacity">[vector.capacity]</a> paragraph 5 to:</p>
+<p>Change the wording of 23.3.13.3 <a href="https://wg21.link/vector.capacity">[vector.capacity]</a> paragraph 5 to:</p>
 
 <blockquote><p>
 Notes: Reallocation invalidates all the references, pointers, and

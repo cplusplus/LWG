@@ -63,7 +63,7 @@
 <hr>
 <p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#New">New</a> status.</em></p>
 <h3 id="4127"><a href="lwg-active.html#4127">4127</a>. The Standard Library should not use predicates of the form <code>pred(*i) != false</code></h3>
-<p><b>Section:</b> 22.10.18.3 <a href="https://wg21.link/func.search.bm">[func.search.bm]</a>, 22.10.18.4 <a href="https://wg21.link/func.search.bmh">[func.search.bmh]</a>, 23.2.7.1 <a href="https://wg21.link/associative.reqmts.general">[associative.reqmts.general]</a>, 23.3.9.5 <a href="https://wg21.link/list.ops">[list.ops]</a>, 26.6.6 <a href="https://wg21.link/alg.find">[alg.find]</a>, 26.6.9 <a href="https://wg21.link/alg.find.first.of">[alg.find.first.of]</a>, 26.6.10 <a href="https://wg21.link/alg.adjacent.find">[alg.adjacent.find]</a>, 26.6.11 <a href="https://wg21.link/alg.count">[alg.count]</a>, 26.6.12 <a href="https://wg21.link/alg.mismatch">[alg.mismatch]</a>, 26.6.15 <a href="https://wg21.link/alg.search">[alg.search]</a>, 26.8.1 <a href="https://wg21.link/alg.sorting.general">[alg.sorting.general]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
+<p><b>Section:</b> 22.10.18.3 <a href="https://wg21.link/func.search.bm">[func.search.bm]</a>, 22.10.18.4 <a href="https://wg21.link/func.search.bmh">[func.search.bmh]</a>, 23.2.7.1 <a href="https://wg21.link/associative.reqmts.general">[associative.reqmts.general]</a>, 23.3.11.5 <a href="https://wg21.link/list.ops">[list.ops]</a>, 26.6.6 <a href="https://wg21.link/alg.find">[alg.find]</a>, 26.6.9 <a href="https://wg21.link/alg.find.first.of">[alg.find.first.of]</a>, 26.6.10 <a href="https://wg21.link/alg.adjacent.find">[alg.adjacent.find]</a>, 26.6.11 <a href="https://wg21.link/alg.count">[alg.count]</a>, 26.6.12 <a href="https://wg21.link/alg.mismatch">[alg.mismatch]</a>, 26.6.15 <a href="https://wg21.link/alg.search">[alg.search]</a>, 26.8.1 <a href="https://wg21.link/alg.sorting.general">[alg.sorting.general]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
  <b>Submitter:</b> Hewill Kang <b>Opened:</b> 2024-07-25 <b>Last modified:</b> 2024-08-05</p>
 <p><b>Priority: </b>3
 </p>
@@ -217,7 +217,7 @@ such that distance from <code>i</code> to <code>j</code> is positive, the follow
 
 </li>
 
-<li><p>Modify 23.3.9.5 <a href="https://wg21.link/list.ops">[list.ops]</a> as indicated:</p>
+<li><p>Modify 23.3.11.5 <a href="https://wg21.link/list.ops">[list.ops]</a> as indicated:</p>
 
 <blockquote>
 <pre>
@@ -404,7 +404,7 @@ that every <i>E</i> <b>definition</b> remains unconverted but and that every <i>
 been applied based on the reflector preference for that simplified approach.
 <p/>
 Nonetheless, during the wording preparation I noticed that the wording in the 
-<i>Throws</i>: element 23.3.9.5 <a href="https://wg21.link/list.ops">[list.ops]</a> p17 is seriously <b>missing</b> the 
+<i>Throws</i>: element 23.3.11.5 <a href="https://wg21.link/list.ops">[list.ops]</a> p17 is seriously <b>missing</b> the 
 additional extra conversion to <code>bool</code> for both expressions, because the 
 <code><i>boolean-testable</i></code> requirements do not impose a no-throw requirement for 
 that conversion, and they must therefore be included here.
@@ -544,7 +544,7 @@ such that distance from <code>i</code> to <code>j</code> is positive, the follow
 
 </li>
 
-<li><p>Modify 23.3.9.5 <a href="https://wg21.link/list.ops">[list.ops]</a> as indicated:</p>
+<li><p>Modify 23.3.11.5 <a href="https://wg21.link/list.ops">[list.ops]</a> as indicated:</p>
 
 <blockquote>
 <pre>

@@ -63,7 +63,7 @@
 <hr>
 <p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#CD1">CD1</a> status.</em></p>
 <h3 id="755"><a href="lwg-defects.html#755">755</a>. <code>std::vector</code> and <code>std:string</code> lack explicit shrink-to-fit operations</h3>
-<p><b>Section:</b> 23.3.11.3 <a href="https://wg21.link/vector.capacity">[vector.capacity]</a>, 27.4.3.5 <a href="https://wg21.link/string.capacity">[string.capacity]</a> <b>Status:</b> <a href="lwg-active.html#CD1">CD1</a>
+<p><b>Section:</b> 23.3.13.3 <a href="https://wg21.link/vector.capacity">[vector.capacity]</a>, 27.4.3.5 <a href="https://wg21.link/string.capacity">[string.capacity]</a> <b>Status:</b> <a href="lwg-active.html#CD1">CD1</a>
  <b>Submitter:</b> Beman Dawes <b>Opened:</b> 2007-10-31 <b>Last modified:</b> 2016-01-28</p>
 <p><b>Priority: </b>Not Prioritized
 </p>
@@ -125,8 +125,8 @@ takes no arguments to keep the solution simple and focused.
 <p id="res-755"><b>Proposed resolution:</b></p>
 <p>
 To Class template basic_string 27.4.3 <a href="https://wg21.link/basic.string">[basic.string]</a> synopsis,
-Class template vector 23.3.11 <a href="https://wg21.link/vector">[vector]</a> synopsis, and Class
-vector&lt;bool&gt; 23.3.12 <a href="https://wg21.link/vector.bool">[vector.bool]</a> synopsis, add:
+Class template vector 23.3.13 <a href="https://wg21.link/vector">[vector]</a> synopsis, and Class
+vector&lt;bool&gt; 23.3.14 <a href="https://wg21.link/vector.bool">[vector.bool]</a> synopsis, add:
 </p>
 
 <blockquote><pre>    
@@ -135,7 +135,7 @@ void shrink_to_fit();
 
 <p>
 To basic_string capacity 27.4.3.5 <a href="https://wg21.link/string.capacity">[string.capacity]</a> and vector
-capacity 23.3.11.3 <a href="https://wg21.link/vector.capacity">[vector.capacity]</a>, add:
+capacity 23.3.13.3 <a href="https://wg21.link/vector.capacity">[vector.capacity]</a>, add:
 </p>
 
 <blockquote>

@@ -79,7 +79,7 @@ that an expression involving the deleter does not exit via an exception. There's
 or user can take advantage of in presence of this UB. Since the behavior otherwise would be a call to 
 <code>std::terminate</code>, these preconditions should be striked out.
 <p/>
-Note that although <code>~unique_ptr()</code> is not <code>noexcept</code>, 16.4.6.13 <a href="https://wg21.link/res.on.exception.handling">[res.on.exception.handling]</a> p3 
+Note that although <code>~unique_ptr()</code> is not <code>noexcept</code>, 16.4.6.14 <a href="https://wg21.link/res.on.exception.handling">[res.on.exception.handling]</a> p3 
 specifies it to behave as if it were.
 </p>
 <p><i>[2021-09-20 Status changed: New &rarr; NAD.]</i></p>

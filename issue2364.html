@@ -63,7 +63,7 @@
 <hr>
 <p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#C++17">C++17</a> status.</em></p>
 <h3 id="2364"><a href="lwg-defects.html#2364">2364</a>. <code>deque</code> and <code>vector</code> <code>pop_back</code> don't specify iterator invalidation requirements</h3>
-<p><b>Section:</b> 23.3.5.4 <a href="https://wg21.link/deque.modifiers">[deque.modifiers]</a>, 23.3.11.5 <a href="https://wg21.link/vector.modifiers">[vector.modifiers]</a> <b>Status:</b> <a href="lwg-active.html#C++17">C++17</a>
+<p><b>Section:</b> 23.3.5.4 <a href="https://wg21.link/deque.modifiers">[deque.modifiers]</a>, 23.3.13.5 <a href="https://wg21.link/vector.modifiers">[vector.modifiers]</a> <b>Status:</b> <a href="lwg-active.html#C++17">C++17</a>
  <b>Submitter:</b> Deskin Miller <b>Opened:</b> 2014-02-17 <b>Last modified:</b> 2017-07-30</p>
 <p><b>Priority: </b>0
 </p>
@@ -77,7 +77,7 @@ my satisfaction in the Standard. N3797 23.2.4 <a href="https://wg21.link/sequenc
 last element", but nowhere do I see this required to invalidate the end iterator (or iterators previously referring to the last element). 
  [container.reqmts.general]/11 states "Unless otherwise specified (either explicitly or by defining a function in terms of 
 other functions), invoking a container member function or passing a container as an argument to a library function shall not 
-invalidate iterators to, or change the values of, objects within that container." 23.3.11.5 <a href="https://wg21.link/vector.modifiers">[vector.modifiers]</a>/3 says that each 
+invalidate iterators to, or change the values of, objects within that container." 23.3.13.5 <a href="https://wg21.link/vector.modifiers">[vector.modifiers]</a>/3 says that each 
 flavor of <code>vector::erase</code> "Invalidates iterators and references at or after the point of the erase", but <code>pop_back</code> isn't 
 discussed, and it wasn't specified in terms of <code>erase</code>.
 </p>
@@ -86,7 +86,7 @@ Similarly for <code>std::deque</code>, 23.2.4 <a href="https://wg21.link/sequenc
 Yet 23.3.5.4 <a href="https://wg21.link/deque.modifiers">[deque.modifiers]</a> likewise doesn't discuss <code>pop_back</code> nor <code>pop_front</code>. Furthermore paragraph 4 fails to 
 specify the iterator-invalidation guarantees when erasing the first element but not the last.
 <p/>
-Both <code>std::vector</code> and <code>std::deque</code> are in contrast to <code>std::list</code>, which says in 23.3.9.4 <a href="https://wg21.link/list.modifiers">[list.modifiers]</a>/3 
+Both <code>std::vector</code> and <code>std::deque</code> are in contrast to <code>std::list</code>, which says in 23.3.11.4 <a href="https://wg21.link/list.modifiers">[list.modifiers]</a>/3 
 regarding <code>pop_back</code> (as well as all forms of <code>erase</code>, <code>pop_front</code>, and <code>clear</code>) "Effects: Invalidates only 
 the iterators and references to the erased elements."
 </p>
@@ -146,7 +146,7 @@ void pop_back();</ins>
 </blockquote>
 </li>
 
-<li><p>Change 23.3.11.5 <a href="https://wg21.link/vector.modifiers">[vector.modifiers]</a> as indicated:</p>
+<li><p>Change 23.3.13.5 <a href="https://wg21.link/vector.modifiers">[vector.modifiers]</a> as indicated:</p>
 <blockquote>
 <blockquote>
 <p>
@@ -207,7 +207,7 @@ are erase operations &mdash; <i>end note</i>]</ins>
 </blockquote>
 </li>
 
-<li><p>Change 23.3.11.5 <a href="https://wg21.link/vector.modifiers">[vector.modifiers]</a> as indicated:</p>
+<li><p>Change 23.3.13.5 <a href="https://wg21.link/vector.modifiers">[vector.modifiers]</a> as indicated:</p>
 <blockquote>
 <pre>
 iterator erase(const_iterator position);

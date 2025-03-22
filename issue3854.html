@@ -63,7 +63,7 @@
 <hr>
 <p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#New">New</a> status.</em></p>
 <h3 id="3854"><a href="lwg-active.html#3854">3854</a>. &sect;[res.on.exception.handling]/3 should not be applied to all standard library types</h3>
-<p><b>Section:</b> 16.4.6.13 <a href="https://wg21.link/res.on.exception.handling">[res.on.exception.handling]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
+<p><b>Section:</b> 16.4.6.14 <a href="https://wg21.link/res.on.exception.handling">[res.on.exception.handling]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
  <b>Submitter:</b> Jiang An <b>Opened:</b> 2023-01-07 <b>Last modified:</b> 2023-02-01</p>
 <p><b>Priority: </b>3
 </p>
@@ -74,7 +74,7 @@
 <p>
 Some standard library types, such as <code>std::pair</code>, <code>std::tuple</code>, and <code>std::array</code>, 
 are currently allowed to have a member or element type with a destructor that is <code>noexcept(false)</code>. 
-In order to conform to 16.4.6.13 <a href="https://wg21.link/res.on.exception.handling">[res.on.exception.handling]</a>/3, these types can't always have 
+In order to conform to 16.4.6.14 <a href="https://wg21.link/res.on.exception.handling">[res.on.exception.handling]</a>/3, these types can't always have 
 implicitly declared destructors because the implicit exception specification may be <code>noexcept(false)</code>.
 <p/>
 However, it may be intentional to implement these types with implicitly declared destructors, and 
@@ -82,7 +82,7 @@ mainstream implementations (libc++, libstdc++, and MSVC STL) are already doing s
 <p/>
 Furtherly, explicitly declared destructors are not allowed for algorithm result types 
 (26.5 <a href="https://wg21.link/algorithms.results">[algorithms.results]</a>), while currently these class templates are allowed to be instantiated 
-with classes with potentially throwing destructors, which is contradictory to 16.4.6.13 <a href="https://wg21.link/res.on.exception.handling">[res.on.exception.handling]</a>/3.
+with classes with potentially throwing destructors, which is contradictory to 16.4.6.14 <a href="https://wg21.link/res.on.exception.handling">[res.on.exception.handling]</a>/3.
 </p>
 
 <p><i>[2023-01-29; Daniel comments]</i></p>

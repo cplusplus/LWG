@@ -75,7 +75,7 @@ There are two paragraphs in the the definition of <code>common_type</code>:
 </p>
 <ul>
 <li><p>Otherwise, if both <code>D1</code> and <code>D2</code> denote comparison category types 
-(17.11.2.1 <a href="https://wg21.link/cmp.categories.pre">[cmp.categories.pre]</a>), let <code>C</code> denote the common comparison type 
+(17.12.2.1 <a href="https://wg21.link/cmp.categories.pre">[cmp.categories.pre]</a>), let <code>C</code> denote the common comparison type 
 (11.10.3 <a href="https://wg21.link/class.spaceship">[class.spaceship]</a>) of <code>D1</code> and <code>D2</code>.</p></li>
 <li><p>Otherwise, if <code>decay_t&lt;decltype(false ? declval&lt;D1&gt;() : declval&lt;D2&gt;())&gt;</code> 
 denotes a valid type, let <code>C</code> denote that type.</p></li>
@@ -116,7 +116,7 @@ is <code>false</code>, let <code>C</code> denote the same type, if any, as <code
 <li><p>(3.3.2) &mdash; [<i>Note:</i> None of the following will apply if there is a specialization 
 <code>common_type&lt;D1, D2&gt;</code>. &mdash; <i>end note</i>]</p></li>
 <li><p><del>(3.3.3) &mdash; Otherwise, if both <code>D1</code> and <code>D2</code> denote comparison category types 
-(17.11.2.1 <a href="https://wg21.link/cmp.categories.pre">[cmp.categories.pre]</a>), let <code>C</code> denote the common comparison type 
+(17.12.2.1 <a href="https://wg21.link/cmp.categories.pre">[cmp.categories.pre]</a>), let <code>C</code> denote the common comparison type 
 (11.10.3 <a href="https://wg21.link/class.spaceship">[class.spaceship]</a>) of <code>D1</code> and <code>D2</code>.</del></p></li>
 <li><p>(3.3.4) &mdash; Otherwise, if</p>
 <blockquote><pre>

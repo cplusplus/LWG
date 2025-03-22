@@ -144,7 +144,7 @@ A ::A () noexcept = default;
 </pre><blockquote>
 <p>
 -4- <i>Effects:</i> <del>leaves the atomic object in an uninitialized state</del><ins>The value of the atomic object
-is default-initialized (9.4 <a href="https://wg21.link/dcl.init">[dcl.init]</a>)</ins>. [<i>Note:</i> These semantics ensure compatibility
+is default-initialized (9.5 <a href="https://wg21.link/dcl.init">[dcl.init]</a>)</ins>. [<i>Note:</i> These semantics ensure compatibility
 with <code>C</code>. &mdash; <i>end note</i>]
 </p>
 </blockquote></blockquote>
@@ -196,7 +196,7 @@ atomic object"]</em></p>
 </pre>
 <blockquote>
 <p>
--4- <i>Effects:</i> <del>leaves the atomic object in an uninitialized state</del><ins>Default-initializes (9.4 <a href="https://wg21.link/dcl.init">[dcl.init]</a>)
+-4- <i>Effects:</i> <del>leaves the atomic object in an uninitialized state</del><ins>Default-initializes (9.5 <a href="https://wg21.link/dcl.init">[dcl.init]</a>)
 the <i>C</i> value referred to by the atomic object</ins>. [<i>Note:</i> These semantics ensure compatibility with <code>C</code>.
 &mdash; <i>end note</i>]
 </p>
@@ -353,7 +353,7 @@ void atomic_flag::clear(memory_order order = memory_order_seq_cst) noexcept;
 atomic() noexcept = default;
 </pre><blockquote>
 
-<p>-2- <em>Effects</em>: <del>Leaves the atomic object in an uninitialized state. [<em>Note:</em> These semantics ensure compatibility with C. &mdash; <em>end note</em>]</del><ins>Initializes the atomic object with a default-initialized (9.4 <a href="https://wg21.link/dcl.init">[dcl.init]</a>) value of type <code>T</code>. [<em>Note:</em> The default-initialized value may not be pointer-interconvertible with the atomic object. &mdash; <em>end note</em>]</ins></p></blockquote></blockquote>
+<p>-2- <em>Effects</em>: <del>Leaves the atomic object in an uninitialized state. [<em>Note:</em> These semantics ensure compatibility with C. &mdash; <em>end note</em>]</del><ins>Initializes the atomic object with a default-initialized (9.5 <a href="https://wg21.link/dcl.init">[dcl.init]</a>) value of type <code>T</code>. [<em>Note:</em> The default-initialized value may not be pointer-interconvertible with the atomic object. &mdash; <em>end note</em>]</ins></p></blockquote></blockquote>
 
 <blockquote><pre>
 constexpr atomic(T desired) noexcept;

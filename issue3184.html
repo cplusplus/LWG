@@ -105,7 +105,7 @@ template&lt;class F&gt; <i>unspecified</i> not_fn(F&amp;&amp; f);
 <li><p>(1.2) &mdash; [&hellip;]</p></li>
 <li><p>(1.3) &mdash; <code>fd</code> is the target object of <code>g</code> (22.10.3 <a href="https://wg21.link/func.def">[func.def]</a>) of type 
 <code>FD</code> <ins>direct-non-list-initialized with</ins><del>initialized with the <i>initializer</i></del> 
-<code><del>(</del>std::forward&lt;F&gt;(f)<del>)</del></code><del> (9.4 <a href="https://wg21.link/dcl.init">[dcl.init]</a>)</del>,</p></li>
+<code><del>(</del>std::forward&lt;F&gt;(f)<del>)</del></code><del> (9.5 <a href="https://wg21.link/dcl.init">[dcl.init]</a>)</del>,</p></li>
 <li><p>(1.4) &mdash; [&hellip;]</p></li>
 </ol>
 </blockquote>
@@ -127,7 +127,7 @@ template &lt;class F, class... Args&gt;
 <li><p>(1.2) &mdash; [&hellip;]</p></li>
 <li><p>(1.3) &mdash; <code>fd</code> is the target object of <code>g</code> (22.10.3 <a href="https://wg21.link/func.def">[func.def]</a>) of type 
 <code>FD</code> <ins>direct-non-list-initialized with</ins><del>initialized with the <i>initializer</i></del> 
-<code><del>(</del>std::forward&lt;F&gt;(f)<del>)</del></code><del> (9.4 <a href="https://wg21.link/dcl.init">[dcl.init]</a>)</del>,</p></li>
+<code><del>(</del>std::forward&lt;F&gt;(f)<del>)</del></code><del> (9.5 <a href="https://wg21.link/dcl.init">[dcl.init]</a>)</del>,</p></li>
 <li><p>(1.4) &mdash; [&hellip;]</p></li>
 <li><p>(1.5) &mdash; <code>bound_args</code> is a pack of bound argument entities of <code>g</code> (22.10.3 <a href="https://wg21.link/func.def">[func.def]</a>) 
 of types <code>BoundArgs...</code>, <ins>direct-non-list-initialized with</ins><del>initialized with 

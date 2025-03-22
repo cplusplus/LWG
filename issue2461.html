@@ -63,7 +63,7 @@
 <hr>
 <p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#New">New</a> status.</em></p>
 <h3 id="2461"><a href="lwg-active.html#2461">2461</a>. Interaction between allocators and container exception safety guarantees</h3>
-<p><b>Section:</b> 16.4.4.6 <a href="https://wg21.link/allocator.requirements">[allocator.requirements]</a>, 23.3.11.3 <a href="https://wg21.link/vector.capacity">[vector.capacity]</a>, 23.3.11.5 <a href="https://wg21.link/vector.modifiers">[vector.modifiers]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
+<p><b>Section:</b> 16.4.4.6 <a href="https://wg21.link/allocator.requirements">[allocator.requirements]</a>, 23.3.13.3 <a href="https://wg21.link/vector.capacity">[vector.capacity]</a>, 23.3.13.5 <a href="https://wg21.link/vector.modifiers">[vector.modifiers]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
  <b>Submitter:</b> dyp <b>Opened:</b> 2014-12-06 <b>Last modified:</b> 2015-06-10</p>
 <p><b>Priority: </b>3
 </p>
@@ -149,7 +149,7 @@ other than a copy/move constructor.
 </ol>
 <p>
 This leads to an issue with the wording of the exception safety guarantees for vector modifiers in
-23.3.11.5 <a href="https://wg21.link/vector.modifiers">[vector.modifiers]</a> p1:
+23.3.13.5 <a href="https://wg21.link/vector.modifiers">[vector.modifiers]</a> p1:
 </p>
 <blockquote>
 <p>
@@ -188,7 +188,7 @@ the implementation is required to ensure that "there are no effects",
 even if the source buffer has been modified.
 <p/>
 Similarly, the <code>vector</code> capacity functions specify exception safety guarantees
-referring to the move constructor of the value type. For example, <code>vector::resize</code> in 23.3.11.3 <a href="https://wg21.link/vector.capacity">[vector.capacity]</a> p14:
+referring to the move constructor of the value type. For example, <code>vector::resize</code> in 23.3.13.3 <a href="https://wg21.link/vector.capacity">[vector.capacity]</a> p14:
 </p>
 <blockquote>
 <i>Remarks</i>: If an exception is thrown other than by the move constructor of a
@@ -277,7 +277,7 @@ Even though the value type has an accessible and <code>noexcept(true)</code> mov
 constructor, this allocator won't call that constructor for rvalue arguments.
 In any case, it does not call a constructor for which vector has formulated its 
 requirements. An exception thrown by a constructor called by this allocator is not
-covered by the specification in 23.3.11.5 <a href="https://wg21.link/vector.modifiers">[vector.modifiers]</a> and therefore is
+covered by the specification in 23.3.13.5 <a href="https://wg21.link/vector.modifiers">[vector.modifiers]</a> and therefore is
 guaranteed not to have any effect on the vector object when resizing.
 <p/>
 For an example how this might invalidate the exception safety

@@ -63,14 +63,14 @@
 <hr>
 <p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#NAD">NAD</a> status.</em></p>
 <h3 id="491"><a href="lwg-closed.html#491">491</a>. std::list&lt;>::unique incorrectly specified</h3>
-<p><b>Section:</b> 23.3.9.5 <a href="https://wg21.link/list.ops">[list.ops]</a> <b>Status:</b> <a href="lwg-active.html#NAD">NAD</a>
+<p><b>Section:</b> 23.3.11.5 <a href="https://wg21.link/list.ops">[list.ops]</a> <b>Status:</b> <a href="lwg-active.html#NAD">NAD</a>
  <b>Submitter:</b> Thomas Mang <b>Opened:</b> 2004-12-12 <b>Last modified:</b> 2016-01-28</p>
 <p><b>Priority: </b>Not Prioritized
 </p>
 <p><b>View all other</b> <a href="lwg-index.html#list.ops">issues</a> in [list.ops].</p>
 <p><b>View all issues with</b> <a href="lwg-status.html#NAD">NAD</a> status.</p>
 <p><b>Discussion:</b></p>
-<p>In Section 23.3.9.5 <a href="https://wg21.link/list.ops">[list.ops]</a>, paragraphs 19 to 21 describe the
+<p>In Section 23.3.11.5 <a href="https://wg21.link/list.ops">[list.ops]</a>, paragraphs 19 to 21 describe the
 behavior of the std::list&lt;T, Allocator>::unique operation. However, the
 current wording is defective for various reasons.</p>
 
@@ -80,7 +80,7 @@ current wording is defective for various reasons.</p>
 1) Analysis of current wording:
 </p>
 
-<p>23.3.9.5 <a href="https://wg21.link/list.ops">[list.ops]</a>, paragraph 19:</p>
+<p>23.3.11.5 <a href="https://wg21.link/list.ops">[list.ops]</a>, paragraph 19:</p>
 
 <p>
 Current wording says:
@@ -94,7 +94,7 @@ predicate argument) holds."</p>
 This sentences makes use of the undefined term "Eliminates". Although it
 is, to a certain degree, reasonable to consider the term "eliminate"
 synonymous with "erase", using "Erase" in the first place, as the
-wording of 23.3.9.5 <a href="https://wg21.link/list.ops">[list.ops]</a>, paragraph 15 does, would be clearer.</p>
+wording of 23.3.11.5 <a href="https://wg21.link/list.ops">[list.ops]</a>, paragraph 15 does, would be clearer.</p>
 
 <p>
 The range of the elements referred to by iterator i is "[first + 1,
@@ -111,7 +111,7 @@ The same problems as pointed out in DR 202 (equivalence relation / order
 of arguments for pred()) apply to this paragraph.</p>
 
 <p>
-23.3.9.5 <a href="https://wg21.link/list.ops">[list.ops]</a>, paragraph 20:
+23.3.11.5 <a href="https://wg21.link/list.ops">[list.ops]</a>, paragraph 20:
 </p>
 
 <p>
@@ -128,7 +128,7 @@ expressions ( "*i == *(i - 1)", "pred(*i, *(i -1))" ).
 </p>
 
 <p>
-23.3.9.5 <a href="https://wg21.link/list.ops">[list.ops]</a>, paragraph 21:</p>
+23.3.11.5 <a href="https://wg21.link/list.ops">[list.ops]</a>, paragraph 21:</p>
 
 <p>
 Current wording says:
@@ -167,7 +167,7 @@ of DR 202, no impact on current code is expected.</p>
 3) Proposed fixes:</p>
 
 <p>
-Change 23.3.9.5 <a href="https://wg21.link/list.ops">[list.ops]</a>, paragraph 19 to:</p>
+Change 23.3.11.5 <a href="https://wg21.link/list.ops">[list.ops]</a>, paragraph 19 to:</p>
 
 <p>
 "Effect: Erases all but the first element from every consecutive group
@@ -186,7 +186,7 @@ wording need also additional review.
 b) "Erases" refers in the author's opinion unambiguously to the member
 function "erase". In case there is doubt this might not be unamgibuous,
 a direct reference to the member function "erase" is suggested [Note:
-This would also imply a change of 23.3.9.5 <a href="https://wg21.link/list.ops">[list.ops]</a>, paragraph
+This would also imply a change of 23.3.11.5 <a href="https://wg21.link/list.ops">[list.ops]</a>, paragraph
 15.].
 c) The expression "(i - 1)" was left, but is expected that DR submitted
 by Thomas Mang regarding invalid iterator arithmetic expressions will
@@ -206,7 +206,7 @@ elements consists of only a single element, this element is also
 considered the first element."</p>
 
 <p>
-Change 23.3.9.5 <a href="https://wg21.link/list.ops">[list.ops]</a>, paragraph 20 to:</p>
+Change 23.3.11.5 <a href="https://wg21.link/list.ops">[list.ops]</a>, paragraph 20 to:</p>
 
 <p>
 "Throws: Nothing unless an exception is thrown by *(i-1) == *i or
@@ -217,7 +217,7 @@ Comments to the new wording:</p>
 
 <p>
 a) The wording regarding the conditions is identical to proposed
-23.3.9.5 <a href="https://wg21.link/list.ops">[list.ops]</a>, paragraph 19. If 23.3.9.5 <a href="https://wg21.link/list.ops">[list.ops]</a>,
+23.3.11.5 <a href="https://wg21.link/list.ops">[list.ops]</a>, paragraph 19. If 23.3.11.5 <a href="https://wg21.link/list.ops">[list.ops]</a>,
 paragraph 19 is resolved in another way, the proposed wording need also
 additional review.
 b) The expression "(i - 1)" was left, but is expected that DR submitted
@@ -226,7 +226,7 @@ take this into account.
 c) Typos fixed.</p>
 
 <p>
-Change 23.3.9.5 <a href="https://wg21.link/list.ops">[list.ops]</a>, paragraph 21 to:</p>
+Change 23.3.11.5 <a href="https://wg21.link/list.ops">[list.ops]</a>, paragraph 21 to:</p>
 
 <p>
 "Complexity: If empty() == false, exactly size() - 1 applications of the

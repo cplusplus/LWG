@@ -63,7 +63,7 @@
 <hr>
 <p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#CD1">CD1</a> status.</em></p>
 <h3 id="341"><a href="lwg-defects.html#341">341</a>. Vector reallocation and swap</h3>
-<p><b>Section:</b> 23.3.11.3 <a href="https://wg21.link/vector.capacity">[vector.capacity]</a> <b>Status:</b> <a href="lwg-active.html#CD1">CD1</a>
+<p><b>Section:</b> 23.3.13.3 <a href="https://wg21.link/vector.capacity">[vector.capacity]</a> <b>Status:</b> <a href="lwg-active.html#CD1">CD1</a>
  <b>Submitter:</b> Anthony Williams <b>Opened:</b> 2001-09-27 <b>Last modified:</b> 2016-01-28</p>
 <p><b>Priority: </b>Not Prioritized
 </p>
@@ -80,7 +80,7 @@ an empty one:</p>
   // vec is now empty, with minimal capacity
 </pre>
 
-<p>However, the wording of 23.3.11.3 <a href="https://wg21.link/vector.capacity">[vector.capacity]</a>paragraph 5 prevents
+<p>However, the wording of 23.3.13.3 <a href="https://wg21.link/vector.capacity">[vector.capacity]</a>paragraph 5 prevents
 the capacity of a vector being reduced, following a call to
 reserve(). This invalidates the idiom, as swap() is thus prevented
 from reducing the capacity. The proposed wording for issue <a href="lwg-defects.html#329" title="vector capacity, reserve and reallocation (Status: CD1)">329</a><sup><a href="https://cplusplus.github.io/LWG/issue329" title="Latest snapshot">(i)</a></sup> does not affect this.  Consequently, the example above
@@ -113,7 +113,7 @@ referred to one vector now refer to the other, and vice-versa.</li>
 
 
 <p id="res-341"><b>Proposed resolution:</b></p>
-<p>Add a new paragraph after 23.3.11.3 <a href="https://wg21.link/vector.capacity">[vector.capacity]</a> paragraph 5:</p>
+<p>Add a new paragraph after 23.3.13.3 <a href="https://wg21.link/vector.capacity">[vector.capacity]</a> paragraph 5:</p>
 <blockquote>
 <pre>
   void swap(vector&lt;T,Allocator&gt;&amp; x);

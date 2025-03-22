@@ -74,7 +74,7 @@
 Otherwise, one could use <code>memcpy</code> to save and restore the value according to 3.9p2.
 <p/>
 It seems the core language rules in 11 <a href="https://wg21.link/class">[class]</a>p6 with  [class.copy]p12 
-(trivial copy constructor) etc. and 9.5.2 <a href="https://wg21.link/dcl.fct.def.default">[dcl.fct.def.default]</a>p5 (user-provided) say 
+(trivial copy constructor) etc. and 9.6.2 <a href="https://wg21.link/dcl.fct.def.default">[dcl.fct.def.default]</a>p5 (user-provided) say 
 that the atomic types are trivially copyable, which is bad. We shouldn't rely on future core 
 changes in that area and simply say in the library section 32.5.8 <a href="https://wg21.link/atomics.types.generic">[atomics.types.generic]</a> 
 that these very special types are not trivially copyable.

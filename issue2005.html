@@ -222,7 +222,7 @@ equal to <code>std::pair&lt;KM, T&gt;</code>, this is equivalent to:
 std::pair&lt;const KM, T&gt; dest = std::move(p);
 </pre></blockquote>
 <p>
-Now 9.4 <a href="https://wg21.link/dcl.init">[dcl.init]</a> p16 b6 sb2 says that the effects of this heterogeneous copy-initialization (<code>p</code>
+Now 9.5 <a href="https://wg21.link/dcl.init">[dcl.init]</a> p16 b6 sb2 says that the effects of this heterogeneous copy-initialization (<code>p</code>
 has a different type than <code>dest</code>) are as-if a temporary of the target type <code>std::pair&lt;const KM, T&gt;</code>
 is produced from the rvalue <code>p</code> of type <code>P</code> (which is fine), and this temporary is used to initialize 
 <code>dest</code>. This second step cannot succeed, because we cannot move from <code>const KM</code> to <code>const KM</code>. This 

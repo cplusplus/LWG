@@ -63,7 +63,7 @@
 <hr>
 <p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#New">New</a> status.</em></p>
 <h3 id="3917"><a href="lwg-active.html#3917">3917</a>. Validity of <code>allocator&lt;void&gt;</code> and possibly <code>polymorphic_allocator&lt;void&gt;</code> should be clarified</h3>
-<p><b>Section:</b> 20.2.10 <a href="https://wg21.link/default.allocator">[default.allocator]</a>, 20.4.3 <a href="https://wg21.link/mem.poly.allocator.class">[mem.poly.allocator.class]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
+<p><b>Section:</b> 20.2.10 <a href="https://wg21.link/default.allocator">[default.allocator]</a>, 20.5.3 <a href="https://wg21.link/mem.poly.allocator.class">[mem.poly.allocator.class]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
  <b>Submitter:</b> Daniel Kr&uuml;gler <b>Opened:</b> 2023-04-08 <b>Last modified:</b> 2023-05-24</p>
 <p><b>Priority: </b>3
 </p>
@@ -109,7 +109,7 @@ complete, but <code>void</code> can never be completed), since it is mostly focu
 type itself.
 <p/>
 The situation is similar (albeit maybe not that strong) for <code>polymorphic_allocator&lt;void&gt;</code>, since
-20.4.3 <a href="https://wg21.link/mem.poly.allocator.class">[mem.poly.allocator.class]</a> p1 has some unusual wording form that says
+20.5.3 <a href="https://wg21.link/mem.poly.allocator.class">[mem.poly.allocator.class]</a> p1 has some unusual wording form that says
 </p>
 <blockquote><p>
 -1- A specialization of class template <code>pmr::polymorphic_allocator</code> meets the <i>Cpp17Allocator</i> requirements
@@ -131,7 +131,7 @@ is a complete object type.
 <p/>
 I assume that at least the intention exists that <code>std::allocator</code> is intended to support incomplete types, maybe also
 for <code>polymorphic_allocator</code>. If <code>polymorphic_allocator</code> is intended to support incomplete types as well,
-we should also amend 20.4.3.3 <a href="https://wg21.link/mem.poly.allocator.mem">[mem.poly.allocator.mem]</a> p1 and p8 with a <i>Mandates:</i> element similarly as we did 
+we should also amend 20.5.3.3 <a href="https://wg21.link/mem.poly.allocator.mem">[mem.poly.allocator.mem]</a> p1 and p8 with a <i>Mandates:</i> element similarly as we did 
 for <code>std::allocator</code> via LWG <a href="lwg-defects.html#3307" title="std::allocator&lt;void&gt;().allocate(n) (Status: C++20)">3307</a><sup><a href="https://cplusplus.github.io/LWG/issue3307" title="Latest snapshot">(i)</a></sup>.
 </p>
 
@@ -162,7 +162,7 @@ This wording is relative to <a href="https://wg21.link/N4944" title=" Working Dr
 </li>
 
 <li>
-<p>Add the following new paragraph at the end of 20.4.3.1 <a href="https://wg21.link/mem.poly.allocator.class.general">[mem.poly.allocator.class.general]</a> (possibly just after
+<p>Add the following new paragraph at the end of 20.5.3.1 <a href="https://wg21.link/mem.poly.allocator.class.general">[mem.poly.allocator.class.general]</a> (possibly just after
 the class template synopsis) as indicated:</p>
 
 <blockquote>
@@ -173,7 +173,7 @@ the class template synopsis) as indicated:</p>
 </li>
 
 <li>
-<p>Modify 20.4.3.3 <a href="https://wg21.link/mem.poly.allocator.mem">[mem.poly.allocator.mem]</a> as indicated:</p>
+<p>Modify 20.5.3.3 <a href="https://wg21.link/mem.poly.allocator.mem">[mem.poly.allocator.mem]</a> as indicated:</p>
 
 <blockquote class="note">
 <p>

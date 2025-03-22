@@ -63,7 +63,7 @@
 <hr>
 <p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#C++20">C++20</a> status.</em></p>
 <h3 id="2164"><a href="lwg-defects.html#2164">2164</a>. What are the semantics of <code>vector.emplace(vector.begin(), vector.back())</code>?</h3>
-<p><b>Section:</b> 23.3.11.5 <a href="https://wg21.link/vector.modifiers">[vector.modifiers]</a>, 23.2 <a href="https://wg21.link/container.requirements">[container.requirements]</a> <b>Status:</b> <a href="lwg-active.html#C++20">C++20</a>
+<p><b>Section:</b> 23.3.13.5 <a href="https://wg21.link/vector.modifiers">[vector.modifiers]</a>, 23.2 <a href="https://wg21.link/container.requirements">[container.requirements]</a> <b>Status:</b> <a href="lwg-active.html#C++20">C++20</a>
  <b>Submitter:</b> Howard Hinnant <b>Opened:</b> 2012-07-07 <b>Last modified:</b> 2021-02-25</p>
 <p><b>Priority: </b>2
 </p>
@@ -120,7 +120,7 @@ I believe Nikolay is correct that vector should initialize an intermediate objec
 before any shifts take place. As Nikolay pointed out in another email, this appears to be the only way to 
 satisfy the strong exception guarantee when an exception is not thrown by <code>T</code>'s copy constructor, 
 move constructor, copy assignment operator, or move assignment operator as specified by 
-23.3.11.5 <a href="https://wg21.link/vector.modifiers">[vector.modifiers]</a>/p1. I.e. if the emplace construction throws, the vector must remain unaltered.
+23.3.13.5 <a href="https://wg21.link/vector.modifiers">[vector.modifiers]</a>/p1. I.e. if the emplace construction throws, the vector must remain unaltered.
 <p/>
 That leads to an implementation that tolerates objects bound to the function parameter pack of the <code>emplace</code> 
 member function may be elements or sub-objects of elements of the container.

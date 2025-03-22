@@ -116,7 +116,7 @@ Move to Review once that wording is availalbe.
 Note that C++98/03 had the <code>Reversible Container Requirements</code>.</p>
 <p>Step 3: Also like <code>std::begin/end()</code>, provide overloads of <code>std::rbegin/rend()</code> for arrays.</p>
 <p>Step 4: Provide overloads of <code>std::rbegin/rend()</code> for <code>initializer_list</code>, because it lacks 
-<code>rbegin/rend()</code> members. These overloads follow 17.10.5 <a href="https://wg21.link/support.initlist.range">[support.initlist.range]</a>'s signatures. Note that 
+<code>rbegin/rend()</code> members. These overloads follow 17.11.5 <a href="https://wg21.link/support.initlist.range">[support.initlist.range]</a>'s signatures. Note that 
 because these overloads return <code>reverse_iterator</code>, they aren't being specified in <code>&lt;initializer_list&gt;</code>.</p>
 <p>Step 5: Like Step 1, implement <code>std::crbegin/crend()</code> by calling <code>std::rbegin/rend()</code>.</p>
 

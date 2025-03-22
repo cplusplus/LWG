@@ -162,7 +162,7 @@ Ideally, the resolution would also add back the wording which SG1 dropped from <
 <blockquote><p>Add at new element to the end of 17.5 <a href="https://wg21.link/support.start.term">[support.start.term]</a> p13 (<code>quick_exit()</code>):</p>
 <blockquote>
 <p>
-<ins><i>Remarks:</i> The function <code>quick_exit()</code> is signal-safe (17.13.4 <a href="https://wg21.link/csignal.syn">[csignal.syn]</a>). [<i>Note:</i> It might 
+<ins><i>Remarks:</i> The function <code>quick_exit()</code> is signal-safe (17.14.4 <a href="https://wg21.link/csignal.syn">[csignal.syn]</a>). [<i>Note:</i> It might 
 still be unsafe to call <code>quick_exit()</code> from a handler, because the functions registered with <code>at_quick_exit()</code> 
 might not be signal-safe. &mdash; <i>end note</i>]</ins>
 </p>
@@ -197,7 +197,7 @@ functions should not rely on the identity of objects with thread storage duratio
 calling registered functions, <code>quick_exit</code> shall call <code>_Exit(status)</code>. [<i>Note:</i> The standard file 
 buffers are not flushed. See: ISO C 7.22.4.5. &mdash; <i>end note</i>]
 <p/>
-<ins>-?- <i>Remarks:</i> The function <code>quick_exit()</code> is signal-safe (17.13.4 <a href="https://wg21.link/csignal.syn">[csignal.syn]</a>). [<i>Note:</i> 
+<ins>-?- <i>Remarks:</i> The function <code>quick_exit()</code> is signal-safe (17.14.4 <a href="https://wg21.link/csignal.syn">[csignal.syn]</a>). [<i>Note:</i> 
 It might still be unsafe to call <code>quick_exit()</code> from a handler, because the functions registered with 
 <code>at_quick_exit()</code> might not be signal-safe. &mdash; <i>end note</i>]</ins>
 </p>

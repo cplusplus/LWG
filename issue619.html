@@ -63,7 +63,7 @@
 <hr>
 <p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#CD1">CD1</a> status.</em></p>
 <h3 id="619"><a href="lwg-defects.html#619">619</a>. Longjmp wording problem</h3>
-<p><b>Section:</b> 17.13 <a href="https://wg21.link/support.runtime">[support.runtime]</a> <b>Status:</b> <a href="lwg-active.html#CD1">CD1</a>
+<p><b>Section:</b> 17.14 <a href="https://wg21.link/support.runtime">[support.runtime]</a> <b>Status:</b> <a href="lwg-active.html#CD1">CD1</a>
  <b>Submitter:</b> Lawrence Crowl <b>Opened:</b> 2007-01-12 <b>Last modified:</b> 2016-01-28</p>
 <p><b>Priority: </b>Not Prioritized
 </p>
@@ -74,7 +74,7 @@
 The wording for <code>longjmp</code> is confusing.
 </p>
 <p>
-17.13 <a href="https://wg21.link/support.runtime">[support.runtime]</a> -4- Other runtime support
+17.14 <a href="https://wg21.link/support.runtime">[support.runtime]</a> -4- Other runtime support
 </p>
 <blockquote><p>
 The function signature <code>longjmp(jmp_buf jbuf, int val)</code> has more restricted
@@ -100,7 +100,7 @@ caught only at the point of the setjmp, the behavior is undefined."
 In general, accept Bill Gibbons' recommendation,
 but add "call" to indicate that the undefined behavior
 comes from the dynamic call, not from its presence in the code.
-In 17.13 <a href="https://wg21.link/support.runtime">[support.runtime]</a> paragraph 4, change
+In 17.14 <a href="https://wg21.link/support.runtime">[support.runtime]</a> paragraph 4, change
 </p>
 
 <blockquote><p>

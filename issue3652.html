@@ -63,18 +63,18 @@
 <hr>
 <p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#NAD">NAD</a> status.</em></p>
 <h3 id="3652"><a href="lwg-closed.html#3652">3652</a>. Can we relax the preconditions of <code>longjmp</code>?</h3>
-<p><b>Section:</b> 17.13.3 <a href="https://wg21.link/csetjmp.syn">[csetjmp.syn]</a> <b>Status:</b> <a href="lwg-active.html#NAD">NAD</a>
+<p><b>Section:</b> 17.14.3 <a href="https://wg21.link/csetjmp.syn">[csetjmp.syn]</a> <b>Status:</b> <a href="lwg-active.html#NAD">NAD</a>
  <b>Submitter:</b> Jiang An <b>Opened:</b> 2021-12-15 <b>Last modified:</b> 2022-01-30</p>
 <p><b>Priority: </b>Not Prioritized
 </p>
 <p><b>View all issues with</b> <a href="lwg-status.html#NAD">NAD</a> status.</p>
 <p><b>Discussion:</b></p>
 <p>
-IMO the UB in 17.13.3 <a href="https://wg21.link/csetjmp.syn">[csetjmp.syn]</a>/2 is because of the design that "every destructor call 
+IMO the UB in 17.14.3 <a href="https://wg21.link/csetjmp.syn">[csetjmp.syn]</a>/2 is because of the design that "every destructor call 
 for an object shall be in effect when the lifetime of that object ends". A similar requirement is 
 in 6.7.4 <a href="https://wg21.link/basic.life">[basic.life]</a>/5, but it's more relaxed than the requirement for <code>setjmp</code>/<code>longjmp</code>.
 It seems better to harmonize the requirements in 6.7.4 <a href="https://wg21.link/basic.life">[basic.life]</a>/5 and 
-17.13.3 <a href="https://wg21.link/csetjmp.syn">[csetjmp.syn]</a>/2, which allows <code>longjmp</code> to skip non-trivial but no-op destructor calls. 
+17.14.3 <a href="https://wg21.link/csetjmp.syn">[csetjmp.syn]</a>/2, which allows <code>longjmp</code> to skip non-trivial but no-op destructor calls. 
 Given that Microsoft UCRT's <code>longjmp</code> can sometimes (but not always) call destructors, 
 IMO we should say that it's unspecified whether <code>longjmp</code> calls destructor for any object 
 whose lifetime ends.
@@ -91,7 +91,7 @@ This wording is relative to <a href="https://wg21.link/N4901" title=" Working Dr
 </p>
 
 <ol>
-<li><p>Modify 17.13.3 <a href="https://wg21.link/csetjmp.syn">[csetjmp.syn]</a> as indicated:</p>
+<li><p>Modify 17.14.3 <a href="https://wg21.link/csetjmp.syn">[csetjmp.syn]</a> as indicated:</p>
 
 <blockquote>
 <p>

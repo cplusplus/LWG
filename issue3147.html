@@ -73,8 +73,8 @@
 <p><b>Discussion:</b></p>
 <p>
 16.4.5.3.3 <a href="https://wg21.link/macro.names">[macro.names]</a>/2 forbids a translation unit to define names "lexically identical to [&hellip;] the 
-<i>attribute-token</i>s described in 9.12 <a href="https://wg21.link/dcl.attr">[dcl.attr]</a>." We recently added the attribute-tokens <code>likely</code> 
-and <code>unlikely</code> (9.12.8 <a href="https://wg21.link/dcl.attr.likelihood">[dcl.attr.likelihood]</a>). These names are in extremely wide use as function-like 
+<i>attribute-token</i>s described in 9.13 <a href="https://wg21.link/dcl.attr">[dcl.attr]</a>." We recently added the attribute-tokens <code>likely</code> 
+and <code>unlikely</code> (9.13.7 <a href="https://wg21.link/dcl.attr.likelihood">[dcl.attr.likelihood]</a>). These names are in extremely wide use as function-like 
 macros in the open source community, forbidding users to define them breaks large amounts of code. (Reportedly 
 Chromium contains 19 definitions each of "likely" and "unlikely" as function-like macros.)
 <p/>
@@ -110,9 +110,9 @@ the text inserted by LWG <a href="lwg-defects.html#3132" title="Library needs to
 <blockquote>
 <p>
 -2- A translation unit shall not <code>#define</code> or <code>#undef</code> names lexically identical to keywords, to 
-the identifiers listed in Table 4, or to the <i>attribute-token</i>s described in 9.12 <a href="https://wg21.link/dcl.attr">[dcl.attr]</a><ins>, 
+the identifiers listed in Table 4, or to the <i>attribute-token</i>s described in 9.13 <a href="https://wg21.link/dcl.attr">[dcl.attr]</a><ins>, 
 except that the names <code>likely</code> and <code>unlikely</code> may be defined as function-like macros 
-(15.6 <a href="https://wg21.link/cpp.replace">[cpp.replace]</a>)</ins>.
+(15.7 <a href="https://wg21.link/cpp.replace">[cpp.replace]</a>)</ins>.
 </p>
 </blockquote>
 </li>

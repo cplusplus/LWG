@@ -63,7 +63,7 @@
 <hr>
 <p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#C++17">C++17</a> status.</em></p>
 <h3 id="2586"><a href="lwg-defects.html#2586">2586</a>. Wrong value category used in <code>scoped_allocator_adaptor::construct()</code></h3>
-<p><b>Section:</b> 20.5.4 <a href="https://wg21.link/allocator.adaptor.members">[allocator.adaptor.members]</a>, 20.2.8.2 <a href="https://wg21.link/allocator.uses.construction">[allocator.uses.construction]</a> <b>Status:</b> <a href="lwg-active.html#C++17">C++17</a>
+<p><b>Section:</b> 20.6.4 <a href="https://wg21.link/allocator.adaptor.members">[allocator.adaptor.members]</a>, 20.2.8.2 <a href="https://wg21.link/allocator.uses.construction">[allocator.uses.construction]</a> <b>Status:</b> <a href="lwg-active.html#C++17">C++17</a>
  <b>Submitter:</b> Jonathan Wakely <b>Opened:</b> 2016-01-15 <b>Last modified:</b> 2017-07-30</p>
 <p><b>Priority: </b>0
 </p>
@@ -71,7 +71,7 @@
 <p><b>View all issues with</b> <a href="lwg-status.html#C++17">C++17</a> status.</p>
 <p><b>Discussion:</b></p>
 <p>
-20.5.4 <a href="https://wg21.link/allocator.adaptor.members">[allocator.adaptor.members]</a> p9 says that the <code>is_constructible</code>
+20.6.4 <a href="https://wg21.link/allocator.adaptor.members">[allocator.adaptor.members]</a> p9 says that the <code>is_constructible</code>
 tests are done using <code>inner_allocator_type</code>, which checks for
 construction from an rvalue, but then the constructor is passed
 <code>inner_allocator()</code> which returns a non-<code>const</code> lvalue reference. The
@@ -133,7 +133,7 @@ following rules:
 </blockquote>
 </li>
 
-<li><p>Change the 2nd and 3rd bullets in 20.5.4 <a href="https://wg21.link/allocator.adaptor.members">[allocator.adaptor.members]</a> p9 to add two lvalue-references:</p>
+<li><p>Change the 2nd and 3rd bullets in 20.6.4 <a href="https://wg21.link/allocator.adaptor.members">[allocator.adaptor.members]</a> p9 to add two lvalue-references:</p>
 
 <blockquote>
 <ol style="list-style-type: none">
@@ -149,7 +149,7 @@ inner_allocator())</code>.</p></li>
 </blockquote>
 </li>
 
-<li><p>Change the 2nd, 3rd, 6th, and 7th bullets in 20.5.4 <a href="https://wg21.link/allocator.adaptor.members">[allocator.adaptor.members]</a> p11 to
+<li><p>Change the 2nd, 3rd, 6th, and 7th bullets in 20.6.4 <a href="https://wg21.link/allocator.adaptor.members">[allocator.adaptor.members]</a> p11 to
 add four lvalue-references:</p>
 
 <blockquote>
@@ -188,7 +188,7 @@ This wording is relative to N4567.
 </p>
 
 <ol>
-<li><p>Change the 2nd and 3rd bullets in 20.5.4 <a href="https://wg21.link/allocator.adaptor.members">[allocator.adaptor.members]</a> p9 to add two lvalue-references:</p>
+<li><p>Change the 2nd and 3rd bullets in 20.6.4 <a href="https://wg21.link/allocator.adaptor.members">[allocator.adaptor.members]</a> p9 to add two lvalue-references:</p>
 
 <blockquote>
 <ol style="list-style-type: none">
@@ -204,7 +204,7 @@ inner_allocator())</code>.</p></li>
 </blockquote>
 </li>
 
-<li><p>Change the 2nd, 3rd, 6th, and 7th bullets in 20.5.4 <a href="https://wg21.link/allocator.adaptor.members">[allocator.adaptor.members]</a> p11 to
+<li><p>Change the 2nd, 3rd, 6th, and 7th bullets in 20.6.4 <a href="https://wg21.link/allocator.adaptor.members">[allocator.adaptor.members]</a> p11 to
 add four lvalue-references:</p>
 
 <blockquote>

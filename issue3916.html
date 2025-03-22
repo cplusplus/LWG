@@ -63,7 +63,7 @@
 <hr>
 <p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#New">New</a> status.</em></p>
 <h3 id="3916"><a href="lwg-active.html#3916">3916</a>. <code>allocator</code>, <code>polymorphic_allocator</code>, and containers should forbid <i>cv</i>-qualified types</h3>
-<p><b>Section:</b> 20.2.10 <a href="https://wg21.link/default.allocator">[default.allocator]</a>, 20.4.3.1 <a href="https://wg21.link/mem.poly.allocator.class.general">[mem.poly.allocator.class.general]</a>, 23.2 <a href="https://wg21.link/container.requirements">[container.requirements]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
+<p><b>Section:</b> 20.2.10 <a href="https://wg21.link/default.allocator">[default.allocator]</a>, 20.5.3.1 <a href="https://wg21.link/mem.poly.allocator.class.general">[mem.poly.allocator.class.general]</a>, 23.2 <a href="https://wg21.link/container.requirements">[container.requirements]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
  <b>Submitter:</b> Stephan T. Lavavej <b>Opened:</b> 2023-04-02 <b>Last modified:</b> 2023-05-24</p>
 <p><b>Priority: </b>3
 </p>
@@ -81,7 +81,7 @@ except where 20.2.10.2 <a href="https://wg21.link/allocator.members">[allocator.
 whose signatures implied that <code>const</code>-qualified types were forbidden, but those signatures were deprecated and 
 removed. This explains the phrasing of an MSVC static assertion.)
 <p/>
-20.4.3.1 <a href="https://wg21.link/mem.poly.allocator.class.general">[mem.poly.allocator.class.general]</a> says a bit more about <code>Tp</code> in <code>polymorphic_allocator&lt;Tp&gt;</code> 
+20.5.3.1 <a href="https://wg21.link/mem.poly.allocator.class.general">[mem.poly.allocator.class.general]</a> says a bit more about <code>Tp</code> in <code>polymorphic_allocator&lt;Tp&gt;</code> 
 but doesn't forbid anything. It says that if <code>Tp</code> is a <i>cv</i>-unqualified object type, then 
 <code>polymorphic_allocator&lt;Tp&gt;</code> meets the <i>Cpp17Allocator</i> requirements and allocator completeness requirements, 
 but that's all.

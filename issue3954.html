@@ -63,7 +63,7 @@
 <hr>
 <p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#New">New</a> status.</em></p>
 <h3 id="3954"><a href="lwg-active.html#3954">3954</a>. Feature-test macros in C headers (<code>&lt;stddef.h&gt;</code> etc.)</h3>
-<p><b>Section:</b> 17.14.1 <a href="https://wg21.link/support.c.headers.general">[support.c.headers.general]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
+<p><b>Section:</b> 17.15.1 <a href="https://wg21.link/support.c.headers.general">[support.c.headers.general]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
  <b>Submitter:</b> Jiang An <b>Opened:</b> 2023-07-06 <b>Last modified:</b> 2024-02-22</p>
 <p><b>Priority: </b>3
 </p>
@@ -78,7 +78,7 @@ required to provide <code>__cpp_lib_*</code> macros in C++.
 Presumably, <code><i>name</i>.h</code> should provide macros shown in the synopsis of its corresponding <code>c<i>name</i></code> 
 (as required in C), but should not be required to provide C++ library feature-test macros because such requirement would 
 generally require implementations of the C standard library to change. I think we should make clarification in 
-17.14.1 <a href="https://wg21.link/support.c.headers.general">[support.c.headers.general]</a>.
+17.15.1 <a href="https://wg21.link/support.c.headers.general">[support.c.headers.general]</a>.
 </p>
 
 <p><i>[2024-02-22; Reflector poll]</i></p>
@@ -141,9 +141,9 @@ Also related to LWG <a href="lwg-active.html#3484" title="Should &lt;stddef.h&gt
 
 
 <p>
-It seems 17.14 <a href="https://wg21.link/support.c.headers">[support.c.headers]</a> is silent on which macros
+It seems 17.15 <a href="https://wg21.link/support.c.headers">[support.c.headers]</a> is silent on which macros
 from the <code>&lt;cxxx&gt;</code> headers are made available via the <code>&lt;xxx.h&gt;</code> headers,
-given that 17.14.7 <a href="https://wg21.link/support.c.headers.other">[support.c.headers.other]</a> talks about names placed in
+given that 17.15.7 <a href="https://wg21.link/support.c.headers.other">[support.c.headers.other]</a> talks about names placed in
 the standard library namespace (macros don't fit that description).
 </p>
 

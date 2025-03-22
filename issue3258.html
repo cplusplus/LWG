@@ -76,7 +76,7 @@ The specification of <code>ranges::begin</code> in 25.3.2 <a href="https://wg21.
 template&lt;class T&gt; void begin(initializer_list&lt;T&gt;&amp;&amp;) = delete;
 </pre></blockquote>
 which exists to create an ambiguity with the non-member <code>initializer_list</code> overload of
-<code>begin</code> in namespace <code>std</code> (17.10.2 <a href="https://wg21.link/initializer.list.syn">[initializer.list.syn]</a>) when performing
+<code>begin</code> in namespace <code>std</code> (17.11.2 <a href="https://wg21.link/initializer.list.syn">[initializer.list.syn]</a>) when performing
 unqualified lookup, since specializations of <code>initializer_list</code> should not satisfy
 <code><i>forwarding-range</i></code> (25.4.2 <a href="https://wg21.link/range.range">[range.range]</a>). The design intent is that
 <code>const</code> specializations of <code>initializer_list</code> should also not satisfy

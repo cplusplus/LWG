@@ -63,7 +63,7 @@
 <hr>
 <p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#New">New</a> status.</em></p>
 <h3 id="3883"><a href="lwg-active.html#3883">3883</a>. &sect;[support.c.headers.other] Ambiguity in the requirements for includes</h3>
-<p><b>Section:</b> 17.14.7 <a href="https://wg21.link/support.c.headers.other">[support.c.headers.other]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
+<p><b>Section:</b> 17.15.7 <a href="https://wg21.link/support.c.headers.other">[support.c.headers.other]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
  <b>Submitter:</b> Alex Mills <b>Opened:</b> 2023-02-09 <b>Last modified:</b> 2023-03-22</p>
 <p><b>Priority: </b>4
 </p>
@@ -72,7 +72,7 @@
 <p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
 <p><b>Discussion:</b></p>
 <p>
-In 17.14.7 <a href="https://wg21.link/support.c.headers.other">[support.c.headers.other]</a>, it states that the <code>&lt;<i>name</i>.h&gt;</code> headers behave 
+In 17.15.7 <a href="https://wg21.link/support.c.headers.other">[support.c.headers.other]</a>, it states that the <code>&lt;<i>name</i>.h&gt;</code> headers behave 
 "as if each name placed in the standard library namespace by the corresponding header is placed within the 
 global namespace scope". There are exceptions for several different definitions in the headers, but it's left 
 ambiguous as to whether their inclusion in the <code>&lt;<i>name</i>.h&gt;</code> headers is required or unspecified.
@@ -107,16 +107,16 @@ This wording is relative to <a href="https://wg21.link/N4928" title=" Working Dr
 </p>
 
 <ol>
-<li><p>Modify 17.14.7 <a href="https://wg21.link/support.c.headers.other">[support.c.headers.other]</a> as indicated:</p>
+<li><p>Modify 17.15.7 <a href="https://wg21.link/support.c.headers.other">[support.c.headers.other]</a> as indicated:</p>
 
 <blockquote>
 <p>
--1- Every C header other than <code>&lt;complex.h&gt;</code> (17.14.2 <a href="https://wg21.link/complex.h.syn">[complex.h.syn]</a>), 
-<code>&lt;iso646.h&gt;</code> (17.14.3 <a href="https://wg21.link/iso646.h.syn">[iso646.h.syn]</a>), 
-<code>&lt;stdalign.h&gt;</code> (17.14.4 <a href="https://wg21.link/stdalign.h.syn">[stdalign.h.syn]</a>),
+-1- Every C header other than <code>&lt;complex.h&gt;</code> (17.15.2 <a href="https://wg21.link/complex.h.syn">[complex.h.syn]</a>), 
+<code>&lt;iso646.h&gt;</code> (17.15.3 <a href="https://wg21.link/iso646.h.syn">[iso646.h.syn]</a>), 
+<code>&lt;stdalign.h&gt;</code> (17.15.4 <a href="https://wg21.link/stdalign.h.syn">[stdalign.h.syn]</a>),
 <code>&lt;stdatomic.h&gt;</code> (32.5.12 <a href="https://wg21.link/stdatomic.h.syn">[stdatomic.h.syn]</a>), 
-<code>&lt;stdbool.h&gt;</code> (17.14.5 <a href="https://wg21.link/stdbool.h.syn">[stdbool.h.syn]</a>), and 
-<code>&lt;tgmath.h&gt;</code> (17.14.6 <a href="https://wg21.link/tgmath.h.syn">[tgmath.h.syn]</a>), each 
+<code>&lt;stdbool.h&gt;</code> (17.15.5 <a href="https://wg21.link/stdbool.h.syn">[stdbool.h.syn]</a>), and 
+<code>&lt;tgmath.h&gt;</code> (17.15.6 <a href="https://wg21.link/tgmath.h.syn">[tgmath.h.syn]</a>), each 
 of which has a name of the form <code>&lt;<i>name</i>.h&gt;</code>, behaves as if each name placed in 
 the standard library namespace by the corresponding <code>&lt;c<i>name</i>&gt;</code> header is placed 
 within the global namespace scope, except for the functions described in 29.7.6 <a href="https://wg21.link/sf.cmath">[sf.cmath]</a>,
@@ -125,7 +125,7 @@ the <code>std::lerp</code> function overloads (29.7.4 <a href="https://wg21.link
 in 17.2.5 <a href="https://wg21.link/support.types.byteops">[support.types.byteops]</a>. 
 It is unspecified whether these names are first declared or defined within namespace scope 
 (6.4.6 <a href="https://wg21.link/basic.scope.namespace">[basic.scope.namespace]</a>) of the namespace <code>std</code> and are then injected into the 
-global namespace scope by explicit <i>using-declarations</i> (9.9 <a href="https://wg21.link/namespace.udecl">[namespace.udecl]</a>).
+global namespace scope by explicit <i>using-declarations</i> (9.10 <a href="https://wg21.link/namespace.udecl">[namespace.udecl]</a>).
 <ins>Whether the listed exceptions are included in their corresponding <code>&lt;<i>name</i>.h&gt;</code> 
 headers under the standard library namespace is unspecified.</ins>
 </p>

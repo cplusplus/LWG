@@ -79,7 +79,7 @@
 </tr>
 </table>
 <h1>C++ Standard Library Active Issues List (Revision D125)</h1>
-<p>Revised 2025-03-22 at 15:10:03 UTC
+<p>Revised 2025-03-22 at 15:52:05 UTC
 </p>
   <p>Reference ISO/IEC IS 14882:2020(E)</p>
   <p>Also see:</p>
@@ -2407,7 +2407,7 @@ SG1: Agreement that we need a paper.
 
 <hr>
 <h3 id="1102"><a href="#1102">1102</a><sup><a href="https://cplusplus.github.io/LWG/issue1102">(i)</a></sup>. <code>std::vector</code>'s reallocation policy still unclear</h3>
-<p><b>Section:</b> 23.3.11.3 <a href="https://wg21.link/vector.capacity">[vector.capacity]</a> <b>Status:</b> <a href="lwg-active.html#Open">Open</a>
+<p><b>Section:</b> 23.3.13.3 <a href="https://wg21.link/vector.capacity">[vector.capacity]</a> <b>Status:</b> <a href="lwg-active.html#Open">Open</a>
  <b>Submitter:</b> Daniel Kr&uuml;gler <b>Opened:</b> 2009-04-20 <b>Last modified:</b> 2020-07-17</p>
 <p><b>Priority: </b>3
 </p>
@@ -2446,19 +2446,19 @@ IMO the problem is due to the fact, that
 <ol style="list-style-type:lower-alpha">
 <li>
 the actual memory-reallocation stability of <code>std::vector</code>
-is explained in 23.3.11.3 <a href="https://wg21.link/vector.capacity">[vector.capacity]</a>/3 and /6 which
+is explained in 23.3.13.3 <a href="https://wg21.link/vector.capacity">[vector.capacity]</a>/3 and /6 which
 are describing just the effects of the <code>reserve</code>
 function, but in many examples (like above) there
 is no explicit call to <code>reserve</code> involved. Further-more
-23.3.11.3 <a href="https://wg21.link/vector.capacity">[vector.capacity]</a>/6 does only mention <em>insertions</em>
+23.3.13.3 <a href="https://wg21.link/vector.capacity">[vector.capacity]</a>/6 does only mention <em>insertions</em>
 and never mentions the consequences of erasing elements.
 </li>
 <li>
 <p>
 the effects clause of <code>std::vector</code>'s <code>erase</code> overloads in
-23.3.11.5 <a href="https://wg21.link/vector.modifiers">[vector.modifiers]</a>/4 is silent about capacity changes. This
+23.3.13.5 <a href="https://wg21.link/vector.modifiers">[vector.modifiers]</a>/4 is silent about capacity changes. This
 easily causes a misunderstanding, because the counter
-parting insert functions described in 23.3.11.5 <a href="https://wg21.link/vector.modifiers">[vector.modifiers]</a>/2
+parting insert functions described in 23.3.13.5 <a href="https://wg21.link/vector.modifiers">[vector.modifiers]</a>/2
 explicitly say, that
 </p>
 <blockquote><p>
@@ -2517,8 +2517,8 @@ general consensus that the standard is correct as written.
 <p><i>[
 This is a minimum version. I also
 suggest that the wording explaining the allocation strategy
-of <code>std::vector</code> in 23.3.11.3 <a href="https://wg21.link/vector.capacity">[vector.capacity]</a>/3 and /6 is moved into
-a separate sub paragraph of 23.3.11.3 <a href="https://wg21.link/vector.capacity">[vector.capacity]</a> <em>before</em>
+of <code>std::vector</code> in 23.3.13.3 <a href="https://wg21.link/vector.capacity">[vector.capacity]</a>/3 and /6 is moved into
+a separate sub paragraph of 23.3.13.3 <a href="https://wg21.link/vector.capacity">[vector.capacity]</a> <em>before</em>
 any of the prototype's are discussed, but I cannot provide
 reasonable wording changes now.
 ]</i></p>
@@ -2527,7 +2527,7 @@ reasonable wording changes now.
 <ol>
 <li>
 <p>
-Change 23.3.11.3 <a href="https://wg21.link/vector.capacity">[vector.capacity]</a>/6 as follows:
+Change 23.3.13.3 <a href="https://wg21.link/vector.capacity">[vector.capacity]</a>/6 as follows:
 </p>
 <blockquote><p>
 It is guaranteed that no reallocation takes place during
@@ -2538,7 +2538,7 @@ the size of the vector greater than the value of <code>capacity()</code>.
 </li>
 <li>
 <p>
-Change 23.3.11.5 <a href="https://wg21.link/vector.modifiers">[vector.modifiers]</a>/4 as follows:
+Change 23.3.13.5 <a href="https://wg21.link/vector.modifiers">[vector.modifiers]</a>/4 as follows:
 </p>
 <blockquote><p>
 <i>Effects:</i> <ins>The capacity shall remain unchanged and no reallocation shall
@@ -3726,7 +3726,7 @@ future standard.
 
 <hr>
 <h3 id="1422"><a href="#1422">1422</a><sup><a href="https://cplusplus.github.io/LWG/issue1422">(i)</a></sup>. <code>vector&lt;bool&gt;</code> iterators are not random access</h3>
-<p><b>Section:</b> 23.3.12 <a href="https://wg21.link/vector.bool">[vector.bool]</a> <b>Status:</b> <a href="lwg-active.html#Open">Open</a>
+<p><b>Section:</b> 23.3.14 <a href="https://wg21.link/vector.bool">[vector.bool]</a> <b>Status:</b> <a href="lwg-active.html#Open">Open</a>
  <b>Submitter:</b> BSI <b>Opened:</b> 2010-08-25 <b>Last modified:</b> 2020-09-06</p>
 <p><b>Priority: </b>3
 </p>
@@ -3789,7 +3789,7 @@ Old Proposed Resolution:
 
 <blockquote>
 <p>
-Insert a new paragraph into 23.3.12 <a href="https://wg21.link/vector.bool">[vector.bool]</a> between p4 and p5:
+Insert a new paragraph into 23.3.14 <a href="https://wg21.link/vector.bool">[vector.bool]</a> between p4 and p5:
 </p>
 <blockquote><p>
 [<i>Note</i> All functions in the library that take a pair of iterators to
@@ -5363,7 +5363,7 @@ are satisfied (All previous fully constructed sub-objects must be destructed).
 The core language also honors this fact in  [class.copy] p11:
 </p>
 <blockquote><p>
-A defaulted copy&#47;move constructor for a class <code>X</code> is defined as deleted (9.5.3 <a href="https://wg21.link/dcl.fct.def.delete">[dcl.fct.def.delete]</a>)
+A defaulted copy&#47;move constructor for a class <code>X</code> is defined as deleted (9.6.3 <a href="https://wg21.link/dcl.fct.def.delete">[dcl.fct.def.delete]</a>)
 if <code>X</code> has:<br/>
 [&hellip;]<br/>
 &mdash; any direct or virtual base class or non-static data member of a type with a destructor that is deleted
@@ -6486,7 +6486,7 @@ specification.
 
 <hr>
 <h3 id="2158"><a href="#2158">2158</a><sup><a href="https://cplusplus.github.io/LWG/issue2158">(i)</a></sup>. Conditional copy&#47;move in <code>std::vector</code></h3>
-<p><b>Section:</b> 23.3.11.3 <a href="https://wg21.link/vector.capacity">[vector.capacity]</a> <b>Status:</b> <a href="lwg-active.html#Open">Open</a>
+<p><b>Section:</b> 23.3.13.3 <a href="https://wg21.link/vector.capacity">[vector.capacity]</a> <b>Status:</b> <a href="lwg-active.html#Open">Open</a>
  <b>Submitter:</b> Nikolay Ivchenkov <b>Opened:</b> 2012-05-08 <b>Last modified:</b> 2022-11-06</p>
 <p><b>Priority: </b>3
 </p>
@@ -6502,7 +6502,7 @@ argument; the choice depends on the value of <code>!is_nothrow_move_constructibl
 is_copy_constructible&lt;T&gt;::value</code>, where <code>T</code> is the element type. Thus, some operations 
 on <code>std::vector</code> (e.g. 'resize' with single parameter, 'reserve', 'emplace_back') should have 
 conditional requirements. For example, let's consider the requirement for 'reserve' in N3376 &ndash; 
-23.3.11.3 <a href="https://wg21.link/vector.capacity">[vector.capacity]</a>&#47;2:
+23.3.13.3 <a href="https://wg21.link/vector.capacity">[vector.capacity]</a>&#47;2:
 </p>
 <blockquote><p>
 <i>Requires</i>: <code>T</code> shall be <code>MoveInsertable</code> into <code>*this</code>.
@@ -7236,7 +7236,7 @@ to copy-list-initialize an object of type <code>std::initializer_list&lt;value_t
 </p>
 <blockquote><p>
 "<code>bil</code> designates any <i>braced-init-list</i> suitable to copy-list-initialize an object of type 
-<code>initializer_list&lt;value_type&gt;</code> (9.4.5 <a href="https://wg21.link/dcl.init.list">[dcl.init.list]</a>)"
+<code>initializer_list&lt;value_type&gt;</code> (9.5.5 <a href="https://wg21.link/dcl.init.list">[dcl.init.list]</a>)"
 </p></blockquote>
 <p>
 As a drive-by fix, the provided wording adds another initialization "expression" that makes the construction 
@@ -7269,7 +7269,7 @@ constructor. &mdash; <i>end drafting note</i>]
 -3- In Tables 66 and 67, [&hellip;] <code>il</code> designates a<del>n object</del><ins>value</ins> of type 
 <code>initializer_list&lt;value_type&gt;</code>, <ins><code>bil</code> designates any <i>braced-init-list</i> 
 suitable to copy-list-initialize an object of type <code>initializer_list&lt;value_type&gt;</code> 
-(9.4.5 <a href="https://wg21.link/dcl.init.list">[dcl.init.list]</a>),</ins> [&hellip;]
+(9.5.5 <a href="https://wg21.link/dcl.init.list">[dcl.init.list]</a>),</ins> [&hellip;]
 </p>
 </blockquote>
 
@@ -7401,7 +7401,7 @@ equivalent to <code>X u = initializer_list&lt;value_type&gt;(bil);</code></ins>
 -8- In Table 69, [&hellip;] <code>il</code> designates a<del>n object</del><ins>value</ins> of type 
 <code>initializer_list&lt;value_type&gt;</code>, <ins><code>bil</code> designates any <i>braced-init-list</i> 
 suitable to copy-list-initialize an object of type <code>initializer_list&lt;value_type&gt;</code> 
-(9.4.5 <a href="https://wg21.link/dcl.init.list">[dcl.init.list]</a>),</ins> [&hellip;]
+(9.5.5 <a href="https://wg21.link/dcl.init.list">[dcl.init.list]</a>),</ins> [&hellip;]
 </p>
 </blockquote>
 
@@ -7572,7 +7572,7 @@ equivalent to <code>a.insert(il.begin(), il.end())</code>
 <li><p>[&hellip;]</p></li>
 <li><p>(11.14) &mdash; <code>il</code> denotes a value of type <code>initializer_list&lt;value_type&gt;</code>,</p></li>
 <li><p><ins>(11.?) &mdash; <code>bil</code> denotes any <i>braced-init-list</i> suitable to copy-list-initialize 
-an object of type <code>initializer_list&lt;value_type&gt;</code> (9.4.5 <a href="https://wg21.link/dcl.init.list">[dcl.init.list]</a>), </ins></p></li>
+an object of type <code>initializer_list&lt;value_type&gt;</code> (9.5.5 <a href="https://wg21.link/dcl.init.list">[dcl.init.list]</a>), </ins></p></li>
 <li><p>[&hellip;]</p></li>
 </ol>
 </blockquote>
@@ -7786,7 +7786,7 @@ valid and have the indicated semantics, and [&hellip;] In that Table and through
 <li><p>(2.6) &mdash; <code>il</code> is a value of <code>initializer_list&lt;T&gt;</code><del>.</del><ins>;</ins></p></li>
 <li><p><ins>(2.?) &mdash; <code>bil</code> denotes any <i>braced-init-list</i> suitable to 
 copy-list-initialize an object of type <code>initializer_list&lt;T&gt;</code> 
-(9.4.5 <a href="https://wg21.link/dcl.init.list">[dcl.init.list]</a>).</ins></p></li>
+(9.5.5 <a href="https://wg21.link/dcl.init.list">[dcl.init.list]</a>).</ins></p></li>
 </ol>
 </blockquote>
 
@@ -12236,7 +12236,7 @@ Core wording should say "this kind of thing is ill-formed, no diagnostic require
 
 <hr>
 <h3 id="2453"><a href="#2453">2453</a><sup><a href="https://cplusplus.github.io/LWG/issue2453">(i)</a></sup>. &sect;[iterator.range] and now [iterator.container] aren't available via <code>&lt;initializer_list&gt;</code></h3>
-<p><b>Section:</b> 17.10 <a href="https://wg21.link/support.initlist">[support.initlist]</a>, 24.7 <a href="https://wg21.link/iterator.range">[iterator.range]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
+<p><b>Section:</b> 17.11 <a href="https://wg21.link/support.initlist">[support.initlist]</a>, 24.7 <a href="https://wg21.link/iterator.range">[iterator.range]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
  <b>Submitter:</b> Richard Smith <b>Opened:</b> 2014-11-11 <b>Last modified:</b> 2021-06-06</p>
 <p><b>Priority: </b>3
 </p>
@@ -12266,7 +12266,7 @@ const int *q = data(x); // ok
 
 <hr>
 <h3 id="2461"><a href="#2461">2461</a><sup><a href="https://cplusplus.github.io/LWG/issue2461">(i)</a></sup>. Interaction between allocators and container exception safety guarantees</h3>
-<p><b>Section:</b> 16.4.4.6 <a href="https://wg21.link/allocator.requirements">[allocator.requirements]</a>, 23.3.11.3 <a href="https://wg21.link/vector.capacity">[vector.capacity]</a>, 23.3.11.5 <a href="https://wg21.link/vector.modifiers">[vector.modifiers]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
+<p><b>Section:</b> 16.4.4.6 <a href="https://wg21.link/allocator.requirements">[allocator.requirements]</a>, 23.3.13.3 <a href="https://wg21.link/vector.capacity">[vector.capacity]</a>, 23.3.13.5 <a href="https://wg21.link/vector.modifiers">[vector.modifiers]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
  <b>Submitter:</b> dyp <b>Opened:</b> 2014-12-06 <b>Last modified:</b> 2015-06-10</p>
 <p><b>Priority: </b>3
 </p>
@@ -12352,7 +12352,7 @@ other than a copy/move constructor.
 </ol>
 <p>
 This leads to an issue with the wording of the exception safety guarantees for vector modifiers in
-23.3.11.5 <a href="https://wg21.link/vector.modifiers">[vector.modifiers]</a> p1:
+23.3.13.5 <a href="https://wg21.link/vector.modifiers">[vector.modifiers]</a> p1:
 </p>
 <blockquote>
 <p>
@@ -12391,7 +12391,7 @@ the implementation is required to ensure that "there are no effects",
 even if the source buffer has been modified.
 <p/>
 Similarly, the <code>vector</code> capacity functions specify exception safety guarantees
-referring to the move constructor of the value type. For example, <code>vector::resize</code> in 23.3.11.3 <a href="https://wg21.link/vector.capacity">[vector.capacity]</a> p14:
+referring to the move constructor of the value type. For example, <code>vector::resize</code> in 23.3.13.3 <a href="https://wg21.link/vector.capacity">[vector.capacity]</a> p14:
 </p>
 <blockquote>
 <i>Remarks</i>: If an exception is thrown other than by the move constructor of a
@@ -12480,7 +12480,7 @@ Even though the value type has an accessible and <code>noexcept(true)</code> mov
 constructor, this allocator won't call that constructor for rvalue arguments.
 In any case, it does not call a constructor for which vector has formulated its 
 requirements. An exception thrown by a constructor called by this allocator is not
-covered by the specification in 23.3.11.5 <a href="https://wg21.link/vector.modifiers">[vector.modifiers]</a> and therefore is
+covered by the specification in 23.3.13.5 <a href="https://wg21.link/vector.modifiers">[vector.modifiers]</a> and therefore is
 guaranteed not to have any effect on the vector object when resizing.
 <p/>
 For an example how this might invalidate the exception safety
@@ -12686,7 +12686,7 @@ out))</code> is not equivalent to <code>copy_n(in, 4, out)</code>
 
 <hr>
 <h3 id="2472"><a href="#2472">2472</a><sup><a href="https://cplusplus.github.io/LWG/issue2472">(i)</a></sup>. Heterogeneous comparisons in the standard library can result in ambiguities</h3>
-<p><b>Section:</b> 22.4.9 <a href="https://wg21.link/tuple.rel">[tuple.rel]</a>, 20.2.10.3 <a href="https://wg21.link/allocator.globals">[allocator.globals]</a>, 20.3.1.6 <a href="https://wg21.link/unique.ptr.special">[unique.ptr.special]</a>, 20.3.2.2.8 <a href="https://wg21.link/util.smartptr.shared.cmp">[util.smartptr.shared.cmp]</a>, 30.5.7 <a href="https://wg21.link/time.duration.comparisons">[time.duration.comparisons]</a>, 30.6.7 <a href="https://wg21.link/time.point.comparisons">[time.point.comparisons]</a>, 20.5.5 <a href="https://wg21.link/scoped.adaptor.operators">[scoped.adaptor.operators]</a>, 24.5.1.8 <a href="https://wg21.link/reverse.iter.cmp">[reverse.iter.cmp]</a>, 24.5.4.8 <a href="https://wg21.link/move.iter.op.comp">[move.iter.op.comp]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
+<p><b>Section:</b> 22.4.9 <a href="https://wg21.link/tuple.rel">[tuple.rel]</a>, 20.2.10.3 <a href="https://wg21.link/allocator.globals">[allocator.globals]</a>, 20.3.1.6 <a href="https://wg21.link/unique.ptr.special">[unique.ptr.special]</a>, 20.3.2.2.8 <a href="https://wg21.link/util.smartptr.shared.cmp">[util.smartptr.shared.cmp]</a>, 30.5.7 <a href="https://wg21.link/time.duration.comparisons">[time.duration.comparisons]</a>, 30.6.7 <a href="https://wg21.link/time.point.comparisons">[time.point.comparisons]</a>, 20.6.5 <a href="https://wg21.link/scoped.adaptor.operators">[scoped.adaptor.operators]</a>, 24.5.1.8 <a href="https://wg21.link/reverse.iter.cmp">[reverse.iter.cmp]</a>, 24.5.4.8 <a href="https://wg21.link/move.iter.op.comp">[move.iter.op.comp]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
  <b>Submitter:</b> Richard Smith <b>Opened:</b> 2015-02-07 <b>Last modified:</b> 2021-06-06</p>
 <p><b>Priority: </b>3
 </p>
@@ -13044,7 +13044,7 @@ is a core constant expression.</ins></p></li>
 
 <hr>
 <h3 id="2493"><a href="#2493">2493</a><sup><a href="https://cplusplus.github.io/LWG/issue2493">(i)</a></sup>. <code>initializer_list</code> supports incomplete classes</h3>
-<p><b>Section:</b> 17.10 <a href="https://wg21.link/support.initlist">[support.initlist]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
+<p><b>Section:</b> 17.11 <a href="https://wg21.link/support.initlist">[support.initlist]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
  <b>Submitter:</b> David Krauss <b>Opened:</b> 2015-04-27 <b>Last modified:</b> 2015-05-05</p>
 <p><b>Priority: </b>4
 </p>
@@ -13230,7 +13230,7 @@ make it an abstract class.
 
 <hr>
 <h3 id="2506"><a href="#2506">2506</a><sup><a href="https://cplusplus.github.io/LWG/issue2506">(i)</a></sup>. Underspecification of atomics</h3>
-<p><b>Section:</b> 6.9.2 <a href="https://wg21.link/intro.multithread">[intro.multithread]</a>, 32.5.8 <a href="https://wg21.link/atomics.types.generic">[atomics.types.generic]</a>, 17.13 <a href="https://wg21.link/support.runtime">[support.runtime]</a> <b>Status:</b> <a href="lwg-active.html#SG1">SG1</a>
+<p><b>Section:</b> 6.9.2 <a href="https://wg21.link/intro.multithread">[intro.multithread]</a>, 32.5.8 <a href="https://wg21.link/atomics.types.generic">[atomics.types.generic]</a>, 17.14 <a href="https://wg21.link/support.runtime">[support.runtime]</a> <b>Status:</b> <a href="lwg-active.html#SG1">SG1</a>
  <b>Submitter:</b> Geoffrey Romer <b>Opened:</b> 2015-05-29 <b>Last modified:</b> 2018-03-15</p>
 <p><b>Priority: </b>3
 </p>
@@ -13266,7 +13266,7 @@ which provides the general atomic operations as specified in 29.6.1", but read i
 appears to be a loose synonym for "general operations on atomic types" as defined in  [atomics.types.operations.general], 
 rather than a use of "atomic object" as Words of Power. Incidentally, "atomic type" is never satisfactorily defined either 
 (although the <code>&lt;atomic&gt;</code> synopsis comes close).</p></li>
-<li><p>17.13 <a href="https://wg21.link/support.runtime">[support.runtime]</a>/p10 specifies exactly which operations are "plain lock-free atomic operations", but 
+<li><p>17.14 <a href="https://wg21.link/support.runtime">[support.runtime]</a>/p10 specifies exactly which operations are "plain lock-free atomic operations", but 
 in a standard where an "integral constant expression" isn't necessarily a "constant expression", I do not feel safe assuming 
 that a "plain lock-free atomic operation" is an "atomic operation".</p></li>
 <li><p>Hans Boehm tells me the operations with "atomically" in the Effects element are intended to be atomic operations, 
@@ -15017,7 +15017,7 @@ before the function call, if any.</ins>
 -16- <i>Returns</i>: <code>*this</code>.
 </p><p>
 <ins>-x- <i>Remarks</i>: If <code>*this</code> and <code>rhs</code> do not refer to the same object, the
-resulting state of <code>rhs</code> is unspecified (16.4.6.15 <a href="https://wg21.link/lib.types.movedfrom">[lib.types.movedfrom]</a>).</ins>
+resulting state of <code>rhs</code> is unspecified (16.4.6.17 <a href="https://wg21.link/lib.types.movedfrom">[lib.types.movedfrom]</a>).</ins>
 </p>
 </blockquote>
 <pre>
@@ -17660,7 +17660,7 @@ Ideally, the resolution would also add back the wording which SG1 dropped from <
 <blockquote><p>Add at new element to the end of 17.5 <a href="https://wg21.link/support.start.term">[support.start.term]</a> p13 (<code>quick_exit()</code>):</p>
 <blockquote>
 <p>
-<ins><i>Remarks:</i> The function <code>quick_exit()</code> is signal-safe (17.13.4 <a href="https://wg21.link/csignal.syn">[csignal.syn]</a>). [<i>Note:</i> It might 
+<ins><i>Remarks:</i> The function <code>quick_exit()</code> is signal-safe (17.14.4 <a href="https://wg21.link/csignal.syn">[csignal.syn]</a>). [<i>Note:</i> It might 
 still be unsafe to call <code>quick_exit()</code> from a handler, because the functions registered with <code>at_quick_exit()</code> 
 might not be signal-safe. &mdash; <i>end note</i>]</ins>
 </p>
@@ -17695,7 +17695,7 @@ functions should not rely on the identity of objects with thread storage duratio
 calling registered functions, <code>quick_exit</code> shall call <code>_Exit(status)</code>. [<i>Note:</i> The standard file 
 buffers are not flushed. See: ISO C 7.22.4.5. &mdash; <i>end note</i>]
 <p/>
-<ins>-?- <i>Remarks:</i> The function <code>quick_exit()</code> is signal-safe (17.13.4 <a href="https://wg21.link/csignal.syn">[csignal.syn]</a>). [<i>Note:</i> 
+<ins>-?- <i>Remarks:</i> The function <code>quick_exit()</code> is signal-safe (17.14.4 <a href="https://wg21.link/csignal.syn">[csignal.syn]</a>). [<i>Note:</i> 
 It might still be unsafe to call <code>quick_exit()</code> from a handler, because the functions registered with 
 <code>at_quick_exit()</code> might not be signal-safe. &mdash; <i>end note</i>]</ins>
 </p>
@@ -18172,7 +18172,7 @@ std::array&lt;int, 1&gt; arr{{0}};
 should be fine, but isn't guaranteed, since <code>{0}</code> has no type. We should rather go for implicit conversion:
 </p>
 <blockquote><p>
-An array is an aggregate (9.4.2 <a href="https://wg21.link/dcl.init.aggr">[dcl.init.aggr]</a>) that can be list-initialized with up to <code>N</code> elements 
+An array is an aggregate (9.5.2 <a href="https://wg21.link/dcl.init.aggr">[dcl.init.aggr]</a>) that can be list-initialized with up to <code>N</code> elements 
 <del>whose types are convertible to <code>T</code></del><ins>that can be implicitly converted to <code>T</code></ins>.
 </p></blockquote>
 
@@ -18204,7 +18204,7 @@ This wording is relative to N4606.
 
 <blockquote>
 <p>
--2- An <code>array</code> is an aggregate (9.4.2 <a href="https://wg21.link/dcl.init.aggr">[dcl.init.aggr]</a>) that can be list-initialized with up to <code>N</code> 
+-2- An <code>array</code> is an aggregate (9.5.2 <a href="https://wg21.link/dcl.init.aggr">[dcl.init.aggr]</a>) that can be list-initialized with up to <code>N</code> 
 elements <del>whose types are convertible</del><ins>that can be implicitly converted</ins> to <code>T</code>.
 </p>
 </blockquote>
@@ -19218,14 +19218,14 @@ The same issue arises for all math functions inherited from C.
 
 <hr>
 <h3 id="2848"><a href="#2848">2848</a><sup><a href="https://cplusplus.github.io/LWG/issue2848">(i)</a></sup>. Pass-through threshold for pool allocator</h3>
-<p><b>Section:</b> 20.4.5.2 <a href="https://wg21.link/mem.res.pool.options">[mem.res.pool.options]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
+<p><b>Section:</b> 20.5.5.2 <a href="https://wg21.link/mem.res.pool.options">[mem.res.pool.options]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
  <b>Submitter:</b> Jens Maurer <b>Opened:</b> 2016-12-15 <b>Last modified:</b> 2017-02-02</p>
 <p><b>Priority: </b>3
 </p>
 <p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
 <p><b>Discussion:</b></p>
 <p>
-20.4.5.2 <a href="https://wg21.link/mem.res.pool.options">[mem.res.pool.options]</a> p3 talks about a "pass-through-threshold".
+20.5.5.2 <a href="https://wg21.link/mem.res.pool.options">[mem.res.pool.options]</a> p3 talks about a "pass-through-threshold".
 <p/>
 First, the phrase is not defined and it seems it could be easily avoided given the context.
 <p/>
@@ -26581,7 +26581,7 @@ ill-formed with no diagnostic required.</ins>
 In annotating things required to be called by <code>~vector</code>, Casey pointed out that several operations I guarded 
 with <code>noexcept</code> aren't actually mandated by the standard to be <code>noexcept</code>. However, the STL, and more 
 specifically here, containers, consider inability to destroy an element an unrecoverable condition. This is evidenced 
-for the whole STL by 16.4.6.13 <a href="https://wg21.link/res.on.exception.handling">[res.on.exception.handling]</a>/3 "Every destructor in the C ++ standard library shall 
+for the whole STL by 16.4.6.14 <a href="https://wg21.link/res.on.exception.handling">[res.on.exception.handling]</a>/3 "Every destructor in the C ++ standard library shall 
 behave as if it had a non-throwing exception specification.".
 <p/>
 As a result, <code>allocator::destroy</code> and fancy pointer operations must be non-throwing for valid input, or the 
@@ -27074,7 +27074,7 @@ namespace std {
 
 <hr>
 <h3 id="3166"><a href="#3166">3166</a><sup><a href="https://cplusplus.github.io/LWG/issue3166">(i)</a></sup>. No such descriptive element as <i>Value:</i></h3>
-<p><b>Section:</b> 22.3.4 <a href="https://wg21.link/pair.astuple">[pair.astuple]</a>, 22.6.4 <a href="https://wg21.link/variant.helper">[variant.helper]</a>, 23.3.3.7 <a href="https://wg21.link/array.tuple">[array.tuple]</a>, 20.2.3.2 <a href="https://wg21.link/pointer.traits.types">[pointer.traits.types]</a>, 20.2.9.2 <a href="https://wg21.link/allocator.traits.types">[allocator.traits.types]</a>, 20.5.2 <a href="https://wg21.link/allocator.adaptor.types">[allocator.adaptor.types]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
+<p><b>Section:</b> 22.3.4 <a href="https://wg21.link/pair.astuple">[pair.astuple]</a>, 22.6.4 <a href="https://wg21.link/variant.helper">[variant.helper]</a>, 23.3.3.7 <a href="https://wg21.link/array.tuple">[array.tuple]</a>, 20.2.3.2 <a href="https://wg21.link/pointer.traits.types">[pointer.traits.types]</a>, 20.2.9.2 <a href="https://wg21.link/allocator.traits.types">[allocator.traits.types]</a>, 20.6.2 <a href="https://wg21.link/allocator.adaptor.types">[allocator.adaptor.types]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
  <b>Submitter:</b> Walter Brown <b>Opened:</b> 2018-11-08 <b>Last modified:</b> 2020-09-06</p>
 <p><b>Priority: </b>3
 </p>
@@ -27700,7 +27700,7 @@ and <i>Requires:</i> alone.
 <p>
 During the preparation of the wording for this issue it was found that we should allow
 <i>Remarks:</i> elements to be used for other things than functions. One example of imposed
-restrictions can be found in 17.11.3 <a href="https://wg21.link/cmp.common">[cmp.common]</a>:
+restrictions can be found in 17.12.3 <a href="https://wg21.link/cmp.common">[cmp.common]</a>:
 </p>
 <blockquote>
 <pre>
@@ -28631,7 +28631,7 @@ Those entries marked "(Note A)" or "(Note B)" have linear complexity for <code>a
 
 <blockquote>
 <p>
--2- An <code>array</code> is an aggregate (9.4.2 <a href="https://wg21.link/dcl.init.aggr">[dcl.init.aggr]</a>) that can be list-initialized with up to
+-2- An <code>array</code> is an aggregate (9.5.2 <a href="https://wg21.link/dcl.init.aggr">[dcl.init.aggr]</a>) that can be list-initialized with up to
 <code>N</code> elements whose types are convertible to <code>T</code>.
 <p/>
 -3- <ins>An <code>array&lt;T, 0&gt;</code> satisfies all of the requirements of a container and of a
@@ -28712,7 +28712,7 @@ constant for all other standard containers.
 
 <blockquote>
 <p>
--2- An <code>array</code> is an aggregate (9.4.2 <a href="https://wg21.link/dcl.init.aggr">[dcl.init.aggr]</a>) that can be list-initialized with up to
+-2- An <code>array</code> is an aggregate (9.5.2 <a href="https://wg21.link/dcl.init.aggr">[dcl.init.aggr]</a>) that can be list-initialized with up to
 <code>N</code> elements whose types are convertible to <code>T</code>.
 <p/>
 -3- <ins>An <code>array&lt;T, 0&gt;</code> meets all of the requirements of a container (23.2.2.2 <a href="https://wg21.link/container.reqmts">[container.reqmts]</a>) 
@@ -29403,7 +29403,7 @@ node_type extract(const key_type&amp; x);
 
 <hr>
 <h3 id="3229"><a href="#3229">3229</a><sup><a href="https://cplusplus.github.io/LWG/issue3229">(i)</a></sup>. &sect;[res.on.exception.handling]#3 cannot apply to types with implicitly declared destructors</h3>
-<p><b>Section:</b> 16.4.6.13 <a href="https://wg21.link/res.on.exception.handling">[res.on.exception.handling]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
+<p><b>Section:</b> 16.4.6.14 <a href="https://wg21.link/res.on.exception.handling">[res.on.exception.handling]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
  <b>Submitter:</b> Nevin Liber <b>Opened:</b> 2019-06-28 <b>Last modified:</b> 2023-01-29</p>
 <p><b>Priority: </b>3
 </p>
@@ -29412,7 +29412,7 @@ node_type extract(const key_type&amp; x);
 <p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
 <p><b>Discussion:</b></p>
 <p>
-16.4.6.13 <a href="https://wg21.link/res.on.exception.handling">[res.on.exception.handling]</a>#3 says:
+16.4.6.14 <a href="https://wg21.link/res.on.exception.handling">[res.on.exception.handling]</a>#3 says:
 </p>
 <blockquote><p>
 Destructor operations defined in the C++ standard library shall not throw exceptions.
@@ -29430,7 +29430,7 @@ for any of its potentially constructed subobjects is potentially-throwing or the
 is virtual and the destructor of any virtual base class is potentially throwing.
 </p></blockquote>
 <p>
-We can relax 16.4.6.13 <a href="https://wg21.link/res.on.exception.handling">[res.on.exception.handling]</a> to only cover explicitly declared
+We can relax 16.4.6.14 <a href="https://wg21.link/res.on.exception.handling">[res.on.exception.handling]</a> to only cover explicitly declared
 destructors because if they hold a user type where the destructor throws then we get UB
 from 16.4.5.8 <a href="https://wg21.link/res.on.functions">[res.on.functions]</a>#2:
 </p>
@@ -29464,7 +29464,7 @@ This issue has very much overlap with LWG <a href="lwg-active.html#3854" title="
 <p>This wording is relative to <a href="https://wg21.link/n4820">N4820</a>.</p>
 
 <ol>
-<li><p>Modify 16.4.6.13 <a href="https://wg21.link/res.on.exception.handling">[res.on.exception.handling]</a> as indicated:</p>
+<li><p>Modify 16.4.6.14 <a href="https://wg21.link/res.on.exception.handling">[res.on.exception.handling]</a> as indicated:</p>
 
 <blockquote><p>
 -3- Destructor operations defined in the C++ standard library shall not throw exceptions.
@@ -30316,7 +30316,7 @@ requirements <del>and refer to elements implicitly convertible to <code>value_ty
 
 <hr>
 <h3 id="3308"><a href="#3308">3308</a><sup><a href="https://cplusplus.github.io/LWG/issue3308">(i)</a></sup>. <code>vector</code> and <code>deque</code> iterator <code>erase</code> invalidates elements even when no change occurs</h3>
-<p><b>Section:</b> 23.3.5.4 <a href="https://wg21.link/deque.modifiers">[deque.modifiers]</a>, 23.3.11.5 <a href="https://wg21.link/vector.modifiers">[vector.modifiers]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
+<p><b>Section:</b> 23.3.5.4 <a href="https://wg21.link/deque.modifiers">[deque.modifiers]</a>, 23.3.13.5 <a href="https://wg21.link/vector.modifiers">[vector.modifiers]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
  <b>Submitter:</b> Billy O'Neal III <b>Opened:</b> 2019-10-29 <b>Last modified:</b> 2019-11-04</p>
 <p><b>Priority: </b>3
 </p>
@@ -30373,7 +30373,7 @@ and <code>pop_back</code> are erase operations. &mdash; <i>end note</i>]</del>
 </blockquote>
 </li>
 
-<li><p>Modify 23.3.11.5 <a href="https://wg21.link/vector.modifiers">[vector.modifiers]</a> as indicated:</p>
+<li><p>Modify 23.3.13.5 <a href="https://wg21.link/vector.modifiers">[vector.modifiers]</a> as indicated:</p>
 
 <blockquote>
 <pre>
@@ -30464,7 +30464,7 @@ Perhaps this means "value-initialized" or "default-initialized" instead of merel
 
 <hr>
 <h3 id="3339"><a href="#3339">3339</a><sup><a href="https://cplusplus.github.io/LWG/issue3339">(i)</a></sup>. Move-constructed empty-container capacity</h3>
-<p><b>Section:</b> 27.4.3 <a href="https://wg21.link/basic.string">[basic.string]</a>, 23.3.11 <a href="https://wg21.link/vector">[vector]</a>, 23.5.3 <a href="https://wg21.link/unord.map">[unord.map]</a>, 23.5.6 <a href="https://wg21.link/unord.set">[unord.set]</a>, 23.2.2 <a href="https://wg21.link/container.requirements.general">[container.requirements.general]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
+<p><b>Section:</b> 27.4.3 <a href="https://wg21.link/basic.string">[basic.string]</a>, 23.3.13 <a href="https://wg21.link/vector">[vector]</a>, 23.5.3 <a href="https://wg21.link/unord.map">[unord.map]</a>, 23.5.6 <a href="https://wg21.link/unord.set">[unord.set]</a>, 23.2.2 <a href="https://wg21.link/container.requirements.general">[container.requirements.general]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
  <b>Submitter:</b> Nathan Myers <b>Opened:</b> 2019-11-17 <b>Last modified:</b> 2020-09-06</p>
 <p><b>Priority: </b>3
 </p>
@@ -30589,7 +30589,7 @@ as per <a href="https://wg21.link/p2408">P2408</a>.
 
 <hr>
 <h3 id="3342"><a href="#3342">3342</a><sup><a href="https://cplusplus.github.io/LWG/issue3342">(i)</a></sup>. Library wording uses "initializes <code>x</code> with <code>y</code>", which is underspecified</h3>
-<p><b>Section:</b> 22.3.2 <a href="https://wg21.link/pairs.pair">[pairs.pair]</a>, 22.4.4.2 <a href="https://wg21.link/tuple.cnstr">[tuple.cnstr]</a>, 22.6.3.2 <a href="https://wg21.link/variant.ctor">[variant.ctor]</a>, 32.5.8.7.2 <a href="https://wg21.link/util.smartptr.atomic.shared">[util.smartptr.atomic.shared]</a>, 20.5.3 <a href="https://wg21.link/allocator.adaptor.cnstr">[allocator.adaptor.cnstr]</a>, 28.5.6.6 <a href="https://wg21.link/format.parse.ctx">[format.parse.ctx]</a>, 28.5.8.1 <a href="https://wg21.link/format.arg">[format.arg]</a>, 23.6 <a href="https://wg21.link/container.adaptors">[container.adaptors]</a>, 24.5 <a href="https://wg21.link/predef.iterators">[predef.iterators]</a>, 25.5.4.2 <a href="https://wg21.link/range.subrange.ctor">[range.subrange.ctor]</a>, 25.6 <a href="https://wg21.link/range.factories">[range.factories]</a>, 25.7 <a href="https://wg21.link/range.adaptors">[range.adaptors]</a>, 26.10 <a href="https://wg21.link/numeric.ops">[numeric.ops]</a>, 30.9 <a href="https://wg21.link/time.hms">[time.hms]</a>, 28.6.11 <a href="https://wg21.link/re.iter">[re.iter]</a>, 32.5.8 <a href="https://wg21.link/atomics.types.generic">[atomics.types.generic]</a>, 32.5.9 <a href="https://wg21.link/atomics.nonmembers">[atomics.nonmembers]</a>, 32.3 <a href="https://wg21.link/thread.stoptoken">[thread.stoptoken]</a>, 32.4 <a href="https://wg21.link/thread.threads">[thread.threads]</a>, 32.6 <a href="https://wg21.link/thread.mutex">[thread.mutex]</a>, 32.8 <a href="https://wg21.link/thread.sema">[thread.sema]</a>, 32.9 <a href="https://wg21.link/thread.coord">[thread.coord]</a>, 32.10 <a href="https://wg21.link/futures">[futures]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
+<p><b>Section:</b> 22.3.2 <a href="https://wg21.link/pairs.pair">[pairs.pair]</a>, 22.4.4.2 <a href="https://wg21.link/tuple.cnstr">[tuple.cnstr]</a>, 22.6.3.2 <a href="https://wg21.link/variant.ctor">[variant.ctor]</a>, 32.5.8.7.2 <a href="https://wg21.link/util.smartptr.atomic.shared">[util.smartptr.atomic.shared]</a>, 20.6.3 <a href="https://wg21.link/allocator.adaptor.cnstr">[allocator.adaptor.cnstr]</a>, 28.5.6.6 <a href="https://wg21.link/format.parse.ctx">[format.parse.ctx]</a>, 28.5.8.1 <a href="https://wg21.link/format.arg">[format.arg]</a>, 23.6 <a href="https://wg21.link/container.adaptors">[container.adaptors]</a>, 24.5 <a href="https://wg21.link/predef.iterators">[predef.iterators]</a>, 25.5.4.2 <a href="https://wg21.link/range.subrange.ctor">[range.subrange.ctor]</a>, 25.6 <a href="https://wg21.link/range.factories">[range.factories]</a>, 25.7 <a href="https://wg21.link/range.adaptors">[range.adaptors]</a>, 26.10 <a href="https://wg21.link/numeric.ops">[numeric.ops]</a>, 30.9 <a href="https://wg21.link/time.hms">[time.hms]</a>, 28.6.11 <a href="https://wg21.link/re.iter">[re.iter]</a>, 32.5.8 <a href="https://wg21.link/atomics.types.generic">[atomics.types.generic]</a>, 32.5.9 <a href="https://wg21.link/atomics.nonmembers">[atomics.nonmembers]</a>, 32.3 <a href="https://wg21.link/thread.stoptoken">[thread.stoptoken]</a>, 32.4 <a href="https://wg21.link/thread.threads">[thread.threads]</a>, 32.6 <a href="https://wg21.link/thread.mutex">[thread.mutex]</a>, 32.8 <a href="https://wg21.link/thread.sema">[thread.sema]</a>, 32.9 <a href="https://wg21.link/thread.coord">[thread.coord]</a>, 32.10 <a href="https://wg21.link/futures">[futures]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
  <b>Submitter:</b> Richard Smith <b>Opened:</b> 2019-11-21 <b>Last modified:</b> 2019-12-08</p>
 <p><b>Priority: </b>3
 </p>
@@ -33471,7 +33471,7 @@ to create another thread, or the system-imposed limit on the number of threads i
 
 <hr>
 <h3 id="3484"><a href="#3484">3484</a><sup><a href="https://cplusplus.github.io/LWG/issue3484">(i)</a></sup>. Should <code>&lt;stddef.h&gt;</code> declare <code>::nullptr_t</code>?</h3>
-<p><b>Section:</b> 17.14.7 <a href="https://wg21.link/support.c.headers.other">[support.c.headers.other]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
+<p><b>Section:</b> 17.15.7 <a href="https://wg21.link/support.c.headers.other">[support.c.headers.other]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
  <b>Submitter:</b> Thomas K&ouml;ppe <b>Opened:</b> 2020-09-06 <b>Last modified:</b> 2022-09-18</p>
 <p><b>Priority: </b>3
 </p>
@@ -33482,7 +33482,7 @@ to create another thread, or the system-imposed limit on the number of threads i
 <p>
 From this <a href="https://github.com/cplusplus/draft/issues/4144">editorial issue request</a>: 
 <p/>
-The header <code>&lt;stddef.h&gt;</code> is currently specified in 17.14.7 <a href="https://wg21.link/support.c.headers.other">[support.c.headers.other]</a> 
+The header <code>&lt;stddef.h&gt;</code> is currently specified in 17.15.7 <a href="https://wg21.link/support.c.headers.other">[support.c.headers.other]</a> 
 to not declare a global name corresponding to <code>std::byte</code>, but no similar exclusion exists for 
 <code>std::nullptr_t</code>.
 <p/>
@@ -33521,14 +33521,14 @@ This wording is relative to <a href="https://wg21.link/N4910" title=" Working Dr
 </p>
 
 <ol>
-<li><p>Modify 17.14.7 <a href="https://wg21.link/support.c.headers.other">[support.c.headers.other]</a> as indicated:</p>
+<li><p>Modify 17.15.7 <a href="https://wg21.link/support.c.headers.other">[support.c.headers.other]</a> as indicated:</p>
 
 <blockquote>
 <p>
--1- Every C header other than <code>&lt;complex.h&gt;</code> (17.14.2 <a href="https://wg21.link/complex.h.syn">[complex.h.syn]</a>), 
-<code>&lt;iso646.h&gt;</code> (17.14.3 <a href="https://wg21.link/iso646.h.syn">[iso646.h.syn]</a>), <code>&lt;stdalign.h&gt;</code> 
-(17.14.4 <a href="https://wg21.link/stdalign.h.syn">[stdalign.h.syn]</a>), <code>&lt;stdatomic.h&gt;</code> (32.5.12 <a href="https://wg21.link/stdatomic.h.syn">[stdatomic.h.syn]</a>), 
-<code>&lt;stdbool.h&gt;</code> (17.14.5 <a href="https://wg21.link/stdbool.h.syn">[stdbool.h.syn]</a>), and <code>&lt;tgmath.h&gt;</code> (17.14.6 <a href="https://wg21.link/tgmath.h.syn">[tgmath.h.syn]</a>), 
+-1- Every C header other than <code>&lt;complex.h&gt;</code> (17.15.2 <a href="https://wg21.link/complex.h.syn">[complex.h.syn]</a>), 
+<code>&lt;iso646.h&gt;</code> (17.15.3 <a href="https://wg21.link/iso646.h.syn">[iso646.h.syn]</a>), <code>&lt;stdalign.h&gt;</code> 
+(17.15.4 <a href="https://wg21.link/stdalign.h.syn">[stdalign.h.syn]</a>), <code>&lt;stdatomic.h&gt;</code> (32.5.12 <a href="https://wg21.link/stdatomic.h.syn">[stdatomic.h.syn]</a>), 
+<code>&lt;stdbool.h&gt;</code> (17.15.5 <a href="https://wg21.link/stdbool.h.syn">[stdbool.h.syn]</a>), and <code>&lt;tgmath.h&gt;</code> (17.15.6 <a href="https://wg21.link/tgmath.h.syn">[tgmath.h.syn]</a>), 
 each of which has a name of the form 
 <code>&lt;<i>name</i>.h&gt;</code>, behaves as if each name placed in the standard library namespace by the 
 corresponding <code>&lt;c<i>name</i>&gt;</code> header is placed within the global namespace scope, except 
@@ -33537,7 +33537,7 @@ for the functions described in 29.7.6 <a href="https://wg21.link/sf.cmath">[sf.c
 described in 17.2.5 <a href="https://wg21.link/support.types.byteops">[support.types.byteops]</a>. It is unspecified whether these names are first
 declared or defined within namespace scope (6.4.6 <a href="https://wg21.link/basic.scope.namespace">[basic.scope.namespace]</a>) of the namespace 
 <code>std</code> and are then injected into the global namespace scope by explicit <i>using-declaration</i>s 
-(9.9 <a href="https://wg21.link/namespace.udecl">[namespace.udecl]</a>).
+(9.10 <a href="https://wg21.link/namespace.udecl">[namespace.udecl]</a>).
 </p>
 </blockquote>
 </li>
@@ -33546,7 +33546,7 @@ declared or defined within namespace scope (6.4.6 <a href="https://wg21.link/bas
 
 <blockquote>
 <p>
-<ins><b>Affected subclause:</b> 17.14.7 <a href="https://wg21.link/support.c.headers.other">[support.c.headers.other]</a><br/>
+<ins><b>Affected subclause:</b> 17.15.7 <a href="https://wg21.link/support.c.headers.other">[support.c.headers.other]</a><br/>
 <b>Change:</b> Removal of name <code>::nullptr_t</code> from header <code>&lt;stddef.h&gt;</code>.<br/>
 <b>Rationale:</b> <code>std::nullptr_t</code> is a C++-only feature that is not useful for interoperability with ISO C.<br/>
 <b>Effect on original feature:</b> Valid C++20 code may fail to compile in this International Standard. Occurrences 
@@ -33953,7 +33953,7 @@ friend bool operator==(const <i>iterator</i>&amp; x, default_sentinel_t);
 
 <hr>
 <h3 id="3491"><a href="#3491">3491</a><sup><a href="https://cplusplus.github.io/LWG/issue3491">(i)</a></sup>. What is a "decayed type"?</h3>
-<p><b>Section:</b> 17.11.6 <a href="https://wg21.link/cmp.alg">[cmp.alg]</a>, 25.7.6.1 <a href="https://wg21.link/range.all.general">[range.all.general]</a>, 17.11.6 <a href="https://wg21.link/cmp.alg">[cmp.alg]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
+<p><b>Section:</b> 17.12.6 <a href="https://wg21.link/cmp.alg">[cmp.alg]</a>, 25.7.6.1 <a href="https://wg21.link/range.all.general">[range.all.general]</a>, 17.12.6 <a href="https://wg21.link/cmp.alg">[cmp.alg]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
  <b>Submitter:</b> Alisdair Meredith <b>Opened:</b> 2020-10-27 <b>Last modified:</b> 2021-10-30</p>
 <p><b>Priority: </b>3
 </p>
@@ -33974,9 +33974,9 @@ our intent using existing well-defined terms of art.
 Affected clauses:
 <p/>
 <ul>
-<li><p>17.11.6 <a href="https://wg21.link/cmp.alg">[cmp.alg]</a>: Most heavily used here.</p></li>
+<li><p>17.12.6 <a href="https://wg21.link/cmp.alg">[cmp.alg]</a>: Most heavily used here.</p></li>
 <li><p>25.7.6.1 <a href="https://wg21.link/range.all.general">[range.all.general]</a></p></li>
-<li><p>17.11.6 <a href="https://wg21.link/cmp.alg">[cmp.alg]</a></p></li>
+<li><p>17.12.6 <a href="https://wg21.link/cmp.alg">[cmp.alg]</a></p></li>
 </ul>
 </p>
 
@@ -34680,7 +34680,7 @@ return wait_until(lock, <del>chrono::steady_clock::now() + rel_time</del> <ins><
 <p><b>Discussion:</b></p>
 <p>
 The specification of 19.6.3.4 <a href="https://wg21.link/stacktrace.entry.query">[stacktrace.entry.query]</a> uses the terms "presumed or actual name 
-of the source file" and "actual line number". It makes reference to 15.11 <a href="https://wg21.link/cpp.predefined">[cpp.predefined]</a>, 
+of the source file" and "actual line number". It makes reference to 15.12 <a href="https://wg21.link/cpp.predefined">[cpp.predefined]</a>, 
 which introduces the term "presumed". It does not clearly define the term, but it describes how the 
 presumed values can be modified with preprocessor directives. However, there is no definition whatsoever 
 of "actual".
@@ -34689,7 +34689,7 @@ The term should either be defined, or we should strike the "actual" parts of the
 We should consult implementers about this.
 <p/>
 I don't have a proposed resolution, but if we want to keep "actual", then perhaps we should define 
-both "presumed" and "actual" in 15.11 <a href="https://wg21.link/cpp.predefined">[cpp.predefined]</a>.
+both "presumed" and "actual" in 15.12 <a href="https://wg21.link/cpp.predefined">[cpp.predefined]</a>.
 </p>
 
 <p><i>[2021-01-15; Telecon prioritization]</i></p>
@@ -35844,14 +35844,14 @@ Set priority to 3 after reflector poll.
 
 <hr>
 <h3 id="3584"><a href="#3584">3584</a><sup><a href="https://cplusplus.github.io/LWG/issue3584">(i)</a></sup>. Clarify common comparison category conversions</h3>
-<p><b>Section:</b> 17.11.3 <a href="https://wg21.link/cmp.common">[cmp.common]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
+<p><b>Section:</b> 17.12.3 <a href="https://wg21.link/cmp.common">[cmp.common]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
  <b>Submitter:</b> Peter Brett <b>Opened:</b> 2021-08-23 <b>Last modified:</b> 2021-09-20</p>
 <p><b>Priority: </b>3
 </p>
 <p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
 <p><b>Discussion:</b></p>
 <p>
-17.11.3 <a href="https://wg21.link/cmp.common">[cmp.common]</a>/1 says:
+17.12.3 <a href="https://wg21.link/cmp.common">[cmp.common]</a>/1 says:
 </p>
 <blockquote style="border-left: 3px solid #ccc;padding-left: 15px;"><p>
 The type <code>common_comparison_category</code> provides an alias for the
@@ -35868,7 +35868,7 @@ notion from 11.10.3 <a href="https://wg21.link/class.spaceship">[class.spaceship
 result, all the template arguments must be comparison categories, rather than
 convertible to comparison categories.
 <p/>
-17.11.3 <a href="https://wg21.link/cmp.common">[cmp.common]</a>/2 mildly contradicts the first paragraph:
+17.12.3 <a href="https://wg21.link/cmp.common">[cmp.common]</a>/2 mildly contradicts the first paragraph:
 </p>
 <blockquote style="border-left: 3px solid #ccc;padding-left: 15px;"><p>
 <i>Remarks:</i> The member <i>typedef-name</i> <code>type</code> denotes the common comparison
@@ -35882,8 +35882,8 @@ metafunction that the template represents.
 <p/>
 Suggested resolution;
 <p/>
-Delete 17.11.3 <a href="https://wg21.link/cmp.common">[cmp.common]</a>/1, because it does not provide any information not
-already more precisely included in 17.11.3 <a href="https://wg21.link/cmp.common">[cmp.common]</a>/2.
+Delete 17.12.3 <a href="https://wg21.link/cmp.common">[cmp.common]</a>/1, because it does not provide any information not
+already more precisely included in 17.12.3 <a href="https://wg21.link/cmp.common">[cmp.common]</a>/2.
 </p>
 
 <p><i>[2021-09-20; Reflector poll]</i></p>
@@ -35905,7 +35905,7 @@ This wording is relative to <a href="https://wg21.link/n4892">N4892</a>.
 </p>
 
 <ol>
-<li><p>Modify 17.11.3 <a href="https://wg21.link/cmp.common">[cmp.common]</a> as indicated:</p>
+<li><p>Modify 17.12.3 <a href="https://wg21.link/cmp.common">[cmp.common]</a> as indicated:</p>
 
 <blockquote>
 <p>
@@ -35938,7 +35938,7 @@ This wording is relative to <a href="https://wg21.link/n4892">N4892</a>.
 </p>
 
 <ol>
-<li><p>Modify 17.11.3 <a href="https://wg21.link/cmp.common">[cmp.common]</a> as indicated:</p>
+<li><p>Modify 17.12.3 <a href="https://wg21.link/cmp.common">[cmp.common]</a> as indicated:</p>
 
 <blockquote>
 <p>
@@ -36053,7 +36053,7 @@ and <code>bool</code> or when an integer presentation type is specified</del>.</
 
 <hr>
 <h3 id="3587"><a href="#3587">3587</a><sup><a href="https://cplusplus.github.io/LWG/issue3587">(i)</a></sup>. <code>std::three_way_comparable_with&lt;T, U, void&gt;</code> can be satisfied but can't be modeled</h3>
-<p><b>Section:</b> 17.11.4 <a href="https://wg21.link/cmp.concept">[cmp.concept]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
+<p><b>Section:</b> 17.12.4 <a href="https://wg21.link/cmp.concept">[cmp.concept]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
  <b>Submitter:</b> Jiang An <b>Opened:</b> 2021-09-06 <b>Last modified:</b> 2021-10-23</p>
 <p><b>Priority: </b>3
 </p>
@@ -37052,12 +37052,12 @@ by its underlying iterator to the beginning of that sequence.
 <code>reverse_iterator</code> and function templates in 24.5.1.8 <a href="https://wg21.link/reverse.iter.cmp">[reverse.iter.cmp]</a> and 24.5.1.9 <a href="https://wg21.link/reverse.iter.nonmember">[reverse.iter.nonmember]</a> 
 are available when any of the following headers are included: <code>&lt;array&gt;</code>  (23.3.2 <a href="https://wg21.link/array.syn">[array.syn]</a>), 
 <code>&lt;deque&gt;</code>  (23.3.4 <a href="https://wg21.link/deque.syn">[deque.syn]</a>), <code>&lt;forward_list&gt;</code> (23.3.6 <a href="https://wg21.link/forward.list.syn">[forward.list.syn]</a>), 
-<code>&lt;list&gt;</code> (23.3.8 <a href="https://wg21.link/list.syn">[list.syn]</a>), <code>&lt;map&gt;</code> (23.4.2 <a href="https://wg21.link/associative.map.syn">[associative.map.syn]</a>), 
+<code>&lt;list&gt;</code> (23.3.10 <a href="https://wg21.link/list.syn">[list.syn]</a>), <code>&lt;map&gt;</code> (23.4.2 <a href="https://wg21.link/associative.map.syn">[associative.map.syn]</a>), 
 <code>&lt;regex&gt;</code> (28.6.3 <a href="https://wg21.link/re.syn">[re.syn]</a>), <code>&lt;set&gt;</code> (23.4.5 <a href="https://wg21.link/associative.set.syn">[associative.set.syn]</a>), 
 <code>&lt;span&gt;</code> (23.7.2.1 <a href="https://wg21.link/span.syn">[span.syn]</a>), <code>&lt;stacktrace&gt;</code> (19.6.2 <a href="https://wg21.link/stacktrace.syn">[stacktrace.syn]</a>), 
 <code>&lt;string&gt;</code> (27.4.2 <a href="https://wg21.link/string.syn">[string.syn]</a>), <code>&lt;string_view&gt;</code> (27.3.2 <a href="https://wg21.link/string.view.synop">[string.view.synop]</a>), 
 <code>&lt;unordered_map&gt;</code> (23.5.2 <a href="https://wg21.link/unord.map.syn">[unord.map.syn]</a>), <code>&lt;unordered_set&gt;</code> (23.5.5 <a href="https://wg21.link/unord.set.syn">[unord.set.syn]</a>), 
-and <code>&lt;vector&gt;</code> (23.3.10 <a href="https://wg21.link/vector.syn">[vector.syn]</a>).</ins>
+and <code>&lt;vector&gt;</code> (23.3.12 <a href="https://wg21.link/vector.syn">[vector.syn]</a>).</ins>
 </p>
 </blockquote>
 </li>
@@ -37070,7 +37070,7 @@ and <code>&lt;vector&gt;</code> (23.3.10 <a href="https://wg21.link/vector.syn">
 <hr>
 <h3 id="3624"><a href="#3624">3624</a><sup><a href="https://cplusplus.github.io/LWG/issue3624">(i)</a></sup>. Inconsistency of <code>&lt;typeinfo&gt;</code>, <code>&lt;initializer_list&gt;</code>, and 
 <code>&lt;compare&gt;</code> in the standard library</h3>
-<p><b>Section:</b> 17.7 <a href="https://wg21.link/support.rtti">[support.rtti]</a>, 17.10 <a href="https://wg21.link/support.initlist">[support.initlist]</a>, 17.11 <a href="https://wg21.link/cmp">[cmp]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
+<p><b>Section:</b> 17.7 <a href="https://wg21.link/support.rtti">[support.rtti]</a>, 17.11 <a href="https://wg21.link/support.initlist">[support.initlist]</a>, 17.12 <a href="https://wg21.link/cmp">[cmp]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
  <b>Submitter:</b> Jiang An <b>Opened:</b> 2021-10-23 <b>Last modified:</b> 2022-01-29</p>
 <p><b>Priority: </b>3
 </p>
@@ -37079,7 +37079,7 @@ and <code>&lt;vector&gt;</code> (23.3.10 <a href="https://wg21.link/vector.syn">
 <p>
  Standard library headers <code>&lt;typeinfo&gt;</code>, <code>&lt;initializer_list&gt;</code>, and <code>&lt;compare&gt;</code> 
  are required for some core language features, as specified in 7.6.1.8 <a href="https://wg21.link/expr.typeid">[expr.typeid]</a>/7, 
- 9.4.5 <a href="https://wg21.link/dcl.init.list">[dcl.init.list]</a>/2, and 7.6.8 <a href="https://wg21.link/expr.spaceship">[expr.spaceship]</a>/8. In C++11 (via <a href="https://wg21.link/n2930">N2930</a>), 
+ 9.5.5 <a href="https://wg21.link/dcl.init.list">[dcl.init.list]</a>/2, and 7.6.8 <a href="https://wg21.link/expr.spaceship">[expr.spaceship]</a>/8. In C++11 (via <a href="https://wg21.link/n2930">N2930</a>), 
  every header that has dependency on <code>std::initializer_list</code> is required to include 
  <code>&lt;initializer_list&gt;</code>. The similar requirements are added for <code>operator&lt;=&gt;</code> and 
  <code>&lt;compare&gt;</code> in C++20 (via LWG <a href="lwg-defects.html#3330" title="Include &lt;compare&gt; from most library headers (Status: C++20)">3330</a><sup><a href="https://cplusplus.github.io/LWG/issue3330" title="Latest snapshot">(i)</a></sup>).
@@ -37194,12 +37194,12 @@ a decision]
 -1- In addition to being available via inclusion of the <code>&lt;iterator&gt;</code> header, the function templates 
 in 24.7 <a href="https://wg21.link/iterator.range">[iterator.range]</a> are available when any of the following headers are included: 
 <code>&lt;array&gt;</code> (23.3.2 <a href="https://wg21.link/array.syn">[array.syn]</a>), <code>&lt;deque&gt;</code> (23.3.4 <a href="https://wg21.link/deque.syn">[deque.syn]</a>), 
-<code>&lt;forward_list&gt;</code> (23.3.6 <a href="https://wg21.link/forward.list.syn">[forward.list.syn]</a>), <code>&lt;list&gt;</code> (23.3.8 <a href="https://wg21.link/list.syn">[list.syn]</a>), 
+<code>&lt;forward_list&gt;</code> (23.3.6 <a href="https://wg21.link/forward.list.syn">[forward.list.syn]</a>), <code>&lt;list&gt;</code> (23.3.10 <a href="https://wg21.link/list.syn">[list.syn]</a>), 
 <code>&lt;map&gt;</code> (23.4.2 <a href="https://wg21.link/associative.map.syn">[associative.map.syn]</a>), <code>&lt;regex&gt;</code> (28.6.3 <a href="https://wg21.link/re.syn">[re.syn]</a>), 
 <code>&lt;set&gt;</code> (23.4.5 <a href="https://wg21.link/associative.set.syn">[associative.set.syn]</a>), <code>&lt;span&gt;</code> (23.7.2.1 <a href="https://wg21.link/span.syn">[span.syn]</a>), 
 <ins><code>&lt;stacktrace&gt;</code> (19.6.2 <a href="https://wg21.link/stacktrace.syn">[stacktrace.syn]</a>),</ins> <code>&lt;string&gt;</code> (27.4.2 <a href="https://wg21.link/string.syn">[string.syn]</a>), 
 <code>&lt;string_view&gt;</code> (27.3.2 <a href="https://wg21.link/string.view.synop">[string.view.synop]</a>), <code>&lt;unordered_map&gt;</code> (23.5.2 <a href="https://wg21.link/unord.map.syn">[unord.map.syn]</a>), 
-<code>&lt;unordered_set&gt;</code> (23.5.5 <a href="https://wg21.link/unord.set.syn">[unord.set.syn]</a>), and <code>&lt;vector&gt;</code> (23.3.10 <a href="https://wg21.link/vector.syn">[vector.syn]</a>).
+<code>&lt;unordered_set&gt;</code> (23.5.5 <a href="https://wg21.link/unord.set.syn">[unord.set.syn]</a>), and <code>&lt;vector&gt;</code> (23.3.12 <a href="https://wg21.link/vector.syn">[vector.syn]</a>).
 [&hellip;]
 </p>
 </blockquote>
@@ -37637,7 +37637,7 @@ atomic&amp; operator=(const <ins>volatile</ins> atomic&amp;) volatile = delete;
 
 <hr>
 <h3 id="3634"><a href="#3634">3634</a><sup><a href="https://cplusplus.github.io/LWG/issue3634">(i)</a></sup>. When are static-duration <code>memory_resource</code> objects destroyed?</h3>
-<p><b>Section:</b> 20.4.4 <a href="https://wg21.link/mem.res.global">[mem.res.global]</a>, 19.5.3.5 <a href="https://wg21.link/syserr.errcat.objects">[syserr.errcat.objects]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
+<p><b>Section:</b> 20.5.4 <a href="https://wg21.link/mem.res.global">[mem.res.global]</a>, 19.5.3.5 <a href="https://wg21.link/syserr.errcat.objects">[syserr.errcat.objects]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
  <b>Submitter:</b> Jiang An <b>Opened:</b> 2021-11-07 <b>Last modified:</b> 2022-01-29</p>
 <p><b>Priority: </b>3
 </p>
@@ -37671,7 +37671,7 @@ Set priority to 3 after reflector poll.
 
 <hr>
 <h3 id="3637"><a href="#3637">3637</a><sup><a href="https://cplusplus.github.io/LWG/issue3637">(i)</a></sup>. <code>pmr::memory_resource::do_allocate</code> needs clarification</h3>
-<p><b>Section:</b> 20.4.2 <a href="https://wg21.link/mem.res.class">[mem.res.class]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
+<p><b>Section:</b> 20.5.2 <a href="https://wg21.link/mem.res.class">[mem.res.class]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
  <b>Submitter:</b> Jonathan Wakely <b>Opened:</b> 2021-11-12 <b>Last modified:</b> 2022-01-30</p>
 <p><b>Priority: </b>3
 </p>
@@ -37679,7 +37679,7 @@ Set priority to 3 after reflector poll.
 <p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
 <p><b>Discussion:</b></p>
 <p>
-20.4.2.3 <a href="https://wg21.link/mem.res.private">[mem.res.private]</a> says that <code>pmr::memory_resource::do_allocate</code> 
+20.5.2.3 <a href="https://wg21.link/mem.res.private">[mem.res.private]</a> says that <code>pmr::memory_resource::do_allocate</code> 
 returns "a pointer to allocated storage" and references 6.7.6.5.2 <a href="https://wg21.link/basic.stc.dynamic.allocation">[basic.stc.dynamic.allocation]</a>. 
 But it's not really clear which parts of 6.7.6.5.2 <a href="https://wg21.link/basic.stc.dynamic.allocation">[basic.stc.dynamic.allocation]</a> define 
 "allocated storage". <code>pmr::memory_resource::allocate</code> is not "an allocation function" 
@@ -37718,7 +37718,7 @@ Set priority to 3 after reflector poll.
 
 <hr>
 <h3 id="3638"><a href="#3638">3638</a><sup><a href="https://cplusplus.github.io/LWG/issue3638">(i)</a></sup>. <code>vector&lt;bool&gt;::swap(reference, reference)</code> is useless</h3>
-<p><b>Section:</b> 23.3.12 <a href="https://wg21.link/vector.bool">[vector.bool]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
+<p><b>Section:</b> 23.3.14 <a href="https://wg21.link/vector.bool">[vector.bool]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
  <b>Submitter:</b> Jonathan Wakely <b>Opened:</b> 2021-11-12 <b>Last modified:</b> 2025-02-07</p>
 <p><b>Priority: </b>3
 </p>
@@ -37763,12 +37763,12 @@ This wording is relative to <a href="https://wg21.link/N4901" title=" Working Dr
 
 <ol>
 
-<li><p>Create a new subclause [vector.bool.general] below 23.3.12 <a href="https://wg21.link/vector.bool">[vector.bool]</a> and move paragraphs p1-p3 
+<li><p>Create a new subclause [vector.bool.general] below 23.3.14 <a href="https://wg21.link/vector.bool">[vector.bool]</a> and move paragraphs p1-p3 
 (including the class template <code>vector&lt;bool, Allocator&gt;</code> partial specialization synopsis) into that 
 subclause.</p>
 </li>
 
-<li><p>Add to the synopsis in [vector.bool.general] p1 (n&eacute;e 23.3.12 <a href="https://wg21.link/vector.bool">[vector.bool]</a> p1):</p>
+<li><p>Add to the synopsis in [vector.bool.general] p1 (n&eacute;e 23.3.14 <a href="https://wg21.link/vector.bool">[vector.bool]</a> p1):</p>
 
 <blockquote>
 <pre>
@@ -37891,7 +37891,7 @@ template&lt;class Allocator&gt; struct hash&lt;vector&lt;bool, Allocator&gt;&gt;
 <p>
 <ins><b>D.? Deprecated <code>vector&lt;bool, Allocator&gt;</code> swap [depr.vector.bool.swap]</b></ins>
 <p/>
-<ins>-?- The following member is declared in addition to those members specified in 23.3.12 <a href="https://wg21.link/vector.bool">[vector.bool]</a>:</ins>
+<ins>-?- The following member is declared in addition to those members specified in 23.3.14 <a href="https://wg21.link/vector.bool">[vector.bool]</a>:</ins>
 </p>
 <pre>
 <ins>namespace std {
@@ -37936,12 +37936,12 @@ This wording is relative to <a href="https://wg21.link/N4901" title=" Working Dr
 
 <ol>
 
-<li><p>Create a new subclause [vector.bool.general] below 23.3.12 <a href="https://wg21.link/vector.bool">[vector.bool]</a> and move paragraphs p1-p3 
+<li><p>Create a new subclause [vector.bool.general] below 23.3.14 <a href="https://wg21.link/vector.bool">[vector.bool]</a> and move paragraphs p1-p3 
 (including the class template <code>vector&lt;bool, Allocator&gt;</code> partial specialization synopsis) into that 
 subclause.</p>
 </li>
 
-<li><p>Add to the synopsis in [vector.bool.general] p1 (n&eacute;e 23.3.12 <a href="https://wg21.link/vector.bool">[vector.bool]</a> p1):</p>
+<li><p>Add to the synopsis in [vector.bool.general] p1 (n&eacute;e 23.3.14 <a href="https://wg21.link/vector.bool">[vector.bool]</a> p1):</p>
 
 <blockquote>
 <pre>
@@ -38064,7 +38064,7 @@ template&lt;class Allocator&gt; struct hash&lt;vector&lt;bool, Allocator&gt;&gt;
 <p>
 <ins><b>D.? Deprecated <code>vector&lt;bool, Allocator&gt;</code> swap [depr.vector.bool.swap]</b></ins>
 <p/>
-<ins>-?- The following member is declared in addition to those members specified in 23.3.12 <a href="https://wg21.link/vector.bool">[vector.bool]</a>:</ins>
+<ins>-?- The following member is declared in addition to those members specified in 23.3.14 <a href="https://wg21.link/vector.bool">[vector.bool]</a>:</ins>
 </p>
 <pre>
 <ins>namespace std {
@@ -38110,7 +38110,7 @@ This wording is relative to <a href="https://wg21.link/N4988" title=" Working Dr
 
 <ol>
 
-<li><p>Add to the synopsis in 23.3.12.1 <a href="https://wg21.link/vector.bool.pspc">[vector.bool.pspc]</a> p1:</p>
+<li><p>Add to the synopsis in 23.3.14.1 <a href="https://wg21.link/vector.bool.pspc">[vector.bool.pspc]</a> p1:</p>
 
 <blockquote>
 <pre>
@@ -38228,7 +38228,7 @@ template&lt;class Allocator&gt; struct hash&lt;vector&lt;bool, Allocator&gt;&gt;
 <p>
 <ins><b>D.? Deprecated <code>vector&lt;bool, Allocator&gt;</code> swap [depr.vector.bool.swap]</b></ins>
 <p/>
-<ins>-?- The following member is declared in addition to those members specified in 23.3.12 <a href="https://wg21.link/vector.bool">[vector.bool]</a>:</ins>
+<ins>-?- The following member is declared in addition to those members specified in 23.3.14 <a href="https://wg21.link/vector.bool">[vector.bool]</a>:</ins>
 </p>
 <pre>
 <ins>namespace std {
@@ -38302,7 +38302,7 @@ namespace std {
 </blockquote>
 </li>
 
-<li><p>Add to the synopsis in 23.3.12.1 <a href="https://wg21.link/vector.bool.pspc">[vector.bool.pspc]</a> p1:</p>
+<li><p>Add to the synopsis in 23.3.14.1 <a href="https://wg21.link/vector.bool.pspc">[vector.bool.pspc]</a> p1:</p>
 
 <blockquote>
 <pre>
@@ -38420,7 +38420,7 @@ template&lt;class Allocator&gt; struct hash&lt;vector&lt;bool, Allocator&gt;&gt;
 <p>
 <ins><b>D.? Deprecated <code>vector&lt;bool, Allocator&gt;</code> swap [depr.vector.bool.swap]</b></ins>
 <p/>
-<ins>-?- The following member is declared in addition to those members specified in 23.3.12 <a href="https://wg21.link/vector.bool">[vector.bool]</a>:</ins>
+<ins>-?- The following member is declared in addition to those members specified in 23.3.14 <a href="https://wg21.link/vector.bool">[vector.bool]</a>:</ins>
 </p>
 <pre>
 <ins>namespace std {
@@ -39222,7 +39222,7 @@ whichever comes first."
 
 <hr>
 <h3 id="3653"><a href="#3653">3653</a><sup><a href="https://cplusplus.github.io/LWG/issue3653">(i)</a></sup>. <code>&lt;coroutine&gt;</code> is freestanding, but uses <code>std::hash</code> which is not</h3>
-<p><b>Section:</b> 17.12.2 <a href="https://wg21.link/coroutine.syn">[coroutine.syn]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
+<p><b>Section:</b> 17.13.2 <a href="https://wg21.link/coroutine.syn">[coroutine.syn]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
  <b>Submitter:</b> Jonathan Wakely <b>Opened:</b> 2021-12-17 <b>Last modified:</b> 2022-01-30</p>
 <p><b>Priority: </b>3
 </p>
@@ -40457,7 +40457,7 @@ is_invocable_r_v&lt;R, VT <i>inv-quals</i>, ArgTypes...&gt;
 
 <hr>
 <h3 id="3681"><a href="#3681">3681</a><sup><a href="https://cplusplus.github.io/LWG/issue3681">(i)</a></sup>. Further considerations on LWG 3679</h3>
-<p><b>Section:</b> 20.4.1 <a href="https://wg21.link/mem.res.syn">[mem.res.syn]</a>, 20.2.2 <a href="https://wg21.link/memory.syn">[memory.syn]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
+<p><b>Section:</b> 20.5.1 <a href="https://wg21.link/mem.res.syn">[mem.res.syn]</a>, 20.2.2 <a href="https://wg21.link/memory.syn">[memory.syn]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
  <b>Submitter:</b> Jiang An <b>Opened:</b> 2022-02-28 <b>Last modified:</b> 2022-05-17</p>
 <p><b>Priority: </b>4
 </p>
@@ -42906,7 +42906,7 @@ template&lt;common_with&lt;I&gt; I2&gt;
 <hr>
 <h3 id="3758"><a href="#3758">3758</a><sup><a href="https://cplusplus.github.io/LWG/issue3758">(i)</a></sup>. Element-relocating operations of <code>std::vector</code> and <code>std::deque</code> 
 should conditionally require <i>Cpp17CopyInsertable</i> in their preconditions</h3>
-<p><b>Section:</b> 23.3.11.3 <a href="https://wg21.link/vector.capacity">[vector.capacity]</a>, 23.3.11.5 <a href="https://wg21.link/vector.modifiers">[vector.modifiers]</a>, 23.3.5.3 <a href="https://wg21.link/deque.capacity">[deque.capacity]</a>, 23.3.5.4 <a href="https://wg21.link/deque.modifiers">[deque.modifiers]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
+<p><b>Section:</b> 23.3.13.3 <a href="https://wg21.link/vector.capacity">[vector.capacity]</a>, 23.3.13.5 <a href="https://wg21.link/vector.modifiers">[vector.modifiers]</a>, 23.3.5.3 <a href="https://wg21.link/deque.capacity">[deque.capacity]</a>, 23.3.5.4 <a href="https://wg21.link/deque.modifiers">[deque.modifiers]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
  <b>Submitter:</b> Jiang An <b>Opened:</b> 2022-08-24 <b>Last modified:</b> 2022-11-06</p>
 <p><b>Priority: </b>3
 </p>
@@ -43645,7 +43645,7 @@ change the <code>subrange</code>'s tuple protocol, which is not ideal.
 
 <hr>
 <h3 id="3799"><a href="#3799">3799</a><sup><a href="https://cplusplus.github.io/LWG/issue3799">(i)</a></sup>. Should <code>&lt;math.h&gt;</code> provide 3-argument <code>::hypot</code> overloads?</h3>
-<p><b>Section:</b> 17.14.7 <a href="https://wg21.link/support.c.headers.other">[support.c.headers.other]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
+<p><b>Section:</b> 17.15.7 <a href="https://wg21.link/support.c.headers.other">[support.c.headers.other]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
  <b>Submitter:</b> Jiang An <b>Opened:</b> 2022-10-22 <b>Last modified:</b> 2022-11-01</p>
 <p><b>Priority: </b>3
 </p>
@@ -44653,7 +44653,7 @@ Set priority to 4 after reflector poll.
 <hr>
 <h3 id="3837"><a href="#3837">3837</a><sup><a href="https://cplusplus.github.io/LWG/issue3837">(i)</a></sup>. <code>std::erase_if</code> overloads for non-associative containers should move (and
 not copy) their predicate object</h3>
-<p><b>Section:</b> 27.4.4.5 <a href="https://wg21.link/string.erasure">[string.erasure]</a>, 23.3.5.5 <a href="https://wg21.link/deque.erasure">[deque.erasure]</a>, 23.3.7.7 <a href="https://wg21.link/forward.list.erasure">[forward.list.erasure]</a>, 23.3.9.6 <a href="https://wg21.link/list.erasure">[list.erasure]</a>, 23.3.11.6 <a href="https://wg21.link/vector.erasure">[vector.erasure]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
+<p><b>Section:</b> 27.4.4.5 <a href="https://wg21.link/string.erasure">[string.erasure]</a>, 23.3.5.5 <a href="https://wg21.link/deque.erasure">[deque.erasure]</a>, 23.3.7.7 <a href="https://wg21.link/forward.list.erasure">[forward.list.erasure]</a>, 23.3.11.6 <a href="https://wg21.link/list.erasure">[list.erasure]</a>, 23.3.13.6 <a href="https://wg21.link/vector.erasure">[vector.erasure]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
  <b>Submitter:</b> Giuseppe D'Angelo <b>Opened:</b> 2022-12-04 <b>Last modified:</b> 2023-01-06</p>
 <p><b>Priority: </b>3
 </p>
@@ -44671,8 +44671,8 @@ and their unordered and multi variants).
 For the overloads that deal with non-associative containers the predicate passed to 
 <code>std::erase_if</code> is always <em>copied</em> into the inner call
 to <code>std::remove_if</code> or the container's <code>remove_if</code> (see 
-27.4.4.5 <a href="https://wg21.link/string.erasure">[string.erasure]</a>, 23.3.11.6 <a href="https://wg21.link/vector.erasure">[vector.erasure]</a>, 
-23.3.9.6 <a href="https://wg21.link/list.erasure">[list.erasure]</a>, 23.3.7.7 <a href="https://wg21.link/forward.list.erasure">[forward.list.erasure]</a>, and
+27.4.4.5 <a href="https://wg21.link/string.erasure">[string.erasure]</a>, 23.3.13.6 <a href="https://wg21.link/vector.erasure">[vector.erasure]</a>, 
+23.3.11.6 <a href="https://wg21.link/list.erasure">[list.erasure]</a>, 23.3.7.7 <a href="https://wg21.link/forward.list.erasure">[forward.list.erasure]</a>, and
 23.3.5.5 <a href="https://wg21.link/deque.erasure">[deque.erasure]</a>).
 <p/>
 Now, algorithms are generally allowed to take as many copies of
@@ -44782,7 +44782,7 @@ template&lt;class T, class Allocator, class Predicate&gt;
 </blockquote>
 </li>
 
-<li><p>Modify 23.3.9.6 <a href="https://wg21.link/list.erasure">[list.erasure]</a> as indicated:</p>
+<li><p>Modify 23.3.11.6 <a href="https://wg21.link/list.erasure">[list.erasure]</a> as indicated:</p>
 
 <blockquote>
 <pre>
@@ -44800,7 +44800,7 @@ template&lt;class T, class Allocator, class Predicate&gt;
 </blockquote>
 </li>
 
-<li><p>Modify 23.3.11.6 <a href="https://wg21.link/vector.erasure">[vector.erasure]</a> as indicated:</p>
+<li><p>Modify 23.3.13.6 <a href="https://wg21.link/vector.erasure">[vector.erasure]</a> as indicated:</p>
 
 <blockquote>
 <pre>
@@ -45562,7 +45562,7 @@ namespace std::ranges {
 
 <hr>
 <h3 id="3854"><a href="#3854">3854</a><sup><a href="https://cplusplus.github.io/LWG/issue3854">(i)</a></sup>. &sect;[res.on.exception.handling]/3 should not be applied to all standard library types</h3>
-<p><b>Section:</b> 16.4.6.13 <a href="https://wg21.link/res.on.exception.handling">[res.on.exception.handling]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
+<p><b>Section:</b> 16.4.6.14 <a href="https://wg21.link/res.on.exception.handling">[res.on.exception.handling]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
  <b>Submitter:</b> Jiang An <b>Opened:</b> 2023-01-07 <b>Last modified:</b> 2023-02-01</p>
 <p><b>Priority: </b>3
 </p>
@@ -45573,7 +45573,7 @@ namespace std::ranges {
 <p>
 Some standard library types, such as <code>std::pair</code>, <code>std::tuple</code>, and <code>std::array</code>, 
 are currently allowed to have a member or element type with a destructor that is <code>noexcept(false)</code>. 
-In order to conform to 16.4.6.13 <a href="https://wg21.link/res.on.exception.handling">[res.on.exception.handling]</a>/3, these types can't always have 
+In order to conform to 16.4.6.14 <a href="https://wg21.link/res.on.exception.handling">[res.on.exception.handling]</a>/3, these types can't always have 
 implicitly declared destructors because the implicit exception specification may be <code>noexcept(false)</code>.
 <p/>
 However, it may be intentional to implement these types with implicitly declared destructors, and 
@@ -45581,7 +45581,7 @@ mainstream implementations (libc++, libstdc++, and MSVC STL) are already doing s
 <p/>
 Furtherly, explicitly declared destructors are not allowed for algorithm result types 
 (26.5 <a href="https://wg21.link/algorithms.results">[algorithms.results]</a>), while currently these class templates are allowed to be instantiated 
-with classes with potentially throwing destructors, which is contradictory to 16.4.6.13 <a href="https://wg21.link/res.on.exception.handling">[res.on.exception.handling]</a>/3.
+with classes with potentially throwing destructors, which is contradictory to 16.4.6.14 <a href="https://wg21.link/res.on.exception.handling">[res.on.exception.handling]</a>/3.
 </p>
 
 <p><i>[2023-01-29; Daniel comments]</i></p>
@@ -46112,7 +46112,7 @@ This wording is relative to <a href="https://wg21.link/N4928" title=" Working Dr
 
 <blockquote>
 <pre>
-#include &lt;initializer_list&gt;     // <i>see 17.10.2 <a href="https://wg21.link/initializer.list.syn">[initializer.list.syn]</a></i>
+#include &lt;initializer_list&gt;     // <i>see 17.11.2 <a href="https://wg21.link/initializer.list.syn">[initializer.list.syn]</a></i>
 
 namespace std {
   [&hellip;]
@@ -46589,7 +46589,7 @@ tuple_element_t&lt;tuple_size_v&lt;UTuple&gt; - 1, UTuple&gt;</code>.
 
 <hr>
 <h3 id="3883"><a href="#3883">3883</a><sup><a href="https://cplusplus.github.io/LWG/issue3883">(i)</a></sup>. &sect;[support.c.headers.other] Ambiguity in the requirements for includes</h3>
-<p><b>Section:</b> 17.14.7 <a href="https://wg21.link/support.c.headers.other">[support.c.headers.other]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
+<p><b>Section:</b> 17.15.7 <a href="https://wg21.link/support.c.headers.other">[support.c.headers.other]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
  <b>Submitter:</b> Alex Mills <b>Opened:</b> 2023-02-09 <b>Last modified:</b> 2023-03-22</p>
 <p><b>Priority: </b>4
 </p>
@@ -46598,7 +46598,7 @@ tuple_element_t&lt;tuple_size_v&lt;UTuple&gt; - 1, UTuple&gt;</code>.
 <p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
 <p><b>Discussion:</b></p>
 <p>
-In 17.14.7 <a href="https://wg21.link/support.c.headers.other">[support.c.headers.other]</a>, it states that the <code>&lt;<i>name</i>.h&gt;</code> headers behave 
+In 17.15.7 <a href="https://wg21.link/support.c.headers.other">[support.c.headers.other]</a>, it states that the <code>&lt;<i>name</i>.h&gt;</code> headers behave 
 "as if each name placed in the standard library namespace by the corresponding header is placed within the 
 global namespace scope". There are exceptions for several different definitions in the headers, but it's left 
 ambiguous as to whether their inclusion in the <code>&lt;<i>name</i>.h&gt;</code> headers is required or unspecified.
@@ -46633,16 +46633,16 @@ This wording is relative to <a href="https://wg21.link/N4928" title=" Working Dr
 </p>
 
 <ol>
-<li><p>Modify 17.14.7 <a href="https://wg21.link/support.c.headers.other">[support.c.headers.other]</a> as indicated:</p>
+<li><p>Modify 17.15.7 <a href="https://wg21.link/support.c.headers.other">[support.c.headers.other]</a> as indicated:</p>
 
 <blockquote>
 <p>
--1- Every C header other than <code>&lt;complex.h&gt;</code> (17.14.2 <a href="https://wg21.link/complex.h.syn">[complex.h.syn]</a>), 
-<code>&lt;iso646.h&gt;</code> (17.14.3 <a href="https://wg21.link/iso646.h.syn">[iso646.h.syn]</a>), 
-<code>&lt;stdalign.h&gt;</code> (17.14.4 <a href="https://wg21.link/stdalign.h.syn">[stdalign.h.syn]</a>),
+-1- Every C header other than <code>&lt;complex.h&gt;</code> (17.15.2 <a href="https://wg21.link/complex.h.syn">[complex.h.syn]</a>), 
+<code>&lt;iso646.h&gt;</code> (17.15.3 <a href="https://wg21.link/iso646.h.syn">[iso646.h.syn]</a>), 
+<code>&lt;stdalign.h&gt;</code> (17.15.4 <a href="https://wg21.link/stdalign.h.syn">[stdalign.h.syn]</a>),
 <code>&lt;stdatomic.h&gt;</code> (32.5.12 <a href="https://wg21.link/stdatomic.h.syn">[stdatomic.h.syn]</a>), 
-<code>&lt;stdbool.h&gt;</code> (17.14.5 <a href="https://wg21.link/stdbool.h.syn">[stdbool.h.syn]</a>), and 
-<code>&lt;tgmath.h&gt;</code> (17.14.6 <a href="https://wg21.link/tgmath.h.syn">[tgmath.h.syn]</a>), each 
+<code>&lt;stdbool.h&gt;</code> (17.15.5 <a href="https://wg21.link/stdbool.h.syn">[stdbool.h.syn]</a>), and 
+<code>&lt;tgmath.h&gt;</code> (17.15.6 <a href="https://wg21.link/tgmath.h.syn">[tgmath.h.syn]</a>), each 
 of which has a name of the form <code>&lt;<i>name</i>.h&gt;</code>, behaves as if each name placed in 
 the standard library namespace by the corresponding <code>&lt;c<i>name</i>&gt;</code> header is placed 
 within the global namespace scope, except for the functions described in 29.7.6 <a href="https://wg21.link/sf.cmath">[sf.cmath]</a>,
@@ -46651,7 +46651,7 @@ the <code>std::lerp</code> function overloads (29.7.4 <a href="https://wg21.link
 in 17.2.5 <a href="https://wg21.link/support.types.byteops">[support.types.byteops]</a>. 
 It is unspecified whether these names are first declared or defined within namespace scope 
 (6.4.6 <a href="https://wg21.link/basic.scope.namespace">[basic.scope.namespace]</a>) of the namespace <code>std</code> and are then injected into the 
-global namespace scope by explicit <i>using-declarations</i> (9.9 <a href="https://wg21.link/namespace.udecl">[namespace.udecl]</a>).
+global namespace scope by explicit <i>using-declarations</i> (9.10 <a href="https://wg21.link/namespace.udecl">[namespace.udecl]</a>).
 <ins>Whether the listed exceptions are included in their corresponding <code>&lt;<i>name</i>.h&gt;</code> 
 headers under the standard library namespace is unspecified.</ins>
 </p>
@@ -48273,7 +48273,7 @@ constexpr T&amp; operator[](size_t i) const;
 
 <hr>
 <h3 id="3916"><a href="#3916">3916</a><sup><a href="https://cplusplus.github.io/LWG/issue3916">(i)</a></sup>. <code>allocator</code>, <code>polymorphic_allocator</code>, and containers should forbid <i>cv</i>-qualified types</h3>
-<p><b>Section:</b> 20.2.10 <a href="https://wg21.link/default.allocator">[default.allocator]</a>, 20.4.3.1 <a href="https://wg21.link/mem.poly.allocator.class.general">[mem.poly.allocator.class.general]</a>, 23.2 <a href="https://wg21.link/container.requirements">[container.requirements]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
+<p><b>Section:</b> 20.2.10 <a href="https://wg21.link/default.allocator">[default.allocator]</a>, 20.5.3.1 <a href="https://wg21.link/mem.poly.allocator.class.general">[mem.poly.allocator.class.general]</a>, 23.2 <a href="https://wg21.link/container.requirements">[container.requirements]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
  <b>Submitter:</b> Stephan T. Lavavej <b>Opened:</b> 2023-04-02 <b>Last modified:</b> 2023-05-24</p>
 <p><b>Priority: </b>3
 </p>
@@ -48291,7 +48291,7 @@ except where 20.2.10.2 <a href="https://wg21.link/allocator.members">[allocator.
 whose signatures implied that <code>const</code>-qualified types were forbidden, but those signatures were deprecated and 
 removed. This explains the phrasing of an MSVC static assertion.)
 <p/>
-20.4.3.1 <a href="https://wg21.link/mem.poly.allocator.class.general">[mem.poly.allocator.class.general]</a> says a bit more about <code>Tp</code> in <code>polymorphic_allocator&lt;Tp&gt;</code> 
+20.5.3.1 <a href="https://wg21.link/mem.poly.allocator.class.general">[mem.poly.allocator.class.general]</a> says a bit more about <code>Tp</code> in <code>polymorphic_allocator&lt;Tp&gt;</code> 
 but doesn't forbid anything. It says that if <code>Tp</code> is a <i>cv</i>-unqualified object type, then 
 <code>polymorphic_allocator&lt;Tp&gt;</code> meets the <i>Cpp17Allocator</i> requirements and allocator completeness requirements, 
 but that's all.
@@ -48326,7 +48326,7 @@ Set priority to 3 after reflector poll.
 
 <hr>
 <h3 id="3917"><a href="#3917">3917</a><sup><a href="https://cplusplus.github.io/LWG/issue3917">(i)</a></sup>. Validity of <code>allocator&lt;void&gt;</code> and possibly <code>polymorphic_allocator&lt;void&gt;</code> should be clarified</h3>
-<p><b>Section:</b> 20.2.10 <a href="https://wg21.link/default.allocator">[default.allocator]</a>, 20.4.3 <a href="https://wg21.link/mem.poly.allocator.class">[mem.poly.allocator.class]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
+<p><b>Section:</b> 20.2.10 <a href="https://wg21.link/default.allocator">[default.allocator]</a>, 20.5.3 <a href="https://wg21.link/mem.poly.allocator.class">[mem.poly.allocator.class]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
  <b>Submitter:</b> Daniel Kr&uuml;gler <b>Opened:</b> 2023-04-08 <b>Last modified:</b> 2023-05-24</p>
 <p><b>Priority: </b>3
 </p>
@@ -48372,7 +48372,7 @@ complete, but <code>void</code> can never be completed), since it is mostly focu
 type itself.
 <p/>
 The situation is similar (albeit maybe not that strong) for <code>polymorphic_allocator&lt;void&gt;</code>, since
-20.4.3 <a href="https://wg21.link/mem.poly.allocator.class">[mem.poly.allocator.class]</a> p1 has some unusual wording form that says
+20.5.3 <a href="https://wg21.link/mem.poly.allocator.class">[mem.poly.allocator.class]</a> p1 has some unusual wording form that says
 </p>
 <blockquote><p>
 -1- A specialization of class template <code>pmr::polymorphic_allocator</code> meets the <i>Cpp17Allocator</i> requirements
@@ -48394,7 +48394,7 @@ is a complete object type.
 <p/>
 I assume that at least the intention exists that <code>std::allocator</code> is intended to support incomplete types, maybe also
 for <code>polymorphic_allocator</code>. If <code>polymorphic_allocator</code> is intended to support incomplete types as well,
-we should also amend 20.4.3.3 <a href="https://wg21.link/mem.poly.allocator.mem">[mem.poly.allocator.mem]</a> p1 and p8 with a <i>Mandates:</i> element similarly as we did 
+we should also amend 20.5.3.3 <a href="https://wg21.link/mem.poly.allocator.mem">[mem.poly.allocator.mem]</a> p1 and p8 with a <i>Mandates:</i> element similarly as we did 
 for <code>std::allocator</code> via LWG <a href="lwg-defects.html#3307" title="std::allocator&lt;void&gt;().allocate(n) (Status: C++20)">3307</a><sup><a href="https://cplusplus.github.io/LWG/issue3307" title="Latest snapshot">(i)</a></sup>.
 </p>
 
@@ -48425,7 +48425,7 @@ This wording is relative to <a href="https://wg21.link/N4944" title=" Working Dr
 </li>
 
 <li>
-<p>Add the following new paragraph at the end of 20.4.3.1 <a href="https://wg21.link/mem.poly.allocator.class.general">[mem.poly.allocator.class.general]</a> (possibly just after
+<p>Add the following new paragraph at the end of 20.5.3.1 <a href="https://wg21.link/mem.poly.allocator.class.general">[mem.poly.allocator.class.general]</a> (possibly just after
 the class template synopsis) as indicated:</p>
 
 <blockquote>
@@ -48436,7 +48436,7 @@ the class template synopsis) as indicated:</p>
 </li>
 
 <li>
-<p>Modify 20.4.3.3 <a href="https://wg21.link/mem.poly.allocator.mem">[mem.poly.allocator.mem]</a> as indicated:</p>
+<p>Modify 20.5.3.3 <a href="https://wg21.link/mem.poly.allocator.mem">[mem.poly.allocator.mem]</a> as indicated:</p>
 
 <blockquote class="note">
 <p>
@@ -48656,7 +48656,7 @@ respectively.]
 <blockquote class="note">
 <p>
 [<i>Drafting Note:</i> The particular wording form has been borrowed from
-17.12.4.1 <a href="https://wg21.link/coroutine.handle.general">[coroutine.handle.general]</a> p2 and 20.2.9.1 <a href="https://wg21.link/allocator.traits.general">[allocator.traits.general]</a> p1, 
+17.13.4.1 <a href="https://wg21.link/coroutine.handle.general">[coroutine.handle.general]</a> p2 and 20.2.9.1 <a href="https://wg21.link/allocator.traits.general">[allocator.traits.general]</a> p1, 
 respectively.] 
 </p>
 </blockquote>
@@ -49285,7 +49285,7 @@ not required to be also in <code>&lt;functional&gt;</code>.</p></li>
 
 <hr>
 <h3 id="3932"><a href="#3932">3932</a><sup><a href="https://cplusplus.github.io/LWG/issue3932">(i)</a></sup>. Expression-equivalence is sometimes unimplementable when passing prvalue expressions to comparison CPOs</h3>
-<p><b>Section:</b> 17.11.6 <a href="https://wg21.link/cmp.alg">[cmp.alg]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
+<p><b>Section:</b> 17.12.6 <a href="https://wg21.link/cmp.alg">[cmp.alg]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
  <b>Submitter:</b> Jiang An <b>Opened:</b> 2023-05-04 <b>Last modified:</b> 2023-05-24</p>
 <p><b>Priority: </b>3
 </p>
@@ -50144,14 +50144,14 @@ iterators to elements in the parsed range. For example,<br/>
 
 <hr>
 <h3 id="3945"><a href="#3945">3945</a><sup><a href="https://cplusplus.github.io/LWG/issue3945">(i)</a></sup>. &sect;[cstdarg.syn] 'Compatible types' are undefined</h3>
-<p><b>Section:</b> 17.13.2 <a href="https://wg21.link/cstdarg.syn">[cstdarg.syn]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
+<p><b>Section:</b> 17.14.2 <a href="https://wg21.link/cstdarg.syn">[cstdarg.syn]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
  <b>Submitter:</b> Lukas Barth <b>Opened:</b> 2023-06-08 <b>Last modified:</b> 2023-06-12</p>
 <p><b>Priority: </b>3
 </p>
 <p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
 <p><b>Discussion:</b></p>
 <p>
-Subclause 17.13.2 <a href="https://wg21.link/cstdarg.syn">[cstdarg.syn]</a> p1 bullet (1.2) states (among other things): 
+Subclause 17.14.2 <a href="https://wg21.link/cstdarg.syn">[cstdarg.syn]</a> p1 bullet (1.2) states (among other things): 
 </p>
 <blockquote style="border-left: 3px solid #ccc;padding-left: 15px;"><p>
 [&hellip;]  If the parameter <code>parmN</code> is of a reference type, or of a type that is not
@@ -50310,7 +50310,7 @@ namespace std {
 
 <hr>
 <h3 id="3954"><a href="#3954">3954</a><sup><a href="https://cplusplus.github.io/LWG/issue3954">(i)</a></sup>. Feature-test macros in C headers (<code>&lt;stddef.h&gt;</code> etc.)</h3>
-<p><b>Section:</b> 17.14.1 <a href="https://wg21.link/support.c.headers.general">[support.c.headers.general]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
+<p><b>Section:</b> 17.15.1 <a href="https://wg21.link/support.c.headers.general">[support.c.headers.general]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
  <b>Submitter:</b> Jiang An <b>Opened:</b> 2023-07-06 <b>Last modified:</b> 2024-02-22</p>
 <p><b>Priority: </b>3
 </p>
@@ -50325,7 +50325,7 @@ required to provide <code>__cpp_lib_*</code> macros in C++.
 Presumably, <code><i>name</i>.h</code> should provide macros shown in the synopsis of its corresponding <code>c<i>name</i></code> 
 (as required in C), but should not be required to provide C++ library feature-test macros because such requirement would 
 generally require implementations of the C standard library to change. I think we should make clarification in 
-17.14.1 <a href="https://wg21.link/support.c.headers.general">[support.c.headers.general]</a>.
+17.15.1 <a href="https://wg21.link/support.c.headers.general">[support.c.headers.general]</a>.
 </p>
 
 <p><i>[2024-02-22; Reflector poll]</i></p>
@@ -50388,9 +50388,9 @@ Also related to LWG <a href="lwg-active.html#3484" title="Should &lt;stddef.h&gt
 
 
 <p>
-It seems 17.14 <a href="https://wg21.link/support.c.headers">[support.c.headers]</a> is silent on which macros
+It seems 17.15 <a href="https://wg21.link/support.c.headers">[support.c.headers]</a> is silent on which macros
 from the <code>&lt;cxxx&gt;</code> headers are made available via the <code>&lt;xxx.h&gt;</code> headers,
-given that 17.14.7 <a href="https://wg21.link/support.c.headers.other">[support.c.headers.other]</a> talks about names placed in
+given that 17.15.7 <a href="https://wg21.link/support.c.headers.other">[support.c.headers.other]</a> talks about names placed in
 the standard library namespace (macros don't fit that description).
 </p>
 
@@ -52236,8 +52236,8 @@ This wording is relative to <a href="https://wg21.link/N4958" title=" Working Dr
 
 <blockquote>
 <pre>
-#include &lt;compare&gt;              // <i>see 17.11.1 <a href="https://wg21.link/compare.syn">[compare.syn]</a></i>
-#include &lt;initializer_list&gt;     // <i>see 17.10.2 <a href="https://wg21.link/initializer.list.syn">[initializer.list.syn]</a></i>
+#include &lt;compare&gt;              // <i>see 17.12.1 <a href="https://wg21.link/compare.syn">[compare.syn]</a></i>
+#include &lt;initializer_list&gt;     // <i>see 17.11.2 <a href="https://wg21.link/initializer.list.syn">[initializer.list.syn]</a></i>
 #include &lt;iterator&gt;             // <i>see 24.2 <a href="https://wg21.link/iterator.synopsis">[iterator.synopsis]</a></i>
 
 namespace std::ranges {
@@ -56525,7 +56525,7 @@ This wording is relative to <a href="https://wg21.link/N4971" title=" Working Dr
 
 <blockquote class="note">
 <p>
-[<i>Drafting Note:</i> The proposed wording is similar to the specification in 23.3.11.1 <a href="https://wg21.link/vector.overview">[vector.overview]</a> p2 
+[<i>Drafting Note:</i> The proposed wording is similar to the specification in 23.3.13.1 <a href="https://wg21.link/vector.overview">[vector.overview]</a> p2 
 and suggests to simply strike 27.4.3.4 <a href="https://wg21.link/string.iterators">[string.iterators]</a> because it doesn't say anything new compared to 
 23.2.2.2 <a href="https://wg21.link/container.reqmts">[container.reqmts]</a> and 23.2.2.3 <a href="https://wg21.link/container.rev.reqmts">[container.rev.reqmts]</a>.
 <p/>
@@ -56878,8 +56878,8 @@ or <code>#undef</code>, the program is ill-formed, no diagnostic required</ins><
 a standard library header shall not <code>#define</code> or <code>#undef</code> names declared in any standard library header</del>.
 <p/>
 -2- A translation unit shall not <code>#define</code> or <code>#undef</code> names lexically identical to keywords, to the identifiers 
-listed in Table [tab:lex.name.special], or to the <i>attribute-token</i>s described in 9.12 <a href="https://wg21.link/dcl.attr">[dcl.attr]</a>, except that 
-the names <code>likely</code> and <code>unlikely</code> may be defined as function-like macros (15.6 <a href="https://wg21.link/cpp.replace">[cpp.replace]</a>).
+listed in Table [tab:lex.name.special], or to the <i>attribute-token</i>s described in 9.13 <a href="https://wg21.link/dcl.attr">[dcl.attr]</a>, except that 
+the names <code>likely</code> and <code>unlikely</code> may be defined as function-like macros (15.7 <a href="https://wg21.link/cpp.replace">[cpp.replace]</a>).
 </p>
 </blockquote>
 
@@ -57639,7 +57639,7 @@ This wording is relative to <a href="https://wg21.link/N4971" title=" Working Dr
 
 <blockquote>
 <p>
--9- 17.14 <a href="https://wg21.link/support.c.headers">[support.c.headers]</a>, C standard library headers, describes the effects of using the 
+-9- 17.15 <a href="https://wg21.link/support.c.headers">[support.c.headers]</a>, C standard library headers, describes the effects of using the 
 <code><i>name</i>.h</code> (C header) form in a C++ program. <ins>The <code><i>name</i>.h</code> form is the 
 <i>corresponding C header form</i>.</ins>
 </p>
@@ -57886,7 +57886,7 @@ This wording is relative to <a href="https://wg21.link/N4971" title=" Working Dr
 
 <hr>
 <h3 id="4051"><a href="#4051">4051</a><sup><a href="https://cplusplus.github.io/LWG/issue4051">(i)</a></sup>. A less hacky and more useful way to compare comparison category types</h3>
-<p><b>Section:</b> 17.11.2 <a href="https://wg21.link/cmp.categories">[cmp.categories]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
+<p><b>Section:</b> 17.12.2 <a href="https://wg21.link/cmp.categories">[cmp.categories]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
  <b>Submitter:</b> Corentin Jabot <b>Opened:</b> 2024-01-31 <b>Last modified:</b> 2024-02-04</p>
 <p><b>Priority: </b>Not Prioritized
 </p>
@@ -57952,7 +57952,7 @@ This wording is relative to <a href="https://wg21.link/N4971" title=" Working Dr
 </p>
 
 <ol>
-<li><p>Modify 17.11.2.1 <a href="https://wg21.link/cmp.categories.pre">[cmp.categories.pre]</a> as indicated:</p>
+<li><p>Modify 17.12.2.1 <a href="https://wg21.link/cmp.categories.pre">[cmp.categories.pre]</a> as indicated:</p>
 
 <blockquote>
 <p>
@@ -58546,7 +58546,7 @@ constexpr <i>iterator</i>&amp; operator--()
 
 <hr>
 <h3 id="4062"><a href="#4062">4062</a><sup><a href="https://cplusplus.github.io/LWG/issue4062">(i)</a></sup>. <code>ranges::empty</code> has no semantic requirements for <code>forward_range</code>s</h3>
-<p><b>Section:</b> 25.3.12 <a href="https://wg21.link/range.prim.empty">[range.prim.empty]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
+<p><b>Section:</b> 25.3.14 <a href="https://wg21.link/range.prim.empty">[range.prim.empty]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
  <b>Submitter:</b> Hewill Kang <b>Opened:</b> 2024-03-30 <b>Last modified:</b> 2024-03-30</p>
 <p><b>Priority: </b>Not Prioritized
 </p>
@@ -58555,7 +58555,7 @@ constexpr <i>iterator</i>&amp; operator--()
 <p>
 This is a small part of issues raised by already-closed <a href="https://wg21.link/P3156" title=" empty_checkable_range">P3156</a>.
 <p/>
-Currently, <code>ranges::empty</code> (25.3.12 <a href="https://wg21.link/range.prim.empty">[range.prim.empty]</a>) is always a valid expression when applied
+Currently, <code>ranges::empty</code> (25.3.14 <a href="https://wg21.link/range.prim.empty">[range.prim.empty]</a>) is always a valid expression when applied
 to <code>forward_range</code>s, because even if it does not have <code>.empty()</code> or <code>.size()</code> we can always
 check whether it is empty by comparing its <code>begin()</code> and <code>end()</code>, which is reflected in the 
 standard preference to use it to check whether a certain <code>forward_range</code> is empty,
@@ -58568,7 +58568,7 @@ of <code>ranges::contains_subrange</code> for the check.
 <p/>
 However, unlike <code>ranges::size</code>, which has a <code>sized_range</code> concept to ensure semantics,
 <code>ranges::empty</code> has no corresponding one. This makes it lack of time complexity guarantees and semantics 
-for the meaning of the returned value when using the bullets (2.2) and (2.3) of 25.3.12 <a href="https://wg21.link/range.prim.empty">[range.prim.empty]</a>
+for the meaning of the returned value when using the bullets (2.2) and (2.3) of 25.3.14 <a href="https://wg21.link/range.prim.empty">[range.prim.empty]</a>
 to check emptiness.
 <p/>
 Perhaps we need to add semantic requirements for <code>ranges::empty</code>, but this seems
@@ -59238,7 +59238,7 @@ When reviewing this we were clear this imposes requirements on users.
 <blockquote><pre>
 int main() {
   int x = 12345;
-  // note: this is "awoo" followed by 28 zeros (9.4.3 <a href="https://wg21.link/dcl.init.string">[dcl.init.string]</a> p3)
+  // note: this is "awoo" followed by 28 zeros (9.5.3 <a href="https://wg21.link/dcl.init.string">[dcl.init.string]</a> p3)
   char buffer[32] = "awoo";
   std::format_to(buffer, "{}{}", x, buffer);
   std::println("{}", buffer);
@@ -60267,7 +60267,7 @@ This wording is relative to <a href="https://wg21.link/N4981" title=" Working Dr
 
 <blockquote>
 <pre>
-#include &lt;initializer_list&gt;     // <i>see 17.10.2 <a href="https://wg21.link/initializer.list.syn">[initializer.list.syn]</a></i>
+#include &lt;initializer_list&gt;     // <i>see 17.11.2 <a href="https://wg21.link/initializer.list.syn">[initializer.list.syn]</a></i>
 
 namespace std {
   [&hellip;]
@@ -60406,7 +60406,7 @@ This wording is relative to <a href="https://wg21.link/N4981" title=" Working Dr
 
 <blockquote>
 <pre>
-#include &lt;initializer_list&gt;     // <i>see 17.10.2 <a href="https://wg21.link/initializer.list.syn">[initializer.list.syn]</a></i>
+#include &lt;initializer_list&gt;     // <i>see 17.11.2 <a href="https://wg21.link/initializer.list.syn">[initializer.list.syn]</a></i>
 
 namespace std {
   [&hellip;]
@@ -62561,7 +62561,7 @@ constexpr auto <i>container-append</i>(Container&amp; c) {     <i>// exposition 
 
 <hr>
 <h3 id="4122"><a href="#4122">4122</a><sup><a href="https://cplusplus.github.io/LWG/issue4122">(i)</a></sup>. Ill-formed <code>operator&lt;=&gt;</code> can cause hard error when instantiating <code>std::inplace_vector</code></h3>
-<p><b>Section:</b> 23.3.14.1 <a href="https://wg21.link/inplace.vector.overview">[inplace.vector.overview]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
+<p><b>Section:</b> 23.3.16.1 <a href="https://wg21.link/inplace.vector.overview">[inplace.vector.overview]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
  <b>Submitter:</b> Jiang An <b>Opened:</b> 2024-07-20 <b>Last modified:</b> 2024-08-02</p>
 <p><b>Priority: </b>2
 </p>
@@ -62588,7 +62588,7 @@ This wording is relative to <a href="https://wg21.link/N4986" title=" Working Dr
 </p>
 
 <ol>
-<li><p>Modify 23.3.14.1 <a href="https://wg21.link/inplace.vector.overview">[inplace.vector.overview]</a>, class template <code>std::inplace_vector</code> synopsis, as indicated:</p>
+<li><p>Modify 23.3.16.1 <a href="https://wg21.link/inplace.vector.overview">[inplace.vector.overview]</a>, class template <code>std::inplace_vector</code> synopsis, as indicated:</p>
 
 <blockquote>
 <pre>
@@ -62624,7 +62624,7 @@ namespace std {
 
 <hr>
 <h3 id="4123"><a href="#4123">4123</a><sup><a href="https://cplusplus.github.io/LWG/issue4123">(i)</a></sup>. Container effects use "the assignment operator or move assignment operator"</h3>
-<p><b>Section:</b> 23.3.5.4 <a href="https://wg21.link/deque.modifiers">[deque.modifiers]</a>, 23.3.11.5 <a href="https://wg21.link/vector.modifiers">[vector.modifiers]</a>, 23.3.14.5 <a href="https://wg21.link/inplace.vector.modifiers">[inplace.vector.modifiers]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
+<p><b>Section:</b> 23.3.5.4 <a href="https://wg21.link/deque.modifiers">[deque.modifiers]</a>, 23.3.13.5 <a href="https://wg21.link/vector.modifiers">[vector.modifiers]</a>, 23.3.16.5 <a href="https://wg21.link/inplace.vector.modifiers">[inplace.vector.modifiers]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
  <b>Submitter:</b> Jonathan Wakely <b>Opened:</b> 2024-07-25 <b>Last modified:</b> 2024-12-06</p>
 <p><b>Priority: </b>3
 </p>
@@ -62671,7 +62671,7 @@ Set priority to 3 after reflector poll. Arthur to draft wording.
 <p><i>[2024-12-06; LWG telecon]</i></p>
 
 <p>
-23.3.9.4 <a href="https://wg21.link/list.modifiers">[list.modifiers]</a> p1 says:
+23.3.11.4 <a href="https://wg21.link/list.modifiers">[list.modifiers]</a> p1 says:
 <blockquote>
 <i>Complexity</i>:
 Insertion of a single element into a list takes constant time and exactly
@@ -62836,7 +62836,7 @@ linear in <code class='backtick'>n</code> and the number of <del>calls to the de
 </blockquote>
 </li>
 <li>
-<p>Modify 23.3.9.4 <a href="https://wg21.link/list.modifiers">[list.modifiers]</a> as indicated:</p>
+<p>Modify 23.3.11.4 <a href="https://wg21.link/list.modifiers">[list.modifiers]</a> as indicated:</p>
 <blockquote>
 <p>
 -1- <i>Complexity</i>:
@@ -62881,7 +62881,7 @@ is exactly equal to the size of the range.
 </blockquote>
 </li>
 <li>
-<p>Modify 23.3.11.2 <a href="https://wg21.link/vector.cons">[vector.cons]</a> as indicated:</p>
+<p>Modify 23.3.13.2 <a href="https://wg21.link/vector.cons">[vector.cons]</a> as indicated:</p>
 <blockquote>
 <pre>template&lt;class InputIterator&gt;
   constexpr vector(InputIterator first, InputIterator last,
@@ -62926,7 +62926,7 @@ and <ins>initializes</ins> order <i>N</i>
 </blockquote>
 </li>
 <li>
-<p>Modify 23.3.11.3 <a href="https://wg21.link/vector.capacity">[vector.capacity]</a> as indicated:</p>
+<p>Modify 23.3.13.3 <a href="https://wg21.link/vector.capacity">[vector.capacity]</a> as indicated:</p>
 <blockquote>
 <pre>constexpr void reserve(size_type n);</pre>
 <p>
@@ -62990,7 +62990,7 @@ there are no effects.
 </blockquote>
 </li>
 <li>
-<p>Modify 23.3.11.5 <a href="https://wg21.link/vector.modifiers">[vector.modifiers]</a> as indicated:</p>
+<p>Modify 23.3.13.5 <a href="https://wg21.link/vector.modifiers">[vector.modifiers]</a> as indicated:</p>
 <blockquote>
 <pre>iterator insert(const_iterator position, const T&amp; x);
 ...
@@ -63054,7 +63054,7 @@ the number of elements in the vector after the erased elements.
 </blockquote>
 </li>
 <li>
-<p>Modify 23.3.14.5 <a href="https://wg21.link/inplace.vector.modifiers">[inplace.vector.modifiers]</a> as indicated:</p>
+<p>Modify 23.3.16.5 <a href="https://wg21.link/inplace.vector.modifiers">[inplace.vector.modifiers]</a> as indicated:</p>
 <blockquote>
 <pre>constexpr iterator erase(const_iterator position);
 constexpr iterator erase(const_iterator first, const_iterator last);
@@ -63173,7 +63173,7 @@ namespace std {
 
 <hr>
 <h3 id="4127"><a href="#4127">4127</a><sup><a href="https://cplusplus.github.io/LWG/issue4127">(i)</a></sup>. The Standard Library should not use predicates of the form <code>pred(*i) != false</code></h3>
-<p><b>Section:</b> 22.10.18.3 <a href="https://wg21.link/func.search.bm">[func.search.bm]</a>, 22.10.18.4 <a href="https://wg21.link/func.search.bmh">[func.search.bmh]</a>, 23.2.7.1 <a href="https://wg21.link/associative.reqmts.general">[associative.reqmts.general]</a>, 23.3.9.5 <a href="https://wg21.link/list.ops">[list.ops]</a>, 26.6.6 <a href="https://wg21.link/alg.find">[alg.find]</a>, 26.6.9 <a href="https://wg21.link/alg.find.first.of">[alg.find.first.of]</a>, 26.6.10 <a href="https://wg21.link/alg.adjacent.find">[alg.adjacent.find]</a>, 26.6.11 <a href="https://wg21.link/alg.count">[alg.count]</a>, 26.6.12 <a href="https://wg21.link/alg.mismatch">[alg.mismatch]</a>, 26.6.15 <a href="https://wg21.link/alg.search">[alg.search]</a>, 26.8.1 <a href="https://wg21.link/alg.sorting.general">[alg.sorting.general]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
+<p><b>Section:</b> 22.10.18.3 <a href="https://wg21.link/func.search.bm">[func.search.bm]</a>, 22.10.18.4 <a href="https://wg21.link/func.search.bmh">[func.search.bmh]</a>, 23.2.7.1 <a href="https://wg21.link/associative.reqmts.general">[associative.reqmts.general]</a>, 23.3.11.5 <a href="https://wg21.link/list.ops">[list.ops]</a>, 26.6.6 <a href="https://wg21.link/alg.find">[alg.find]</a>, 26.6.9 <a href="https://wg21.link/alg.find.first.of">[alg.find.first.of]</a>, 26.6.10 <a href="https://wg21.link/alg.adjacent.find">[alg.adjacent.find]</a>, 26.6.11 <a href="https://wg21.link/alg.count">[alg.count]</a>, 26.6.12 <a href="https://wg21.link/alg.mismatch">[alg.mismatch]</a>, 26.6.15 <a href="https://wg21.link/alg.search">[alg.search]</a>, 26.8.1 <a href="https://wg21.link/alg.sorting.general">[alg.sorting.general]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
  <b>Submitter:</b> Hewill Kang <b>Opened:</b> 2024-07-25 <b>Last modified:</b> 2024-08-05</p>
 <p><b>Priority: </b>3
 </p>
@@ -63327,7 +63327,7 @@ such that distance from <code>i</code> to <code>j</code> is positive, the follow
 
 </li>
 
-<li><p>Modify 23.3.9.5 <a href="https://wg21.link/list.ops">[list.ops]</a> as indicated:</p>
+<li><p>Modify 23.3.11.5 <a href="https://wg21.link/list.ops">[list.ops]</a> as indicated:</p>
 
 <blockquote>
 <pre>
@@ -63514,7 +63514,7 @@ that every <i>E</i> <b>definition</b> remains unconverted but and that every <i>
 been applied based on the reflector preference for that simplified approach.
 <p/>
 Nonetheless, during the wording preparation I noticed that the wording in the 
-<i>Throws</i>: element 23.3.9.5 <a href="https://wg21.link/list.ops">[list.ops]</a> p17 is seriously <b>missing</b> the 
+<i>Throws</i>: element 23.3.11.5 <a href="https://wg21.link/list.ops">[list.ops]</a> p17 is seriously <b>missing</b> the 
 additional extra conversion to <code>bool</code> for both expressions, because the 
 <code><i>boolean-testable</i></code> requirements do not impose a no-throw requirement for 
 that conversion, and they must therefore be included here.
@@ -63654,7 +63654,7 @@ such that distance from <code>i</code> to <code>j</code> is positive, the follow
 
 </li>
 
-<li><p>Modify 23.3.9.5 <a href="https://wg21.link/list.ops">[list.ops]</a> as indicated:</p>
+<li><p>Modify 23.3.11.5 <a href="https://wg21.link/list.ops">[list.ops]</a> as indicated:</p>
 
 <blockquote>
 <pre>
@@ -64212,8 +64212,8 @@ templates in 24.7 <a href="https://wg21.link/iterator.range">[iterator.range]</a
 <code>&lt;flat_map&gt;</code> (23.6.7 <a href="https://wg21.link/flat.map.syn">[flat.map.syn]</a>), 
 <code>&lt;flat_set&gt;</code> (23.6.10 <a href="https://wg21.link/flat.set.syn">[flat.set.syn]</a>), 
 <code>&lt;forward_list&gt;</code> (23.3.6 <a href="https://wg21.link/forward.list.syn">[forward.list.syn]</a>), 
-<code>&lt;inplace_vector&gt;</code> (23.3.13 <a href="https://wg21.link/inplace.vector.syn">[inplace.vector.syn]</a>),
-<code>&lt;list&gt;</code> (23.3.8 <a href="https://wg21.link/list.syn">[list.syn]</a>), 
+<code>&lt;inplace_vector&gt;</code> (23.3.15 <a href="https://wg21.link/inplace.vector.syn">[inplace.vector.syn]</a>),
+<code>&lt;list&gt;</code> (23.3.10 <a href="https://wg21.link/list.syn">[list.syn]</a>), 
 <code>&lt;map&gt;</code> (23.4.2 <a href="https://wg21.link/associative.map.syn">[associative.map.syn]</a>), 
 <ins><code>&lt;optional&gt;</code> (22.5.2 <a href="https://wg21.link/optional.syn">[optional.syn]</a>),</ins> 
 <code>&lt;regex&gt;</code> (28.6.3 <a href="https://wg21.link/re.syn">[re.syn]</a>), 
@@ -64223,7 +64223,7 @@ templates in 24.7 <a href="https://wg21.link/iterator.range">[iterator.range]</a
 <code>&lt;string_view&gt;</code> (27.3.2 <a href="https://wg21.link/string.view.synop">[string.view.synop]</a>), 
 <code>&lt;unordered_map&gt;</code> (23.5.2 <a href="https://wg21.link/unord.map.syn">[unord.map.syn]</a>), 
 <code>&lt;unordered_set&gt;</code> (23.5.5 <a href="https://wg21.link/unord.set.syn">[unord.set.syn]</a>), 
-and <code>&lt;vector&gt;</code> (23.3.10 <a href="https://wg21.link/vector.syn">[vector.syn]</a>).
+and <code>&lt;vector&gt;</code> (23.3.12 <a href="https://wg21.link/vector.syn">[vector.syn]</a>).
 </p>
 </blockquote>
 
@@ -64237,7 +64237,7 @@ and <code>&lt;vector&gt;</code> (23.3.10 <a href="https://wg21.link/vector.syn">
 
 <hr>
 <h3 id="4132"><a href="#4132">4132</a><sup><a href="https://cplusplus.github.io/LWG/issue4132">(i)</a></sup>. <i>Throws</i> specifications need to include <code><i>boolean-testable</i></code> operations</h3>
-<p><b>Section:</b> 23.2.7.1 <a href="https://wg21.link/associative.reqmts.general">[associative.reqmts.general]</a>, 23.3.9.5 <a href="https://wg21.link/list.ops">[list.ops]</a>, 23.3.7.6 <a href="https://wg21.link/forward.list.ops">[forward.list.ops]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
+<p><b>Section:</b> 23.2.7.1 <a href="https://wg21.link/associative.reqmts.general">[associative.reqmts.general]</a>, 23.3.11.5 <a href="https://wg21.link/list.ops">[list.ops]</a>, 23.3.7.6 <a href="https://wg21.link/forward.list.ops">[forward.list.ops]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
  <b>Submitter:</b> Daniel Krügler <b>Opened:</b> 2024-08-03 <b>Last modified:</b> 2024-10-02</p>
 <p><b>Priority: </b>3
 </p>
@@ -64247,7 +64247,7 @@ and <code>&lt;vector&gt;</code> (23.3.10 <a href="https://wg21.link/vector.syn">
 <p><b>Discussion:</b></p>
 <p>
 The standard provides various <i>Throws</i>: elements whose specification refers to boolean-like 
-expressions, for example 23.3.9.5 <a href="https://wg21.link/list.ops">[list.ops]</a> says:
+expressions, for example 23.3.11.5 <a href="https://wg21.link/list.ops">[list.ops]</a> says:
 </p>
 <blockquote><p>
 -17- <i>Throws</i>: Nothing unless an exception is thrown by <code>*i == value</code> or
@@ -64341,7 +64341,7 @@ template&lt;class BinaryPredicate&gt; size_type unique(BinaryPredicate binary_pr
 </blockquote>
 </li>
 
-<li><p>Modify 23.3.9.5 <a href="https://wg21.link/list.ops">[list.ops]</a> as indicated:</p>
+<li><p>Modify 23.3.11.5 <a href="https://wg21.link/list.ops">[list.ops]</a> as indicated:</p>
 
 <blockquote class="note">
 <p>
@@ -64475,7 +64475,7 @@ the predicate<ins>, including any selected <code><i>boolean-testable</i></code>
 </blockquote>
 </li>
 
-<li><p>Modify 23.3.9.5 <a href="https://wg21.link/list.ops">[list.ops]</a> as indicated:</p>
+<li><p>Modify 23.3.11.5 <a href="https://wg21.link/list.ops">[list.ops]</a> as indicated:</p>
 
 <blockquote class="note">
 <p>
@@ -65434,9 +65434,9 @@ This wording is relative to <a href="https://wg21.link/N4986" title=" Working Dr
 <ins>that includes a standard library header</ins>
 shall not <code class='backtick'>#define</code> or <code class='backtick'>#undef</code> names lexically identical to keywords,
 to the identifiers listed in Table 4,
-or to the <i>attribute-tokens</i> described in 9.12 <a href="https://wg21.link/dcl.attr">[dcl.attr]</a>,
+or to the <i>attribute-tokens</i> described in 9.13 <a href="https://wg21.link/dcl.attr">[dcl.attr]</a>,
 except that the names <code class='backtick'>likely</code> and <code class='backtick'>unlikely</code> may be defined as
-function-like macros (15.6 <a href="https://wg21.link/cpp.replace">[cpp.replace]</a>).
+function-like macros (15.7 <a href="https://wg21.link/cpp.replace">[cpp.replace]</a>).
 </p>
 </blockquote>
 </li>
@@ -65448,7 +65448,7 @@ function-like macros (15.6 <a href="https://wg21.link/cpp.replace">[cpp.replace]
 
 <hr>
 <h3 id="4151"><a href="#4151">4151</a><sup><a href="https://cplusplus.github.io/LWG/issue4151">(i)</a></sup>. Precondition of <code>inplace_vector::swap</code></h3>
-<p><b>Section:</b> 23.3.14.5 <a href="https://wg21.link/inplace.vector.modifiers">[inplace.vector.modifiers]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
+<p><b>Section:</b> 23.3.16.5 <a href="https://wg21.link/inplace.vector.modifiers">[inplace.vector.modifiers]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
  <b>Submitter:</b> Arthur O'Dwyer <b>Opened:</b> 2024-09-07 <b>Last modified:</b> 2024-09-18</p>
 <p><b>Priority: </b>2
 </p>
@@ -65497,7 +65497,7 @@ This wording is relative to <a href="https://wg21.link/N4988" title=" Working Dr
 </p>
 
 <ol>
-<li><p>Modify 23.3.14.5 <a href="https://wg21.link/inplace.vector.modifiers">[inplace.vector.modifiers]</a> as indicated:</p>
+<li><p>Modify 23.3.16.5 <a href="https://wg21.link/inplace.vector.modifiers">[inplace.vector.modifiers]</a> as indicated:</p>
 
 <blockquote class="note">
 <p>
@@ -67126,7 +67126,7 @@ A reads the initial value of X and B modifies M</ins>, or
 We sometimes give detailed specifications of container members which add
 additional specification to the common requirements in
 23.2.2 <a href="https://wg21.link/container.requirements.general">[container.requirements.general]</a>, for example
-23.3.11.5 <a href="https://wg21.link/vector.modifiers">[vector.modifiers]</a> defines <code class='backtick'>vector::erase</code> without actually
+23.3.13.5 <a href="https://wg21.link/vector.modifiers">[vector.modifiers]</a> defines <code class='backtick'>vector::erase</code> without actually
 saying it erases any elements. The actual effects of <code class='backtick'>erase</code> are given in
 23.2.4 <a href="https://wg21.link/sequence.reqmts">[sequence.reqmts]</a>.
 </p>
@@ -67281,8 +67281,8 @@ The usual pattern in 23 <a href="https://wg21.link/containers">[containers]</a> 
 <i>Constraints</i> element. That is, <code class='backtick'>emplace</code> is not SFINAE-friendly. And it has only the one overload, 
 so it doesn't need a constraint for purposes of overload resolution.
 <p/>
-No Constraints on <code class='backtick'>emplace</code>: <code class='backtick'>deque</code> (23.3.5.4 <a href="https://wg21.link/deque.modifiers">[deque.modifiers]</a>), <code class='backtick'>list</code> (23.3.9.4 <a href="https://wg21.link/list.modifiers">[list.modifiers]</a>), 
-<code class='backtick'>vector</code> (23.3.11.5 <a href="https://wg21.link/vector.modifiers">[vector.modifiers]</a>), <code class='backtick'>containers</code> (23.2.4 <a href="https://wg21.link/sequence.reqmts">[sequence.reqmts]</a> p19), 
+No Constraints on <code class='backtick'>emplace</code>: <code class='backtick'>deque</code> (23.3.5.4 <a href="https://wg21.link/deque.modifiers">[deque.modifiers]</a>), <code class='backtick'>list</code> (23.3.11.4 <a href="https://wg21.link/list.modifiers">[list.modifiers]</a>), 
+<code class='backtick'>vector</code> (23.3.13.5 <a href="https://wg21.link/vector.modifiers">[vector.modifiers]</a>), <code class='backtick'>containers</code> (23.2.4 <a href="https://wg21.link/sequence.reqmts">[sequence.reqmts]</a> p19), 
 <code class='backtick'>associative containers</code> (23.2.7.1 <a href="https://wg21.link/associative.reqmts.general">[associative.reqmts.general]</a> p47), 
 <code class='backtick'>unordered containers</code> (23.2.8.1 <a href="https://wg21.link/unord.req.general">[unord.req.general]</a> p78), <code class='backtick'>priority_queue</code> (23.6.4.4 <a href="https://wg21.link/priqueue.members">[priqueue.members]</a> p5), 
 <code class='backtick'>optional</code> (22.5.3.4 <a href="https://wg21.link/optional.assign">[optional.assign]</a> p29).
@@ -70708,14 +70708,14 @@ template&lt;<i>not-a-const-iterator</i> I<ins>, same_as&lt;Iterator&gt; J</ins>&
 
 <hr>
 <h3 id="4219"><a href="#4219">4219</a><sup><a href="https://cplusplus.github.io/LWG/issue4219">(i)</a></sup>. <code>std::vector::erase[_if]</code> should be based on ranges <code class='backtick'>remove</code></h3>
-<p><b>Section:</b> 23.3.11.6 <a href="https://wg21.link/vector.erasure">[vector.erasure]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
+<p><b>Section:</b> 23.3.13.6 <a href="https://wg21.link/vector.erasure">[vector.erasure]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
  <b>Submitter:</b> Peter Kasting <b>Opened:</b> 2025-03-05 <b>Last modified:</b> 2025-03-09</p>
 <p><b>Priority: </b>Not Prioritized
 </p>
 <p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
 <p><b>Discussion:</b></p>
 <p>
-C++20 added <code>std::vector::erase[_if]</code>. Per 23.3.11.6 <a href="https://wg21.link/vector.erasure">[vector.erasure]</a>, these are equivalent 
+C++20 added <code>std::vector::erase[_if]</code>. Per 23.3.13.6 <a href="https://wg21.link/vector.erasure">[vector.erasure]</a>, these are equivalent 
 to a call to <code>std::remove[_if]</code> followed by an appropriate <code>erase</code>.
 <p/>
 This is unfortunate, because <code class='backtick'>std::remove_if</code> is specified (by 26.7.8 <a href="https://wg21.link/alg.remove">[alg.remove]</a>) as invoking 
@@ -70739,7 +70739,7 @@ This wording is relative to <a href="https://wg21.link/N5001">N5001</a>.
 
 <ol>
 
-<li><p>Modify 23.3.11.6 <a href="https://wg21.link/vector.erasure">[vector.erasure]</a> as indicated:</p>
+<li><p>Modify 23.3.13.6 <a href="https://wg21.link/vector.erasure">[vector.erasure]</a> as indicated:</p>
 
 <blockquote>
 <pre>
@@ -71220,7 +71220,7 @@ namespace std {
 
 <hr>
 <h3 id="4225"><a href="#4225">4225</a><sup><a href="https://cplusplus.github.io/LWG/issue4225">(i)</a></sup>. What should happen when an exception is thrown on resizing <code class='backtick'>std::deque</code>, <code class='backtick'>std::forward_list</code>, or <code class='backtick'>std::list</code>?</h3>
-<p><b>Section:</b> 23.3.5.3 <a href="https://wg21.link/deque.capacity">[deque.capacity]</a>, 23.3.7.5 <a href="https://wg21.link/forward.list.modifiers">[forward.list.modifiers]</a>, 23.3.9.3 <a href="https://wg21.link/list.capacity">[list.capacity]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
+<p><b>Section:</b> 23.3.5.3 <a href="https://wg21.link/deque.capacity">[deque.capacity]</a>, 23.3.7.5 <a href="https://wg21.link/forward.list.modifiers">[forward.list.modifiers]</a>, 23.3.11.3 <a href="https://wg21.link/list.capacity">[list.capacity]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
  <b>Submitter:</b> Jiang An <b>Opened:</b> 2025-03-15 <b>Last modified:</b> 2025-03-15</p>
 <p><b>Priority: </b>Not Prioritized
 </p>
@@ -71250,7 +71250,7 @@ as much as possible that of <code class='backtick'>std::vector</code>.
 
 <hr>
 <h3 id="4226"><a href="#4226">4226</a><sup><a href="https://cplusplus.github.io/LWG/issue4226">(i)</a></sup>. <code>to_input_view::<i>iterator</i></code> cannot be compared to its <code class='backtick'>const</code> sentinel</h3>
-<p><b>Section:</b> 99 [range.to.input] <b>Status:</b> <a href="lwg-active.html#New">New</a>
+<p><b>Section:</b> 25.7.35 <a href="https://wg21.link/range.to.input">[range.to.input]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
  <b>Submitter:</b> Hewill Kang <b>Opened:</b> 2025-03-15 <b>Last modified:</b> 2025-03-22</p>
 <p><b>Priority: </b>Not Prioritized
 </p>
@@ -71304,7 +71304,7 @@ This wording is relative to <a href="https://wg21.link/N5008">N5008</a>.
 
 <ol>
 
-<li><p>Modify  [range.to.input.view] as indicated:</p>
+<li><p>Modify 25.7.35.2 <a href="https://wg21.link/range.to.input.view">[range.to.input.view]</a> as indicated:</p>
 
 <blockquote>
 <blockquote>
@@ -71351,7 +71351,7 @@ return <ins><i>sentinel</i>&lt;true&gt;(</ins>ranges::end(<i>base_</i>)<ins>)</i
 </blockquote>
 </li>
 
-<li><p>Modify  [range.to.input.iterator] as indicated:</p>
+<li><p>Modify 25.7.35.3 <a href="https://wg21.link/range.to.input.iterator">[range.to.input.iterator]</a> as indicated:</p>
 
 <blockquote>
 <blockquote>
@@ -71578,7 +71578,7 @@ equivalent to the following lambda expression:
 
 <hr>
 <h3 id="4228"><a href="#4228">4228</a><sup><a href="https://cplusplus.github.io/LWG/issue4228">(i)</a></sup>. Does <code>vector&lt;bool, Allocator&gt;</code> mandate that <code class='backtick'>Allocator::value_type</code> is <code class='backtick'>bool</code>?</h3>
-<p><b>Section:</b> 23.3.12.1 <a href="https://wg21.link/vector.bool.pspc">[vector.bool.pspc]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
+<p><b>Section:</b> 23.3.14.1 <a href="https://wg21.link/vector.bool.pspc">[vector.bool.pspc]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
  <b>Submitter:</b> Stephan T. Lavavej <b>Opened:</b> 2025-03-18 <b>Last modified:</b> 2025-03-22</p>
 <p><b>Priority: </b>Not Prioritized
 </p>
@@ -71586,7 +71586,7 @@ equivalent to the following lambda expression:
 <p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
 <p><b>Discussion:</b></p>
 <p>
-<a href="https://wg21.link/N5008">N5008</a> 23.3.12.1 <a href="https://wg21.link/vector.bool.pspc">[vector.bool.pspc]</a>/2 says:
+<a href="https://wg21.link/N5008">N5008</a> 23.3.14.1 <a href="https://wg21.link/vector.bool.pspc">[vector.bool.pspc]</a>/2 says:
 </p>
 <blockquote style="border-left: 3px solid #ccc;padding-left: 15px;">
 <p>
@@ -71614,7 +71614,7 @@ an editorial note could also be added to this effect, although I don't believe i
 <p/>
 Alternate resolution: If LWG believes that the <i>Mandate</i> does not apply, and that <code>vector&lt;bool&gt;</code> 
 should be unique among containers in accepting <code>allocator&lt;Anything&gt;</code>, then I believe that 
-a normative sentence should be added to 23.3.12.1 <a href="https://wg21.link/vector.bool.pspc">[vector.bool.pspc]</a>/2, specifically creating an exemption 
+a normative sentence should be added to 23.3.14.1 <a href="https://wg21.link/vector.bool.pspc">[vector.bool.pspc]</a>/2, specifically creating an exemption 
 to 23.2.2.5 <a href="https://wg21.link/container.alloc.reqmts">[container.alloc.reqmts]</a>/5.
 </p>
 
@@ -71753,14 +71753,14 @@ template&lt;template&lt;class...&gt; class C, class... Args&gt;
 
 <hr>
 <h3 id="4230"><a href="#4230">4230</a><sup><a href="https://cplusplus.github.io/LWG/issue4230">(i)</a></sup>. <code>simd&lt;complex&gt;::real/imag</code> is overconstrained</h3>
-<p><b>Section:</b> 99 [simd.complex.access] <b>Status:</b> <a href="lwg-active.html#New">New</a>
+<p><b>Section:</b> 29.10.7.4 <a href="https://wg21.link/simd.complex.access">[simd.complex.access]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
  <b>Submitter:</b> Matthias Kretz <b>Opened:</b> 2025-03-18 <b>Last modified:</b> 2025-03-22</p>
 <p><b>Priority: </b>Not Prioritized
 </p>
 <p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
 <p><b>Discussion:</b></p>
 <p>
-99 [simd.complex.access] overconstrains the arguments to <code class='backtick'>real</code> and <code class='backtick'>imag</code>.
+29.10.7.4 <a href="https://wg21.link/simd.complex.access">[simd.complex.access]</a> overconstrains the arguments to <code class='backtick'>real</code> and <code class='backtick'>imag</code>.
 <code>complex&lt;T&gt;::real/imag</code> allows conversions to <code class='backtick'>T</code> whereas <code>simd&lt;complex&lt;T&gt;&gt;</code>
 requires basically an exact match (<code>same_as&lt;simd&lt;T&gt;&gt;</code> modulo ABI tag differences).
 </p>
@@ -71814,7 +71814,7 @@ namespace std::datapar {
     <del>template&lt;<i>simd-floating-point</i> V&gt;</del>
       constexpr explicit(<i>see below</i>) basic_simd(const <ins><i>real-type</i></ins><del>V</del>&amp; reals, const <ins><i>real-type</i></ins><del>V</del>&amp; imags = {}) noexcept;
     [&hellip;]
-    <i>// 99 [simd.complex.access], basic_simd complex-value accessors</i>
+    <i>// 29.10.7.4 <a href="https://wg21.link/simd.complex.access">[simd.complex.access]</a>, basic_simd complex-value accessors</i>
     constexpr <ins><i>real-type</i></ins><del>auto</del> real() const noexcept;
     constexpr <ins><i>real-type</i></ins><del>auto</del> imag() const noexcept;
     <del>template&lt;<i>simd-floating-point</i> V&gt;</del>
@@ -71855,7 +71855,7 @@ conversion rank of <code><ins><i>real-type</i></ins><del>V</del>::value_type</co
 </blockquote>
 </li>
 
-<li><p>Modify 99 [simd.complex.access] as indicated:</p>
+<li><p>Modify 29.10.7.4 <a href="https://wg21.link/simd.complex.access">[simd.complex.access]</a> as indicated:</p>
 
 <blockquote>
 <pre>

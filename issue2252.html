@@ -63,7 +63,7 @@
 <hr>
 <p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#C++14">C++14</a> status.</em></p>
 <h3 id="2252"><a href="lwg-defects.html#2252">2252</a>. Strong guarantee on <code>vector::push_back()</code> still broken with C++11?</h3>
-<p><b>Section:</b> 23.3.11.5 <a href="https://wg21.link/vector.modifiers">[vector.modifiers]</a> <b>Status:</b> <a href="lwg-active.html#C++14">C++14</a>
+<p><b>Section:</b> 23.3.13.5 <a href="https://wg21.link/vector.modifiers">[vector.modifiers]</a> <b>Status:</b> <a href="lwg-active.html#C++14">C++14</a>
  <b>Submitter:</b> Nicolai Josuttis <b>Opened:</b> 2013-04-21 <b>Last modified:</b> 2016-01-28</p>
 <p><b>Priority: </b>Not Prioritized
 </p>
@@ -90,7 +90,7 @@ Clause meet the following additional requirements:
 </ul>
 </blockquote>
 <p>
-However, 23.3.11.5 <a href="https://wg21.link/vector.modifiers">[vector.modifiers]</a> specifies for vector modifiers, <em>including</em> <code>push_back()</code>:
+However, 23.3.13.5 <a href="https://wg21.link/vector.modifiers">[vector.modifiers]</a> specifies for vector modifiers, <em>including</em> <code>push_back()</code>:
 </p>
 <blockquote>
 <p>
@@ -208,7 +208,7 @@ deque always takes constant time and causes a single call to a constructor of <c
 </blockquote></blockquote>
 </li>
 
-<li><p>Edit 23.3.11.5 <a href="https://wg21.link/vector.modifiers">[vector.modifiers]</a> as indicated:</p>
+<li><p>Edit 23.3.13.5 <a href="https://wg21.link/vector.modifiers">[vector.modifiers]</a> as indicated:</p>
 
 <blockquote>
 <pre>iterator insert(const_iterator position, const T&amp; x);

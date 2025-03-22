@@ -63,7 +63,7 @@
 <hr>
 <p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#Open">Open</a> status.</em></p>
 <h3 id="1102"><a href="lwg-active.html#1102">1102</a>. <code>std::vector</code>'s reallocation policy still unclear</h3>
-<p><b>Section:</b> 23.3.11.3 <a href="https://wg21.link/vector.capacity">[vector.capacity]</a> <b>Status:</b> <a href="lwg-active.html#Open">Open</a>
+<p><b>Section:</b> 23.3.13.3 <a href="https://wg21.link/vector.capacity">[vector.capacity]</a> <b>Status:</b> <a href="lwg-active.html#Open">Open</a>
  <b>Submitter:</b> Daniel Kr&uuml;gler <b>Opened:</b> 2009-04-20 <b>Last modified:</b> 2020-07-17</p>
 <p><b>Priority: </b>3
 </p>
@@ -102,19 +102,19 @@ IMO the problem is due to the fact, that
 <ol style="list-style-type:lower-alpha">
 <li>
 the actual memory-reallocation stability of <code>std::vector</code>
-is explained in 23.3.11.3 <a href="https://wg21.link/vector.capacity">[vector.capacity]</a>/3 and /6 which
+is explained in 23.3.13.3 <a href="https://wg21.link/vector.capacity">[vector.capacity]</a>/3 and /6 which
 are describing just the effects of the <code>reserve</code>
 function, but in many examples (like above) there
 is no explicit call to <code>reserve</code> involved. Further-more
-23.3.11.3 <a href="https://wg21.link/vector.capacity">[vector.capacity]</a>/6 does only mention <em>insertions</em>
+23.3.13.3 <a href="https://wg21.link/vector.capacity">[vector.capacity]</a>/6 does only mention <em>insertions</em>
 and never mentions the consequences of erasing elements.
 </li>
 <li>
 <p>
 the effects clause of <code>std::vector</code>'s <code>erase</code> overloads in
-23.3.11.5 <a href="https://wg21.link/vector.modifiers">[vector.modifiers]</a>/4 is silent about capacity changes. This
+23.3.13.5 <a href="https://wg21.link/vector.modifiers">[vector.modifiers]</a>/4 is silent about capacity changes. This
 easily causes a misunderstanding, because the counter
-parting insert functions described in 23.3.11.5 <a href="https://wg21.link/vector.modifiers">[vector.modifiers]</a>/2
+parting insert functions described in 23.3.13.5 <a href="https://wg21.link/vector.modifiers">[vector.modifiers]</a>/2
 explicitly say, that
 </p>
 <blockquote><p>
@@ -173,8 +173,8 @@ general consensus that the standard is correct as written.
 <p><i>[
 This is a minimum version. I also
 suggest that the wording explaining the allocation strategy
-of <code>std::vector</code> in 23.3.11.3 <a href="https://wg21.link/vector.capacity">[vector.capacity]</a>/3 and /6 is moved into
-a separate sub paragraph of 23.3.11.3 <a href="https://wg21.link/vector.capacity">[vector.capacity]</a> <em>before</em>
+of <code>std::vector</code> in 23.3.13.3 <a href="https://wg21.link/vector.capacity">[vector.capacity]</a>/3 and /6 is moved into
+a separate sub paragraph of 23.3.13.3 <a href="https://wg21.link/vector.capacity">[vector.capacity]</a> <em>before</em>
 any of the prototype's are discussed, but I cannot provide
 reasonable wording changes now.
 ]</i></p>
@@ -183,7 +183,7 @@ reasonable wording changes now.
 <ol>
 <li>
 <p>
-Change 23.3.11.3 <a href="https://wg21.link/vector.capacity">[vector.capacity]</a>/6 as follows:
+Change 23.3.13.3 <a href="https://wg21.link/vector.capacity">[vector.capacity]</a>/6 as follows:
 </p>
 <blockquote><p>
 It is guaranteed that no reallocation takes place during
@@ -194,7 +194,7 @@ the size of the vector greater than the value of <code>capacity()</code>.
 </li>
 <li>
 <p>
-Change 23.3.11.5 <a href="https://wg21.link/vector.modifiers">[vector.modifiers]</a>/4 as follows:
+Change 23.3.13.5 <a href="https://wg21.link/vector.modifiers">[vector.modifiers]</a>/4 as follows:
 </p>
 <blockquote><p>
 <i>Effects:</i> <ins>The capacity shall remain unchanged and no reallocation shall

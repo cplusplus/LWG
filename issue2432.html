@@ -63,7 +63,7 @@
 <hr>
 <p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#NAD">NAD</a> status.</em></p>
 <h3 id="2432"><a href="lwg-closed.html#2432">2432</a>. <code>initializer_list</code> assignability</h3>
-<p><b>Section:</b> 17.10 <a href="https://wg21.link/support.initlist">[support.initlist]</a> <b>Status:</b> <a href="lwg-active.html#NAD">NAD</a>
+<p><b>Section:</b> 17.11 <a href="https://wg21.link/support.initlist">[support.initlist]</a> <b>Status:</b> <a href="lwg-active.html#NAD">NAD</a>
  <b>Submitter:</b> David Krauss <b>Opened:</b> 2014-09-30 <b>Last modified:</b> 2023-11-13</p>
 <p><b>Priority: </b>2
 </p>
@@ -72,7 +72,7 @@
 <p><b>View all issues with</b> <a href="lwg-status.html#NAD">NAD</a> status.</p>
 <p><b>Discussion:</b></p>
 <p>
-<code>std::initializer_list::operator=</code> 17.10 <a href="https://wg21.link/support.initlist">[support.initlist]</a> is horribly broken and it needs deprecation:
+<code>std::initializer_list::operator=</code> 17.11 <a href="https://wg21.link/support.initlist">[support.initlist]</a> is horribly broken and it needs deprecation:
 </p>
 <blockquote><pre>
 std::initializer_list&lt;foo&gt; a = {{1}, {2}, {3}};
@@ -125,7 +125,7 @@ initializer_list&amp; operator=(initializer_list const&amp;) requires false = de
 <p id="res-2432"><b>Proposed resolution:</b></p>
 
 <ol>
-<li><p>Edit 17.10 <a href="https://wg21.link/support.initlist">[support.initlist]</a> p1, class template <code>initializer_list</code> synopsis, as indicated:</p>
+<li><p>Edit 17.11 <a href="https://wg21.link/support.initlist">[support.initlist]</a> p1, class template <code>initializer_list</code> synopsis, as indicated:</p>
 
 <blockquote>
 <pre>

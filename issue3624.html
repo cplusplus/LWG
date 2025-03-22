@@ -66,7 +66,7 @@
 <p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#New">New</a> status.</em></p>
 <h3 id="3624"><a href="lwg-active.html#3624">3624</a>. Inconsistency of <code>&lt;typeinfo&gt;</code>, <code>&lt;initializer_list&gt;</code>, and 
 <code>&lt;compare&gt;</code> in the standard library</h3>
-<p><b>Section:</b> 17.7 <a href="https://wg21.link/support.rtti">[support.rtti]</a>, 17.10 <a href="https://wg21.link/support.initlist">[support.initlist]</a>, 17.11 <a href="https://wg21.link/cmp">[cmp]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
+<p><b>Section:</b> 17.7 <a href="https://wg21.link/support.rtti">[support.rtti]</a>, 17.11 <a href="https://wg21.link/support.initlist">[support.initlist]</a>, 17.12 <a href="https://wg21.link/cmp">[cmp]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
  <b>Submitter:</b> Jiang An <b>Opened:</b> 2021-10-23 <b>Last modified:</b> 2022-01-29</p>
 <p><b>Priority: </b>3
 </p>
@@ -75,7 +75,7 @@
 <p>
  Standard library headers <code>&lt;typeinfo&gt;</code>, <code>&lt;initializer_list&gt;</code>, and <code>&lt;compare&gt;</code> 
  are required for some core language features, as specified in 7.6.1.8 <a href="https://wg21.link/expr.typeid">[expr.typeid]</a>/7, 
- 9.4.5 <a href="https://wg21.link/dcl.init.list">[dcl.init.list]</a>/2, and 7.6.8 <a href="https://wg21.link/expr.spaceship">[expr.spaceship]</a>/8. In C++11 (via <a href="https://wg21.link/n2930">N2930</a>), 
+ 9.5.5 <a href="https://wg21.link/dcl.init.list">[dcl.init.list]</a>/2, and 7.6.8 <a href="https://wg21.link/expr.spaceship">[expr.spaceship]</a>/8. In C++11 (via <a href="https://wg21.link/n2930">N2930</a>), 
  every header that has dependency on <code>std::initializer_list</code> is required to include 
  <code>&lt;initializer_list&gt;</code>. The similar requirements are added for <code>operator&lt;=&gt;</code> and 
  <code>&lt;compare&gt;</code> in C++20 (via LWG <a href="lwg-defects.html#3330" title="Include &lt;compare&gt; from most library headers (Status: C++20)">3330</a><sup><a href="https://cplusplus.github.io/LWG/issue3330" title="Latest snapshot">(i)</a></sup>).

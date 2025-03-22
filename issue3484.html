@@ -63,7 +63,7 @@
 <hr>
 <p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#New">New</a> status.</em></p>
 <h3 id="3484"><a href="lwg-active.html#3484">3484</a>. Should <code>&lt;stddef.h&gt;</code> declare <code>::nullptr_t</code>?</h3>
-<p><b>Section:</b> 17.14.7 <a href="https://wg21.link/support.c.headers.other">[support.c.headers.other]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
+<p><b>Section:</b> 17.15.7 <a href="https://wg21.link/support.c.headers.other">[support.c.headers.other]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
  <b>Submitter:</b> Thomas K&ouml;ppe <b>Opened:</b> 2020-09-06 <b>Last modified:</b> 2022-09-18</p>
 <p><b>Priority: </b>3
 </p>
@@ -74,7 +74,7 @@
 <p>
 From this <a href="https://github.com/cplusplus/draft/issues/4144">editorial issue request</a>: 
 <p/>
-The header <code>&lt;stddef.h&gt;</code> is currently specified in 17.14.7 <a href="https://wg21.link/support.c.headers.other">[support.c.headers.other]</a> 
+The header <code>&lt;stddef.h&gt;</code> is currently specified in 17.15.7 <a href="https://wg21.link/support.c.headers.other">[support.c.headers.other]</a> 
 to not declare a global name corresponding to <code>std::byte</code>, but no similar exclusion exists for 
 <code>std::nullptr_t</code>.
 <p/>
@@ -113,14 +113,14 @@ This wording is relative to <a href="https://wg21.link/N4910" title=" Working Dr
 </p>
 
 <ol>
-<li><p>Modify 17.14.7 <a href="https://wg21.link/support.c.headers.other">[support.c.headers.other]</a> as indicated:</p>
+<li><p>Modify 17.15.7 <a href="https://wg21.link/support.c.headers.other">[support.c.headers.other]</a> as indicated:</p>
 
 <blockquote>
 <p>
--1- Every C header other than <code>&lt;complex.h&gt;</code> (17.14.2 <a href="https://wg21.link/complex.h.syn">[complex.h.syn]</a>), 
-<code>&lt;iso646.h&gt;</code> (17.14.3 <a href="https://wg21.link/iso646.h.syn">[iso646.h.syn]</a>), <code>&lt;stdalign.h&gt;</code> 
-(17.14.4 <a href="https://wg21.link/stdalign.h.syn">[stdalign.h.syn]</a>), <code>&lt;stdatomic.h&gt;</code> (32.5.12 <a href="https://wg21.link/stdatomic.h.syn">[stdatomic.h.syn]</a>), 
-<code>&lt;stdbool.h&gt;</code> (17.14.5 <a href="https://wg21.link/stdbool.h.syn">[stdbool.h.syn]</a>), and <code>&lt;tgmath.h&gt;</code> (17.14.6 <a href="https://wg21.link/tgmath.h.syn">[tgmath.h.syn]</a>), 
+-1- Every C header other than <code>&lt;complex.h&gt;</code> (17.15.2 <a href="https://wg21.link/complex.h.syn">[complex.h.syn]</a>), 
+<code>&lt;iso646.h&gt;</code> (17.15.3 <a href="https://wg21.link/iso646.h.syn">[iso646.h.syn]</a>), <code>&lt;stdalign.h&gt;</code> 
+(17.15.4 <a href="https://wg21.link/stdalign.h.syn">[stdalign.h.syn]</a>), <code>&lt;stdatomic.h&gt;</code> (32.5.12 <a href="https://wg21.link/stdatomic.h.syn">[stdatomic.h.syn]</a>), 
+<code>&lt;stdbool.h&gt;</code> (17.15.5 <a href="https://wg21.link/stdbool.h.syn">[stdbool.h.syn]</a>), and <code>&lt;tgmath.h&gt;</code> (17.15.6 <a href="https://wg21.link/tgmath.h.syn">[tgmath.h.syn]</a>), 
 each of which has a name of the form 
 <code>&lt;<i>name</i>.h&gt;</code>, behaves as if each name placed in the standard library namespace by the 
 corresponding <code>&lt;c<i>name</i>&gt;</code> header is placed within the global namespace scope, except 
@@ -129,7 +129,7 @@ for the functions described in 29.7.6 <a href="https://wg21.link/sf.cmath">[sf.c
 described in 17.2.5 <a href="https://wg21.link/support.types.byteops">[support.types.byteops]</a>. It is unspecified whether these names are first
 declared or defined within namespace scope (6.4.6 <a href="https://wg21.link/basic.scope.namespace">[basic.scope.namespace]</a>) of the namespace 
 <code>std</code> and are then injected into the global namespace scope by explicit <i>using-declaration</i>s 
-(9.9 <a href="https://wg21.link/namespace.udecl">[namespace.udecl]</a>).
+(9.10 <a href="https://wg21.link/namespace.udecl">[namespace.udecl]</a>).
 </p>
 </blockquote>
 </li>
@@ -138,7 +138,7 @@ declared or defined within namespace scope (6.4.6 <a href="https://wg21.link/bas
 
 <blockquote>
 <p>
-<ins><b>Affected subclause:</b> 17.14.7 <a href="https://wg21.link/support.c.headers.other">[support.c.headers.other]</a><br/>
+<ins><b>Affected subclause:</b> 17.15.7 <a href="https://wg21.link/support.c.headers.other">[support.c.headers.other]</a><br/>
 <b>Change:</b> Removal of name <code>::nullptr_t</code> from header <code>&lt;stddef.h&gt;</code>.<br/>
 <b>Rationale:</b> <code>std::nullptr_t</code> is a C++-only feature that is not useful for interoperability with ISO C.<br/>
 <b>Effect on original feature:</b> Valid C++20 code may fail to compile in this International Standard. Occurrences 

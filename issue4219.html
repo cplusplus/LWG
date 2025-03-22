@@ -63,14 +63,14 @@
 <hr>
 <p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#New">New</a> status.</em></p>
 <h3 id="4219"><a href="lwg-active.html#4219">4219</a>. <code>std::vector::erase[_if]</code> should be based on ranges <code class='backtick'>remove</code></h3>
-<p><b>Section:</b> 23.3.11.6 <a href="https://wg21.link/vector.erasure">[vector.erasure]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
+<p><b>Section:</b> 23.3.13.6 <a href="https://wg21.link/vector.erasure">[vector.erasure]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
  <b>Submitter:</b> Peter Kasting <b>Opened:</b> 2025-03-05 <b>Last modified:</b> 2025-03-09</p>
 <p><b>Priority: </b>Not Prioritized
 </p>
 <p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
 <p><b>Discussion:</b></p>
 <p>
-C++20 added <code>std::vector::erase[_if]</code>. Per 23.3.11.6 <a href="https://wg21.link/vector.erasure">[vector.erasure]</a>, these are equivalent 
+C++20 added <code>std::vector::erase[_if]</code>. Per 23.3.13.6 <a href="https://wg21.link/vector.erasure">[vector.erasure]</a>, these are equivalent 
 to a call to <code>std::remove[_if]</code> followed by an appropriate <code>erase</code>.
 <p/>
 This is unfortunate, because <code class='backtick'>std::remove_if</code> is specified (by 26.7.8 <a href="https://wg21.link/alg.remove">[alg.remove]</a>) as invoking 
@@ -94,7 +94,7 @@ This wording is relative to <a href="https://wg21.link/N5001">N5001</a>.
 
 <ol>
 
-<li><p>Modify 23.3.11.6 <a href="https://wg21.link/vector.erasure">[vector.erasure]</a> as indicated:</p>
+<li><p>Modify 23.3.13.6 <a href="https://wg21.link/vector.erasure">[vector.erasure]</a> as indicated:</p>
 
 <blockquote>
 <pre>

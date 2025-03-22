@@ -63,7 +63,7 @@
 <hr>
 <p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#C++20">C++20</a> status.</em></p>
 <h3 id="3077"><a href="lwg-defects.html#3077">3077</a>. <code>(push|emplace)_back</code> should invalidate the <code>end</code> iterator</h3>
-<p><b>Section:</b> 23.3.11.5 <a href="https://wg21.link/vector.modifiers">[vector.modifiers]</a> <b>Status:</b> <a href="lwg-active.html#C++20">C++20</a>
+<p><b>Section:</b> 23.3.13.5 <a href="https://wg21.link/vector.modifiers">[vector.modifiers]</a> <b>Status:</b> <a href="lwg-active.html#C++20">C++20</a>
  <b>Submitter:</b> Casey Carter <b>Opened:</b> 2018-03-10 <b>Last modified:</b> 2021-02-25</p>
 <p><b>Priority: </b>3
 </p>
@@ -71,7 +71,7 @@
 <p><b>View all issues with</b> <a href="lwg-status.html#C++20">C++20</a> status.</p>
 <p><b>Discussion:</b></p>
 <p>
-23.3.11.5 <a href="https://wg21.link/vector.modifiers">[vector.modifiers]</a> paragraph 1 specifies that <code>emplace_back</code>
+23.3.13.5 <a href="https://wg21.link/vector.modifiers">[vector.modifiers]</a> paragraph 1 specifies that <code>emplace_back</code>
 and <code>push_back</code> do not invalidate iterators before the insertion point when
 reallocation is unnecessary:
 <blockquote>
@@ -104,7 +104,7 @@ iterator as well.
 <blockquote class="note">
 <ol>
 <li>
-<p>Edit 23.3.11.5 <a href="https://wg21.link/vector.modifiers">[vector.modifiers]</a> as indicated:</p>
+<p>Edit 23.3.13.5 <a href="https://wg21.link/vector.modifiers">[vector.modifiers]</a> as indicated:</p>
 <blockquote>
 <p>
 -1- <i>Remarks:</i> <ins>Invalidates the past-the-end iterator.</ins> Causes
@@ -189,7 +189,7 @@ the past-the-end iterator.
 </blockquote>
 </li>
 <li>
-<p>Change 23.3.11.3 <a href="https://wg21.link/vector.capacity">[vector.capacity]</a> as indicated:</p>
+<p>Change 23.3.13.3 <a href="https://wg21.link/vector.capacity">[vector.capacity]</a> as indicated:</p>
 <blockquote>
 <blockquote>
 <pre>
@@ -225,7 +225,7 @@ note</i> ]</ins>
 </blockquote>
 </li>
 <li>
-<p>Change 23.3.11.5 <a href="https://wg21.link/vector.modifiers">[vector.modifiers]</a> as indicated:</p>
+<p>Change 23.3.13.5 <a href="https://wg21.link/vector.modifiers">[vector.modifiers]</a> as indicated:</p>
 <blockquote>
 <p>
 -1- <i>Remarks:</i> Causes reallocation if the new size is greater than the old

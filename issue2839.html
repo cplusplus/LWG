@@ -63,7 +63,7 @@
 <hr>
 <p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#C++23">C++23</a> status.</em></p>
 <h3 id="2839"><a href="lwg-defects.html#2839">2839</a>. Self-move-assignment of library types, again</h3>
-<p><b>Section:</b> 16.4.6.15 <a href="https://wg21.link/lib.types.movedfrom">[lib.types.movedfrom]</a>, 16.4.5.9 <a href="https://wg21.link/res.on.arguments">[res.on.arguments]</a>, 23.2.2 <a href="https://wg21.link/container.requirements.general">[container.requirements.general]</a> <b>Status:</b> <a href="lwg-active.html#C++23">C++23</a>
+<p><b>Section:</b> 16.4.6.17 <a href="https://wg21.link/lib.types.movedfrom">[lib.types.movedfrom]</a>, 16.4.5.9 <a href="https://wg21.link/res.on.arguments">[res.on.arguments]</a>, 23.2.2 <a href="https://wg21.link/container.requirements.general">[container.requirements.general]</a> <b>Status:</b> <a href="lwg-active.html#C++23">C++23</a>
  <b>Submitter:</b> Tim Song <b>Opened:</b> 2016-12-09 <b>Last modified:</b> 2023-11-22</p>
 <p><b>Priority: </b>2
 </p>
@@ -76,7 +76,7 @@ those types not meet <code>MoveAssignable</code> any longer.
 <p/>
 To realize the intent here, we need to carve out an exception to 16.4.5.9 <a href="https://wg21.link/res.on.arguments">[res.on.arguments]</a>'s restriction for
 move assignment operators and specify that self-move-assignment results in valid but unspecified state unless otherwise
-specified. The proposed wording below adds that to 16.4.6.15 <a href="https://wg21.link/lib.types.movedfrom">[lib.types.movedfrom]</a> since it seems to fit well with the
+specified. The proposed wording below adds that to 16.4.6.17 <a href="https://wg21.link/lib.types.movedfrom">[lib.types.movedfrom]</a> since it seems to fit well with the
 theme of the current paragraph in that section.
 <p/> In addition, to address the issue with 23.2.2 <a href="https://wg21.link/container.requirements.general">[container.requirements.general]</a> noted in LWG
 <a href="lwg-defects.html#2468" title="Self-move-assignment of library types (Status: C++17)">2468</a><sup><a href="https://cplusplus.github.io/LWG/issue2468" title="Latest snapshot">(i)</a></sup>'s discussion, the requirement tables in that subclause will need to be edited in a way similar to
@@ -96,7 +96,7 @@ LWG <a href="lwg-defects.html#2468" title="Self-move-assignment of library types
 <p>This wording is relative to <a href="https://wg21.link/n4618">N4618</a>.</p>
 
 <ol>
-<li><p>Add a new paragraph at the end of 16.4.6.15 <a href="https://wg21.link/lib.types.movedfrom">[lib.types.movedfrom]</a>:</p>
+<li><p>Add a new paragraph at the end of 16.4.6.17 <a href="https://wg21.link/lib.types.movedfrom">[lib.types.movedfrom]</a>:</p>
 <blockquote>
 <p>
 -1- Objects of types defined in the C++ standard library may be moved from (12.8). Move operations may be
@@ -126,7 +126,7 @@ casts an lvalue to an xvalue while passing that lvalue to a library function (e.
 <code>std::move(x)</code>), the program is effectively asking that function to treat that lvalue as a temporary.
 The implementation is free to optimize away aliasing checks which might be needed if the argument
 was an lvalue. &mdash; <i>end note</i>] <ins>[<i>Note:</i> This does not apply to the argument passed to a
-move assignment operator (16.4.6.15 <a href="https://wg21.link/lib.types.movedfrom">[lib.types.movedfrom]</a>). &mdash; <i>end note</i>]</ins></p></li>
+move assignment operator (16.4.6.17 <a href="https://wg21.link/lib.types.movedfrom">[lib.types.movedfrom]</a>). &mdash; <i>end note</i>]</ins></p></li>
 </ol>
 </blockquote>
 </li>
@@ -278,7 +278,7 @@ Unanimous consent to move to Ready.
 <p>This wording is relative to <a href="https://wg21.link/n4861">N4861</a>.</p>
 
 <ol>
-<li><p>Add a new paragraph at the end of 16.4.6.15 <a href="https://wg21.link/lib.types.movedfrom">[lib.types.movedfrom]</a>:</p>
+<li><p>Add a new paragraph at the end of 16.4.6.17 <a href="https://wg21.link/lib.types.movedfrom">[lib.types.movedfrom]</a>:</p>
 <blockquote>
 <p>
 -1- Objects of types defined in the C++ standard library may be moved from
@@ -304,7 +304,7 @@ explicitly stated otherwise.
 <li><p>(1.2) &mdash; [&hellip;]</p></li>
 <li><p>(1.3) &mdash; If a function argument binds to an rvalue reference parameter, the implementation may
 assume that this parameter is a unique reference to this argument<ins>, except that the argument passed to a
-move-assignment operator may be a reference to <code>*this</code> (16.4.6.15 <a href="https://wg21.link/lib.types.movedfrom">[lib.types.movedfrom]</a>)</ins>.
+move-assignment operator may be a reference to <code>*this</code> (16.4.6.17 <a href="https://wg21.link/lib.types.movedfrom">[lib.types.movedfrom]</a>)</ins>.
 [<i>Note:</i> If the <ins>type of a</ins> parameter is a <del>generic parameter
 of the form <code>T&amp;&amp;</code> and an lvalue of type <code>A</code> is bound, the argument binds to an lvalue reference
 (13.10.3.2 <a href="https://wg21.link/temp.deduct.call">[temp.deduct.call]</a>) and thus is not covered by the previous sentence.</del>

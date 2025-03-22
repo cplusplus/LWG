@@ -63,7 +63,7 @@
 <hr>
 <p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#C++20">C++20</a> status.</em></p>
 <h3 id="2998"><a href="lwg-defects.html#2998">2998</a>. Requirements on function objects passed to <code>{forward_,}list</code>-specific algorithms</h3>
-<p><b>Section:</b> 23.3.9.5 <a href="https://wg21.link/list.ops">[list.ops]</a>, 23.3.7.6 <a href="https://wg21.link/forward.list.ops">[forward.list.ops]</a> <b>Status:</b> <a href="lwg-active.html#C++20">C++20</a>
+<p><b>Section:</b> 23.3.11.5 <a href="https://wg21.link/list.ops">[list.ops]</a>, 23.3.7.6 <a href="https://wg21.link/forward.list.ops">[forward.list.ops]</a> <b>Status:</b> <a href="lwg-active.html#C++20">C++20</a>
  <b>Submitter:</b> Tim Song <b>Opened:</b> 2017-07-07 <b>Last modified:</b> 2023-02-07</p>
 <p><b>Priority: </b>0
 </p>
@@ -90,7 +90,7 @@ This wording is relative to <a href="https://wg21.link/n4659">N4659</a>.
 </p>
 
 <ol>
-<li><p>Edit 23.3.9.5 <a href="https://wg21.link/list.ops">[list.ops]</a> as indicated:</p>
+<li><p>Edit 23.3.11.5 <a href="https://wg21.link/list.ops">[list.ops]</a> as indicated:</p>
 <blockquote>
 <p>-1- Since lists allow fast insertion and erasing from the middle of a list, certain operations are provided specifically 
 for them.<sup>259)</sup> <ins>In this subclause, arguments for a template parameter named <code>Predicate</code> or 
@@ -100,7 +100,7 @@ For <code>merge</code> and <code>sort</code>, the definitions and requirements i
 </blockquote>
 </li>
 
-<li><p>Edit 23.3.9.5 <a href="https://wg21.link/list.ops">[list.ops]</a> as indicated:</p>
+<li><p>Edit 23.3.11.5 <a href="https://wg21.link/list.ops">[list.ops]</a> as indicated:</p>
 <blockquote>
 <pre>
 void merge(list&amp; x);
@@ -116,7 +116,7 @@ template &lt;class Compare&gt; void merge(list&amp;&amp; x, Compare comp);
 </blockquote>
 </li>
 
-<li><p>Delete 23.3.9.5 <a href="https://wg21.link/list.ops">[list.ops]</a>/28 as redundant:</p>
+<li><p>Delete 23.3.11.5 <a href="https://wg21.link/list.ops">[list.ops]</a>/28 as redundant:</p>
 <blockquote>
 <pre>
 void sort();

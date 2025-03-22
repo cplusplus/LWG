@@ -63,7 +63,7 @@
 <hr>
 <p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#C++23">C++23</a> status.</em></p>
 <h3 id="3036"><a href="lwg-defects.html#3036">3036</a>. <code>polymorphic_allocator::destroy</code> is extraneous</h3>
-<p><b>Section:</b> 20.4.3 <a href="https://wg21.link/mem.poly.allocator.class">[mem.poly.allocator.class]</a> <b>Status:</b> <a href="lwg-active.html#C++23">C++23</a>
+<p><b>Section:</b> 20.5.3 <a href="https://wg21.link/mem.poly.allocator.class">[mem.poly.allocator.class]</a> <b>Status:</b> <a href="lwg-active.html#C++23">C++23</a>
  <b>Submitter:</b> Casey Carter <b>Opened:</b> 2017-11-15 <b>Last modified:</b> 2023-11-22</p>
 <p><b>Priority: </b>3
 </p>
@@ -97,7 +97,7 @@ Wording relative to <a href="https://wg21.link/n4700">N4700</a>.
 <li>
 <p>
 Strike the declaration of <code>destroy</code> from the synopsis of class
-<code>polymorphic_allocator</code> in 20.4.3 <a href="https://wg21.link/mem.poly.allocator.class">[mem.poly.allocator.class]</a>:
+<code>polymorphic_allocator</code> in 20.5.3 <a href="https://wg21.link/mem.poly.allocator.class">[mem.poly.allocator.class]</a>:
 </p>
 <blockquote>
 <pre>
@@ -114,7 +114,7 @@ polymorphic_allocator select_on_container_copy_construction() const;
 
 <li>
 <p>
-Strike the specification of <code>destroy</code> in 20.4.3.3 <a href="https://wg21.link/mem.poly.allocator.mem">[mem.poly.allocator.mem]</a>:
+Strike the specification of <code>destroy</code> in 20.5.3.3 <a href="https://wg21.link/mem.poly.allocator.mem">[mem.poly.allocator.mem]</a>:
 </p>
 <blockquote>
 [&hellip;]
@@ -150,7 +150,7 @@ Wording relative to <a href="https://wg21.link/n4861">N4861</a>.
 <li>
 <p>
 Strike the declaration of <code>destroy</code> from the synopsis of class
-<code>polymorphic_allocator</code> in 20.4.3 <a href="https://wg21.link/mem.poly.allocator.class">[mem.poly.allocator.class]</a>:
+<code>polymorphic_allocator</code> in 20.5.3 <a href="https://wg21.link/mem.poly.allocator.class">[mem.poly.allocator.class]</a>:
 </p>
 <blockquote>
 <pre>
@@ -167,7 +167,7 @@ polymorphic_allocator select_on_container_copy_construction() const;
 
 <li>
 <p>
-Adjust the specification of <code>delete_object</code> in 20.4.3.3 <a href="https://wg21.link/mem.poly.allocator.mem">[mem.poly.allocator.mem]</a>:
+Adjust the specification of <code>delete_object</code> in 20.5.3.3 <a href="https://wg21.link/mem.poly.allocator.mem">[mem.poly.allocator.mem]</a>:
 </p>
 <blockquote>
 <pre>
@@ -185,7 +185,7 @@ template &lt;class T&gt;
 
 <li>
 <p>
-Strike the specification of <code>destroy</code> in 20.4.3.3 <a href="https://wg21.link/mem.poly.allocator.mem">[mem.poly.allocator.mem]</a>:
+Strike the specification of <code>destroy</code> in 20.5.3.3 <a href="https://wg21.link/mem.poly.allocator.mem">[mem.poly.allocator.mem]</a>:
 </p>
 <blockquote>
 [&hellip;]
@@ -212,7 +212,7 @@ Strike the specification of <code>destroy</code> in 20.4.3.3 <a href="https://wg
 <p>
 <ins>
 -1- The following member is declared in addition to those members specified in
-20.4.3.3 <a href="https://wg21.link/mem.poly.allocator.mem">[mem.poly.allocator.mem]</a>:
+20.5.3.3 <a href="https://wg21.link/mem.poly.allocator.mem">[mem.poly.allocator.mem]</a>:
 </ins>
 </p>
 <blockquote><pre><ins>

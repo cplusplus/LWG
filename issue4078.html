@@ -73,7 +73,7 @@
 <blockquote><pre>
 int main() {
   int x = 12345;
-  // note: this is "awoo" followed by 28 zeros (9.4.3 <a href="https://wg21.link/dcl.init.string">[dcl.init.string]</a> p3)
+  // note: this is "awoo" followed by 28 zeros (9.5.3 <a href="https://wg21.link/dcl.init.string">[dcl.init.string]</a> p3)
   char buffer[32] = "awoo";
   std::format_to(buffer, "{}{}", x, buffer);
   std::println("{}", buffer);

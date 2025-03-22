@@ -63,7 +63,7 @@
 <hr>
 <p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#NAD">NAD</a> status.</em></p>
 <h3 id="1265"><a href="lwg-closed.html#1265">1265</a>. <code>longjmp</code> and destructors</h3>
-<p><b>Section:</b> 17.13 <a href="https://wg21.link/support.runtime">[support.runtime]</a> <b>Status:</b> <a href="lwg-active.html#NAD">NAD</a>
+<p><b>Section:</b> 17.14 <a href="https://wg21.link/support.runtime">[support.runtime]</a> <b>Status:</b> <a href="lwg-active.html#NAD">NAD</a>
  <b>Submitter:</b> Sean Hunt <b>Opened:</b> 2009-11-16 <b>Last modified:</b> 2016-01-28</p>
 <p><b>Priority: </b>Not Prioritized
 </p>
@@ -71,7 +71,7 @@
 <p><b>View all issues with</b> <a href="lwg-status.html#NAD">NAD</a> status.</p>
 <p><b>Discussion:</b></p>
 <p>
-17.13 <a href="https://wg21.link/support.runtime">[support.runtime]</a>/4 says that <code>longjmp</code> is undefined if
+17.14 <a href="https://wg21.link/support.runtime">[support.runtime]</a>/4 says that <code>longjmp</code> is undefined if
 unwinding by the mechanism used by catch and throw would invoke any nontrivial
 destructors. However, the text as written is rather vague, in particular when
 dealing with <code>catch(...)</code>:
@@ -92,7 +92,7 @@ void foo() {
 </pre></blockquote>
 
 <p>
-My interpretation of the meaning of 17.13 <a href="https://wg21.link/support.runtime">[support.runtime]</a>/4 is that
+My interpretation of the meaning of 17.14 <a href="https://wg21.link/support.runtime">[support.runtime]</a>/4 is that
 declaration 2, but not 1, would cause the <code>longjmp</code> to be undefined
 behavior. However,  it's not entirely clear from the text. Arguably, replacing
 the <code>setjmp</code> and <code>longjmp</code> with <code>catch</code> would still cause
@@ -113,7 +113,7 @@ called later as the frame was left in the normal control flow).
 </p>
 
 <p>
-I suggest that paragraph 4 of 17.13 <a href="https://wg21.link/support.runtime">[support.runtime]</a> should be replaced
+I suggest that paragraph 4 of 17.14 <a href="https://wg21.link/support.runtime">[support.runtime]</a> should be replaced
 with the following, or something that reads better but has the same effect:
 </p>
 
@@ -135,7 +135,7 @@ Rationale added below.
 
 <p id="res-1265"><b>Proposed resolution:</b></p>
 <p>
-Change 17.13 <a href="https://wg21.link/support.runtime">[support.runtime]</a>/4:
+Change 17.14 <a href="https://wg21.link/support.runtime">[support.runtime]</a>/4:
 </p>
 
 <blockquote><p>

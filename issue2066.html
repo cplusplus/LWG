@@ -63,7 +63,7 @@
 <hr>
 <p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#Resolved">Resolved</a> status.</em></p>
 <h3 id="2066"><a href="lwg-defects.html#2066">2066</a>. Missing specification of <code>vector::resize(size_type)</code></h3>
-<p><b>Section:</b> 23.3.11.3 <a href="https://wg21.link/vector.capacity">[vector.capacity]</a> <b>Status:</b> <a href="lwg-active.html#Resolved">Resolved</a>
+<p><b>Section:</b> 23.3.13.3 <a href="https://wg21.link/vector.capacity">[vector.capacity]</a> <b>Status:</b> <a href="lwg-active.html#Resolved">Resolved</a>
  <b>Submitter:</b> Rani Sharoni <b>Opened:</b> 2011-03-29 <b>Last modified:</b> 2016-01-28</p>
 <p><b>Priority: </b>Not Prioritized
 </p>
@@ -72,14 +72,14 @@
 <p><b>View all issues with</b> <a href="lwg-status.html#Resolved">Resolved</a> status.</p>
 <p><b>Discussion:</b></p>
 <p>
-In C++1x (N3090) there are two version of <code>vector::resize</code> &mdash; 23.3.11.3 <a href="https://wg21.link/vector.capacity">[vector.capacity]</a>:
+In C++1x (N3090) there are two version of <code>vector::resize</code> &mdash; 23.3.13.3 <a href="https://wg21.link/vector.capacity">[vector.capacity]</a>:
 </p>
 <blockquote><pre>
 void resize(size_type sz);
 void resize(size_type sz, const T&amp; c);
 </pre></blockquote>
 <p>
-The text in 23.3.11.3 <a href="https://wg21.link/vector.capacity">[vector.capacity]</a>&#47;12 only mentions "no effects on throw" for the
+The text in 23.3.13.3 <a href="https://wg21.link/vector.capacity">[vector.capacity]</a>&#47;12 only mentions "no effects on throw" for the
 two args version of resize:
 </p><blockquote><p>
 <i>Requires</i>: If an exception is thrown other than by the move constructor

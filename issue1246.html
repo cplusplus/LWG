@@ -63,7 +63,7 @@
 <hr>
 <p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#NAD">NAD</a> status.</em></p>
 <h3 id="1246"><a href="lwg-closed.html#1246">1246</a>. <code>vector::resize()</code> missing efficiency guarantee</h3>
-<p><b>Section:</b> 23.3.11.3 <a href="https://wg21.link/vector.capacity">[vector.capacity]</a> <b>Status:</b> <a href="lwg-active.html#NAD">NAD</a>
+<p><b>Section:</b> 23.3.13.3 <a href="https://wg21.link/vector.capacity">[vector.capacity]</a> <b>Status:</b> <a href="lwg-active.html#NAD">NAD</a>
  <b>Submitter:</b> David Abrahams <b>Opened:</b> 2009-10-24 <b>Last modified:</b> 2016-01-28</p>
 <p><b>Priority: </b>Not Prioritized
 </p>
@@ -106,7 +106,7 @@ below.
 
 <p id="res-1246"><b>Proposed resolution:</b></p>
 <p>
-In 23.3.11.3 <a href="https://wg21.link/vector.capacity">[vector.capacity]</a>/10, change
+In 23.3.13.3 <a href="https://wg21.link/vector.capacity">[vector.capacity]</a>/10, change
 </p>
 
 <blockquote><pre>
@@ -127,7 +127,7 @@ sequence</del>
 The description in terms of <code>push_back</code> led some to believe that
 one could expect the exact same growth pattern from both <code>resize</code> and
 <code>push_back</code> (e.g.) which could lead to sub-optimal implementations.
-Additionally, 23.3.11 <a href="https://wg21.link/vector">[vector]</a>, p1 includes a statement that this container
+Additionally, 23.3.13 <a href="https://wg21.link/vector">[vector]</a>, p1 includes a statement that this container
 "supports (amortized) constant time insert and erase operations at the end;",
 therefore addressing the concern of this issue.
 </p>

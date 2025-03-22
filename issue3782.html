@@ -63,7 +63,7 @@
 <hr>
 <p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#C++23">C++23</a> status.</em></p>
 <h3 id="3782"><a href="lwg-defects.html#3782">3782</a>. Should <code>&lt;math.h&gt;</code> declare <code>::lerp</code>?</h3>
-<p><b>Section:</b> 17.14.7 <a href="https://wg21.link/support.c.headers.other">[support.c.headers.other]</a> <b>Status:</b> <a href="lwg-active.html#C++23">C++23</a>
+<p><b>Section:</b> 17.15.7 <a href="https://wg21.link/support.c.headers.other">[support.c.headers.other]</a> <b>Status:</b> <a href="lwg-active.html#C++23">C++23</a>
  <b>Submitter:</b> Jiang An <b>Opened:</b> 2022-09-17 <b>Last modified:</b> 2023-11-22</p>
 <p><b>Priority: </b>Not Prioritized
 </p>
@@ -72,10 +72,10 @@
 <p><b>View all issues with</b> <a href="lwg-status.html#C++23">C++23</a> status.</p>
 <p><b>Discussion:</b></p>
 <p>
-According to 17.14.7 <a href="https://wg21.link/support.c.headers.other">[support.c.headers.other]</a>/1, <code>&lt;math.h&gt;</code> is required to 
+According to 17.15.7 <a href="https://wg21.link/support.c.headers.other">[support.c.headers.other]</a>/1, <code>&lt;math.h&gt;</code> is required to 
 provide <code>::lerp</code>, despite that it is a C++-only component. In <a href="https://wg21.link/P0811R3" title=" Well-behaved interpolation for numbers and pointers">P0811R3</a>, neither 
 <code>&lt;math.h&gt;</code> nor C compatibility is mentioned, so it seems unintended not to list 
-<code>lerp</code> as an exception in 17.14.7 <a href="https://wg21.link/support.c.headers.other">[support.c.headers.other]</a>.
+<code>lerp</code> as an exception in 17.15.7 <a href="https://wg21.link/support.c.headers.other">[support.c.headers.other]</a>.
 <p/>
 Currently there is implementation divergence: libstdc++ provide <code>::lerp</code> in 
 <code>&lt;math.h&gt;</code> but not in <code>&lt;cmath&gt;</code>, while MSVC STL and libc++ don't provide 
@@ -105,16 +105,16 @@ This wording is relative to <a href="https://wg21.link/N4917" title=" Working Dr
 
 <ol>
 
-<li><p>Modify 17.14.7 <a href="https://wg21.link/support.c.headers.other">[support.c.headers.other]</a> as indicated:</p>
+<li><p>Modify 17.15.7 <a href="https://wg21.link/support.c.headers.other">[support.c.headers.other]</a> as indicated:</p>
 
 <blockquote>
 <p>
--1- Every C header other than <code>&lt;complex.h&gt;</code> (17.14.2 <a href="https://wg21.link/complex.h.syn">[complex.h.syn]</a>), 
-<code>&lt;iso646.h&gt;</code> (17.14.3 <a href="https://wg21.link/iso646.h.syn">[iso646.h.syn]</a>), 
-<code>&lt;stdalign.h&gt;</code> (17.14.4 <a href="https://wg21.link/stdalign.h.syn">[stdalign.h.syn]</a>),
+-1- Every C header other than <code>&lt;complex.h&gt;</code> (17.15.2 <a href="https://wg21.link/complex.h.syn">[complex.h.syn]</a>), 
+<code>&lt;iso646.h&gt;</code> (17.15.3 <a href="https://wg21.link/iso646.h.syn">[iso646.h.syn]</a>), 
+<code>&lt;stdalign.h&gt;</code> (17.15.4 <a href="https://wg21.link/stdalign.h.syn">[stdalign.h.syn]</a>),
 <code>&lt;stdatomic.h&gt;</code> (32.5.12 <a href="https://wg21.link/stdatomic.h.syn">[stdatomic.h.syn]</a>), 
-<code>&lt;stdbool.h&gt;</code> (17.14.5 <a href="https://wg21.link/stdbool.h.syn">[stdbool.h.syn]</a>), 
-and <code>&lt;tgmath.h&gt;</code> (17.14.6 <a href="https://wg21.link/tgmath.h.syn">[tgmath.h.syn]</a>), each of which has a name of
+<code>&lt;stdbool.h&gt;</code> (17.15.5 <a href="https://wg21.link/stdbool.h.syn">[stdbool.h.syn]</a>), 
+and <code>&lt;tgmath.h&gt;</code> (17.15.6 <a href="https://wg21.link/tgmath.h.syn">[tgmath.h.syn]</a>), each of which has a name of
 the form <code>&lt;<i>name</i>.h&gt;</code>, behaves as if each name placed in 
 the standard library namespace by the corresponding <code>&lt;c<i>name</i>&gt;</code> 
 header is placed within the global namespace scope, except for the functions 

@@ -63,7 +63,7 @@
 <hr>
 <p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#NAD">NAD</a> status.</em></p>
 <h3 id="2449"><a href="lwg-closed.html#2449">2449</a>. <code>vector::insert</code> invalidates <code>end()</code>?</h3>
-<p><b>Section:</b> 23.3.11.5 <a href="https://wg21.link/vector.modifiers">[vector.modifiers]</a> <b>Status:</b> <a href="lwg-active.html#NAD">NAD</a>
+<p><b>Section:</b> 23.3.13.5 <a href="https://wg21.link/vector.modifiers">[vector.modifiers]</a> <b>Status:</b> <a href="lwg-active.html#NAD">NAD</a>
  <b>Submitter:</b> Marc Glisse <b>Opened:</b> 2014-10-21 <b>Last modified:</b> 2017-03-14</p>
 <p><b>Priority: </b>3
 </p>
@@ -73,7 +73,7 @@
 <p>
 this issue is based on the discussion <a href="https://groups.google.com/a/isocpp.org/d/topic/std-discussion/oYvKscnl280/discussion">here</a>.
 <p/>
-23.3.11.5 <a href="https://wg21.link/vector.modifiers">[vector.modifiers]</a> says about <code>vector::insert</code>: "If no reallocation happens, all the iterators and references 
+23.3.13.5 <a href="https://wg21.link/vector.modifiers">[vector.modifiers]</a> says about <code>vector::insert</code>: "If no reallocation happens, all the iterators and references 
 before the insertion point remain valid." This doesn't seem to guarantee anything about the iterator <em>at</em> the point of insertion.
 <p/>
 The question comes from people asking if the following is valid, assuming a sufficient call to <code>reserve()</code> was done first:

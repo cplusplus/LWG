@@ -63,7 +63,7 @@
 <hr>
 <p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#New">New</a> status.</em></p>
 <h3 id="4123"><a href="lwg-active.html#4123">4123</a>. Container effects use "the assignment operator or move assignment operator"</h3>
-<p><b>Section:</b> 23.3.5.4 <a href="https://wg21.link/deque.modifiers">[deque.modifiers]</a>, 23.3.11.5 <a href="https://wg21.link/vector.modifiers">[vector.modifiers]</a>, 23.3.14.5 <a href="https://wg21.link/inplace.vector.modifiers">[inplace.vector.modifiers]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
+<p><b>Section:</b> 23.3.5.4 <a href="https://wg21.link/deque.modifiers">[deque.modifiers]</a>, 23.3.13.5 <a href="https://wg21.link/vector.modifiers">[vector.modifiers]</a>, 23.3.16.5 <a href="https://wg21.link/inplace.vector.modifiers">[inplace.vector.modifiers]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
  <b>Submitter:</b> Jonathan Wakely <b>Opened:</b> 2024-07-25 <b>Last modified:</b> 2024-12-06</p>
 <p><b>Priority: </b>3
 </p>
@@ -110,7 +110,7 @@ Set priority to 3 after reflector poll. Arthur to draft wording.
 <p><i>[2024-12-06; LWG telecon]</i></p>
 
 <p>
-23.3.9.4 <a href="https://wg21.link/list.modifiers">[list.modifiers]</a> p1 says:
+23.3.11.4 <a href="https://wg21.link/list.modifiers">[list.modifiers]</a> p1 says:
 <blockquote>
 <i>Complexity</i>:
 Insertion of a single element into a list takes constant time and exactly
@@ -275,7 +275,7 @@ linear in <code class='backtick'>n</code> and the number of <del>calls to the de
 </blockquote>
 </li>
 <li>
-<p>Modify 23.3.9.4 <a href="https://wg21.link/list.modifiers">[list.modifiers]</a> as indicated:</p>
+<p>Modify 23.3.11.4 <a href="https://wg21.link/list.modifiers">[list.modifiers]</a> as indicated:</p>
 <blockquote>
 <p>
 -1- <i>Complexity</i>:
@@ -320,7 +320,7 @@ is exactly equal to the size of the range.
 </blockquote>
 </li>
 <li>
-<p>Modify 23.3.11.2 <a href="https://wg21.link/vector.cons">[vector.cons]</a> as indicated:</p>
+<p>Modify 23.3.13.2 <a href="https://wg21.link/vector.cons">[vector.cons]</a> as indicated:</p>
 <blockquote>
 <pre>template&lt;class InputIterator&gt;
   constexpr vector(InputIterator first, InputIterator last,
@@ -365,7 +365,7 @@ and <ins>initializes</ins> order <i>N</i>
 </blockquote>
 </li>
 <li>
-<p>Modify 23.3.11.3 <a href="https://wg21.link/vector.capacity">[vector.capacity]</a> as indicated:</p>
+<p>Modify 23.3.13.3 <a href="https://wg21.link/vector.capacity">[vector.capacity]</a> as indicated:</p>
 <blockquote>
 <pre>constexpr void reserve(size_type n);</pre>
 <p>
@@ -429,7 +429,7 @@ there are no effects.
 </blockquote>
 </li>
 <li>
-<p>Modify 23.3.11.5 <a href="https://wg21.link/vector.modifiers">[vector.modifiers]</a> as indicated:</p>
+<p>Modify 23.3.13.5 <a href="https://wg21.link/vector.modifiers">[vector.modifiers]</a> as indicated:</p>
 <blockquote>
 <pre>iterator insert(const_iterator position, const T&amp; x);
 ...
@@ -493,7 +493,7 @@ the number of elements in the vector after the erased elements.
 </blockquote>
 </li>
 <li>
-<p>Modify 23.3.14.5 <a href="https://wg21.link/inplace.vector.modifiers">[inplace.vector.modifiers]</a> as indicated:</p>
+<p>Modify 23.3.16.5 <a href="https://wg21.link/inplace.vector.modifiers">[inplace.vector.modifiers]</a> as indicated:</p>
 <blockquote>
 <pre>constexpr iterator erase(const_iterator position);
 constexpr iterator erase(const_iterator first, const_iterator last);
