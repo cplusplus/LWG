@@ -79,7 +79,7 @@
 </tr>
 </table>
 <h1>C++ Standard Library Active Issues List (Revision D125)</h1>
-<p>Revised 2025-03-22 at 14:18:18 UTC
+<p>Revised 2025-03-22 at 15:10:03 UTC
 </p>
   <p>Reference ISO/IEC IS 14882:2020(E)</p>
   <p>Also see:</p>
@@ -71775,7 +71775,18 @@ sc.real(simd&lt;float&gt;(1.f)); // <span style="color:red;font-weight:bolder">i
 The design intent was to match the <code>std::complex&lt;T&gt;</code> interface. In which case
 the current wording doesn't match that intent. <code class='backtick'>complex</code> doesn't say <code>real(same_as&lt;T&gt; auto)</code> 
 but 'real(T)', which allows conversions.
+<p/>
+This issue is also present in the <code class='backtick'>basic_simd(real, imag)</code> constructor. It deduces the type for the 
+real/imag arguments instead of using a dependent type derived from <code class='backtick'>value_type</code> and ABI tag.
 </p>
+<blockquote><pre>
+// OK:
+complex&lt;double&gt; c{1., 1.f};
+
+// <span style="color:red;font-weight:bolder">Ill-formed, should be allowed</span>:
+simd&lt;complex&lt;double&gt;&gt; sc0(1., 1.);
+simd&lt;complex&lt;double&gt;, 4&gt; sc1(simd&lt;double, 4&gt;(1.), simd&lt;float, 4&gt;(1.f));
+</pre></blockquote>
 
 
 <p id="res-4230"><b>Proposed resolution:</b></p>
@@ -71789,16 +71800,58 @@ This wording is relative to <a href="https://wg21.link/N5008">N5008</a>.
 
 <blockquote>
 <pre>
-[&hellip;]
-<i>// 99 [simd.complex.access], basic_simd complex-value accessors</i>
-constexpr auto real() const noexcept;
-constexpr auto imag() const noexcept;
-<del>template&lt;<i>simd-floating-point</i> V&gt;</del>
-  constexpr void real(<ins><i>see below</i></ins><del>const V&amp;</del> v) noexcept;
-<del>template&lt;<i>simd-floating-point</i> V&gt;</del>
-  constexpr void imag(<ins><i>see below</i></ins><del>const V&amp;</del> v) noexcept;
-[&hellip;]
+namespace std::datapar {
+  template&lt;class T, class Abi&gt; class basic_simd {
+  public:
+    using value_type = T;
+    using mask_type = basic_simd_mask&lt;sizeof(T), Abi&gt;;
+    using abi_type = Abi;
+    
+    <ins>using <i>real-type</i> = rebind_t&lt;typename T::value_type, basic_simd&gt; <i>// exposition-only</i></ins>
+    
+    <i>// 29.10.6.2 <a href="https://wg21.link/simd.ctor">[simd.ctor]</a>, basic_simd constructors</i>   
+    [&hellip;]
+    <del>template&lt;<i>simd-floating-point</i> V&gt;</del>
+      constexpr explicit(<i>see below</i>) basic_simd(const <ins><i>real-type</i></ins><del>V</del>&amp; reals, const <ins><i>real-type</i></ins><del>V</del>&amp; imags = {}) noexcept;
+    [&hellip;]
+    <i>// 99 [simd.complex.access], basic_simd complex-value accessors</i>
+    constexpr <ins><i>real-type</i></ins><del>auto</del> real() const noexcept;
+    constexpr <ins><i>real-type</i></ins><del>auto</del> imag() const noexcept;
+    <del>template&lt;<i>simd-floating-point</i> V&gt;</del>
+      constexpr void real(const <ins><i>real-type</i></ins><del>V</del>&amp; v) noexcept;
+    <del>template&lt;<i>simd-floating-point</i> V&gt;</del>
+      constexpr void imag(const <ins><i>real-type</i></ins><del>V</del>&amp; v) noexcept;
+    [&hellip;]
+  };
+  [&hellip;]
+}
 </pre>
+</blockquote>
+</li>
+
+<li><p>Modify 29.10.6.2 <a href="https://wg21.link/simd.ctor">[simd.ctor]</a> as indicated:</p>
+
+<blockquote>
+<pre>
+<del>template&lt;<i>simd-floating-point</i> V&gt;</del>
+  constexpr explicit(<i>see below</i>) basic_simd(const <ins><i>real-type</i></ins><del>V</del>&amp; reals, const <ins><i>real-type</i></ins><del>V</del>&amp; imags = {}) noexcept;
+</pre>
+<blockquote>
+<p>
+-19- <i>Constraints</i>:
+</p>
+<ol style="list-style-type: none">
+<li><p><del>(19.1) &mdash;</del> <code><i>simd-complex</i>&lt;basic_simd&gt;</code> is modeled<ins>.</ins><del>, and</del></p></li>
+<li><p><del>(19.2) &mdash; <code class='backtick'>V::size() == size()</code> is <code class='backtick'>true</code>.</del></p></li>
+</ol>
+<p>
+[&hellip;]
+<p/>
+-21- <i>Remarks</i>: The expression inside <code class='backtick'>explicit</code> evaluates to <code class='backtick'>false</code> if and only if the 
+floating-point conversion rank of <code class='backtick'>T::value_type</code> is greater than or equal to the floating-point 
+conversion rank of <code><ins><i>real-type</i></ins><del>V</del>::value_type</code>.
+</p>
+</blockquote>
 </blockquote>
 </li>
 
@@ -71806,10 +71859,25 @@ constexpr auto imag() const noexcept;
 
 <blockquote>
 <pre>
+constexpr <ins><i>real-type</i></ins><del>auto</del> real() const noexcept;
+constexpr <ins><i>real-type</i></ins><del>auto</del> imag() const noexcept;
+</pre>
+<blockquote>
+<p>
+-1- <i>Constraints</i>: <code><i>simd-complex</i>&lt;basic_simd&gt;</code> is modeled.
+<p/>
+-2- <i>Returns</i>: An object of type <code><ins><i>real-type</i></ins><del>rebind_t&lt;typename T::value_type, basic_simd&gt;</del></code> 
+where the <code><i>i</i></code><sup>th</sup> element is initialized to the result of 
+<code><i>cmplx-func</i>(operator[](<i>i</i>))</code> for all <code><i>i</i></code> in the range 
+<code class='backtick'>[0, size())</code>, where <code><i>cmplx-func</i></code> is the corresponding function from 
+<code>&lt;complex&gt;</code>.
+</p>
+</blockquote>
+<pre>
 <del>template&lt;<i>simd-floating-point</i> V&gt;</del>
-  constexpr void real(<ins><i>see below</i></ins><del>const V&amp;</del> v) noexcept;
+  constexpr void real(const <ins><i>real-type</i></ins><del>V</del>&amp; v) noexcept;
 <del>template&lt;<i>simd-floating-point</i> V&gt;</del>
-  constexpr void imag(<ins><i>see below</i></ins><del>const V&amp;</del> v) noexcept;
+  constexpr void imag(const <ins><i>real-type</i></ins><del>V</del>&amp; v) noexcept;
 </pre>
 <blockquote>
 <p>
@@ -71821,13 +71889,7 @@ constexpr auto imag() const noexcept;
 <li><p><del>(3.3) &mdash; <code class='backtick'>V::size() == size()</code> is <code class='backtick'>true</code>.</del></p></li>
 </ol>
 <p>
--4- <i>Effects</i>: Replaces each element of the <code class='backtick'>basic_simd</code> object such that the <code><i>i</i></code><sup>th</sup> 
-element is replaced with <code>value_type(v[<i>i</i>], operator[](<i>i</i>).imag())</code> or 
-<code>value_type(operator[](<i>i</i>).real(), v[<i>i</i>])</code> for <code class='backtick'>real</code> and <code class='backtick'>imag</code> respectively, 
-for all <code><i>i</i></code> in the range <code class='backtick'>[0, size())</code>.
-<p/>
-<ins>-?- <i>Remarks</i>: The type of argument <code class='backtick'>v</code> is 
-<code>const rebind_t&lt;typename T::value_type, basic_simd&gt;&amp;</code>.</ins>
+[&hellip;]
 </p>
 </blockquote>
 </blockquote>
