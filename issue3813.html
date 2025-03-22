@@ -64,7 +64,7 @@
 <p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#New">New</a> status.</em></p>
 <h3 id="3813"><a href="lwg-active.html#3813">3813</a>. <code>std::span&lt;volatile T, E&gt;</code> is made ill-formed by P2278R4 when <code>T</code> is a normal class type</h3>
 <p><b>Section:</b> 23.7.2.2.1 <a href="https://wg21.link/span.overview">[span.overview]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Jiang An <b>Opened:</b> 2022-11-06 <b>Last modified:</b> 2022-11-12</p>
+ <b>Submitter:</b> Jiang An <b>Opened:</b> 2022-11-06 <b>Last modified:</b> 2025-03-22</p>
 <p><b>Priority: </b>2
 </p>
 <p><b>View all other</b> <a href="lwg-index.html#span.overview">issues</a> in [span.overview].</p>
@@ -102,9 +102,126 @@ class types provided by the standard library via <code>volatile</code> glvalues 
 <p><i>[Kona 2022-11-12; Set priority to 2]</i></p>
 
 
+<p><i>[2025-03-22; Jiang An comments and provides wording]</i></p>
+
+<p>
+The proposed resolution relaxes the <code class='backtick'>input_iterator</code> concept (which in turn relaxes stronger iterator concepts) 
+and extends <code class='backtick'>iter_const_reference_t</code> and the exposition only <code><i>iter-const-rvalue-reference-t</i></code> 
+aliases. Another approach can be just relaxing the <code class='backtick'>indirectly_readable</code> concept, but its impact may be larger 
+than expected.
+</p>
 
 
 <p id="res-3813"><b>Proposed resolution:</b></p>
+<p>
+This wording is relative to <a href="https://wg21.link/N5008">N5008</a>.
+</p>
+
+<ol>
+
+<li><p>Modify 24.2 <a href="https://wg21.link/iterator.synopsis">[iterator.synopsis]</a>, header <code>&lt;iterator&gt;</code> synopsis, as indicated:</p>
+
+<blockquote>
+<pre>
+[&hellip;]
+<i>// 24.3.4.9 <a href="https://wg21.link/iterator.concept.input">[iterator.concept.input]</a>, concept input_iterator</i>
+<ins>template&lt;class I&gt;
+  concept <i>deref-to-value-t</i> = <i>see below</i>;            <i>// freestanding</i>
+
+template&lt;class I&gt;
+  concept <i>weakly-indirectly-readable</i> = <i>see below</i>;  <i>// freestanding</i></ins>
+
+template&lt;class I&gt;
+concept input_iterator = <i>see below</i>;                <i>// freestanding</i>
+
+[&hellip;]
+
+<i>// 24.5.3.2 <a href="https://wg21.link/const.iterators.alias">[const.iterators.alias]</a>, alias templates</i>
+template&lt;<del>indirectly_readable</del><ins><i>weakly-indirectly-readable</i></ins> I&gt;
+  using iter_const_reference_t = <i>see below</i>;
+</pre>
+</blockquote>
+</li>
+
+<li><p>Modify 24.3.4.9 <a href="https://wg21.link/iterator.concept.input">[iterator.concept.input]</a>, concept <code>input_iterator</code> synopsis, as indicated:</p>
+
+<blockquote>
+<pre>
+<ins>template&lt;class I&gt;
+  concept <i>deref-to-value-t-impl</i> =      <i>// exposition only</i>
+    same_as&lt;remove_cvref_t&lt;iter_reference_t&lt;I&gt;&gt;, iter_value_t&lt;I&gt;&gt; &amp;&amp;
+    is_object_v&lt;iter_value_t&lt;I&gt;&gt;;
+
+template&lt;class I&gt;
+  concept <i>deref-to-value-t</i> =           <i>// exposition only</i>
+    <i>deref-to-value-t-impl</i>&lt;remove_cvref_t&lt;I&gt;&gt;;
+
+template&lt;class I&gt;
+  concept <i>weakly-indirectly-readable</i> = <i>// exposition only</i>
+    <i>deref-to-value-t</i>&lt;I&gt; ||
+    indirectly_readable&lt;I&gt;;</ins>
+
+template&lt;class I&gt;
+  concept input_iterator =
+    input_or_output_iterator&lt;I&gt; &amp;&amp;
+    <del>indirectly_readable</del><ins><i>weakly-indirectly-readable</i></ins>&lt;I&gt; &amp;&amp;
+    requires { typename <i>ITER_CONCEPT</i>(I); } &amp;&amp;
+    derived_from&lt;<i>ITER_CONCEPT</i>(I), input_iterator_tag&gt;;
+</pre>
+</blockquote>
+</li>
+
+<li><p>Modify 24.5.3.2 <a href="https://wg21.link/const.iterators.alias">[const.iterators.alias]</a> as indicated:</p>
+
+<blockquote>
+<pre>
+<ins>template&lt;class T&gt;
+  using <i>ref-add-const-t</i> = <i>see below</i>;</ins>
+</pre>
+<blockquote>
+<p>
+<ins>-?- <i>Result</i>: If <code>is_lvalue_reference_v&lt;T&gt;</code> is <code class='backtick'>true</code>, 
+<code>const remove_reference_t&lt;T&gt;&amp;</code>. Otherwise, if <code>is_rvalue_reference_v&lt;T&gt;</code> 
+is <code class='backtick'>true</code>, <code>const remove_reference_t&lt;T&gt;&amp;&amp;</code>. Otherwise, <code>T</code>.</ins>
+</p>
+</blockquote>
+<pre>
+template&lt;<del>indirectly_readable</del><ins><i>weakly-indirectly-readable</i></ins> It&gt;
+  using iter_const_reference_t = <ins>see below;</ins>
+    <del>common_reference_t&lt;const iter_value_t&lt;It&gt;&amp;&amp;, iter_reference_t&lt;It&gt;&gt;;</del>
+</pre>
+<blockquote>
+<p>
+<ins>-?- <i>Result</i>: If <code class='backtick'>It</code> models <code><i>deref-to-value-t</i></code>, 
+<code><i>ref-add-const-t</i>&lt;iter_reference_t&lt;It&gt;&gt;</code>. Otherwise, 
+<code>common_reference_t&lt;const iter_value_t&lt;It&gt;&amp;&amp;, iter_reference_t&lt;It&gt;&gt;</code>.</ins>
+</p>
+</blockquote>
+</blockquote>
+
+<blockquote class="note">
+<p>
+[<i>Drafting note</i>: The simple <code><i>deref-to-value-t</i></code> case should be detected first, 
+which avoids unnecessary instantiations and IFNDR-ness.]
+</p>
+</blockquote>
+
+</li>
+
+<li><p>Modify 24.5.3.3 <a href="https://wg21.link/const.iterators.iterator">[const.iterators.iterator]</a> as indicated:</p>
+
+<blockquote>
+<pre>
+[&hellip;]
+template&lt;<del>indirectly_readable</del><ins><i>weakly-indirectly-readable</i></ins> I&gt;
+  using <i>iter-const-rvalue-reference-t</i> =              <i>// exposition only</i>
+    common_reference_t&lt;const iter_value_t&lt;I&gt;&amp;&amp;, iter_rvalue_reference_t&lt;I&gt;&gt;;
+[&hellip;]
+</pre>
+</blockquote>
+</li>
+
+</ol>
 
 
 
