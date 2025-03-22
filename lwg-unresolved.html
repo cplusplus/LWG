@@ -54,7 +54,7 @@
 </style>
 </head>
 <body>
-<p>Revised 2025-03-22 at 12:54:53 UTC
+<p>Revised 2025-03-22 at 13:21:28 UTC
 </p><h2>Unresolved Issues</h2>
 <hr>
 <h3 id="423"><a href="#423">423</a><sup><a href="https://cplusplus.github.io/LWG/issue423">(i)</a></sup>. Effects of negative <code>streamsize</code> in iostreams</h3>
@@ -67613,6 +67613,132 @@ to 23.2.2.5 <a href="https://wg21.link/container.alloc.reqmts">[container.alloc.
 
 
 <p id="res-4228"><b>Proposed resolution:</b></p>
+
+
+
+
+
+<hr>
+<h3 id="4229"><a href="#4229">4229</a><sup><a href="https://cplusplus.github.io/LWG/issue4229">(i)</a></sup>. <code class='backtick'>std::ranges::to</code> with union return type</h3>
+<p><b>Section:</b> 25.5.7.2 <a href="https://wg21.link/range.utility.conv.to">[range.utility.conv.to]</a>, 25.5.7.3 <a href="https://wg21.link/range.utility.conv.adaptors">[range.utility.conv.adaptors]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
+ <b>Submitter:</b> Jiang An <b>Opened:</b> 2025-03-20 <b>Last modified:</b> 2025-03-22</p>
+<p><b>Priority: </b>Not Prioritized
+</p>
+<p><b>View other</b> <a href="lwg-index-open.html#range.utility.conv.to">active issues</a> in [range.utility.conv.to].</p>
+<p><b>View all other</b> <a href="lwg-index.html#range.utility.conv.to">issues</a> in [range.utility.conv.to].</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
+<p><b>Discussion:</b></p>
+<p>
+LWG <a href="lwg-defects.html#3847" title="ranges::to can still return views (Status: C++23)">3847</a><sup><a href="https://cplusplus.github.io/LWG/issue3847" title="Latest snapshot">(i)</a></sup> made <code class='backtick'>std::ranges::to</code> require the return type (or the target type for the overload 
+returning range adaptor closure object) to be a <i>cv</i>-unqualified class type. Although the term 
+"class type" in core language specification also covers union types, implementations (libstdc++ and MSVC STL) 
+tend to implement this part of the <i>Mandates</i> only with <code class='backtick'>std::is_class_v</code>, which rejects union types.
+<p/>
+E.g. the following program is rejected by libstdc++ and MSVC STL 
+(<a href="https://godbolt.org/z/MnsY4Tzen">https://godbolt.org/z/MnsY4Tzen</a>):
+</p>
+<blockquote><pre>
+#include &lt;memory&gt;
+#include &lt;ranges&gt;
+#include &lt;type_traits&gt;
+#include &lt;utility&gt;
+#include &lt;vector&gt;
+
+template&lt;class T, class A = std::allocator&lt;T&gt;&gt;
+union weird_vector {
+  std::vector&lt;T, A&gt; vec_;
+
+  constexpr weird_vector() : vec_() {}
+  constexpr weird_vector(const weird_vector&amp; other) : vec_(other.vec_) {}
+  constexpr weird_vector(weird_vector&amp;&amp; other) noexcept : vec_(std::move(other.vec_)) {}
+
+  template&lt;class U&gt;
+    requires (!std::same_as&lt;std::remove_cvref_t&lt;U&gt;, weird_vector&gt;) &amp;&amp;
+      (!std::same_as&lt;std::remove_cvref_t&lt;U&gt;, std::vector&lt;T, A&gt;&gt;) &amp;&amp;
+      requires(U&amp;&amp; u) { std::vector&lt;T, A&gt;(std::forward&lt;U&gt;(u)); }
+  constexpr explicit weird_vector(U&amp;&amp; u) : vec_(std::forward&lt;U&gt;(u)) {}
+
+  template&lt;class T1, class T2, class... Ts&gt;
+    requires requires(T1&amp;&amp; t1, T2&amp;&amp; t2, Ts&amp;&amp;... ts) {
+      std::vector&lt;T, A&gt;(std::forward&lt;T1&gt;(t1), std::forward&lt;T2&gt;(t2), std::forward&lt;Ts&gt;(ts)...);
+    }
+  constexpr weird_vector(T1&amp;&amp; t1, T2&amp;&amp; t2, Ts&amp;&amp;... ts)
+    : vec_(std::forward&lt;T1&gt;(t1), std::forward&lt;T2&gt;(t2), std::forward&lt;Ts&gt;(ts)...) {}
+
+  constexpr weird_vector&amp; operator=(const weird_vector&amp; other) {
+    vec_ = other.vec_;
+    return *this;
+  }
+  constexpr weird_vector&amp; operator=(weird_vector&amp;&amp; other)
+    noexcept(std::is_nothrow_move_assignable_v&lt;std::vector&lt;T, A&gt;&gt;) {
+    vec_ = std::move(other.vec_);
+    return *this;
+  }
+
+  constexpr ~weird_vector() {
+    vec_.~vector();
+  }
+};
+
+int main() {
+  int arr[]{42, 1729};
+  auto v [[maybe_unused]] = std::ranges::to&lt;weird_vector&lt;int&gt;&gt;(arr);
+}
+</pre></blockquote>
+<p>
+Although libc++ currently accepts this example, the acceptance seems to be a bug, because libc++ hasn't 
+implemented the "class" part in the <i>Mandates</i> at all 
+(<a href="https://github.com/llvm/llvm-project/issues/132133">llvm/llvm-project#132133</a>).
+<p/>
+It's unclear whether union types were intended to be accepted. Perhaps we should follow implementations' 
+choices and reject them.
+</p>
+
+
+<p id="res-4229"><b>Proposed resolution:</b></p>
+<p>
+This wording is relative to <a href="https://wg21.link/N5008">N5008</a>.
+</p>
+
+<ol>
+
+<li><p>Modify 25.5.7.2 <a href="https://wg21.link/range.utility.conv.to">[range.utility.conv.to]</a> as indicated:</p>
+
+<blockquote>
+<pre>
+template&lt;class C, input_range R, class... Args&gt; requires (!view&lt;C&gt;)
+  constexpr C to(R&amp;&amp; r, Args&amp;&amp;... args);
+</pre>
+<blockquote>
+<p>
+-1- <i>Mandates</i>: <code class='backtick'>C</code> is a cv-unqualified <ins>non-union</ins> class type.
+<p/>
+[&hellip;]
+</p>
+</blockquote>
+</blockquote>
+</li>
+
+<li><p>Modify 25.5.7.3 <a href="https://wg21.link/range.utility.conv.adaptors">[range.utility.conv.adaptors]</a> as indicated:</p>
+
+<blockquote>
+<pre>
+template&lt;class C, class... Args&gt; requires (!view&lt;C&gt;)
+  constexpr auto to(Args&amp;&amp;... args);
+template&lt;template&lt;class...&gt; class C, class... Args&gt;
+  constexpr auto to(Args&amp;&amp;... args);
+</pre>
+<blockquote>
+<p>
+-1- <i>Mandates</i>: For the first overload, <code class='backtick'>C</code> is a cv-unqualified <ins>non-union</ins> class type.
+<p/>
+[&hellip;]
+</p>
+</blockquote>
+</blockquote>
+</li>
+
+</ol>
 
 
 
