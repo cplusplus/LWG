@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Issue 4231: datapar::chunk&lt;N&gt; should use simd-size-type instead of size_t</title>
+<meta property="og:title" content="Issue 4231: datapar::chunk&lt;N&gt; should use simd-size-type instead of size_t">
+<meta property="og:description" content="C++ library issue. Status: New">
+<meta property="og:url" content="https://cplusplus.github.io/LWG/issue4231.html">
+<meta property="og:type" content="website">
+<meta property="og:image" content="http://cplusplus.github.io/LWG/images/cpp_logo.png">
+<meta property="og:image:alt" content="C++ logo">
+<style>
+  p {text-align:justify}
+  li {text-align:justify}
+  pre code.backtick::before { content: "`" }
+  pre code.backtick::after { content: "`" }
+  blockquote.note
+  {
+    background-color:#E0E0E0;
+    padding-left: 15px;
+    padding-right: 15px;
+    padding-top: 1px;
+    padding-bottom: 1px;
+  }
+  ins {background-color:#A0FFA0}
+  del {background-color:#FFA0A0}
+  table.issues-index { border: 1px solid; border-collapse: collapse; }
+  table.issues-index th { text-align: center; padding: 4px; border: 1px solid; }
+  table.issues-index td { padding: 4px; border: 1px solid; }
+  table.issues-index td:nth-child(1) { text-align: right; }
+  table.issues-index td:nth-child(2) { text-align: left; }
+  table.issues-index td:nth-child(3) { text-align: left; }
+  table.issues-index td:nth-child(4) { text-align: left; }
+  table.issues-index td:nth-child(5) { text-align: center; }
+  table.issues-index td:nth-child(6) { text-align: center; }
+  table.issues-index td:nth-child(7) { text-align: left; }
+  table.issues-index td:nth-child(5) span.no-pr { color: red; }
+  @media (prefers-color-scheme: dark) {
+     html {
+        color: #ddd;
+        background-color: black;
+     }
+     ins {
+        background-color: #225522
+     }
+     del {
+        background-color: #662222
+     }
+     a {
+        color: #6af
+     }
+     a:visited {
+        color: #6af
+     }
+     blockquote.note
+     {
+        background-color: rgba(255, 255, 255, .10)
+     }
+  }
+</style>
+</head>
+<body>
+<hr>
+<p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#New">New</a> status.</em></p>
+<h3 id="4231"><a href="lwg-active.html#4231">4231</a>. <code>datapar::chunk&lt;N&gt;</code> should use <code><i>simd-size-type</i></code> instead of <code>size_t</code></h3>
+<p><b>Section:</b> 29.10.3 <a href="https://wg21.link/simd.syn">[simd.syn]</a>, 29.10.7.8 <a href="https://wg21.link/simd.creation">[simd.creation]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
+ <b>Submitter:</b> Matthias Kretz <b>Opened:</b> 2025-03-22 <b>Last modified:</b> 2025-03-22</p>
+<p><b>Priority: </b>Not Prioritized
+</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
+<p><b>Discussion:</b></p>
+<p>
+All index values and simd widths in subclause "Data-parallel types" use the
+type <code><i>simd-size-type</i></code>. Specifically, the NTTP of <code class='backtick'>std::datapar::resize</code> 
+uses <code><i>simd-size-type</i></code> and <code class='backtick'>std::datapar::chunk</code> is "implemented" 
+using <code class='backtick'>std::datapar::resize</code>.
+<p/>
+For <code>chunk&lt;N&gt;</code>, <code>N</code> is of type <code class='backtick'>size_t</code> and needs to be 
+converted to <code><i>simd-size-type</i></code> in the effects clause where it is 
+passed to resize. The NTTP of chunk should use <code><i>simd-size-type</i></code> 
+instead of <code class='backtick'>size_t</code>.
+</p>
+
+
+<p id="res-4231"><b>Proposed resolution:</b></p>
+<p>
+This wording is relative to <a href="https://wg21.link/N5008">N5008</a>.
+</p>
+
+<ol>
+
+<li><p>Modify 29.10.3 <a href="https://wg21.link/simd.syn">[simd.syn]</a>, header <code>&lt;simd&gt;</code> synopsis, as indicated:</p>
+
+<blockquote>
+<pre>
+namespace std::datapar {
+  [&hellip;]
+  template&lt;<ins><i>simd-size-type</i></ins><del>size_t</del> N, class T, class Abi&gt;
+    constexpr auto chunk(const basic_simd&lt;T, Abi&gt;&amp; x) noexcept;
+  template&lt;<ins><i>simd-size-type</i></ins><del>size_t</del> N, size_t Bytes, class Abi&gt;
+    constexpr auto chunk(const basic_simd_mask&lt;Bytes, Abi&gt;&amp; x) noexcept;
+  [&hellip;]
+}
+</pre>
+</blockquote>
+</li>
+
+<li><p>Modify 29.10.7.8 <a href="https://wg21.link/simd.creation">[simd.creation]</a> as indicated:</p>
+
+<blockquote>
+<pre>
+template&lt;<ins><i>simd-size-type</i></ins><del>size_t</del> N, class T, class Abi&gt;
+  constexpr auto chunk(const basic_simd&lt;T, Abi&gt;&amp; x) noexcept;
+</pre>
+<blockquote>
+<p>
+-4- <i>Effects</i>: Equivalent to: <code>return chunk&lt;resize_t&lt;N, basic_simd&lt;T, Abi&gt;&gt;&gt;(x);</code>
+</p>
+</blockquote>
+<pre>
+template&lt;<ins><i>simd-size-type</i></ins><del>size_t</del> N, size_t Bytes, class Abi&gt;
+  constexpr auto chunk(const basic_simd_mask&lt;Bytes, Abi&gt;&amp; x) noexcept;
+</pre>
+<blockquote>
+<p>
+-5- <i>Effects</i>: Equivalent to: <code>return chunk&lt;resize_t&lt;N, basic_simd_mask&lt;Bytes, Abi&gt;&gt;&gt;(x);</code>
+</p>
+</blockquote>
+</blockquote>
+</li>
+
+</ol>
+
+
+
+
+
+</body>
+</html>

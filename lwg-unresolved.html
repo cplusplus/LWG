@@ -54,7 +54,7 @@
 </style>
 </head>
 <body>
-<p>Revised 2025-03-22 at 16:28:34 UTC
+<p>Revised 2025-03-22 at 16:51:41 UTC
 </p><h2>Unresolved Issues</h2>
 <hr>
 <h3 id="423"><a href="#423">423</a><sup><a href="https://cplusplus.github.io/LWG/issue423">(i)</a></sup>. Effects of negative <code>streamsize</code> in iostreams</h3>
@@ -68000,6 +68000,80 @@ where the <code><i>i</i></code><sup>th</sup> element is initialized to the resul
 </ol>
 <p>
 [&hellip;]
+</p>
+</blockquote>
+</blockquote>
+</li>
+
+</ol>
+
+
+
+
+
+<hr>
+<h3 id="4231"><a href="#4231">4231</a><sup><a href="https://cplusplus.github.io/LWG/issue4231">(i)</a></sup>. <code>datapar::chunk&lt;N&gt;</code> should use <code><i>simd-size-type</i></code> instead of <code>size_t</code></h3>
+<p><b>Section:</b> 29.10.3 <a href="https://wg21.link/simd.syn">[simd.syn]</a>, 29.10.7.8 <a href="https://wg21.link/simd.creation">[simd.creation]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
+ <b>Submitter:</b> Matthias Kretz <b>Opened:</b> 2025-03-22 <b>Last modified:</b> 2025-03-22</p>
+<p><b>Priority: </b>Not Prioritized
+</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
+<p><b>Discussion:</b></p>
+<p>
+All index values and simd widths in subclause "Data-parallel types" use the
+type <code><i>simd-size-type</i></code>. Specifically, the NTTP of <code class='backtick'>std::datapar::resize</code> 
+uses <code><i>simd-size-type</i></code> and <code class='backtick'>std::datapar::chunk</code> is "implemented" 
+using <code class='backtick'>std::datapar::resize</code>.
+<p/>
+For <code>chunk&lt;N&gt;</code>, <code>N</code> is of type <code class='backtick'>size_t</code> and needs to be 
+converted to <code><i>simd-size-type</i></code> in the effects clause where it is 
+passed to resize. The NTTP of chunk should use <code><i>simd-size-type</i></code> 
+instead of <code class='backtick'>size_t</code>.
+</p>
+
+
+<p id="res-4231"><b>Proposed resolution:</b></p>
+<p>
+This wording is relative to <a href="https://wg21.link/N5008">N5008</a>.
+</p>
+
+<ol>
+
+<li><p>Modify 29.10.3 <a href="https://wg21.link/simd.syn">[simd.syn]</a>, header <code>&lt;simd&gt;</code> synopsis, as indicated:</p>
+
+<blockquote>
+<pre>
+namespace std::datapar {
+  [&hellip;]
+  template&lt;<ins><i>simd-size-type</i></ins><del>size_t</del> N, class T, class Abi&gt;
+    constexpr auto chunk(const basic_simd&lt;T, Abi&gt;&amp; x) noexcept;
+  template&lt;<ins><i>simd-size-type</i></ins><del>size_t</del> N, size_t Bytes, class Abi&gt;
+    constexpr auto chunk(const basic_simd_mask&lt;Bytes, Abi&gt;&amp; x) noexcept;
+  [&hellip;]
+}
+</pre>
+</blockquote>
+</li>
+
+<li><p>Modify 29.10.7.8 <a href="https://wg21.link/simd.creation">[simd.creation]</a> as indicated:</p>
+
+<blockquote>
+<pre>
+template&lt;<ins><i>simd-size-type</i></ins><del>size_t</del> N, class T, class Abi&gt;
+  constexpr auto chunk(const basic_simd&lt;T, Abi&gt;&amp; x) noexcept;
+</pre>
+<blockquote>
+<p>
+-4- <i>Effects</i>: Equivalent to: <code>return chunk&lt;resize_t&lt;N, basic_simd&lt;T, Abi&gt;&gt;&gt;(x);</code>
+</p>
+</blockquote>
+<pre>
+template&lt;<ins><i>simd-size-type</i></ins><del>size_t</del> N, size_t Bytes, class Abi&gt;
+  constexpr auto chunk(const basic_simd_mask&lt;Bytes, Abi&gt;&amp; x) noexcept;
+</pre>
+<blockquote>
+<p>
+-5- <i>Effects</i>: Equivalent to: <code>return chunk&lt;resize_t&lt;N, basic_simd_mask&lt;Bytes, Abi&gt;&gt;&gt;(x);</code>
 </p>
 </blockquote>
 </blockquote>
