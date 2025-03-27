@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Issue 4235: cache_latest_view and to_input_view miss reserve_hint</title>
+<meta property="og:title" content="Issue 4235: cache_latest_view and to_input_view miss reserve_hint">
+<meta property="og:description" content="C++ library issue. Status: New">
+<meta property="og:url" content="https://cplusplus.github.io/LWG/issue4235.html">
+<meta property="og:type" content="website">
+<meta property="og:image" content="http://cplusplus.github.io/LWG/images/cpp_logo.png">
+<meta property="og:image:alt" content="C++ logo">
+<style>
+  p {text-align:justify}
+  li {text-align:justify}
+  pre code.backtick::before { content: "`" }
+  pre code.backtick::after { content: "`" }
+  blockquote.note
+  {
+    background-color:#E0E0E0;
+    padding-left: 15px;
+    padding-right: 15px;
+    padding-top: 1px;
+    padding-bottom: 1px;
+  }
+  ins {background-color:#A0FFA0}
+  del {background-color:#FFA0A0}
+  table.issues-index { border: 1px solid; border-collapse: collapse; }
+  table.issues-index th { text-align: center; padding: 4px; border: 1px solid; }
+  table.issues-index td { padding: 4px; border: 1px solid; }
+  table.issues-index td:nth-child(1) { text-align: right; }
+  table.issues-index td:nth-child(2) { text-align: left; }
+  table.issues-index td:nth-child(3) { text-align: left; }
+  table.issues-index td:nth-child(4) { text-align: left; }
+  table.issues-index td:nth-child(5) { text-align: center; }
+  table.issues-index td:nth-child(6) { text-align: center; }
+  table.issues-index td:nth-child(7) { text-align: left; }
+  table.issues-index td:nth-child(5) span.no-pr { color: red; }
+  @media (prefers-color-scheme: dark) {
+     html {
+        color: #ddd;
+        background-color: black;
+     }
+     ins {
+        background-color: #225522
+     }
+     del {
+        background-color: #662222
+     }
+     a {
+        color: #6af
+     }
+     a:visited {
+        color: #6af
+     }
+     blockquote.note
+     {
+        background-color: rgba(255, 255, 255, .10)
+     }
+  }
+</style>
+</head>
+<body>
+<hr>
+<p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#New">New</a> status.</em></p>
+<h3 id="4235"><a href="lwg-active.html#4235">4235</a>. <code>cache_latest_view</code> and <code>to_input_view</code> miss <code>reserve_hint</code></h3>
+<p><b>Section:</b> 25.7.34.2 <a href="https://wg21.link/range.cache.latest.view">[range.cache.latest.view]</a>, 25.7.35.2 <a href="https://wg21.link/range.to.input.view">[range.to.input.view]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
+ <b>Submitter:</b> Hewill Kang <b>Opened:</b> 2025-03-25 <b>Last modified:</b> 2025-03-27</p>
+<p><b>Priority: </b>Not Prioritized
+</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
+<p><b>Discussion:</b></p>
+<p>
+Intuitively, both view classes should also have <code>reserve_hint</code> members.
+</p>
+
+
+<p id="res-4235"><b>Proposed resolution:</b></p>
+<p>
+This wording is relative to <a href="https://wg21.link/N5008">N5008</a>.
+</p>
+
+<ol>
+
+<li><p>Modify 25.7.34.2 <a href="https://wg21.link/range.cache.latest.view">[range.cache.latest.view]</a> as indicated:</p>
+
+<blockquote>
+<blockquote>
+<pre>
+namespace std::ranges {
+  template&lt;input_range V&gt;
+    requires view&lt;V&gt;
+  class cache_latest_view : public view_interface&lt;cache_latest_view&lt;V&gt;&gt; {
+    [&hellip;]
+    constexpr auto size() requires sized_range&lt;V&gt;;
+    constexpr auto size() const requires sized_range&lt;const V&gt;;
+
+    <ins>constexpr auto reserve_hint() requires approximately_sized_range&lt;V&gt;;
+    constexpr auto reserve_hint() const requires approximately_sized_range&lt;const V&gt;;</ins>
+  };
+  [&hellip;]
+}
+</pre>
+</blockquote>
+[&hellip;]
+<pre>
+constexpr auto size() requires sized_range&lt;V&gt;;
+constexpr auto size() const requires sized_range&lt;const V&gt;;
+</pre>
+<blockquote>
+<p>
+-4- <i>Effects</i>: Equivalent to: <code>return ranges::size(<i>base_</i>);</code>
+</p>
+</blockquote>
+<pre><ins>
+constexpr auto reserve_hint() requires approximately_sized_range&lt;V&gt;;
+constexpr auto reserve_hint() const requires approximately_sized_range&lt;const V&gt;;</ins>
+</pre>
+<blockquote>
+<p>
+<ins>-?- <i>Effects</i>: Equivalent to: <code>return ranges::reserve_hint(<i>base_</i>);</code></ins>
+</p>
+</blockquote>
+</blockquote>
+
+</li>
+
+<li><p>Modify 25.7.35.2 <a href="https://wg21.link/range.to.input.view">[range.to.input.view]</a> as indicated:</p>
+
+<blockquote>
+<blockquote>
+<pre>
+template&lt;input_range V&gt;
+  requires view&lt;V&gt;
+class to_input_view : public view_interface&lt;to_input_view&lt;V&gt;&gt; {
+  [&hellip;]
+  constexpr auto size() requires sized_range&lt;V&gt;;
+  constexpr auto size() const requires sized_range&lt;const V&gt;;
+
+  <ins>constexpr auto reserve_hint() requires approximately_sized_range&lt;V&gt;;
+  constexpr auto reserve_hint() const requires approximately_sized_range&lt;const V&gt;;</ins>
+};
+[&hellip;]
+</pre>
+</blockquote>
+[&hellip;]
+<pre>
+constexpr auto size() requires sized_range&lt;V&gt;;
+constexpr auto size() const requires sized_range&lt;const V&gt;;
+</pre>
+<blockquote>
+<p>
+-5- <i>Effects</i>: Equivalent to: <code>return ranges::size(<i>base_</i>);</code>
+</p>
+</blockquote>
+<pre><ins>
+constexpr auto reserve_hint() requires approximately_sized_range&lt;V&gt;;
+constexpr auto reserve_hint() const requires approximately_sized_range&lt;const V&gt;;</ins>
+</pre>
+<blockquote>
+<p>
+<ins>-?- <i>Effects</i>: Equivalent to: <code>return ranges::reserve_hint(<i>base_</i>);</code></ins>
+</p>
+</blockquote>
+</blockquote>
+
+</li>
+
+</ol>
+
+
+
+
+
+</body>
+</html>
