@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Issue 4232: datapar::resize does not resize</title>
+<meta property="og:title" content="Issue 4232: datapar::resize does not resize">
+<meta property="og:description" content="C++ library issue. Status: New">
+<meta property="og:url" content="https://cplusplus.github.io/LWG/issue4232.html">
+<meta property="og:type" content="website">
+<meta property="og:image" content="http://cplusplus.github.io/LWG/images/cpp_logo.png">
+<meta property="og:image:alt" content="C++ logo">
+<style>
+  p {text-align:justify}
+  li {text-align:justify}
+  pre code.backtick::before { content: "`" }
+  pre code.backtick::after { content: "`" }
+  blockquote.note
+  {
+    background-color:#E0E0E0;
+    padding-left: 15px;
+    padding-right: 15px;
+    padding-top: 1px;
+    padding-bottom: 1px;
+  }
+  ins {background-color:#A0FFA0}
+  del {background-color:#FFA0A0}
+  table.issues-index { border: 1px solid; border-collapse: collapse; }
+  table.issues-index th { text-align: center; padding: 4px; border: 1px solid; }
+  table.issues-index td { padding: 4px; border: 1px solid; }
+  table.issues-index td:nth-child(1) { text-align: right; }
+  table.issues-index td:nth-child(2) { text-align: left; }
+  table.issues-index td:nth-child(3) { text-align: left; }
+  table.issues-index td:nth-child(4) { text-align: left; }
+  table.issues-index td:nth-child(5) { text-align: center; }
+  table.issues-index td:nth-child(6) { text-align: center; }
+  table.issues-index td:nth-child(7) { text-align: left; }
+  table.issues-index td:nth-child(5) span.no-pr { color: red; }
+  @media (prefers-color-scheme: dark) {
+     html {
+        color: #ddd;
+        background-color: black;
+     }
+     ins {
+        background-color: #225522
+     }
+     del {
+        background-color: #662222
+     }
+     a {
+        color: #6af
+     }
+     a:visited {
+        color: #6af
+     }
+     blockquote.note
+     {
+        background-color: rgba(255, 255, 255, .10)
+     }
+  }
+</style>
+</head>
+<body>
+<hr>
+<p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#New">New</a> status.</em></p>
+<h3 id="4232"><a href="lwg-active.html#4232">4232</a>. <code class='backtick'>datapar::resize</code> does not resize</h3>
+<p><b>Section:</b> 29.10.4 <a href="https://wg21.link/simd.traits">[simd.traits]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
+ <b>Submitter:</b> Tim Song <b>Opened:</b> 2025-03-24 <b>Last modified:</b> 2025-03-27</p>
+<p><b>Priority: </b>Not Prioritized
+</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
+<p><b>Discussion:</b></p>
+<p>
+The wording actually requires the size to be left unchanged.
+</p>
+
+
+<p id="res-4232"><b>Proposed resolution:</b></p>
+<p>
+This wording is relative to <a href="https://wg21.link/N5008">N5008</a>.
+</p>
+
+<ol>
+
+<li><p>Modify 29.10.4 <a href="https://wg21.link/simd.traits">[simd.traits]</a> as indicated:</p>
+
+<blockquote>
+<pre>
+template&lt;<i>simd-size-type</i> N, class V&gt; struct resize { using type = <i>see below</i>; };
+</pre>
+<blockquote>
+<p>
+[&hellip;]
+<p/>
+-9- If <code class='backtick'>V</code> is a specialization of <code class='backtick'>basic_simd</code>, let <code class='backtick'>Abi1</code> denote an ABI tag such that 
+<code>basic_simd&lt;T, Abi1&gt;::size()</code> equals <code><del>V::size()</del><ins>N</ins></code>. 
+If <code class='backtick'>V</code> is a specialization of <code class='backtick'>basic_simd_mask</code>, let <code class='backtick'>Abi1</code> denote an ABI tag such that 
+<code>basic_simd_mask&lt;sizeof(T), Abi1&gt;::size()</code> equals <code><del>V::size()</del><ins>N</ins></code>.
+</p>
+</blockquote>
+</blockquote>
+</li>
+
+</ol>
+
+
+
+
+
+</body>
+</html>

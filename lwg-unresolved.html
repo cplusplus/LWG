@@ -54,7 +54,7 @@
 </style>
 </head>
 <body>
-<p>Revised 2025-03-22 at 16:51:41 UTC
+<p>Revised 2025-03-27 at 17:03:46 UTC
 </p><h2>Unresolved Issues</h2>
 <hr>
 <h3 id="423"><a href="#423">423</a><sup><a href="https://cplusplus.github.io/LWG/issue423">(i)</a></sup>. Effects of negative <code>streamsize</code> in iostreams</h3>
@@ -68074,6 +68074,51 @@ template&lt;<ins><i>simd-size-type</i></ins><del>size_t</del> N, size_t Bytes, c
 <blockquote>
 <p>
 -5- <i>Effects</i>: Equivalent to: <code>return chunk&lt;resize_t&lt;N, basic_simd_mask&lt;Bytes, Abi&gt;&gt;&gt;(x);</code>
+</p>
+</blockquote>
+</blockquote>
+</li>
+
+</ol>
+
+
+
+
+
+<hr>
+<h3 id="4232"><a href="#4232">4232</a><sup><a href="https://cplusplus.github.io/LWG/issue4232">(i)</a></sup>. <code class='backtick'>datapar::resize</code> does not resize</h3>
+<p><b>Section:</b> 29.10.4 <a href="https://wg21.link/simd.traits">[simd.traits]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
+ <b>Submitter:</b> Tim Song <b>Opened:</b> 2025-03-24 <b>Last modified:</b> 2025-03-27</p>
+<p><b>Priority: </b>Not Prioritized
+</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
+<p><b>Discussion:</b></p>
+<p>
+The wording actually requires the size to be left unchanged.
+</p>
+
+
+<p id="res-4232"><b>Proposed resolution:</b></p>
+<p>
+This wording is relative to <a href="https://wg21.link/N5008">N5008</a>.
+</p>
+
+<ol>
+
+<li><p>Modify 29.10.4 <a href="https://wg21.link/simd.traits">[simd.traits]</a> as indicated:</p>
+
+<blockquote>
+<pre>
+template&lt;<i>simd-size-type</i> N, class V&gt; struct resize { using type = <i>see below</i>; };
+</pre>
+<blockquote>
+<p>
+[&hellip;]
+<p/>
+-9- If <code class='backtick'>V</code> is a specialization of <code class='backtick'>basic_simd</code>, let <code class='backtick'>Abi1</code> denote an ABI tag such that 
+<code>basic_simd&lt;T, Abi1&gt;::size()</code> equals <code><del>V::size()</del><ins>N</ins></code>. 
+If <code class='backtick'>V</code> is a specialization of <code class='backtick'>basic_simd_mask</code>, let <code class='backtick'>Abi1</code> denote an ABI tag such that 
+<code>basic_simd_mask&lt;sizeof(T), Abi1&gt;::size()</code> equals <code><del>V::size()</del><ins>N</ins></code>.
 </p>
 </blockquote>
 </blockquote>
