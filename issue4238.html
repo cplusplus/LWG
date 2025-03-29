@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Issue 4238: simd_mask&lt;complex&lt;double&gt;&gt;::operator+/-/~ return a disabled simd specialization</title>
+<meta property="og:title" content="Issue 4238: simd_mask&lt;complex&lt;double&gt;&gt;::operator+/-/~ return a disabled simd specialization">
+<meta property="og:description" content="C++ library issue. Status: New">
+<meta property="og:url" content="https://cplusplus.github.io/LWG/issue4238.html">
+<meta property="og:type" content="website">
+<meta property="og:image" content="http://cplusplus.github.io/LWG/images/cpp_logo.png">
+<meta property="og:image:alt" content="C++ logo">
+<style>
+  p {text-align:justify}
+  li {text-align:justify}
+  pre code.backtick::before { content: "`" }
+  pre code.backtick::after { content: "`" }
+  blockquote.note
+  {
+    background-color:#E0E0E0;
+    padding-left: 15px;
+    padding-right: 15px;
+    padding-top: 1px;
+    padding-bottom: 1px;
+  }
+  ins {background-color:#A0FFA0}
+  del {background-color:#FFA0A0}
+  table.issues-index { border: 1px solid; border-collapse: collapse; }
+  table.issues-index th { text-align: center; padding: 4px; border: 1px solid; }
+  table.issues-index td { padding: 4px; border: 1px solid; }
+  table.issues-index td:nth-child(1) { text-align: right; }
+  table.issues-index td:nth-child(2) { text-align: left; }
+  table.issues-index td:nth-child(3) { text-align: left; }
+  table.issues-index td:nth-child(4) { text-align: left; }
+  table.issues-index td:nth-child(5) { text-align: center; }
+  table.issues-index td:nth-child(6) { text-align: center; }
+  table.issues-index td:nth-child(7) { text-align: left; }
+  table.issues-index td:nth-child(5) span.no-pr { color: red; }
+  @media (prefers-color-scheme: dark) {
+     html {
+        color: #ddd;
+        background-color: black;
+     }
+     ins {
+        background-color: #225522
+     }
+     del {
+        background-color: #662222
+     }
+     a {
+        color: #6af
+     }
+     a:visited {
+        color: #6af
+     }
+     blockquote.note
+     {
+        background-color: rgba(255, 255, 255, .10)
+     }
+  }
+</style>
+</head>
+<body>
+<hr>
+<p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#New">New</a> status.</em></p>
+<h3 id="4238"><a href="lwg-active.html#4238">4238</a>. <code>simd_mask&lt;complex&lt;double&gt;&gt;::operator+/-/~</code> return a disabled <code class='backtick'>simd</code> specialization</h3>
+<p><b>Section:</b> 29.10.8.4 <a href="https://wg21.link/simd.mask.unary">[simd.mask.unary]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
+ <b>Submitter:</b> Matthias Kretz <b>Opened:</b> 2025-03-27 <b>Last modified:</b> 2025-03-29</p>
+<p><b>Priority: </b>Not Prioritized
+</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
+<p><b>Discussion:</b></p>
+<p>
+Consider:
+</p>
+<blockquote><pre>
+simd&lt;complex&lt;double&gt;&gt; c = {};
+simd_mask&lt;complex&lt;double&gt;&gt; k = (c == c); // sizeof(complex&lt;double&gt;) == 16
+auto i = -k; // simd&lt;__int128&gt; !
+</pre></blockquote>
+<p>
+<code class='backtick'>basic_simd_mask</code> unary <code class='backtick'>+</code>, <code class='backtick'>-</code>, and <code class='backtick'>~</code> return <code>basic_simd&lt;<i>integer-from</i>&lt;Bytes, Abi&gt;&gt;</code>.
+29.10.2.1 <a href="https://wg21.link/simd.expos.defn">[simd.expos.defn]</a>/2 says:
+</p>
+<blockquote style="border-left: 3px solid #ccc;padding-left: 15px;">
+<p>
+<code><i>integer-from</i>&lt;Bytes&gt;</code> is an alias for a signed integer type <code class='backtick'>T</code> such that <code class='backtick'>sizeof(T)</code> equals <code class='backtick'>Bytes</code>.
+</p>
+</blockquote>
+<p>
+But <code class='backtick'>__int128</code> isn't a vectorizable type. Consequently, <code>simd&lt;__int128&gt;</code> currently
+is a disabled specialization. So it seems <code>simd&lt;complex&lt;double&gt;&gt;</code> wants <code class='backtick'>__int128</code>
+to be added to the list of vectorizable types.
+<p/>
+<b>Options:</b>
+</p>
+<ol style="list-style-type:lower-alpha">
+<li><p>"Specialize" <code>basic_simd_mask&lt;16, Abi&gt;</code> to return 
+<code>rebind_t&lt;<i>integer-from</i>&lt;8&gt;, basic_simd_mask&lt;<i>integer-from</i>&lt;16&gt;, Abi&gt;&gt;</code> 
+(reduces a 128-bit value of a vector-mask to a 64-bit value in the simd)</p></li>
+<li><p>"Specialize" <code>basic_simd_mask&lt;16, Abi&gt;</code> to return 
+<code>resize_t&lt;size() * 2, rebind_t&lt;<i>integer-from</i>&lt;8&gt;, 
+basic_simd_mask&lt;<i>integer-from</i>&lt;16&gt;, Abi&gt;&gt;&gt;</code> 
+(duplicates a 128-bit value of a vector-mask to two 64-bit values in the simd)</p></li>
+<li><p>delete unary <code class='backtick'>+</code>, <code class='backtick'>-</code>, and <code class='backtick'>~</code> for <code>basic_simd_mask&lt;16, Abi&gt;</code> 
+(closest to the status quo)</p></li>
+</ol>
+
+
+<p id="res-4238"><b>Proposed resolution:</b></p>
+<p>
+This wording is relative to <a href="https://wg21.link/N5008">N5008</a>.
+</p>
+
+<ol>
+
+<li><p>Modify 29.10.8.4 <a href="https://wg21.link/simd.mask.unary">[simd.mask.unary]</a> as indicated:</p>
+
+<blockquote>
+<pre>
+constexpr basic_simd_mask operator!() const noexcept;
+constexpr basic_simd&lt;<i>integer-from</i>&lt;Bytes&gt;, Abi&gt; operator+() const noexcept;
+constexpr basic_simd&lt;<i>integer-from</i>&lt;Bytes&gt;, Abi&gt; operator-() const noexcept;
+constexpr basic_simd&lt;<i>integer-from</i>&lt;Bytes&gt;, Abi&gt; operator~() const noexcept;
+</pre>
+<blockquote>
+<p>
+-1- Let <code><i>op</i></code> be the operator.
+<p/>
+-2- <i>Returns</i>: A data-parallel object where the <code><i>i</i></code><sup>th</sup> element 
+is initialized to the results of applying <code><i>op</i></code> to <code>operator[](<i>i</i>)</code> 
+for all <code><i>i</i></code> in the range of <code>[0, size())</code>.
+<p/>
+<ins>-?- <i>Remarks</i>: If <code>Bytes</code> is greater than <code>8</code>, <code class='backtick'>operator+()</code>, <code class='backtick'>operator-()</code>, and
+<code class='backtick'>operator~()</code> are deleted.
+</ins>
+</p>
+</blockquote>
+</blockquote>
+
+</li>
+
+</ol>
+
+
+
+
+
+</body>
+</html>
