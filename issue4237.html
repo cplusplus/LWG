@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Issue 4237: The standard library iterator adaptor does not handle iterator_category correctly</title>
+<meta property="og:title" content="Issue 4237: The standard library iterator adaptor does not handle iterator_category correctly">
+<meta property="og:description" content="C++ library issue. Status: New">
+<meta property="og:url" content="https://cplusplus.github.io/LWG/issue4237.html">
+<meta property="og:type" content="website">
+<meta property="og:image" content="http://cplusplus.github.io/LWG/images/cpp_logo.png">
+<meta property="og:image:alt" content="C++ logo">
+<style>
+  p {text-align:justify}
+  li {text-align:justify}
+  pre code.backtick::before { content: "`" }
+  pre code.backtick::after { content: "`" }
+  blockquote.note
+  {
+    background-color:#E0E0E0;
+    padding-left: 15px;
+    padding-right: 15px;
+    padding-top: 1px;
+    padding-bottom: 1px;
+  }
+  ins {background-color:#A0FFA0}
+  del {background-color:#FFA0A0}
+  table.issues-index { border: 1px solid; border-collapse: collapse; }
+  table.issues-index th { text-align: center; padding: 4px; border: 1px solid; }
+  table.issues-index td { padding: 4px; border: 1px solid; }
+  table.issues-index td:nth-child(1) { text-align: right; }
+  table.issues-index td:nth-child(2) { text-align: left; }
+  table.issues-index td:nth-child(3) { text-align: left; }
+  table.issues-index td:nth-child(4) { text-align: left; }
+  table.issues-index td:nth-child(5) { text-align: center; }
+  table.issues-index td:nth-child(6) { text-align: center; }
+  table.issues-index td:nth-child(7) { text-align: left; }
+  table.issues-index td:nth-child(5) span.no-pr { color: red; }
+  @media (prefers-color-scheme: dark) {
+     html {
+        color: #ddd;
+        background-color: black;
+     }
+     ins {
+        background-color: #225522
+     }
+     del {
+        background-color: #662222
+     }
+     a {
+        color: #6af
+     }
+     a:visited {
+        color: #6af
+     }
+     blockquote.note
+     {
+        background-color: rgba(255, 255, 255, .10)
+     }
+  }
+</style>
+</head>
+<body>
+<hr>
+<p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#New">New</a> status.</em></p>
+<h3 id="4237"><a href="lwg-active.html#4237">4237</a>. The standard library iterator adaptor does not handle <code>iterator_category</code> correctly</h3>
+<p><b>Section:</b> 24.5.3.3 <a href="https://wg21.link/const.iterators.iterator">[const.iterators.iterator]</a>, 25.7 <a href="https://wg21.link/range.adaptors">[range.adaptors]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
+ <b>Submitter:</b> Hewill Kang <b>Opened:</b> 2025-03-27 <b>Last modified:</b> 2025-03-29</p>
+<p><b>Priority: </b>Not Prioritized
+</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
+<p><b>Discussion:</b></p>
+<p>
+Currently, <code>basic_const_iterator</code>, and several range adaptors such as 
+<code>filter_view</code>'s iterators provide <code>iterator_category</code> only when the 
+underlying iterator models <code>forward_iterator</code>, implying that they expect those 
+iterators should have a valid <code>iterator_category</code>.
+</p>
+<p>
+However, this is incorrect because being a <code>forward_iterator</code> does not 
+necessarily mean it is a <i>Cpp17InputIterator</i>, it just means that it <i>probably</i> 
+meets the syntactic requirements of <i>Cpp17InputIterator</i>.
+</p>
+<p>
+Any iterator that specializes <code>iterator_traits</code> and provides only
+<code>iterator_concept</code> without <code>iterator_category</code> is not a
+<i>Cpp17InputIterator</i>, for example, <code>common_iterator</code> with a 
+<code>difference_type</code> of integer-class type.
+</p>
+<p>
+In this case, instantiating these iterator adaptors will result in a hard error because the
+<code>iterator_category</code> they expect does not exist. The following illustrates the 
+problem (<a href="https://godbolt.org/z/j7x8bKzo4">demo</a>):
+</p>
+<blockquote><pre>
+#include &lt;iterator&gt;
+#include &lt;ranges&gt;
+
+int main() {
+  auto r = std::views::iota(0ULL)
+         | std::views::take(5)
+         | std::views::common;
+
+  static_assert(std::ranges::forward_range&lt;decltype(r)&gt;);
+  
+  std::basic_const_iterator ci(r.begin()); // <span style="color:red;font-weight:bolder">'iterator_category': is not a member of 'std::iterator_traits'</span>
+
+  auto f = r | std::views::filter([](auto) { return true; });
+  auto b = f.begin();                      // <span style="color:red;font-weight:bolder">'iterator_category': is not a member of 'std::iterator_traits'</span>
+}
+</pre></blockquote>
+<p>
+I believe that checking if the underlying iterator is a <code>forward_iterator</code> is not an appropriate
+mechanism to provide <code>iterator_category</code>, but rather checking if its <code>iterator_traits</code> 
+specialization provides <code>iterator_category</code>.
+</p>
+<p>
+This issue is somewhat related to LWG <a href="lwg-active.html#3763" title="Should range adaptor iterators only provide iterator_category when its 
+difference_type is not an integer-class type? (Status: New)">3763</a><sup><a href="https://cplusplus.github.io/LWG/issue3763" title="Latest snapshot">(i)</a></sup>, which is a further consideration after LWG 
+<a href="lwg-defects.html#3749" title="common_iterator should handle integer-class difference types (Status: WP)">3749</a><sup><a href="https://cplusplus.github.io/LWG/issue3749" title="Latest snapshot">(i)</a></sup> has been resolved.
+</p>
+
+
+<p id="res-4237"><b>Proposed resolution:</b></p>
+
+
+
+
+
+</body>
+</html>

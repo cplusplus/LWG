@@ -54,7 +54,7 @@
 </style>
 </head>
 <body>
-<p>Revised 2025-03-29 at 08:06:03 UTC
+<p>Revised 2025-03-29 at 09:26:41 UTC
 </p><h2>Unresolved Issues</h2>
 <hr>
 <h3 id="423"><a href="#423">423</a><sup><a href="https://cplusplus.github.io/LWG/issue423">(i)</a></sup>. Effects of negative <code>streamsize</code> in iostreams</h3>
@@ -68423,6 +68423,71 @@ return <i>to-unsigned-like</i>(ranges::min(<i>parent_</i>-&gt;remainder_,
 </li>
 
 </ol>
+
+
+
+
+
+<hr>
+<h3 id="4237"><a href="#4237">4237</a><sup><a href="https://cplusplus.github.io/LWG/issue4237">(i)</a></sup>. The standard library iterator adaptor does not handle <code>iterator_category</code> correctly</h3>
+<p><b>Section:</b> 24.5.3.3 <a href="https://wg21.link/const.iterators.iterator">[const.iterators.iterator]</a>, 25.7 <a href="https://wg21.link/range.adaptors">[range.adaptors]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
+ <b>Submitter:</b> Hewill Kang <b>Opened:</b> 2025-03-27 <b>Last modified:</b> 2025-03-29</p>
+<p><b>Priority: </b>Not Prioritized
+</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
+<p><b>Discussion:</b></p>
+<p>
+Currently, <code>basic_const_iterator</code>, and several range adaptors such as 
+<code>filter_view</code>'s iterators provide <code>iterator_category</code> only when the 
+underlying iterator models <code>forward_iterator</code>, implying that they expect those 
+iterators should have a valid <code>iterator_category</code>.
+</p>
+<p>
+However, this is incorrect because being a <code>forward_iterator</code> does not 
+necessarily mean it is a <i>Cpp17InputIterator</i>, it just means that it <i>probably</i> 
+meets the syntactic requirements of <i>Cpp17InputIterator</i>.
+</p>
+<p>
+Any iterator that specializes <code>iterator_traits</code> and provides only
+<code>iterator_concept</code> without <code>iterator_category</code> is not a
+<i>Cpp17InputIterator</i>, for example, <code>common_iterator</code> with a 
+<code>difference_type</code> of integer-class type.
+</p>
+<p>
+In this case, instantiating these iterator adaptors will result in a hard error because the
+<code>iterator_category</code> they expect does not exist. The following illustrates the 
+problem (<a href="https://godbolt.org/z/j7x8bKzo4">demo</a>):
+</p>
+<blockquote><pre>
+#include &lt;iterator&gt;
+#include &lt;ranges&gt;
+
+int main() {
+  auto r = std::views::iota(0ULL)
+         | std::views::take(5)
+         | std::views::common;
+
+  static_assert(std::ranges::forward_range&lt;decltype(r)&gt;);
+  
+  std::basic_const_iterator ci(r.begin()); // <span style="color:red;font-weight:bolder">'iterator_category': is not a member of 'std::iterator_traits'</span>
+
+  auto f = r | std::views::filter([](auto) { return true; });
+  auto b = f.begin();                      // <span style="color:red;font-weight:bolder">'iterator_category': is not a member of 'std::iterator_traits'</span>
+}
+</pre></blockquote>
+<p>
+I believe that checking if the underlying iterator is a <code>forward_iterator</code> is not an appropriate
+mechanism to provide <code>iterator_category</code>, but rather checking if its <code>iterator_traits</code> 
+specialization provides <code>iterator_category</code>.
+</p>
+<p>
+This issue is somewhat related to LWG <a href="lwg-active.html#3763" title="Should range adaptor iterators only provide iterator_category when its 
+difference_type is not an integer-class type? (Status: New)">3763</a><sup><a href="https://cplusplus.github.io/LWG/issue3763" title="Latest snapshot">(i)</a></sup>, which is a further consideration after LWG 
+<a href="lwg-defects.html#3749" title="common_iterator should handle integer-class difference types (Status: WP)">3749</a><sup><a href="https://cplusplus.github.io/LWG/issue3749" title="Latest snapshot">(i)</a></sup> has been resolved.
+</p>
+
+
+<p id="res-4237"><b>Proposed resolution:</b></p>
 
 
 
