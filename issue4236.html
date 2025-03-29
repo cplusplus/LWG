@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Issue 4236: chunk_view::outer-iterator::value_type should provide reserve_hint</title>
+<meta property="og:title" content="Issue 4236: chunk_view::outer-iterator::value_type should provide reserve_hint">
+<meta property="og:description" content="C++ library issue. Status: New">
+<meta property="og:url" content="https://cplusplus.github.io/LWG/issue4236.html">
+<meta property="og:type" content="website">
+<meta property="og:image" content="http://cplusplus.github.io/LWG/images/cpp_logo.png">
+<meta property="og:image:alt" content="C++ logo">
+<style>
+  p {text-align:justify}
+  li {text-align:justify}
+  pre code.backtick::before { content: "`" }
+  pre code.backtick::after { content: "`" }
+  blockquote.note
+  {
+    background-color:#E0E0E0;
+    padding-left: 15px;
+    padding-right: 15px;
+    padding-top: 1px;
+    padding-bottom: 1px;
+  }
+  ins {background-color:#A0FFA0}
+  del {background-color:#FFA0A0}
+  table.issues-index { border: 1px solid; border-collapse: collapse; }
+  table.issues-index th { text-align: center; padding: 4px; border: 1px solid; }
+  table.issues-index td { padding: 4px; border: 1px solid; }
+  table.issues-index td:nth-child(1) { text-align: right; }
+  table.issues-index td:nth-child(2) { text-align: left; }
+  table.issues-index td:nth-child(3) { text-align: left; }
+  table.issues-index td:nth-child(4) { text-align: left; }
+  table.issues-index td:nth-child(5) { text-align: center; }
+  table.issues-index td:nth-child(6) { text-align: center; }
+  table.issues-index td:nth-child(7) { text-align: left; }
+  table.issues-index td:nth-child(5) span.no-pr { color: red; }
+  @media (prefers-color-scheme: dark) {
+     html {
+        color: #ddd;
+        background-color: black;
+     }
+     ins {
+        background-color: #225522
+     }
+     del {
+        background-color: #662222
+     }
+     a {
+        color: #6af
+     }
+     a:visited {
+        color: #6af
+     }
+     blockquote.note
+     {
+        background-color: rgba(255, 255, 255, .10)
+     }
+  }
+</style>
+</head>
+<body>
+<hr>
+<p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#New">New</a> status.</em></p>
+<h3 id="4236"><a href="lwg-active.html#4236">4236</a>. <code>chunk_view::<i>outer-iterator</i>::value_type</code> should provide <code>reserve_hint</code></h3>
+<p><b>Section:</b> 25.7.29.4 <a href="https://wg21.link/range.chunk.outer.value">[range.chunk.outer.value]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
+ <b>Submitter:</b> Hewill Kang <b>Opened:</b> 2025-03-26 <b>Last modified:</b> 2025-03-29</p>
+<p><b>Priority: </b>Not Prioritized
+</p>
+<p><b>View other</b> <a href="lwg-index-open.html#range.chunk.outer.value">active issues</a> in [range.chunk.outer.value].</p>
+<p><b>View all other</b> <a href="lwg-index.html#range.chunk.outer.value">issues</a> in [range.chunk.outer.value].</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
+<p><b>Discussion:</b></p>
+<p>
+Consider:
+</p>
+<blockquote><pre>
+views::istream&lt;int&gt;(is) | views::chunk(N) | ranges::to&lt;std::list&lt;std::vector&lt;int&gt;&gt;&gt;();
+</pre></blockquote>
+<p>
+When the stream is large enough, each chunk will be of size <code>N</code> in most cases, except it is the
+last chunk.
+</p>
+<p>
+In this case, there is no reason not to provide a <code>reserve_hint</code> as this can be easily done by just
+return <code><i>remainder_</i></code>. Otherwise, when <code>N</code> is large, each vector will be reallocated
+multiple times unnecessarily.
+</p>
+<p>
+This is also consistent with the <code>forward_range</code> version, since its value type is
+<code>views::take(subrange(<i>current_</i>, <i>end_</i>), <i>n_</i>)</code>, which always has a
+<code>reserve_hint</code> as <code>take_view</code> unconditionally provides it.
+</p>
+
+
+<p id="res-4236"><b>Proposed resolution:</b></p>
+<p>
+This wording is relative to <a href="https://wg21.link/N5008">N5008</a>.
+</p>
+
+<ol>
+
+<li><p>Modify 25.7.29.4 <a href="https://wg21.link/range.chunk.outer.value">[range.chunk.outer.value]</a> as indicated:</p>
+
+<blockquote>
+<blockquote>
+<pre>
+namespace std::ranges {
+  template&lt;view V&gt;
+    requires input_range&lt;V&gt;
+  struct chunk_view&lt;V&gt;::<i>outer-iterator</i>::value_type : view_interface&lt;value_type&gt; {
+    [&hellip;]
+    constexpr auto size() const
+      requires sized_sentinel_for&lt;sentinel_t&lt;V&gt;, iterator_t&lt;V&gt;&gt;;
+
+    <ins>constexpr auto reserve_hint() const noexcept;</ins>
+  };
+}  
+</pre>
+</blockquote>
+[&hellip;]
+<pre>
+constexpr auto size() const
+  requires sized_sentinel_for&lt;sentinel_t&lt;V&gt;, iterator_t&lt;V&gt;&gt;;
+</pre>
+<blockquote>
+<p>
+-4- <i>Effects</i>: Equivalent to:
+</p>
+<blockquote><pre>
+return <i>to-unsigned-like</i>(ranges::min(<i>parent_</i>-&gt;remainder_,
+                                    ranges::end(<i>parent_</i>-&gt;<i>base_</i>) - *<i>parent_</i>-&gt;<i>current_</i>));
+</pre></blockquote>
+</blockquote>
+<pre>
+<ins>constexpr auto reserve_hint() const noexcept;</ins>
+</pre>
+<blockquote>
+<p>
+<ins> -?- <i>Effects</i>: Equivalent to:</ins>
+</p>
+<blockquote><pre>
+<ins>return <i>to-unsigned-like</i>(<i>parent_</i>-><i>remainder_</i>);</ins>
+</pre></blockquote>
+</blockquote>
+</blockquote>
+
+</li>
+
+</ol>
+
+
+
+
+
+</body>
+</html>
