@@ -54,7 +54,7 @@
 </style>
 </head>
 <body>
-<p>Revised 2025-03-29 at 10:29:15 UTC
+<p>Revised 2025-04-06 at 17:03:30 UTC
 </p><h2>Unresolved Issues</h2>
 <hr>
 <h3 id="423"><a href="#423">423</a><sup><a href="https://cplusplus.github.io/LWG/issue423">(i)</a></sup>. Effects of negative <code>streamsize</code> in iostreams</h3>
@@ -48388,6 +48388,7 @@ as indicated:</p>
  <b>Submitter:</b> Mark de Wever <b>Opened:</b> 2023-06-01 <b>Last modified:</b> 2023-06-08</p>
 <p><b>Priority: </b>3
 </p>
+<p><b>View other</b> <a href="lwg-index-open.html#format.formattable">active issues</a> in [format.formattable].</p>
 <p><b>View all other</b> <a href="lwg-index.html#format.formattable">issues</a> in [format.formattable].</p>
 <p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
 <p><b>Discussion:</b></p>
@@ -68649,6 +68650,151 @@ auto value_it = <i>c</i>.values.begin() + distance(<i>c</i>.keys.begin(), key_it
 <i>c</i>.values.emplace(value_it, std::forward&lt;Args&gt;(args)...);
 </pre></blockquote>
 </blockquote>
+</blockquote>
+
+</li>
+
+</ol>
+
+
+
+
+
+<hr>
+<h3 id="4240"><a href="#4240">4240</a><sup><a href="https://cplusplus.github.io/LWG/issue4240">(i)</a></sup>. The formattable type is not a <code>formattable</code> type</h3>
+<p><b>Section:</b> 28.5.6.3 <a href="https://wg21.link/format.formattable">[format.formattable]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
+ <b>Submitter:</b> Hewill Kang <b>Opened:</b> 2025-04-06 <b>Last modified:</b> 2025-04-06</p>
+<p><b>Priority: </b>Not Prioritized
+</p>
+<p><b>View other</b> <a href="lwg-index-open.html#format.formattable">active issues</a> in [format.formattable].</p>
+<p><b>View all other</b> <a href="lwg-index.html#format.formattable">issues</a> in [format.formattable].</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
+<p><b>Discussion:</b></p>
+<p>
+User-specific <code>formatter</code>s usually have the following form:
+</p>
+<blockquote><pre>
+template &lt;&gt; struct std::formatter&lt;T&gt; {
+  constexpr auto parse(format_parse_context&amp; ctx)
+    -> format_parse_context::iterator;
+
+  auto format(const T&amp; value, format_context&amp; ctx) const
+    -> format_context::iterator;
+};
+</pre></blockquote>
+<p>
+This is reflected in wording examples such as 28.5.6.4 <a href="https://wg21.link/format.formatter.spec">[format.formatter.spec]</a> bullet 8 or
+28.5.6.7 <a href="https://wg21.link/format.context">[format.context]</a> bullet 9:
+</p>
+<blockquote><pre>
+#include &lt;format&gt;
+#include &lt;string&gt;
+
+enum color { red, green, blue };
+const char* color_names[] = { "red", "green", "blue" };
+
+template&lt;&gt; struct std::formatter&lt;color&gt; : std::formatter&lt;const char*&gt; {
+  auto format(color c, format_context&amp; ctx) const {
+    return formatter&lt;const char*&gt;::format(color_names[c], ctx);
+  }
+};
+</pre></blockquote>
+<p>
+which allows us to format <code>color</code> with <code>std::format("{}", red)</code>.
+Unfortunately, even so, the <code>color</code> still does not satisfy <code>std::formattable</code>.
+<p/>
+This is because the concept <code>formattable</code> is currently defined as follows:
+</p>
+<blockquote><pre>
+template&lt;class T, class Context,
+         class Formatter = typename Context::template formatter_type&lt;remove_const_t&lt;T&gt;&gt;&gt;
+  concept <i>formattable-with</i> =                // <i>exposition only</i>
+    semiregular&lt;Formatter&gt; &amp;&amp;
+    requires(Formatter&amp; f, const Formatter&amp; cf, T&amp;&amp; t, Context fc,
+             basic_format_parse_context&lt;typename Context::char_type&gt; pc)
+    {
+      { f.parse(pc) } -> same_as&lt;typename decltype(pc)::iterator&gt;;
+      { cf.format(t, fc) } -> same_as&lt;typename Context::iterator&gt;;
+    };
+
+template&lt;class T, class charT&gt;
+  concept formattable =
+    <i>formattable-with</i>&lt;remove_reference_t&lt;T&gt;, basic_format_context&lt;<i>fmt-iter-for</i>&lt;charT&gt;, charT&gt;&gt;;
+</pre></blockquote>
+<p>
+where <code><i>fmt-iter-for</i>&lt;charT&gt;</code> is an unspecified type that can write
+<code>charT</code>, which for <code>char</code> is <code>back_insert_iterator&lt;string&gt;</code> 
+and <code>char*</code> in libstdc++ and libc++, respectively.
+</p>
+<p>
+That is, for <code>color</code> to satisfy <code>formattable</code>, it is
+necessary to ensure that <code>cf.format(t, fc)</code> is well-formed.
+</p>
+<p>
+However, the <code>format()</code> function in the above example takes a <code>format_context</code>
+whose <code>Out</code> parameter is internal iterator type, namely
+<code>_Sink_iter&lt;char&gt;</code> and <code>__format::__output_buffer&lt;char&gt;</code> in 
+libstdc++ and libc++, respectively. 
+Since <code>basic_format_context</code> with different <code>Out</code> parameters cannot be converted to
+each other, the constraint is not satisfied.
+</p>
+<p>
+The reason <code>color</code> can still be formatted is that <code>basic_format_arg</code>
+checks for <code><i>formattable-with</i>&lt;Context&gt;</code> where <code>Context</code> 
+has been correctly specified as <code>format_context</code>.
+</p>
+<p>
+And since <code>color</code> is formattable but not <code>formattable</code>, this further
+prevents formatting a range with elements of <code>color</code>, because the <code>formatter</code> 
+specialization for ranges requires that the element type must be <code>formattable</code>. 
+This leads to some inconsistencies (<a href="https://godbolt.org/z/Y8a6WTrK1">demo</a>):
+</p>
+<blockquote><pre>
+std::println("{}", red); // ok
+static_assert(std::formattable&lt;color, char&gt;); // <span  style="color:#C80000;font-weight:bold">fires</span>
+
+std::vector&lt;color&gt; v;
+std::println("{}", v); // <span  style="color:#C80000;font-weight:bold">not ok</span>
+</pre></blockquote>
+<p>
+The workaround is to turn the custom <code>format()</code> into a template function 
+such as <code>format(color c, auto&amp; ctx)</code> or 
+<code>format(color c, basic_format_context&lt;Out, charT&gt;&amp; ctx)</code>,
+However, this seems mandate users to always declare <code>format()</code> as the template 
+function for the best practice, which in my opinion defeats the purpose of introducing 
+<code>format_context</code> in the first place.
+</p>
+<p>
+Also, since <code><i>fmt-iter-for</i>&lt;charT&gt;</code> is unspecified, if it is specified 
+in some library implementation as the same type as <code>format_context</code>'s <code>Out</code> 
+parameters, then <code>color</code> will suddenly become <code>formattable</code>. This lack 
+of guarantee about <code>formattable</code> can bring unnecessary confusion.
+</p>
+<p>
+I think we should ensure that <code>color</code> is <code>formattable</code>, because it is formattable.
+</p>
+
+
+<p id="res-4240"><b>Proposed resolution:</b></p>
+<p>
+This wording is relative to <a href="https://wg21.link/N5008">N5008</a>.
+</p>
+
+<ol>
+
+<li><p>Modify 28.5.6.3 <a href="https://wg21.link/format.formattable">[format.formattable]</a> as indicated:</p>
+
+<blockquote>
+<p>
+-1- <del>Let <code><i>fmt-iter-for</i>&lt;charT&gt;</code> be an unspecified type that models
+<code>output_iterator&lt;const charT&amp;&gt;</code> (24.3.4.10 <a href="https://wg21.link/iterator.concept.output">[iterator.concept.output]</a>)</del>.
+</p>
+<blockquote><pre>
+[&hellip;]
+template&lt;class T, class charT&gt;
+  concept formattable =
+    <i>formattable-with</i>&lt;remove_reference_t&lt;T&gt;, <ins>conditional_t&lt;same_as&lt;charT, char&gt;, format_context, wformat_context&gt;</ins><del>basic_format_context&lt;<i>fmt-iter-for</i>&lt;charT&gt;, charT&gt;</del>&gt;;
+</pre></blockquote>
 </blockquote>
 
 </li>
