@@ -54,7 +54,7 @@
 </style>
 </head>
 <body>
-<p>Revised 2025-04-13 at 08:53:33 UTC
+<p>Revised 2025-04-13 at 09:30:00 UTC
 </p><h2>Unresolved Issues</h2>
 <hr>
 <h3 id="423"><a href="#423">423</a><sup><a href="https://cplusplus.github.io/LWG/issue423">(i)</a></sup>. Effects of negative <code>streamsize</code> in iostreams</h3>
@@ -68916,6 +68916,71 @@ template&lt;input_iterator I, class Proj = identity,
 <p/>
 <del>-30- [<i>Note 11</i>: The overload in namespace <code class='backtick'>ranges</code> requires <code class='backtick'>Fun</code> to model <code class='backtick'>copy_constructible</code>. &mdash; <i>end note</i>]</del>
 </p>
+</blockquote>
+</blockquote>
+
+</li>
+
+</ol>
+
+
+
+
+
+<hr>
+<h3 id="4242"><a href="#4242">4242</a><sup><a href="https://cplusplus.github.io/LWG/issue4242">(i)</a></sup>. <code class='backtick'>ranges::distance</code> does not work with volatile iterators</h3>
+<p><b>Section:</b> 24.4.4.3 <a href="https://wg21.link/range.iter.op.distance">[range.iter.op.distance]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
+ <b>Submitter:</b> Hewill Kang <b>Opened:</b> 2025-04-12 <b>Last modified:</b> 2025-04-13</p>
+<p><b>Priority: </b>Not Prioritized
+</p>
+<p><b>View all other</b> <a href="lwg-index.html#range.iter.op.distance">issues</a> in [range.iter.op.distance].</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
+<p><b>Discussion:</b></p>
+<p>
+After LWG <a href="lwg-defects.html#3664" title="LWG 3392 broke std::ranges::distance(a, a+3) (Status: C++23)">3664</a><sup><a href="https://cplusplus.github.io/LWG/issue3664" title="Latest snapshot">(i)</a></sup>, <code class='backtick'>ranges::distance</code> computes the distance between <code class='backtick'>last</code> and <code class='backtick'>first</code>
+by returning <code>last - static_cast&lt;const decay_t&lt;I&gt;&amp;&gt;(first)</code> when the 
+two are subtractable. However, this will cause a hard error if <code>first</code> is volatile-qualified
+(<a href="https://godbolt.org/z/5M3d9rMjE">demo</a>):
+</p>
+<blockquote><pre>
+#include &lt;iterator&gt;
+
+int main() {
+  int arr[] = {1, 2, 3};
+  int* volatile ptr = arr;
+  // return std::distance(ptr, arr + 3);      // this is ok
+  return std::ranges::distance(ptr, arr + 3); // <span  style="color:#C80000;font-weight:bold">hard error</span>
+}
+</pre></blockquote>
+<p>
+The resolution changes the <i>Effects</i> of LWG <a href="lwg-defects.html#3664" title="LWG 3392 broke std::ranges::distance(a, a+3) (Status: C++23)">3664</a><sup><a href="https://cplusplus.github.io/LWG/issue3664" title="Latest snapshot">(i)</a></sup> from "cute" to "noncute".
+</p>
+
+
+<p id="res-4242"><b>Proposed resolution:</b></p>
+<p>
+This wording is relative to <a href="https://wg21.link/N5008">N5008</a>.
+</p>
+
+<ol>
+
+<li><p>Modify 24.4.4.3 <a href="https://wg21.link/range.iter.op.distance">[range.iter.op.distance]</a> as indicated:</p>
+
+<blockquote>
+<pre>
+template&lt;class I, sized_sentinel_for&lt;decay_t&lt;I&gt;&gt; S&gt;
+  constexpr iter_difference_t&lt;decay_t&lt;I&gt;&gt; ranges::distance(I&amp;&amp; first, S last);
+</pre>
+<blockquote>
+<p>
+-3- <i>Effects</i>: Equivalent to:
+</p>
+<pre>
+<ins>if constexpr (!is_array_v&lt;remove_reference_t&lt;I&gt;&gt;)
+  return last - first;
+else</ins>
+  return last - static_cast&lt;<del>const</del> decay_t&lt;I&gt;<del>&amp;</del>&gt;(first);
+</pre>
 </blockquote>
 </blockquote>
 

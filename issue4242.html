@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Issue 4242: ranges::distance does not work with volatile iterators</title>
+<meta property="og:title" content="Issue 4242: ranges::distance does not work with volatile iterators">
+<meta property="og:description" content="C++ library issue. Status: New">
+<meta property="og:url" content="https://cplusplus.github.io/LWG/issue4242.html">
+<meta property="og:type" content="website">
+<meta property="og:image" content="http://cplusplus.github.io/LWG/images/cpp_logo.png">
+<meta property="og:image:alt" content="C++ logo">
+<style>
+  p {text-align:justify}
+  li {text-align:justify}
+  pre code.backtick::before { content: "`" }
+  pre code.backtick::after { content: "`" }
+  blockquote.note
+  {
+    background-color:#E0E0E0;
+    padding-left: 15px;
+    padding-right: 15px;
+    padding-top: 1px;
+    padding-bottom: 1px;
+  }
+  ins {background-color:#A0FFA0}
+  del {background-color:#FFA0A0}
+  table.issues-index { border: 1px solid; border-collapse: collapse; }
+  table.issues-index th { text-align: center; padding: 4px; border: 1px solid; }
+  table.issues-index td { padding: 4px; border: 1px solid; }
+  table.issues-index td:nth-child(1) { text-align: right; }
+  table.issues-index td:nth-child(2) { text-align: left; }
+  table.issues-index td:nth-child(3) { text-align: left; }
+  table.issues-index td:nth-child(4) { text-align: left; }
+  table.issues-index td:nth-child(5) { text-align: center; }
+  table.issues-index td:nth-child(6) { text-align: center; }
+  table.issues-index td:nth-child(7) { text-align: left; }
+  table.issues-index td:nth-child(5) span.no-pr { color: red; }
+  @media (prefers-color-scheme: dark) {
+     html {
+        color: #ddd;
+        background-color: black;
+     }
+     ins {
+        background-color: #225522
+     }
+     del {
+        background-color: #662222
+     }
+     a {
+        color: #6af
+     }
+     a:visited {
+        color: #6af
+     }
+     blockquote.note
+     {
+        background-color: rgba(255, 255, 255, .10)
+     }
+  }
+</style>
+</head>
+<body>
+<hr>
+<p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#New">New</a> status.</em></p>
+<h3 id="4242"><a href="lwg-active.html#4242">4242</a>. <code class='backtick'>ranges::distance</code> does not work with volatile iterators</h3>
+<p><b>Section:</b> 24.4.4.3 <a href="https://wg21.link/range.iter.op.distance">[range.iter.op.distance]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
+ <b>Submitter:</b> Hewill Kang <b>Opened:</b> 2025-04-12 <b>Last modified:</b> 2025-04-13</p>
+<p><b>Priority: </b>Not Prioritized
+</p>
+<p><b>View all other</b> <a href="lwg-index.html#range.iter.op.distance">issues</a> in [range.iter.op.distance].</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
+<p><b>Discussion:</b></p>
+<p>
+After LWG <a href="lwg-defects.html#3664" title="LWG 3392 broke std::ranges::distance(a, a+3) (Status: C++23)">3664</a><sup><a href="https://cplusplus.github.io/LWG/issue3664" title="Latest snapshot">(i)</a></sup>, <code class='backtick'>ranges::distance</code> computes the distance between <code class='backtick'>last</code> and <code class='backtick'>first</code>
+by returning <code>last - static_cast&lt;const decay_t&lt;I&gt;&amp;&gt;(first)</code> when the 
+two are subtractable. However, this will cause a hard error if <code>first</code> is volatile-qualified
+(<a href="https://godbolt.org/z/5M3d9rMjE">demo</a>):
+</p>
+<blockquote><pre>
+#include &lt;iterator&gt;
+
+int main() {
+  int arr[] = {1, 2, 3};
+  int* volatile ptr = arr;
+  // return std::distance(ptr, arr + 3);      // this is ok
+  return std::ranges::distance(ptr, arr + 3); // <span  style="color:#C80000;font-weight:bold">hard error</span>
+}
+</pre></blockquote>
+<p>
+The resolution changes the <i>Effects</i> of LWG <a href="lwg-defects.html#3664" title="LWG 3392 broke std::ranges::distance(a, a+3) (Status: C++23)">3664</a><sup><a href="https://cplusplus.github.io/LWG/issue3664" title="Latest snapshot">(i)</a></sup> from "cute" to "noncute".
+</p>
+
+
+<p id="res-4242"><b>Proposed resolution:</b></p>
+<p>
+This wording is relative to <a href="https://wg21.link/N5008">N5008</a>.
+</p>
+
+<ol>
+
+<li><p>Modify 24.4.4.3 <a href="https://wg21.link/range.iter.op.distance">[range.iter.op.distance]</a> as indicated:</p>
+
+<blockquote>
+<pre>
+template&lt;class I, sized_sentinel_for&lt;decay_t&lt;I&gt;&gt; S&gt;
+  constexpr iter_difference_t&lt;decay_t&lt;I&gt;&gt; ranges::distance(I&amp;&amp; first, S last);
+</pre>
+<blockquote>
+<p>
+-3- <i>Effects</i>: Equivalent to:
+</p>
+<pre>
+<ins>if constexpr (!is_array_v&lt;remove_reference_t&lt;I&gt;&gt;)
+  return last - first;
+else</ins>
+  return last - static_cast&lt;<del>const</del> decay_t&lt;I&gt;<del>&amp;</del>&gt;(first);
+</pre>
+</blockquote>
+</blockquote>
+
+</li>
+
+</ol>
+
+
+
+
+
+</body>
+</html>
