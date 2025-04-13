@@ -54,7 +54,7 @@
 </style>
 </head>
 <body>
-<p>Revised 2025-04-13 at 09:30:00 UTC
+<p>Revised 2025-04-13 at 09:36:41 UTC
 </p><h2>Unresolved Issues</h2>
 <hr>
 <h3 id="423"><a href="#423">423</a><sup><a href="https://cplusplus.github.io/LWG/issue423">(i)</a></sup>. Effects of negative <code>streamsize</code> in iostreams</h3>
@@ -68940,7 +68940,7 @@ template&lt;input_iterator I, class Proj = identity,
 After LWG <a href="lwg-defects.html#3664" title="LWG 3392 broke std::ranges::distance(a, a+3) (Status: C++23)">3664</a><sup><a href="https://cplusplus.github.io/LWG/issue3664" title="Latest snapshot">(i)</a></sup>, <code class='backtick'>ranges::distance</code> computes the distance between <code class='backtick'>last</code> and <code class='backtick'>first</code>
 by returning <code>last - static_cast&lt;const decay_t&lt;I&gt;&amp;&gt;(first)</code> when the 
 two are subtractable. However, this will cause a hard error if <code>first</code> is volatile-qualified
-(<a href="https://godbolt.org/z/5M3d9rMjE">demo</a>):
+(<a href="https://godbolt.org/z/Pz1cGxKEW">demo</a>):
 </p>
 <blockquote><pre>
 #include &lt;iterator&gt;
