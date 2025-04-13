@@ -54,7 +54,7 @@
 </style>
 </head>
 <body>
-<p>Revised 2025-04-06 at 17:45:19 UTC
+<p>Revised 2025-04-13 at 08:53:33 UTC
 </p><h2>Unresolved Issues</h2>
 <hr>
 <h3 id="423"><a href="#423">423</a><sup><a href="https://cplusplus.github.io/LWG/issue423">(i)</a></sup>. Effects of negative <code>streamsize</code> in iostreams</h3>
@@ -41799,6 +41799,7 @@ constexpr common_iterator(I i);
  <b>Submitter:</b> Jiang An <b>Opened:</b> 2022-10-05 <b>Last modified:</b> 2022-10-12</p>
 <p><b>Priority: </b>3
 </p>
+<p><b>View other</b> <a href="lwg-index-open.html#alg.foreach">active issues</a> in [alg.foreach].</p>
 <p><b>View all other</b> <a href="lwg-index.html#alg.foreach">issues</a> in [alg.foreach].</p>
 <p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
 <p><b>Discussion:</b></p>
@@ -68796,6 +68797,126 @@ template&lt;class T, class charT&gt;
   concept formattable =
     <i>formattable-with</i>&lt;remove_reference_t&lt;T&gt;, <ins>conditional_t&lt;same_as&lt;charT, char&gt;, format_context, wformat_context&gt;</ins><del>basic_format_context&lt;<i>fmt-iter-for</i>&lt;charT&gt;, charT&gt;</del>&gt;;
 </pre></blockquote>
+</blockquote>
+
+</li>
+
+</ol>
+
+
+
+
+
+<hr>
+<h3 id="4241"><a href="#4241">4241</a><sup><a href="https://cplusplus.github.io/LWG/issue4241">(i)</a></sup>. <code class='backtick'>ranges::for_each(_n)</code> should be less constrained</h3>
+<p><b>Section:</b> 26.6.5 <a href="https://wg21.link/alg.foreach">[alg.foreach]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
+ <b>Submitter:</b> Jiang An <b>Opened:</b> 2025-04-08 <b>Last modified:</b> 2025-04-13</p>
+<p><b>Priority: </b>Not Prioritized
+</p>
+<p><b>View other</b> <a href="lwg-index-open.html#alg.foreach">active issues</a> in [alg.foreach].</p>
+<p><b>View all other</b> <a href="lwg-index.html#alg.foreach">issues</a> in [alg.foreach].</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
+<p><b>Discussion:</b></p>
+<p>
+Currently, <code class='backtick'>ranges::for_each(_n)</code> are constrained with <code class='backtick'>indirectly_unary_invocable</code>, 
+which doesn't meet the actual use of the range elements. These algorithms are only 
+expected to invoke the callable object with the possibly projected elements, and not 
+to use any element as the value type. Moreover, <code class='backtick'>indirectly_unary_invocable</code> requires 
+the callable object to be copy constructible, which might be undesired because the 
+corresponding <code class='backtick'>std::for_each(_n)</code> only require move constructibilty.
+<p/>
+LWG <a href="lwg-active.html#4171" title="P2609R3 breaks code that uses views::zip and get&lt;T&gt; (Status: New)">4171</a><sup><a href="https://cplusplus.github.io/LWG/issue4171" title="Latest snapshot">(i)</a></sup> talked about the breakage around <code class='backtick'>ranges::for_each</code> introduced 
+by <a href="https://wg21.link/P2609R3" title=" Relaxing Ranges Just A Smidge">P2609R3</a>. P2609R3 looks like a reasonable fix as long as the affected 
+algorithms potentially use the intermediate element values copied as 
+<code>std::iter_value_t&lt;I&gt;</code>. However, when the algorithm is not expected to or 
+even required not to do this, P2609R3 can bring unexpected impacts. It seems that 
+constraints around <code class='backtick'>iter_value_t</code> should be avoided for such an algorithm.
+</p>
+
+
+<p id="res-4241"><b>Proposed resolution:</b></p>
+<p>
+This wording is relative to <a href="https://wg21.link/N5008">N5008</a>.
+</p>
+
+<ol>
+
+<li><p>Modify 26.4 <a href="https://wg21.link/algorithm.syn">[algorithm.syn]</a>, header <code>&lt;algorithm&gt;</code> synopsis, as indicated:</p>
+
+<blockquote>
+<pre>
+[&hellip;]
+namespace ranges {
+  template&lt;class I, class F&gt;
+  using for_each_result = in_fun_result&lt;I, F&gt;;
+  
+  template&lt;input_iterator I, sentinel_for&lt;I&gt; S, class Proj = identity,
+           <del>indirectly_unary_invocable&lt;projected&lt;I, Proj&gt;&gt;</del><ins>move_constructible</ins> Fun&gt;
+    <ins>requires invocable&lt;Fun&amp;, iter_reference_t&lt;projected&lt;I, Proj&gt;&gt;&gt;</ins>
+    constexpr for_each_result&lt;I, Fun&gt;
+      for_each(I first, S last, Fun f, Proj proj = {});
+  template&lt;input_range R, class Proj = identity,
+           <del>indirectly_unary_invocable&lt;projected&lt;iterator_t&lt;R&gt;, Proj&gt;&gt;</del><ins>move_constructible</ins> Fun&gt;
+    <ins>requires invocable&lt;Fun&amp;, iter_reference_t&lt;projected&lt;iterator_t&lt;R&gt;, Proj&gt;&gt;&gt;</ins>
+    constexpr for_each_result&lt;borrowed_iterator_t&lt;R&gt;, Fun&gt;
+      for_each(R&amp;&amp; r, Fun f, Proj proj = {});
+}
+[&hellip;]
+namespace ranges {
+  template&lt;class I, class F&gt;
+  using for_each_n_result = in_fun_result&lt;I, F&gt;;
+
+  template&lt;input_iterator I, class Proj = identity,
+           <del>indirectly_unary_invocable&lt;projected&lt;I, Proj&gt;&gt;</del><ins>move_constructible</ins> Fun&gt;
+     <ins>requires invocable&lt;Fun&amp;, iter_reference_t&lt;projected&lt;I, Proj&gt;&gt;&gt;</ins>
+    constexpr for_each_n_result&lt;I, Fun&gt;
+      for_each_n(I first, iter_difference_t&lt;I&gt; n, Fun f, Proj proj = {});
+}
+[&hellip;]
+</pre>
+</blockquote>
+
+</li>
+
+<li><p>Modify 26.6.5 <a href="https://wg21.link/alg.foreach">[alg.foreach]</a> as indicated:</p>
+
+<blockquote>
+<pre>
+template&lt;input_iterator I, sentinel_for&lt;I&gt; S, class Proj = identity,
+         <del>indirectly_unary_invocable&lt;projected&lt;I, Proj&gt;&gt;</del><ins>move_constructible</ins> Fun&gt;
+  <ins>requires invocable&lt;Fun&amp;, iter_reference_t&lt;projected&lt;I, Proj&gt;&gt;&gt;</ins>
+  constexpr ranges::for_each_result&lt;I, Fun&gt;
+    ranges::for_each(I first, S last, Fun f, Proj proj = {});
+template&lt;input_range R, class Proj = identity,
+         <del>indirectly_unary_invocable&lt;projected&lt;iterator_t&lt;R&gt;, Proj&gt;&gt;</del><ins>move_constructible</ins> Fun&gt;
+  <ins>requires invocable&lt;Fun&amp;, iter_reference_t&lt;projected&lt;iterator_t&gt;R&gt;, Proj&gt;&gt;&gt;</ins>
+  constexpr ranges::for_each_result&lt;borrowed_iterator_t&lt;R&gt;, Fun&gt;
+    ranges::for_each(R&amp;&amp; r, Fun f, Proj proj = {});
+</pre>
+<blockquote>
+<p>
+[&hellip;]
+<p/>
+<del>-15- [<i>Note 6</i>: The overloads in namespace <code class='backtick'>ranges</code> require <code class='backtick'>Fun</code> to model <code class='backtick'>copy_constructible</code>. &mdash; <i>end note</i>]</del>
+</p>
+</blockquote>
+<p>
+[&hellip;]
+</p>
+<pre>
+template&lt;input_iterator I, class Proj = identity,
+         <del>indirectly_unary_invocable&lt;projected&lt;I, Proj&gt;&gt;</del><ins>move_constructible</ins> Fun&gt;
+  <ins>requires invocable&lt;Fun&amp;, iter_reference_t&lt;projected&lt;I, Proj&gt;&gt;&gt;</ins>
+  constexpr ranges::for_each_n_result&lt;I, Fun&gt;
+    ranges::for_each_n(I first, iter_difference_t&lt;I&gt; n, Fun f, Proj proj = {});
+</pre>
+<blockquote>
+<p>
+[&hellip;]
+<p/>
+<del>-30- [<i>Note 11</i>: The overload in namespace <code class='backtick'>ranges</code> requires <code class='backtick'>Fun</code> to model <code class='backtick'>copy_constructible</code>. &mdash; <i>end note</i>]</del>
+</p>
+</blockquote>
 </blockquote>
 
 </li>
