@@ -54,7 +54,7 @@
 </style>
 </head>
 <body>
-<p>Revised 2025-04-13 at 12:45:17 UTC
+<p>Revised 2025-04-21 at 09:45:59 UTC
 </p><h2>Unresolved Issues</h2>
 <hr>
 <h3 id="423"><a href="#423">423</a><sup><a href="https://cplusplus.github.io/LWG/issue423">(i)</a></sup>. Effects of negative <code>streamsize</code> in iostreams</h3>
@@ -68995,7 +68995,7 @@ else</ins>
 <hr>
 <h3 id="4243"><a href="#4243">4243</a><sup><a href="https://cplusplus.github.io/LWG/issue4243">(i)</a></sup>. <code class='backtick'>as_bytes</code>/<code class='backtick'>as_writable_bytes</code> is broken with <code>span&lt;volatile T&gt;</code></h3>
 <p><b>Section:</b> 23.7.2.3 <a href="https://wg21.link/span.objectrep">[span.objectrep]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Hewill Kang <b>Opened:</b> 2025-04-12 <b>Last modified:</b> 2025-04-13</p>
+ <b>Submitter:</b> Hewill Kang <b>Opened:</b> 2025-04-12 <b>Last modified:</b> 2025-04-21</p>
 <p><b>Priority: </b>Not Prioritized
 </p>
 <p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
@@ -69015,8 +69015,9 @@ int main() {
 }
 </pre></blockquote>
 
+<p><strong>Previous resolution [SUPERSEDED]:</strong></p>
+<blockquote class="note">
 
-<p id="res-4243"><b>Proposed resolution:</b></p>
 <p>
 This wording is relative to <a href="https://wg21.link/N5008">N5008</a>.
 </p>
@@ -69077,6 +69078,60 @@ template&lt;class ElementType, size_t Extent&gt;
 <p>
 -3- <i>Effects</i>: Equivalent to:
 <code>return R{reinterpret_cast&lt;<ins>R::pointer</ins><del>byte*</del>&gt;(s.data()), s.size_bytes()};</code><br/>
+where <code class='backtick'>R</code> is the return type.
+</p>
+</blockquote>
+</blockquote>
+
+</li>
+
+</ol>
+</blockquote>
+
+<p><i>[2025-04-16; Hewill Kang provides alternative wording]</i></p>
+
+<p>
+Based on reflector feedback, the revised wording just improves the current state of not supporting
+support for <code class='backtick'>volatile</code>.
+</p>
+
+
+<p id="res-4243"><b>Proposed resolution:</b></p>
+<p>
+This wording is relative to <a href="https://wg21.link/N5008">N5008</a>.
+</p>
+
+<ol>
+
+<li><p>Modify 23.7.2.3 <a href="https://wg21.link/span.objectrep">[span.objectrep]</a> as indicated:</p>
+
+<blockquote>
+<pre>
+template&lt;class ElementType, size_t Extent&gt;
+  span&lt;const byte, Extent == dynamic_extent ? dynamic_extent : sizeof(ElementType) * Extent&gt;
+    as_bytes(span&lt;ElementType, Extent&gt; s) noexcept;
+</pre>
+<blockquote>
+<p>
+<ins>-?- <i>Constraints</i>: <code>is_volatile_v&lt;ElementType&gt;</code> is <code class='backtick'>false</code>.</ins>
+</p>
+<p>
+-1- <i>Effects</i>: Equivalent to: <code>return R{reinterpret_cast&lt;const byte*&gt;(s.data()), s.size_bytes()};</code><br/> 
+where <code>R</code> is the return type.
+</p>
+</blockquote>
+<pre>
+template&lt;class ElementType, size_t Extent&gt;
+  span&lt;byte, Extent == dynamic_extent ? dynamic_extent : sizeof(ElementType) * Extent&gt;
+    as_writable_bytes(span&lt;ElementType, Extent&gt; s) noexcept;
+</pre>
+<blockquote>
+<p>
+-2- <i>Constraints</i>: <code>is_const_v&lt;ElementType&gt;</code> is <code class='backtick'>false</code> <ins>and
+<code>is_volatile_v&lt;ElementType&gt;</code> is <code class='backtick'>false</code></ins>.
+</p>
+<p>
+-3- <i>Effects</i>: Equivalent to: <code>return R{reinterpret_cast&lt;byte*&gt;(s.data()), s.size_bytes()};</code><br/> 
 where <code class='backtick'>R</code> is the return type.
 </p>
 </blockquote>
