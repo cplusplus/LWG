@@ -54,7 +54,7 @@
 </style>
 </head>
 <body>
-<p>Revised 2025-04-21 at 10:18:27 UTC
+<p>Revised 2025-04-21 at 10:33:27 UTC
 </p><h2>Unresolved Issues</h2>
 <hr>
 <h3 id="423"><a href="#423">423</a><sup><a href="https://cplusplus.github.io/LWG/issue423">(i)</a></sup>. Effects of negative <code>streamsize</code> in iostreams</h3>
@@ -69280,6 +69280,88 @@ friend constexpr bool operator==(
 <blockquote>
 <p>
 -3- <i>Effects</i>: Equivalent to: <code>return x.length == 0;</code>
+</p>
+</blockquote>
+</blockquote>
+
+</li>
+
+</ol>
+
+
+
+
+
+<hr>
+<h3 id="4246"><a href="#4246">4246</a><sup><a href="https://cplusplus.github.io/LWG/issue4246">(i)</a></sup>. Redundant constraint in <code class='backtick'>range_formatter::format</code></h3>
+<p><b>Section:</b> 28.5.7.2 <a href="https://wg21.link/format.range.formatter">[format.range.formatter]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
+ <b>Submitter:</b> Hewill Kang <b>Opened:</b> 2025-04-18 <b>Last modified:</b> 2025-04-21</p>
+<p><b>Priority: </b>Not Prioritized
+</p>
+<p><b>View all other</b> <a href="lwg-index.html#format.range.formatter">issues</a> in [format.range.formatter].</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
+<p><b>Discussion:</b></p>
+<p>
+Currently, the signature of <code class='backtick'>range_formatter::format</code> is as follows:
+</p>
+<blockquote><pre>
+template&lt;ranges::input_range R, class FormatContext&gt;
+  requires formattable&lt;ranges::range_reference_t&lt;R&gt;, charT&gt; &amp;&amp;
+           same_as&lt;remove_cvref_t&lt;ranges::range_reference_t&lt;R&gt;&gt;, T&gt;
+typename FormatContext::iterator
+  format(R&amp;&amp; r, FormatContext&amp; ctx) const;
+</pre></blockquote>
+<p>
+which requires that the reference type of the range parameter must be <code class='backtick'>formattable</code>,
+and such type must be exactly <code class='backtick'>T</code> after removing the <i>cvref</i>-qualifiers.
+</p>
+<p>
+However, satisfying the latter always implies satisfying the former, as the <code class='backtick'>range_formatter</code> class
+already requires that <code class='backtick'>T</code> must be <code class='backtick'>formattable</code>.
+</p>
+<p>
+There is no need to perform a redundant check here.
+</p>
+
+
+<p id="res-4246"><b>Proposed resolution:</b></p>
+<p>
+This wording is relative to <a href="https://wg21.link/N5008">N5008</a>.
+</p>
+
+<ol>
+
+<li><p>Modify 28.5.7.2 <a href="https://wg21.link/format.range.formatter">[format.range.formatter]</a> as indicated:</p>
+
+<blockquote>
+<blockquote>
+<pre>
+namespace std {
+  template&lt;class T, class charT = char&gt;
+    requires same_as&lt;remove_cvref_t&lt;T>, T> &amp;&amp; formattable&lt;T, charT&gt;
+  class range_formatter {
+    [&hellip;]
+    template&lt;ranges::input_range R, class FormatContext&gt;
+        requires <del>formattable&lt;ranges::range_reference_t&lt;R&gt;, charT&gt; &amp;&amp;</del>
+                 same_as&lt;remove_cvref_t&lt;ranges::range_reference_t&lt;R&gt;&gt;, T&gt;
+      typename FormatContext::iterator
+        format(R&amp;&amp; r, FormatContext&amp; ctx) const;
+  };
+}
+</pre>
+</blockquote>
+[&hellip;]
+<pre>
+template&lt;ranges::input_range R, class FormatContext&gt;
+  requires <del>formattable&lt;ranges::range_reference_t&lt;R&gt;, charT&gt; &amp;&amp;</del>
+           same_as&lt;remove_cvref_t&lt;ranges::range_reference_t&lt;R&gt;&gt;, T&gt;
+typename FormatContext::iterator
+  format(R&amp;&amp; r, FormatContext&amp; ctx) const;
+</pre>
+<blockquote>
+<p>
+-11- <i>Effects</i>: Writes the following into <code>ctx.out()</code>, adjusted according to the
+<i>range-format-spec</i>:
 </p>
 </blockquote>
 </blockquote>

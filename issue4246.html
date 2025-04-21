@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Issue 4246: Redundant constraint in range_formatter::format</title>
+<meta property="og:title" content="Issue 4246: Redundant constraint in range_formatter::format">
+<meta property="og:description" content="C++ library issue. Status: New">
+<meta property="og:url" content="https://cplusplus.github.io/LWG/issue4246.html">
+<meta property="og:type" content="website">
+<meta property="og:image" content="http://cplusplus.github.io/LWG/images/cpp_logo.png">
+<meta property="og:image:alt" content="C++ logo">
+<style>
+  p {text-align:justify}
+  li {text-align:justify}
+  pre code.backtick::before { content: "`" }
+  pre code.backtick::after { content: "`" }
+  blockquote.note
+  {
+    background-color:#E0E0E0;
+    padding-left: 15px;
+    padding-right: 15px;
+    padding-top: 1px;
+    padding-bottom: 1px;
+  }
+  ins {background-color:#A0FFA0}
+  del {background-color:#FFA0A0}
+  table.issues-index { border: 1px solid; border-collapse: collapse; }
+  table.issues-index th { text-align: center; padding: 4px; border: 1px solid; }
+  table.issues-index td { padding: 4px; border: 1px solid; }
+  table.issues-index td:nth-child(1) { text-align: right; }
+  table.issues-index td:nth-child(2) { text-align: left; }
+  table.issues-index td:nth-child(3) { text-align: left; }
+  table.issues-index td:nth-child(4) { text-align: left; }
+  table.issues-index td:nth-child(5) { text-align: center; }
+  table.issues-index td:nth-child(6) { text-align: center; }
+  table.issues-index td:nth-child(7) { text-align: left; }
+  table.issues-index td:nth-child(5) span.no-pr { color: red; }
+  @media (prefers-color-scheme: dark) {
+     html {
+        color: #ddd;
+        background-color: black;
+     }
+     ins {
+        background-color: #225522
+     }
+     del {
+        background-color: #662222
+     }
+     a {
+        color: #6af
+     }
+     a:visited {
+        color: #6af
+     }
+     blockquote.note
+     {
+        background-color: rgba(255, 255, 255, .10)
+     }
+  }
+</style>
+</head>
+<body>
+<hr>
+<p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#New">New</a> status.</em></p>
+<h3 id="4246"><a href="lwg-active.html#4246">4246</a>. Redundant constraint in <code class='backtick'>range_formatter::format</code></h3>
+<p><b>Section:</b> 28.5.7.2 <a href="https://wg21.link/format.range.formatter">[format.range.formatter]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
+ <b>Submitter:</b> Hewill Kang <b>Opened:</b> 2025-04-18 <b>Last modified:</b> 2025-04-21</p>
+<p><b>Priority: </b>Not Prioritized
+</p>
+<p><b>View all other</b> <a href="lwg-index.html#format.range.formatter">issues</a> in [format.range.formatter].</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
+<p><b>Discussion:</b></p>
+<p>
+Currently, the signature of <code class='backtick'>range_formatter::format</code> is as follows:
+</p>
+<blockquote><pre>
+template&lt;ranges::input_range R, class FormatContext&gt;
+  requires formattable&lt;ranges::range_reference_t&lt;R&gt;, charT&gt; &amp;&amp;
+           same_as&lt;remove_cvref_t&lt;ranges::range_reference_t&lt;R&gt;&gt;, T&gt;
+typename FormatContext::iterator
+  format(R&amp;&amp; r, FormatContext&amp; ctx) const;
+</pre></blockquote>
+<p>
+which requires that the reference type of the range parameter must be <code class='backtick'>formattable</code>,
+and such type must be exactly <code class='backtick'>T</code> after removing the <i>cvref</i>-qualifiers.
+</p>
+<p>
+However, satisfying the latter always implies satisfying the former, as the <code class='backtick'>range_formatter</code> class
+already requires that <code class='backtick'>T</code> must be <code class='backtick'>formattable</code>.
+</p>
+<p>
+There is no need to perform a redundant check here.
+</p>
+
+
+<p id="res-4246"><b>Proposed resolution:</b></p>
+<p>
+This wording is relative to <a href="https://wg21.link/N5008">N5008</a>.
+</p>
+
+<ol>
+
+<li><p>Modify 28.5.7.2 <a href="https://wg21.link/format.range.formatter">[format.range.formatter]</a> as indicated:</p>
+
+<blockquote>
+<blockquote>
+<pre>
+namespace std {
+  template&lt;class T, class charT = char&gt;
+    requires same_as&lt;remove_cvref_t&lt;T>, T> &amp;&amp; formattable&lt;T, charT&gt;
+  class range_formatter {
+    [&hellip;]
+    template&lt;ranges::input_range R, class FormatContext&gt;
+        requires <del>formattable&lt;ranges::range_reference_t&lt;R&gt;, charT&gt; &amp;&amp;</del>
+                 same_as&lt;remove_cvref_t&lt;ranges::range_reference_t&lt;R&gt;&gt;, T&gt;
+      typename FormatContext::iterator
+        format(R&amp;&amp; r, FormatContext&amp; ctx) const;
+  };
+}
+</pre>
+</blockquote>
+[&hellip;]
+<pre>
+template&lt;ranges::input_range R, class FormatContext&gt;
+  requires <del>formattable&lt;ranges::range_reference_t&lt;R&gt;, charT&gt; &amp;&amp;</del>
+           same_as&lt;remove_cvref_t&lt;ranges::range_reference_t&lt;R&gt;&gt;, T&gt;
+typename FormatContext::iterator
+  format(R&amp;&amp; r, FormatContext&amp; ctx) const;
+</pre>
+<blockquote>
+<p>
+-11- <i>Effects</i>: Writes the following into <code>ctx.out()</code>, adjusted according to the
+<i>range-format-spec</i>:
+</p>
+</blockquote>
+</blockquote>
+
+</li>
+
+</ol>
+
+
+
+
+
+</body>
+</html>
