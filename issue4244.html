@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Issue 4244: Whether the spuriously failed comparison applies to compare_exchange_strong is unclear</title>
+<meta property="og:title" content="Issue 4244: Whether the spuriously failed comparison applies to compare_exchange_strong is unclear">
+<meta property="og:description" content="C++ library issue. Status: New">
+<meta property="og:url" content="https://cplusplus.github.io/LWG/issue4244.html">
+<meta property="og:type" content="website">
+<meta property="og:image" content="http://cplusplus.github.io/LWG/images/cpp_logo.png">
+<meta property="og:image:alt" content="C++ logo">
+<style>
+  p {text-align:justify}
+  li {text-align:justify}
+  pre code.backtick::before { content: "`" }
+  pre code.backtick::after { content: "`" }
+  blockquote.note
+  {
+    background-color:#E0E0E0;
+    padding-left: 15px;
+    padding-right: 15px;
+    padding-top: 1px;
+    padding-bottom: 1px;
+  }
+  ins {background-color:#A0FFA0}
+  del {background-color:#FFA0A0}
+  table.issues-index { border: 1px solid; border-collapse: collapse; }
+  table.issues-index th { text-align: center; padding: 4px; border: 1px solid; }
+  table.issues-index td { padding: 4px; border: 1px solid; }
+  table.issues-index td:nth-child(1) { text-align: right; }
+  table.issues-index td:nth-child(2) { text-align: left; }
+  table.issues-index td:nth-child(3) { text-align: left; }
+  table.issues-index td:nth-child(4) { text-align: left; }
+  table.issues-index td:nth-child(5) { text-align: center; }
+  table.issues-index td:nth-child(6) { text-align: center; }
+  table.issues-index td:nth-child(7) { text-align: left; }
+  table.issues-index td:nth-child(5) span.no-pr { color: red; }
+  @media (prefers-color-scheme: dark) {
+     html {
+        color: #ddd;
+        background-color: black;
+     }
+     ins {
+        background-color: #225522
+     }
+     del {
+        background-color: #662222
+     }
+     a {
+        color: #6af
+     }
+     a:visited {
+        color: #6af
+     }
+     blockquote.note
+     {
+        background-color: rgba(255, 255, 255, .10)
+     }
+  }
+</style>
+</head>
+<body>
+<hr>
+<p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#New">New</a> status.</em></p>
+<h3 id="4244"><a href="lwg-active.html#4244">4244</a>. Whether the spuriously failed comparison applies to <code class='backtick'>compare_exchange_strong</code> is unclear</h3>
+<p><b>Section:</b> 32.5.7.2 <a href="https://wg21.link/atomics.ref.ops">[atomics.ref.ops]</a>, 32.5.8.2 <a href="https://wg21.link/atomics.types.operations">[atomics.types.operations]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
+ <b>Submitter:</b> jim x <b>Opened:</b> 2025-04-17 <b>Last modified:</b> 2025-04-21</p>
+<p><b>Priority: </b>Not Prioritized
+</p>
+<p><b>View other</b> <a href="lwg-index-open.html#atomics.ref.ops">active issues</a> in [atomics.ref.ops].</p>
+<p><b>View all other</b> <a href="lwg-index.html#atomics.ref.ops">issues</a> in [atomics.ref.ops].</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
+<p><b>Discussion:</b></p>
+<p>
+Both <code class='backtick'>compare_exchange_strong</code> and <code class='backtick'>compare_exchange_weak</code> share the same specified rule
+</p>
+<blockquote style="border-left: 3px solid #ccc;padding-left: 15px;">
+<p>
+If and only if the comparison is <code class='backtick'>false</code> then, after the atomic operation, the value in 
+<code class='backtick'>expected</code> is replaced by the value read from the value referenced by <code class='backtick'>*ptr</code> during the 
+atomic comparison.
+</p>
+</blockquote>
+<p>
+However, there is a remark for the weak version
+</p>
+<blockquote style="border-left: 3px solid #ccc;padding-left: 15px;">
+<p>
+A weak compare-and-exchange operation may fail spuriously.
+</p>
+</blockquote>
+<p>
+That is, even when the contents of memory referred to by <code class='backtick'>expected</code> and <code class='backtick'>ptr</code> are equal, 
+it may return <code class='backtick'>false</code> and store back to expected the same memory contents that were 
+originally there.
+<p/>
+However, we don't explicitly say whether the strong version can have the spuriously failed 
+comparison. The status quo is that we can only infer the point from the name, namely, the 
+strong version should have a stronger guarantee than the weak version.
+<p/>
+<b>Suggested resolution:</b>
+<p/>
+Explicitly specify whether <code class='backtick'>compare_exchange_strong</code> can have the spurious failed comparison.
+</p>
+
+
+<p id="res-4244"><b>Proposed resolution:</b></p>
+
+
+
+
+
+</body>
+</html>
