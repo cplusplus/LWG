@@ -54,7 +54,7 @@
 </style>
 </head>
 <body>
-<p>Revised 2025-04-21 at 10:02:58 UTC
+<p>Revised 2025-04-21 at 10:18:27 UTC
 </p><h2>Unresolved Issues</h2>
 <hr>
 <h3 id="423"><a href="#423">423</a><sup><a href="https://cplusplus.github.io/LWG/issue423">(i)</a></sup>. Effects of negative <code>streamsize</code> in iostreams</h3>
@@ -69191,6 +69191,102 @@ Explicitly specify whether <code class='backtick'>compare_exchange_strong</code>
 
 
 <p id="res-4244"><b>Proposed resolution:</b></p>
+
+
+
+
+
+<hr>
+<h3 id="4245"><a href="#4245">4245</a><sup><a href="https://cplusplus.github.io/LWG/issue4245">(i)</a></sup>. Operators that interact with <code class='backtick'>counted_iterator</code> and <code class='backtick'>default_sentinel_t</code> should be <code class='backtick'>noexcept</code></h3>
+<p><b>Section:</b> 24.5.7.1 <a href="https://wg21.link/counted.iterator">[counted.iterator]</a>, 24.5.7.5 <a href="https://wg21.link/counted.iter.nav">[counted.iter.nav]</a>, 24.5.7.6 <a href="https://wg21.link/counted.iter.cmp">[counted.iter.cmp]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
+ <b>Submitter:</b> Hewill Kang <b>Opened:</b> 2025-04-18 <b>Last modified:</b> 2025-04-21</p>
+<p><b>Priority: </b>Not Prioritized
+</p>
+<p><b>View all other</b> <a href="lwg-index.html#counted.iterator">issues</a> in [counted.iterator].</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
+<p><b>Discussion:</b></p>
+<p>
+<code class='backtick'>counted_iterator</code> can be compared or subtracted from <code class='backtick'>default_sentinel_t</code>,
+which only involves simple integer arithmetic and does not have any <i>Preconditions</i>.
+<p/>
+In this case, it is reasonable to declare them as <code>noexcept</code>.
+</p>
+
+
+<p id="res-4245"><b>Proposed resolution:</b></p>
+<p>
+This wording is relative to <a href="https://wg21.link/N5008">N5008</a>.
+</p>
+
+<ol>
+
+<li><p>Modify 24.5.7.1 <a href="https://wg21.link/counted.iterator">[counted.iterator]</a> as indicated:</p>
+
+<blockquote>
+<pre>
+namespace std {
+  template&lt;input_or_output_iterator I&gt;
+  class counted_iterator {
+  public:
+    [&hellip;]
+    friend constexpr iter_difference_t&lt;I&gt; operator-(
+      const counted_iterator&amp; x, default_sentinel_t) <ins>noexcept</ins>;
+    friend constexpr iter_difference_t&lt;I&gt; operator-(
+      default_sentinel_t, const counted_iterator&amp; y) <ins>noexcept</ins>;
+    [&hellip;]
+    friend constexpr bool operator==(
+      const counted_iterator&amp; x, default_sentinel_t) <ins>noexcept</ins>;
+    [&hellip;]
+  };
+  [&hellip;]
+}
+</pre>
+</blockquote>
+
+</li>
+
+<li><p>Modify 24.5.7.5 <a href="https://wg21.link/counted.iter.nav">[counted.iter.nav]</a> as indicated:</p>
+
+<blockquote>
+<pre>
+friend constexpr iter_difference_t&lt;I&gt; operator-(
+  const counted_iterator&amp; x, default_sentinel_t) <ins>noexcept</ins>;
+</pre>
+<blockquote>
+<p>
+-15- <i>Effects</i>: Equivalent to: <code>return -x.length;</code>
+</p>
+</blockquote>
+<pre>
+friend constexpr iter_difference_t&lt;I&gt; operator-(
+  default_sentinel_t, const counted_iterator&amp; y) <ins>noexcept</ins>;
+</pre>
+<blockquote>
+<p>
+-16- <i>Effects</i>: Equivalent to: <code>return y.length;</code>
+</p>
+</blockquote>
+</blockquote>
+
+</li>
+
+<li><p>Modify 24.5.7.6 <a href="https://wg21.link/counted.iter.cmp">[counted.iter.cmp]</a> as indicated:</p>
+
+<blockquote>
+<pre>
+friend constexpr bool operator==(
+  const counted_iterator&amp; x, default_sentinel_t) <ins>noexcept</ins>;
+</pre>
+<blockquote>
+<p>
+-3- <i>Effects</i>: Equivalent to: <code>return x.length == 0;</code>
+</p>
+</blockquote>
+</blockquote>
+
+</li>
+
+</ol>
 
 
 

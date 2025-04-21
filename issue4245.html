@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Issue 4245: Operators that interact with counted_iterator and default_sentinel_t should be noexcept</title>
+<meta property="og:title" content="Issue 4245: Operators that interact with counted_iterator and default_sentinel_t should be noexcept">
+<meta property="og:description" content="C++ library issue. Status: New">
+<meta property="og:url" content="https://cplusplus.github.io/LWG/issue4245.html">
+<meta property="og:type" content="website">
+<meta property="og:image" content="http://cplusplus.github.io/LWG/images/cpp_logo.png">
+<meta property="og:image:alt" content="C++ logo">
+<style>
+  p {text-align:justify}
+  li {text-align:justify}
+  pre code.backtick::before { content: "`" }
+  pre code.backtick::after { content: "`" }
+  blockquote.note
+  {
+    background-color:#E0E0E0;
+    padding-left: 15px;
+    padding-right: 15px;
+    padding-top: 1px;
+    padding-bottom: 1px;
+  }
+  ins {background-color:#A0FFA0}
+  del {background-color:#FFA0A0}
+  table.issues-index { border: 1px solid; border-collapse: collapse; }
+  table.issues-index th { text-align: center; padding: 4px; border: 1px solid; }
+  table.issues-index td { padding: 4px; border: 1px solid; }
+  table.issues-index td:nth-child(1) { text-align: right; }
+  table.issues-index td:nth-child(2) { text-align: left; }
+  table.issues-index td:nth-child(3) { text-align: left; }
+  table.issues-index td:nth-child(4) { text-align: left; }
+  table.issues-index td:nth-child(5) { text-align: center; }
+  table.issues-index td:nth-child(6) { text-align: center; }
+  table.issues-index td:nth-child(7) { text-align: left; }
+  table.issues-index td:nth-child(5) span.no-pr { color: red; }
+  @media (prefers-color-scheme: dark) {
+     html {
+        color: #ddd;
+        background-color: black;
+     }
+     ins {
+        background-color: #225522
+     }
+     del {
+        background-color: #662222
+     }
+     a {
+        color: #6af
+     }
+     a:visited {
+        color: #6af
+     }
+     blockquote.note
+     {
+        background-color: rgba(255, 255, 255, .10)
+     }
+  }
+</style>
+</head>
+<body>
+<hr>
+<p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#New">New</a> status.</em></p>
+<h3 id="4245"><a href="lwg-active.html#4245">4245</a>. Operators that interact with <code class='backtick'>counted_iterator</code> and <code class='backtick'>default_sentinel_t</code> should be <code class='backtick'>noexcept</code></h3>
+<p><b>Section:</b> 24.5.7.1 <a href="https://wg21.link/counted.iterator">[counted.iterator]</a>, 24.5.7.5 <a href="https://wg21.link/counted.iter.nav">[counted.iter.nav]</a>, 24.5.7.6 <a href="https://wg21.link/counted.iter.cmp">[counted.iter.cmp]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
+ <b>Submitter:</b> Hewill Kang <b>Opened:</b> 2025-04-18 <b>Last modified:</b> 2025-04-21</p>
+<p><b>Priority: </b>Not Prioritized
+</p>
+<p><b>View all other</b> <a href="lwg-index.html#counted.iterator">issues</a> in [counted.iterator].</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
+<p><b>Discussion:</b></p>
+<p>
+<code class='backtick'>counted_iterator</code> can be compared or subtracted from <code class='backtick'>default_sentinel_t</code>,
+which only involves simple integer arithmetic and does not have any <i>Preconditions</i>.
+<p/>
+In this case, it is reasonable to declare them as <code>noexcept</code>.
+</p>
+
+
+<p id="res-4245"><b>Proposed resolution:</b></p>
+<p>
+This wording is relative to <a href="https://wg21.link/N5008">N5008</a>.
+</p>
+
+<ol>
+
+<li><p>Modify 24.5.7.1 <a href="https://wg21.link/counted.iterator">[counted.iterator]</a> as indicated:</p>
+
+<blockquote>
+<pre>
+namespace std {
+  template&lt;input_or_output_iterator I&gt;
+  class counted_iterator {
+  public:
+    [&hellip;]
+    friend constexpr iter_difference_t&lt;I&gt; operator-(
+      const counted_iterator&amp; x, default_sentinel_t) <ins>noexcept</ins>;
+    friend constexpr iter_difference_t&lt;I&gt; operator-(
+      default_sentinel_t, const counted_iterator&amp; y) <ins>noexcept</ins>;
+    [&hellip;]
+    friend constexpr bool operator==(
+      const counted_iterator&amp; x, default_sentinel_t) <ins>noexcept</ins>;
+    [&hellip;]
+  };
+  [&hellip;]
+}
+</pre>
+</blockquote>
+
+</li>
+
+<li><p>Modify 24.5.7.5 <a href="https://wg21.link/counted.iter.nav">[counted.iter.nav]</a> as indicated:</p>
+
+<blockquote>
+<pre>
+friend constexpr iter_difference_t&lt;I&gt; operator-(
+  const counted_iterator&amp; x, default_sentinel_t) <ins>noexcept</ins>;
+</pre>
+<blockquote>
+<p>
+-15- <i>Effects</i>: Equivalent to: <code>return -x.length;</code>
+</p>
+</blockquote>
+<pre>
+friend constexpr iter_difference_t&lt;I&gt; operator-(
+  default_sentinel_t, const counted_iterator&amp; y) <ins>noexcept</ins>;
+</pre>
+<blockquote>
+<p>
+-16- <i>Effects</i>: Equivalent to: <code>return y.length;</code>
+</p>
+</blockquote>
+</blockquote>
+
+</li>
+
+<li><p>Modify 24.5.7.6 <a href="https://wg21.link/counted.iter.cmp">[counted.iter.cmp]</a> as indicated:</p>
+
+<blockquote>
+<pre>
+friend constexpr bool operator==(
+  const counted_iterator&amp; x, default_sentinel_t) <ins>noexcept</ins>;
+</pre>
+<blockquote>
+<p>
+-3- <i>Effects</i>: Equivalent to: <code>return x.length == 0;</code>
+</p>
+</blockquote>
+</blockquote>
+
+</li>
+
+</ol>
+
+
+
+
+
+</body>
+</html>
