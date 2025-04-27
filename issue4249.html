@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Issue 4249: The past end issue for lazy_split_view</title>
+<meta property="og:title" content="Issue 4249: The past end issue for lazy_split_view">
+<meta property="og:description" content="C++ library issue. Status: New">
+<meta property="og:url" content="https://cplusplus.github.io/LWG/issue4249.html">
+<meta property="og:type" content="website">
+<meta property="og:image" content="http://cplusplus.github.io/LWG/images/cpp_logo.png">
+<meta property="og:image:alt" content="C++ logo">
+<style>
+  p {text-align:justify}
+  li {text-align:justify}
+  pre code.backtick::before { content: "`" }
+  pre code.backtick::after { content: "`" }
+  blockquote.note
+  {
+    background-color:#E0E0E0;
+    padding-left: 15px;
+    padding-right: 15px;
+    padding-top: 1px;
+    padding-bottom: 1px;
+  }
+  ins {background-color:#A0FFA0}
+  del {background-color:#FFA0A0}
+  table.issues-index { border: 1px solid; border-collapse: collapse; }
+  table.issues-index th { text-align: center; padding: 4px; border: 1px solid; }
+  table.issues-index td { padding: 4px; border: 1px solid; }
+  table.issues-index td:nth-child(1) { text-align: right; }
+  table.issues-index td:nth-child(2) { text-align: left; }
+  table.issues-index td:nth-child(3) { text-align: left; }
+  table.issues-index td:nth-child(4) { text-align: left; }
+  table.issues-index td:nth-child(5) { text-align: center; }
+  table.issues-index td:nth-child(6) { text-align: center; }
+  table.issues-index td:nth-child(7) { text-align: left; }
+  table.issues-index td:nth-child(5) span.no-pr { color: red; }
+  @media (prefers-color-scheme: dark) {
+     html {
+        color: #ddd;
+        background-color: black;
+     }
+     ins {
+        background-color: #225522
+     }
+     del {
+        background-color: #662222
+     }
+     a {
+        color: #6af
+     }
+     a:visited {
+        color: #6af
+     }
+     blockquote.note
+     {
+        background-color: rgba(255, 255, 255, .10)
+     }
+  }
+</style>
+</head>
+<body>
+<hr>
+<p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#New">New</a> status.</em></p>
+<h3 id="4249"><a href="lwg-active.html#4249">4249</a>. The past end issue for <code class='backtick'>lazy_split_view</code></h3>
+<p><b>Section:</b> 25.7.16.3 <a href="https://wg21.link/range.lazy.split.outer">[range.lazy.split.outer]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
+ <b>Submitter:</b> Hewill Kang <b>Opened:</b> 2025-04-26 <b>Last modified:</b> 2025-04-27</p>
+<p><b>Priority: </b>Not Prioritized
+</p>
+<p><b>View other</b> <a href="lwg-index-open.html#range.lazy.split.outer">active issues</a> in [range.lazy.split.outer].</p>
+<p><b>View all other</b> <a href="lwg-index.html#range.lazy.split.outer">issues</a> in [range.lazy.split.outer].</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
+<p><b>Discussion:</b></p>
+<p>
+Consider (<a href="https://godbolt.org/z/eeMe8aTqv">demo</a>):
+</p>
+<blockquote><pre>
+#include &lt;print&gt;
+#include &lt;ranges&gt;
+#include &lt;sstream&gt;
+
+int main() {
+  std::istringstream is{"1 0 2 0 3"};
+  auto r = std::views::istream&lt;int&gt;(is)
+         | std::views::lazy_split(0)
+         | std::views::stride(2);
+  std::println("{}", r); // should print [[1], [3]]
+}
+</pre></blockquote>
+<p>
+The above leads to SIGSEGV in libstdc++, the reason is that we are iterating over the nested
+range as:
+</p>
+<blockquote><pre>
+for (auto&amp;&amp; inner : r) {
+  for (auto&amp;&amp; elem : inner) {
+    // [&hellip;]
+  }
+}
+</pre></blockquote>
+<p>
+which is disassembled as:
+</p>
+<blockquote><pre>
+auto outer_it = r.begin();
+std::default_sentinel_t out_end = r.end();
+for(; outer_it != out_end; ++outer_it) {
+  auto&amp;&amp; inner_r = *outer_it;
+  auto inner_it = inner_r.begin();
+  std::default_sentinel_t inner_end = inner_r.end();
+  for(; inner_it != inner_end; ++inner_it) {
+    auto&amp;&amp; elem = *inner_it;
+    // [&hellip;]
+  }
+}
+</pre></blockquote>
+<p>
+Since <code class='backtick'>inner_it</code> and <code class='backtick'>output_it</code> actually update the same iterator,
+when we back to the outer loop, <code>lazy_split_view::<i>outer-iterator</i></code> 
+is now equal to <code class='backtick'>default_sentinel</code>, which makes <code class='backtick'>output_it</code> reach the end,
+so <code class='backtick'>++outer_it</code> will increment the iterator past end, triggering the assertion.
+</p>
+<p>
+Note that this <a href="https://godbolt.org/z/6Tx61eeq8">also happens</a> in MSVC-STL 
+when <code class='backtick'>_ITERATOR_DEBUG_LEVEL</code> is turned on.
+</p>
+<p>
+It seems that extra flags are needed to fix this issue because <code class='backtick'>output_it</code> should not 
+be considered to reach the end when we back to the outer loop.
+</p>
+
+
+<p id="res-4249"><b>Proposed resolution:</b></p>
+<p>
+This wording is relative to <a href="https://wg21.link/N5008">N5008</a>.
+</p>
+
+<ol>
+
+<li><p>Modify 25.7.16.3 <a href="https://wg21.link/range.lazy.split.outer">[range.lazy.split.outer]</a> as indicated:</p>
+
+<blockquote>
+<blockquote>
+<pre>
+namespace std::ranges {
+  template&lt;input_range V, forward_range Pattern&gt;
+    requires view&lt;V&gt; &amp;&amp; view&lt;Pattern&gt; &amp;&amp;
+             indirectly_comparable&lt;iterator_t&lt;V&gt;, iterator_t&lt;Pattern&gt;, ranges::equal_to&gt; &amp;&amp;
+             (forward_range&lt;V&gt; || <i>tiny-range</i>&lt;Pattern&gt;)
+  template&lt;bool Const&gt;
+  struct lazy_split_view&lt;V, Pattern&gt;::<i>outer-iterator</i> {
+  private:
+    using <i>Parent</i> = <i>maybe-const</i>&lt;Const, lazy_split_view&gt;;     // <i>exposition only</i>
+    using <i>Base</i> = <i>maybe-const</i>&lt;Const, V&gt;;                     // <i>exposition only</i>
+    <i>Parent</i>* <i>parent_</i> = nullptr;                              // <i>exposition only</i>
+
+    iterator_t&lt;<i>Base</i>&gt; <i>current_</i> = iterator_t&lt;<i>Base</i>&gt;();         // <i>exposition only, present only</i>
+                                                            // <i>if V models forward_range</i>
+
+    bool <i>trailing_empty_</i> = false;                           // <i>exposition only</i>
+    <ins>bool <i>has_next_</i> = false;                                 // <i>exposition only, present only</i></ins>
+                                                            <ins>// <i>if forward_range&lt;<i>V</i>&gt; is false</i></ins>
+  public:
+    [&hellip;]
+  };
+}
+</pre>
+</blockquote>
+[&hellip;]
+<pre>
+constexpr explicit <i>outer-iterator</i>(<i>Parent</i>&amp; parent)
+  requires (!forward_range&lt;<i>Base</i>&gt;);
+</pre>
+<blockquote>
+<p>
+-2- <i>Effects:</i> Initializes <code><i>parent_</i></code> with <code class='backtick'>addressof(parent)</code> <ins>and
+<code><i>has_next_</i></code> with <code><i>current</i> != ranges::end(<i>parent_</i>-&gt;<i>base_</i>)</code></ins>.
+</p>
+</blockquote>
+[&hellip;]
+<pre>
+constexpr <i>outer-iterator</i>&amp; operator++();
+</pre>
+<blockquote>
+<p>
+-6- <i>Effects:</i> Equivalent to:
+</p>
+<blockquote><pre>
+const auto end = ranges::end(<i>parent_</i>-&gt;<i>base_</i>);
+if (<i>current</i> == end) {
+  <i>trailing_empty_</i> = false;
+  <ins>if constexpr (!forward_range&lt;V&gt;)
+    <i>has_next_</i> = false;</ins>
+  return <code>*this</code>;
+}
+const auto [pbegin, pend] = subrange{<i>parent_</i>-&gt;<i>pattern_</i>};
+if (pbegin == pend) ++<i>current</i>;
+else if constexpr (<i>tiny-range</i>&lt;Pattern&gt;) {
+  <i>current</i> = ranges::find(std::move(<i>current</i>), end, *pbegin);
+  if (<i>current</i> != end) {
+    ++<i>current</i>;
+    if (<i>current</i> == end)
+      <i>trailing_empty_</i> = true;
+  }
+}
+else {
+  do {
+    auto [b, p] = ranges::mismatch(<i>current</i>, end, pbegin, pend);
+    if (p == pend) {
+      <i>current</i> = b;
+      if (<i>current</i> == end)
+        <i>trailing_empty_</i> = true;
+      break;            <i>// The pattern matched; skip it</i>
+    }
+  } while (++<i>current</i> != end);
+}
+<ins>if constexpr (!forward_range&lt;V&gt;)
+  if (<i>current</i> == end)
+    <i>has_next_</i> = false;</ins>
+return *this;
+</pre></blockquote>
+</blockquote>
+[&hellip;]
+<pre>
+friend constexpr bool operator==(const <i>outer-iterator</i>&amp; x, default_sentinel_t);
+</pre>
+<blockquote>
+<p>
+-8- <i>Effects:</i> Equivalent to:
+</p>
+<blockquote><pre>
+<ins>if constexpr (!forward_range&lt;V&gt;)
+  return !x.<i>has_next_</i> &amp;&amp; !x.<i>trailing_empty_</i>;
+else</ins>
+  return x.<i>current</i> == ranges::end(x.<i>parent_</i>-&gt;<i>base_</i>) &amp;&amp; !x.<i>trailing_empty_</i>;
+</pre></blockquote>
+</blockquote>
+</blockquote>
+
+</li>
+
+</ol>
+
+
+
+
+
+</body>
+</html>
