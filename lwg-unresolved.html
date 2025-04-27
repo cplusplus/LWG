@@ -54,7 +54,7 @@
 </style>
 </head>
 <body>
-<p>Revised 2025-04-21 at 10:33:27 UTC
+<p>Revised 2025-04-27 at 08:42:21 UTC
 </p><h2>Unresolved Issues</h2>
 <hr>
 <h3 id="423"><a href="#423">423</a><sup><a href="https://cplusplus.github.io/LWG/issue423">(i)</a></sup>. Effects of negative <code>streamsize</code> in iostreams</h3>
@@ -69364,6 +69364,116 @@ typename FormatContext::iterator
 <i>range-format-spec</i>:
 </p>
 </blockquote>
+</blockquote>
+
+</li>
+
+</ol>
+
+
+
+
+
+<hr>
+<h3 id="4247"><a href="#4247">4247</a><sup><a href="https://cplusplus.github.io/LWG/issue4247">(i)</a></sup>. Header <code>&lt;stdbit.h&gt;</code> is not yet freestanding</h3>
+<p><b>Section:</b> 22.12 <a href="https://wg21.link/stdbit.h.syn">[stdbit.h.syn]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
+ <b>Submitter:</b> Jiang An <b>Opened:</b> 2025-04-24 <b>Last modified:</b> 2025-04-27</p>
+<p><b>Priority: </b>Not Prioritized
+</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
+<p><b>Discussion:</b></p>
+<p>
+Per C23/WG14 <a href="https://www.open-std.org/jtc1/sc22/wg14/www/docs/n3220.pdf#page=22">N3220</a> 4 p7, <code>&lt;stdbit.h&gt;</code> 
+is freestanding in C23, but C++ hasn't required it for a freestanding implementation. 
+LWG <a href="lwg-active.html#4049" title="C &lt;foo.h&gt; headers not in freestanding (Status: New)">4049</a><sup><a href="https://cplusplus.github.io/LWG/issue4049" title="Latest snapshot">(i)</a></sup> is related but doesn't cover this, because there's no <code>&lt;cstdbit&gt;</code> standard header.
+</p>
+
+
+<p id="res-4247"><b>Proposed resolution:</b></p>
+<p>
+This wording is relative to <a href="https://wg21.link/N5008">N5008</a>.
+</p>
+
+<ol>
+
+<li><p>Modify Table 27 [tab:headers.cpp.fs] as indicated:</p>
+
+<blockquote>
+<table border="1">
+<caption>Table 27: C++ headers for freestanding implementations [tab:headers.cpp.fs]</caption>
+<tr align="center">
+<th></th>
+<th>Subclause</th>
+<th>Header</th>
+</tr> 
+
+<tr>
+<td colspan="3" align="center">
+<code>[&hellip;]</code>
+</td>
+</tr>
+
+<tr>
+<td>
+22.11 <a href="https://wg21.link/bit">[bit]</a>
+</td>
+<td>
+Bit manipulation
+</td>
+<td>
+<code>&lt;bit&gt;</code>
+</td>
+</tr>
+
+<tr>
+<td>
+<ins>22.12 <a href="https://wg21.link/stdbit.h.syn">[stdbit.h.syn]</a></ins>
+</td>
+<td>
+<ins>C-compatible bit manipulation</ins>
+</td>
+<td>
+<ins><code>&lt;stdbit.h&gt;</code></ins>
+</td>
+</tr>
+
+<tr>
+<td>
+23.3.3 <a href="https://wg21.link/array">[array]</a>
+</td>
+<td>
+Class template <code class='backtick'>array</code>
+</td>
+<td>
+<code>&lt;array&gt;</code>
+</td>
+</tr>
+
+<tr>
+<td colspan="3" align="center">
+<code>[&hellip;]</code>
+</td>
+</tr>
+
+</table>
+
+</blockquote>
+
+</li>
+
+<li><p>Modify 22.12 <a href="https://wg21.link/stdbit.h.syn">[stdbit.h.syn]</a>, header <code>&lt;stdbit.h&gt;</code> synopsis, as indicated:</p>
+
+<blockquote>
+<pre>
+<ins>// all freestanding</ins>
+#define __STDC_VERSION_STDBIT_H__ 202311L
+
+#define __STDC_ENDIAN_BIG__    <i>see below</i>
+#define __STDC_ENDIAN_LITTLE__ <i>see below</i>
+#define __STDC_ENDIAN_NATIVE__ <i>see below</i>
+
+[&hellip;]
+</pre>
 </blockquote>
 
 </li>
