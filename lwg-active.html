@@ -79,7 +79,7 @@
 </tr>
 </table>
 <h1>C++ Standard Library Active Issues List (Revision D125)</h1>
-<p>Revised 2025-04-27 at 16:10:19 UTC
+<p>Revised 2025-04-27 at 16:28:29 UTC
 </p>
   <p>Reference ISO/IEC IS 14882:2020(E)</p>
   <p>Also see:</p>
@@ -45734,7 +45734,7 @@ which are not.
 <hr>
 <h3 id="3855"><a href="#3855">3855</a><sup><a href="https://cplusplus.github.io/LWG/issue3855">(i)</a></sup>. <code><i>tiny-range</i></code> is not quite right</h3>
 <p><b>Section:</b> 25.7.16.2 <a href="https://wg21.link/range.lazy.split.view">[range.lazy.split.view]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Hewill Kang <b>Opened:</b> 2023-01-07 <b>Last modified:</b> 2023-02-01</p>
+ <b>Submitter:</b> Hewill Kang <b>Opened:</b> 2023-01-07 <b>Last modified:</b> 2025-04-27</p>
 <p><b>Priority: </b>4
 </p>
 <p><b>View other</b> <a href="lwg-index-open.html#range.lazy.split.view">active issues</a> in [range.lazy.split.view].</p>
@@ -45764,9 +45764,9 @@ Only matters for pathological types.
 Maybe use <code>requires bool_constant&lt;ranges::size(r) &lt;= 1&gt;</code>.
 </p>
 
+<p><strong>Previous resolution [SUPERSEDED]:</strong></p>
+<blockquote class="note">
 
-
-<p id="res-3855"><b>Proposed resolution:</b></p>
 <p>
 This wording is relative to <a href="https://wg21.link/N4917" title=" Working Draft, Standard for Programming Language C++">N4917</a>.
 </p>
@@ -45817,6 +45817,95 @@ constexpr lazy_split_view(V base, Pattern pattern);
 -1- <i>Effects</i>: : Initializes <code><i>base_</i></code> with <code>std::move(base)</code>, and <code><i>pattern_</i></code> with 
 <code>std::move(pattern)</code>.
 </p>
+</blockquote>
+</blockquote>
+</li>
+
+</ol>
+</blockquote>
+
+<p><i>[2025-04-27, Hewill provides alternative wording]</i></p>
+
+
+
+<p id="res-3855"><b>Proposed resolution:</b></p>
+<p>
+This wording is relative to <a href="https://wg21.link/N5008">N5008</a>.
+</p>
+
+<ol>
+<li><p>Modify 25.7.16.2 <a href="https://wg21.link/range.lazy.split.view">[range.lazy.split.view]</a> as indicated:</p>
+
+<blockquote class="note">
+<p>
+[<i>Drafting note:</i> This benefits from <a href="https://wg21.link/P2280" title=" Using unknown references in constant expressions">P2280</a> that a call to a
+member function of a non-constexpr object can be a constant expression if it does 
+not actually access the member.
+<p/>
+This would make <code>views::lazy_split(r, span&lt;int, 0&gt;{})</code> 
+well-formed, which can be seen as an enhancement.]
+</p>
+</blockquote>
+
+<blockquote>
+<pre>
+namespace std::ranges {
+  <del>template&lt;auto&gt; struct <i>require-constant</i>;                       // <i>exposition only</i></del>
+
+  template&lt;class R&gt;
+  concept <i>tiny-range</i> =                                          // <i>exposition only</i>
+    sized_range&lt;R&gt; &amp;&amp;
+    <ins>requires (R&amp; r) { requires bool_constant&lt;ranges::size(r) &lt;= 1&gt;::value; }</ins>
+    <del>requires { typename <i>require-constant</i>&lt;remove_reference_t&lt;R&gt;::size()>; } &amp;&amp;
+    (remove_reference_t&lt;R&gt;::size() &lt;= 1)</del>;
+
+  template&lt;input_range V, forward_range Pattern&gt;
+    requires view&lt;V&gt; &amp;&amp; view&lt;Pattern&gt; &amp;&amp;
+             indirectly_comparable&lt;iterator_t&lt;V&gt;, iterator_t&lt;Pattern&gt;, ranges::equal_to&gt; &amp;&amp;
+             (forward_range&lt;V&gt; || <i>tiny-range</i>&lt;Pattern&gt;)
+  class lazy_split_view::view_interface&lt;lazy_split_view&lt;V, Pattern&gt;&gt; {
+    [&hellip;]
+  };
+  [&hellip;]
+}
+</pre>
+</blockquote>
+</li>
+
+<li><p>Modify 25.7.16.5 <a href="https://wg21.link/range.lazy.split.inner">[range.lazy.split.inner]</a> as indicated:</p>
+
+<blockquote class="note">
+<p>
+[<i>Drafting note:</i>
+We can't use <code>if constexpr (ranges::size(<i>i_</i>.<i>parent_</i>-&gt;<i>pattern_</i>) == 0)</code> 
+here because it is not a constant expression, and it seems more intuitive to just use 
+<code>ranges::empty</code> which is always well-formed. Note that the PR does not seek the
+aggressive optimization that minimizes the instantiation as this is not the intent of the 
+current design (for example, <code><i>outer-iterator</i>&amp; operator++()</code> can be
+specialized for the case where <code>Pattern::size() == 0</code>), library implementations 
+are free to optimize as it pleases.]
+</p>
+</blockquote>
+
+<blockquote>
+<pre>
+constexpr <i>inner-iterator</i>&amp; operator++();
+</pre>
+<blockquote>
+<p>
+-5- <i>Effects:</i> Equivalent to:
+</p>
+<blockquote><pre>
+<i>incremented_</i> = true;
+if constexpr (!forward_range&lt;<i>Base</i>&gt;) {
+  <ins>if (ranges::empty(<i>i_</i>.<i>parent_</i>-&gt;<i>pattern_</i>))</ins>
+  <del>if constexpr (Pattern::size() == 0) {</del>
+    return *this;
+  }
+}
+++<i>i_</i>.<i>current</i>;
+return *this;
+</pre></blockquote>
 </blockquote>
 </blockquote>
 </li>
