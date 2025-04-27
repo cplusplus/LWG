@@ -54,7 +54,7 @@
 </style>
 </head>
 <body>
-<p>Revised 2025-04-27 at 08:50:33 UTC
+<p>Revised 2025-04-27 at 09:35:33 UTC
 </p><h2>Unresolved Issues</h2>
 <hr>
 <h3 id="423"><a href="#423">423</a><sup><a href="https://cplusplus.github.io/LWG/issue423">(i)</a></sup>. Effects of negative <code>streamsize</code> in iostreams</h3>
@@ -65210,6 +65210,8 @@ namespace std {
  <b>Submitter:</b> Eric Niebler <b>Opened:</b> 2025-01-02 <b>Last modified:</b> 2025-02-07</p>
 <p><b>Priority: </b>2
 </p>
+<p><b>View other</b> <a href="lwg-index-open.html#exec.snd.expos">active issues</a> in [exec.snd.expos].</p>
+<p><b>View all other</b> <a href="lwg-index.html#exec.snd.expos">issues</a> in [exec.snd.expos].</p>
 <p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
 <p><b>Discussion:</b></p>
 <p>
@@ -69474,6 +69476,122 @@ Class template <code class='backtick'>array</code>
 
 [&hellip;]
 </pre>
+</blockquote>
+
+</li>
+
+</ol>
+
+
+
+
+
+<hr>
+<h3 id="4248"><a href="#4248">4248</a><sup><a href="https://cplusplus.github.io/LWG/issue4248">(i)</a></sup>. Late domain-based dispatching of <code class='backtick'>schedule_from</code> and <code class='backtick'>continues_on</code> are flipped</h3>
+<p><b>Section:</b> 33.9.2 <a href="https://wg21.link/exec.snd.expos">[exec.snd.expos]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
+ <b>Submitter:</b> Eric Niebler <b>Opened:</b> 2025-04-26 <b>Last modified:</b> 2025-04-27</p>
+<p><b>Priority: </b>Not Prioritized
+</p>
+<p><b>View other</b> <a href="lwg-index-open.html#exec.snd.expos">active issues</a> in [exec.snd.expos].</p>
+<p><b>View all other</b> <a href="lwg-index.html#exec.snd.expos">issues</a> in [exec.snd.expos].</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
+<p><b>Discussion:</b></p>
+<p>
+The reason for having two different customization points for transitioning between two execution contexts 
+is described in 33.9.2 <a href="https://wg21.link/exec.snd.expos">[exec.snd.expos]</a> bullet (14.1) Note 1, to wit:
+</p>
+<blockquote style="border-left: 3px solid #ccc;padding-left: 15px;">
+<p>
+[<i>Note 1</i>: The <code class='backtick'>continues_on</code> algorithm works in tandem with <code class='backtick'>schedule_from</code> 
+(33.9.12.5 <a href="https://wg21.link/exec.schedule.from">[exec.schedule.from]</a>) to give scheduler authors a way to customize 
+both how to transition onto (<code class='backtick'>continues_on</code>) and off of (<code class='backtick'>schedule_from</code>) a given 
+execution context. Thus, <code class='backtick'>continues_on</code> ignores the domain of the predecessor and 
+uses the domain of the destination scheduler to select a customization, a property 
+that is unique to <code class='backtick'>continues_on</code>. That is why it is given special treatment here. 
+&mdash; <i>end note</i>]
+</p>
+</blockquote>
+<p>
+The exposition-only <code><i>get-domain-late</i></code> function treats <code class='backtick'>continues_on</code> 
+senders specially to make sure the correct domain (that of the destination scheduler) 
+is used to find customizations at connect time.
+<p/>
+However, customizations are also searched for early when the sender is first constructed. 
+And here the dispatching of <code class='backtick'>continues_on</code> and <code class='backtick'>schedule_from</code> are reversed.
+<p/>
+<code class='backtick'>continues_on(sndr, sch)</code> is defined as (33.9.12.4 <a href="https://wg21.link/exec.continues.on">[exec.continues.on]</a>):
+</p>
+<blockquote><pre>
+transform_sender(<i>get-domain-early</i>(sndr), <i>make-sender</i>(continues_on, sch, sndr))
+</pre></blockquote>
+<p>
+which is using the domain of the predecessor rather than ignoring it as 33.9.2 <a href="https://wg21.link/exec.snd.expos">[exec.snd.expos]</a> p14.1 
+says it does. And <code class='backtick'>schedule_from(sch, sndr)</code> is currently defined as (33.9.12.5 <a href="https://wg21.link/exec.schedule.from">[exec.schedule.from]</a>):
+</p>
+<blockquote><pre>
+transform_sender(
+  <i>query-or-default</i>(get_domain, sch, default_domain()),
+  <i>make-sender</i>(schedule_from, sch, sndr))
+</pre></blockquote>
+<p>
+which is using the domain of the destination scheduler to find customizations. The logic for 
+determining the domain to use for early customization of these two algorithms are opposite 
+what they are for late customization. This is a bug. They should be consistent.
+<p/>
+"Lazy" customization (at connect time) was added to <a href="https://wg21.link/P2300" title=" `std::execution`">P2300</a> later in the process, 
+and this inconsistency was a mistake on my part. The correct thing to do is to change 
+<code><i>get-domain-late</i></code> to treat <code class='backtick'>schedule_from</code> as special, not <code class='backtick'>continues_on</code>.
+</p>
+
+
+<p id="res-4248"><b>Proposed resolution:</b></p>
+<p>
+This wording is relative to <a href="https://wg21.link/N5008">N5008</a>.
+</p>
+
+<ol>
+
+<li><p>Modify 33.9.2 <a href="https://wg21.link/exec.snd.expos">[exec.snd.expos]</a> as indicated:</p>
+
+<blockquote>
+<pre>
+template&lt;class Sndr, class Env&gt;
+  constexpr auto <i>get-domain-late</i>(const Sndr&amp; sndr, const Env&amp; env) noexcept;
+</pre>
+<blockquote>
+<p>
+-14- <i>Effects</i>: Equivalent to:
+</p>
+<ol style="list-style-type: none">
+<li><p>(14.1) &mdash; If <code><i>sender-for</i>&lt;Sndr, <del>continues_on_t</del><ins>schedule_from_t</ins>&gt;</code> is <code class='backtick'>true</code>, then</p>
+<blockquote><pre>
+return Domain();
+</pre></blockquote>
+<p>
+where <code class='backtick'>Domain</code> is the type of the following expression:
+</p>
+<blockquote><pre>
+[] {
+  auto [_, sch, _] = sndr;
+  return <i>query-or-default</i>(get_domain, sch, default_domain());
+}();
+</pre></blockquote>
+<p>
+[<i>Note 1</i>: The <code><del>continues_on</del><ins>schedule_from</ins></code> algorithm 
+works in tandem with <code><del>schedule_from</del><ins>continues_on</ins></code> 
+(<del>33.9.12.5 <a href="https://wg21.link/exec.schedule.from">[exec.schedule.from]</a></del><ins>33.9.12.4 <a href="https://wg21.link/exec.continues.on">[exec.continues.on]</a></ins>) 
+to give scheduler authors a way to customize both how to transition onto 
+(<code><del>continues_on</del><ins>schedule_from</ins></code>) and off of 
+(<code><del>schedule_from</del><ins>continues_on</ins></code>) a given execution context. 
+Thus, <code><del>continues_on</del><ins>schedule_from</ins></code> ignores the domain of the 
+predecessor and uses the domain of the destination scheduler to select a customization, 
+a property that is unique to <code><del>continues_on</del><ins>schedule_from</ins></code>. 
+That is why it is given special treatment here. &mdash; <i>end note</i>]
+</p>
+</li>
+<li><p>[&hellip;]</p></li>
+</ol>
+</blockquote>
 </blockquote>
 
 </li>

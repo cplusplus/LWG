@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Issue 4248: Late domain-based dispatching of schedule_from and continues_on are flipped</title>
+<meta property="og:title" content="Issue 4248: Late domain-based dispatching of schedule_from and continues_on are flipped">
+<meta property="og:description" content="C++ library issue. Status: New">
+<meta property="og:url" content="https://cplusplus.github.io/LWG/issue4248.html">
+<meta property="og:type" content="website">
+<meta property="og:image" content="http://cplusplus.github.io/LWG/images/cpp_logo.png">
+<meta property="og:image:alt" content="C++ logo">
+<style>
+  p {text-align:justify}
+  li {text-align:justify}
+  pre code.backtick::before { content: "`" }
+  pre code.backtick::after { content: "`" }
+  blockquote.note
+  {
+    background-color:#E0E0E0;
+    padding-left: 15px;
+    padding-right: 15px;
+    padding-top: 1px;
+    padding-bottom: 1px;
+  }
+  ins {background-color:#A0FFA0}
+  del {background-color:#FFA0A0}
+  table.issues-index { border: 1px solid; border-collapse: collapse; }
+  table.issues-index th { text-align: center; padding: 4px; border: 1px solid; }
+  table.issues-index td { padding: 4px; border: 1px solid; }
+  table.issues-index td:nth-child(1) { text-align: right; }
+  table.issues-index td:nth-child(2) { text-align: left; }
+  table.issues-index td:nth-child(3) { text-align: left; }
+  table.issues-index td:nth-child(4) { text-align: left; }
+  table.issues-index td:nth-child(5) { text-align: center; }
+  table.issues-index td:nth-child(6) { text-align: center; }
+  table.issues-index td:nth-child(7) { text-align: left; }
+  table.issues-index td:nth-child(5) span.no-pr { color: red; }
+  @media (prefers-color-scheme: dark) {
+     html {
+        color: #ddd;
+        background-color: black;
+     }
+     ins {
+        background-color: #225522
+     }
+     del {
+        background-color: #662222
+     }
+     a {
+        color: #6af
+     }
+     a:visited {
+        color: #6af
+     }
+     blockquote.note
+     {
+        background-color: rgba(255, 255, 255, .10)
+     }
+  }
+</style>
+</head>
+<body>
+<hr>
+<p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#New">New</a> status.</em></p>
+<h3 id="4248"><a href="lwg-active.html#4248">4248</a>. Late domain-based dispatching of <code class='backtick'>schedule_from</code> and <code class='backtick'>continues_on</code> are flipped</h3>
+<p><b>Section:</b> 33.9.2 <a href="https://wg21.link/exec.snd.expos">[exec.snd.expos]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
+ <b>Submitter:</b> Eric Niebler <b>Opened:</b> 2025-04-26 <b>Last modified:</b> 2025-04-27</p>
+<p><b>Priority: </b>Not Prioritized
+</p>
+<p><b>View other</b> <a href="lwg-index-open.html#exec.snd.expos">active issues</a> in [exec.snd.expos].</p>
+<p><b>View all other</b> <a href="lwg-index.html#exec.snd.expos">issues</a> in [exec.snd.expos].</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
+<p><b>Discussion:</b></p>
+<p>
+The reason for having two different customization points for transitioning between two execution contexts 
+is described in 33.9.2 <a href="https://wg21.link/exec.snd.expos">[exec.snd.expos]</a> bullet (14.1) Note 1, to wit:
+</p>
+<blockquote style="border-left: 3px solid #ccc;padding-left: 15px;">
+<p>
+[<i>Note 1</i>: The <code class='backtick'>continues_on</code> algorithm works in tandem with <code class='backtick'>schedule_from</code> 
+(33.9.12.5 <a href="https://wg21.link/exec.schedule.from">[exec.schedule.from]</a>) to give scheduler authors a way to customize 
+both how to transition onto (<code class='backtick'>continues_on</code>) and off of (<code class='backtick'>schedule_from</code>) a given 
+execution context. Thus, <code class='backtick'>continues_on</code> ignores the domain of the predecessor and 
+uses the domain of the destination scheduler to select a customization, a property 
+that is unique to <code class='backtick'>continues_on</code>. That is why it is given special treatment here. 
+&mdash; <i>end note</i>]
+</p>
+</blockquote>
+<p>
+The exposition-only <code><i>get-domain-late</i></code> function treats <code class='backtick'>continues_on</code> 
+senders specially to make sure the correct domain (that of the destination scheduler) 
+is used to find customizations at connect time.
+<p/>
+However, customizations are also searched for early when the sender is first constructed. 
+And here the dispatching of <code class='backtick'>continues_on</code> and <code class='backtick'>schedule_from</code> are reversed.
+<p/>
+<code class='backtick'>continues_on(sndr, sch)</code> is defined as (33.9.12.4 <a href="https://wg21.link/exec.continues.on">[exec.continues.on]</a>):
+</p>
+<blockquote><pre>
+transform_sender(<i>get-domain-early</i>(sndr), <i>make-sender</i>(continues_on, sch, sndr))
+</pre></blockquote>
+<p>
+which is using the domain of the predecessor rather than ignoring it as 33.9.2 <a href="https://wg21.link/exec.snd.expos">[exec.snd.expos]</a> p14.1 
+says it does. And <code class='backtick'>schedule_from(sch, sndr)</code> is currently defined as (33.9.12.5 <a href="https://wg21.link/exec.schedule.from">[exec.schedule.from]</a>):
+</p>
+<blockquote><pre>
+transform_sender(
+  <i>query-or-default</i>(get_domain, sch, default_domain()),
+  <i>make-sender</i>(schedule_from, sch, sndr))
+</pre></blockquote>
+<p>
+which is using the domain of the destination scheduler to find customizations. The logic for 
+determining the domain to use for early customization of these two algorithms are opposite 
+what they are for late customization. This is a bug. They should be consistent.
+<p/>
+"Lazy" customization (at connect time) was added to <a href="https://wg21.link/P2300" title=" `std::execution`">P2300</a> later in the process, 
+and this inconsistency was a mistake on my part. The correct thing to do is to change 
+<code><i>get-domain-late</i></code> to treat <code class='backtick'>schedule_from</code> as special, not <code class='backtick'>continues_on</code>.
+</p>
+
+
+<p id="res-4248"><b>Proposed resolution:</b></p>
+<p>
+This wording is relative to <a href="https://wg21.link/N5008">N5008</a>.
+</p>
+
+<ol>
+
+<li><p>Modify 33.9.2 <a href="https://wg21.link/exec.snd.expos">[exec.snd.expos]</a> as indicated:</p>
+
+<blockquote>
+<pre>
+template&lt;class Sndr, class Env&gt;
+  constexpr auto <i>get-domain-late</i>(const Sndr&amp; sndr, const Env&amp; env) noexcept;
+</pre>
+<blockquote>
+<p>
+-14- <i>Effects</i>: Equivalent to:
+</p>
+<ol style="list-style-type: none">
+<li><p>(14.1) &mdash; If <code><i>sender-for</i>&lt;Sndr, <del>continues_on_t</del><ins>schedule_from_t</ins>&gt;</code> is <code class='backtick'>true</code>, then</p>
+<blockquote><pre>
+return Domain();
+</pre></blockquote>
+<p>
+where <code class='backtick'>Domain</code> is the type of the following expression:
+</p>
+<blockquote><pre>
+[] {
+  auto [_, sch, _] = sndr;
+  return <i>query-or-default</i>(get_domain, sch, default_domain());
+}();
+</pre></blockquote>
+<p>
+[<i>Note 1</i>: The <code><del>continues_on</del><ins>schedule_from</ins></code> algorithm 
+works in tandem with <code><del>schedule_from</del><ins>continues_on</ins></code> 
+(<del>33.9.12.5 <a href="https://wg21.link/exec.schedule.from">[exec.schedule.from]</a></del><ins>33.9.12.4 <a href="https://wg21.link/exec.continues.on">[exec.continues.on]</a></ins>) 
+to give scheduler authors a way to customize both how to transition onto 
+(<code><del>continues_on</del><ins>schedule_from</ins></code>) and off of 
+(<code><del>schedule_from</del><ins>continues_on</ins></code>) a given execution context. 
+Thus, <code><del>continues_on</del><ins>schedule_from</ins></code> ignores the domain of the 
+predecessor and uses the domain of the destination scheduler to select a customization, 
+a property that is unique to <code><del>continues_on</del><ins>schedule_from</ins></code>. 
+That is why it is given special treatment here. &mdash; <i>end note</i>]
+</p>
+</li>
+<li><p>[&hellip;]</p></li>
+</ol>
+</blockquote>
+</blockquote>
+
+</li>
+
+</ol>
+
+
+
+
+
+</body>
+</html>
