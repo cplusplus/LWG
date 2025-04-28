@@ -64,7 +64,7 @@
 <p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#New">New</a> status.</em></p>
 <h3 id="3855"><a href="lwg-active.html#3855">3855</a>. <code><i>tiny-range</i></code> is not quite right</h3>
 <p><b>Section:</b> 25.7.16.2 <a href="https://wg21.link/range.lazy.split.view">[range.lazy.split.view]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Hewill Kang <b>Opened:</b> 2023-01-07 <b>Last modified:</b> 2025-04-27</p>
+ <b>Submitter:</b> Hewill Kang <b>Opened:</b> 2023-01-07 <b>Last modified:</b> 2025-04-28</p>
 <p><b>Priority: </b>4
 </p>
 <p><b>View other</b> <a href="lwg-index-open.html#range.lazy.split.view">active issues</a> in [range.lazy.split.view].</p>
@@ -209,11 +209,11 @@ namespace std::ranges {
 [<i>Drafting note:</i>
 We can't use <code>if constexpr (ranges::size(<i>i_</i>.<i>parent_</i>-&gt;<i>pattern_</i>) == 0)</code> 
 here because it is not a constant expression, and it seems more intuitive to just use 
-<code>ranges::empty</code> which is always well-formed. Note that the PR does not seek the
-aggressive optimization that minimizes the instantiation as this is not the intent of the 
-current design (for example, <code><i>outer-iterator</i>&amp; operator++()</code> can be
-specialized for the case where <code>Pattern::size() == 0</code>), library implementations 
-are free to optimize as it pleases.]
+<code>ranges::empty</code> combined with runtime <code>if</code> which is always well-formed. 
+Note that the PR does not seek the aggressive optimization that minimizes the instantiation as this is 
+not the intent of the current design (for example, <code><i>outer-iterator</i>&amp; operator++()</code> 
+can be specialized for the case where <code>Pattern::size() == 0</code> to save some O(1) comparisons), 
+library implementations are free to optimize as it pleases.]
 </p>
 </blockquote>
 
