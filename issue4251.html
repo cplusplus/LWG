@@ -86,13 +86,16 @@ is false.
 <p>
 It seems like we should require <code class='backtick'>is_move_constructible_v</code> instead,
 and only if the allocator traits mean we need to construct an object.
+(Technically move-constructible might not be correct, because the allocator's
+<code class='backtick'>construct</code> member might use a different constructor).
 </p>
 <p>
 Additionally, the noexcept-specifier for the move assignment doesn't match
 the effects. The noexcept-specifier says it can't throw if POCMA is true,
-but nothing in the effects says that ownership can be transferred in that case.
-We only do a non-throwing transfer when the allocators are equal.
-I think we should also transfer ownership when
+but nothing in the effects says that ownership can be transferred in that case;
+we only do a non-throwing transfer when the allocators are equal.
+I think we <i>should</i> transfer ownership when POCMA is true,
+which would make the noexcept-specifier correct.
 </p>
 
 
