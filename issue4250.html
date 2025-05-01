@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Issue 4250: swap overloads for indirect and polymorphic only found by ADL</title>
+<meta property="og:title" content="Issue 4250: swap overloads for indirect and polymorphic only found by ADL">
+<meta property="og:description" content="C++ library issue. Status: New">
+<meta property="og:url" content="https://cplusplus.github.io/LWG/issue4250.html">
+<meta property="og:type" content="website">
+<meta property="og:image" content="http://cplusplus.github.io/LWG/images/cpp_logo.png">
+<meta property="og:image:alt" content="C++ logo">
+<style>
+  p {text-align:justify}
+  li {text-align:justify}
+  pre code.backtick::before { content: "`" }
+  pre code.backtick::after { content: "`" }
+  blockquote.note
+  {
+    background-color:#E0E0E0;
+    padding-left: 15px;
+    padding-right: 15px;
+    padding-top: 1px;
+    padding-bottom: 1px;
+  }
+  ins {background-color:#A0FFA0}
+  del {background-color:#FFA0A0}
+  table.issues-index { border: 1px solid; border-collapse: collapse; }
+  table.issues-index th { text-align: center; padding: 4px; border: 1px solid; }
+  table.issues-index td { padding: 4px; border: 1px solid; }
+  table.issues-index td:nth-child(1) { text-align: right; }
+  table.issues-index td:nth-child(2) { text-align: left; }
+  table.issues-index td:nth-child(3) { text-align: left; }
+  table.issues-index td:nth-child(4) { text-align: left; }
+  table.issues-index td:nth-child(5) { text-align: center; }
+  table.issues-index td:nth-child(6) { text-align: center; }
+  table.issues-index td:nth-child(7) { text-align: left; }
+  table.issues-index td:nth-child(5) span.no-pr { color: red; }
+  @media (prefers-color-scheme: dark) {
+     html {
+        color: #ddd;
+        background-color: black;
+     }
+     ins {
+        background-color: #225522
+     }
+     del {
+        background-color: #662222
+     }
+     a {
+        color: #6af
+     }
+     a:visited {
+        color: #6af
+     }
+     blockquote.note
+     {
+        background-color: rgba(255, 255, 255, .10)
+     }
+  }
+</style>
+</head>
+<body>
+<hr>
+<p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#New">New</a> status.</em></p>
+<h3 id="4250"><a href="lwg-active.html#4250">4250</a>. <code class='backtick'>swap</code> overloads for <code class='backtick'>indirect</code> and <code class='backtick'>polymorphic</code> only found by ADL</h3>
+<p><b>Section:</b> 20.4.1.7 <a href="https://wg21.link/indirect.swap">[indirect.swap]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
+ <b>Submitter:</b> Jonathan Wakely <b>Opened:</b> 2025-05-01 <b>Last modified:</b> 2025-05-01</p>
+<p><b>Priority: </b>Not Prioritized
+</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
+<p><b>Discussion:</b></p>
+<p>
+The non-member <code class='backtick'>swap</code> overloads for <code class='backtick'>std::indirect</code> and <code class='backtick'>std::polymorphic</code>
+are defined as hidden friends, so are only available via ADL.
+This means that calling <code class='backtick'>std::swap(i1, i2)</code> will always use the generic
+<code class='backtick'>std::swap</code> instead of the custom overload for <code class='backtick'>std::indirect</code>.
+</p>
+
+
+<p id="res-4250"><b>Proposed resolution:</b></p>
+<p>
+This wording is relative to <a href="https://wg21.link/N5008">N5008</a>.
+</p>
+<ol>
+
+<li><p>Modify 20.2.2 <a href="https://wg21.link/memory.syn">[memory.syn]</a> as indicated:</p>
+
+<blockquote>
+<pre><code>
+// 20.4.1, class template indirect
+template&lt;class T, class Allocator = allocator&lt;T&gt;&gt;
+  class indirect;
+<ins>
+template&lt;class T, class Allocator&gt;
+constexpr void swap(indirect&lt;T, Allocator&gt;&amp; lhs, indirect&lt;T, Allocator&gt;&amp; rhs) noexcept(<i>see below</i>);
+</ins>
+// 20.4.1.10, hash support
+template&lt;class T, class Alloc&gt; struct hash&lt;indirect&lt;T, Alloc&gt;&gt;;
+
+// 20.4.2, class template polymorphic
+template&lt;class T, class Allocator = allocator&lt;T&gt;&gt;
+  class polymorphic;
+<ins>
+template&lt;class T, class Allocator&gt;
+constexpr void swap(polymorphic&lt;T, Allocator&gt;&amp; lhs, polymorphic&lt;T, Allocator&gt;&amp; rhs) noexcept(<i>see below</i>);
+</ins>
+</code></pre>
+</blockquote>
+</li>
+
+<li><p>Modify 20.4.1.2 <a href="https://wg21.link/indirect.syn">[indirect.syn]</a> as indicated:</p>
+<blockquote>
+<pre><code>
+// 20.4.1.7, swap
+constexpr void swap(indirect&amp; other) noexcept(<i>see below</i>);
+<del>friend constexpr void swap(indirect&amp; lhs, indirect&amp; rhs) noexcept(<i>see below</i>);</del>
+</code></pre>
+</blockquote>
+</li>
+
+<li><p>Modify 20.4.1.7 <a href="https://wg21.link/indirect.swap">[indirect.swap]</a> as indicated:</p>
+<blockquote>
+<pre><code>
+<ins>template&lt;class T, class Allocator&gt;</ins>
+constexpr void swap(indirect<ins>&lt;T, Allocator&gt;</ins>&amp; lhs, indirect<ins>&lt;T, Allocator&gt;</ins>&amp; rhs) noexcept(noexcept(lhs.swap(rhs)));
+</code></pre>
+<blockquote>-3- <i>Effects</i>: Equivalent to <code class='backtick'>lhs.swap(rhs)</code>.</blockquote>
+</blockquote>
+</li>
+
+<li><p>Modify 20.4.2.2 <a href="https://wg21.link/polymorphic.syn">[polymorphic.syn]</a> as indicated:</p>
+<blockquote>
+<pre><code>
+// 20.4.2.7, swap
+constexpr void swap(polymorphic&amp; other) noexcept(<i>see below</i>);
+<del>friend constexpr void swap(polymorphic&amp; lhs, polymorphic&amp; rhs) noexcept(<i>see below</i>);</del>
+</code></pre>
+</blockquote>
+</li>
+
+<li><p>Modify 20.4.2.7 <a href="https://wg21.link/polymorphic.swap">[polymorphic.swap]</a> as indicated:</p>
+<blockquote>
+<pre><code>
+<ins>template&lt;class T, class Allocator&gt;</ins>
+constexpr void swap(polymorphic<ins>&lt;T, Allocator&gt;</ins>&amp; lhs, polymorphic<ins>&lt;T, Allocator&gt;</ins>&amp; rhs) noexcept(noexcept(lhs.swap(rhs)));
+</code></pre>
+<blockquote>-3- <i>Effects</i>: Equivalent to <code class='backtick'>lhs.swap(rhs)</code>.</blockquote>
+</blockquote>
+</li>
+
+</ol>
+
+
+
+
+
+
+</body>
+</html>

@@ -54,7 +54,7 @@
 </style>
 </head>
 <body>
-<p>Revised 2025-04-28 at 08:11:08 UTC
+<p>Revised 2025-05-01 at 18:06:06 UTC
 </p><h2>Unresolved Issues</h2>
 <hr>
 <h3 id="423"><a href="#423">423</a><sup><a href="https://cplusplus.github.io/LWG/issue423">(i)</a></sup>. Effects of negative <code>streamsize</code> in iostreams</h3>
@@ -69870,6 +69870,215 @@ else</ins>
 
 </li>
 
+</ol>
+
+
+
+
+
+<hr>
+<h3 id="4250"><a href="#4250">4250</a><sup><a href="https://cplusplus.github.io/LWG/issue4250">(i)</a></sup>. <code class='backtick'>swap</code> overloads for <code class='backtick'>indirect</code> and <code class='backtick'>polymorphic</code> only found by ADL</h3>
+<p><b>Section:</b> 20.4.1.7 <a href="https://wg21.link/indirect.swap">[indirect.swap]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
+ <b>Submitter:</b> Jonathan Wakely <b>Opened:</b> 2025-05-01 <b>Last modified:</b> 2025-05-01</p>
+<p><b>Priority: </b>Not Prioritized
+</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
+<p><b>Discussion:</b></p>
+<p>
+The non-member <code class='backtick'>swap</code> overloads for <code class='backtick'>std::indirect</code> and <code class='backtick'>std::polymorphic</code>
+are defined as hidden friends, so are only available via ADL.
+This means that calling <code class='backtick'>std::swap(i1, i2)</code> will always use the generic
+<code class='backtick'>std::swap</code> instead of the custom overload for <code class='backtick'>std::indirect</code>.
+</p>
+
+
+<p id="res-4250"><b>Proposed resolution:</b></p>
+<p>
+This wording is relative to <a href="https://wg21.link/N5008">N5008</a>.
+</p>
+<ol>
+
+<li><p>Modify 20.2.2 <a href="https://wg21.link/memory.syn">[memory.syn]</a> as indicated:</p>
+
+<blockquote>
+<pre><code>
+// 20.4.1, class template indirect
+template&lt;class T, class Allocator = allocator&lt;T&gt;&gt;
+  class indirect;
+<ins>
+template&lt;class T, class Allocator&gt;
+constexpr void swap(indirect&lt;T, Allocator&gt;&amp; lhs, indirect&lt;T, Allocator&gt;&amp; rhs) noexcept(<i>see below</i>);
+</ins>
+// 20.4.1.10, hash support
+template&lt;class T, class Alloc&gt; struct hash&lt;indirect&lt;T, Alloc&gt;&gt;;
+
+// 20.4.2, class template polymorphic
+template&lt;class T, class Allocator = allocator&lt;T&gt;&gt;
+  class polymorphic;
+<ins>
+template&lt;class T, class Allocator&gt;
+constexpr void swap(polymorphic&lt;T, Allocator&gt;&amp; lhs, polymorphic&lt;T, Allocator&gt;&amp; rhs) noexcept(<i>see below</i>);
+</ins>
+</code></pre>
+</blockquote>
+</li>
+
+<li><p>Modify 20.4.1.2 <a href="https://wg21.link/indirect.syn">[indirect.syn]</a> as indicated:</p>
+<blockquote>
+<pre><code>
+// 20.4.1.7, swap
+constexpr void swap(indirect&amp; other) noexcept(<i>see below</i>);
+<del>friend constexpr void swap(indirect&amp; lhs, indirect&amp; rhs) noexcept(<i>see below</i>);</del>
+</code></pre>
+</blockquote>
+</li>
+
+<li><p>Modify 20.4.1.7 <a href="https://wg21.link/indirect.swap">[indirect.swap]</a> as indicated:</p>
+<blockquote>
+<pre><code>
+<ins>template&lt;class T, class Allocator&gt;</ins>
+constexpr void swap(indirect<ins>&lt;T, Allocator&gt;</ins>&amp; lhs, indirect<ins>&lt;T, Allocator&gt;</ins>&amp; rhs) noexcept(noexcept(lhs.swap(rhs)));
+</code></pre>
+<blockquote>-3- <i>Effects</i>: Equivalent to <code class='backtick'>lhs.swap(rhs)</code>.</blockquote>
+</blockquote>
+</li>
+
+<li><p>Modify 20.4.2.2 <a href="https://wg21.link/polymorphic.syn">[polymorphic.syn]</a> as indicated:</p>
+<blockquote>
+<pre><code>
+// 20.4.2.7, swap
+constexpr void swap(polymorphic&amp; other) noexcept(<i>see below</i>);
+<del>friend constexpr void swap(polymorphic&amp; lhs, polymorphic&amp; rhs) noexcept(<i>see below</i>);</del>
+</code></pre>
+</blockquote>
+</li>
+
+<li><p>Modify 20.4.2.7 <a href="https://wg21.link/polymorphic.swap">[polymorphic.swap]</a> as indicated:</p>
+<blockquote>
+<pre><code>
+<ins>template&lt;class T, class Allocator&gt;</ins>
+constexpr void swap(polymorphic<ins>&lt;T, Allocator&gt;</ins>&amp; lhs, polymorphic<ins>&lt;T, Allocator&gt;</ins>&amp; rhs) noexcept(noexcept(lhs.swap(rhs)));
+</code></pre>
+<blockquote>-3- <i>Effects</i>: Equivalent to <code class='backtick'>lhs.swap(rhs)</code>.</blockquote>
+</blockquote>
+</li>
+
+</ol>
+
+
+
+
+
+
+<hr>
+<h3 id="4251"><a href="#4251">4251</a><sup><a href="https://cplusplus.github.io/LWG/issue4251">(i)</a></sup>. Move assignment for <code class='backtick'>indirect</code> unnecessarily requires copy construction</h3>
+<p><b>Section:</b> 20.4.1.5 <a href="https://wg21.link/indirect.asgn">[indirect.asgn]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
+ <b>Submitter:</b> Jonathan Wakely <b>Opened:</b> 2025-05-01 <b>Last modified:</b> 2025-05-01</p>
+<p><b>Priority: </b>Not Prioritized
+</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
+<p><b>Discussion:</b></p>
+<p>
+The move assignment operator for <code class='backtick'>indirect</code> says:
+<blockquote>
+<i>Mandates</i>: <code>is_copy_constructible_t&lt;T&gt;</code> is <code class='backtick'>true</code>.
+</blockquote>
+
+However, the only way it ever construct an object is:
+<blockquote>
+constructs a new owned object with the owned object of <code class='backtick'>other</code> as the argument
+as an rvalue
+</blockquote>
+and that only ever happens when <code><i>alloc</i> == other.<i>alloc</i></code>
+is false.
+</p>
+<p>
+It seems like we should require <code class='backtick'>is_move_constructible_v</code> instead,
+and only if the allocator traits mean we need to construct an object.
+</p>
+<p>
+Additionally, the noexcept-specifier for the move assignment doesn't match
+the effects. The noexcept-specifier says it can't throw if POCMA is true,
+but nothing in the effects says that ownership can be transferred in that case.
+We only do a non-throwing transfer when the allocators are equal.
+I think we should also transfer ownership when
+</p>
+
+
+<p id="res-4251"><b>Proposed resolution:</b></p>
+<p>
+This wording is relative to <a href="https://wg21.link/N5008">N5008</a>.
+</p>
+<ol>
+
+<li><p>Modify 20.4.1.5 <a href="https://wg21.link/indirect.asgn">[indirect.asgn]</a> as indicated:</p>
+<blockquote>
+<pre><code>
+constexpr indirect&amp; operator=(indirect&amp;&amp; other)
+  noexcept(allocator_traits&lt;Allocator&gt;::propagate_on_container_move_assignment::value ||
+           allocator_traits&lt;Allocator&gt;::is_always_equal::value);
+</code></pre>
+<blockquote>
+<p>
+-5- <i>Mandates</i>:
+<ins>
+If
+<code>allocator_traits&lt;Allocator&gt;::propagate_on_container_move_assignment::value</code>
+is <code class='backtick'>false</code>
+and
+<code>allocator_traits&lt;Allocator&gt;::is_always_equal::value</code>
+is <code class='backtick'>false</code>,
+</ins>
+<code>is_<del>copy</del><ins>move</ins>_constructible_t&lt;T&gt;</code> is <code class='backtick'>true</code>.
+</p>
+<p>
+-6- <i>Effects</i>:
+If <code class='backtick'>addressof(other) == this</code> is <code class='backtick'>true</code>, there are no effects.
+Otherwise:
+<ol style="list-style-type:none">
+<li>(6.1) &mdash;
+The allocator needs updating if
+<code>allocator_traits&lt;Allocator&gt;::propagate_on_container_move_assignment::value</code>
+is <code class='backtick'>true</code>.
+</li>
+<li>(6.2) &mdash;
+If <code class='backtick'>other</code> is valueless, <code class='backtick'>*this</code> becomes valueless<del> and the owned object
+in <code class='backtick'>*this</code>, if any, is destroyed using
+<code>allocator_traits&lt;Allocator&gt;::destroy</code>
+and then the storage is deallocated</del>.
+</li>
+<li>(6.3) &mdash;
+Otherwise,
+<ins>if the allocator needs updating or</ins>
+if <code><i>alloc</i> == other.<i>alloc</i></code> is <code class='backtick'>true</code>,
+<del>
+swaps the owned objects in <code class='backtick'>*this</code> and <code class='backtick'>other</code>;
+the owned object in <code class='backtick'>other</code>, if any, is then destroyed using
+<code>allocator_traits&lt;Allocator&gt;::destroy</code>
+and then the storage is deallocated
+</del>
+<ins><code class='backtick'>*this</code> takes ownership of the owned object of <code class='backtick'>other</code></ins>.
+</li>
+<li>(6.4) &mdash;
+Otherwise, constructs a new owned object with the owned object of <code class='backtick'>other</code>
+as the argument as an rvalue, using either the allocator in <code class='backtick'>*this</code>
+or the allocator in <code class='backtick'>other</code> if the allocator needs updating.
+</li>
+<li>(6.5) &mdash;
+The previously owned object in <code class='backtick'>*this</code>, if any, is destroyed using
+<code>allocator_traits&lt;Allocator&gt;::destroy</code>
+and then the storage is deallocated.
+</li>
+<li>(6.6) &mdash;
+If the allocator needs updating,
+the allocator in <code class='backtick'>*this</code> is replaced with a copy of the allocator in <code class='backtick'>other</code>.
+</li>
+</ol>
+</p>
+<p>-7- <i>Postcondition</i>: <code class='backtick'>other</code> is valueless.</p>
+</blockquote>
+</blockquote>
+</li>
 </ol>
 
 
