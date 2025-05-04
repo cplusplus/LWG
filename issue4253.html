@@ -89,7 +89,7 @@ using BI = std::basic_const_iterator&lt;I&gt;;
 static_assert(std::same_as&lt;RI::iterator_type, I&gt;);
 static_assert(std::same_as&lt;MI::iterator_type, I&gt;);
 static_assert(std::same_as&lt;CI::iterator_type, I&gt;);
-static_assert(std::same_as&lt;BI::iterator_type, I&gt;); // <span  style="color:#C80000;font-weight:bold">fire</span>
+static_assert(std::same_as&lt;BI::iterator_type, I&gt;); // <span  style="color:#C80000;font-weight:bold">error</span>
 </pre></blockquote>
 <p>
 It seems reasonable to add one for <code class='backtick'>basic_const_iterator</code> for consistency.
