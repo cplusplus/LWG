@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Issue 4254: stride_view::iterator should provide operator-&gt;</title>
+<meta property="og:title" content="Issue 4254: stride_view::iterator should provide operator-&gt;">
+<meta property="og:description" content="C++ library issue. Status: New">
+<meta property="og:url" content="https://cplusplus.github.io/LWG/issue4254.html">
+<meta property="og:type" content="website">
+<meta property="og:image" content="http://cplusplus.github.io/LWG/images/cpp_logo.png">
+<meta property="og:image:alt" content="C++ logo">
+<style>
+  p {text-align:justify}
+  li {text-align:justify}
+  pre code.backtick::before { content: "`" }
+  pre code.backtick::after { content: "`" }
+  blockquote.note
+  {
+    background-color:#E0E0E0;
+    padding-left: 15px;
+    padding-right: 15px;
+    padding-top: 1px;
+    padding-bottom: 1px;
+  }
+  ins {background-color:#A0FFA0}
+  del {background-color:#FFA0A0}
+  table.issues-index { border: 1px solid; border-collapse: collapse; }
+  table.issues-index th { text-align: center; padding: 4px; border: 1px solid; }
+  table.issues-index td { padding: 4px; border: 1px solid; }
+  table.issues-index td:nth-child(1) { text-align: right; }
+  table.issues-index td:nth-child(2) { text-align: left; }
+  table.issues-index td:nth-child(3) { text-align: left; }
+  table.issues-index td:nth-child(4) { text-align: left; }
+  table.issues-index td:nth-child(5) { text-align: center; }
+  table.issues-index td:nth-child(6) { text-align: center; }
+  table.issues-index td:nth-child(7) { text-align: left; }
+  table.issues-index td:nth-child(5) span.no-pr { color: red; }
+  @media (prefers-color-scheme: dark) {
+     html {
+        color: #ddd;
+        background-color: black;
+     }
+     ins {
+        background-color: #225522
+     }
+     del {
+        background-color: #662222
+     }
+     a {
+        color: #6af
+     }
+     a:visited {
+        color: #6af
+     }
+     blockquote.note
+     {
+        background-color: rgba(255, 255, 255, .10)
+     }
+  }
+</style>
+</head>
+<body>
+<hr>
+<p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#New">New</a> status.</em></p>
+<h3 id="4254"><a href="lwg-active.html#4254">4254</a>. <code>stride_view::<i>iterator</i></code> should provide <code>operator-&gt;</code></h3>
+<p><b>Section:</b> 25.7.32.3 <a href="https://wg21.link/range.stride.iterator">[range.stride.iterator]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
+ <b>Submitter:</b> Hewill Kang <b>Opened:</b> 2025-05-01 <b>Last modified:</b> 2025-05-04</p>
+<p><b>Priority: </b>Not Prioritized
+</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
+<p><b>Discussion:</b></p>
+<p>
+Currently, only <code>filter_view::<i>iterator</i></code> and <code>join_view::<i>InnerIter</i></code> in
+<code>&lt;ranges&gt;</code> provide <code>operator-&gt;</code>, which makes sense since their <code class='backtick'>operator*</code>
+simply dereferences the underlying iterator.
+<p/>
+It turns out this is also true for <code>stride_view::<i>iterator</i></code>, suggesting that providing
+<code>operator-&gt;</code> does is the intuitive thing to do, e.g. when wrapping pointers, keeping 
+<code>operator-&gt;</code> valid so that users can continue to use <code>it-&gt;foo()</code>.
+<p/>
+There is no reason to give up this convenience because <code>stride_view::<i>iterator</i></code> is intended 
+to preserve the nature of the underlying iterator.
+</p>
+
+
+<p id="res-4254"><b>Proposed resolution:</b></p>
+<p>
+This wording is relative to <a href="https://wg21.link/N5008">N5008</a>.
+</p>
+<ol>
+
+<li><p>Modify 25.7.32.3 <a href="https://wg21.link/range.stride.iterator">[range.stride.iterator]</a> as indicated:</p>
+
+<blockquote>
+<pre>
+namespace std::ranges {
+  template&lt;input_range V&gt;
+    requires view&lt;V&gt;
+  template&lt;bool Const&gt;
+  class stride_view&lt;V&gt;::<i>iterator</i> {
+    using <i>Parent</i> = <i>maybe-const</i>&lt;Const, stride_view&gt;;                      // <i>exposition only</i>
+    using <i>Base</i> = <i>maybe-const</i>&lt;Const, V&gt;;                                  // <i>exposition only</i>
+
+    iterator_t&lt;<i>Base</i>&gt; <i>current_</i> = iterator_t&lt;<i>Base</i>&gt;();                      // <i>exposition only</i>
+    sentinel_t&lt;<i>Base</i>&gt; <i>end_</i> = sentinel_t&lt;<i>Base</i>&gt;();                          // <i>exposition only</i>
+    range_difference_t&lt;<i>Base</i>&gt; <i>stride_</i> = 0;                                // <i>exposition only</i>
+    range_difference_t&lt;<i>Base</i>&gt; <i>missing_</i> = 0;                               // <i>exposition only</i>
+
+    constexpr iterator(<i>Parent</i>* parent, iterator_t&lt;<i>Base</i>&gt; current,        // <i>exposition only</i>
+                       range_difference_t&lt;<i>Base</i>&gt; missing = 0);
+  public:
+    [&hellip;]
+  
+    constexpr decltype(auto) operator*() const { return *<i>current_</i>; }
+    <ins>constexpr auto operator-&gt;() const
+      requires <i>has-arrow</i>&lt;iterator_t&lt;<i>Base</i>&gt;&gt; &amp;&amp; copyable&lt;iterator_t&lt;<i>Base</i>&gt;&gt;
+    { return <i>current_</i>; }</ins>
+  
+    [&hellip;]
+  };
+}</pre>
+</blockquote>
+</li>
+</ol>
+
+
+
+
+
+</body>
+</html>

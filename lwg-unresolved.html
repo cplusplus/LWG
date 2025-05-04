@@ -54,7 +54,7 @@
 </style>
 </head>
 <body>
-<p>Revised 2025-05-04 at 12:05:14 UTC
+<p>Revised 2025-05-04 at 12:30:07 UTC
 </p><h2>Unresolved Issues</h2>
 <hr>
 <h3 id="423"><a href="#423">423</a><sup><a href="https://cplusplus.github.io/LWG/issue423">(i)</a></sup>. Effects of negative <code>streamsize</code> in iostreams</h3>
@@ -70196,6 +70196,72 @@ namespace std {
   };
 }
 </pre>
+</blockquote>
+</li>
+</ol>
+
+
+
+
+
+<hr>
+<h3 id="4254"><a href="#4254">4254</a><sup><a href="https://cplusplus.github.io/LWG/issue4254">(i)</a></sup>. <code>stride_view::<i>iterator</i></code> should provide <code>operator-&gt;</code></h3>
+<p><b>Section:</b> 25.7.32.3 <a href="https://wg21.link/range.stride.iterator">[range.stride.iterator]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
+ <b>Submitter:</b> Hewill Kang <b>Opened:</b> 2025-05-01 <b>Last modified:</b> 2025-05-04</p>
+<p><b>Priority: </b>Not Prioritized
+</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
+<p><b>Discussion:</b></p>
+<p>
+Currently, only <code>filter_view::<i>iterator</i></code> and <code>join_view::<i>InnerIter</i></code> in
+<code>&lt;ranges&gt;</code> provide <code>operator-&gt;</code>, which makes sense since their <code class='backtick'>operator*</code>
+simply dereferences the underlying iterator.
+<p/>
+It turns out this is also true for <code>stride_view::<i>iterator</i></code>, suggesting that providing
+<code>operator-&gt;</code> does is the intuitive thing to do, e.g. when wrapping pointers, keeping 
+<code>operator-&gt;</code> valid so that users can continue to use <code>it-&gt;foo()</code>.
+<p/>
+There is no reason to give up this convenience because <code>stride_view::<i>iterator</i></code> is intended 
+to preserve the nature of the underlying iterator.
+</p>
+
+
+<p id="res-4254"><b>Proposed resolution:</b></p>
+<p>
+This wording is relative to <a href="https://wg21.link/N5008">N5008</a>.
+</p>
+<ol>
+
+<li><p>Modify 25.7.32.3 <a href="https://wg21.link/range.stride.iterator">[range.stride.iterator]</a> as indicated:</p>
+
+<blockquote>
+<pre>
+namespace std::ranges {
+  template&lt;input_range V&gt;
+    requires view&lt;V&gt;
+  template&lt;bool Const&gt;
+  class stride_view&lt;V&gt;::<i>iterator</i> {
+    using <i>Parent</i> = <i>maybe-const</i>&lt;Const, stride_view&gt;;                      // <i>exposition only</i>
+    using <i>Base</i> = <i>maybe-const</i>&lt;Const, V&gt;;                                  // <i>exposition only</i>
+
+    iterator_t&lt;<i>Base</i>&gt; <i>current_</i> = iterator_t&lt;<i>Base</i>&gt;();                      // <i>exposition only</i>
+    sentinel_t&lt;<i>Base</i>&gt; <i>end_</i> = sentinel_t&lt;<i>Base</i>&gt;();                          // <i>exposition only</i>
+    range_difference_t&lt;<i>Base</i>&gt; <i>stride_</i> = 0;                                // <i>exposition only</i>
+    range_difference_t&lt;<i>Base</i>&gt; <i>missing_</i> = 0;                               // <i>exposition only</i>
+
+    constexpr iterator(<i>Parent</i>* parent, iterator_t&lt;<i>Base</i>&gt; current,        // <i>exposition only</i>
+                       range_difference_t&lt;<i>Base</i>&gt; missing = 0);
+  public:
+    [&hellip;]
+  
+    constexpr decltype(auto) operator*() const { return *<i>current_</i>; }
+    <ins>constexpr auto operator-&gt;() const
+      requires <i>has-arrow</i>&lt;iterator_t&lt;<i>Base</i>&gt;&gt; &amp;&amp; copyable&lt;iterator_t&lt;<i>Base</i>&gt;&gt;
+    { return <i>current_</i>; }</ins>
+  
+    [&hellip;]
+  };
+}</pre>
 </blockquote>
 </li>
 </ol>
