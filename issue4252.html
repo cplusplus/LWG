@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Issue 4252: Are exposition-only classes considered specified for the purpose of final?</title>
+<meta property="og:title" content="Issue 4252: Are exposition-only classes considered specified for the purpose of final?">
+<meta property="og:description" content="C++ library issue. Status: New">
+<meta property="og:url" content="https://cplusplus.github.io/LWG/issue4252.html">
+<meta property="og:type" content="website">
+<meta property="og:image" content="http://cplusplus.github.io/LWG/images/cpp_logo.png">
+<meta property="og:image:alt" content="C++ logo">
+<style>
+  p {text-align:justify}
+  li {text-align:justify}
+  pre code.backtick::before { content: "`" }
+  pre code.backtick::after { content: "`" }
+  blockquote.note
+  {
+    background-color:#E0E0E0;
+    padding-left: 15px;
+    padding-right: 15px;
+    padding-top: 1px;
+    padding-bottom: 1px;
+  }
+  ins {background-color:#A0FFA0}
+  del {background-color:#FFA0A0}
+  table.issues-index { border: 1px solid; border-collapse: collapse; }
+  table.issues-index th { text-align: center; padding: 4px; border: 1px solid; }
+  table.issues-index td { padding: 4px; border: 1px solid; }
+  table.issues-index td:nth-child(1) { text-align: right; }
+  table.issues-index td:nth-child(2) { text-align: left; }
+  table.issues-index td:nth-child(3) { text-align: left; }
+  table.issues-index td:nth-child(4) { text-align: left; }
+  table.issues-index td:nth-child(5) { text-align: center; }
+  table.issues-index td:nth-child(6) { text-align: center; }
+  table.issues-index td:nth-child(7) { text-align: left; }
+  table.issues-index td:nth-child(5) span.no-pr { color: red; }
+  @media (prefers-color-scheme: dark) {
+     html {
+        color: #ddd;
+        background-color: black;
+     }
+     ins {
+        background-color: #225522
+     }
+     del {
+        background-color: #662222
+     }
+     a {
+        color: #6af
+     }
+     a:visited {
+        color: #6af
+     }
+     blockquote.note
+     {
+        background-color: rgba(255, 255, 255, .10)
+     }
+  }
+</style>
+</head>
+<body>
+<hr>
+<p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#New">New</a> status.</em></p>
+<h3 id="4252"><a href="lwg-active.html#4252">4252</a>. Are exposition-only classes considered specified for the purpose of <code class='backtick'>final</code>?</h3>
+<p><b>Section:</b> 16.4.6.13 <a href="https://wg21.link/derivation">[derivation]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
+ <b>Submitter:</b> Jiang An <b>Opened:</b> 2025-04-28 <b>Last modified:</b> 2025-05-04</p>
+<p><b>Priority: </b>Not Prioritized
+</p>
+<p><b>View all other</b> <a href="lwg-index.html#derivation">issues</a> in [derivation].</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
+<p><b>Discussion:</b></p>
+<p>
+Currently, iterator and sentinel types of several views are exposition-only in the standard wording, 
+and none of them is specified to be <code class='backtick'>final</code>. These types are arguably required to be non-final due to 
+16.4.6.13 <a href="https://wg21.link/derivation">[derivation]</a> p4 because it's possible to say they are specified except for names.
+<p/>
+However, libc++ marks <code class='backtick'>join_view</code>'s iterator <code class='backtick'>final</code> for some reasons 
+(<a href="https://reviews.llvm.org/D142811#inline-1383022">https://reviews.llvm.org/D142811#inline-1383022</a>). 
+Perhaps we should clarify that the <code class='backtick'>final</code>-ity of exposition-only class is unspecified.
+</p>
+
+
+<p id="res-4252"><b>Proposed resolution:</b></p>
+<p>
+This wording is relative to <a href="https://wg21.link/N5008">N5008</a>.
+</p>
+<ol>
+
+<li><p>Modify 16.4.6.13 <a href="https://wg21.link/derivation">[derivation]</a> as indicated:</p>
+
+<blockquote>
+<p>
+-4- All types specified in the C++ standard library shall be non-<code class='backtick'>final</code> types unless otherwise specified.
+<ins>Exposition-only classes (16.3.3.2 <a href="https://wg21.link/expos.only.entity">[expos.only.entity]</a>) are not considered specified for the purpose 
+of <code class='backtick'>final</code>.</ins>
+</p>
+</blockquote>
+</li>
+</ol>
+
+
+
+
+
+</body>
+</html>
