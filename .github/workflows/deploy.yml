@@ -9,7 +9,7 @@ on:
 
 jobs:
   update-html-pages:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
 
     steps:
     - name: Use cached git repo
@@ -51,7 +51,7 @@ jobs:
       run: make dates
 
     - name: Build programs
-      run: make pgms -j 4
+      run: make CXX=g++-14 pgms -j 4
 
     - name: Generate HTML lists
       run: make lists
