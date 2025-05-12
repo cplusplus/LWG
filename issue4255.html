@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Issue 4255: move_only_function constructor should recognize empty copyable_functions</title>
+<meta property="og:title" content="Issue 4255: move_only_function constructor should recognize empty copyable_functions">
+<meta property="og:description" content="C++ library issue. Status: New">
+<meta property="og:url" content="https://cplusplus.github.io/LWG/issue4255.html">
+<meta property="og:type" content="website">
+<meta property="og:image" content="http://cplusplus.github.io/LWG/images/cpp_logo.png">
+<meta property="og:image:alt" content="C++ logo">
+<style>
+  p {text-align:justify}
+  li {text-align:justify}
+  pre code.backtick::before { content: "`" }
+  pre code.backtick::after { content: "`" }
+  blockquote.note
+  {
+    background-color:#E0E0E0;
+    padding-left: 15px;
+    padding-right: 15px;
+    padding-top: 1px;
+    padding-bottom: 1px;
+  }
+  ins {background-color:#A0FFA0}
+  del {background-color:#FFA0A0}
+  table.issues-index { border: 1px solid; border-collapse: collapse; }
+  table.issues-index th { text-align: center; padding: 4px; border: 1px solid; }
+  table.issues-index td { padding: 4px; border: 1px solid; }
+  table.issues-index td:nth-child(1) { text-align: right; }
+  table.issues-index td:nth-child(2) { text-align: left; }
+  table.issues-index td:nth-child(3) { text-align: left; }
+  table.issues-index td:nth-child(4) { text-align: left; }
+  table.issues-index td:nth-child(5) { text-align: center; }
+  table.issues-index td:nth-child(6) { text-align: center; }
+  table.issues-index td:nth-child(7) { text-align: left; }
+  table.issues-index td:nth-child(5) span.no-pr { color: red; }
+  @media (prefers-color-scheme: dark) {
+     html {
+        color: #ddd;
+        background-color: black;
+     }
+     ins {
+        background-color: #225522
+     }
+     del {
+        background-color: #662222
+     }
+     a {
+        color: #6af
+     }
+     a:visited {
+        color: #6af
+     }
+     blockquote.note
+     {
+        background-color: rgba(255, 255, 255, .10)
+     }
+  }
+</style>
+</head>
+<body>
+<hr>
+<p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#New">New</a> status.</em></p>
+<h3 id="4255"><a href="lwg-active.html#4255">4255</a>. move_only_function constructor should recognize empty copyable_functions</h3>
+<p><b>Section:</b> 22.10.17.4.3 <a href="https://wg21.link/func.wrap.move.ctor">[func.wrap.move.ctor]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
+ <b>Submitter:</b> Tomasz Kami&nacute;ski <b>Opened:</b> 2025-05-12 <b>Last modified:</b> 2025-05-12</p>
+<p><b>Priority: </b>Not Prioritized
+</p>
+<p><b>View other</b> <a href="lwg-index-open.html#func.wrap.move.ctor">active issues</a> in [func.wrap.move.ctor].</p>
+<p><b>View all other</b> <a href="lwg-index.html#func.wrap.move.ctor">issues</a> in [func.wrap.move.ctor].</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
+<p><b>Discussion:</b></p>
+<p>
+The standard currently requires that constructing <code>move_only_function</code>
+from empty <code>copyable_function</code>, creates an non-empty <code>move_only_function</code>,
+that contains an empty <code>copyable_function</code> as the target. For exampe:
+<code>
+std::copyable_function&lt;int(int)&gt; ce;
+std::move_only_function&lt;int(int)&gt; me(ce);
+</code>
+We require that invoking <code>me(1)</code> is undefined behavior (as it leads to call to the
+<code>ce(1)</code>), however it cannot be detected in the user code, as <code>me != nullptr</code>
+is true.
+</p>
+
+<p>
+We should require that the <code>move_only_function(F&amp;&amp; f)</code> constructor to create an
+empty object, if <code>f</code> is instantiation of of <code>copyable_function</code> and
+<code>f == nullptr</code> is true, i.e. f does not contain target object.
+</p>
+
+<p>
+This simplifies implementing avoidance of double wrapping per 22.10.17.1 <a href="https://wg21.link/func.wrap.general">[func.wrap.general]</a> p2,
+as transfering the target produces empty functor.
+</p>
+
+<p>
+The <code>copyable_function</code> cannot be constructed from <code>move_only_function</code>,
+as it requires functor to be copyable. Invkoing an empty <code>std::function</code> has well
+defined behavior (throws <code>bad_function_call</code>), and wrapping such object into
+other functors should reproduce that behavior
+</p>
+
+
+
+<p id="res-4255"><b>Proposed resolution:</b></p>
+<p>
+This wording is relative to <a href="https://wg21.link/N5008">N5008</a>.
+</p>
+<ol>
+
+<li><p>Modify 22.10.17.1 <a href="https://wg21.link/func.wrap.general">[func.wrap.general]</a> as indicated:</p>
+
+<blockquote>
+<pre>
+template&lt;class F&gt; move_only_function(F&amp;&amp; f);
+</pre>
+<blockquote>
+[&hellip;]
+<p>-8- <i>Postconditions:</i>: <code>*this</code> has no target object if any of the following hold:</p>
+<ul>
+  <li><p>(8.1) <code>f</code> is a null function pointer value, <del>or</del></p></li>
+  <li><p>(8.2) <code>f</code> is a null member pointer value, or</p></li>
+  <li><p>(8.2) <code>remove_cvref_t&lt;F&gt;</code> is a specialization of the <code>move_only_function</code>
+       <ins>or <code>copyable_function</code></ins> class template, and <code>f</code> has no target object.</p></li>
+</ul>
+</blockquote>
+</blockquote>
+
+</li>
+</ol>
+
+
+
+
+
+
+</body>
+</html>
