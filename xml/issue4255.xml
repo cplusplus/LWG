@@ -1,0 +1,74 @@
+<?xml version='1.0' encoding='utf-8' standalone='no'?>
+<!DOCTYPE issue SYSTEM "lwg-issue.dtd">
+
+<issue num="4255" status="New">
+<title>move_only_function constructor should recognize empty copyable_functions</title>
+<section><sref ref="[func.wrap.move.ctor]"/></section>
+<submitter>Tomasz Kami&nacute;ski</submitter>
+<date>12 May 2025</date>
+<priority>99</priority>
+
+<discussion>
+<p>
+The standard currently requires that constructing <code>move_only_function</code>
+from empty <code>copyable_function</code>, creates an non-empty <code>move_only_function</code>,
+that contains an empty <code>copyable_function</code> as the target. For exampe:
+<code>
+std::copyable_function&lt;int(int)&gt; ce;
+std::move_only_function&lt;int(int)&gt; me(ce);
+</code>
+We require that invoking <code>me(1)</code> is undefined behavior (as it leads to call to the
+<code>ce(1)</code>), however it cannot be detected in the user code, as <code>me != nullptr</code>
+is true.
+</p>
+
+<p>
+We should require that the <code>move_only_function(F&amp;&amp; f)</code> constructor to create an
+empty object, if <code>f</code> is instantiation of of <code>copyable_function</code> and
+<code>f == nullptr</code> is true, i.e. f does not contain target object.
+</p>
+
+<p>
+This simplifies implementing avoidance of double wrapping per <sref ref="[func.wrap.general]"/> p2,
+as transfering the target produces empty functor.
+</p>
+
+<p>
+The <code>copyable_function</code> cannot be constructed from <code>move_only_function</code>,
+as it requires functor to be copyable. Invkoing an empty <code>std::function</code> has well
+defined behavior (throws <code>bad_function_call</code>), and wrapping such object into
+other functors should reproduce that behavior
+</p>
+
+</discussion>
+
+<resolution>
+<p>
+This wording is relative to <paper num="N5008"/>.
+</p>
+<ol>
+
+<li><p>Modify <sref ref="[func.wrap.general]"/> as indicated:</p>
+
+<blockquote>
+<pre>
+template&lt;class F&gt; move_only_function(F&amp;&amp; f);
+</pre>
+<blockquote>
+[&hellip;]
+<p>-8- <i>Postconditions:</i>: <tt>*this</tt> has no target object if any of the following hold:</p>
+<ul>
+  <li><p>(8.1) <tt>f</tt> is a null function pointer value, <del>or</del></p></li>
+  <li><p>(8.2) <tt>f</tt> is a null member pointer value, or</p></li>
+  <li><p>(8.2) <tt>remove_cvref_t&lt;F&gt;</tt> is a specialization of the <tt>move_only_function</tt>
+       <ins>or <tt>copyable_function</tt></ins> class template, and <tt>f</tt> has no target object.</p></li>
+</ul>
+</blockquote>
+</blockquote>
+
+</li>
+</ol>
+
+</resolution>
+
+</issue>
