@@ -15,7 +15,7 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
 
     steps:
     - uses: actions/checkout@v4
@@ -23,7 +23,7 @@ jobs:
         fetch-depth: 1
 
     - name: Compile binary programs
-      run: make pgms
+      run: make CXX=g++-14 pgms
 
     - name: Check for carriage returns
       run: |
