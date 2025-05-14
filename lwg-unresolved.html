@@ -54,7 +54,7 @@
 </style>
 </head>
 <body>
-<p>Revised 2025-05-12 at 11:03:51 UTC
+<p>Revised 2025-05-14 at 10:07:39 UTC
 </p><h2>Unresolved Issues</h2>
 <hr>
 <h3 id="423"><a href="#423">423</a><sup><a href="https://cplusplus.github.io/LWG/issue423">(i)</a></sup>. Effects of negative <code>streamsize</code> in iostreams</h3>
@@ -70334,6 +70334,89 @@ template&lt;class F&gt; move_only_function(F&amp;&amp; f);
   <li><p>(8.2) <code>remove_cvref_t&lt;F&gt;</code> is a specialization of the <code>move_only_function</code>
        <ins>or <code>copyable_function</code></ins> class template, and <code>f</code> has no target object.</p></li>
 </ul>
+</blockquote>
+</blockquote>
+
+</li>
+</ol>
+
+
+
+
+
+
+<hr>
+<h3 id="4256"><a href="#4256">4256</a><sup><a href="https://cplusplus.github.io/LWG/issue4256">(i)</a></sup>. Incorrect constrains for <code>function_ref</code> constructors from <code>nontype_t</code></h3>
+<p><b>Section:</b> 22.10.17.6.3 <a href="https://wg21.link/func.wrap.ref.ctor">[func.wrap.ref.ctor]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
+ <b>Submitter:</b> Tomasz Kami&nacute;ski <b>Opened:</b> 2025-05-14 <b>Last modified:</b> 2025-05-14</p>
+<p><b>Priority: </b>Not Prioritized
+</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
+<p><b>Discussion:</b></p>
+<p>
+For the following class:
+</p>
+<pre>
+struct M
+{
+   void operator();
+};
+</pre>
+<p>
+The constructor of <code>function_ref&lt;void()&gt;</code> from <code>nontype_t</code>
+is considered to be valid candidate
+(is_constructible_v&lt;function_ref&lt;void()&gt;, nontype_t&lt;M{}&gt;&gt; is <code>true</code>),
+despite the fact that the corresponding invocation of template argument object, that is const lvalue,
+is ill-formed. As consequence we produce hard error from inside of this constructor.
+</p>
+
+<p>
+This is caused by the fact that for constructors with non-type <code>auto f</code> parameter,
+we are checking if <code><i>is-invocable-using</i>&lt;F&gt;</code> is <code>true</code>,
+where <code>F</code> is <code>decltype(f)</code> i.e. <code>M</code> for the example.
+We should use <code>const F&amp;</code> or <code>decltype((f))</code>.
+</p>
+
+
+
+<p id="res-4256"><b>Proposed resolution:</b></p>
+<p>
+This wording is relative to <a href="https://wg21.link/N5008">N5008</a>.
+</p>
+<ol>
+
+<li><p>Modify 22.10.17.6.3 <a href="https://wg21.link/func.wrap.ref.ctor">[func.wrap.ref.ctor]</a> as indicated:</p>
+
+<blockquote>
+<pre>
+template&lt;auto f&gt; constexpr function_ref(nontype_t&lt;f&gt;) noexcept;
+</pre>
+<blockquote>
+<p>-8- Let <code>F</code> be <code>decltype(f)</code>.</p>
+<p>-9- <i>Constraints</i>: <code><i>is-invocable-using</i>&lt;<ins>const </ins>F<ins>&amp;</ins>&gt;</code> is <code>true</code>.</p>
+[&hellip;]
+</blockquote>
+
+<pre>
+template&lt;auto f, class U&gt; constexpr function_ref(nontype_t&lt;f&gt;, U&amp;&amp; obj) noexcept;
+</pre>
+<blockquote>
+<p>-12- Let <code>T</code> be <code>remove_reference_t&lt;U&gt;</code> and <code>F</code> be <code>decltype(f)</code>.</p>
+<p>-13- <i>Constraints:</i>:</p>
+<ul>
+  <li><p>(13.1) <code>is_rvalue_reference_v&lt;U&amp;&amp;&gt;</code> is false, and</p></li>
+  <li><p>(13.2) <code><i>is-invocable-using</i>&lt;<ins>const </ins>F<ins>&amp;</ins>, T <i>cv</i>&amp;&gt;</code> is <code>true</code>.</p></li>
+</ul>
+[&hellip;]
+</blockquote>
+
+<pre>
+template&lt;auto f, class T&gt; constexpr function_ref(nontype_t&lt;f&gt;, T <i>cv</i>* obj) noexcept;
+</pre>
+<blockquote>
+<p>-17- Let <code>F</code> be <code>decltype(f)</code>.</p>
+<p>-16- <i>Constraints</i>: <code><i>is-invocable-using</i>&lt;<ins>const </ins>F<ins>&amp;</ins>, T <i>cv</i>*&gt;</code> is <code>true</code>.</p>
+[&hellip;]
 </blockquote>
 </blockquote>
 

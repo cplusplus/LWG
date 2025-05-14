@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Issue 4256: Incorrect constrains for function_ref constructors from nontype_t</title>
+<meta property="og:title" content="Issue 4256: Incorrect constrains for function_ref constructors from nontype_t">
+<meta property="og:description" content="C++ library issue. Status: New">
+<meta property="og:url" content="https://cplusplus.github.io/LWG/issue4256.html">
+<meta property="og:type" content="website">
+<meta property="og:image" content="http://cplusplus.github.io/LWG/images/cpp_logo.png">
+<meta property="og:image:alt" content="C++ logo">
+<style>
+  p {text-align:justify}
+  li {text-align:justify}
+  pre code.backtick::before { content: "`" }
+  pre code.backtick::after { content: "`" }
+  blockquote.note
+  {
+    background-color:#E0E0E0;
+    padding-left: 15px;
+    padding-right: 15px;
+    padding-top: 1px;
+    padding-bottom: 1px;
+  }
+  ins {background-color:#A0FFA0}
+  del {background-color:#FFA0A0}
+  table.issues-index { border: 1px solid; border-collapse: collapse; }
+  table.issues-index th { text-align: center; padding: 4px; border: 1px solid; }
+  table.issues-index td { padding: 4px; border: 1px solid; }
+  table.issues-index td:nth-child(1) { text-align: right; }
+  table.issues-index td:nth-child(2) { text-align: left; }
+  table.issues-index td:nth-child(3) { text-align: left; }
+  table.issues-index td:nth-child(4) { text-align: left; }
+  table.issues-index td:nth-child(5) { text-align: center; }
+  table.issues-index td:nth-child(6) { text-align: center; }
+  table.issues-index td:nth-child(7) { text-align: left; }
+  table.issues-index td:nth-child(5) span.no-pr { color: red; }
+  @media (prefers-color-scheme: dark) {
+     html {
+        color: #ddd;
+        background-color: black;
+     }
+     ins {
+        background-color: #225522
+     }
+     del {
+        background-color: #662222
+     }
+     a {
+        color: #6af
+     }
+     a:visited {
+        color: #6af
+     }
+     blockquote.note
+     {
+        background-color: rgba(255, 255, 255, .10)
+     }
+  }
+</style>
+</head>
+<body>
+<hr>
+<p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#New">New</a> status.</em></p>
+<h3 id="4256"><a href="lwg-active.html#4256">4256</a>. Incorrect constrains for <code>function_ref</code> constructors from <code>nontype_t</code></h3>
+<p><b>Section:</b> 22.10.17.6.3 <a href="https://wg21.link/func.wrap.ref.ctor">[func.wrap.ref.ctor]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
+ <b>Submitter:</b> Tomasz Kami&nacute;ski <b>Opened:</b> 2025-05-14 <b>Last modified:</b> 2025-05-14</p>
+<p><b>Priority: </b>Not Prioritized
+</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
+<p><b>Discussion:</b></p>
+<p>
+For the following class:
+</p>
+<pre>
+struct M
+{
+   void operator();
+};
+</pre>
+<p>
+The constructor of <code>function_ref&lt;void()&gt;</code> from <code>nontype_t</code>
+is considered to be valid candidate
+(is_constructible_v&lt;function_ref&lt;void()&gt;, nontype_t&lt;M{}&gt;&gt; is <code>true</code>),
+despite the fact that the corresponding invocation of template argument object, that is const lvalue,
+is ill-formed. As consequence we produce hard error from inside of this constructor.
+</p>
+
+<p>
+This is caused by the fact that for constructors with non-type <code>auto f</code> parameter,
+we are checking if <code><i>is-invocable-using</i>&lt;F&gt;</code> is <code>true</code>,
+where <code>F</code> is <code>decltype(f)</code> i.e. <code>M</code> for the example.
+We should use <code>const F&amp;</code> or <code>decltype((f))</code>.
+</p>
+
+
+
+<p id="res-4256"><b>Proposed resolution:</b></p>
+<p>
+This wording is relative to <a href="https://wg21.link/N5008">N5008</a>.
+</p>
+<ol>
+
+<li><p>Modify 22.10.17.6.3 <a href="https://wg21.link/func.wrap.ref.ctor">[func.wrap.ref.ctor]</a> as indicated:</p>
+
+<blockquote>
+<pre>
+template&lt;auto f&gt; constexpr function_ref(nontype_t&lt;f&gt;) noexcept;
+</pre>
+<blockquote>
+<p>-8- Let <code>F</code> be <code>decltype(f)</code>.</p>
+<p>-9- <i>Constraints</i>: <code><i>is-invocable-using</i>&lt;<ins>const </ins>F<ins>&amp;</ins>&gt;</code> is <code>true</code>.</p>
+[&hellip;]
+</blockquote>
+
+<pre>
+template&lt;auto f, class U&gt; constexpr function_ref(nontype_t&lt;f&gt;, U&amp;&amp; obj) noexcept;
+</pre>
+<blockquote>
+<p>-12- Let <code>T</code> be <code>remove_reference_t&lt;U&gt;</code> and <code>F</code> be <code>decltype(f)</code>.</p>
+<p>-13- <i>Constraints:</i>:</p>
+<ul>
+  <li><p>(13.1) <code>is_rvalue_reference_v&lt;U&amp;&amp;&gt;</code> is false, and</p></li>
+  <li><p>(13.2) <code><i>is-invocable-using</i>&lt;<ins>const </ins>F<ins>&amp;</ins>, T <i>cv</i>&amp;&gt;</code> is <code>true</code>.</p></li>
+</ul>
+[&hellip;]
+</blockquote>
+
+<pre>
+template&lt;auto f, class T&gt; constexpr function_ref(nontype_t&lt;f&gt;, T <i>cv</i>* obj) noexcept;
+</pre>
+<blockquote>
+<p>-17- Let <code>F</code> be <code>decltype(f)</code>.</p>
+<p>-16- <i>Constraints</i>: <code><i>is-invocable-using</i>&lt;<ins>const </ins>F<ins>&amp;</ins>, T <i>cv</i>*&gt;</code> is <code>true</code>.</p>
+[&hellip;]
+</blockquote>
+</blockquote>
+
+</li>
+</ol>
+
+
+
+
+
+
+</body>
+</html>
