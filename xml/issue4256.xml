@@ -1,0 +1,84 @@
+<?xml version='1.0' encoding='utf-8' standalone='no'?>
+<!DOCTYPE issue SYSTEM "lwg-issue.dtd">
+
+<issue num="4256" status="New">
+<title>Incorrect constrains for <code>function_ref</code> constructors from <code>nontype_t</code></title>
+<section><sref ref="[func.wrap.ref.ctor]"/></section>
+<submitter>Tomasz Kami&nacute;ski</submitter>
+<date>14 May 2025</date>
+<priority>99</priority>
+
+<discussion>
+<p>
+For the following class:
+</p>
+<pre>
+struct M
+{
+   void operator();
+};
+</pre>
+<p>
+The constructor of <code>function_ref&lt;void()&gt;</code> from <code>nontype_t</code>
+is considered to be valid candidate
+(is_constructible_v&lt;function_ref&lt;void()&gt;, nontype_t&lt;M{}&gt;&gt; is <code>true</code>),
+despite the fact that the corresponding invocation of template argument object, that is const lvalue,
+is ill-formed. As consequence we produce hard error from inside of this constructor.
+</p>
+
+<p>
+This is caused by the fact that for constructors with non-type <code>auto f</code> parameter,
+we are checking if <code><i>is-invocable-using</i>&lt;F&gt;</code> is <code>true</code>,
+where <code>F</code> is <code>decltype(f)</code> i.e. <code>M</code> for the example.
+We should use <code>const F&amp;</code> or <code>decltype((f))</code>.
+</p>
+
+</discussion>
+
+<resolution>
+<p>
+This wording is relative to <paper num="N5008"/>.
+</p>
+<ol>
+
+<li><p>Modify <sref ref="[func.wrap.ref.ctor]"/> as indicated:</p>
+
+<blockquote>
+<pre>
+template&lt;auto f&gt; constexpr function_ref(nontype_t&lt;f&gt;) noexcept;
+</pre>
+<blockquote>
+<p>-8- Let <tt>F</tt> be <tt>decltype(f)</tt>.</p>
+<p>-9- <i>Constraints</i>: <tt><i>is-invocable-using</i>&lt;<ins>const </ins>F<ins>&amp;</ins>&gt;</tt> is <tt>true</tt>.</p>
+[&hellip;]
+</blockquote>
+
+<pre>
+template&lt;auto f, class U&gt; constexpr function_ref(nontype_t&lt;f&gt;, U&amp;&amp; obj) noexcept;
+</pre>
+<blockquote>
+<p>-12- Let <tt>T</tt> be <tt>remove_reference_t&lt;U&gt;</tt> and <tt>F</tt> be <tt>decltype(f)</tt>.</p>
+<p>-13- <i>Constraints:</i>:</p>
+<ul>
+  <li><p>(13.1) <tt>is_rvalue_reference_v&lt;U&amp;&amp;&gt;</tt> is false, and</p></li>
+  <li><p>(13.2) <tt><i>is-invocable-using</i>&lt;<ins>const </ins>F<ins>&amp;</ins>, T <i>cv</i>&amp;&gt;</tt> is <tt>true</tt>.</p></li>
+</ul>
+[&hellip;]
+</blockquote>
+
+<pre>
+template&lt;auto f, class T&gt; constexpr function_ref(nontype_t&lt;f&gt;, T <i>cv</i>* obj) noexcept;
+</pre>
+<blockquote>
+<p>-17- Let <tt>F</tt> be <tt>decltype(f)</tt>.</p>
+<p>-16- <i>Constraints</i>: <tt><i>is-invocable-using</i>&lt;<ins>const </ins>F<ins>&amp;</ins>, T <i>cv</i>*&gt;</tt> is <tt>true</tt>.</p>
+[&hellip;]
+</blockquote>
+</blockquote>
+
+</li>
+</ol>
+
+</resolution>
+
+</issue>
