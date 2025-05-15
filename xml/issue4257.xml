@@ -11,7 +11,7 @@
 <discussion>
 <p>
 Currently the wording in <sref ref="[func.wrap.general]"/> allows implementation
-to avoid double indirection when onstructing owning functions wrappers from another one:
+to avoid double indirection when constructing owning functions wrappers from another one:
 </p>
 <blockquote>
 <p> 2- Let <tt>t</tt> be an object of a type that is a specialization of <tt>function</tt>,
@@ -33,10 +33,10 @@ std::function_ref&lt;void()&gt; f1(f2);
 </pre>
 
 <p>
-We should include specialization of the function_ref in the list. Note that this allows,
-but does not require implementation to perform such optimization. As consequence it is acceptable
-to specifiy the allowance for all combinations of polymorphic wrappers, even for creating
-owning wrapper from non-owning one, even if implementing such optimization may not be possible.
+We should include <tt>function_ref</tt> in the list. Note that this allows, but does not require,
+an implementation to perform such an optimization. As a consequence, it is acceptable
+to specify the allowance for all combinations of polymorphic wrappers, even for creating an
+owning wrapper from a non-owning one, where implementing such an optimization may not be possible.
 </p>
 
 </discussion>
