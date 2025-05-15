@@ -21,7 +21,7 @@ struct M
 <p>
 The constructor of <code>function_ref&lt;void()&gt;</code> from <code>nontype_t</code>
 is considered to be valid candidate
-(is_constructible_v&lt;function_ref&lt;void()&gt;, nontype_t&lt;M{}&gt;&gt; is <code>true</code>),
+(<code>is_constructible_v&lt;function_ref&lt;void()&gt;, nontype_t&lt;M{}&gt;&gt;</code> is <code>true</code>),
 despite the fact that the corresponding invocation of template argument object, that is const lvalue,
 is ill-formed. As consequence we produce hard error from inside of this constructor.
 </p>
