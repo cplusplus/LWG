@@ -1,0 +1,68 @@
+<?xml version='1.0' encoding='utf-8' standalone='no'?>
+<!DOCTYPE issue SYSTEM "lwg-issue.dtd">
+
+<issue num="4257" status="New">
+<title>Skipping indirection is not allowed for <code>function_ref</code></title>
+<section><sref ref="[func.wrap.general]"/></section>
+<submitter>Tomasz Kami&nacute;ski</submitter>
+<date>15 May 2025</date>
+<priority>99</priority>
+
+<discussion>
+<p>
+Currently the wording in <sref ref="[func.wrap.general]"/> allows implementation
+to avoid double indirection when onstructing owning functions wrappers from another one:
+</p>
+<blockquote>
+<p> 2- Let <tt>t</tt> be an object of a type that is a specialization of <tt>function</tt>,
+<tt>copyable_function</tt>, or <tt>move_only_function</tt>, such that the target object
+<tt>x</tt> of <tt>t</tt> has a type that is a specialization of <tt>function</tt>, 
+<tt>copyable_function</tt>, or <tt>move_only_function</tt>
+Each argument of the invocation of <tt>x</tt> evaluated as part of the invocation of <tt>t</tt>
+may alias an argument in the same position in the invocation of <tt>t</tt> that has the same type,
+even if the corresponding parameter is not of reference type.</p>
+</blockquote>
+
+<p>
+However, the wording does not cover a <code>function_ref</code>, disallowing implementation to perform
+this optimization when signatures are compatible, for example:
+</p>
+<pre>
+std::function_ref&lt;void() noexcept&gt; f1(ptr);
+std::function_ref&lt;void()&gt; f1(f2);
+</pre>
+
+<p>
+We should include specialization of the function_ref in the list. Note that this allows,
+but does not require implementation to perform such optimization. As consequence it is acceptable
+to specifiy the allowance for all combinations of polymorphic wrappers, even for creating
+owning wrapper from non-owning one, even if implementing such optimization may not be possible.
+</p>
+
+</discussion>
+
+<resolution>
+<p>
+This wording is relative to <paper num="N5008"/>.
+</p>
+<ol>
+
+<li><p>Modify <sref ref="[func.wrap.general]"/> as indicated:</p>
+
+<blockquote>
+<p> 2- Let <tt>t</tt> be an object of a type that is a specialization of <tt>function</tt>,
+<tt>copyable_function</tt>,<del> or</del> <tt>move_only_function</tt><ins>, or <tt>function_ref</tt></ins>,
+such that the target object <tt>x</tt> of <tt>t</tt> has a type that is a specialization of <tt>function</tt>, 
+<tt>copyable_function</tt>, <del>or </del><tt>move_only_function</tt><ins>, or <tt>function_ref</tt></ins>.
+Each argument of the invocation of <tt>x</tt> evaluated as part of the invocation of <tt>t</tt>
+may alias an argument in the same position in the invocation of <tt>t</tt> that has the same type,
+even if the corresponding parameter is not of reference type.</p>
+
+</blockquote>
+
+</li>
+</ol>
+
+</resolution>
+
+</issue>
