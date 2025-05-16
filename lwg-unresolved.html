@@ -54,7 +54,7 @@
 </style>
 </head>
 <body>
-<p>Revised 2025-05-14 at 10:07:39 UTC
+<p>Revised 2025-05-16 at 11:17:41 UTC
 </p><h2>Unresolved Issues</h2>
 <hr>
 <h3 id="423"><a href="#423">423</a><sup><a href="https://cplusplus.github.io/LWG/issue423">(i)</a></sup>. Effects of negative <code>streamsize</code> in iostreams</h3>
@@ -70420,6 +70420,80 @@ template&lt;auto f, class T&gt; constexpr function_ref(nontype_t&lt;f&gt;, T <i>
 </blockquote>
 </blockquote>
 
+</li>
+</ol>
+
+
+
+
+
+
+<hr>
+<h3 id="4257"><a href="#4257">4257</a><sup><a href="https://cplusplus.github.io/LWG/issue4257">(i)</a></sup>. Stream insertion for <code class='backtick'>chrono::local_time</code> should be constrained</h3>
+<p><b>Section:</b> 30.7.9 <a href="https://wg21.link/time.clock.local">[time.clock.local]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
+ <b>Submitter:</b> Jonathan Wakely <b>Opened:</b> 2025-05-16 <b>Last modified:</b> 2025-05-16</p>
+<p><b>Priority: </b>Not Prioritized
+</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
+<p><b>Discussion:</b></p>
+<p>
+Stream insertion for <code class='backtick'>chrono::local_time</code> is defined in terms of conversion to
+<code class='backtick'>chrono::sys_time</code>, but not all <code class='backtick'>chrono::sys_time</code> specializations
+can be inserted into an ostream, because one of the overloads is
+constrained and the other requires convertibility to <code class='backtick'>chrono::sys_days</code>
+(see 30.7.2.3 <a href="https://wg21.link/time.clock.system.nonmembers">[time.clock.system.nonmembers]</a>).
+</p>
+<p>
+This means the following code fails to compile:
+<pre><code>
+#include &lt;iostream&gt;
+#include &lt;chrono&gt;
+
+template&lt;typename T&gt;
+concept ostream_insertable = requires (std::ostream&amp; o, const T&amp; t) { o &lt;&lt; t; };
+
+using D = std::chrono::duration&lt;double&gt;;
+
+int main() {
+  if constexpr (ostream_insertable&lt;std::chrono::sys_time&lt;D&gt;&gt;)
+    std::cout &lt;&lt; std::chrono::sys_time&lt;D&gt;{};
+  if constexpr (ostream_insertable&lt;std::chrono::local_time&lt;D&gt;&gt;)
+    std::cout &lt;&lt; std::chrono::local_time&lt;D&gt;{}; // <b>FAIL</b>
+}
+</code></pre>
+The first condition is false, because there's no overload that's suitable.
+The second is true, because the <code>operator&lt;&lt;</code> overload for
+<code class='backtick'>chrono::local_time</code> isn't constrained and so insertion appears to be valid.
+But actually trying to use it is ill-formed, because it tries to convert the
+<code>local_time&lt;D&gt;</code> to a <code>sys_time&lt;D&gt;</code>
+and then insert that, which isn't valid.
+</p>
+
+
+<p id="res-4257"><b>Proposed resolution:</b></p>
+<p>
+This wording is relative to <a href="https://wg21.link/N5008">N5008</a>.
+</p>
+
+<ol>
+<li><p>Modify 30.7.9 <a href="https://wg21.link/time.clock.local">[time.clock.local]</a> as indicated:</p>
+
+<blockquote>
+<pre><code>
+template&lt;class charT, class traits, class Duration&gt;
+  basic_ostream&lt;charT, traits&gt;&amp;
+    operator&lt;&lt;(basic_ostream&lt;charT, traits&gt;&amp; os, const local_time&lt;Duration&gt;&amp; lt);
+</code></pre>
+<p><ins>-?- <i>Constraints</i>:
+<code>os &lt;&lt; sys_time&lt;Duration&gt;{lt.time_since_epoch()}</code>
+is a valid expression.</ins>
+</p>
+<p>-2- <i>Effects</i>:
+<pre><code> os &lt;&lt; sys_time&lt;Duration&gt;{lt.time_since_epoch()};
+</code></pre>
+</p>
+<p>-3- <i>Returns</i>: <code class='backtick'>os</code>.</p>
+</blockquote>
 </li>
 </ol>
 

@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Issue 4257: Stream insertion for chrono::local_time should be constrained</title>
+<meta property="og:title" content="Issue 4257: Stream insertion for chrono::local_time should be constrained">
+<meta property="og:description" content="C++ library issue. Status: New">
+<meta property="og:url" content="https://cplusplus.github.io/LWG/issue4257.html">
+<meta property="og:type" content="website">
+<meta property="og:image" content="http://cplusplus.github.io/LWG/images/cpp_logo.png">
+<meta property="og:image:alt" content="C++ logo">
+<style>
+  p {text-align:justify}
+  li {text-align:justify}
+  pre code.backtick::before { content: "`" }
+  pre code.backtick::after { content: "`" }
+  blockquote.note
+  {
+    background-color:#E0E0E0;
+    padding-left: 15px;
+    padding-right: 15px;
+    padding-top: 1px;
+    padding-bottom: 1px;
+  }
+  ins {background-color:#A0FFA0}
+  del {background-color:#FFA0A0}
+  table.issues-index { border: 1px solid; border-collapse: collapse; }
+  table.issues-index th { text-align: center; padding: 4px; border: 1px solid; }
+  table.issues-index td { padding: 4px; border: 1px solid; }
+  table.issues-index td:nth-child(1) { text-align: right; }
+  table.issues-index td:nth-child(2) { text-align: left; }
+  table.issues-index td:nth-child(3) { text-align: left; }
+  table.issues-index td:nth-child(4) { text-align: left; }
+  table.issues-index td:nth-child(5) { text-align: center; }
+  table.issues-index td:nth-child(6) { text-align: center; }
+  table.issues-index td:nth-child(7) { text-align: left; }
+  table.issues-index td:nth-child(5) span.no-pr { color: red; }
+  @media (prefers-color-scheme: dark) {
+     html {
+        color: #ddd;
+        background-color: black;
+     }
+     ins {
+        background-color: #225522
+     }
+     del {
+        background-color: #662222
+     }
+     a {
+        color: #6af
+     }
+     a:visited {
+        color: #6af
+     }
+     blockquote.note
+     {
+        background-color: rgba(255, 255, 255, .10)
+     }
+  }
+</style>
+</head>
+<body>
+<hr>
+<p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#New">New</a> status.</em></p>
+<h3 id="4257"><a href="lwg-active.html#4257">4257</a>. Stream insertion for <code class='backtick'>chrono::local_time</code> should be constrained</h3>
+<p><b>Section:</b> 30.7.9 <a href="https://wg21.link/time.clock.local">[time.clock.local]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
+ <b>Submitter:</b> Jonathan Wakely <b>Opened:</b> 2025-05-16 <b>Last modified:</b> 2025-05-16</p>
+<p><b>Priority: </b>Not Prioritized
+</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
+<p><b>Discussion:</b></p>
+<p>
+Stream insertion for <code class='backtick'>chrono::local_time</code> is defined in terms of conversion to
+<code class='backtick'>chrono::sys_time</code>, but not all <code class='backtick'>chrono::sys_time</code> specializations
+can be inserted into an ostream, because one of the overloads is
+constrained and the other requires convertibility to <code class='backtick'>chrono::sys_days</code>
+(see 30.7.2.3 <a href="https://wg21.link/time.clock.system.nonmembers">[time.clock.system.nonmembers]</a>).
+</p>
+<p>
+This means the following code fails to compile:
+<pre><code>
+#include &lt;iostream&gt;
+#include &lt;chrono&gt;
+
+template&lt;typename T&gt;
+concept ostream_insertable = requires (std::ostream&amp; o, const T&amp; t) { o &lt;&lt; t; };
+
+using D = std::chrono::duration&lt;double&gt;;
+
+int main() {
+  if constexpr (ostream_insertable&lt;std::chrono::sys_time&lt;D&gt;&gt;)
+    std::cout &lt;&lt; std::chrono::sys_time&lt;D&gt;{};
+  if constexpr (ostream_insertable&lt;std::chrono::local_time&lt;D&gt;&gt;)
+    std::cout &lt;&lt; std::chrono::local_time&lt;D&gt;{}; // <b>FAIL</b>
+}
+</code></pre>
+The first condition is false, because there's no overload that's suitable.
+The second is true, because the <code>operator&lt;&lt;</code> overload for
+<code class='backtick'>chrono::local_time</code> isn't constrained and so insertion appears to be valid.
+But actually trying to use it is ill-formed, because it tries to convert the
+<code>local_time&lt;D&gt;</code> to a <code>sys_time&lt;D&gt;</code>
+and then insert that, which isn't valid.
+</p>
+
+
+<p id="res-4257"><b>Proposed resolution:</b></p>
+<p>
+This wording is relative to <a href="https://wg21.link/N5008">N5008</a>.
+</p>
+
+<ol>
+<li><p>Modify 30.7.9 <a href="https://wg21.link/time.clock.local">[time.clock.local]</a> as indicated:</p>
+
+<blockquote>
+<pre><code>
+template&lt;class charT, class traits, class Duration&gt;
+  basic_ostream&lt;charT, traits&gt;&amp;
+    operator&lt;&lt;(basic_ostream&lt;charT, traits&gt;&amp; os, const local_time&lt;Duration&gt;&amp; lt);
+</code></pre>
+<p><ins>-?- <i>Constraints</i>:
+<code>os &lt;&lt; sys_time&lt;Duration&gt;{lt.time_since_epoch()}</code>
+is a valid expression.</ins>
+</p>
+<p>-2- <i>Effects</i>:
+<pre><code> os &lt;&lt; sys_time&lt;Duration&gt;{lt.time_since_epoch()};
+</code></pre>
+</p>
+<p>-3- <i>Returns</i>: <code class='backtick'>os</code>.</p>
+</blockquote>
+</li>
+</ol>
+
+
+
+
+
+
+</body>
+</html>
