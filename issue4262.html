@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Issue 4262: copy_if, remove_copy, remove_copy_if, unique_copy have too strong preconditions</title>
+<meta property="og:title" content="Issue 4262: copy_if, remove_copy, remove_copy_if, unique_copy have too strong preconditions">
+<meta property="og:description" content="C++ library issue. Status: New">
+<meta property="og:url" content="https://cplusplus.github.io/LWG/issue4262.html">
+<meta property="og:type" content="website">
+<meta property="og:image" content="http://cplusplus.github.io/LWG/images/cpp_logo.png">
+<meta property="og:image:alt" content="C++ logo">
+<style>
+  p {text-align:justify}
+  li {text-align:justify}
+  pre code.backtick::before { content: "`" }
+  pre code.backtick::after { content: "`" }
+  blockquote.note
+  {
+    background-color:#E0E0E0;
+    padding-left: 15px;
+    padding-right: 15px;
+    padding-top: 1px;
+    padding-bottom: 1px;
+  }
+  ins {background-color:#A0FFA0}
+  del {background-color:#FFA0A0}
+  table.issues-index { border: 1px solid; border-collapse: collapse; }
+  table.issues-index th { text-align: center; padding: 4px; border: 1px solid; }
+  table.issues-index td { padding: 4px; border: 1px solid; }
+  table.issues-index td:nth-child(1) { text-align: right; }
+  table.issues-index td:nth-child(2) { text-align: left; }
+  table.issues-index td:nth-child(3) { text-align: left; }
+  table.issues-index td:nth-child(4) { text-align: left; }
+  table.issues-index td:nth-child(5) { text-align: center; }
+  table.issues-index td:nth-child(6) { text-align: center; }
+  table.issues-index td:nth-child(7) { text-align: left; }
+  table.issues-index td:nth-child(5) span.no-pr { color: red; }
+  @media (prefers-color-scheme: dark) {
+     html {
+        color: #ddd;
+        background-color: black;
+     }
+     ins {
+        background-color: #225522
+     }
+     del {
+        background-color: #662222
+     }
+     a {
+        color: #6af
+     }
+     a:visited {
+        color: #6af
+     }
+     blockquote.note
+     {
+        background-color: rgba(255, 255, 255, .10)
+     }
+  }
+</style>
+</head>
+<body>
+<hr>
+<p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#New">New</a> status.</em></p>
+<h3 id="4262"><a href="lwg-active.html#4262">4262</a>. <code class='backtick'>copy_if</code>, <code class='backtick'>remove_copy</code>, <code class='backtick'>remove_copy_if</code>, <code class='backtick'>unique_copy</code> have too strong preconditions</h3>
+<p><b>Section:</b> 26.7.1 <a href="https://wg21.link/alg.copy">[alg.copy]</a>, 26.7.8 <a href="https://wg21.link/alg.remove">[alg.remove]</a>, 26.7.9 <a href="https://wg21.link/alg.unique">[alg.unique]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
+ <b>Submitter:</b> Alex Guteniev <b>Opened:</b> 2025-05-12 <b>Last modified:</b> 2025-05-18</p>
+<p><b>Priority: </b>Not Prioritized
+</p>
+<p><b>View other</b> <a href="lwg-index-open.html#alg.copy">active issues</a> in [alg.copy].</p>
+<p><b>View all other</b> <a href="lwg-index.html#alg.copy">issues</a> in [alg.copy].</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
+<p><b>Discussion:</b></p>
+<p>
+26.7.1 <a href="https://wg21.link/alg.copy">[alg.copy]</a>/16 , 26.7.8 <a href="https://wg21.link/alg.remove">[alg.remove]</a>/11, 26.7.9 <a href="https://wg21.link/alg.unique">[alg.unique]</a>/8.1 all say:
+</p>
+<blockquote>
+<p>
+<i>Preconditions</i>: The ranges <code class='backtick'>[first, last)</code> and <code class='backtick'>[result, result + (last - first))</code> do not overlap.
+</p>
+</blockquote>
+<p>
+These algorithms may produce fewer elements than <code class='backtick'>(last - first)</code>. If this is known in advance, 
+a smaller output range may be used, so that the precondition will not be satisfied.
+<p/>
+Example from LLVM test suite 
+(<a href="https://github.com/llvm/llvm-project/blob/79210feb2993ff9a79ef11f8a7016a527d4fcf22/libcxx/test/std/algorithms/alg.modifying.operations/alg.copy/ranges.copy_if.pass.cpp#L160-L162">
+/libcxx/test/std/algorithms/alg.modifying.operations/alg.copy/ranges.copy_if.pass.cpp</a>):
+</p>
+<blockquote><pre>
+std::array&lt;S, 4&gt; in = {{{4, 2}, {1, 3}, {3, 4}, {3, 5}}};
+std::array&lt;S, 2&gt; out;
+auto ret = std::ranges::copy_if(in.begin(), in.end(), out.begin(), [](int i) { return i == 3; }, &amp;S::val);
+</pre></blockquote>
+<p>
+I think there should be a weaker precondition, like 26.7.1 <a href="https://wg21.link/alg.copy">[alg.copy]</a>/2:
+</p>
+<blockquote>
+<p>
+<i>Preconditions</i>: <code class='backtick'>result</code> is not in the range <code class='backtick'>[first, last)</code>.
+</p>
+</blockquote>
+
+
+<p id="res-4262"><b>Proposed resolution:</b></p>
+<p>
+This wording is relative to <a href="https://wg21.link/N5008">N5008</a>.
+</p>
+<ol>
+
+<li><p>Modify 26.7.1 <a href="https://wg21.link/alg.copy">[alg.copy]</a> as indicated:</p>
+
+<blockquote>
+<pre>
+template&lt;class InputIterator, class OutputIterator, class Predicate&gt;
+  constexpr OutputIterator copy_if(InputIterator first, InputIterator last,
+                                   OutputIterator result, Predicate pred);
+[&hellip;]
+template&lt;input_range R, weakly_incrementable O, class Proj = identity,
+         indirect_unary_predicate&lt;projected&lt;iterator_t&lt;R&gt;, Proj&gt;&gt; Pred&gt;
+  requires indirectly_copyable&lt;iterator_t&lt;R&gt;, O&gt;
+  constexpr ranges::copy_if_result&lt;borrowed_iterator_t&lt;R&gt;, O&gt;
+    ranges::copy_if(R&amp;&amp; r, O result, Pred pred, Proj proj = {});
+</pre>
+<blockquote>
+<p>
+-15- Let <code><i>E</i></code> be: [&hellip;]
+<p/>
+-16 <i>Preconditions</i>: <ins><code class='backtick'>result</code> is not in the range <code class='backtick'>[first, last)</code></ins><del>The ranges <code class='backtick'>[first, last)</code> and <code class='backtick'>[result, result + (last - first))</code> do not overlap</del>.
+</p>
+</blockquote>
+</blockquote>
+</li>
+
+<li><p>Modify 26.7.8 <a href="https://wg21.link/alg.remove">[alg.remove]</a> as indicated:</p>
+
+<blockquote>
+<pre>
+template&lt;class InputIterator, class OutputIterator,
+         class T = iterator_traits&lt;InputIterator&gt;::value_type>
+  constexpr OutputIterator
+    remove_copy(InputIterator first, InputIterator last,
+                OutputIterator result, const T&amp; value);
+[&hellip;]
+template&lt;input_range R, weakly_incrementable O, class Proj = identity,
+         indirect_unary_predicate&lt;projected&lt;iterator_t&lt;R&gt;, Proj&gt;&gt; Pred&gt;
+  requires indirectly_copyable&lt;iterator_t&lt;R&gt;, O&gt;
+  constexpr ranges::remove_copy_if_result&lt;borrowed_iterator_t&lt;R&gt;, O&gt;
+    ranges::remove_copy_if(R&amp;&amp; r, O result, Pred pred, Proj proj = {});
+</pre>
+<blockquote>
+<p>
+-8- Let <code><i>E</i></code> be [&hellip;]
+<p/>
+[&hellip;]
+<p/>
+-11 <i>Preconditions</i>: <ins><code class='backtick'>result</code> is not in the range <code class='backtick'>[first, last)</code></ins><del>The ranges <code class='backtick'>[first, last)</code> and <code class='backtick'>[result, result + (last - first))</code> do not overlap</del>.
+</p>
+</blockquote>
+</blockquote>
+</li>
+
+<li><p>Modify 26.7.9 <a href="https://wg21.link/alg.unique">[alg.unique]</a> as indicated:</p>
+
+<blockquote>
+<pre>
+template&lt;class InputIterator, class OutputIterator&gt;
+  constexpr OutputIterator
+    unique_copy(InputIterator first, InputIterator last,
+                OutputIterator result);
+[&hellip;]
+template&lt;input_range R, weakly_incrementable O, class Proj = identity,
+         indirect_equivalence_relation&lt;projected&lt;iterator_t&lt;R&gt;, Proj&gt;&gt; C = ranges::equal_to&gt;
+  requires indirectly_copyable&lt;iterator_t&lt;R&gt;, O&gt; &amp;&amp;
+          (forward_iterator&lt;iterator_t&lt;R&gt;&gt; ||
+          (input_iterator&lt;O&gt; &amp;&amp; same_as&lt;range_value_t&lt;R&gt;, iter_value_t&lt;O&gt;&gt;) ||
+          indirectly_copyable_storable&lt;iterator_t&lt;R&gt;, O&gt;)
+  constexpr ranges::unique_copy_result&lt;borrowed_iterator_t&lt;R&gt;, O&gt;
+    ranges::unique_copy(R&amp;&amp; r, O result, C comp = {}, Proj proj = {});
+</pre>
+<blockquote>
+<p>
+-6- Let <code class='backtick'>pred</code> be [&hellip;]
+<p/>
+-7- <i>Mandates</i>: [&hellip;]
+<p/>
+-8 <i>Preconditions</i>:
+</p>
+<ol style="list-style-type: none">
+<li><p>(8.1) &mdash; <ins><ins><code class='backtick'>result</code> is not in the range <code class='backtick'>[first, last)</code></ins></ins><del>The ranges <code class='backtick'>[first, last)</code> and <code class='backtick'>[result, result + (last - first))</code> do not overlap</del>.</p></li>
+<li><p>(8.2) &mdash; [&hellip;]</p></li>
+</ol>
+</blockquote>
+</blockquote>
+</li>
+</ol>
+
+
+
+
+
+</body>
+</html>
