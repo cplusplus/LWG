@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Issue 4261: P1206R7 broke uses of container adaptors with old custom sequence containers</title>
+<meta property="og:title" content="Issue 4261: P1206R7 broke uses of container adaptors with old custom sequence containers">
+<meta property="og:description" content="C++ library issue. Status: New">
+<meta property="og:url" content="https://cplusplus.github.io/LWG/issue4261.html">
+<meta property="og:type" content="website">
+<meta property="og:image" content="http://cplusplus.github.io/LWG/images/cpp_logo.png">
+<meta property="og:image:alt" content="C++ logo">
+<style>
+  p {text-align:justify}
+  li {text-align:justify}
+  pre code.backtick::before { content: "`" }
+  pre code.backtick::after { content: "`" }
+  blockquote.note
+  {
+    background-color:#E0E0E0;
+    padding-left: 15px;
+    padding-right: 15px;
+    padding-top: 1px;
+    padding-bottom: 1px;
+  }
+  ins {background-color:#A0FFA0}
+  del {background-color:#FFA0A0}
+  table.issues-index { border: 1px solid; border-collapse: collapse; }
+  table.issues-index th { text-align: center; padding: 4px; border: 1px solid; }
+  table.issues-index td { padding: 4px; border: 1px solid; }
+  table.issues-index td:nth-child(1) { text-align: right; }
+  table.issues-index td:nth-child(2) { text-align: left; }
+  table.issues-index td:nth-child(3) { text-align: left; }
+  table.issues-index td:nth-child(4) { text-align: left; }
+  table.issues-index td:nth-child(5) { text-align: center; }
+  table.issues-index td:nth-child(6) { text-align: center; }
+  table.issues-index td:nth-child(7) { text-align: left; }
+  table.issues-index td:nth-child(5) span.no-pr { color: red; }
+  @media (prefers-color-scheme: dark) {
+     html {
+        color: #ddd;
+        background-color: black;
+     }
+     ins {
+        background-color: #225522
+     }
+     del {
+        background-color: #662222
+     }
+     a {
+        color: #6af
+     }
+     a:visited {
+        color: #6af
+     }
+     blockquote.note
+     {
+        background-color: rgba(255, 255, 255, .10)
+     }
+  }
+</style>
+</head>
+<body>
+<hr>
+<p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#New">New</a> status.</em></p>
+<h3 id="4261"><a href="lwg-active.html#4261">4261</a>. P1206R7 broke uses of container adaptors with old custom sequence containers</h3>
+<p><b>Section:</b> 27.4.3.8.2 <a href="https://wg21.link/string.find">[string.find]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
+ <b>Submitter:</b> Jiang An <b>Opened:</b> 2025-05-07 <b>Last modified:</b> 2025-05-18</p>
+<p><b>Priority: </b>Not Prioritized
+</p>
+<p><b>View other</b> <a href="lwg-index-open.html#string.find">active issues</a> in [string.find].</p>
+<p><b>View all other</b> <a href="lwg-index.html#string.find">issues</a> in [string.find].</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
+<p><b>Discussion:</b></p>
+<p>
+<a href="https://wg21.link/P1206R7" title=" Conversions from ranges to containers">P1206R7</a> added some requirements for sequence containers, including program-defined ones.
+<p/>
+These requirements mean that if a custom C++20 sequence container type has no newly required member 
+functions added in C++23 mode, it is no longer a sequence container, and uses of it with 
+<code class='backtick'>std::stack</code>, <code class='backtick'>std::queue</code>, or <code class='backtick'>std::priority_queue</code> possibly have undefined behavior or 
+make the program ill-formed. Additionally, some users want to use C++23 flat container adaptors 
+with old sequence containers (<a href="https://github.com/llvm/llvm-project/issues/136656">llvm/llvm-project#136656</a>), 
+it is unclear whether such uses are intentionally rejected.
+<p/>
+Perhaps the requirements on <code class='backtick'>from_range_t</code> constructor, <code class='backtick'>insert_range</code> and <code class='backtick'>assign_range</code> should be made optional, 
+although these operations should have specified semantics whenever being well-formed in immediate contexts.
+</p>
+
+
+<p id="res-4261"><b>Proposed resolution:</b></p>
+
+
+
+
+
+</body>
+</html>

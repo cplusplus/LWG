@@ -54,7 +54,7 @@
 </style>
 </head>
 <body>
-<p>Revised 2025-05-18 at 09:48:56 UTC
+<p>Revised 2025-05-18 at 09:57:32 UTC
 </p><h2>Unresolved Issues</h2>
 <hr>
 <h3 id="423"><a href="#423">423</a><sup><a href="https://cplusplus.github.io/LWG/issue423">(i)</a></sup>. Effects of negative <code>streamsize</code> in iostreams</h3>
@@ -70539,6 +70539,8 @@ require accepting <code class='backtick'>size_t</code> values?
  <b>Submitter:</b> Jiang An <b>Opened:</b> 2025-05-05 <b>Last modified:</b> 2025-05-18</p>
 <p><b>Priority: </b>Not Prioritized
 </p>
+<p><b>View other</b> <a href="lwg-index-open.html#string.find">active issues</a> in [string.find].</p>
+<p><b>View all other</b> <a href="lwg-index.html#string.find">issues</a> in [string.find].</p>
 <p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
 <p><b>Discussion:</b></p>
 <p>
@@ -70636,6 +70638,37 @@ A query imposes syntactic and semantic requirements on its invocations.
 </blockquote>
 </li>
 </ol>
+
+
+
+
+
+<hr>
+<h3 id="4261"><a href="#4261">4261</a><sup><a href="https://cplusplus.github.io/LWG/issue4261">(i)</a></sup>. P1206R7 broke uses of container adaptors with old custom sequence containers</h3>
+<p><b>Section:</b> 27.4.3.8.2 <a href="https://wg21.link/string.find">[string.find]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
+ <b>Submitter:</b> Jiang An <b>Opened:</b> 2025-05-07 <b>Last modified:</b> 2025-05-18</p>
+<p><b>Priority: </b>Not Prioritized
+</p>
+<p><b>View other</b> <a href="lwg-index-open.html#string.find">active issues</a> in [string.find].</p>
+<p><b>View all other</b> <a href="lwg-index.html#string.find">issues</a> in [string.find].</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
+<p><b>Discussion:</b></p>
+<p>
+<a href="https://wg21.link/P1206R7" title=" Conversions from ranges to containers">P1206R7</a> added some requirements for sequence containers, including program-defined ones.
+<p/>
+These requirements mean that if a custom C++20 sequence container type has no newly required member 
+functions added in C++23 mode, it is no longer a sequence container, and uses of it with 
+<code class='backtick'>std::stack</code>, <code class='backtick'>std::queue</code>, or <code class='backtick'>std::priority_queue</code> possibly have undefined behavior or 
+make the program ill-formed. Additionally, some users want to use C++23 flat container adaptors 
+with old sequence containers (<a href="https://github.com/llvm/llvm-project/issues/136656">llvm/llvm-project#136656</a>), 
+it is unclear whether such uses are intentionally rejected.
+<p/>
+Perhaps the requirements on <code class='backtick'>from_range_t</code> constructor, <code class='backtick'>insert_range</code> and <code class='backtick'>assign_range</code> should be made optional, 
+although these operations should have specified semantics whenever being well-formed in immediate contexts.
+</p>
+
+
+<p id="res-4261"><b>Proposed resolution:</b></p>
 
 
 
