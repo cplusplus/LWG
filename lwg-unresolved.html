@@ -54,7 +54,7 @@
 </style>
 </head>
 <body>
-<p>Revised 2025-05-18 at 09:00:55 UTC
+<p>Revised 2025-05-18 at 09:36:53 UTC
 </p><h2>Unresolved Issues</h2>
 <hr>
 <h3 id="423"><a href="#423">423</a><sup><a href="https://cplusplus.github.io/LWG/issue423">(i)</a></sup>. Effects of negative <code>streamsize</code> in iostreams</h3>
@@ -70528,6 +70528,68 @@ require accepting <code class='backtick'>size_t</code> values?
 
 
 <p id="res-4258"><b>Proposed resolution:</b></p>
+
+
+
+
+
+<hr>
+<h3 id="4259"><a href="#4259">4259</a><sup><a href="https://cplusplus.github.io/LWG/issue4259">(i)</a></sup>. P1148R0 changed the return values of searching functions of <code class='backtick'>std::basic_string</code> on some platforms</h3>
+<p><b>Section:</b> 27.4.3.8.2 <a href="https://wg21.link/string.find">[string.find]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
+ <b>Submitter:</b> Jiang An <b>Opened:</b> 2025-05-05 <b>Last modified:</b> 2025-05-18</p>
+<p><b>Priority: </b>Not Prioritized
+</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
+<p><b>Discussion:</b></p>
+<p>
+<a href="https://wg21.link/P1148R0" title=" Cleaning up Clause 20">P1148R0</a> respecified the searching functions of <code class='backtick'>std::basic_string</code> to return 
+corresponding string view type's <code class='backtick'>npos</code> member constant (equal to <code class='backtick'>std::size_t(-1)</code>), converted 
+to the string type <code class='backtick'>S</code>'s member <code class='backtick'>S::size_type</code>, when the search fails. Before the change, 
+<code class='backtick'>S::npos</code> (equal to <code class='backtick'>S::size_type(-1)</code>) was returned on failure.
+<p/>
+On platforms where <code class='backtick'>std::size_t</code> isn't the widest unsigned integer type (e.g. on usual 32-bit 
+platforms), the return value can change. Because there can be an allocator with a wider size_type, 
+and when the basic_string type <code class='backtick'>S</code> uses such an allocator, <code class='backtick'>S::size_type</code> is specified to be that 
+type, which in turn makes <code class='backtick'>S::size_type(std::size_t(-1))</code> not equal to <code class='backtick'>S::size_type(-1)</code>.
+<p/>
+Do we want to restore the old return values?
+</p>
+
+
+<p id="res-4259"><b>Proposed resolution:</b></p>
+<p>
+This wording is relative to <a href="https://wg21.link/N5008">N5008</a>.
+</p>
+<ol>
+
+<li><p>Modify 27.4.3.8.2 <a href="https://wg21.link/string.find">[string.find]</a> as indicated:</p>
+
+<blockquote>
+<pre>
+template&lt;class T&gt;
+  constexpr size_type find(const T&amp; t, size_type pos = 0) const noexcept(<i>see below</i>);
+[&hellip;]
+template&lt;class T&gt;
+  constexpr size_type find_last_not_of(const T&amp; t, size_type pos = npos) const noexcept(<i>see below</i>);
+</pre>
+<blockquote>
+<p>
+-2- <i>Constraints</i>: [&hellip;]
+<p/>
+-3- <i>Effects</i>: Let <code><i>G</i></code> be the name of the function. Equivalent to:
+</p>
+<blockquote><pre>
+basic_string_view&lt;charT, traits&gt; s = *this, sv = t;
+<del>return s.<i>G</i>(sv, pos);</del>
+<ins>if (auto result = s.<i>G</i>(sv, pos); result == size_t(-1))
+  return npos;
+else
+  return result;</ins>
+</pre></blockquote>
+</blockquote>
+</blockquote>
+</li>
+</ol>
 
 
 

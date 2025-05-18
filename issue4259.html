@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Issue 4259: P1148R0 changed the return values of searching functions of std::basic_string on some platforms</title>
+<meta property="og:title" content="Issue 4259: P1148R0 changed the return values of searching functions of std::basic_string on some platforms">
+<meta property="og:description" content="C++ library issue. Status: New">
+<meta property="og:url" content="https://cplusplus.github.io/LWG/issue4259.html">
+<meta property="og:type" content="website">
+<meta property="og:image" content="http://cplusplus.github.io/LWG/images/cpp_logo.png">
+<meta property="og:image:alt" content="C++ logo">
+<style>
+  p {text-align:justify}
+  li {text-align:justify}
+  pre code.backtick::before { content: "`" }
+  pre code.backtick::after { content: "`" }
+  blockquote.note
+  {
+    background-color:#E0E0E0;
+    padding-left: 15px;
+    padding-right: 15px;
+    padding-top: 1px;
+    padding-bottom: 1px;
+  }
+  ins {background-color:#A0FFA0}
+  del {background-color:#FFA0A0}
+  table.issues-index { border: 1px solid; border-collapse: collapse; }
+  table.issues-index th { text-align: center; padding: 4px; border: 1px solid; }
+  table.issues-index td { padding: 4px; border: 1px solid; }
+  table.issues-index td:nth-child(1) { text-align: right; }
+  table.issues-index td:nth-child(2) { text-align: left; }
+  table.issues-index td:nth-child(3) { text-align: left; }
+  table.issues-index td:nth-child(4) { text-align: left; }
+  table.issues-index td:nth-child(5) { text-align: center; }
+  table.issues-index td:nth-child(6) { text-align: center; }
+  table.issues-index td:nth-child(7) { text-align: left; }
+  table.issues-index td:nth-child(5) span.no-pr { color: red; }
+  @media (prefers-color-scheme: dark) {
+     html {
+        color: #ddd;
+        background-color: black;
+     }
+     ins {
+        background-color: #225522
+     }
+     del {
+        background-color: #662222
+     }
+     a {
+        color: #6af
+     }
+     a:visited {
+        color: #6af
+     }
+     blockquote.note
+     {
+        background-color: rgba(255, 255, 255, .10)
+     }
+  }
+</style>
+</head>
+<body>
+<hr>
+<p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#New">New</a> status.</em></p>
+<h3 id="4259"><a href="lwg-active.html#4259">4259</a>. P1148R0 changed the return values of searching functions of <code class='backtick'>std::basic_string</code> on some platforms</h3>
+<p><b>Section:</b> 27.4.3.8.2 <a href="https://wg21.link/string.find">[string.find]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
+ <b>Submitter:</b> Jiang An <b>Opened:</b> 2025-05-05 <b>Last modified:</b> 2025-05-18</p>
+<p><b>Priority: </b>Not Prioritized
+</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
+<p><b>Discussion:</b></p>
+<p>
+<a href="https://wg21.link/P1148R0" title=" Cleaning up Clause 20">P1148R0</a> respecified the searching functions of <code class='backtick'>std::basic_string</code> to return 
+corresponding string view type's <code class='backtick'>npos</code> member constant (equal to <code class='backtick'>std::size_t(-1)</code>), converted 
+to the string type <code class='backtick'>S</code>'s member <code class='backtick'>S::size_type</code>, when the search fails. Before the change, 
+<code class='backtick'>S::npos</code> (equal to <code class='backtick'>S::size_type(-1)</code>) was returned on failure.
+<p/>
+On platforms where <code class='backtick'>std::size_t</code> isn't the widest unsigned integer type (e.g. on usual 32-bit 
+platforms), the return value can change. Because there can be an allocator with a wider size_type, 
+and when the basic_string type <code class='backtick'>S</code> uses such an allocator, <code class='backtick'>S::size_type</code> is specified to be that 
+type, which in turn makes <code class='backtick'>S::size_type(std::size_t(-1))</code> not equal to <code class='backtick'>S::size_type(-1)</code>.
+<p/>
+Do we want to restore the old return values?
+</p>
+
+
+<p id="res-4259"><b>Proposed resolution:</b></p>
+<p>
+This wording is relative to <a href="https://wg21.link/N5008">N5008</a>.
+</p>
+<ol>
+
+<li><p>Modify 27.4.3.8.2 <a href="https://wg21.link/string.find">[string.find]</a> as indicated:</p>
+
+<blockquote>
+<pre>
+template&lt;class T&gt;
+  constexpr size_type find(const T&amp; t, size_type pos = 0) const noexcept(<i>see below</i>);
+[&hellip;]
+template&lt;class T&gt;
+  constexpr size_type find_last_not_of(const T&amp; t, size_type pos = npos) const noexcept(<i>see below</i>);
+</pre>
+<blockquote>
+<p>
+-2- <i>Constraints</i>: [&hellip;]
+<p/>
+-3- <i>Effects</i>: Let <code><i>G</i></code> be the name of the function. Equivalent to:
+</p>
+<blockquote><pre>
+basic_string_view&lt;charT, traits&gt; s = *this, sv = t;
+<del>return s.<i>G</i>(sv, pos);</del>
+<ins>if (auto result = s.<i>G</i>(sv, pos); result == size_t(-1))
+  return npos;
+else
+  return result;</ins>
+</pre></blockquote>
+</blockquote>
+</blockquote>
+</li>
+</ol>
+
+
+
+
+
+</body>
+</html>
