@@ -54,7 +54,7 @@
 </style>
 </head>
 <body>
-<p>Revised 2025-05-18 at 08:49:45 UTC
+<p>Revised 2025-05-18 at 09:00:55 UTC
 </p><h2>Unresolved Issues</h2>
 <hr>
 <h3 id="423"><a href="#423">423</a><sup><a href="https://cplusplus.github.io/LWG/issue423">(i)</a></sup>. Effects of negative <code>streamsize</code> in iostreams</h3>
@@ -70497,6 +70497,37 @@ is a valid expression.</ins>
 </li>
 </ol>
 
+
+
+
+
+
+<hr>
+<h3 id="4258"><a href="#4258">4258</a><sup><a href="https://cplusplus.github.io/LWG/issue4258">(i)</a></sup>. Size type mismatch in constraints involving <i>Cpp17Allocator</i></h3>
+<p><b>Section:</b> 16.4.4.6.1 <a href="https://wg21.link/allocator.requirements.general">[allocator.requirements.general]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
+ <b>Submitter:</b> Jiang An <b>Opened:</b> 2025-05-05 <b>Last modified:</b> 2025-05-18</p>
+<p><b>Priority: </b>Not Prioritized
+</p>
+<p><b>View other</b> <a href="lwg-index-open.html#allocator.requirements.general">active issues</a> in [allocator.requirements.general].</p>
+<p><b>View all other</b> <a href="lwg-index.html#allocator.requirements.general">issues</a> in [allocator.requirements.general].</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
+<p><b>Discussion:</b></p>
+<p>
+It seems assumed that a <code class='backtick'>size_t</code> value can be passed to an allocator's <code class='backtick'>allocate</code> member 
+function per the <code><i>simple-allocator</i></code> exposition-only concept in 
+16.4.4.6.1 <a href="https://wg21.link/allocator.requirements.general">[allocator.requirements.general]</a> and the minimal constraints for 
+allocator types in 23.2.2.2 <a href="https://wg21.link/container.reqmts">[container.reqmts]</a>.
+<p/>
+However, it is not exactly required that a type meeting the <i>Cpp17Allocator</i> requirements 
+can be used with <code class='backtick'>size_t</code> values, because only <code>allocator_traits&lt;A&gt;::size_type</code>, 
+which is possibly not <code class='backtick'>size_t</code>, is required to be usable with the allocator.
+<p/>
+Do we want to change these constraints, or change the <i>Cpp17Allocator</i> requirements to 
+require accepting <code class='backtick'>size_t</code> values?
+</p>
+
+
+<p id="res-4258"><b>Proposed resolution:</b></p>
 
 
 
