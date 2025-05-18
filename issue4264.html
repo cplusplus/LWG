@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Issue 4264: Skipping indirection is not allowed for function_ref</title>
+<meta property="og:title" content="Issue 4264: Skipping indirection is not allowed for function_ref">
+<meta property="og:description" content="C++ library issue. Status: New">
+<meta property="og:url" content="https://cplusplus.github.io/LWG/issue4264.html">
+<meta property="og:type" content="website">
+<meta property="og:image" content="http://cplusplus.github.io/LWG/images/cpp_logo.png">
+<meta property="og:image:alt" content="C++ logo">
+<style>
+  p {text-align:justify}
+  li {text-align:justify}
+  pre code.backtick::before { content: "`" }
+  pre code.backtick::after { content: "`" }
+  blockquote.note
+  {
+    background-color:#E0E0E0;
+    padding-left: 15px;
+    padding-right: 15px;
+    padding-top: 1px;
+    padding-bottom: 1px;
+  }
+  ins {background-color:#A0FFA0}
+  del {background-color:#FFA0A0}
+  table.issues-index { border: 1px solid; border-collapse: collapse; }
+  table.issues-index th { text-align: center; padding: 4px; border: 1px solid; }
+  table.issues-index td { padding: 4px; border: 1px solid; }
+  table.issues-index td:nth-child(1) { text-align: right; }
+  table.issues-index td:nth-child(2) { text-align: left; }
+  table.issues-index td:nth-child(3) { text-align: left; }
+  table.issues-index td:nth-child(4) { text-align: left; }
+  table.issues-index td:nth-child(5) { text-align: center; }
+  table.issues-index td:nth-child(6) { text-align: center; }
+  table.issues-index td:nth-child(7) { text-align: left; }
+  table.issues-index td:nth-child(5) span.no-pr { color: red; }
+  @media (prefers-color-scheme: dark) {
+     html {
+        color: #ddd;
+        background-color: black;
+     }
+     ins {
+        background-color: #225522
+     }
+     del {
+        background-color: #662222
+     }
+     a {
+        color: #6af
+     }
+     a:visited {
+        color: #6af
+     }
+     blockquote.note
+     {
+        background-color: rgba(255, 255, 255, .10)
+     }
+  }
+</style>
+</head>
+<body>
+<hr>
+<p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#New">New</a> status.</em></p>
+<h3 id="4264"><a href="lwg-active.html#4264">4264</a>. Skipping indirection is not allowed for <code>function_ref</code></h3>
+<p><b>Section:</b> 22.10.17.1 <a href="https://wg21.link/func.wrap.general">[func.wrap.general]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
+ <b>Submitter:</b> Tomasz Kami&nacute;ski <b>Opened:</b> 2025-05-15 <b>Last modified:</b> 2025-05-18</p>
+<p><b>Priority: </b>Not Prioritized
+</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
+<p><b>Discussion:</b></p>
+<p>
+Currently the wording in 22.10.17.1 <a href="https://wg21.link/func.wrap.general">[func.wrap.general]</a> allows implementation
+to avoid double indirection when constructing owning functions wrappers from another one:
+</p>
+<blockquote>
+<p> 
+-2- Let <code>t</code> be an object of a type that is a specialization of <code>function</code>,
+<code>copyable_function</code>, or <code>move_only_function</code>, such that the target object
+<code>x</code> of <code>t</code> has a type that is a specialization of <code>function</code>, 
+<code>copyable_function</code>, or <code>move_only_function</code>.
+Each argument of the invocation of <code>x</code> evaluated as part of the invocation of <code>t</code>
+may alias an argument in the same position in the invocation of <code>t</code> that has the same type,
+even if the corresponding parameter is not of reference type.
+</p>
+</blockquote>
+<p>
+However, the wording does not cover a <code>function_ref</code>, disallowing implementation to perform
+this optimization when signatures are compatible, for example:
+</p>
+<blockquote><pre>
+std::function_ref&lt;void() noexcept&gt; f1(ptr);
+std::function_ref&lt;void()&gt; f1(f2);
+</pre></blockquote>
+<p>
+We should include <code>function_ref</code> in the list. Note that this allows, but does not require,
+an implementation to perform such an optimization. As a consequence, it is acceptable
+to specify the allowance for all combinations of polymorphic wrappers, even for creating an
+owning wrapper from a non-owning one, where implementing such an optimization may not be possible.
+</p>
+
+
+<p id="res-4264"><b>Proposed resolution:</b></p>
+<p>
+This wording is relative to <a href="https://wg21.link/N5008">N5008</a>.
+</p>
+<ol>
+
+<li><p>Modify 22.10.17.1 <a href="https://wg21.link/func.wrap.general">[func.wrap.general]</a> as indicated:</p>
+
+<blockquote>
+<p> 
+-2- Let <code>t</code> be an object of a type that is a specialization of <code>function</code>,
+<code>copyable_function</code>, <del>or</del> <code>move_only_function</code><ins>, or <code>function_ref</code></ins>,
+such that the target object <code>x</code> of <code>t</code> has a type that is a specialization of <code>function</code>, 
+<code>copyable_function</code>, <del>or</del><code>move_only_function</code><ins>, or <code>function_ref</code></ins>.
+Each argument of the invocation of <code>x</code> evaluated as part of the invocation of <code>t</code>
+may alias an argument in the same position in the invocation of <code>t</code> that has the same type,
+even if the corresponding parameter is not of reference type.
+</p>
+</blockquote>
+
+</li>
+</ol>
+
+
+
+
+
+</body>
+</html>
