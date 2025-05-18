@@ -54,7 +54,7 @@
 </style>
 </head>
 <body>
-<p>Revised 2025-05-18 at 11:06:34 UTC
+<p>Revised 2025-05-18 at 11:20:54 UTC
 </p><h2>Unresolved Issues</h2>
 <hr>
 <h3 id="423"><a href="#423">423</a><sup><a href="https://cplusplus.github.io/LWG/issue423">(i)</a></sup>. Effects of negative <code>streamsize</code> in iostreams</h3>
@@ -37613,6 +37613,8 @@ or indirection through valid iterators.
  <b>Submitter:</b> Barry Revzin <b>Opened:</b> 2021-12-08 <b>Last modified:</b> 2022-01-30</p>
 <p><b>Priority: </b>3
 </p>
+<p><b>View other</b> <a href="lwg-index-open.html#format">active issues</a> in [format].</p>
+<p><b>View all other</b> <a href="lwg-index.html#format">issues</a> in [format].</p>
 <p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
 <p><b>Discussion:</b></p>
 <p>
@@ -70807,6 +70809,38 @@ template&lt;input_range R, weakly_incrementable O, class Proj = identity,
 </blockquote>
 </li>
 </ol>
+
+
+
+
+
+<hr>
+<h3 id="4263"><a href="#4263">4263</a><sup><a href="https://cplusplus.github.io/LWG/issue4263">(i)</a></sup>. What should <code class='backtick'>std::format_to</code> etc. behave when the output is overlong?</h3>
+<p><b>Section:</b> 28.5 <a href="https://wg21.link/format">[format]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
+ <b>Submitter:</b> Jiang An <b>Opened:</b> 2025-05-14 <b>Last modified:</b> 2025-05-18</p>
+<p><b>Priority: </b>Not Prioritized
+</p>
+<p><b>View other</b> <a href="lwg-index-open.html#format">active issues</a> in [format].</p>
+<p><b>View all other</b> <a href="lwg-index.html#format">issues</a> in [format].</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
+<p><b>Discussion:</b></p>
+<p>
+It seems permitted to write overly long contents via an (C++20) output iterator with 
+<code class='backtick'>std::format_to(_n)</code>, where the length isn't representable in <code class='backtick'>size_t</code> or <code class='backtick'>ptrdiff_t</code>, 
+especially when the implementation provides integer-class types. However, currently 
+some implementation can't properly handle content whose length is greater than 
+<code class='backtick'>PTRDIFF_MAX</code>. Presumably we don't want UB in such cases. Should we explicitly allow 
+throwing exception and/or silent truncation?
+<p/>
+Additionally, given that the return type of <code class='backtick'>std::formatted_size</code> is <code class='backtick'>std::size_t</code>, 
+even if the implementation supports formatted contents whose lengths are greater than 
+<code class='backtick'>SIZE_MAX</code>, the length can't be correctly returned. Perhaps we need to either precisely 
+specify the return value as modulo arithmetic seems undesired, or specify that an 
+exception is thrown.
+</p>
+
+
+<p id="res-4263"><b>Proposed resolution:</b></p>
 
 
 
