@@ -64,7 +64,7 @@
 <p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#New">New</a> status.</em></p>
 <h3 id="4256"><a href="lwg-active.html#4256">4256</a>. Incorrect constrains for <code>function_ref</code> constructors from <code>nontype_t</code></h3>
 <p><b>Section:</b> 22.10.17.6.3 <a href="https://wg21.link/func.wrap.ref.ctor">[func.wrap.ref.ctor]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Tomasz Kami&nacute;ski <b>Opened:</b> 2025-05-14 <b>Last modified:</b> 2025-05-14</p>
+ <b>Submitter:</b> Tomasz Kami&nacute;ski <b>Opened:</b> 2025-05-14 <b>Last modified:</b> 2025-05-18</p>
 <p><b>Priority: </b>Not Prioritized
 </p>
 <p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
@@ -80,12 +80,12 @@ struct M
 </pre>
 <p>
 The constructor of <code>function_ref&lt;void()&gt;</code> from <code>nontype_t</code>
-is considered to be valid candidate
-(is_constructible_v&lt;function_ref&lt;void()&gt;, nontype_t&lt;M{}&gt;&gt; is <code>true</code>),
-despite the fact that the corresponding invocation of template argument object, that is const lvalue,
-is ill-formed. As consequence we produce hard error from inside of this constructor.
+is considered to be valid candidate 
+(<code>is_constructible_v&lt;function_ref&lt;void()&gt;, nontype_t&lt;M{}&gt;&gt;</code> 
+is <code>true</code>), despite the fact that the corresponding invocation of template 
+argument object, that is const lvalue, is ill-formed. As consequence we produce a hard 
+error from inside of this constructor.
 </p>
-
 <p>
 This is caused by the fact that for constructors with non-type <code>auto f</code> parameter,
 we are checking if <code><i>is-invocable-using</i>&lt;F&gt;</code> is <code>true</code>,
@@ -119,10 +119,10 @@ template&lt;auto f, class U&gt; constexpr function_ref(nontype_t&lt;f&gt;, U&amp
 <blockquote>
 <p>-12- Let <code>T</code> be <code>remove_reference_t&lt;U&gt;</code> and <code>F</code> be <code>decltype(f)</code>.</p>
 <p>-13- <i>Constraints:</i>:</p>
-<ul>
-  <li><p>(13.1) <code>is_rvalue_reference_v&lt;U&amp;&amp;&gt;</code> is false, and</p></li>
-  <li><p>(13.2) <code><i>is-invocable-using</i>&lt;<ins>const </ins>F<ins>&amp;</ins>, T <i>cv</i>&amp;&gt;</code> is <code>true</code>.</p></li>
-</ul>
+<ol style="list-style-type: none">
+<li><p>(13.1) &mdash; <code>is_rvalue_reference_v&lt;U&amp;&amp;&gt;</code> is false, and</p></li>
+<li><p>(13.2) &mdash; <code><i>is-invocable-using</i>&lt;<ins>const </ins>F<ins>&amp;</ins>, T <i>cv</i>&amp;&gt;</code> is <code>true</code>.</p></li>
+</ol>
 [&hellip;]
 </blockquote>
 
