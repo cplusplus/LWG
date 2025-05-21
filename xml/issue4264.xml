@@ -14,10 +14,10 @@ Currently the wording in <sref ref="[func.wrap.general]"/> allows implementation
 to avoid double indirection when constructing owning functions wrappers from another one:
 </p>
 <blockquote>
-<p> 
+<p>
 -2- Let <tt>t</tt> be an object of a type that is a specialization of <tt>function</tt>,
 <tt>copyable_function</tt>, or <tt>move_only_function</tt>, such that the target object
-<tt>x</tt> of <tt>t</tt> has a type that is a specialization of <tt>function</tt>, 
+<tt>x</tt> of <tt>t</tt> has a type that is a specialization of <tt>function</tt>,
 <tt>copyable_function</tt>, or <tt>move_only_function</tt>.
 Each argument of the invocation of <tt>x</tt> evaluated as part of the invocation of <tt>t</tt>
 may alias an argument in the same position in the invocation of <tt>t</tt> that has the same type,
@@ -38,6 +38,131 @@ an implementation to perform such an optimization. As a consequence, it is accep
 to specify the allowance for all combinations of polymorphic wrappers, even for creating an
 owning wrapper from a non-owning one, where implementing such an optimization may not be possible.
 </p>
+
+<superseded>
+<p>
+This wording is relative to <paper num="N5008"/>.
+</p>
+<ol>
+
+<li><p>Modify <sref ref="[func.wrap.general]"/> as indicated:</p>
+
+<blockquote>
+<p>
+-2- Let <tt>t</tt> be an object of a type that is a specialization of <tt>function</tt>,
+<tt>copyable_function</tt>, <del>or</del> <tt>move_only_function</tt><ins>, or <tt>function_ref</tt></ins>,
+such that the target object <tt>x</tt> of <tt>t</tt> has a type that is a specialization of <tt>function</tt>,
+<tt>copyable_function</tt>, <del>or</del><tt>move_only_function</tt><ins>, or <tt>function_ref</tt></ins>.
+Each argument of the invocation of <tt>x</tt> evaluated as part of the invocation of <tt>t</tt>
+may alias an argument in the same position in the invocation of <tt>t</tt> that has the same type,
+even if the corresponding parameter is not of reference type.
+</p>
+</blockquote>
+
+</li>
+</ol>
+
+</superseded>
+
+<note>2024-05-21; Tomasz's comment and upates proposed resolution</note>
+
+<p>
+After implementing double indirecation avoidance in the libstdc++, I have realized
+that above wording change is insufficient to cover all user observable effects of
+the change. Revelant quiote from the <a href="https://gcc.gnu.org/pipermail/libstdc++/2025-May/061561.html">
+Avoid double indirection in function_ref</a>  from libsdc++ mailing lists:
+</p>
+
+<blockquote>
+<p>
+To avoidance of double indirection requires that constructed <tt>function_ref</tt>,
+refers directly to the target function of the source, instead of source,
+and this is visible after the assigment:
+</p>
+
+<pre>
+void foo() noexcept;
+void bar() noexcept;
+
+std::function_ref&lt;void() noexcept&gt; sr(&amp;foo);
+std::function_ref&lt;void()&gt; dr(sr);
+dr(); // calls `foo` regardless of implementation
+
+sr = &amp;bar;
+sr(); // calls `bar`
+dr(); // still calls `foo` if we avoid indirection,
+      // calls `bar` if we do not
+</pre>
+
+<p>
+Similary for <tt>move_only_function</tt>/<tt>copyable_function</tt> source:
+</p>
+
+<pre>
+std::move_only_function&lt;void()&gt; sm;
+std::function_ref&lt;void()&gt; dm(sm);
+
+dm(); // UB because `sm` is empty
+
+sm = &amp;foo;
+
+dm(); // remains UB if we avoid indirection,
+      // calls `bar` if we do not.
+</pre>
+
+<p>
+While we may want to allow skipping indirection for function_ref,
+as this produces same behavior as in case for copy constructor (matching
+signatures):
+</p>
+
+<pre>
+void foo() noexcept;
+void bar() noexcept;
+
+std::function_ref&lt;void() noexcept&gt; sr(&amp;foo);
+std::function_ref&lt;void() noexcept&gt; dr(sr); // copy-cosntructor
+dr(); // calls `foo` regardless of implementation
+
+sr = &amp;bar;
+sr(); // calls `bar`
+dr(); // still calls `foo` if we avoid indirection
+</pre>
+
+
+<p>
+I do not think this is acceptable for <tt>move_only_function</tt>. So most
+likely we will and only first commit.
+</p>
+
+<p>
+Note that for the same reason, implementations are not free to avoid
+dangling when constructing <tt>function_ref</tt> from <tt>reference_wrapper</tt>:
+</p>
+
+<pre>
+auto srw = std::ref(&amp;foo);
+std::function_ref&lt;void()&gt; drw(srw);
+drw(); // calls `foo`
+
+srw = std::ref(&amp;bar);
+drw(); // calls `foo` if we unwrap referenc wrapper,
+       // calls `bar` otherwise.
+</pre>
+
+<p>
+Note that this is limited to <tt>function_ref</tt> due reference nature of this
+wrapper.
+</p>
+
+</blockquote>
+
+<p>
+The updated resolution allows indirection but making it unspecified if
+<tt>function_ref</tt> constructed from other <tt>function_ref</tt> specialization,
+will reffer to source object or it's target.
+</p>
+
 </discussion>
 
 <resolution>
@@ -49,10 +174,10 @@ This wording is relative to <paper num="N5008"/>.
 <li><p>Modify <sref ref="[func.wrap.general]"/> as indicated:</p>
 
 <blockquote>
-<p> 
+<p>
 -2- Let <tt>t</tt> be an object of a type that is a specialization of <tt>function</tt>,
 <tt>copyable_function</tt>, <del>or</del> <tt>move_only_function</tt><ins>, or <tt>function_ref</tt></ins>,
-such that the target object <tt>x</tt> of <tt>t</tt> has a type that is a specialization of <tt>function</tt>, 
+such that the target object <tt>x</tt> of <tt>t</tt> has a type that is a specialization of <tt>function</tt>,
 <tt>copyable_function</tt>, <del>or</del><tt>move_only_function</tt><ins>, or <tt>function_ref</tt></ins>.
 Each argument of the invocation of <tt>x</tt> evaluated as part of the invocation of <tt>t</tt>
 may alias an argument in the same position in the invocation of <tt>t</tt> that has the same type,
@@ -61,7 +186,43 @@ even if the corresponding parameter is not of reference type.
 </blockquote>
 
 </li>
+
+<li><p>Modify <sref ref="[func.wrap.ref.ctor]"/> as indicated:</p>
+
+<blockquote>
+<pre>
+template&lt;class F&gt; constexpr function_ref(F&amp;&amp;) noexcept;
+</pre>
+<blockquote>
+[&hellip;]
+<p>-7- <i>Effects</i>: 
+Initializes <tt><i>bound-entity</i></tt> with <tt>addressof(f)</tt>
+and <tt><i>thunk-ptr</i></tt> with the address of a function <tt><i>thunk</i></tt> such that 
+<tt><i>thunk</i>(<i>bound-entity</i>, <i>call-args</i>...)</tt> is expression-equivalent
+(<sref ref="[defns.expression.equivalent]"/>) to 
+<tt>invoke_r&lt;R&gt;(static_cast&lt;cv T&amp;&gt;(f), <i>call-args</i>...)</tt>.
+</p>
+<ins><p>-X- <i>Remarks</i>:
+If <tt>remove_cveref_t&lt;F&gt;</tt> is specialization of <tt>function_ref</tt> implementation
+may initialize <tt><i>bound-entity</i></tt> with <tt><i>bound-entity</i></tt> of <tt>f</tt>.
+[<i>Example:</i>:</p>
+<pre>
+void f1() noexcept;
+void f2() noexcept;
+
+function_ref&lt;void() noexcept&gt; r1(&amp;r1);
+function_ref&lt;void()&gt; r2(r1);
+r1 = &amp;f2;
+f2(); // it is unspecified if `f1` or `f2` is invoked
+</pre>
+<p> &mdash; <i>end example</i>]</p>
+</ins>
+</blockquote>
+</blockquote>
+
+</li>
 </ol>
+
 
 </resolution>
 
