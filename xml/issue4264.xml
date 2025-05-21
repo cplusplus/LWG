@@ -131,8 +131,8 @@ dr(); // still calls `foo` if we avoid indirection
 
 
 <p>
-I do not think this is acceptable for <tt>move_only_function</tt>. So most
-likely we will and only first commit.
+I do not think this is acceptable for <tt>move_only_function</tt>.
+&hellip;
 </p>
 
 <p>
