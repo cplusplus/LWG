@@ -67,7 +67,7 @@
 </tr>
 <tr>
   <td align="left">Date:</td>
-  <td align="left">2025-05-18</td>
+  <td align="left">2025-05-21</td>
 </tr>
 <tr>
   <td align="left">Project:</td>
@@ -79,7 +79,7 @@
 </tr>
 </table>
 <h1>C++ Standard Library Active Issues List (Revision D125)</h1>
-<p>Revised 2025-05-18 at 11:35:46 UTC
+<p>Revised 2025-05-21 at 10:18:11 UTC
 </p>
   <p>Reference ISO/IEC IS 14882:2020(E)</p>
   <p>Also see:</p>
@@ -74858,7 +74858,7 @@ exception is thrown.
 <hr>
 <h3 id="4264"><a href="#4264">4264</a><sup><a href="https://cplusplus.github.io/LWG/issue4264">(i)</a></sup>. Skipping indirection is not allowed for <code>function_ref</code></h3>
 <p><b>Section:</b> 22.10.17.1 <a href="https://wg21.link/func.wrap.general">[func.wrap.general]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Tomasz Kami&nacute;ski <b>Opened:</b> 2025-05-15 <b>Last modified:</b> 2025-05-18</p>
+ <b>Submitter:</b> Tomasz Kami&nacute;ski <b>Opened:</b> 2025-05-15 <b>Last modified:</b> 2025-05-21</p>
 <p><b>Priority: </b>Not Prioritized
 </p>
 <p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
@@ -74868,10 +74868,10 @@ Currently the wording in 22.10.17.1 <a href="https://wg21.link/func.wrap.general
 to avoid double indirection when constructing owning functions wrappers from another one:
 </p>
 <blockquote>
-<p> 
+<p>
 -2- Let <code>t</code> be an object of a type that is a specialization of <code>function</code>,
 <code>copyable_function</code>, or <code>move_only_function</code>, such that the target object
-<code>x</code> of <code>t</code> has a type that is a specialization of <code>function</code>, 
+<code>x</code> of <code>t</code> has a type that is a specialization of <code>function</code>,
 <code>copyable_function</code>, or <code>move_only_function</code>.
 Each argument of the invocation of <code>x</code> evaluated as part of the invocation of <code>t</code>
 may alias an argument in the same position in the invocation of <code>t</code> that has the same type,
@@ -74893,6 +74893,134 @@ to specify the allowance for all combinations of polymorphic wrappers, even for 
 owning wrapper from a non-owning one, where implementing such an optimization may not be possible.
 </p>
 
+<p><strong>Previous resolution [SUPERSEDED]:</strong></p>
+<blockquote class="note">
+
+<p>
+This wording is relative to <a href="https://wg21.link/N5008">N5008</a>.
+</p>
+<ol>
+
+<li><p>Modify 22.10.17.1 <a href="https://wg21.link/func.wrap.general">[func.wrap.general]</a> as indicated:</p>
+
+<blockquote>
+<p>
+-2- Let <code>t</code> be an object of a type that is a specialization of <code>function</code>,
+<code>copyable_function</code>, <del>or</del> <code>move_only_function</code><ins>, or <code>function_ref</code></ins>,
+such that the target object <code>x</code> of <code>t</code> has a type that is a specialization of <code>function</code>,
+<code>copyable_function</code>, <del>or</del><code>move_only_function</code><ins>, or <code>function_ref</code></ins>.
+Each argument of the invocation of <code>x</code> evaluated as part of the invocation of <code>t</code>
+may alias an argument in the same position in the invocation of <code>t</code> that has the same type,
+even if the corresponding parameter is not of reference type.
+</p>
+</blockquote>
+
+</li>
+</ol>
+
+</blockquote>
+
+<p><i>[2024-05-21; Tomasz's comment and upates proposed resolution]</i></p>
+
+
+<p>
+After implementing double indirection avoidance in the libstdc++, I have realized
+that above wording change is insufficient to cover all user observable effects of
+the change. Revelant quote from the <a href="https://gcc.gnu.org/pipermail/libstdc++/2025-May/061561.html">
+Avoid double indirection in function_ref</a>  from libstdc++ mailing lists:
+</p>
+
+<blockquote>
+<p>
+To avoidance of double indirection requires that constructed <code>function_ref</code>,
+refers directly to the target function of the source, instead of source,
+and this is visible after the assigment:
+</p>
+
+<pre>
+void foo() noexcept;
+void bar() noexcept;
+
+std::function_ref&lt;void() noexcept&gt; sr(&amp;foo);
+std::function_ref&lt;void()&gt; dr(sr);
+dr(); // calls <code class='backtick'>foo</code> regardless of implementation
+
+sr = &amp;bar;
+sr(); // calls <code class='backtick'>bar</code>
+dr(); // still calls <code class='backtick'>foo</code> if we avoid indirection,
+      // calls <code class='backtick'>bar</code> if we do not
+</pre>
+
+<p>
+Similary for <code>move_only_function</code>/<code>copyable_function</code> source:
+</p>
+
+<pre>
+std::move_only_function&lt;void()&gt; sm;
+std::function_ref&lt;void()&gt; dm(sm);
+
+dm(); // UB because <code class='backtick'>sm</code> is empty
+
+sm = &amp;foo;
+
+dm(); // remains UB if we avoid indirection,
+      // calls <code class='backtick'>bar</code> if we do not.
+</pre>
+
+<p>
+While we may want to allow skipping indirection for function_ref,
+as this produces same behavior as in case for copy constructor (matching
+signatures):
+</p>
+
+<pre>
+void foo() noexcept;
+void bar() noexcept;
+
+std::function_ref&lt;void() noexcept&gt; sr(&amp;foo);
+std::function_ref&lt;void() noexcept&gt; dr(sr); // copy-cosntructor
+dr(); // calls <code class='backtick'>foo</code> regardless of implementation
+
+sr = &amp;bar;
+sr(); // calls <code class='backtick'>bar</code>
+dr(); // still calls <code class='backtick'>foo</code> if we avoid indirection
+</pre>
+
+
+<p>
+I do not think this is acceptable for <code>move_only_function</code>.
+&hellip;
+</p>
+
+<p>
+Note that for the same reason, implementations are not free to avoid
+dangling when constructing <code>function_ref</code> from <code>reference_wrapper</code>:
+</p>
+
+<pre>
+auto srw = std::ref(&amp;foo);
+std::function_ref&lt;void()&gt; drw(srw);
+drw(); // calls <code class='backtick'>foo</code>
+
+srw = std::ref(&amp;bar);
+drw(); // calls <code class='backtick'>foo</code> if we unwrap referenc wrapper,
+       // calls <code class='backtick'>bar</code> otherwise.
+</pre>
+
+<p>
+Note that this is limited to <code>function_ref</code> due reference nature of this
+wrapper.
+</p>
+
+</blockquote>
+
+<p>
+The updated resolution allows indirection but making it unspecified if
+<code>function_ref</code> constructed from other <code>function_ref</code> specialization,
+will refer to source object or its target.
+</p>
+
+
 
 <p id="res-4264"><b>Proposed resolution:</b></p>
 <p>
@@ -74903,10 +75031,10 @@ This wording is relative to <a href="https://wg21.link/N5008">N5008</a>.
 <li><p>Modify 22.10.17.1 <a href="https://wg21.link/func.wrap.general">[func.wrap.general]</a> as indicated:</p>
 
 <blockquote>
-<p> 
+<p>
 -2- Let <code>t</code> be an object of a type that is a specialization of <code>function</code>,
 <code>copyable_function</code>, <del>or</del> <code>move_only_function</code><ins>, or <code>function_ref</code></ins>,
-such that the target object <code>x</code> of <code>t</code> has a type that is a specialization of <code>function</code>, 
+such that the target object <code>x</code> of <code>t</code> has a type that is a specialization of <code>function</code>,
 <code>copyable_function</code>, <del>or</del><code>move_only_function</code><ins>, or <code>function_ref</code></ins>.
 Each argument of the invocation of <code>x</code> evaluated as part of the invocation of <code>t</code>
 may alias an argument in the same position in the invocation of <code>t</code> that has the same type,
@@ -74915,7 +75043,44 @@ even if the corresponding parameter is not of reference type.
 </blockquote>
 
 </li>
+
+<li><p>Modify 22.10.17.6.3 <a href="https://wg21.link/func.wrap.ref.ctor">[func.wrap.ref.ctor]</a> as indicated:</p>
+
+<blockquote>
+<pre>
+template&lt;class F&gt; constexpr function_ref(F&amp;&amp;) noexcept;
+</pre>
+<blockquote>
+[&hellip;]
+<p>-7- <i>Effects</i>: 
+Initializes <code><i>bound-entity</i></code> with <code>addressof(f)</code>
+and <code><i>thunk-ptr</i></code> with the address of a function <code><i>thunk</i></code> such that 
+<code><i>thunk</i>(<i>bound-entity</i>, <i>call-args</i>...)</code> is expression-equivalent
+(3.22 <a href="https://wg21.link/defns.expression.equivalent">[defns.expression.equivalent]</a>) to 
+<code>invoke_r&lt;R&gt;(static_cast&lt;cv T&amp;&gt;(f), <i>call-args</i>...)</code>.
+</p>
+<ins><p>-X- <i>Remarks</i>:
+If <code>remove_cveref_t&lt;F&gt;</code> is specialization of <code>function_ref</code> implementation
+may initialize <code><i>bound-entity</i></code> with <code><i>bound-entity</i></code> of <code>f</code>.
+[<i>Example:</i>:</p>
+<pre>
+void f1() noexcept;
+void f2() noexcept;
+
+function_ref&lt;void() noexcept&gt; r1(&amp;r1);
+function_ref&lt;void()&gt; r2(r1);
+r1 = &amp;f2;
+f2(); // it is unspecified if <code class='backtick'>f1</code> or <code class='backtick'>f2</code> is invoked
+</pre>
+<p> &mdash; <i>end example</i>]</p>
+</ins>
+</blockquote>
+</blockquote>
+
+</li>
 </ol>
+
+
 
 
 
