@@ -67,10 +67,10 @@ even if the corresponding parameter is not of reference type.
 <note>2024-05-21; Tomasz's comment and upates proposed resolution</note>
 
 <p>
-After implementing double indirecation avoidance in the libstdc++, I have realized
+After implementing double indirection avoidance in the libstdc++, I have realized
 that above wording change is insufficient to cover all user observable effects of
-the change. Revelant quiote from the <a href="https://gcc.gnu.org/pipermail/libstdc++/2025-May/061561.html">
-Avoid double indirection in function_ref</a>  from libsdc++ mailing lists:
+the change. Revelant quote from the <a href="https://gcc.gnu.org/pipermail/libstdc++/2025-May/061561.html">
+Avoid double indirection in function_ref</a>  from libstdc++ mailing lists:
 </p>
 
 <blockquote>
@@ -160,7 +160,7 @@ wrapper.
 <p>
 The updated resolution allows indirection but making it unspecified if
 <tt>function_ref</tt> constructed from other <tt>function_ref</tt> specialization,
-will reffer to source object or it's target.
+will refer to source object or its target.
 </p>
 
 </discussion>
