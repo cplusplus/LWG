@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Issue 4266: layout_stride::mapping should treat empty mappings as exhaustive</title>
+<meta property="og:title" content="Issue 4266: layout_stride::mapping should treat empty mappings as exhaustive">
+<meta property="og:description" content="C++ library issue. Status: New">
+<meta property="og:url" content="https://cplusplus.github.io/LWG/issue4266.html">
+<meta property="og:type" content="website">
+<meta property="og:image" content="http://cplusplus.github.io/LWG/images/cpp_logo.png">
+<meta property="og:image:alt" content="C++ logo">
+<style>
+  p {text-align:justify}
+  li {text-align:justify}
+  pre code.backtick::before { content: "`" }
+  pre code.backtick::after { content: "`" }
+  blockquote.note
+  {
+    background-color:#E0E0E0;
+    padding-left: 15px;
+    padding-right: 15px;
+    padding-top: 1px;
+    padding-bottom: 1px;
+  }
+  ins {background-color:#A0FFA0}
+  del {background-color:#FFA0A0}
+  table.issues-index { border: 1px solid; border-collapse: collapse; }
+  table.issues-index th { text-align: center; padding: 4px; border: 1px solid; }
+  table.issues-index td { padding: 4px; border: 1px solid; }
+  table.issues-index td:nth-child(1) { text-align: right; }
+  table.issues-index td:nth-child(2) { text-align: left; }
+  table.issues-index td:nth-child(3) { text-align: left; }
+  table.issues-index td:nth-child(4) { text-align: left; }
+  table.issues-index td:nth-child(5) { text-align: center; }
+  table.issues-index td:nth-child(6) { text-align: center; }
+  table.issues-index td:nth-child(7) { text-align: left; }
+  table.issues-index td:nth-child(5) span.no-pr { color: red; }
+  @media (prefers-color-scheme: dark) {
+     html {
+        color: #ddd;
+        background-color: black;
+     }
+     ins {
+        background-color: #225522
+     }
+     del {
+        background-color: #662222
+     }
+     a {
+        color: #6af
+     }
+     a:visited {
+        color: #6af
+     }
+     blockquote.note
+     {
+        background-color: rgba(255, 255, 255, .10)
+     }
+  }
+</style>
+</head>
+<body>
+<hr>
+<p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#New">New</a> status.</em></p>
+<h3 id="4266"><a href="lwg-active.html#4266">4266</a>. <code class='backtick'>layout_stride::mapping</code> should treat empty mappings as exhaustive</h3>
+<p><b>Section:</b> 23.7.3.4.7 <a href="https://wg21.link/mdspan.layout.stride">[mdspan.layout.stride]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
+ <b>Submitter:</b> Tomasz Kamiński <b>Opened:</b> 2025-05-22 <b>Last modified:</b> 2025-05-24</p>
+<p><b>Priority: </b>Not Prioritized
+</p>
+<p><b>View all other</b> <a href="lwg-index.html#mdspan.layout.stride">issues</a> in [mdspan.layout.stride].</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
+<p><b>Discussion:</b></p>
+<p>
+Mapping over an empty multidimensional index space is always exhaustive according to the 
+corresponding definitions from 23.7.3.4.2 <a href="https://wg21.link/mdspan.layout.reqmts">[mdspan.layout.reqmts]</a> p16.
+<p/>
+However, the current specification of <code class='backtick'>layout_stride::mapping</code> does not consider whether 
+some of the empty multidimensional index spaces are unique or exhaustive. For illustration, 
+the mapping with the following configuration is not considered exhaustive according to the 
+current specification of 23.7.3.4.7.4 <a href="https://wg21.link/mdspan.layout.stride.obs">[mdspan.layout.stride.obs]</a> bullet 5.2:
+</p>
+<blockquote><pre>
+extents: 2, 2, 0
+strides: 2, 6, 20
+</pre></blockquote>
+<p>
+This prevents the implementation from implementing <code class='backtick'>sm.is_exhaustive()</code> as 
+<code>sm.<i>fwd-prod-of-extents</i>(sm::extents_type::rank()) == sm.required_span_size()</code>. 
+For all mappings with size greater than zero, such an expression provides an answer consistent 
+with the standard. However, it always returns <code class='backtick'>true</code> for an empty mapping, such as shown 
+in the example.
+<p/>
+We should make such implementation conforming, and require <code class='backtick'>is_exhaustive()</code> to return 
+<code class='backtick'>true</code> for empty mappings.
+<p/>
+For consistency, we could update <code class='backtick'>is_always_exhaustive()</code> to recognize mapping with 
+<code class='backtick'>rank() == 0</code>, and one for which at least one of the static extents is equal to zero 
+(i.e., they always represent a multidimensional index space).
+</p>
+
+
+<p id="res-4266"><b>Proposed resolution:</b></p>
+<p>
+This wording is relative to <a href="https://wg21.link/N5008">N5008</a>.
+</p>
+<ol>
+
+<li><p>Modify 23.7.3.4.7.1 <a href="https://wg21.link/mdspan.layout.stride.overview">[mdspan.layout.stride.overview]</a> as indicated:</p>
+
+<blockquote>
+<pre>
+namespace std {
+  template&lt;class Extents&gt;
+  class layout_stride::mapping {
+    [&hellip;]
+    static constexpr bool is_always_unique() noexcept { return true; }
+    static constexpr bool is_always_exhaustive() noexcept<ins>;</ins><del>{ return false; }</del><ins>;</ins>
+    static constexpr bool is_always_strided() noexcept { return true; }
+    [&hellip;]
+  };
+}
+</pre>
+</blockquote>
+
+</li>
+
+<li><p>Modify 23.7.3.4.7.4 <a href="https://wg21.link/mdspan.layout.stride.obs">[mdspan.layout.stride.obs]</a> as indicated:</p>
+
+<blockquote>
+<p>
+[&hellip;]
+</p>
+<pre>
+<ins>static constexpr bool is_always_exhaustive() noexcept;</ins>
+</pre>
+<blockquote>
+<p>
+<ins>-?- <i>Returns</i>: <code class='backtick'>true</code> if <code><i>rank_</i></code> is <code class='backtick'>0</code> or if there is a rank index 
+<code class='backtick'>r</code> of <code class='backtick'>extents()</code> such that <code class='backtick'>extents_type::static_extent(r)</code> is <code class='backtick'>0</code>, otherwise <code class='backtick'>false</code>.</ins>
+</p>
+</blockquote>
+<pre>
+constexpr bool is_exhaustive() const noexcept;
+</pre>
+<blockquote>
+<p>
+-5- <i>Returns</i>:
+</p>
+<ol style="list-style-type: none">
+<li><p>(5.1) &mdash; <code class='backtick'>true</code> if <code><i>rank_</i></code> <ins>or the size of the multidimensional 
+index space <code class='backtick'>m.extents()</code></ins> is <code class='backtick'>0</code>.</p></li>
+<li><p>(5.2) &mdash; [&hellip;]</p></li>
+<li><p>(5.3) &mdash; [&hellip;]</p></li>
+</ol>
+</blockquote>
+</blockquote>
+
+</li>
+
+</ol>
+
+
+
+
+
+
+</body>
+</html>
