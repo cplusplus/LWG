@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Issue 4265: std::midpoint should not accept const bool</title>
+<meta property="og:title" content="Issue 4265: std::midpoint should not accept const bool">
+<meta property="og:description" content="C++ library issue. Status: New">
+<meta property="og:url" content="https://cplusplus.github.io/LWG/issue4265.html">
+<meta property="og:type" content="website">
+<meta property="og:image" content="http://cplusplus.github.io/LWG/images/cpp_logo.png">
+<meta property="og:image:alt" content="C++ logo">
+<style>
+  p {text-align:justify}
+  li {text-align:justify}
+  pre code.backtick::before { content: "`" }
+  pre code.backtick::after { content: "`" }
+  blockquote.note
+  {
+    background-color:#E0E0E0;
+    padding-left: 15px;
+    padding-right: 15px;
+    padding-top: 1px;
+    padding-bottom: 1px;
+  }
+  ins {background-color:#A0FFA0}
+  del {background-color:#FFA0A0}
+  table.issues-index { border: 1px solid; border-collapse: collapse; }
+  table.issues-index th { text-align: center; padding: 4px; border: 1px solid; }
+  table.issues-index td { padding: 4px; border: 1px solid; }
+  table.issues-index td:nth-child(1) { text-align: right; }
+  table.issues-index td:nth-child(2) { text-align: left; }
+  table.issues-index td:nth-child(3) { text-align: left; }
+  table.issues-index td:nth-child(4) { text-align: left; }
+  table.issues-index td:nth-child(5) { text-align: center; }
+  table.issues-index td:nth-child(6) { text-align: center; }
+  table.issues-index td:nth-child(7) { text-align: left; }
+  table.issues-index td:nth-child(5) span.no-pr { color: red; }
+  @media (prefers-color-scheme: dark) {
+     html {
+        color: #ddd;
+        background-color: black;
+     }
+     ins {
+        background-color: #225522
+     }
+     del {
+        background-color: #662222
+     }
+     a {
+        color: #6af
+     }
+     a:visited {
+        color: #6af
+     }
+     blockquote.note
+     {
+        background-color: rgba(255, 255, 255, .10)
+     }
+  }
+</style>
+</head>
+<body>
+<hr>
+<p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#New">New</a> status.</em></p>
+<h3 id="4265"><a href="lwg-active.html#4265">4265</a>. <code class='backtick'>std::midpoint</code> should not accept <code class='backtick'>const bool</code></h3>
+<p><b>Section:</b> 26.10.16 <a href="https://wg21.link/numeric.ops.midpoint">[numeric.ops.midpoint]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
+ <b>Submitter:</b> Jan Schultke <b>Opened:</b> 2025-05-21 <b>Last modified:</b> 2025-05-24</p>
+<p><b>Priority: </b>Not Prioritized
+</p>
+<p><b>View all other</b> <a href="lwg-index.html#numeric.ops.midpoint">issues</a> in [numeric.ops.midpoint].</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
+<p><b>Discussion:</b></p>
+<p>
+The constraints of the first overload of <code class='backtick'>std::midpoint</code> are as follows:
+</p>
+<blockquote>
+<pre>
+template&lt;class T&gt;
+  constexpr T midpoint(T a, T b) noexcept;
+</pre>
+<blockquote>
+<p>
+-1- <i>Constraints</i>: <code class='backtick'>T</code> is an arithmetic type other than <code class='backtick'>bool</code>.
+</p>
+</blockquote>
+</blockquote>
+<p>
+It does not appear intentional that <code class='backtick'>const bool</code> is supported considering that 
+26.10.14 <a href="https://wg21.link/numeric.ops.gcd">[numeric.ops.gcd]</a> excludes <i>cv</i> <code class='backtick'>bool</code>.
+<p/>
+More generally, it is questionable that <i>cv</i>-qualified arithmetic types aren't 
+excluded in general, considering that 26.10.17 <a href="https://wg21.link/numeric.sat">[numeric.sat]</a> excludes them with 
+the "signed or unsigned integer type" constraint. However, tightening the constraints 
+for these other functions seems evolutionary, not like fixing an obvious oversight, 
+and so it likely requires a separate issue.
+</p>
+
+
+
+<p id="res-4265"><b>Proposed resolution:</b></p>
+<p>
+This wording is relative to <a href="https://wg21.link/N5008">N5008</a>.
+</p>
+<ol>
+
+<li><p>Modify 26.10.16 <a href="https://wg21.link/numeric.ops.midpoint">[numeric.ops.midpoint]</a> as indicated:</p>
+
+<blockquote>
+<pre>
+template&lt;class T&gt;
+  constexpr T midpoint(T a, T b) noexcept;
+</pre>
+<blockquote>
+<p>
+-1- <i>Constraints</i>: <code class='backtick'>T</code> is an arithmetic type other than <ins><i>cv</i></ins> <code class='backtick'>bool</code>.
+</p>
+</blockquote>
+</blockquote>
+
+</li>
+
+</ol>
+
+
+
+
+
+
+</body>
+</html>
