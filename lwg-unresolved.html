@@ -54,7 +54,7 @@
 </style>
 </head>
 <body>
-<p>Revised 2025-05-24 at 10:35:47 UTC
+<p>Revised 2025-05-24 at 10:56:29 UTC
 </p><h2>Unresolved Issues</h2>
 <hr>
 <h3 id="423"><a href="#423">423</a><sup><a href="https://cplusplus.github.io/LWG/issue423">(i)</a></sup>. Effects of negative <code>streamsize</code> in iostreams</h3>
@@ -71233,6 +71233,68 @@ index space <code class='backtick'>m.extents()</code></ins> is <code class='back
 <li><p>(5.2) &mdash; [&hellip;]</p></li>
 <li><p>(5.3) &mdash; [&hellip;]</p></li>
 </ol>
+</blockquote>
+</blockquote>
+
+</li>
+
+</ol>
+
+
+
+
+
+
+<hr>
+<h3 id="4267"><a href="#4267">4267</a><sup><a href="https://cplusplus.github.io/LWG/issue4267">(i)</a></sup>. Uses-allocator construction is meaningless for tuple of references</h3>
+<p><b>Section:</b> 22.4.4.2 <a href="https://wg21.link/tuple.cnstr">[tuple.cnstr]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
+ <b>Submitter:</b> Jiang An <b>Opened:</b> 2025-05-24 <b>Last modified:</b> 2025-05-24</p>
+<p><b>Priority: </b>Not Prioritized
+</p>
+<p><b>View other</b> <a href="lwg-index-open.html#tuple.cnstr">active issues</a> in [tuple.cnstr].</p>
+<p><b>View all other</b> <a href="lwg-index.html#tuple.cnstr">issues</a> in [tuple.cnstr].</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
+<p><b>Discussion:</b></p>
+<p>
+Per 20.2.8.2 <a href="https://wg21.link/allocator.uses.construction">[allocator.uses.construction]</a>/1, uses-allocator construction is only defined for objects. 
+And presumably, an attempt to construct <code class='backtick'>std::tuple</code> of reference from an <code class='backtick'>allocator_arg_t</code> constructor 
+causes a hard error.
+<p/>
+Since C++23/<a href="https://wg21.link/P2255R2" title=" A type trait to detect reference binding to temporary">P2255R2</a>, it seems that these <code class='backtick'>allocator_arg_t</code> constructors are conditionally 
+deleted according to 22.4.4.2 <a href="https://wg21.link/tuple.cnstr">[tuple.cnstr]</a>/33. However, it's confusing that these constructors are 
+sometimes non-deleted when the tuple contains a reference, while there are hard errors in an instantiation 
+instead.
+</p>
+
+
+<p id="res-4267"><b>Proposed resolution:</b></p>
+<p>
+This wording is relative to <a href="https://wg21.link/N5008">N5008</a>.
+</p>
+<ol>
+
+<li><p>Modify 22.4.4.2 <a href="https://wg21.link/tuple.cnstr">[tuple.cnstr]</a> as indicated:</p>
+
+<blockquote>
+<pre>
+template&lt;class Alloc&gt;
+  constexpr explicit(<i>see below</i>)
+    tuple(allocator_arg_t, const Alloc&amp; a);
+[&hellip;]
+template&lt;class Alloc, tuple-like UTuple&gt;
+  constexpr explicit(<i>see below</i>)
+    tuple(allocator_arg_t, const Alloc&amp; a, UTuple&amp;&amp;);
+</pre>
+<blockquote>
+<p>
+-32- <i>Preconditions</i>: <code class='backtick'>Alloc</code> meets the <i>Cpp17Allocator</i> requirements (16.4.4.6.1 <a href="https://wg21.link/allocator.requirements.general">[allocator.requirements.general]</a>).
+<p/>
+-33- <i>Effects</i>: Equivalent to the preceding constructors except that each element is constructed with uses-allocator
+construction (20.2.8.2 <a href="https://wg21.link/allocator.uses.construction">[allocator.uses.construction]</a>).
+<p/>
+<ins>-?- <i>Remarks</i>: These constructors are defined as deleted if <code>is_reference_v&lt;T<sub><i>i</i></sub>&gt;</code> 
+is <code class='backtick'>true</code> for at least one <code>T<sub><i>i</i></sub></code>.</ins>
+</p>
 </blockquote>
 </blockquote>
 
