@@ -54,7 +54,7 @@
 </style>
 </head>
 <body>
-<p>Revised 2025-05-26 at 15:53:36 UTC
+<p>Revised 2025-05-26 at 15:55:12 UTC
 </p><h2>Unresolved Issues</h2>
 <hr>
 <h3 id="423"><a href="#423">423</a><sup><a href="https://cplusplus.github.io/LWG/issue423">(i)</a></sup>. Effects of negative <code>streamsize</code> in iostreams</h3>
@@ -71043,7 +71043,8 @@ template&lt;class F&gt; constexpr function_ref(F&amp;&amp;) noexcept;
 </pre>
 <blockquote>
 [&hellip;]
-<p>-7- <i>Effects</i>: 
+<p>
+-7- <i>Effects</i>: 
 Initializes <code><i>bound-entity</i></code> with <code>addressof(f)</code>
 and <code><i>thunk-ptr</i></code> with the address of a function <code><i>thunk</i></code> such that 
 <code><i>thunk</i>(<i>bound-entity</i>, <i>call-args</i>...)</code> is expression-equivalent
@@ -71052,7 +71053,7 @@ and <code><i>thunk-ptr</i></code> with the address of a function <code><i>thunk<
 </p>
 <p>
 <ins>-?- <i>Remarks</i>:
-If <code>remove_cveref_t&lt;F&gt;</code> is specialization of <code>function_ref</code> implementation
+If <code>remove_cveref_t&lt;F&gt;</code> is a specialization of <code>function_ref</code> an implementation
 may initialize <code><i>bound-entity</i></code> with <code><i>bound-entity</i></code> of <code>f</code>.
 [<i>Example:</i>:</ins>
 </p>
