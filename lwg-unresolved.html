@@ -54,7 +54,7 @@
 </style>
 </head>
 <body>
-<p>Revised 2025-05-24 at 10:56:29 UTC
+<p>Revised 2025-05-26 at 14:29:43 UTC
 </p><h2>Unresolved Issues</h2>
 <hr>
 <h3 id="423"><a href="#423">423</a><sup><a href="https://cplusplus.github.io/LWG/issue423">(i)</a></sup>. Effects of negative <code>streamsize</code> in iostreams</h3>
@@ -71145,7 +71145,7 @@ template&lt;class T&gt;
 <hr>
 <h3 id="4266"><a href="#4266">4266</a><sup><a href="https://cplusplus.github.io/LWG/issue4266">(i)</a></sup>. <code class='backtick'>layout_stride::mapping</code> should treat empty mappings as exhaustive</h3>
 <p><b>Section:</b> 23.7.3.4.7 <a href="https://wg21.link/mdspan.layout.stride">[mdspan.layout.stride]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Tomasz Kamiński <b>Opened:</b> 2025-05-22 <b>Last modified:</b> 2025-05-24</p>
+ <b>Submitter:</b> Tomasz Kamiński <b>Opened:</b> 2025-05-22 <b>Last modified:</b> 2025-05-26</p>
 <p><b>Priority: </b>Not Prioritized
 </p>
 <p><b>View all other</b> <a href="lwg-index.html#mdspan.layout.stride">issues</a> in [mdspan.layout.stride].</p>
@@ -71195,7 +71195,7 @@ namespace std {
   class layout_stride::mapping {
     [&hellip;]
     static constexpr bool is_always_unique() noexcept { return true; }
-    static constexpr bool is_always_exhaustive() noexcept<ins>;</ins><del>{ return false; }</del><ins>;</ins>
+    static constexpr bool is_always_exhaustive() noexcept<ins>;</ins> <del>{ return false; }</del>
     static constexpr bool is_always_strided() noexcept { return true; }
     [&hellip;]
   };
