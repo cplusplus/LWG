@@ -54,7 +54,7 @@
 </style>
 </head>
 <body>
-<p>Revised 2025-05-29 at 15:25:25 UTC
+<p>Revised 2025-05-29 at 16:58:28 UTC
 </p><h2>Unresolved Issues</h2>
 <hr>
 <h3 id="423"><a href="#423">423</a><sup><a href="https://cplusplus.github.io/LWG/issue423">(i)</a></sup>. Effects of negative <code>streamsize</code> in iostreams</h3>
@@ -58699,6 +58699,7 @@ Set priority to 2 after reflector poll.
  <b>Submitter:</b> Hewill Kang <b>Opened:</b> 2024-05-14 <b>Last modified:</b> 2024-06-24</p>
 <p><b>Priority: </b>3
 </p>
+<p><b>View other</b> <a href="lwg-index-open.html#alg.unique">active issues</a> in [alg.unique].</p>
 <p><b>View all other</b> <a href="lwg-index.html#alg.unique">issues</a> in [alg.unique].</p>
 <p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
 <p><b>Discussion:</b></p>
@@ -71361,6 +71362,101 @@ discarding results, and which we don't.
 <p id="res-4268"><b>Proposed resolution:</b></p>
 <p>
 </p>
+
+
+
+
+
+<hr>
+<h3 id="4269"><a href="#4269">4269</a><sup><a href="https://cplusplus.github.io/LWG/issue4269">(i)</a></sup>. <code class='backtick'>unique_copy</code> passes arguments to its predicate backwards</h3>
+<p><b>Section:</b> 26.7.9 <a href="https://wg21.link/alg.unique">[alg.unique]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
+ <b>Submitter:</b> Jonathan Wakely <b>Opened:</b> 2025-05-29 <b>Last modified:</b> 2025-05-29</p>
+<p><b>Priority: </b>Not Prioritized
+</p>
+<p><b>View other</b> <a href="lwg-index-open.html#alg.unique">active issues</a> in [alg.unique].</p>
+<p><b>View all other</b> <a href="lwg-index.html#alg.unique">issues</a> in [alg.unique].</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
+<p><b>Discussion:</b></p>
+<p>
+For the <code class='backtick'>unique</code> algorithms, 26.7.9 <a href="https://wg21.link/alg.unique">[alg.unique]</a> p1 says:
+</p>
+<blockquote>
+1. Let <code class='backtick'>pred</code> be <code class='backtick'>equal_to{}</code> for the overloads with no parameter <code class='backtick'>pred</code>,
+and let <i>E</i> be
+<ol style="list-style-type: none">
+<li> (1.1)
+ &mdash; <code class='backtick'>bool(pred(*(i - 1), *i))</code> for the overloads in namespace <code class='backtick'>std</code>;
+</li>
+<li>(1.2)
+ &mdash; <code class='backtick'>bool(invoke(comp, invoke(proj, *(i - 1)), invoke(proj, *i)))</code>
+ for the overloads in namespace <code class='backtick'>ranges</code>.
+</li>
+</ol>
+</blockquote>
+<p>
+However for the <code class='backtick'>unique_copy</code> algorithms, 26.7.9 <a href="https://wg21.link/alg.unique">[alg.unique]</a> p6 says
+that the arguments <code class='backtick'>*i</code> and <code class='backtick'>*(i-1)</code> should be reversed:
+</p>
+<blockquote>
+6. Let <code class='backtick'>pred</code> be <code class='backtick'>equal_to{}</code> for the overloads with no parameter <code class='backtick'>pred</code>,
+and let <i>E</i> be
+<ol style="list-style-type: none">
+<li> (6.1)
+ &mdash; <code class='backtick'>bool(pred(*i, *(i - 1)))</code> for the overloads in namespace <code class='backtick'>std</code>;
+</li>
+<li>(6.2)
+ &mdash; <code class='backtick'>bool(invoke(comp, invoke(proj, *i), invoke(proj, *(i - 1))))</code>
+ for the overloads in namespace <code class='backtick'>ranges</code>.
+</li>
+</ol>
+</blockquote>
+<p>
+This reversed order is consistent with the documentation for
+<a href="https://stl.boost.org/unique_copy.html">SGI STL <code class='backtick'>unique_copy</code></a>,
+although the docs for 
+<a href="https://stl.boost.org/unique_copy.html">SGI STL <code class='backtick'>unique</code></a>
+show reversed arguments too, and the C++ standard doesn't match that.
+</p>
+<p>
+A survey of known implementations shows that all three of libstdc++, libc++,
+and MSVC STL use the <code class='backtick'>pred(*(i - 1), *i)</code> order for all of <code class='backtick'>std::unique</code>,
+<code class='backtick'>std::unique_copy</code>, <code class='backtick'>ranges::unique</code>, and <code class='backtick'>ranges::unique_copy</code>. The range-v3
+library did the same, and even the SGI STL did too (despite what its docs said).
+Only two implementations were found which match the spec and use a different
+argument order for <code class='backtick'>unique</code> and <code class='backtick'>unique_copy</code>, Casey Carter's (cmcstl2) and
+Fraser Gordon's.
+</p>
+<p>
+In the absence of any known rationale for <code class='backtick'>unique</code> and <code class='backtick'>unique_copy</code> to differ,
+it seems sensible to make <code class='backtick'>unique_copy</code> more consistent with <code class='backtick'>unique</code>
+(and with the majority of implementations stretching back three decades).
+</p>
+
+
+<p id="res-4269"><b>Proposed resolution:</b></p>
+<p>
+This wording is relative to <a href="https://wg21.link/N5008">N5008</a>.
+</p>
+
+<ol>
+<li><p>Modify 26.7.9 <a href="https://wg21.link/alg.unique">[alg.unique]</a> as indicated:</p>
+<blockquote>
+6. Let <code class='backtick'>pred</code> be <code class='backtick'>equal_to{}</code> for the overloads with no parameter <code class='backtick'>pred</code>,
+and let <i>E</i> be
+<ol style="list-style-type: none">
+<li> (6.1)
+ &mdash; <code>bool(pred(<del>*i,</del> *(i - 1))<ins>, *i</ins>)</code>
+ for the overloads in namespace <code class='backtick'>std</code>;
+</li>
+<li>(6.2)
+ &mdash; <code>bool(invoke(comp, <del>invoke(proj, *i),</del>
+ invoke(proj, *(i - 1))<ins>, invoke(proj, *i)</ins>))</code>
+ for the overloads in namespace <code class='backtick'>ranges</code>.
+</li>
+</ol>
+</blockquote>
+</li>
+</ol>
 
 
 
