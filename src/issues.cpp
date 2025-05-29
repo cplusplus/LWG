@@ -16,6 +16,7 @@
 #include <iterator>
 #include <fstream>
 #include <sstream>
+#include <format>
 
 #include <iostream>  // eases debugging
 
@@ -154,7 +155,7 @@ auto lwg::parse_issue_from_file(std::string tx, std::string const & filename,
    k += match.size();
    auto l = tx.find('\"', k);
    auto num = tx.substr(k, l-k);
-   if (filename.find(num + ".xml") == filename.npos)
+   if (!filename.ends_with(std::format("issue{:0>4}.xml", num)))
      std::cerr << "warning: issue number " << num << " in " << filename << " does not match issue number\n";
    is.num = std::stoi(num);
 
