@@ -54,7 +54,7 @@
 </style>
 </head>
 <body>
-<p>Revised 2025-06-05 at 15:53:30 UTC
+<p>Revised 2025-06-05 at 17:35:42 UTC
 </p><h2>Unresolved Issues</h2>
 <hr>
 <h3 id="423"><a href="#423">423</a><sup><a href="https://cplusplus.github.io/LWG/issue423">(i)</a></sup>. Effects of negative <code>streamsize</code> in iostreams</h3>
@@ -71511,6 +71511,287 @@ namespace std {
 <blockquote>
 <p>
 <ins>-?- <i>Mandates</i>: This function is not odr-used (6.3 <a href="https://wg21.link/basic.def.odr">[basic.def.odr]</a>).</ins>
+</p>
+</blockquote>
+</blockquote>
+</li>
+</ol>
+
+
+
+
+
+<hr>
+<h3 id="4271"><a href="#4271">4271</a><sup><a href="https://cplusplus.github.io/LWG/issue4271">(i)</a></sup>. Caching range views claim amortized amortized &#x1d4aa;(1) runtime
+complexity for algorithms that are in fact &#x1d4aa;(n)</h3>
+<p><b>Section:</b> 24.3.1 <a href="https://wg21.link/iterator.requirements.general">[iterator.requirements.general]</a>, 25.3.13 <a href="https://wg21.link/range.approximately.sized">[range.approximately.sized]</a>, 25.4.1 <a href="https://wg21.link/range.req.general">[range.req.general]</a>, 25.4.2 <a href="https://wg21.link/range.range">[range.range]</a>, 25.4.3 <a href="https://wg21.link/range.sized">[range.sized]</a>, 25.7.8.2 <a href="https://wg21.link/range.filter.view">[range.filter.view]</a>, 25.7.12.2 <a href="https://wg21.link/range.drop.view">[range.drop.view]</a>, 25.7.13.2 <a href="https://wg21.link/range.drop.while.view">[range.drop.while.view]</a>, 25.7.17.2 <a href="https://wg21.link/range.split.view">[range.split.view]</a>, 25.7.21.2 <a href="https://wg21.link/range.reverse.view">[range.reverse.view]</a>, 25.7.30.2 <a href="https://wg21.link/range.slide.view">[range.slide.view]</a>, 25.7.31.2 <a href="https://wg21.link/range.chunk.by.view">[range.chunk.by.view]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
+ <b>Submitter:</b> Andreas Weis <b>Opened:</b> 2025-06-02 <b>Last modified:</b> 2025-06-05</p>
+<p><b>Priority: </b>Not Prioritized
+</p>
+<p><b>View all other</b> <a href="lwg-index.html#iterator.requirements.general">issues</a> in [iterator.requirements.general].</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
+<p><b>Discussion:</b></p>
+<p>
+Currently range views that cache the result of their operation claim an
+amortized &#x1d4aa;(1) worst-case runtime complexity. This is inconsistent 
+with the established practice in algorithm analysis, where the given
+complexity bound must hold for all possible sequences of operations.
+Caching is not sufficient to lower the complexity bound here, as the
+sequence that contains only a single call to the operation will cause a
+runtime cost linear in the size of the underlying range. Thus all of the
+caching range operations are in fact &#x1d4aa;(n).
+<p/>
+Apart from the caching view operations, this also has secondary impacts
+in other places that rely on the complexity of iterator functions, such
+as the iterator requirements and functions for computing the size of a
+range.
+<p/>
+It is unclear how desirable it is under these circumstances to continue
+disallowing other kinds of &#x1d4aa;(n) behavior for iterator functions. 
+While caching offers clear benefits in the context of lazy evaluation, it
+cannot prevent losing the &#x1d4aa;(1) complexity guarantee. The proposed
+changes below therefore do not address the issue that other types of
+views (such as hypothetical non-caching variants of the affected views)
+that were previously considered invalid will become valid with these
+changes.
+</p>
+
+
+<p id="res-4271"><b>Proposed resolution:</b></p>
+<p>
+This wording is relative to <a href="https://wg21.link/N5008">N5008</a>.
+</p>
+
+<ol>
+<li><p>Modify 24.3.1 <a href="https://wg21.link/iterator.requirements.general">[iterator.requirements.general]</a> as indicated:</p>
+
+<blockquote>
+<p>
+-14- All the categories of iterators require only those functions that are realizable 
+for a given category in <del>constant time (amortized)</del><ins>linear time</ins>. 
+Therefore, requirement tables and concept definitions for the iterators do not specify
+complexity.
+</p>
+</blockquote>
+</li>
+
+<li><p>Modify 25.3.13 <a href="https://wg21.link/range.approximately.sized">[range.approximately.sized]</a> as indicated:</p>
+
+<blockquote>
+<p>
+-1- The <code class='backtick'>approximately_sized_range</code> concept refines range with the requirement that 
+an approximation of the number of elements in the range can be determined in 
+<del>amortized constant</del><ins>linear</ins> time using <code class='backtick'>ranges::reserve_hint</code>.
+</p>
+</blockquote>
+</li>
+
+<li><p>Modify 25.4.1 <a href="https://wg21.link/range.req.general">[range.req.general]</a> as indicated:</p>
+
+<blockquote>
+<p>
+-2- The <code class='backtick'>range</code> concept requires that <code class='backtick'>ranges::begin</code> and <code class='backtick'>ranges::end</code> return an 
+iterator and a sentinel, respectively. The <code class='backtick'>sized_range</code> concept refines range 
+with the requirement that <code class='backtick'>ranges::size</code> be amortized &#x1d4aa;(<del>1</del><ins>n</ins>).
+The <code class='backtick'>view</code> concept specifies requirements on a <code class='backtick'>range</code> type to provide operations 
+with predictable complexity.
+</p>
+</blockquote>
+</li>
+
+<li><p>Modify 25.4.2 <a href="https://wg21.link/range.range">[range.range]</a> as indicated:</p>
+
+<blockquote>
+<p>
+-2- Given an expression <code class='backtick'>t</code> such that <code class='backtick'>decltype((t))</code> is <code>T&amp;</code>, <code class='backtick'>T</code> models <code class='backtick'>range</code> 
+only if
+</p>
+<ol style="list-style-type: none">
+<li><p>(2.1) &mdash; [&hellip;]</p></li>
+<li><p>(2.2) &mdash; both <code class='backtick'>ranges::begin(t)</code> and <code class='backtick'>ranges::end(t)</code> are <del>amortized
+constant</del><ins>linear</ins> time and non-modifying,
+and</p></li>
+<li><p>(2.3) &mdash; [&hellip;]</p></li>
+</ol>
+</blockquote>
+</li>
+
+<li><p>Modify 25.4.3 <a href="https://wg21.link/range.sized">[range.sized]</a> as indicated:</p>
+
+<blockquote>
+<p>
+-1- The <code class='backtick'>sized_range</code> concept refines <code class='backtick'>approximately_sized_range</code> with the 
+requirement that the number of elements in the range can be determined in 
+<del>amortized constant</del><ins>linear</ins> time using <code class='backtick'>ranges::size</code>.
+</p>
+<pre>
+template&lt;class T&gt;
+  concept sized_range =
+    approximately_sized_range&lt;T&gt; &amp;&amp; requires(T&amp; t) { ranges::size(t); };
+</pre>
+<blockquote>
+<p>
+-2- Given an lvalue <code class='backtick'>t</code> of type <code>remove_reference_t&lt;T&gt;</code>, <code class='backtick'>T</code> models 
+<code class='backtick'>sized_range</code> only if
+</p>
+</blockquote>
+<ol style="list-style-type: none">
+<li><p>(2.1) &mdash; <code class='backtick'>ranges::size(t)</code> is amortized &#x1d4aa;(<del>1</del><ins>n</ins>), 
+does not modify <code class='backtick'>t</code>, and is equal to <code class='backtick'>ranges::distance(ranges::begin(t), ranges::end(t))</code>, 
+and</p></li>
+<li><p>(2.2) &mdash; [&hellip;]</p></li>
+</ol>
+</blockquote>
+</li>
+
+<li><p>Modify 25.7.8.2 <a href="https://wg21.link/range.filter.view">[range.filter.view]</a> as indicated:</p>
+
+<blockquote>
+<pre>
+constexpr <i>iterator</i> begin();
+</pre>
+<blockquote>
+<p>
+-3- <i>Preconditions</i>: [&hellip;]
+<p/>
+-4- <i>Returns</i>: [&hellip;]
+<p/>
+-5- <i>Remarks</i>: <del>In order to provide the amortized constant time complexity required 
+by the <code class='backtick'>range</code> concept when <code class='backtick'>filter_view</code> models <code class='backtick'>forward_range</code>, this</del><ins>This</ins> 
+function caches the result within the <code class='backtick'>filter_view</code> for use on subsequent calls.
+</p>
+</blockquote>
+</blockquote>
+</li>
+
+<li><p>Modify 25.7.12.2 <a href="https://wg21.link/range.drop.view">[range.drop.view]</a> as indicated:</p>
+
+<blockquote>
+<pre>
+constexpr auto begin()
+  requires (!(<i>simple-view</i>&lt;V&gt; &amp;&amp;
+              random_access_range&lt;const V&gt; &amp;&amp; sized_range&lt;const V&gt;));
+constexpr auto begin() const
+  requires random_access_range&lt;const V&gt; &amp;&amp; sized_range&lt;const V&gt;;
+</pre>
+<blockquote>
+<p>
+-3- <i>Returns</i>: [&hellip;]
+<p/>
+-4- <i>Remarks</i>: <del>In order to provide the amortized constant-time complexity 
+required by the <code class='backtick'>range</code> concept when <code class='backtick'>drop_view</code> models <code class='backtick'>forward_range</code>, the</del><ins>The</ins> 
+first overload caches the result within the <code class='backtick'>drop_view</code> for use on subsequent calls.
+</p>
+</blockquote>
+</blockquote>
+</li>
+
+<li><p>Modify 25.7.13.2 <a href="https://wg21.link/range.drop.while.view">[range.drop.while.view]</a> as indicated:</p>
+
+<blockquote>
+<pre>
+constexpr auto begin();
+</pre>
+<blockquote>
+<p>
+-3- <i>Preconditions</i>: [&hellip;]
+<p/>
+-4- <i>Returns</i>: [&hellip;]
+<p/>
+-5- <i>Remarks</i>: <del>In order to provide the amortized constant-time complexity 
+required by the <code class='backtick'>range</code> concept when <code class='backtick'>drop_while_view</code> models <code class='backtick'>forward_range</code>, the</del><ins>The</ins> 
+first call caches the result within the <code class='backtick'>drop_while_view</code> for use on subsequent calls.
+</p>
+</blockquote>
+</blockquote>
+</li>
+
+<li><p>Modify 25.7.17.2 <a href="https://wg21.link/range.split.view">[range.split.view]</a> as indicated:</p>
+
+<blockquote>
+<pre>
+constexpr <i>iterator</i> begin();
+</pre>
+<blockquote>
+<p>
+-3- <i>Returns</i>: [&hellip;]
+<p/>
+-4- <i>Remarks</i>: <del>In order to provide the amortized constant time complexity 
+required by the <code class='backtick'>range</code> concept, this</del><ins>This</ins> function caches the result 
+within the <code class='backtick'>split_view</code> for use on subsequent calls.
+</p>
+</blockquote>
+</blockquote>
+</li>
+
+<li><p>Modify 25.7.21.2 <a href="https://wg21.link/range.reverse.view">[range.reverse.view]</a> as indicated:</p>
+
+<blockquote>
+<pre>
+constexpr reverse_iterator&lt;iterator_t&lt;V&gt;&gt; begin();
+</pre>
+<blockquote>
+<p>
+-2- <i>Returns</i>: [&hellip;]
+<p/>
+-3- <i>Remarks</i>: <del>In order to provide the amortized constant time complexity 
+required by the <code class='backtick'>range</code> concept, this</del><ins>This</ins> function caches the 
+result within the <code class='backtick'>reverse_view</code> for use on subsequent calls.
+</p>
+</blockquote>
+</blockquote>
+</li>
+
+<li><p>Modify 25.7.30.2 <a href="https://wg21.link/range.slide.view">[range.slide.view]</a> as indicated:</p>
+
+<blockquote>
+<pre>
+constexpr auto begin()
+  requires (!(<i>simple-view</i>&lt;V&gt; &amp;&amp; <i>slide-caches-nothing</i>&lt;const V&gt;));
+</pre>
+<blockquote>
+<p>
+-3- <i>Returns</i>: [&hellip;]
+<p/>
+-4- <i>Remarks</i>: <del>In order to provide the amortized constant-time complexity 
+required by the <code class='backtick'>range</code> concept, this</del><ins>This</ins> function caches the result 
+within the <code class='backtick'>slide_view</code> for use on subsequent calls when <code class='backtick'>V</code> models
+<code><i>slide-caches-first</i></code>.
+</p>
+</blockquote>
+[&hellip;]
+<pre>
+constexpr auto end()
+  requires (!(<i>simple-view</i>&lt;V&gt; &amp;&amp; <i>slide-caches-nothing</i>&lt;const V&gt;));
+</pre>
+<blockquote>
+<p>
+-6- <i>Returns</i>: [&hellip;]
+<p/>
+-7- <i>Remarks</i>: <del>In order to provide the amortized constant-time complexity 
+required by the <code class='backtick'>range</code> concept, this</del><ins>This</ins> function caches the result 
+within the <code class='backtick'>slide_view</code> for use on subsequent calls when <code class='backtick'>V</code> models
+<code><i>slide-caches-first</i></code>.
+</p>
+</blockquote>
+</blockquote>
+</li>
+
+<li><p>Modify 25.7.31.2 <a href="https://wg21.link/range.chunk.by.view">[range.chunk.by.view]</a> as indicated:</p>
+
+<blockquote>
+<pre>
+constexpr <i>iterator</i> begin();
+</pre>
+<blockquote>
+<p>
+-3- <i>Preconditions</i>: [&hellip;]
+<p/>
+-4- <i>Returns</i>: [&hellip;]
+<p/>
+-5- <i>Remarks</i>: <del>In order to provide the amortized constant-time complexity 
+required by the <code class='backtick'>range</code> concept, this</del><ins>This</ins> function caches the result 
+within the <code class='backtick'>chunk_by_view</code> for use on subsequent calls.
 </p>
 </blockquote>
 </blockquote>
