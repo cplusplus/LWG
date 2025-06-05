@@ -54,7 +54,7 @@
 </style>
 </head>
 <body>
-<p>Revised 2025-05-29 at 16:58:28 UTC
+<p>Revised 2025-06-05 at 15:53:30 UTC
 </p><h2>Unresolved Issues</h2>
 <hr>
 <h3 id="423"><a href="#423">423</a><sup><a href="https://cplusplus.github.io/LWG/issue423">(i)</a></sup>. Effects of negative <code>streamsize</code> in iostreams</h3>
@@ -71454,6 +71454,65 @@ and let <i>E</i> be
  for the overloads in namespace <code class='backtick'>ranges</code>.
 </li>
 </ol>
+</blockquote>
+</li>
+</ol>
+
+
+
+
+
+<hr>
+<h3 id="4270"><a href="#4270">4270</a><sup><a href="https://cplusplus.github.io/LWG/issue4270">(i)</a></sup>. Diagnose misuse of <code class='backtick'>std::projected::operator*</code></h3>
+<p><b>Section:</b> 24.3.6.4 <a href="https://wg21.link/projected">[projected]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
+ <b>Submitter:</b> Jiang An <b>Opened:</b> 2025-05-30 <b>Last modified:</b> 2025-06-05</p>
+<p><b>Priority: </b>Not Prioritized
+</p>
+<p><b>View all other</b> <a href="lwg-index.html#projected">issues</a> in [projected].</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
+<p><b>Discussion:</b></p>
+<p>
+<code class='backtick'>std::projected::operator*</code> is only intentionally used for type calculation like <code class='backtick'>std::declval</code>. 
+Currently, if one attempts to call it in a potentially evaluated expression, the program is ill-formed, 
+no diagnostic required because the <code class='backtick'>operator*</code> is not defined.
+<p/>
+It seems better to diagnose such misuse, as we are already diagnosing misuse of <code class='backtick'>std::declval</code> 
+(22.2.6 <a href="https://wg21.link/declval">[declval]</a>/2). Implementation used to perform such misuse via <code class='backtick'>std::ranges::iter_move</code>, 
+but libc++ and libstdc++ have already switched not to do this (see 
+<a href="https://github.com/microsoft/STL/issues/5555">microsoft/STL#5555</a>).
+</p>
+
+
+<p id="res-4270"><b>Proposed resolution:</b></p>
+<p>
+This wording is relative to <a href="https://wg21.link/N5008">N5008</a>.
+</p>
+
+<ol>
+<li><p>Modify 24.3.6.4 <a href="https://wg21.link/projected">[projected]</a> as indicated:</p>
+
+<blockquote>
+<pre>
+namespace std {
+  template&lt;class I, class Proj&gt;
+  struct <i>projected-impl</i> { <i>// exposition only</i>
+    struct type { <i>// exposition only</i>
+      [&hellip;]
+      <i>// models weakly_incrementable</i>
+      indirect_result_t&lt;Proj&amp;, I&gt; operator*() const; <del><i>// not defined</i></del>
+    };
+  };
+  [&hellip;]
+}
+</pre>
+<pre>
+<ins>indirect_result_t&lt;Proj&amp;, I&gt; operator*() const;</ins>
+</pre>
+<blockquote>
+<p>
+<ins>-?- <i>Mandates</i>: This function is not odr-used (6.3 <a href="https://wg21.link/basic.def.odr">[basic.def.odr]</a>).</ins>
+</p>
+</blockquote>
 </blockquote>
 </li>
 </ol>
