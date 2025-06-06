@@ -67,7 +67,7 @@ complexity for algorithms that are in fact &#x1d4aa;(n)">
 <h3 id="4271"><a href="lwg-active.html#4271">4271</a>. Caching range views claim amortized amortized &#x1d4aa;(1) runtime
 complexity for algorithms that are in fact &#x1d4aa;(n)</h3>
 <p><b>Section:</b> 24.3.1 <a href="https://wg21.link/iterator.requirements.general">[iterator.requirements.general]</a>, 25.3.13 <a href="https://wg21.link/range.approximately.sized">[range.approximately.sized]</a>, 25.4.1 <a href="https://wg21.link/range.req.general">[range.req.general]</a>, 25.4.2 <a href="https://wg21.link/range.range">[range.range]</a>, 25.4.3 <a href="https://wg21.link/range.sized">[range.sized]</a>, 25.7.8.2 <a href="https://wg21.link/range.filter.view">[range.filter.view]</a>, 25.7.12.2 <a href="https://wg21.link/range.drop.view">[range.drop.view]</a>, 25.7.13.2 <a href="https://wg21.link/range.drop.while.view">[range.drop.while.view]</a>, 25.7.17.2 <a href="https://wg21.link/range.split.view">[range.split.view]</a>, 25.7.21.2 <a href="https://wg21.link/range.reverse.view">[range.reverse.view]</a>, 25.7.30.2 <a href="https://wg21.link/range.slide.view">[range.slide.view]</a>, 25.7.31.2 <a href="https://wg21.link/range.chunk.by.view">[range.chunk.by.view]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Andreas Weis <b>Opened:</b> 2025-06-02 <b>Last modified:</b> 2025-06-05</p>
+ <b>Submitter:</b> Andreas Weis <b>Opened:</b> 2025-06-02 <b>Last modified:</b> 2025-06-06</p>
 <p><b>Priority: </b>Not Prioritized
 </p>
 <p><b>View all other</b> <a href="lwg-index.html#iterator.requirements.general">issues</a> in [iterator.requirements.general].</p>
@@ -134,7 +134,7 @@ an approximation of the number of elements in the range can be determined in
 <p>
 -2- The <code class='backtick'>range</code> concept requires that <code class='backtick'>ranges::begin</code> and <code class='backtick'>ranges::end</code> return an 
 iterator and a sentinel, respectively. The <code class='backtick'>sized_range</code> concept refines range 
-with the requirement that <code class='backtick'>ranges::size</code> be amortized &#x1d4aa;(<del>1</del><ins>n</ins>).
+with the requirement that <code class='backtick'>ranges::size</code> be <del>amortized</del> &#x1d4aa;(<del>1</del><ins>n</ins>).
 The <code class='backtick'>view</code> concept specifies requirements on a <code class='backtick'>range</code> type to provide operations 
 with predictable complexity.
 </p>
@@ -178,7 +178,7 @@ template&lt;class T&gt;
 </p>
 </blockquote>
 <ol style="list-style-type: none">
-<li><p>(2.1) &mdash; <code class='backtick'>ranges::size(t)</code> is amortized &#x1d4aa;(<del>1</del><ins>n</ins>), 
+<li><p>(2.1) &mdash; <code class='backtick'>ranges::size(t)</code> is <del>amortized</del> &#x1d4aa;(<del>1</del><ins>n</ins>), 
 does not modify <code class='backtick'>t</code>, and is equal to <code class='backtick'>ranges::distance(ranges::begin(t), ranges::end(t))</code>, 
 and</p></li>
 <li><p>(2.2) &mdash; [&hellip;]</p></li>
