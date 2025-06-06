@@ -54,7 +54,7 @@
 </style>
 </head>
 <body>
-<p>Revised 2025-06-05 at 17:35:42 UTC
+<p>Revised 2025-06-06 at 14:20:41 UTC
 </p><h2>Unresolved Issues</h2>
 <hr>
 <h3 id="423"><a href="#423">423</a><sup><a href="https://cplusplus.github.io/LWG/issue423">(i)</a></sup>. Effects of negative <code>streamsize</code> in iostreams</h3>
@@ -71465,7 +71465,7 @@ and let <i>E</i> be
 <hr>
 <h3 id="4270"><a href="#4270">4270</a><sup><a href="https://cplusplus.github.io/LWG/issue4270">(i)</a></sup>. Diagnose misuse of <code class='backtick'>std::projected::operator*</code></h3>
 <p><b>Section:</b> 24.3.6.4 <a href="https://wg21.link/projected">[projected]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Jiang An <b>Opened:</b> 2025-05-30 <b>Last modified:</b> 2025-06-05</p>
+ <b>Submitter:</b> Jiang An <b>Opened:</b> 2025-05-30 <b>Last modified:</b> 2025-06-06</p>
 <p><b>Priority: </b>Not Prioritized
 </p>
 <p><b>View all other</b> <a href="lwg-index.html#projected">issues</a> in [projected].</p>
@@ -71496,7 +71496,7 @@ This wording is relative to <a href="https://wg21.link/N5008">N5008</a>.
 namespace std {
   template&lt;class I, class Proj&gt;
   struct <i>projected-impl</i> { <i>// exposition only</i>
-    struct type { <i>// exposition only</i>
+    struct <i>type</i> { <i>// exposition only</i>
       [&hellip;]
       <i>// models weakly_incrementable</i>
       indirect_result_t&lt;Proj&amp;, I&gt; operator*() const; <del><i>// not defined</i></del>
