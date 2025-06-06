@@ -54,7 +54,7 @@
 </style>
 </head>
 <body>
-<p>Revised 2025-06-06 at 17:06:04 UTC
+<p>Revised 2025-06-06 at 17:35:35 UTC
 </p><h2>Unresolved Issues</h2>
 <hr>
 <h3 id="423"><a href="#423">423</a><sup><a href="https://cplusplus.github.io/LWG/issue423">(i)</a></sup>. Effects of negative <code>streamsize</code> in iostreams</h3>
@@ -72038,6 +72038,92 @@ template&lt;class OtherExtents&gt;
 <ins>!(<i>rank_</i> == 0 &amp;&amp; is_convertible_v&lt;OtherExtents, extents_type&gt;)</ins>
 </pre></blockquote>
 </blockquote>
+</blockquote>
+</li>
+
+</ol>
+
+
+
+
+
+<hr>
+<h3 id="4273"><a href="#4273">4273</a><sup><a href="https://cplusplus.github.io/LWG/issue4273">(i)</a></sup>. Standard execution policy types should be conventional tag class types</h3>
+<p><b>Section:</b> 26.3.6.7 <a href="https://wg21.link/execpol.objects">[execpol.objects]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
+ <b>Submitter:</b> Jiang An <b>Opened:</b> 2025-06-03 <b>Last modified:</b> 2025-06-06</p>
+<p><b>Priority: </b>Not Prioritized
+</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
+<p><b>Discussion:</b></p>
+<p>
+Existing standard execution policy types don't hold any state, and mostly act as disambiguating tags 
+in parallel algorithms. Perhaps it will be better to ensure them to be similar to construction tag types, 
+which possibly enables more desired usages.
+<p/>
+Currently, libc++ makes these types non-movable, which is arguable undesired per the decision made in 
+<a href="https://wg21.link/P3136R1">P3136R1</a>.
+</p>
+
+
+<p id="res-4273"><b>Proposed resolution:</b></p>
+<p>
+This wording is relative to <a href="https://wg21.link/N5008">N5008</a>.
+</p>
+
+<ol>
+<li><p>Modify 26.3.6.3 <a href="https://wg21.link/execpol.seq">[execpol.seq]</a> as indicated:</p>
+
+<blockquote>
+<pre>
+class execution::sequenced_policy { <del><i>unspecified</i></del>
+    <ins>explicit sequenced_policy() = default;</ins> 
+};
+</pre>
+</blockquote>
+</li>
+
+<li><p>Modify 26.3.6.4 <a href="https://wg21.link/execpol.par">[execpol.par]</a> as indicated:</p>
+
+<blockquote>
+<pre>
+class execution::parallel_policy { <del><i>unspecified</i></del>
+    <ins>explicit parallel_policy() = default;</ins> 
+};
+</pre>
+</blockquote>
+</li>
+
+<li><p>Modify 26.3.6.5 <a href="https://wg21.link/execpol.parunseq">[execpol.parunseq]</a> as indicated:</p>
+
+<blockquote>
+<pre>
+class execution::parallel_unsequenced_policy { <del><i>unspecified</i></del>
+    <ins>explicit parallel_unsequenced_policy() = default;</ins> 
+};
+</pre>
+</blockquote>
+</li>
+
+<li><p>Modify 26.3.6.6 <a href="https://wg21.link/execpol.unseq">[execpol.unseq]</a> as indicated:</p>
+
+<blockquote>
+<pre>
+class execution::unsequenced_policy { <del><i>unspecified</i></del>
+    <ins>explicit unsequenced_policy() = default;</ins> 
+};
+</pre>
+</blockquote>
+</li>
+
+<li><p>Modify 26.3.6.7 <a href="https://wg21.link/execpol.objects">[execpol.objects]</a> as indicated:</p>
+
+<blockquote>
+<pre>
+inline constexpr execution::sequenced_policy execution::seq{ <del><i>unspecified</i></del> };
+inline constexpr execution::parallel_policy execution::par{ <del><i>unspecified</i></del> };
+inline constexpr execution::parallel_unsequenced_policy execution::par_unseq{ <del><i>unspecified</i></del> };
+inline constexpr execution::unsequenced_policy execution::unseq{ <del><i>unspecified</i></del> };
+</pre>
 </blockquote>
 </li>
 

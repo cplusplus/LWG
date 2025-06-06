@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Issue 4273: Standard execution policy types should be conventional tag class types</title>
+<meta property="og:title" content="Issue 4273: Standard execution policy types should be conventional tag class types">
+<meta property="og:description" content="C++ library issue. Status: New">
+<meta property="og:url" content="https://cplusplus.github.io/LWG/issue4273.html">
+<meta property="og:type" content="website">
+<meta property="og:image" content="http://cplusplus.github.io/LWG/images/cpp_logo.png">
+<meta property="og:image:alt" content="C++ logo">
+<style>
+  p {text-align:justify}
+  li {text-align:justify}
+  pre code.backtick::before { content: "`" }
+  pre code.backtick::after { content: "`" }
+  blockquote.note
+  {
+    background-color:#E0E0E0;
+    padding-left: 15px;
+    padding-right: 15px;
+    padding-top: 1px;
+    padding-bottom: 1px;
+  }
+  ins {background-color:#A0FFA0}
+  del {background-color:#FFA0A0}
+  table.issues-index { border: 1px solid; border-collapse: collapse; }
+  table.issues-index th { text-align: center; padding: 4px; border: 1px solid; }
+  table.issues-index td { padding: 4px; border: 1px solid; }
+  table.issues-index td:nth-child(1) { text-align: right; }
+  table.issues-index td:nth-child(2) { text-align: left; }
+  table.issues-index td:nth-child(3) { text-align: left; }
+  table.issues-index td:nth-child(4) { text-align: left; }
+  table.issues-index td:nth-child(5) { text-align: center; }
+  table.issues-index td:nth-child(6) { text-align: center; }
+  table.issues-index td:nth-child(7) { text-align: left; }
+  table.issues-index td:nth-child(5) span.no-pr { color: red; }
+  @media (prefers-color-scheme: dark) {
+     html {
+        color: #ddd;
+        background-color: black;
+     }
+     ins {
+        background-color: #225522
+     }
+     del {
+        background-color: #662222
+     }
+     a {
+        color: #6af
+     }
+     a:visited {
+        color: #6af
+     }
+     blockquote.note
+     {
+        background-color: rgba(255, 255, 255, .10)
+     }
+  }
+</style>
+</head>
+<body>
+<hr>
+<p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#New">New</a> status.</em></p>
+<h3 id="4273"><a href="lwg-active.html#4273">4273</a>. Standard execution policy types should be conventional tag class types</h3>
+<p><b>Section:</b> 26.3.6.7 <a href="https://wg21.link/execpol.objects">[execpol.objects]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
+ <b>Submitter:</b> Jiang An <b>Opened:</b> 2025-06-03 <b>Last modified:</b> 2025-06-06</p>
+<p><b>Priority: </b>Not Prioritized
+</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
+<p><b>Discussion:</b></p>
+<p>
+Existing standard execution policy types don't hold any state, and mostly act as disambiguating tags 
+in parallel algorithms. Perhaps it will be better to ensure them to be similar to construction tag types, 
+which possibly enables more desired usages.
+<p/>
+Currently, libc++ makes these types non-movable, which is arguable undesired per the decision made in 
+<a href="https://wg21.link/P3136R1">P3136R1</a>.
+</p>
+
+
+<p id="res-4273"><b>Proposed resolution:</b></p>
+<p>
+This wording is relative to <a href="https://wg21.link/N5008">N5008</a>.
+</p>
+
+<ol>
+<li><p>Modify 26.3.6.3 <a href="https://wg21.link/execpol.seq">[execpol.seq]</a> as indicated:</p>
+
+<blockquote>
+<pre>
+class execution::sequenced_policy { <del><i>unspecified</i></del>
+    <ins>explicit sequenced_policy() = default;</ins> 
+};
+</pre>
+</blockquote>
+</li>
+
+<li><p>Modify 26.3.6.4 <a href="https://wg21.link/execpol.par">[execpol.par]</a> as indicated:</p>
+
+<blockquote>
+<pre>
+class execution::parallel_policy { <del><i>unspecified</i></del>
+    <ins>explicit parallel_policy() = default;</ins> 
+};
+</pre>
+</blockquote>
+</li>
+
+<li><p>Modify 26.3.6.5 <a href="https://wg21.link/execpol.parunseq">[execpol.parunseq]</a> as indicated:</p>
+
+<blockquote>
+<pre>
+class execution::parallel_unsequenced_policy { <del><i>unspecified</i></del>
+    <ins>explicit parallel_unsequenced_policy() = default;</ins> 
+};
+</pre>
+</blockquote>
+</li>
+
+<li><p>Modify 26.3.6.6 <a href="https://wg21.link/execpol.unseq">[execpol.unseq]</a> as indicated:</p>
+
+<blockquote>
+<pre>
+class execution::unsequenced_policy { <del><i>unspecified</i></del>
+    <ins>explicit unsequenced_policy() = default;</ins> 
+};
+</pre>
+</blockquote>
+</li>
+
+<li><p>Modify 26.3.6.7 <a href="https://wg21.link/execpol.objects">[execpol.objects]</a> as indicated:</p>
+
+<blockquote>
+<pre>
+inline constexpr execution::sequenced_policy execution::seq{ <del><i>unspecified</i></del> };
+inline constexpr execution::parallel_policy execution::par{ <del><i>unspecified</i></del> };
+inline constexpr execution::parallel_unsequenced_policy execution::par_unseq{ <del><i>unspecified</i></del> };
+inline constexpr execution::unsequenced_policy execution::unseq{ <del><i>unspecified</i></del> };
+</pre>
+</blockquote>
+</li>
+
+</ol>
+
+
+
+
+
+</body>
+</html>
