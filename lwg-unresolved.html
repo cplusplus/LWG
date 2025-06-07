@@ -54,7 +54,7 @@
 </style>
 </head>
 <body>
-<p>Revised 2025-06-06 at 17:42:39 UTC
+<p>Revised 2025-06-07 at 12:59:20 UTC
 </p><h2>Unresolved Issues</h2>
 <hr>
 <h3 id="423"><a href="#423">423</a><sup><a href="https://cplusplus.github.io/LWG/issue423">(i)</a></sup>. Effects of negative <code>streamsize</code> in iostreams</h3>
@@ -72124,6 +72124,65 @@ inline constexpr execution::parallel_policy execution::par{ <del><i>unspecified<
 inline constexpr execution::parallel_unsequenced_policy execution::par_unseq{ <del><i>unspecified</i></del> };
 inline constexpr execution::unsequenced_policy execution::unseq{ <del><i>unspecified</i></del> };
 </pre>
+</blockquote>
+</li>
+
+</ol>
+
+
+
+
+
+<hr>
+<h3 id="4274"><a href="#4274">4274</a><sup><a href="https://cplusplus.github.io/LWG/issue4274">(i)</a></sup>. The <code class='backtick'>chrono::hh_mm_ss</code> constructor is poorly defined for negative durations</h3>
+<p><b>Section:</b> 30.9.2 <a href="https://wg21.link/time.hms.members">[time.hms.members]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
+ <b>Submitter:</b> Michael Welsh Duggan <b>Opened:</b> 2025-06-04 <b>Last modified:</b> 2025-06-07</p>
+<p><b>Priority: </b>Not Prioritized
+</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
+<p><b>Discussion:</b></p>
+<p>
+In 30.9.2 <a href="https://wg21.link/time.hms.members">[time.hms.members]</a>, paragraph 3, the current wording for the
+constructor of <code class='backtick'>hh_mm_ss</code> expresses some of its requirements in terms of
+<code class='backtick'>abs(d)</code>, which is assumed to be <code class='backtick'>chrono::abs(chrono::duration)</code>.
+<code class='backtick'>chrono::abs</code> is not defined, however, for durations with an unsigned
+representation. I believe that not being able to create <code class='backtick'>hh_mm_ss</code>
+objects from unsigned durations is unintentional.
+<p/>
+Moreover, <code>is_constructible_v&lt;hh_mm_ss&lt;ud&gt;, ud&gt;</code> is required 
+to be true by the standard for any duration, so making it actually work makes 
+a lot of sense.
+</p>
+
+
+<p id="res-4274"><b>Proposed resolution:</b></p>
+<p>
+This wording is relative to <a href="https://wg21.link/N5008">N5008</a>.
+</p>
+
+<ol>
+<li><p>Modify 30.9.2 <a href="https://wg21.link/time.hms.members">[time.hms.members]</a> as indicated:</p>
+
+<blockquote>
+<pre>
+constexpr explicit hh_mm_ss(Duration d);
+</pre>
+<blockquote>
+<p>
+-3- <i>Effects</i>: Constructs an object of type <code class='backtick'>hh_mm_ss</code> which represents the <code class='backtick'>Duration d</code> 
+with precision <code class='backtick'>precision</code>.
+</p>
+<ol style="list-style-type: none">
+<li><p>(3.1) &mdash; Initializes <code class='backtick'>is_neg</code> with <code>d &lt; Duration::zero()</code>. <ins>Let 
+<code><i>ABS_D</i></code> represent <code class='backtick'>-d</code> if <code class='backtick'>is_neg</code> is <code class='backtick'>true</code> and <code class='backtick'>d</code> otherwise.</ins></p></li>
+<li><p>(3.2) &mdash; Initializes <code class='backtick'>h</code> with <code>duration_cast&lt;chrono::hours&gt;(<del>abs(d)</del><ins><i>ABS_D</i></ins>)</code>.</p></li>
+<li><p>(3.3) &mdash; Initializes <code class='backtick'>m</code> with <code>duration_cast&lt;chrono::minutes&gt;(<del>abs(d)</del><ins><i>ABS_D</i></ins> - hours())</code>.</p></li>
+<li><p>(3.4) &mdash; Initializes <code class='backtick'>s</code> with <code>duration_cast&lt;chrono::seconds&gt;(<del>abs(d)</del><ins><i>ABS_D</i></ins> - hours() - minutes())</code>.</p></li>
+<li><p>(3.5) &mdash; If <code>treat_as_floating_point_v&lt;precision::rep&gt;</code> is <code class='backtick'>true</code>, initializes 
+<code class='backtick'>ss</code> with <code><del>abs(d)</del><ins><i>ABS_D</i></ins> - hours() - minutes() - seconds()</code>. Otherwise, initializes <code class='backtick'>ss</code> with 
+<code>duration_cast&lt;precision&gt;(<del>abs(d)</del><ins><i>ABS_D</i></ins> - hours() - minutes() - seconds())</code>.</p></li>
+</ol>
+</blockquote>
 </blockquote>
 </li>
 

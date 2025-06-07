@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Issue 4274: The chrono::hh_mm_ss constructor is poorly defined for negative durations</title>
+<meta property="og:title" content="Issue 4274: The chrono::hh_mm_ss constructor is poorly defined for negative durations">
+<meta property="og:description" content="C++ library issue. Status: New">
+<meta property="og:url" content="https://cplusplus.github.io/LWG/issue4274.html">
+<meta property="og:type" content="website">
+<meta property="og:image" content="http://cplusplus.github.io/LWG/images/cpp_logo.png">
+<meta property="og:image:alt" content="C++ logo">
+<style>
+  p {text-align:justify}
+  li {text-align:justify}
+  pre code.backtick::before { content: "`" }
+  pre code.backtick::after { content: "`" }
+  blockquote.note
+  {
+    background-color:#E0E0E0;
+    padding-left: 15px;
+    padding-right: 15px;
+    padding-top: 1px;
+    padding-bottom: 1px;
+  }
+  ins {background-color:#A0FFA0}
+  del {background-color:#FFA0A0}
+  table.issues-index { border: 1px solid; border-collapse: collapse; }
+  table.issues-index th { text-align: center; padding: 4px; border: 1px solid; }
+  table.issues-index td { padding: 4px; border: 1px solid; }
+  table.issues-index td:nth-child(1) { text-align: right; }
+  table.issues-index td:nth-child(2) { text-align: left; }
+  table.issues-index td:nth-child(3) { text-align: left; }
+  table.issues-index td:nth-child(4) { text-align: left; }
+  table.issues-index td:nth-child(5) { text-align: center; }
+  table.issues-index td:nth-child(6) { text-align: center; }
+  table.issues-index td:nth-child(7) { text-align: left; }
+  table.issues-index td:nth-child(5) span.no-pr { color: red; }
+  @media (prefers-color-scheme: dark) {
+     html {
+        color: #ddd;
+        background-color: black;
+     }
+     ins {
+        background-color: #225522
+     }
+     del {
+        background-color: #662222
+     }
+     a {
+        color: #6af
+     }
+     a:visited {
+        color: #6af
+     }
+     blockquote.note
+     {
+        background-color: rgba(255, 255, 255, .10)
+     }
+  }
+</style>
+</head>
+<body>
+<hr>
+<p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#New">New</a> status.</em></p>
+<h3 id="4274"><a href="lwg-active.html#4274">4274</a>. The <code class='backtick'>chrono::hh_mm_ss</code> constructor is poorly defined for negative durations</h3>
+<p><b>Section:</b> 30.9.2 <a href="https://wg21.link/time.hms.members">[time.hms.members]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
+ <b>Submitter:</b> Michael Welsh Duggan <b>Opened:</b> 2025-06-04 <b>Last modified:</b> 2025-06-07</p>
+<p><b>Priority: </b>Not Prioritized
+</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
+<p><b>Discussion:</b></p>
+<p>
+In 30.9.2 <a href="https://wg21.link/time.hms.members">[time.hms.members]</a>, paragraph 3, the current wording for the
+constructor of <code class='backtick'>hh_mm_ss</code> expresses some of its requirements in terms of
+<code class='backtick'>abs(d)</code>, which is assumed to be <code class='backtick'>chrono::abs(chrono::duration)</code>.
+<code class='backtick'>chrono::abs</code> is not defined, however, for durations with an unsigned
+representation. I believe that not being able to create <code class='backtick'>hh_mm_ss</code>
+objects from unsigned durations is unintentional.
+<p/>
+Moreover, <code>is_constructible_v&lt;hh_mm_ss&lt;ud&gt;, ud&gt;</code> is required 
+to be true by the standard for any duration, so making it actually work makes 
+a lot of sense.
+</p>
+
+
+<p id="res-4274"><b>Proposed resolution:</b></p>
+<p>
+This wording is relative to <a href="https://wg21.link/N5008">N5008</a>.
+</p>
+
+<ol>
+<li><p>Modify 30.9.2 <a href="https://wg21.link/time.hms.members">[time.hms.members]</a> as indicated:</p>
+
+<blockquote>
+<pre>
+constexpr explicit hh_mm_ss(Duration d);
+</pre>
+<blockquote>
+<p>
+-3- <i>Effects</i>: Constructs an object of type <code class='backtick'>hh_mm_ss</code> which represents the <code class='backtick'>Duration d</code> 
+with precision <code class='backtick'>precision</code>.
+</p>
+<ol style="list-style-type: none">
+<li><p>(3.1) &mdash; Initializes <code class='backtick'>is_neg</code> with <code>d &lt; Duration::zero()</code>. <ins>Let 
+<code><i>ABS_D</i></code> represent <code class='backtick'>-d</code> if <code class='backtick'>is_neg</code> is <code class='backtick'>true</code> and <code class='backtick'>d</code> otherwise.</ins></p></li>
+<li><p>(3.2) &mdash; Initializes <code class='backtick'>h</code> with <code>duration_cast&lt;chrono::hours&gt;(<del>abs(d)</del><ins><i>ABS_D</i></ins>)</code>.</p></li>
+<li><p>(3.3) &mdash; Initializes <code class='backtick'>m</code> with <code>duration_cast&lt;chrono::minutes&gt;(<del>abs(d)</del><ins><i>ABS_D</i></ins> - hours())</code>.</p></li>
+<li><p>(3.4) &mdash; Initializes <code class='backtick'>s</code> with <code>duration_cast&lt;chrono::seconds&gt;(<del>abs(d)</del><ins><i>ABS_D</i></ins> - hours() - minutes())</code>.</p></li>
+<li><p>(3.5) &mdash; If <code>treat_as_floating_point_v&lt;precision::rep&gt;</code> is <code class='backtick'>true</code>, initializes 
+<code class='backtick'>ss</code> with <code><del>abs(d)</del><ins><i>ABS_D</i></ins> - hours() - minutes() - seconds()</code>. Otherwise, initializes <code class='backtick'>ss</code> with 
+<code>duration_cast&lt;precision&gt;(<del>abs(d)</del><ins><i>ABS_D</i></ins> - hours() - minutes() - seconds())</code>.</p></li>
+</ol>
+</blockquote>
+</blockquote>
+</li>
+
+</ol>
+
+
+
+
+
+</body>
+</html>
