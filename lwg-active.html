@@ -67,7 +67,7 @@
 </tr>
 <tr>
   <td align="left">Date:</td>
-  <td align="left">2025-06-09</td>
+  <td align="left">2025-06-10</td>
 </tr>
 <tr>
   <td align="left">Project:</td>
@@ -79,7 +79,7 @@
 </tr>
 </table>
 <h1>C++ Standard Library Active Issues List (Revision D125)</h1>
-<p>Revised 2025-06-09 at 18:03:40 UTC
+<p>Revised 2025-06-10 at 09:34:55 UTC
 </p>
   <p>Reference ISO/IEC IS 14882:2020(E)</p>
   <p>Also see:</p>
@@ -76205,7 +76205,7 @@ with precision <code class='backtick'>precision</code>.
 <hr>
 <h3 id="4275"><a href="#4275">4275</a><sup><a href="https://cplusplus.github.io/LWG/issue4275">(i)</a></sup>. <code class='backtick'>std::dynamic_extent</code> should also be defined in <code>&lt;mdspan&gt;</code></h3>
 <p><b>Section:</b> 23.7.3.2 <a href="https://wg21.link/mdspan.syn">[mdspan.syn]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Aiden Grossman <b>Opened:</b> 2025-06-06 <b>Last modified:</b> 2025-06-07</p>
+ <b>Submitter:</b> Aiden Grossman <b>Opened:</b> 2025-06-06 <b>Last modified:</b> 2025-06-10</p>
 <p><b>Priority: </b>Not Prioritized
 </p>
 <p><b>View all other</b> <a href="lwg-index.html#mdspan.syn">issues</a> in [mdspan.syn].</p>
@@ -76217,9 +76217,9 @@ such as with padded layouts. However, <code class='backtick'>std::dynamic_extent
 defined in <code>&lt;span&gt;</code> which necessitates including <code>&lt;span&gt;</code> 
 solely for the <code class='backtick'>std::dynamic_extent</code> definition.
 </p>
+<p><strong>Previous resolution [SUPERSEDED]:</strong></p>
+<blockquote class="note">
 
-
-<p id="res-4275"><b>Proposed resolution:</b></p>
 <p>
 This wording is relative to <a href="https://wg21.link/N5008">N5008</a>.
 </p>
@@ -76241,6 +76241,42 @@ namespace std {
   [&hellip;]
 }
 </pre>
+</blockquote>
+</li>
+
+</ol>
+</blockquote>
+
+<p><i>[2025-06-10; Jonathan provides improved wording]</i></p>
+
+
+
+
+<p id="res-4275"><b>Proposed resolution:</b></p>
+<p>
+This wording is relative to <a href="https://wg21.link/N5008">N5008</a>.
+</p>
+
+<ol>
+<li><p>Modify 23.7.1 <a href="https://wg21.link/views.general">[views.general]</a> as indicated:</p>
+
+<blockquote>
+<p>
+The header <code>&lt;span&gt;</code> (23.7.2.1 <a href="https://wg21.link/span.syn">[span.syn]</a>)
+defines the view <code class='backtick'>span</code>.
+The header <code>&lt;mdspan&gt;</code> (23.7.3.2 <a href="https://wg21.link/mdspan.syn">[mdspan.syn]</a>)
+defines the class template <code class='backtick'>mdspan</code> and other facilities for interacting
+with these multidimensional views.
+</p>
+<p>
+<ins>
+-?-
+In addition to being available via inclusion of the <code>&lt;span&gt;</code>
+header,
+<code class='backtick'>dynamic_extent</code> is available when the header <code>&lt;mdspan&gt;</code>
+is included.
+</ins>
+</p>
 </blockquote>
 </li>
 
