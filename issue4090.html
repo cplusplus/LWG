@@ -64,7 +64,7 @@
 <p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#SG16">SG16</a> status.</em></p>
 <h3 id="4090"><a href="lwg-active.html#4090">4090</a>. Underspecified use of locale facets for locale-dependent <code>std::format</code></h3>
 <p><b>Section:</b> 28.5.2.2 <a href="https://wg21.link/format.string.std">[format.string.std]</a> <b>Status:</b> <a href="lwg-active.html#SG16">SG16</a>
- <b>Submitter:</b> Jens Maurer <b>Opened:</b> 2024-04-30 <b>Last modified:</b> 2024-05-08</p>
+ <b>Submitter:</b> Jens Maurer <b>Opened:</b> 2024-04-30 <b>Last modified:</b> 2025-06-12</p>
 <p><b>Priority: </b>3
 </p>
 <p><b>View other</b> <a href="lwg-index-open.html#format.string.std">active issues</a> in [format.string.std].</p>
@@ -104,9 +104,64 @@ single UTF-8 code unit.
 Set priority to 3 after reflector poll.
 </p>
 
+<p><i>[2024-06-12; SG16 meeting]</i></p>
+
+<p>
+The three major implementations all use <code class='backtick'>numpunct</code> but not <code class='backtick'>num_put</code>,
+clarify that this is the intended behaviour.
+</p>
+
+<p><i>[2025-06-12; Jonathan provides wording]</i></p>
+
+
 
 
 <p id="res-4090"><b>Proposed resolution:</b></p>
+<p>
+This wording is relative to <a href="https://wg21.link/N5008">N5008</a>.
+</p>
+
+<ol>
+<li><p>Modify 28.5.2.2 <a href="https://wg21.link/format.string.std">[format.string.std]</a> as indicated:</p>
+
+<blockquote>
+-17-
+When the <code class='backtick'>L</code> option is used, the form used for the conversion is called the
+<i>locale-specific</i> form.
+The <code class='backtick'>L</code> option is only valid for arithmetic types,
+and its effect depends upon the type.
+<ol style="list-style-type: none">
+<li>
+(17.1) &mdash;
+For integral types, the locale-specific form causes the context’s locale
+to be used to insert the appropriate digit group separator characters
+<ins>
+as if obtained with <code>numpunct<ins>&lt;charT&gt;</ins>::grouping</code>
+and <code>numpunct<ins>&lt;charT&gt;</ins>::thousands_sep</code>
+</ins>.
+</li>
+<li>
+(17.2) &mdash;
+For floating-point types, the locale-specific form causes the context’s locale to be used to insert the
+appropriate digit group and radix separator characters
+<ins>
+as if obtained with <code>numpunct<ins>&lt;charT&gt;</ins>::grouping</code>,
+<code>numpunct<ins>&lt;charT&gt;</ins>::thousands_sep</code>, and
+<code>numpunct<ins>&lt;charT&gt;</ins>::decimal_point</code>
+</ins>.
+</li>
+<li>
+(17.3) &mdash;
+For the textual representation of <code class='backtick'>bool</code>, the locale-specific form causes
+the context’s locale to be used to insert the appropriate string
+as if obtained with <code>numpunct<ins>&lt;charT&gt;</ins>::truename</code>
+or <code>numpunct<ins>&lt;charT&gt;</ins>::falsename</code>.
+</li>
+</ol>
+</blockquote>
+</li>
+</ol>
+
 
 
 
