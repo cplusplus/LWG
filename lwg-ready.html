@@ -62,7 +62,7 @@
 </tr>
 <tr>
 <td align="left">Date:</td>
-<td align="left">Revised 2025-06-12 at 20:56:13 UTC
+<td align="left">Revised 2025-06-12 at 21:02:39 UTC
 </td>
 </tr>
 <tr>
@@ -76,1515 +76,37 @@
 </table>
 <h2>Ready Issues</h2>
 <hr>
-<h3 id="4188"><a href="#4188">4188</a><sup><a href="https://cplusplus.github.io/LWG/issue4188">(i)</a></sup>. <code>ostream::sentry</code> destructor should handle exceptions</h3>
-<p><b>Section:</b> 31.7.6.2.4 <a href="https://wg21.link/ostream.sentry">[ostream.sentry]</a> <b>Status:</b> <a href="lwg-active.html#Ready">Tentatively Ready</a>
- <b>Submitter:</b> Jonathan Wakely <b>Opened:</b> 2025-01-14 <b>Last modified:</b> 2025-02-07</p>
+<h3 id="4253"><a href="#4253">4253</a><sup><a href="https://cplusplus.github.io/LWG/issue4253">(i)</a></sup>. <code class='backtick'>basic_const_iterator</code> should provide <code class='backtick'>iterator_type</code></h3>
+<p><b>Section:</b> 24.5.3.3 <a href="https://wg21.link/const.iterators.iterator">[const.iterators.iterator]</a> <b>Status:</b> <a href="lwg-active.html#Ready">Tentatively Ready</a>
+ <b>Submitter:</b> Hewill Kang <b>Opened:</b> 2025-04-29 <b>Last modified:</b> 2025-06-12</p>
 <p><b>Priority: </b>Not Prioritized
 </p>
-<p><b>View other</b> <a href="lwg-index-open.html#ostream.sentry">active issues</a> in [ostream.sentry].</p>
-<p><b>View all other</b> <a href="lwg-index.html#ostream.sentry">issues</a> in [ostream.sentry].</p>
+<p><b>View other</b> <a href="lwg-index-open.html#const.iterators.iterator">active issues</a> in [const.iterators.iterator].</p>
+<p><b>View all other</b> <a href="lwg-index.html#const.iterators.iterator">issues</a> in [const.iterators.iterator].</p>
 <p><b>View all issues with</b> <a href="lwg-status.html#Tentatively Ready">Tentatively Ready</a> status.</p>
 <p><b>Discussion:</b></p>
 <p>
-LWG <a href="lwg-closed.html#397" title="ostream::sentry dtor throws exceptions (Status: NAD Editorial)">397</a><sup><a href="https://cplusplus.github.io/LWG/issue397" title="Latest snapshot">(i)</a></sup> suggested changing 31.7.6.2.4 <a href="https://wg21.link/ostream.sentry">[ostream.sentry]</a> to
-say that the <code class='backtick'>ostream::sentry</code> destructor doesn't throw any exceptions.
-That issue was closed as resolved by LWG <a href="lwg-defects.html#835" title="Tying two streams together (correction to DR 581) (Status: C++11)">835</a><sup><a href="https://cplusplus.github.io/LWG/issue835" title="Latest snapshot">(i)</a></sup> which included
-the "Throws: Nothing" change to the <code class='backtick'>sentry</code> destructor.
-However, that part of the resolution never seems to have been applied to
-the working draft. <a href="https://wg21.link/N3091" title=" Editor's Report">N3091</a> mentions applying LWG 835 for
-<a href="https://wg21.link/N3090" title=" Working Draft, Standard for Programming Language C++">N3090</a> but the destructor change is missing, maybe because
-the paragraph for the sentry destructor had been renumbered from p17 to p4
-and LWG 835 didn't show sufficient context to indicate the intended location.
-</p>
-
-<p>
-The problem described in LWG <a href="lwg-closed.html#397" title="ostream::sentry dtor throws exceptions (Status: NAD Editorial)">397</a><sup><a href="https://cplusplus.github.io/LWG/issue397" title="Latest snapshot">(i)</a></sup> is still present:
-the streambuf operations can fail, and the sentry needs to handle that.
-The changes for LWG <a href="lwg-defects.html#835" title="Tying two streams together (correction to DR 581) (Status: C++11)">835</a><sup><a href="https://cplusplus.github.io/LWG/issue835" title="Latest snapshot">(i)</a></sup> ensure no exception is thrown if
-<code>rdbuf()-&gt;pubsync()</code> returns -1 on failure, but do nothing for
-the case where it throws an exception (the original topic of LWG 397!).
-Because C++11 made <code class='backtick'>~sentry</code> implicitly <code class='backtick'>noexcept</code>,
-an exception from <code class='backtick'>rdbuf()-&gt;pubsync()</code> will terminate the process.
-That needs to be fixed.
-</p>
-
-<p>
-Libstdc++ does terminate if <code class='backtick'>pubsync()</code> throws when called by <code class='backtick'>~sentry</code>.
-Both MSVC and Libc++ silently swallow exceptions.
-It seems preferable to handle the exception and report an error,
-just as we do when <code class='backtick'>pubsync()</code> returns -1.
-</p>
-
-
-<p><i>[2025-02-07; Reflector poll]</i></p>
-
-<p>
-Set status to Tentatively Ready after six votes in favour during reflector poll.
-</p>
-
-
-
-<p id="res-4188"><b>Proposed resolution:</b></p>
-<p>
-This wording is relative to <a href="https://wg21.link/N5001">N5001</a>.
-</p>
-
-<ol>
-<li><p>Modify 31.7.6.2.4 <a href="https://wg21.link/ostream.sentry">[ostream.sentry]</a> as indicated:</p>
-
-<blockquote>
-<pre><code>~sentry();</code></pre>
-<blockquote>
--4- If
-<code>(os.flags() &amp; ios_base::unitbuf) &amp;&amp; !uncaught_exceptions() &amp;&amp; os.good()</code> is <code class='backtick'>true</code>, calls <code>os.rdbuf()-&gt;pubsync()</code>.
-If that function returns −1
-<ins> or exits via an exception</ins>,
-sets <code class='backtick'>badbit</code> in <code class='backtick'>os.rdstate()</code> without propagating an exception.
-</blockquote>
-</blockquote>
-</li>
-</ol>
-
-
-
-
-
-
-<hr>
-<h3 id="4198"><a href="#4198">4198</a><sup><a href="https://cplusplus.github.io/LWG/issue4198">(i)</a></sup>. <code class='backtick'>schedule_from</code> isn't starting the schedule sender if decay-copying results throws</h3>
-<p><b>Section:</b> 33.9.12.5 <a href="https://wg21.link/exec.schedule.from">[exec.schedule.from]</a> <b>Status:</b> <a href="lwg-active.html#Ready">Ready</a>
- <b>Submitter:</b> Eric Niebler <b>Opened:</b> 2025-02-03 <b>Last modified:</b> 2025-02-13</p>
-<p><b>Priority: </b>1
-</p>
-<p><b>View other</b> <a href="lwg-index-open.html#exec.schedule.from">active issues</a> in [exec.schedule.from].</p>
-<p><b>View all other</b> <a href="lwg-index.html#exec.schedule.from">issues</a> in [exec.schedule.from].</p>
-<p><b>View all issues with</b> <a href="lwg-status.html#Ready">Ready</a> status.</p>
-<p><b>Discussion:</b></p>
-<p>
-Imported from <a href="https://github.com/cplusplus/sender-receiver/issues/304">cplusplus/sender-receiver #304</a>.
-</p>
-<p>
-33.9.12.5 <a href="https://wg21.link/exec.schedule.from">[exec.schedule.from]</a>/p11 specifies <code class='backtick'>schedule_from</code>'s completion operation as follows:
-
-<pre><code>
-[]&lt;class Tag, class... Args&gt;(auto, auto&amp; state, auto&amp; rcvr, Tag, Args&amp;&amp;... args) noexcept
-    -> void {
-  using result_t = <i>decayed-tuple</i>&lt;Tag, Args...&gt;;
-  constexpr bool nothrow = is_nothrow_constructible_v&lt;result_t, Tag, Args...&gt;;
-
-  try {
-    state.<i>async-result</i>.template emplace&lt;result_t&gt;(Tag(), std::forward&lt;Args&gt;(args)...);
-  } catch (...) {
-    if constexpr (!nothrow) {
-      set_error(std::move(rcvr), current_exception());
-      return;
-    }
-  }
-  start(state.<i>op-state</i>);
-};
-</code></pre>
-
-so if emplacing the result tuple throws, <code class='backtick'>set_error</code> is immediately called on the downstream receiver. no attempt is made to post the completion to the specified scheduler. this is probably not the right behavior.
-</p>
-<p><b>Suggested resolution</b></p>
-<p>
-The right thing, i think, is to catch the exception, emplace the <code class='backtick'>exception_ptr</code> into the <i><code class='backtick'>async-result</code></i> variant, and then start the schedule operation, as shown below:
-
-<pre><code>
-[]&lt;class Tag, class... Args&gt;(auto, auto&amp; state, auto&amp; rcvr, Tag, Args&amp;&amp;... args) noexcept
-    -> void {
-  using result_t = <i>decayed-tuple</i>&lt;Tag, Args...&gt;;
-  constexpr bool nothrow = is_nothrow_constructible_v&lt;result_t, Tag, Args...&gt;;
-
-  try {
-    state.<i>async-result</i>.template emplace&lt;result_t&gt;(Tag(), std::forward&lt;Args&gt;(args)...);
-  } catch(...) {
-    if constexpr (!nothrow)
-      state.<i>async-result</i>.template emplace&lt;tuple&lt;set_error_t, exception_ptr&gt;&gt;(set_error, current_exception());
-  }
-
-  start(state.<i>op-state</i>);
-}
-</code></pre>
-
-we also need to change how we specify the variant type of
-<code>state.<i>async-result</i></code>:
-
-<blockquote>
-Let <code class='backtick'>Sigs</code> be a pack of the arguments to the <code class='backtick'>completion_signatures</code>
-specialization named by
-<code>completion_signatures_of_t&lt;<i>child-type</i>&lt;Sndr&gt;, env_of_t&lt;Rcvr&gt;&gt;</code>.
-Let <i><code>as-tuple</code></i> be an alias template
-<del>
-that transforms a completion signature <code class='backtick'>Tag(Args...)</code> into
-the tuple specialization <code><i>decayed-tuple</i>&lt;Tag, Args...&gt;</code>.
-</del>
-<ins>
-such that <code><i>as-tuple</i>&lt;Tag(Args...)&gt;</code> denotes
-the tuple specialization <code><i>decayed-tuple</i>&lt;Tag, Args...&gt;</code>,
-and let <code><i>is-nothrow-decay-copy-sig</i></code>
-be a variable template such that
-<code><i>is-nothrow-decay-copy-sig</i>&lt;Tag(Args...)&gt;</code>
-is a core constant expression of type <code class='backtick'>bool const</code> and whose value
-is <code class='backtick'>true</code> if the types <code class='backtick'>Args...</code> are all nothrow decay-copyable, and <code class='backtick'>false</code>
-otherwise.
-Let <i><code>error-completion</code></i> be a pack consisting of the type
-<code class='backtick'>set_error_t(exception_ptr)</code> if
-<code>(<i>is-nothrow-decay-copy-sig</i>&lt;Sigs&gt; &amp;&amp;...)</code>
-is <code class='backtick'>false</code>, and an empty pack otherwise.
-</ins>
-Then <code class='backtick'>variant_t</code> denotes the type
-<code>variant&lt;monostate, <i>as-tuple</i>&lt;Sigs&gt;...<ins>, <i>error-completion</i>...</ins>&gt;</code>,
-except with duplicate types removed.
-</blockquote>
-
-</p>
-
-<p><i>[This touches the same text as LWG <a href="lwg-active.html#4203" title="Constraints on get-state functions are incorrect (Status: Ready)">4203</a><sup><a href="https://cplusplus.github.io/LWG/issue4203" title="Latest snapshot">(i)</a></sup>.]</i></p>
-
-
-<p><i>[2025-02-07; Reflector poll]</i></p>
-
-<p>
-Set priority to 1 after reflector poll.
-</p>
-
-<p><i>[Hagenberg 2025-02-11; LWG]</i></p>
-
-<p>
-Direction seems right. Decay-copyable is not a defined term.
-</p>
-
-<p><i>[2025-02-12 Tim adds PR]</i></p>
-
-<p>This also corrects the issue that <code class='backtick'>nothrow</code> is currently relying
-on the unspecified exception specification of <code class='backtick'>tuple</code>'s constructor.</p>
-
-<p><i>[Hagenberg 2025-02-12; move to Ready]</i></p>
-
-
-
-
-<p id="res-4198"><b>Proposed resolution:</b></p>
-<p>
-This wording is relative to <a href="https://wg21.link/N5001">N5001</a>.
-</p>
-
-<ol>
-<li>
-Modify 33.9.12.5 <a href="https://wg21.link/exec.schedule.from">[exec.schedule.from]</a> p8 as indicated:
-<blockquote>
-<p>
--8- Let <code class='backtick'>Sigs</code> be a pack of the arguments to the <code class='backtick'>completion_signatures</code>
-specialization named by
-<code>completion_signatures_of_t&lt;<i>child-type</i>&lt;Sndr&gt;, env_of_t&lt;Rcvr&gt;&gt;</code>.
-Let <i><code>as-tuple</code></i> be an alias template
-<del>
-that transforms a completion signature <code class='backtick'>Tag(Args...)</code> into
-the tuple specialization <code><i>decayed-tuple</i>&lt;Tag, Args...&gt;</code>.
-</del>
-<ins>
-such that <code><i>as-tuple</i>&lt;Tag(Args...)&gt;</code> denotes
-the type <code><i>decayed-tuple</i>&lt;Tag, Args...&gt;</code>,
-and let <code><i>is-nothrow-decay-copy-sig</i></code>
-be a variable template such that
-<code>auto(<i>is-nothrow-decay-copy-sig</i>&lt;Tag(Args...)&gt;)</code>
-is a constant expression of type <code class='backtick'>bool</code> and equal to 
-<code>(is_nothrow_constructible_v&lt;decay_t&lt;Args&gt;, Args&gt; &amp;&amp; ...)</code>.
-Let <i><code>error-completion</code></i> be a pack consisting of the type
-<code class='backtick'>set_error_t(exception_ptr)</code> if
-<code>(<i>is-nothrow-decay-copy-sig</i>&lt;Sigs&gt; &amp;&amp;...)</code>
-is <code class='backtick'>false</code>, and an empty pack otherwise.
-</ins>
-Then <code class='backtick'>variant_t</code> denotes the type
-<code>variant&lt;monostate, <i>as-tuple</i>&lt;Sigs&gt;...<ins>, <i>error-completion</i>...</ins>&gt;</code>,
-except with duplicate types removed.
-</p>
-</blockquote>
-</li>
-<li>
-<p>Modify 33.9.12.5 <a href="https://wg21.link/exec.schedule.from">[exec.schedule.from]</a> p11 as indicated:</p>
-<blockquote><p>
--11- The member <code><i>impls-for</i>&lt;schedule_from_t&gt;::<i>complete</i></code> 
-is initialized with a callable object equivalent to the following lambda:
-</p>
-<blockquote><pre><code>
-[]&lt;class Tag, class... Args&gt;(auto, auto&amp; state, auto&amp; rcvr, Tag, Args&amp;&amp;... args) noexcept
-    -&gt; void {
-  using result_t = <i>decayed-tuple</i>&lt;Tag, Args...&gt;;
-  constexpr bool nothrow = <del>is_nothrow_constructible_v&lt;result_t, Tag, Args...&gt;</del>
-                           <ins>(is_nothrow_constructible_v&lt;decay_t&lt;Args&gt;, Args&gt; &amp;&amp; ...)</ins>;
-
-  try {
-    state.<i>async-result</i>.template emplace&lt;result_t&gt;(Tag(), std::forward&lt;Args&gt;(args)...);
-  } catch (...) {
-    if constexpr (!nothrow) <del>{</del>
-      <ins>state.<i>async-result</i>.template emplace&lt;tuple&lt;set_error_t, exception_ptr&gt;&gt;(set_error, current_exception());</ins>
-      <del>set_error(std::move(rcvr), current_exception());</del>
-      <del>return;</del>
-    <del>}</del>
-  }
-  start(state.<i>op-state</i>);
-};
-</code></pre></blockquote>
-</blockquote>
-</li>
-</ol>
-
-
-
-
-
-<hr>
-<h3 id="4200"><a href="#4200">4200</a><sup><a href="https://cplusplus.github.io/LWG/issue4200">(i)</a></sup>. The <code class='backtick'>operation_state</code> concept can be simplified</h3>
-<p><b>Section:</b> 33.8.1 <a href="https://wg21.link/exec.opstate.general">[exec.opstate.general]</a> <b>Status:</b> <a href="lwg-active.html#Ready">Tentatively Ready</a>
- <b>Submitter:</b> Eric Niebler <b>Opened:</b> 2025-02-03 <b>Last modified:</b> 2025-02-07</p>
-<p><b>Priority: </b>Not Prioritized
-</p>
-<p><b>View all issues with</b> <a href="lwg-status.html#Tentatively Ready">Tentatively Ready</a> status.</p>
-<p><b>Discussion:</b></p>
-<p>
-Imported from <a href="https://github.com/cplusplus/sender-receiver/issues/312">cplusplus/sender-receiver #312</a>.
-</p>
-<p>
-The current defn of the <code class='backtick'>operation_state</code> concept is:
-
-<pre><code>
-template&lt;class O&gt;
-  concept operation_state =
-    derived_from&lt;typename O::operation_state_concept, operation_state_t&gt; &amp;&amp;
-    is_object_v&lt;O&gt; &amp;&amp;
-    requires (O&amp; o) {
-      { start(o) } noexcept;
-    };
-</code></pre>
-
-I think the <code>is_object_v&lt;O&gt;</code> constraint is not needed
-because the <code>derived_from</code> constraint has already established that
-<code>O</code> is a class type.
-</p>
-<p>
-And <code class='backtick'>start(o)</code> is always <code class='backtick'>noexcept</code> now that <code class='backtick'>start</code> mandates the
-<code class='backtick'>noexcept</code>-ness of <code class='backtick'>op.start()</code>.
-</p>
-
-<p><i>[2025-02-07; Reflector poll]</i></p>
-
-<p>
-Set status to Tentatively Ready after seven votes in favour during reflector poll.
-</p>
-
-
-
-<p id="res-4200"><b>Proposed resolution:</b></p>
-<p>
-This wording is relative to <a href="https://wg21.link/N5001">N5001</a>.
-</p>
-<ol>
-<li>
-Modify 33.8.1 <a href="https://wg21.link/exec.opstate.general">[exec.opstate.general]</a> as indicated:
-<blockquote><pre><code>
-template&lt;class O&gt;
-  concept operation_state =
-    derived_from&lt;typename O::operation_state_concept, operation_state_t&gt; &amp;&amp;
-    <del>is_object_v&lt;O&gt; &amp;&amp;</del>
-    requires (O&amp; o) {
-      <del>{</del> start(o) <del>} noexcept</del>;
-    };
-</code></pre></blockquote>
-</li>
-</ol>
-
-
-
-
-
-
-<hr>
-<h3 id="4201"><a href="#4201">4201</a><sup><a href="https://cplusplus.github.io/LWG/issue4201">(i)</a></sup>. <code class='backtick'>with-await-transform::await_transform</code> should not use a deduced return type</h3>
-<p><b>Section:</b> 33.9.4 <a href="https://wg21.link/exec.awaitable">[exec.awaitable]</a> <b>Status:</b> <a href="lwg-active.html#Ready">Tentatively Ready</a>
- <b>Submitter:</b> Brian Bi <b>Opened:</b> 2025-02-03 <b>Last modified:</b> 2025-02-07</p>
-<p><b>Priority: </b>Not Prioritized
-</p>
-<p><b>View all issues with</b> <a href="lwg-status.html#Tentatively Ready">Tentatively Ready</a> status.</p>
-<p><b>Discussion:</b></p>
-<p>
-Imported from <a href="https://github.com/cplusplus/sender-receiver/issues/309">cplusplus/sender-receiver #309</a>.
-</p>
-<p>
-33.9.4 <a href="https://wg21.link/exec.awaitable">[exec.awaitable]</a>/p5
-</p>
-<p>
-The use of the deduced return type causes the definition of the sender's
-<code class='backtick'>as_awaitable</code> method to be instantiated too early,
-e.g., when the sender is passed to <code class='backtick'>get_completion_signatures</code>.
-</p>
-
-<p><i>[Eric provides wording]</i></p>
-
-
-
-<p><i>[2025-02-07; Reflector poll]</i></p>
-
-<p>
-Set status to Tentatively Ready after five votes in favour during reflector poll.
-</p>
-
-
-
-<p id="res-4201"><b>Proposed resolution:</b></p>
-<p>
-This wording is relative to <a href="https://wg21.link/N5001">N5001</a>.
-</p>
-<ol>
-<li>
-Modify 33.9.4 <a href="https://wg21.link/exec.awaitable">[exec.awaitable]</a> as indicated:
-<blockquote>
--5-
-Let <i><code>with-await-transform</code></i> be the exposition-only class template:
-
-<pre><code>
-namespace std::execution {
-  template&lt;class T, class Promise&gt;
-    concept <i>has-as-awaitable</i> =                                  <i>// exposition only</i>
-      requires (T&amp;&amp; t, Promise&amp; p) {
-        { std::forward&lt;T&gt;(t).as_awaitable(p) } -&gt; is-awaitable&lt;Promise&amp;&gt;;
-      };
-
-  template&lt;class Derived&gt;
-    struct <i>with-await-transform</i> {                               <i>// exposition only</i>
-      template&lt;class T&gt;
-        T&amp;&amp; await_transform(T&amp;&amp; value) noexcept {
-          return std::forward&lt;T&gt;(value);
-        }
-
-      template&lt;has-as-awaitable&lt;Derived&gt; T&gt;
-        <del>decltype(auto)</del><ins>auto</ins> await_transform(T&amp;&amp; value)
-          noexcept(noexcept(std::forward&lt;T&gt;(value).as_awaitable(declval&lt;Derived&amp;&gt;())))
-        <ins>-&gt; decltype(std::forward&lt;T&gt;(value).as_awaitable(declval&lt;Derived&amp;&gt;()))</ins> {
-          return std::forward&lt;T&gt;(value).as_awaitable(static_cast&lt;Derived&amp;&gt;(*this));
-        }
-    };
-}
-</code></pre>
-</blockquote>
-</li>
-</ol>
-
-
-
-
-
-<hr>
-<h3 id="4202"><a href="#4202">4202</a><sup><a href="https://cplusplus.github.io/LWG/issue4202">(i)</a></sup>. <i><code>enable-sender</code></i> should be a variable template</h3>
-<p><b>Section:</b> 33.9.3 <a href="https://wg21.link/exec.snd.concepts">[exec.snd.concepts]</a> <b>Status:</b> <a href="lwg-active.html#Ready">Ready</a>
- <b>Submitter:</b> Eric Niebler <b>Opened:</b> 2025-02-03 <b>Last modified:</b> 2025-02-12</p>
-<p><b>Priority: </b>1
-</p>
-<p><b>View all issues with</b> <a href="lwg-status.html#Ready">Ready</a> status.</p>
-<p><b>Discussion:</b></p>
-<p>
-Imported from
-<a href="https://github.com/cplusplus/sender-receiver/issues/305">cplusplus/sender-receiver #305</a> and
-<a href="https://github.com/cplusplus/sender-receiver/issues/306">cplusplus/sender-receiver #306</a>.
-</p>
-<p>
-We require an opt-in to satisfy the <code class='backtick'>sender</code> concept.
-Making your type awaitable with an empty environment is one way to opt in.
-If your awaitable requires an environment, you have two options:
-<ul>
-<li>give your awaitable type a nested <code class='backtick'>sender_concept</code> typedef, or</li>
-<li>specialize <code class='backtick'>enable_sender</code> for your awaitable type.</li>
-</ul>
-The problem is that somewhere along the way,
-the <code class='backtick'>enable_sender</code> variable template was turned into
-an exposition-only <i><code>enable-sender</code></i> concept.
-We should roll back that change.
-</p>
-
-<p><i>[2025-02-07; Reflector poll]</i></p>
-
-<p>
-Set priority to 1 after reflector poll.
-</p>
-
-<p><i>[Hagenberg 2025-02-11; move to Ready]</i></p>
-
-
-
-
-<p id="res-4202"><b>Proposed resolution:</b></p>
-<p>
-This wording is relative to <a href="https://wg21.link/N5001">N5001</a>.
-</p>
-
-<ol>
-<li>
-Change 33.9.3 <a href="https://wg21.link/exec.snd.concepts">[exec.snd.concepts]</a> as indicated:
-<blockquote>
-<pre><code>
-  template&lt;class Sndr&gt;
-    concept <i>is-sender</i> =                                         <i>// exposition only</i>
-      derived_from&lt;typename Sndr::sender_concept, sender_t&gt;;
-
-  template&lt;class Sndr&gt;
-    concept <i>enable-sender</i> =                                     <i>// exposition only</i>
-      <i>is-sender</i>&lt;Sndr&gt; ||
-      <i>is-awaitable</i>&lt;Sndr, <i>env-promise</i>&lt;empty_env&gt;&gt;;               <i>// [exec.awaitable]</i>
-<ins>
-  template&lt;class Sndr&gt;
-    inline constexpr bool enable_sender = <i>enable-sender</i>&lt;Sndr&gt;;
-</ins>
-  template&lt;class Sndr&gt;
-    concept sender =
-      <del>bool(<i>enable-sender</i></del><ins>enable_sender</ins>&lt;remove_cvref_t&lt;Sndr&gt;&gt;<del>)</del> &amp;&amp;
-      requires (const remove_cvref_t&lt;Sndr&gt;&amp; sndr) {
-        { get_env(sndr) } -&gt; <i>queryable</i>;
-      } &amp;&amp;
-      move_constructible&lt;remove_cvref_t&lt;Sndr&gt;&gt; &amp;&amp;
-      constructible_from&lt;remove_cvref_t&lt;Sndr&gt;, Sndr&gt;;
-</code></pre>
-<p>&hellip;</p>
-<p>
--2-
-Given a subexpression <code class='backtick'>sndr</code>, [&hellip;]
-</p>
-<p>
-<ins>
--?-
-<i>Remarks</i>:
-Pursuant to 16.4.5.2.1 <a href="https://wg21.link/namespace.std">[namespace.std]</a>, users may specialize
-<code class='backtick'>enable_sender</code> to <code class='backtick'>true</code> for cv-unqualified program-defined types that model
-<code class='backtick'>sender</code>, and <code class='backtick'>false</code> for types that do not.
-Such specializations shall be usable in constant expressions
-(7.7 <a href="https://wg21.link/expr.const">[expr.const]</a>) and have type <code class='backtick'>const bool</code>.
-</ins>
-</p>
-</blockquote>
-</li>
-</ol>
-
-
-
-
-
-<hr>
-<h3 id="4203"><a href="#4203">4203</a><sup><a href="https://cplusplus.github.io/LWG/issue4203">(i)</a></sup>. Constraints on <i><code class='backtick'>get-state</code></i> functions are incorrect</h3>
-<p><b>Section:</b> 33.9.12.5 <a href="https://wg21.link/exec.schedule.from">[exec.schedule.from]</a> <b>Status:</b> <a href="lwg-active.html#Ready">Ready</a>
- <b>Submitter:</b> Eric Niebler <b>Opened:</b> 2025-02-03 <b>Last modified:</b> 2025-02-12</p>
-<p><b>Priority: </b>1
-</p>
-<p><b>View other</b> <a href="lwg-index-open.html#exec.schedule.from">active issues</a> in [exec.schedule.from].</p>
-<p><b>View all other</b> <a href="lwg-index.html#exec.schedule.from">issues</a> in [exec.schedule.from].</p>
-<p><b>View all issues with</b> <a href="lwg-status.html#Ready">Ready</a> status.</p>
-<p><b>Discussion:</b></p>
-<p>
-Imported from:
-<a href="https://github.com/cplusplus/sender-receiver/issues/313">cplusplus/sender-receiver #313</a>
-and
-<a href="https://github.com/cplusplus/sender-receiver/issues/314">cplusplus/sender-receiver #314</a>.
-</p>
-<p>
-33.9.12.5 <a href="https://wg21.link/exec.schedule.from">[exec.schedule.from]</a> p6 reads:
-
-<blockquote>
-The member <code><i>impls-for</i>&lt;schedule_from_t&gt;::get-state</code>
-is initialized with a callable object equivalent to the following lambda:
-<pre><code>  []&lt;class Sndr, class Rcvr&gt;(Sndr&amp;&amp; sndr, Rcvr&amp; rcvr) noexcept(<i>see below</i>)
-     requires sender_in&lt;<i>child-type</i>&lt;Sndr&gt;, env_of_t&lt;Rcvr&gt;&gt; {
-</code></pre>
-</blockquote>
-
-The constraint should account for the fact that the child sender will
-be connected with <code><i>FWD-ENV</i>(get_env(rcvr))</code>.
-</p>
-
-<p><i>[
-The resolution touches some of the same text as LWG <a href="lwg-active.html#4198" title="schedule_from isn't starting the schedule sender if decay-copying results throws (Status: Ready)">4198</a><sup><a href="https://cplusplus.github.io/LWG/issue4198" title="Latest snapshot">(i)</a></sup>,
-but without conflicting.
-]</i></p>
-
-
-<p>
-Imported from:
-<a href="https://github.com/cplusplus/sender-receiver/issues/315">cplusplus/sender-receiver #315</a>.
-</p>
-<p>
-33.9.12.11 <a href="https://wg21.link/exec.when.all">[exec.when.all]</a> p6 reads:
-
-<blockquote>
-The member <code>impls-for&lt;when_all_t&gt;::<i>get-env</i></code>
-is initialized with a callable object equivalent to the following lambda
-expression:
-<pre><code>  []&lt;class State, class Rcvr&gt;(auto&amp;&amp;, State&amp; state, const Receiver&amp; rcvr) noexcept {
-    return <i>see below</i>;
-  }
-</code></pre>
-Returns an object <code class='backtick'>e</code> such that
-<ol style="list-style-type:none">
-<li>(6.1) &mdash; <code class='backtick'>decltype(e)</code> models <i><code class='backtick'>queryable</code></i>, and</li>
-<li>(6.2) &mdash; <code class='backtick'>e.query(get_stop_token)</code> is expression-equivalent to
-<code>state.<i>stop-src</i>.get_token()</code>, and</li>
-<li>(6.3) &mdash;
-given a query object <code class='backtick'>q</code> with type other than <i>cv</i> <code class='backtick'>stop_token_t</code>,
-<code class='backtick'>e.query(q)</code> is expression-equivalent to <code class='backtick'>get_env(rcvr).query(q)</code>.
-</li>
-</ol>
-</blockquote>
-
-The problem is in (6.3). It should be forwarding on <i><code class='backtick'>forwarding-query</code></i>'s
-to <code class='backtick'>get_env(rcvr)</code> but is is instead forwarding all queries.
-</p>
-
-<p>
-Imported from:
-<a href="https://github.com/cplusplus/sender-receiver/issues/316">cplusplus/sender-receiver #316</a>.
-</p>
-<p>
-The child senders should only see the parent's queries if they are forwarding queries.
-</p>
-
-<p>
-Imported from:
-<a href="https://github.com/cplusplus/sender-receiver/issues/311">cplusplus/sender-receiver #311</a>.
-</p>
-
-<p>
-33.9.12.13 <a href="https://wg21.link/exec.stopped.opt">[exec.stopped.opt]</a>/para 3 reads:
-
-<blockquote>
-Let <code class='backtick'>sndr</code> and <code class='backtick'>env</code> be subexpressions such that <code class='backtick'>Sndr</code> is <code class='backtick'>decltype((sndr))</code>
-and <code class='backtick'>Env</code> is <code class='backtick'>decltype((env))</code>.
-If <code><i>sender-for</i>&lt;Sndr, stopped_as_optional_t&gt;</code> is <code class='backtick'>false</code>,
-or if the type <code><i>single-sender-value-type</i>&lt;Sndr, Env&gt;</code>
-is ill-formed or <code class='backtick'>void</code>,
-then the expression <code class='backtick'>stopped_as_optional.transform_sender(sndr, env)</code>
-is ill-formed; otherwise, it is equivalent to:
-</blockquote>
-the test for <code>single-sender-value-type&lt;Sndr, Env&gt;</code> is incorrect.
-It should be testing its child for single-sender-ness.
-</p>
-<p>
-In addition, it should be applying <i><code class='backtick'>FWD-ENV-T</code></i> to <code class='backtick'>Env</code>
-so that only forwarding queries are forwarded.
-</p>
-
-
-<p><i>[2025-02-07; Reflector poll]</i></p>
-
-<p>
-Set priority to 1 after reflector poll.
-</p>
-
-<p><i>[Hagenberg 2025-02-11; move to Ready]</i></p>
-
-
-
-
-<p id="res-4203"><b>Proposed resolution:</b></p>
-<p>
-This wording is relative to <a href="https://wg21.link/N5001">N5001</a>.
-</p>
-
-<ol>
-<li>
-Change 33.9.2 <a href="https://wg21.link/exec.snd.expos">[exec.snd.expos]</a> as indicated:
-
-<blockquote>
--2-
-For a queryable object <code class='backtick'>env</code>,
-<code><i>FWD-ENV</i>(env)</code> is an expression whose
-type satisfies <i><code class='backtick'>queryable</code></i> such that for a query object <code class='backtick'>q</code>
-and a pack of subexpressions <code class='backtick'>as</code>,
-the expression <code><i>FWD-ENV</i>(env).query(q, as...)</code>
-is ill-formed if <code class='backtick'>forwarding_query(q)</code> is <code class='backtick'>false</code>;
-otherwise, it is expression-equivalent to <code class='backtick'>env.query(q, as...)</code>.
-<ins>
-The type <code><i>FWD-ENV-T</i>(Env)</code> is
-<code>decltype(<i>FWD-ENV</i>(declval&lt;Env&gt;()))</code>.
-</ins>
-</blockquote>
-</li>
-
-<li>
-Change 33.9.12.5 <a href="https://wg21.link/exec.schedule.from">[exec.schedule.from]</a> as indicated:
-
-<blockquote>
--6-
-The member
-<code><i>impls-for</i>&lt;schedule_from_t&gt;::<i>get-state</i></code>
-is initialized with a callable object equivalent to the following lambda:
-<pre><code>  []&lt;class Sndr, class Rcvr&gt;(Sndr&amp;&amp; sndr, Rcvr&amp; rcvr) noexcept(<i>see below</i>)
-   requires sender_in&lt;child-type&lt;Sndr&gt;, <ins><i>FWD-ENV-T</i>(</ins>env_of_t&lt;Rcvr&gt;<ins>)</ins>&gt; {
-</code></pre>
-<p>&hellip;</p>
-<p>
--8-
-Let <code class='backtick'>Sigs</code> be a pack of the arguments to the <code class='backtick'>completion_signatures</code>
-specialization named by
-<code>completion_signatures_of_t&lt;child-type&lt;Sndr&gt;,
-  <ins><i>FWD-ENV-T</i>(</ins>env_of_t&lt;Rcvr&gt;<ins>)</ins>&gt;</code>.
-Let <code><i>as-tuple</i></code>
-be an alias template that transforms a completion signature
-<code>Tag(Args...)</code> into the tuple specialization
-<code><i>decayed-tuple</i>&lt;Tag, Args...&gt;</code>.
-Then <code>variant_t</code> denotes the type
-<code>variant&lt;monostate, as-tuple&lt;Sigs&gt;...&gt;</code>,
-except with duplicate types removed.
-</p>
-</blockquote>
-</li>
-
-<li>
-Change 33.9.12.8 <a href="https://wg21.link/exec.let">[exec.let]</a> as indicated:
-
-<blockquote>
-<p>
--6-
-Let <i><code class='backtick'>receiver2</code></i> denote the following exposition-only class template:
-<pre><code>  namespace std::execution {
-    &hellip;
-  }
-</code></pre>
-Invocation of the function <code><i>receiver2</i>::get_env</code>
-returns an object <code class='backtick'>e</code> such that
-<ol style="list-style-type:none">
-<li>(6.1) &mdash;
-<code class='backtick'>decltype(e)</code> models <i><code class='backtick'>queryable</code></i> and
-</li>
-<li>(6.2) &mdash;
-given a query object <code class='backtick'>q</code>, the expression <code class='backtick'>e.query(q)</code> is expression-equivalent
-to
-<code><i>env</i>.query(q)</code>
-if that expression is valid<del>,</del><ins>;</ins>
-otherwise,
-<ins>if the type of <code class='backtick'>q</code> satisfies <i><code class='backtick'>forwarding-query</code></i>,</ins>
-<code class='backtick'>e.query(q)</code> is expression-equivalent to
-<code>get_env(<i>rcvr</i>).query(q)</code>
-<ins>; otherwise, <code class='backtick'>e.query(q)</code> is ill-formed</ins>.
-</li>
-</ol>
-</p>
-<p>
--7-
-<code><i>impls-for</i>&lt;<i>decayed-typeof</i>&lt;<i>let-cpo</i>&gt;&gt;::<i>get-state</i></code>
-is initialized with a callable object [&hellip;]
-</p>
-<p>
--8-
-Let <code class='backtick'>Sigs</code> be a pack of the arguments to the <code class='backtick'>completion_signatures</code>
-specialization named by
-<code>completion_signatures_of_t&lt;<i>child-type</i>&lt;Sndr&gt;,
-<ins><i>FWD-ENV-T</i>(</ins>env_of_t&lt;Rcvr&gt;<ins>)</ins>&gt;</code>.
-Let <code class='backtick'>LetSigs</code> be a pack of those types in <code class='backtick'>Sigs</code> with a return type of
-<code><i>decayed-typeof</i>&lt;<i>set-cpo</i>&gt;</code>.
-Let <code class='backtick'>as-tuple</code> be an alias template such that
-<code><i>as-tuple</i>&lt;Tag(Args...)&gt;</code>
-denotes the type <code><i>decayed-tuple</i>&lt;Args...&gt;</code>.
-Then <code class='backtick'>args_variant_t</code> denotes the type
-<code>variant&lt;monostate, <i>as-tuple</i>&lt;LetSigs&gt;...&gt;</code>
-except with duplicate types removed.
-</p>
-</blockquote>
-</li>
-
-<li>
-Change 33.9.12.11 <a href="https://wg21.link/exec.when.all">[exec.when.all]</a> as indicated:
-
-<blockquote>
-<p>
--6-
-The member <code>impls-for&lt;when_all_t&gt;::<i>get-env</i></code>
-is initialized with a callable object equivalent to the following lambda
-expression:
-<pre><code>  []&lt;class State, class Rcvr&gt;(auto&amp;&amp;, State&amp; state, const Receiver&amp; rcvr) noexcept {
-    return <i>see below</i>;
-  }
-</code></pre>
-Returns an object <code class='backtick'>e</code> such that
-<ol style="list-style-type:none">
-<li>(6.1) &mdash; <code class='backtick'>decltype(e)</code> models <i><code class='backtick'>queryable</code></i>, and</li>
-<li>(6.2) &mdash; <code class='backtick'>e.query(get_stop_token)</code> is expression-equivalent to
-<code>state.<i>stop-src</i>.get_token()</code>, and</li>
-<li>(6.3) &mdash;
-given a query object <code class='backtick'>q</code> with type other than <i>cv</i> <code class='backtick'>stop_token_t</code>
-<ins>and whose type satisfies <i><code class='backtick'>forwarding-query</code></i></ins>,
-<code class='backtick'>e.query(q)</code> is expression-equivalent to <code class='backtick'>get_env(rcvr).query(q)</code>.
-</li>
-</ol>
-</p>
-<p>
--7-
-The member <code><i>impls-for</i>&lt;when_all_t&gt;::<i>get-state</i></code>
-is initialized with a callable object equivalent to the following
-lambda expression:
-<pre><code>  []&lt;class Sndr, class Rcvr&gt;(Sndr&amp;&amp; sndr, Rcvr&amp; rcvr) noexcept(e) -&gt; decltype(e) {
-    return <i>e</i>;
-  }
-</code></pre>
-where <i>e</i> is the expression
-<pre><code>  std::forward&lt;Sndr&gt;(sndr).apply(<i>make-state</i>&lt;Rcvr&gt;())
-</code></pre>
-and <i><code class='backtick'>make-state</code></i> is the following exposition-only class template:
-<pre><code>  template&lt;class Sndr, class Env&gt;
-  concept max-1-sender-in = sender_in&lt;Sndr, Env&gt; &amp;&amp; <i>// exposition only</i>
-    (tuple_size_v&lt;value_types_of_t&lt;Sndr, Env, tuple, tuple&gt;&gt; &lt;= 1);
-
-  enum class <i>disposition</i> { <i>started</i>, <i>error</i>, <i>stopped</i> }; <i>// exposition only</i>
-
-  template&lt;class Rcvr&gt;
-  struct make-state {
-   template&lt;max-1-sender-in&lt;<ins><i>FWD-ENV-T</i>(</ins>env_of_t&lt;Rcvr&gt;<ins>)</ins>&gt;... Sndrs&gt;
-</code></pre>
-&hellip;
-</p>
-<p>
--8- Let <i><code class='backtick'>copy_fail</code></i> be <code class='backtick'>exception_ptr</code> if [&hellip;]
-</p>
-<p>
--9-
-The alias <code class='backtick'>values_tuple</code> denotes the type
-<pre><code>  tuple&lt;value_types_of_t&lt;Sndrs, <ins><i>FWD-ENV-T</i>(</ins>env_of_t&lt;Rcvr&gt;<ins>)</ins>, <i>decayed-tuple</i>, optional&gt;...&gt;
-</code></pre>
-if that type is well-formed; otherwise, <code>tuple&lt;&gt;</code>.
-</p>
-</blockquote>
-</li>
-
-<li>
-Change 33.9.12.12 <a href="https://wg21.link/exec.into.variant">[exec.into.variant]</a> as indicated:
-
-<blockquote>
--5-
-The member <code>impls-for&lt;into_variant_t&gt;::<i>get-state</i></code>
-is initialized with a callable object equivalent to the following lambda:
-<pre><code>  []&lt;class Sndr, class Rcvr&gt;(Sndr&amp;&amp; sndr, Rcvr&amp; rcvr) noexcept
-    -&gt; type_identity&lt;value_types_of_t&lt;<i>child-type</i>&lt;Sndr&gt;, <ins><i>FWD-ENV-T</i>(</ins>env_of_t&lt;Rcvr&gt;<ins>)</ins>&gt;&gt; {
-    return {};
-  }
-</code></pre>
-</blockquote>
-</li>
-
-<li>
-Change 33.9.12.13 <a href="https://wg21.link/exec.stopped.opt">[exec.stopped.opt]</a> as indicated:
-
-<blockquote>
--3-
-Let <code class='backtick'>sndr</code> and <code class='backtick'>env</code> be subexpressions such that <code class='backtick'>Sndr</code> is <code class='backtick'>decltype((sndr))</code>
-and <code class='backtick'>Env</code> is <code class='backtick'>decltype((env))</code>.
-If <code><i>sender-for</i>&lt;Sndr, stopped_as_optional_t&gt;</code> is <code class='backtick'>false</code>,
-or if the type <code><i>single-sender-value-type</i>&lt;<ins><i>child-type</i>&lt;</ins>Sndr<ins>&gt;</ins>, <ins><i>FWD-ENV-T</i>(</ins>Env<ins>)</ins>&gt;</code>
-is ill-formed or <code class='backtick'>void</code>,
-then the expression <code class='backtick'>stopped_as_optional.transform_sender(sndr, env)</code>
-is ill-formed; otherwise, it is equivalent to:
-<pre><code>  auto&amp;&amp; [_, _, child] = sndr;
-  using V = <i>single-sender-value-type</i>&lt;<ins><i>child-type</i>&lt;</ins>Sndr<ins>&gt;</ins>, <ins><i>FWD-ENV-T</i>(</ins>Env<ins>)</ins>&gt;;
-</code></pre>
-&hellip;
-</blockquote>
-</li>
-
-</ol>
-
-
-
-
-
-
-<hr>
-<h3 id="4204"><a href="#4204">4204</a><sup><a href="https://cplusplus.github.io/LWG/issue4204">(i)</a></sup>. specification of <code><i>as-sndr2</i>(Sig)</code> in [exec.let] is incomplete</h3>
-<p><b>Section:</b> 33.9.12.8 <a href="https://wg21.link/exec.let">[exec.let]</a> <b>Status:</b> <a href="lwg-active.html#Ready">Ready</a>
- <b>Submitter:</b> Eric Niebler <b>Opened:</b> 2025-02-03 <b>Last modified:</b> 2025-02-12</p>
-<p><b>Priority: </b>1
-</p>
-<p><b>View other</b> <a href="lwg-index-open.html#exec.let">active issues</a> in [exec.let].</p>
-<p><b>View all other</b> <a href="lwg-index.html#exec.let">issues</a> in [exec.let].</p>
-<p><b>View all issues with</b> <a href="lwg-status.html#Ready">Ready</a> status.</p>
-<p><b>Discussion:</b></p>
-<p>
-33.9.12.8 <a href="https://wg21.link/exec.let">[exec.let]</a>/p9 reads:
-<blockquote>
-Given a type <code class='backtick'>Tag</code> and a pack <code class='backtick'>Args</code>, let <code><i>as-sndr2</i></code>
-be an alias template such that
-<code><i>as-sndr2</i>&lt;Tag(Args...)&gt;</code>
-denotes the type
-<code><i>call-result-t</i>&lt;Fn, decay_t&lt;Args&gt;&amp;...&gt;</code>.
-Then <code class='backtick'>ops2_variant_t</code> denotes the type
-<pre><code> variant&lt;monostate, connect_result_t&lt;<i>as-sndr2</i>&lt;LetSigs&gt;, receiver2&lt;Rcvr, Env&gt;&gt;...&gt;
-</code></pre>
-except with duplicate types removed.
-</blockquote>
-
-The type <code class='backtick'>Env</code> is not specified. It should be <code class='backtick'>env_t</code> from paragraph 7.
-</p>
-<p>
-Paragraphs 8, 9, and 10 only make sense in relation to the lambda in paragraph 7,
-but that is not at all clear from the current wording.
-I suggest making paragraphs 8, 9, and 10 sub-bullets of paragraph 7.
-</p>
-
-<p><i>[2025-02-07; Reflector poll]</i></p>
-
-<p>
-Set priority to 1 after reflector poll.
-</p>
-
-<p><i>[Hagenberg 2025-02-11; move to Ready]</i></p>
-
-<p>Dropped the suggestion to nest p8-10 under p7.</p>
-
-
-
-<p id="res-4204"><b>Proposed resolution:</b></p>
-<p>
-This wording is relative to <a href="https://wg21.link/N5001">N5001</a>.
-</p>
-<ol>
-<li>
-Change 33.9.12.8 <a href="https://wg21.link/exec.let">[exec.let]</a> as indicated:
-
-<blockquote>
-<p>
--7-
-<code><i>impls-for</i>&lt;<i>decayed-typeof</i>&lt;<i>let-cpo</i>&gt;&gt;::<i>get-state</i></code>
-is initialized with a callable object equivalent to the following:
-<pre><code>
-  []&lt;class Sndr, class Rcvr&gt;(Sndr&amp;&amp; sndr, Rcvr&amp; rcvr) requires <i>see below</i> {
-    auto&amp; [_, fn, child] = sndr;
-    using fn_t = decay_t&lt;decltype(fn)&gt;;
-    using env_t = decltype(<i>let-env</i>(child));
-    using args_variant_t = <i>see below</i>;
-    using ops2_variant_t = <i>see below</i>;
-
-    struct state-type {
-      fn_t fn;                    <i>// exposition only</i>
-      env_t env;                  <i>// exposition only</i>
-      args_variant_t args;        <i>// exposition only</i>
-      ops2_variant_t ops2;        <i>// exposition only</i>
-    };
-    return <i>state-type</i>{std::forward_like&lt;Sndr&gt;(fn), <i>let-env</i>(child), {}, {}};
-  }
-</code></pre>
-</p>
-<p>
--8-
-Let <code class='backtick'>Sigs</code> be a pack of the arguments to the <code class='backtick'>completion_signatures</code>
-specialization named by
-<code>completion_signatures_of_t&lt;<i>child-type</i>&lt;Sndr&gt;,
-env_of_t&lt;Rcvr&gt;&gt;</code>.
-Let <code class='backtick'>LetSigs</code> be a pack of those types in <code class='backtick'>Sigs</code> with a return type of
-<code><i>decayed-typeof</i>&lt;<i>set-cpo</i>&gt;</code>.
-Let <code class='backtick'>as-tuple</code> be an alias template such that
-<code><i>as-tuple</i>&lt;Tag(Args...)&gt;</code>
-denotes the type <code><i>decayed-tuple</i>&lt;Args...&gt;</code>.
-Then <code class='backtick'>args_variant_t</code> denotes the type
-<code>variant&lt;monostate, <i>as-tuple</i>&lt;LetSigs&gt;...&gt;</code>
-except with duplicate types removed.
-</p>
-<p>
--9-
-Given a type <code class='backtick'>Tag</code> and a pack <code class='backtick'>Args</code>, let <code><i>as-sndr2</i></code>
-be an alias template such that
-<code><i>as-sndr2</i>&lt;Tag(Args...)&gt;</code>
-denotes the type
-<code><i>call-result-t</i>&lt;Fn, decay_t&lt;Args&gt;&amp;...&gt;</code>.
-Then <code class='backtick'>ops2_variant_t</code> denotes the type
-<pre><code> variant&lt;monostate, connect_result_t&lt;<i>as-sndr2</i>&lt;LetSigs&gt;, receiver2&lt;Rcvr, <del>Env</del><ins>env_t</ins>&gt;&gt;...&gt;
-</code></pre>
-except with duplicate types removed.
-</p>
-<p>
--10-
-The <i>requires-clause</i> constraining the above lambda is satisfied
-if and only if the types <code class='backtick'>args_variant_t</code> and <code class='backtick'>ops2_variant_t</code> are well-formed.
-</p>
-</blockquote>
-
-</li>
-</ol>
-
-
-
-
-
-<hr>
-<h3 id="4205"><a href="#4205">4205</a><sup><a href="https://cplusplus.github.io/LWG/issue4205">(i)</a></sup>. <code class='backtick'>let_[*].transform_env</code> is specified in terms of the <code class='backtick'>let_*</code> sender itself instead of its child</h3>
-<p><b>Section:</b> 33.9.12.8 <a href="https://wg21.link/exec.let">[exec.let]</a> <b>Status:</b> <a href="lwg-active.html#Ready">Ready</a>
- <b>Submitter:</b> Eric Niebler <b>Opened:</b> 2025-02-04 <b>Last modified:</b> 2025-02-12</p>
-<p><b>Priority: </b>1
-</p>
-<p><b>View other</b> <a href="lwg-index-open.html#exec.let">active issues</a> in [exec.let].</p>
-<p><b>View all other</b> <a href="lwg-index.html#exec.let">issues</a> in [exec.let].</p>
-<p><b>View all issues with</b> <a href="lwg-status.html#Ready">Ready</a> status.</p>
-<p><b>Discussion:</b></p>
-<p>
-Imported from <a href="https://github.com/cplusplus/sender-receiver/issues/319">cplusplus/sender-receiver #319</a>.
-</p>
-<p>
-33.9.12.8 <a href="https://wg21.link/exec.let">[exec.let]</a> para 13 reads:
-
-<blockquote>
-13.
-Let <code class='backtick'>sndr</code> and <code class='backtick'>env</code> be subexpressions, and let <code class='backtick'>Sndr</code> be <code class='backtick'>decltype((sndr))</code>.
-If
-<code><i>sender-for</i>&lt;Sndr, <i>decayed-typeof</i>&lt;<i>let-cpo</i>&gt;&gt;</code>
-is <code>false</code>,
-then the expression <code><i>let-cpo</i>.transform_env(sndr, env)</code>
-is ill-formed.
-Otherwise, it is equal to
-<code><i>JOIN-ENV</i>(<i>let-env</i>(sndr), <i>FWD-ENV</i>(env))</code>.
-</blockquote>
-
-The sender passed to <i><code class='backtick'>let-env</code></i> here should be the <i>child</i> of <code class='backtick'>sndr</code>.
-
-</p>
-
-<p><i>[2025-02-07; Reflector poll]</i></p>
-
-<p>
-Set priority to 1 after reflector poll.
-</p>
-<p>
-"We seem to be missing a guarantee that <code class='backtick'>auto [_,_,child] = sndr;</code> works.
-We guarantee that it can be used in a structured binding, but not that it
-must work with a size of three."
-</p>
-
-<p><i>[Hagenberg 2025-02-11; move to Ready]</i></p>
-
-
-
-
-<p id="res-4205"><b>Proposed resolution:</b></p>
-<p>
-This wording is relative to <a href="https://wg21.link/N5001">N5001</a>.
-</p>
-
-<ol>
-<li>
-Modify 33.9.12.8 <a href="https://wg21.link/exec.let">[exec.let]</a> as indicated:
-<blockquote>
--13-
-Let <code class='backtick'>sndr</code> and <code class='backtick'>env</code> be subexpressions, and let <code class='backtick'>Sndr</code> be <code class='backtick'>decltype((sndr))</code>.
-If
-<code><i>sender-for</i>&lt;Sndr, <i>decayed-typeof</i>&lt;<i>let-cpo</i>&gt;&gt;</code>
-is <code>false</code>,
-then the expression <code><i>let-cpo</i>.transform_env(sndr, env)</code>
-is ill-formed.
-Otherwise, it is equal to
-<del>
-<code><i>JOIN-ENV</i>(<i>let-env</i>(sndr), <i>FWD-ENV</i>(env))</code>.
-</del>
-<pre><code><ins>  auto&amp; [_, _, child] = sndr;
-  return <i>JOIN-ENV</i>(<i>let-env</i>(child), <i>FWD-ENV</i>(env));</ins>
-</code></pre>
-</blockquote>
-</li>
-</ol>
-
-
-
-
-
-
-<hr>
-<h3 id="4208"><a href="#4208">4208</a><sup><a href="https://cplusplus.github.io/LWG/issue4208">(i)</a></sup>. Wording needs to ensure that in <code class='backtick'>connect(sndr, rcvr)</code> that <code class='backtick'>rcvr</code> expression is only evaluated once</h3>
-<p><b>Section:</b> 33.9.10 <a href="https://wg21.link/exec.connect">[exec.connect]</a> <b>Status:</b> <a href="lwg-active.html#Ready">Ready</a>
- <b>Submitter:</b> Eric Niebler <b>Opened:</b> 2025-02-07 <b>Last modified:</b> 2025-02-12</p>
-<p><b>Priority: </b>Not Prioritized
-</p>
-<p><b>View all issues with</b> <a href="lwg-status.html#Ready">Ready</a> status.</p>
-<p><b>Discussion:</b></p>
-<p>
-Imported from <a href="https://github.com/cplusplus/sender-receiver/issues/325">cplusplus/sender-receiver #325</a>.
-</p>
-<p>
-The current wording of <code class='backtick'>connect(sndr, rcvr)</code> defines the <code class='backtick'>new_sndr</code> expression as 
-<code>transform_sender(decltype(<i>get-domain-late</i>(sndr, get_env(rcvr))){}, sndr, get_env(rcvr))</code>.
-<p/>
-It then defines <code class='backtick'>connect(sndr, rcvr)</code> as expression equivalent to <code class='backtick'>new_sndr.connect(rcvr)</code>.
-<p/>
-As currently worded, this requires evaluating the <code class='backtick'>rcvr</code> expression twice. Note that the first
-usage in the <code class='backtick'>new_sndr</code> expression is unevaluated, but the second usage in <code class='backtick'>get_env(rcvr)</code> is evaluated.
-<p/>
-I think we need to add an extra sentence at the end of this section saying "Where the expression 
-<code class='backtick'>rcvr</code> is only evaluated once." or similar.
-</p>
-
-<p><i>[Hagenberg 2025-02-11; move to Ready]</i></p>
-
-
-
-
-<p id="res-4208"><b>Proposed resolution:</b></p>
-<p>
-This wording is relative to <a href="https://wg21.link/N5001">N5001</a>.
-</p>
-
-<ol>
-<li>
-<p>Modify 33.9.10 <a href="https://wg21.link/exec.connect">[exec.connect]</a> as indicated:</p>
-
-<blockquote>
-<p>
--6- The expression <code class='backtick'>connect(sndr, rcvr)</code> is expression-equivalent to:
-</p>
-<ol style="list-style-type: none">
-<li><p>(6.1) &mdash; <code class='backtick'>new_sndr.connect(rcvr)</code> if that expression is well-formed.
-<p/>
-<i>Mandates</i>: The type of the expression above satisfies <code class='backtick'>operation_state</code>.
-</p>
-</li>
-<li><p>(6.2) &mdash; Otherwise, <code><i>connect-awaitable</i>(new_sndr, rcvr)</code>.</p></li>
-</ol>
-<p>
-<ins>except that <code class='backtick'>rcvr</code> is evaluated only once.</ins>
-<p/>
-<i>Mandates</i>: <code>sender&lt;Sndr&gt; &amp;&amp; receiver&lt;Rcvr&gt;</code> is <code>true</code>.
-<p/>
-</p>
-</blockquote>
-</li>
-</ol>
-
-
-
-
-
-
-<hr>
-<h3 id="4209"><a href="#4209">4209</a><sup><a href="https://cplusplus.github.io/LWG/issue4209">(i)</a></sup>. <code>default_domain::transform_env</code> should be returning <code><i>FWD-ENV</i>(env)</code></h3>
-<p><b>Section:</b> 33.9.5 <a href="https://wg21.link/exec.domain.default">[exec.domain.default]</a> <b>Status:</b> <a href="lwg-active.html#Ready">Ready</a>
- <b>Submitter:</b> Eric Niebler <b>Opened:</b> 2025-02-07 <b>Last modified:</b> 2025-02-12</p>
-<p><b>Priority: </b>Not Prioritized
-</p>
-<p><b>View all issues with</b> <a href="lwg-status.html#Ready">Ready</a> status.</p>
-<p><b>Discussion:</b></p>
-<p>
-Imported from <a href="https://github.com/cplusplus/sender-receiver/issues/168">cplusplus/sender-receiver #168</a>.
-</p>
-<p>
-When writing a generic recursive sender transform, you need to ability to unpack an unknown sender 
-<code class='backtick'>S</code> and recursively transform the children.
-<p/>
-For that, it can be useful to know the type of the environment that <code class='backtick'>S</code> will use when connecting its 
-child senders, which is why <code class='backtick'>transform_env</code> exists.
-<p/>
-For an environment <code class='backtick'>E</code> and a sender <code class='backtick'>S</code> with tag <code class='backtick'>T</code> child <code class='backtick'>C</code>, the expression 
-<code class='backtick'>default_domain().transform_env(S, E)</code> should return an environment <code class='backtick'>E2</code> that is identical to the 
-environment of the receiver that <code class='backtick'>S</code> uses to connect <code class='backtick'>C</code>.
-<p/>
-<code class='backtick'>default_domain().transform_env(S, E)</code> will first check whether <code class='backtick'>T().transform_env(S, E)</code> is 
-well-formed. If so, it will return that (e.g. <code class='backtick'>when_all_t</code> has a <code class='backtick'>transform_env</code> that adds a stop token 
-to the environment).
-<p/>
-If <code class='backtick'>T().transform_env(S, E)</code> is not well-formed, what should <code class='backtick'>default_domain::transform_env</code> do? At 
-present, it returns <code class='backtick'>E</code> unmodified.
-<p/>
-But 33.9.12.1 <a href="https://wg21.link/exec.adapt.general">[exec.adapt.general]</a> has this:
-</p>
-<blockquote style="border-left: 3px solid #ccc;padding-left: 15px;">
-<p>
-[unless otherwise specified, when] a parent sender is connected to a receiver <code class='backtick'>rcvr</code>, any receiver used 
-to connect a child sender has an associated environment equal to <code><i>FWD-ENV</i>(get_env(rcvr))</code>.
-</p>
-</blockquote>
-<p>
-So the correct thing for <code class='backtick'>default_domain::transform_env</code> to do is to return <code><i>FWD-ENV</i>(get_env(rcvr))</code>.
-</p>
-
-<p><i>[Hagenberg 2025-02-11; move to Ready]</i></p>
-
-
-
-
-<p id="res-4209"><b>Proposed resolution:</b></p>
-<p>
-This wording is relative to <a href="https://wg21.link/N5001">N5001</a>.
-</p>
-
-<ol>
-<li>
-<p>Modify 33.9.5 <a href="https://wg21.link/exec.domain.default">[exec.domain.default]</a> as indicated:</p>
-
-<blockquote>
-<pre>
-template&lt;sender Sndr, <i>queryable</i> Env&gt;
-  constexpr <i>queryable</i> decltype(auto) transform_env(Sndr&amp;&amp; sndr, Env&amp;&amp; env) noexcept;
-</pre>
-<blockquote>
-<p>
--5- Let <code class='backtick'>e</code> be the expression
-</p>
-<blockquote><pre>
-tag_of_t&lt;Sndr&gt;().transform_env(std::forward&lt;Sndr&gt;(sndr), std::forward&lt;Env&gt;(env))
-</pre></blockquote>
-<p>
-if that expression is well-formed; otherwise, <code><del>static_cast&lt;Env&gt;</del><ins><i>FWD-ENV</i></ins>(std::forward&lt;Env&gt;(env))</code>.
-<p/>
--6- <i>Mandates</i>: <code class='backtick'>noexcept(e)</code> is <code class='backtick'>true</code>.
-<p/>
--7- <i>Returns</i>: <code class='backtick'>e</code>.
-</p>
-</blockquote>
-</blockquote>
-</li>
-</ol>
-
-
-
-
-
-
-<hr>
-<h3 id="4232"><a href="#4232">4232</a><sup><a href="https://cplusplus.github.io/LWG/issue4232">(i)</a></sup>. <code class='backtick'>datapar::resize</code> does not resize</h3>
-<p><b>Section:</b> 29.10.4 <a href="https://wg21.link/simd.traits">[simd.traits]</a> <b>Status:</b> <a href="lwg-active.html#Ready">Tentatively Ready</a>
- <b>Submitter:</b> Tim Song <b>Opened:</b> 2025-03-24 <b>Last modified:</b> 2025-06-12</p>
-<p><b>Priority: </b>Not Prioritized
-</p>
-<p><b>View all issues with</b> <a href="lwg-status.html#Tentatively Ready">Tentatively Ready</a> status.</p>
-<p><b>Discussion:</b></p>
-<p>
-The wording actually requires the size to be left unchanged.
-</p>
-
-<p><i>[2025-06-12; Reflector poll]</i></p>
-
-<p>
-Set status to Tentatively Ready after seven votes in favour during reflector poll.
-</p>
-
-
-
-<p id="res-4232"><b>Proposed resolution:</b></p>
-<p>
-This wording is relative to <a href="https://wg21.link/N5008">N5008</a>.
-</p>
-
-<ol>
-
-<li><p>Modify 29.10.4 <a href="https://wg21.link/simd.traits">[simd.traits]</a> as indicated:</p>
-
-<blockquote>
-<pre>
-template&lt;<i>simd-size-type</i> N, class V&gt; struct resize { using type = <i>see below</i>; };
-</pre>
-<blockquote>
-<p>
-[&hellip;]
-<p/>
--9- If <code class='backtick'>V</code> is a specialization of <code class='backtick'>basic_simd</code>, let <code class='backtick'>Abi1</code> denote an ABI tag such that 
-<code>basic_simd&lt;T, Abi1&gt;::size()</code> equals <code><del>V::size()</del><ins>N</ins></code>. 
-If <code class='backtick'>V</code> is a specialization of <code class='backtick'>basic_simd_mask</code>, let <code class='backtick'>Abi1</code> denote an ABI tag such that 
-<code>basic_simd_mask&lt;sizeof(T), Abi1&gt;::size()</code> equals <code><del>V::size()</del><ins>N</ins></code>.
-</p>
-</blockquote>
-</blockquote>
-</li>
-
-</ol>
-
-
-
-
-
-<hr>
-<h3 id="4233"><a href="#4233">4233</a><sup><a href="https://cplusplus.github.io/LWG/issue4233">(i)</a></sup>. The helper lambda of <code>std::erase</code> for <code>hive</code> should specify return type as
-    <code>bool</code></h3>
-<p><b>Section:</b> 23.3.9.6 <a href="https://wg21.link/hive.erasure">[hive.erasure]</a> <b>Status:</b> <a href="lwg-active.html#Ready">Tentatively Ready</a>
- <b>Submitter:</b> Hewill Kang <b>Opened:</b> 2025-03-24 <b>Last modified:</b> 2025-06-12</p>
-<p><b>Priority: </b>Not Prioritized
-</p>
-<p><b>View all issues with</b> <a href="lwg-status.html#Tentatively Ready">Tentatively Ready</a> status.</p>
-<p><b>Discussion:</b></p>
-<p>
-This is a follow up to LWG <a href="lwg-defects.html#4135" title="The helper lambda of std::erase for list should specify return type as
-  bool (Status: WP)">4135</a><sup><a href="https://cplusplus.github.io/LWG/issue4135" title="Latest snapshot">(i)</a></sup>, which incidentally adds a default template 
-parameter for <code>U</code> to be consistent with other <code>erase</code> functions, 
-which is editorial since the declaration already has it.
-</p>
-
-<p><i>[2025-06-12; Reflector poll]</i></p>
-
-<p>
-Set status to Tentatively Ready after seven votes in favour during reflector poll.
-</p>
-
-
-
-<p id="res-4233"><b>Proposed resolution:</b></p>
-<p>
-This wording is relative to <a href="https://wg21.link/N5008">N5008</a>.
-</p>
-
-<ol>
-
-<li><p>Modify 23.3.9.6 <a href="https://wg21.link/hive.erasure">[hive.erasure]</a> as indicated:</p>
-
-<blockquote>
-<pre>
-template&lt;class T, class Allocator, class U <ins>= T</ins>&gt;
-  typename hive&lt;T, Allocator&gt;::size_type
-    erase(hive&lt;T, Allocator&gt;&amp; c, const U&amp; value);
-</pre>
-<blockquote>
-<p>
--1- <i>Effects</i>: Equivalent to:
-</p>
-<blockquote><pre>
-return erase_if(c, [&amp;](<ins>const</ins> auto&amp; elem) <ins>-&gt; bool</ins> { return elem == value; });
-</pre></blockquote>
-</blockquote>
-</blockquote>
-</li>
-
-</ol>
-
-
-
-
-
-<hr>
-<h3 id="4234"><a href="#4234">4234</a><sup><a href="https://cplusplus.github.io/LWG/issue4234">(i)</a></sup>. Including <code>&lt;hive&gt;</code> doesn't provide <code>std::begin/end</code></h3>
-<p><b>Section:</b> 24.7 <a href="https://wg21.link/iterator.range">[iterator.range]</a> <b>Status:</b> <a href="lwg-active.html#Ready">Tentatively Ready</a>
- <b>Submitter:</b> Hewill Kang <b>Opened:</b> 2025-03-25 <b>Last modified:</b> 2025-06-12</p>
-<p><b>Priority: </b>Not Prioritized
-</p>
-<p><b>View other</b> <a href="lwg-index-open.html#iterator.range">active issues</a> in [iterator.range].</p>
-<p><b>View all other</b> <a href="lwg-index.html#iterator.range">issues</a> in [iterator.range].</p>
-<p><b>View all issues with</b> <a href="lwg-status.html#Tentatively Ready">Tentatively Ready</a> status.</p>
-<p><b>Discussion:</b></p>
-<p>
-24.7 <a href="https://wg21.link/iterator.range">[iterator.range]</a> should add <code>&lt;hive&gt;</code> to the list as the latter provides
-a series of range access member functions such as <code>begin/end</code>.
-</p>
-
-<p><i>[2025-06-12; Reflector poll]</i></p>
-
-<p>
-Set status to Tentatively Ready after six votes in favour during reflector poll.
-</p>
-
-
-
-<p id="res-4234"><b>Proposed resolution:</b></p>
-<p>
-This wording is relative to <a href="https://wg21.link/N5008">N5008</a>.
-</p>
-
-<ol>
-
-<li><p>Modify 24.7 <a href="https://wg21.link/iterator.range">[iterator.range]</a> as indicated:</p>
-
-<blockquote>
-<p>
--1- In addition to being available via inclusion of the <code>&lt;iterator&gt;</code> header, the function
-templates in 24.7 <a href="https://wg21.link/iterator.range">[iterator.range]</a> are available when any of the following headers are included: 
-<code>&lt;array&gt;</code>,
-<code>&lt;deque&gt;</code>, <code>&lt;flat_map&gt;</code>, <code>&lt;flat_set&gt;</code>,
-<code>&lt;forward_list&gt;</code>,
-<ins><code>&lt;hive&gt;</code>,</ins>
-<code>&lt;inplace_vector&gt;</code>, <code>&lt;list&gt;</code>, <code>&lt;map&gt;</code>,
-<code>&lt;regex&gt;</code>, <code>&lt;set&gt;</code>, <code>&lt;span&gt;</code>, <code>&lt;string&gt;</code>,
-<code>&lt;string_view&gt;</code>,
-<code>&lt;unordered_map&gt;</code>, <code>&lt;unordered_set&gt;</code>, and <code>&lt;vector&gt;</code>.
-</p>
-</blockquote>
-</li>
-
-</ol>
-
-
-
-
-
-<hr>
-<h3 id="4236"><a href="#4236">4236</a><sup><a href="https://cplusplus.github.io/LWG/issue4236">(i)</a></sup>. <code>chunk_view::<i>outer-iterator</i>::value_type</code> should provide <code>reserve_hint</code></h3>
-<p><b>Section:</b> 25.7.29.4 <a href="https://wg21.link/range.chunk.outer.value">[range.chunk.outer.value]</a> <b>Status:</b> <a href="lwg-active.html#Ready">Tentatively Ready</a>
- <b>Submitter:</b> Hewill Kang <b>Opened:</b> 2025-03-26 <b>Last modified:</b> 2025-06-12</p>
-<p><b>Priority: </b>Not Prioritized
-</p>
-<p><b>View other</b> <a href="lwg-index-open.html#range.chunk.outer.value">active issues</a> in [range.chunk.outer.value].</p>
-<p><b>View all other</b> <a href="lwg-index.html#range.chunk.outer.value">issues</a> in [range.chunk.outer.value].</p>
-<p><b>View all issues with</b> <a href="lwg-status.html#Tentatively Ready">Tentatively Ready</a> status.</p>
-<p><b>Discussion:</b></p>
-<p>
-Consider:
-</p>
-<blockquote><pre>
-views::istream&lt;int&gt;(is) | views::chunk(N) | ranges::to&lt;std::list&lt;std::vector&lt;int&gt;&gt;&gt;();
-</pre></blockquote>
-<p>
-When the stream is large enough, each chunk will be of size <code>N</code> in most cases, except it is the
-last chunk.
-</p>
-<p>
-In this case, there is no reason not to provide a <code>reserve_hint</code> as this can be easily done by just
-return <code><i>remainder_</i></code>. Otherwise, when <code>N</code> is large, each vector will be reallocated
-multiple times unnecessarily.
-</p>
-<p>
-This is also consistent with the <code>forward_range</code> version, since its value type is
-<code>views::take(subrange(<i>current_</i>, <i>end_</i>), <i>n_</i>)</code>, which always has a
-<code>reserve_hint</code> as <code>take_view</code> unconditionally provides it.
-</p>
-
-<p><i>[2025-06-12; Reflector poll]</i></p>
-
-<p>
-Set status to Tentatively Ready after five votes in favour during reflector poll.
-</p>
-
-
-
-<p id="res-4236"><b>Proposed resolution:</b></p>
-<p>
-This wording is relative to <a href="https://wg21.link/N5008">N5008</a>.
-</p>
-
-<ol>
-
-<li><p>Modify 25.7.29.4 <a href="https://wg21.link/range.chunk.outer.value">[range.chunk.outer.value]</a> as indicated:</p>
-
-<blockquote>
-<blockquote>
-<pre>
-namespace std::ranges {
-  template&lt;view V&gt;
-    requires input_range&lt;V&gt;
-  struct chunk_view&lt;V&gt;::<i>outer-iterator</i>::value_type : view_interface&lt;value_type&gt; {
-    [&hellip;]
-    constexpr auto size() const
-      requires sized_sentinel_for&lt;sentinel_t&lt;V&gt;, iterator_t&lt;V&gt;&gt;;
-
-    <ins>constexpr auto reserve_hint() const noexcept;</ins>
-  };
-}  
-</pre>
-</blockquote>
-[&hellip;]
-<pre>
-constexpr auto size() const
-  requires sized_sentinel_for&lt;sentinel_t&lt;V&gt;, iterator_t&lt;V&gt;&gt;;
-</pre>
-<blockquote>
-<p>
--4- <i>Effects</i>: Equivalent to:
-</p>
-<blockquote><pre>
-return <i>to-unsigned-like</i>(ranges::min(<i>parent_</i>-&gt;remainder_,
-                                    ranges::end(<i>parent_</i>-&gt;<i>base_</i>) - *<i>parent_</i>-&gt;<i>current_</i>));
-</pre></blockquote>
-</blockquote>
-<pre>
-<ins>constexpr auto reserve_hint() const noexcept;</ins>
-</pre>
-<blockquote>
-<p>
-<ins> -?- <i>Effects</i>: Equivalent to:</ins>
-</p>
-<blockquote><pre>
-<ins>return <i>to-unsigned-like</i>(<i>parent_</i>-><i>remainder_</i>);</ins>
-</pre></blockquote>
-</blockquote>
-</blockquote>
-
-</li>
-
-</ol>
-
-
-
-
-
-<hr>
-<h3 id="4242"><a href="#4242">4242</a><sup><a href="https://cplusplus.github.io/LWG/issue4242">(i)</a></sup>. <code class='backtick'>ranges::distance</code> does not work with volatile iterators</h3>
-<p><b>Section:</b> 24.4.4.3 <a href="https://wg21.link/range.iter.op.distance">[range.iter.op.distance]</a> <b>Status:</b> <a href="lwg-active.html#Ready">Tentatively Ready</a>
- <b>Submitter:</b> Hewill Kang <b>Opened:</b> 2025-04-12 <b>Last modified:</b> 2025-06-12</p>
-<p><b>Priority: </b>Not Prioritized
-</p>
-<p><b>View all other</b> <a href="lwg-index.html#range.iter.op.distance">issues</a> in [range.iter.op.distance].</p>
-<p><b>View all issues with</b> <a href="lwg-status.html#Tentatively Ready">Tentatively Ready</a> status.</p>
-<p><b>Discussion:</b></p>
-<p>
-After LWG <a href="lwg-defects.html#3664" title="LWG 3392 broke std::ranges::distance(a, a+3) (Status: C++23)">3664</a><sup><a href="https://cplusplus.github.io/LWG/issue3664" title="Latest snapshot">(i)</a></sup>, <code class='backtick'>ranges::distance</code> computes the distance between <code class='backtick'>last</code> and <code class='backtick'>first</code>
-by returning <code>last - static_cast&lt;const decay_t&lt;I&gt;&amp;&gt;(first)</code> when the 
-two are subtractable. However, this will cause a hard error if <code>first</code> is volatile-qualified
-(<a href="https://godbolt.org/z/Pz1cGxKEW">demo</a>):
+Currently, iterator adaptors in <code>&lt;iterator&gt;</code> that wrap a single iterator
+such as <code class='backtick'>reverse_iterator</code>, <code class='backtick'>move_iterator</code>, and <code class='backtick'>counted_iterator</code> all provide a
+public <code class='backtick'>iterator_type</code> member for users to access the underlying iterator type, except for
+<code class='backtick'>basic_const_iterator</code> (<a href="https://godbolt.org/z/4hY4qhnPG">demo</a>):
 </p>
 <blockquote><pre>
 #include &lt;iterator&gt;
 
-int main() {
-  int arr[] = {1, 2, 3};
-  int* volatile ptr = arr;
-  // return std::distance(ptr, arr + 3);      // this is ok
-  return std::ranges::distance(ptr, arr + 3); // <span  style="color:#C80000;font-weight:bold">hard error</span>
-}
+using I  = int*;
+using RI = std::reverse_iterator&lt;I&gt;;
+using MI = std::move_iterator&lt;I&gt;;
+using CI = std::counted_iterator&lt;I&gt;;
+using BI = std::basic_const_iterator&lt;I&gt;;
+
+static_assert(std::same_as&lt;RI::iterator_type, I&gt;);
+static_assert(std::same_as&lt;MI::iterator_type, I&gt;);
+static_assert(std::same_as&lt;CI::iterator_type, I&gt;);
+static_assert(std::same_as&lt;BI::iterator_type, I&gt;); // <span  style="color:#C80000;font-weight:bold">error</span>
 </pre></blockquote>
 <p>
-The resolution changes the <i>Effects</i> of LWG <a href="lwg-defects.html#3664" title="LWG 3392 broke std::ranges::distance(a, a+3) (Status: C++23)">3664</a><sup><a href="https://cplusplus.github.io/LWG/issue3664" title="Latest snapshot">(i)</a></sup> from "cute" to "noncute".
-</p>
-
-<p><i>[2025-06-12; Reflector poll]</i></p>
-
-<p>
-Set status to Tentatively Ready after eight votes in favour during reflector poll.
-</p>
-<p>"Would prefer <code class='backtick'>auto(first)</code> but the current wording is correct."</p>
-
-
-
-<p id="res-4242"><b>Proposed resolution:</b></p>
-<p>
-This wording is relative to <a href="https://wg21.link/N5008">N5008</a>.
-</p>
-
-<ol>
-
-<li><p>Modify 24.4.4.3 <a href="https://wg21.link/range.iter.op.distance">[range.iter.op.distance]</a> as indicated:</p>
-
-<blockquote>
-<pre>
-template&lt;class I, sized_sentinel_for&lt;decay_t&lt;I&gt;&gt; S&gt;
-  constexpr iter_difference_t&lt;decay_t&lt;I&gt;&gt; ranges::distance(I&amp;&amp; first, S last);
-</pre>
-<blockquote>
-<p>
--3- <i>Effects</i>: Equivalent to:
-</p>
-<pre>
-<ins>if constexpr (!is_array_v&lt;remove_reference_t&lt;I&gt;&gt;)
-  return last - first;
-else</ins>
-  return last - static_cast&lt;<del>const</del> decay_t&lt;I&gt;<del>&amp;</del>&gt;(first);
-</pre>
-</blockquote>
-</blockquote>
-
-</li>
-
-</ol>
-
-
-
-
-
-<hr>
-<h3 id="4245"><a href="#4245">4245</a><sup><a href="https://cplusplus.github.io/LWG/issue4245">(i)</a></sup>. Operators that interact with <code class='backtick'>counted_iterator</code> and <code class='backtick'>default_sentinel_t</code> should be <code class='backtick'>noexcept</code></h3>
-<p><b>Section:</b> 24.5.7.1 <a href="https://wg21.link/counted.iterator">[counted.iterator]</a>, 24.5.7.5 <a href="https://wg21.link/counted.iter.nav">[counted.iter.nav]</a>, 24.5.7.6 <a href="https://wg21.link/counted.iter.cmp">[counted.iter.cmp]</a> <b>Status:</b> <a href="lwg-active.html#Ready">Tentatively Ready</a>
- <b>Submitter:</b> Hewill Kang <b>Opened:</b> 2025-04-18 <b>Last modified:</b> 2025-06-12</p>
-<p><b>Priority: </b>Not Prioritized
-</p>
-<p><b>View all other</b> <a href="lwg-index.html#counted.iterator">issues</a> in [counted.iterator].</p>
-<p><b>View all issues with</b> <a href="lwg-status.html#Tentatively Ready">Tentatively Ready</a> status.</p>
-<p><b>Discussion:</b></p>
-<p>
-<code class='backtick'>counted_iterator</code> can be compared or subtracted from <code class='backtick'>default_sentinel_t</code>,
-which only involves simple integer arithmetic and does not have any <i>Preconditions</i>.
-<p/>
-In this case, it is reasonable to declare them as <code>noexcept</code>.
+It seems reasonable to add one for <code class='backtick'>basic_const_iterator</code> for consistency.
 </p>
 
 <p><i>[2025-06-12; Reflector poll]</i></p>
@@ -1595,79 +117,37 @@ Set status to Tentatively Ready after seven votes in favour during reflector pol
 
 
 
-<p id="res-4245"><b>Proposed resolution:</b></p>
+<p id="res-4253"><b>Proposed resolution:</b></p>
 <p>
 This wording is relative to <a href="https://wg21.link/N5008">N5008</a>.
 </p>
-
 <ol>
 
-<li><p>Modify 24.5.7.1 <a href="https://wg21.link/counted.iterator">[counted.iterator]</a> as indicated:</p>
+<li><p>Modify 24.5.3.3 <a href="https://wg21.link/const.iterators.iterator">[const.iterators.iterator]</a> as indicated:</p>
 
 <blockquote>
 <pre>
 namespace std {
-  template&lt;input_or_output_iterator I&gt;
-  class counted_iterator {
-  public:
-    [&hellip;]
-    friend constexpr iter_difference_t&lt;I&gt; operator-(
-      const counted_iterator&amp; x, default_sentinel_t) <ins>noexcept</ins>;
-    friend constexpr iter_difference_t&lt;I&gt; operator-(
-      default_sentinel_t, const counted_iterator&amp; y) <ins>noexcept</ins>;
-    [&hellip;]
-    friend constexpr bool operator==(
-      const counted_iterator&amp; x, default_sentinel_t) <ins>noexcept</ins>;
-    [&hellip;]
-  };
   [&hellip;]
+  template&lt;input_iterator Iterator&gt;
+  class basic_const_iterator {
+    Iterator <i>current_</i> = Iterator();                             // <i>exposition only</i>
+    using <i>reference</i> = iter_const_reference_t&lt;Iterator&gt;;         // <i>exposition only</i>
+    using <i>rvalue-reference</i> =                                    // <i>exposition only</i>
+      <i>iter-const-rvalue-reference-t</i>&lt;Iterator&gt;;
+          
+    public:
+      <ins>using iterator_type = Iterator;</ins>
+      using iterator_concept = <i>see below</i>;
+      using iterator_category = <i>see below</i>;  // <i>not always present</i>
+      using value_type = iter_value_t&lt;Iterator&gt;;
+      using difference_type = iter_difference_t&lt;Iterator&gt;;
+      [&hellip;]
+  };
 }
 </pre>
 </blockquote>
-
 </li>
-
-<li><p>Modify 24.5.7.5 <a href="https://wg21.link/counted.iter.nav">[counted.iter.nav]</a> as indicated:</p>
-
-<blockquote>
-<pre>
-friend constexpr iter_difference_t&lt;I&gt; operator-(
-  const counted_iterator&amp; x, default_sentinel_t) <ins>noexcept</ins>;
-</pre>
-<blockquote>
-<p>
--15- <i>Effects</i>: Equivalent to: <code>return -x.length;</code>
-</p>
-</blockquote>
-<pre>
-friend constexpr iter_difference_t&lt;I&gt; operator-(
-  default_sentinel_t, const counted_iterator&amp; y) <ins>noexcept</ins>;
-</pre>
-<blockquote>
-<p>
--16- <i>Effects</i>: Equivalent to: <code>return y.length;</code>
-</p>
-</blockquote>
-</blockquote>
-
-</li>
-
-<li><p>Modify 24.5.7.6 <a href="https://wg21.link/counted.iter.cmp">[counted.iter.cmp]</a> as indicated:</p>
-
-<blockquote>
-<pre>
-friend constexpr bool operator==(
-  const counted_iterator&amp; x, default_sentinel_t) <ins>noexcept</ins>;
-</pre>
-<blockquote>
-<p>
--3- <i>Effects</i>: Equivalent to: <code>return x.length == 0;</code>
-</p>
-</blockquote>
-</blockquote>
-
-</li>
-
 </ol>
 
 
@@ -1675,117 +155,110 @@ friend constexpr bool operator==(
 
 
 <hr>
-<h3 id="4247"><a href="#4247">4247</a><sup><a href="https://cplusplus.github.io/LWG/issue4247">(i)</a></sup>. Header <code>&lt;stdbit.h&gt;</code> is not yet freestanding</h3>
-<p><b>Section:</b> 22.12 <a href="https://wg21.link/stdbit.h.syn">[stdbit.h.syn]</a> <b>Status:</b> <a href="lwg-active.html#Ready">Tentatively Ready</a>
- <b>Submitter:</b> Jiang An <b>Opened:</b> 2025-04-24 <b>Last modified:</b> 2025-06-12</p>
+<h3 id="4266"><a href="#4266">4266</a><sup><a href="https://cplusplus.github.io/LWG/issue4266">(i)</a></sup>. <code class='backtick'>layout_stride::mapping</code> should treat empty mappings as exhaustive</h3>
+<p><b>Section:</b> 23.7.3.4.7 <a href="https://wg21.link/mdspan.layout.stride">[mdspan.layout.stride]</a> <b>Status:</b> <a href="lwg-active.html#Ready">Tentatively Ready</a>
+ <b>Submitter:</b> Tomasz Kamiński <b>Opened:</b> 2025-05-22 <b>Last modified:</b> 2025-06-12</p>
 <p><b>Priority: </b>Not Prioritized
 </p>
+<p><b>View all other</b> <a href="lwg-index.html#mdspan.layout.stride">issues</a> in [mdspan.layout.stride].</p>
 <p><b>View all issues with</b> <a href="lwg-status.html#Tentatively Ready">Tentatively Ready</a> status.</p>
 <p><b>Discussion:</b></p>
 <p>
-Per C23/WG14 <a href="https://www.open-std.org/jtc1/sc22/wg14/www/docs/n3220.pdf#page=22">N3220</a> 4 p7, <code>&lt;stdbit.h&gt;</code> 
-is freestanding in C23, but C++ hasn't required it for a freestanding implementation. 
-LWG <a href="lwg-active.html#4049" title="C &lt;foo.h&gt; headers not in freestanding (Status: New)">4049</a><sup><a href="https://cplusplus.github.io/LWG/issue4049" title="Latest snapshot">(i)</a></sup> is related but doesn't cover this, because there's no <code>&lt;cstdbit&gt;</code> standard header.
+Mapping over an empty multidimensional index space is always exhaustive according to the 
+corresponding definitions from 23.7.3.4.2 <a href="https://wg21.link/mdspan.layout.reqmts">[mdspan.layout.reqmts]</a> p16.
+<p/>
+However, the current specification of <code class='backtick'>layout_stride::mapping</code> does not consider whether 
+some of the empty multidimensional index spaces are unique or exhaustive. For illustration, 
+the mapping with the following configuration is not considered exhaustive according to the 
+current specification of 23.7.3.4.7.4 <a href="https://wg21.link/mdspan.layout.stride.obs">[mdspan.layout.stride.obs]</a> bullet 5.2:
+</p>
+<blockquote><pre>
+extents: 2, 2, 0
+strides: 2, 6, 20
+</pre></blockquote>
+<p>
+This prevents the implementation from implementing <code class='backtick'>sm.is_exhaustive()</code> as 
+<code>sm.<i>fwd-prod-of-extents</i>(sm::extents_type::rank()) == sm.required_span_size()</code>. 
+For all mappings with size greater than zero, such an expression provides an answer consistent 
+with the standard. However, it always returns <code class='backtick'>true</code> for an empty mapping, such as shown 
+in the example.
+<p/>
+We should make such implementation conforming, and require <code class='backtick'>is_exhaustive()</code> to return 
+<code class='backtick'>true</code> for empty mappings.
+<p/>
+For consistency, we could update <code class='backtick'>is_always_exhaustive()</code> to recognize mapping with 
+<code class='backtick'>rank() == 0</code>, and one for which at least one of the static extents is equal to zero 
+(i.e., they always represent a multidimensional index space).
 </p>
 
 <p><i>[2025-06-12; Reflector poll]</i></p>
 
 <p>
-Set status to Tentatively Ready after six votes in favour during reflector poll.
+Set status to Tentatively Ready after five votes in favour during reflector poll.
 </p>
 
 
 
-<p id="res-4247"><b>Proposed resolution:</b></p>
+<p id="res-4266"><b>Proposed resolution:</b></p>
 <p>
 This wording is relative to <a href="https://wg21.link/N5008">N5008</a>.
 </p>
-
 <ol>
 
-<li><p>Modify Table 27 [tab:headers.cpp.fs] as indicated:</p>
-
-<blockquote>
-<table border="1">
-<caption>Table 27: C++ headers for freestanding implementations [tab:headers.cpp.fs]</caption>
-<tr align="center">
-<th></th>
-<th>Subclause</th>
-<th>Header</th>
-</tr> 
-
-<tr>
-<td colspan="3" align="center">
-<code>[&hellip;]</code>
-</td>
-</tr>
-
-<tr>
-<td>
-22.11 <a href="https://wg21.link/bit">[bit]</a>
-</td>
-<td>
-Bit manipulation
-</td>
-<td>
-<code>&lt;bit&gt;</code>
-</td>
-</tr>
-
-<tr>
-<td>
-<ins>22.12 <a href="https://wg21.link/stdbit.h.syn">[stdbit.h.syn]</a></ins>
-</td>
-<td>
-<ins>C-compatible bit manipulation</ins>
-</td>
-<td>
-<ins><code>&lt;stdbit.h&gt;</code></ins>
-</td>
-</tr>
-
-<tr>
-<td>
-23.3.3 <a href="https://wg21.link/array">[array]</a>
-</td>
-<td>
-Class template <code class='backtick'>array</code>
-</td>
-<td>
-<code>&lt;array&gt;</code>
-</td>
-</tr>
-
-<tr>
-<td colspan="3" align="center">
-<code>[&hellip;]</code>
-</td>
-</tr>
-
-</table>
-
-</blockquote>
-
-</li>
-
-<li><p>Modify 22.12 <a href="https://wg21.link/stdbit.h.syn">[stdbit.h.syn]</a>, header <code>&lt;stdbit.h&gt;</code> synopsis, as indicated:</p>
+<li><p>Modify 23.7.3.4.7.1 <a href="https://wg21.link/mdspan.layout.stride.overview">[mdspan.layout.stride.overview]</a> as indicated:</p>
 
 <blockquote>
 <pre>
-<ins><i>// all freestanding</i></ins>
-#define __STDC_VERSION_STDBIT_H__ 202311L
-
-#define __STDC_ENDIAN_BIG__    <i>see below</i>
-#define __STDC_ENDIAN_LITTLE__ <i>see below</i>
-#define __STDC_ENDIAN_NATIVE__ <i>see below</i>
-
-[&hellip;]
+namespace std {
+  template&lt;class Extents&gt;
+  class layout_stride::mapping {
+    [&hellip;]
+    static constexpr bool is_always_unique() noexcept { return true; }
+    static constexpr bool is_always_exhaustive() noexcept<ins>;</ins> <del>{ return false; }</del>
+    static constexpr bool is_always_strided() noexcept { return true; }
+    [&hellip;]
+  };
+}
 </pre>
 </blockquote>
 
 </li>
 
+<li><p>Modify 23.7.3.4.7.4 <a href="https://wg21.link/mdspan.layout.stride.obs">[mdspan.layout.stride.obs]</a> as indicated:</p>
+
+<blockquote>
+<p>
+[&hellip;]
+</p>
+<pre>
+<ins>static constexpr bool is_always_exhaustive() noexcept;</ins>
+</pre>
+<blockquote>
+<p>
+<ins>-?- <i>Returns</i>: <code class='backtick'>true</code> if <code><i>rank_</i></code> is <code class='backtick'>0</code> or if there is a rank index 
+<code class='backtick'>r</code> of <code class='backtick'>extents()</code> such that <code class='backtick'>extents_type::static_extent(r)</code> is <code class='backtick'>0</code>, otherwise <code class='backtick'>false</code>.</ins>
+</p>
+</blockquote>
+<pre>
+constexpr bool is_exhaustive() const noexcept;
+</pre>
+<blockquote>
+<p>
+-5- <i>Returns</i>:
+</p>
+<ol style="list-style-type: none">
+<li><p>(5.1) &mdash; <code class='backtick'>true</code> if <code><i>rank_</i></code> <ins>or the size of the multidimensional 
+index space <code class='backtick'>m.extents()</code></ins> is <code class='backtick'>0</code>.</p></li>
+<li><p>(5.2) &mdash; [&hellip;]</p></li>
+<li><p>(5.3) &mdash; [&hellip;]</p></li>
 </ol>
+</blockquote>
+</blockquote>
+
+</li>
+
+</ol>
+
 
 
 
