@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <title>Issue 4246: Redundant constraint in range_formatter::format</title>
 <meta property="og:title" content="Issue 4246: Redundant constraint in range_formatter::format">
-<meta property="og:description" content="C++ library issue. Status: New">
+<meta property="og:description" content="C++ library issue. Status: Tentatively NAD">
 <meta property="og:url" content="https://cplusplus.github.io/LWG/issue4246.html">
 <meta property="og:type" content="website">
 <meta property="og:image" content="http://cplusplus.github.io/LWG/images/cpp_logo.png">
@@ -61,14 +61,14 @@
 </head>
 <body>
 <hr>
-<p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#New">New</a> status.</em></p>
+<p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#NAD">Tentatively NAD</a> status.</em></p>
 <h3 id="4246"><a href="lwg-active.html#4246">4246</a>. Redundant constraint in <code class='backtick'>range_formatter::format</code></h3>
-<p><b>Section:</b> 28.5.7.2 <a href="https://wg21.link/format.range.formatter">[format.range.formatter]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Hewill Kang <b>Opened:</b> 2025-04-18 <b>Last modified:</b> 2025-04-21</p>
+<p><b>Section:</b> 28.5.7.2 <a href="https://wg21.link/format.range.formatter">[format.range.formatter]</a> <b>Status:</b> <a href="lwg-active.html#NAD">Tentatively NAD</a>
+ <b>Submitter:</b> Hewill Kang <b>Opened:</b> 2025-04-18 <b>Last modified:</b> 2025-06-12</p>
 <p><b>Priority: </b>Not Prioritized
 </p>
 <p><b>View all other</b> <a href="lwg-index.html#format.range.formatter">issues</a> in [format.range.formatter].</p>
-<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#Tentatively NAD">Tentatively NAD</a> status.</p>
 <p><b>Discussion:</b></p>
 <p>
 Currently, the signature of <code class='backtick'>range_formatter::format</code> is as follows:
@@ -91,6 +91,15 @@ already requires that <code class='backtick'>T</code> must be <code class='backt
 <p>
 There is no need to perform a redundant check here.
 </p>
+
+<p><i>[2025-06-12; Reflector poll]</i></p>
+
+<p>
+Set status to Tentatively NAD. This is not redundant, it might check that
+<code class='backtick'>const T</code> is formattable, which is not the same as checking that
+<code class='backtick'>T</code> is formattable.
+</p>
+
 
 
 <p id="res-4246"><b>Proposed resolution:</b></p>

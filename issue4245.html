@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <title>Issue 4245: Operators that interact with counted_iterator and default_sentinel_t should be noexcept</title>
 <meta property="og:title" content="Issue 4245: Operators that interact with counted_iterator and default_sentinel_t should be noexcept">
-<meta property="og:description" content="C++ library issue. Status: New">
+<meta property="og:description" content="C++ library issue. Status: Tentatively Ready">
 <meta property="og:url" content="https://cplusplus.github.io/LWG/issue4245.html">
 <meta property="og:type" content="website">
 <meta property="og:image" content="http://cplusplus.github.io/LWG/images/cpp_logo.png">
@@ -61,14 +61,14 @@
 </head>
 <body>
 <hr>
-<p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#New">New</a> status.</em></p>
+<p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#Ready">Tentatively Ready</a> status.</em></p>
 <h3 id="4245"><a href="lwg-active.html#4245">4245</a>. Operators that interact with <code class='backtick'>counted_iterator</code> and <code class='backtick'>default_sentinel_t</code> should be <code class='backtick'>noexcept</code></h3>
-<p><b>Section:</b> 24.5.7.1 <a href="https://wg21.link/counted.iterator">[counted.iterator]</a>, 24.5.7.5 <a href="https://wg21.link/counted.iter.nav">[counted.iter.nav]</a>, 24.5.7.6 <a href="https://wg21.link/counted.iter.cmp">[counted.iter.cmp]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Hewill Kang <b>Opened:</b> 2025-04-18 <b>Last modified:</b> 2025-04-21</p>
+<p><b>Section:</b> 24.5.7.1 <a href="https://wg21.link/counted.iterator">[counted.iterator]</a>, 24.5.7.5 <a href="https://wg21.link/counted.iter.nav">[counted.iter.nav]</a>, 24.5.7.6 <a href="https://wg21.link/counted.iter.cmp">[counted.iter.cmp]</a> <b>Status:</b> <a href="lwg-active.html#Ready">Tentatively Ready</a>
+ <b>Submitter:</b> Hewill Kang <b>Opened:</b> 2025-04-18 <b>Last modified:</b> 2025-06-12</p>
 <p><b>Priority: </b>Not Prioritized
 </p>
 <p><b>View all other</b> <a href="lwg-index.html#counted.iterator">issues</a> in [counted.iterator].</p>
-<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#Tentatively Ready">Tentatively Ready</a> status.</p>
 <p><b>Discussion:</b></p>
 <p>
 <code class='backtick'>counted_iterator</code> can be compared or subtracted from <code class='backtick'>default_sentinel_t</code>,
@@ -76,6 +76,13 @@ which only involves simple integer arithmetic and does not have any <i>Precondit
 <p/>
 In this case, it is reasonable to declare them as <code>noexcept</code>.
 </p>
+
+<p><i>[2025-06-12; Reflector poll]</i></p>
+
+<p>
+Set status to Tentatively Ready after seven votes in favour during reflector poll.
+</p>
+
 
 
 <p id="res-4245"><b>Proposed resolution:</b></p>

@@ -66,7 +66,7 @@
 <p>This document is the Index by Section for the <a href="lwg-active.html">Library Active Issues List</a>.</p>
 <h2>Index by Section (non-Ready active issues only)</h2>
 <p><a href="lwg-index.html">(view all issues)</a></p>
-<p>Revised 2025-06-12 at 20:47:51 UTC
+<p>Revised 2025-06-12 at 20:56:13 UTC
 </p><h2 id="Section_3">Section 3 (2 issues)</h2>
 <p><a href="lwg-index.html#Section_3">(view all issues)</a></p>
 <table class="issues-index">
@@ -1194,7 +1194,7 @@ passed to allocator <code>construct</code> and <code>destroy</code></td>
 <td>20.4.1.5 [indirect.asgn]<a id="indirect.asgn"></a></td>
 <td>Move assignment for <code class='backtick'>indirect</code> unnecessarily requires copy construction</td>
 <td>Yes</td>
-<td></td>
+<td>1</td>
 <td></td>
 </tr>
 <tr>
@@ -1957,8 +1957,8 @@ the evaluation of type traits</td>
 <td></td>
 </tr>
 <tr>
-<td id="4247"><a href="lwg-active.html#4247" title="Header &lt;stdbit.h&gt; is not yet freestanding (Status: New)">4247</a><sup><a href="https://cplusplus.github.io/LWG/issue4247">(i)</a></sup></td>
-<td><a href="lwg-active.html#New">New</a></td>
+<td id="4247"><a href="lwg-active.html#4247" title="Header &lt;stdbit.h&gt; is not yet freestanding (Status: Tentatively Ready)">4247</a><sup><a href="https://cplusplus.github.io/LWG/issue4247">(i)</a></sup></td>
+<td><a href="lwg-active.html#Ready">Tentatively Ready</a></td>
 <td>22.12 [stdbit.h.syn]<a id="stdbit.h.syn"></a></td>
 <td>Header <code>&lt;stdbit.h&gt;</code> is not yet freestanding</td>
 <td>Yes</td>
@@ -2299,8 +2299,8 @@ arguments when no insertion happens</td>
 </tr>
 <tr>
 <td id="4233"><a href="lwg-active.html#4233" title="The helper lambda of std::erase for hive should specify return type as
-    bool (Status: New)">4233</a><sup><a href="https://cplusplus.github.io/LWG/issue4233">(i)</a></sup></td>
-<td><a href="lwg-active.html#New">New</a></td>
+    bool (Status: Tentatively Ready)">4233</a><sup><a href="https://cplusplus.github.io/LWG/issue4233">(i)</a></sup></td>
+<td><a href="lwg-active.html#Ready">Tentatively Ready</a></td>
 <td>23.3.9.6 [hive.erasure]<a id="hive.erasure"></a></td>
 <td>The helper lambda of <code>std::erase</code> for <code>hive</code> should specify return type as
     <code>bool</code></td>
@@ -2532,7 +2532,7 @@ should conditionally require <i>Cpp17CopyInsertable</i> in their preconditions</
 <td>23.7.2.3 [span.objectrep]<a id="span.objectrep"></a></td>
 <td><code class='backtick'>as_bytes</code>/<code class='backtick'>as_writable_bytes</code> is broken with <code>span&lt;volatile T&gt;</code></td>
 <td>Yes</td>
-<td></td>
+<td>4</td>
 <td></td>
 </tr>
 <tr>
@@ -2568,7 +2568,7 @@ should conditionally require <i>Cpp17CopyInsertable</i> in their preconditions</
 <td>23.7.3.4 [mdspan.layout]<a id="mdspan.layout"></a></td>
 <td>For <code class='backtick'>rank == 0</code>, <code class='backtick'>layout_stride</code> is atypically convertible</td>
 <td>Yes</td>
-<td></td>
+<td>2</td>
 <td></td>
 </tr>
 <tr>
@@ -2794,8 +2794,8 @@ complexity for algorithms that are in fact &#x1d4aa;(n)</td>
 <td></td>
 </tr>
 <tr>
-<td id="4242"><a href="lwg-active.html#4242" title="ranges::distance does not work with volatile iterators (Status: New)">4242</a><sup><a href="https://cplusplus.github.io/LWG/issue4242">(i)</a></sup></td>
-<td><a href="lwg-active.html#New">New</a></td>
+<td id="4242"><a href="lwg-active.html#4242" title="ranges::distance does not work with volatile iterators (Status: Tentatively Ready)">4242</a><sup><a href="https://cplusplus.github.io/LWG/issue4242">(i)</a></sup></td>
+<td><a href="lwg-active.html#Ready">Tentatively Ready</a></td>
 <td>24.4.4.3 [range.iter.op.distance]<a id="range.iter.op.distance"></a></td>
 <td><code class='backtick'>ranges::distance</code> does not work with volatile iterators</td>
 <td>Yes</td>
@@ -2884,20 +2884,20 @@ complexity for algorithms that are in fact &#x1d4aa;(n)</td>
 <td></td>
 </tr>
 <tr>
-<td id="4253"><a href="lwg-active.html#4253" title="basic_const_iterator should provide iterator_type (Status: New)">4253</a><sup><a href="https://cplusplus.github.io/LWG/issue4253">(i)</a></sup></td>
+<td id="4237"><a href="lwg-active.html#4237" title="The standard library iterator adaptor does not handle iterator_category correctly (Status: New)">4237</a><sup><a href="https://cplusplus.github.io/LWG/issue4237">(i)</a></sup></td>
 <td><a href="lwg-active.html#New">New</a></td>
 <td>24.5.3.3 [const.iterators.iterator]<a id="const.iterators.iterator"></a></td>
-<td><code class='backtick'>basic_const_iterator</code> should provide <code class='backtick'>iterator_type</code></td>
-<td>Yes</td>
-<td></td>
+<td>The standard library iterator adaptor does not handle <code>iterator_category</code> correctly</td>
+<td><span class="no-pr">No</span></td>
+<td>3</td>
 <td></td>
 </tr>
 <tr>
-<td id="4237"><a href="lwg-active.html#4237" title="The standard library iterator adaptor does not handle iterator_category correctly (Status: New)">4237</a><sup><a href="https://cplusplus.github.io/LWG/issue4237">(i)</a></sup></td>
+<td id="4253"><a href="lwg-active.html#4253" title="basic_const_iterator should provide iterator_type (Status: New)">4253</a><sup><a href="https://cplusplus.github.io/LWG/issue4253">(i)</a></sup></td>
 <td><a href="lwg-active.html#New">New</a></td>
 <td>24.5.3.3 [const.iterators.iterator]</td>
-<td>The standard library iterator adaptor does not handle <code>iterator_category</code> correctly</td>
-<td><span class="no-pr">No</span></td>
+<td><code class='backtick'>basic_const_iterator</code> should provide <code class='backtick'>iterator_type</code></td>
+<td>Yes</td>
 <td></td>
 <td></td>
 </tr>
@@ -2967,8 +2967,8 @@ forward_iterator (Status: New)">4120</a><sup><a href="https://cplusplus.github.i
 <td></td>
 </tr>
 <tr>
-<td id="4245"><a href="lwg-active.html#4245" title="Operators that interact with counted_iterator and default_sentinel_t should be noexcept (Status: New)">4245</a><sup><a href="https://cplusplus.github.io/LWG/issue4245">(i)</a></sup></td>
-<td><a href="lwg-active.html#New">New</a></td>
+<td id="4245"><a href="lwg-active.html#4245" title="Operators that interact with counted_iterator and default_sentinel_t should be noexcept (Status: Tentatively Ready)">4245</a><sup><a href="https://cplusplus.github.io/LWG/issue4245">(i)</a></sup></td>
+<td><a href="lwg-active.html#Ready">Tentatively Ready</a></td>
 <td>24.5.7.1 [counted.iterator]<a id="counted.iterator"></a></td>
 <td>Operators that interact with <code class='backtick'>counted_iterator</code> and <code class='backtick'>default_sentinel_t</code> should be <code class='backtick'>noexcept</code></td>
 <td>Yes</td>
@@ -3012,8 +3012,8 @@ forward_iterator (Status: New)">4120</a><sup><a href="https://cplusplus.github.i
 <td></td>
 </tr>
 <tr>
-<td id="4234"><a href="lwg-active.html#4234" title="Including &lt;hive&gt; doesn't provide std::begin/end (Status: New)">4234</a><sup><a href="https://cplusplus.github.io/LWG/issue4234">(i)</a></sup></td>
-<td><a href="lwg-active.html#New">New</a></td>
+<td id="4234"><a href="lwg-active.html#4234" title="Including &lt;hive&gt; doesn't provide std::begin/end (Status: Tentatively Ready)">4234</a><sup><a href="https://cplusplus.github.io/LWG/issue4234">(i)</a></sup></td>
+<td><a href="lwg-active.html#Ready">Tentatively Ready</a></td>
 <td>24.7 [iterator.range]<a id="iterator.range"></a></td>
 <td>Including <code>&lt;hive&gt;</code> doesn't provide <code>std::begin/end</code></td>
 <td>Yes</td>
@@ -3640,19 +3640,19 @@ inner-iterator with std::default_sentinel results in null pointer dereference (S
 <td></td>
 </tr>
 <tr>
-<td id="4006"><a href="lwg-active.html#4006" title="chunk_view::outer-iterator::value_type should provide empty (Status: Tentatively NAD)">4006</a><sup><a href="https://cplusplus.github.io/LWG/issue4006">(i)</a></sup></td>
-<td><a href="lwg-active.html#NAD">Tentatively NAD</a></td>
+<td id="4236"><a href="lwg-active.html#4236" title="chunk_view::outer-iterator::value_type should provide reserve_hint (Status: Tentatively Ready)">4236</a><sup><a href="https://cplusplus.github.io/LWG/issue4236">(i)</a></sup></td>
+<td><a href="lwg-active.html#Ready">Tentatively Ready</a></td>
 <td>25.7.29.4 [range.chunk.outer.value]<a id="range.chunk.outer.value"></a></td>
-<td><code>chunk_view::<i>outer-iterator</i>::value_type</code> should provide <code>empty</code></td>
+<td><code>chunk_view::<i>outer-iterator</i>::value_type</code> should provide <code>reserve_hint</code></td>
 <td>Yes</td>
 <td></td>
 <td></td>
 </tr>
 <tr>
-<td id="4236"><a href="lwg-active.html#4236" title="chunk_view::outer-iterator::value_type should provide reserve_hint (Status: New)">4236</a><sup><a href="https://cplusplus.github.io/LWG/issue4236">(i)</a></sup></td>
-<td><a href="lwg-active.html#New">New</a></td>
+<td id="4006"><a href="lwg-active.html#4006" title="chunk_view::outer-iterator::value_type should provide empty (Status: Tentatively NAD)">4006</a><sup><a href="https://cplusplus.github.io/LWG/issue4006">(i)</a></sup></td>
+<td><a href="lwg-active.html#NAD">Tentatively NAD</a></td>
 <td>25.7.29.4 [range.chunk.outer.value]</td>
-<td><code>chunk_view::<i>outer-iterator</i>::value_type</code> should provide <code>reserve_hint</code></td>
+<td><code>chunk_view::<i>outer-iterator</i>::value_type</code> should provide <code>empty</code></td>
 <td>Yes</td>
 <td></td>
 <td></td>
@@ -3681,7 +3681,7 @@ inner-iterator with std::default_sentinel results in null pointer dereference (S
 <td>25.7.34.2 [range.cache.latest.view]<a id="range.cache.latest.view"></a></td>
 <td><code>cache_latest_view</code> and <code>to_input_view</code> miss <code>reserve_hint</code></td>
 <td>Yes</td>
-<td></td>
+<td>2</td>
 <td></td>
 </tr>
 <tr>
@@ -4522,7 +4522,7 @@ not copy) their predicate object</td>
 <td>28.5.6.3 [format.formattable]<a id="format.formattable"></a></td>
 <td>The formattable type is not a <code>formattable</code> type</td>
 <td>Yes</td>
-<td></td>
+<td>2</td>
 <td></td>
 </tr>
 <tr>
@@ -4562,8 +4562,8 @@ not copy) their predicate object</td>
 <td></td>
 </tr>
 <tr>
-<td id="4246"><a href="lwg-active.html#4246" title="Redundant constraint in range_formatter::format (Status: New)">4246</a><sup><a href="https://cplusplus.github.io/LWG/issue4246">(i)</a></sup></td>
-<td><a href="lwg-active.html#New">New</a></td>
+<td id="4246"><a href="lwg-active.html#4246" title="Redundant constraint in range_formatter::format (Status: Tentatively NAD)">4246</a><sup><a href="https://cplusplus.github.io/LWG/issue4246">(i)</a></sup></td>
+<td><a href="lwg-active.html#NAD">Tentatively NAD</a></td>
 <td>28.5.7.2 [format.range.formatter]<a id="format.range.formatter"></a></td>
 <td>Redundant constraint in <code class='backtick'>range_formatter::format</code></td>
 <td>Yes</td>
@@ -4995,8 +4995,8 @@ should require the arguments to have the same length</td>
 <td></td>
 </tr>
 <tr>
-<td id="4232"><a href="lwg-active.html#4232" title="datapar::resize does not resize (Status: New)">4232</a><sup><a href="https://cplusplus.github.io/LWG/issue4232">(i)</a></sup></td>
-<td><a href="lwg-active.html#New">New</a></td>
+<td id="4232"><a href="lwg-active.html#4232" title="datapar::resize does not resize (Status: Tentatively Ready)">4232</a><sup><a href="https://cplusplus.github.io/LWG/issue4232">(i)</a></sup></td>
+<td><a href="lwg-active.html#Ready">Tentatively Ready</a></td>
 <td>29.10.4 [simd.traits]<a id="simd.traits"></a></td>
 <td><code class='backtick'>datapar::resize</code> does not resize</td>
 <td>Yes</td>
@@ -5018,7 +5018,7 @@ should require the arguments to have the same length</td>
 <td>29.10.8.4 [simd.mask.unary]<a id="simd.mask.unary"></a></td>
 <td><code>simd_mask&lt;complex&lt;double&gt;&gt;::operator+/-/~</code> return a disabled <code class='backtick'>simd</code> specialization</td>
 <td>Yes</td>
-<td></td>
+<td>1</td>
 <td></td>
 </tr>
 </table>
@@ -5994,7 +5994,7 @@ fetch_meow members don't (Status: New)">3047</a><sup><a href="https://cplusplus.
 <td>33.9.2 [exec.snd.expos]<a id="exec.snd.expos"></a></td>
 <td>Late domain-based dispatching of <code class='backtick'>schedule_from</code> and <code class='backtick'>continues_on</code> are flipped</td>
 <td>Yes</td>
-<td></td>
+<td>1</td>
 <td></td>
 </tr>
 <tr>

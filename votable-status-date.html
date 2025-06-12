@@ -67,7 +67,7 @@
 This document is the Index by Status and Date for the <a href="lwg-active.html">Library Active Issues List</a>,
 <a href="lwg-defects.html">Library Defect Reports and Accepted Issues</a>, and <a href="lwg-closed.html">Library Closed Issues List</a>.
 </p>
-<p>Revised 2025-06-12 at 20:47:51 UTC
+<p>Revised 2025-06-12 at 20:56:13 UTC
 </p><h2 id="Ready">Ready (7 issues)</h2>
 <table class="issues-index">
 <tr>
@@ -143,7 +143,7 @@ This document is the Index by Status and Date for the <a href="lwg-active.html">
 <td></td>
 </tr>
 </table>
-<h2 id="Tentatively_Ready">Tentatively Ready (3 issues)</h2>
+<h2 id="Tentatively_Ready">Tentatively Ready (10 issues)</h2>
 <table class="issues-index">
 <tr>
   <th><a href="lwg-toc.html">Issue</a></th>
@@ -153,6 +153,71 @@ This document is the Index by Status and Date for the <a href="lwg-active.html">
   <th>Proposed Resolution</th>
   <th><a href="unresolved-prioritized.html">Priority</a></th>
   <th>Duplicates</th>
+</tr>
+<tr>
+<td id="4247"><a href="lwg-active.html#4247" title="Header &lt;stdbit.h&gt; is not yet freestanding (Status: Tentatively Ready)">4247</a><sup><a href="https://cplusplus.github.io/LWG/issue4247">(i)</a></sup></td>
+<td><a href="lwg-active.html#Ready">Tentatively Ready</a></td>
+<td>22.12 [stdbit.h.syn]</td>
+<td>Header <code>&lt;stdbit.h&gt;</code> is not yet freestanding</td>
+<td>Yes</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td id="4233"><a href="lwg-active.html#4233" title="The helper lambda of std::erase for hive should specify return type as
+    bool (Status: Tentatively Ready)">4233</a><sup><a href="https://cplusplus.github.io/LWG/issue4233">(i)</a></sup></td>
+<td><a href="lwg-active.html#Ready">Tentatively Ready</a></td>
+<td>23.3.9.6 [hive.erasure]</td>
+<td>The helper lambda of <code>std::erase</code> for <code>hive</code> should specify return type as
+    <code>bool</code></td>
+<td>Yes</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td id="4242"><a href="lwg-active.html#4242" title="ranges::distance does not work with volatile iterators (Status: Tentatively Ready)">4242</a><sup><a href="https://cplusplus.github.io/LWG/issue4242">(i)</a></sup></td>
+<td><a href="lwg-active.html#Ready">Tentatively Ready</a></td>
+<td>24.4.4.3 [range.iter.op.distance]</td>
+<td><code class='backtick'>ranges::distance</code> does not work with volatile iterators</td>
+<td>Yes</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td id="4245"><a href="lwg-active.html#4245" title="Operators that interact with counted_iterator and default_sentinel_t should be noexcept (Status: Tentatively Ready)">4245</a><sup><a href="https://cplusplus.github.io/LWG/issue4245">(i)</a></sup></td>
+<td><a href="lwg-active.html#Ready">Tentatively Ready</a></td>
+<td>24.5.7.1 [counted.iterator]</td>
+<td>Operators that interact with <code class='backtick'>counted_iterator</code> and <code class='backtick'>default_sentinel_t</code> should be <code class='backtick'>noexcept</code></td>
+<td>Yes</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td id="4234"><a href="lwg-active.html#4234" title="Including &lt;hive&gt; doesn't provide std::begin/end (Status: Tentatively Ready)">4234</a><sup><a href="https://cplusplus.github.io/LWG/issue4234">(i)</a></sup></td>
+<td><a href="lwg-active.html#Ready">Tentatively Ready</a></td>
+<td>24.7 [iterator.range]</td>
+<td>Including <code>&lt;hive&gt;</code> doesn't provide <code>std::begin/end</code></td>
+<td>Yes</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td id="4236"><a href="lwg-active.html#4236" title="chunk_view::outer-iterator::value_type should provide reserve_hint (Status: Tentatively Ready)">4236</a><sup><a href="https://cplusplus.github.io/LWG/issue4236">(i)</a></sup></td>
+<td><a href="lwg-active.html#Ready">Tentatively Ready</a></td>
+<td>25.7.29.4 [range.chunk.outer.value]</td>
+<td><code>chunk_view::<i>outer-iterator</i>::value_type</code> should provide <code>reserve_hint</code></td>
+<td>Yes</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td id="4232"><a href="lwg-active.html#4232" title="datapar::resize does not resize (Status: Tentatively Ready)">4232</a><sup><a href="https://cplusplus.github.io/LWG/issue4232">(i)</a></sup></td>
+<td><a href="lwg-active.html#Ready">Tentatively Ready</a></td>
+<td>29.10.4 [simd.traits]</td>
+<td><code class='backtick'>datapar::resize</code> does not resize</td>
+<td>Yes</td>
+<td></td>
+<td></td>
 </tr>
 <tr>
 <td id="4188"><a href="lwg-active.html#4188" title="ostream::sentry destructor should handle exceptions (Status: Tentatively Ready)">4188</a><sup><a href="https://cplusplus.github.io/LWG/issue4188">(i)</a></sup></td>

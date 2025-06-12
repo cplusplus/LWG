@@ -54,7 +54,7 @@
 </style>
 </head>
 <body>
-<p>Revised 2025-06-12 at 20:47:51 UTC
+<p>Revised 2025-06-12 at 20:56:13 UTC
 </p><h2>Tentative Issues</h2>
 <hr>
 <h3 id="3908"><a href="#3908">3908</a><sup><a href="https://cplusplus.github.io/LWG/issue3908">(i)</a></sup>. <code>enumerate_view::<i>iterator</i></code> constructor is explicit</h3>
@@ -1562,6 +1562,651 @@ namespace std::execution {
 </code></pre>
 </blockquote>
 </li>
+</ol>
+
+
+
+
+
+<hr>
+<h3 id="4232"><a href="#4232">4232</a><sup><a href="https://cplusplus.github.io/LWG/issue4232">(i)</a></sup>. <code class='backtick'>datapar::resize</code> does not resize</h3>
+<p><b>Section:</b> 29.10.4 <a href="https://wg21.link/simd.traits">[simd.traits]</a> <b>Status:</b> <a href="lwg-active.html#Ready">Tentatively Ready</a>
+ <b>Submitter:</b> Tim Song <b>Opened:</b> 2025-03-24 <b>Last modified:</b> 2025-06-12</p>
+<p><b>Priority: </b>Not Prioritized
+</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#Tentatively Ready">Tentatively Ready</a> status.</p>
+<p><b>Discussion:</b></p>
+<p>
+The wording actually requires the size to be left unchanged.
+</p>
+
+<p><i>[2025-06-12; Reflector poll]</i></p>
+
+<p>
+Set status to Tentatively Ready after seven votes in favour during reflector poll.
+</p>
+
+
+
+<p id="res-4232"><b>Proposed resolution:</b></p>
+<p>
+This wording is relative to <a href="https://wg21.link/N5008">N5008</a>.
+</p>
+
+<ol>
+
+<li><p>Modify 29.10.4 <a href="https://wg21.link/simd.traits">[simd.traits]</a> as indicated:</p>
+
+<blockquote>
+<pre>
+template&lt;<i>simd-size-type</i> N, class V&gt; struct resize { using type = <i>see below</i>; };
+</pre>
+<blockquote>
+<p>
+[&hellip;]
+<p/>
+-9- If <code class='backtick'>V</code> is a specialization of <code class='backtick'>basic_simd</code>, let <code class='backtick'>Abi1</code> denote an ABI tag such that 
+<code>basic_simd&lt;T, Abi1&gt;::size()</code> equals <code><del>V::size()</del><ins>N</ins></code>. 
+If <code class='backtick'>V</code> is a specialization of <code class='backtick'>basic_simd_mask</code>, let <code class='backtick'>Abi1</code> denote an ABI tag such that 
+<code>basic_simd_mask&lt;sizeof(T), Abi1&gt;::size()</code> equals <code><del>V::size()</del><ins>N</ins></code>.
+</p>
+</blockquote>
+</blockquote>
+</li>
+
+</ol>
+
+
+
+
+
+<hr>
+<h3 id="4233"><a href="#4233">4233</a><sup><a href="https://cplusplus.github.io/LWG/issue4233">(i)</a></sup>. The helper lambda of <code>std::erase</code> for <code>hive</code> should specify return type as
+    <code>bool</code></h3>
+<p><b>Section:</b> 23.3.9.6 <a href="https://wg21.link/hive.erasure">[hive.erasure]</a> <b>Status:</b> <a href="lwg-active.html#Ready">Tentatively Ready</a>
+ <b>Submitter:</b> Hewill Kang <b>Opened:</b> 2025-03-24 <b>Last modified:</b> 2025-06-12</p>
+<p><b>Priority: </b>Not Prioritized
+</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#Tentatively Ready">Tentatively Ready</a> status.</p>
+<p><b>Discussion:</b></p>
+<p>
+This is a follow up to LWG <a href="lwg-defects.html#4135" title="The helper lambda of std::erase for list should specify return type as
+  bool (Status: WP)">4135</a><sup><a href="https://cplusplus.github.io/LWG/issue4135" title="Latest snapshot">(i)</a></sup>, which incidentally adds a default template 
+parameter for <code>U</code> to be consistent with other <code>erase</code> functions, 
+which is editorial since the declaration already has it.
+</p>
+
+<p><i>[2025-06-12; Reflector poll]</i></p>
+
+<p>
+Set status to Tentatively Ready after seven votes in favour during reflector poll.
+</p>
+
+
+
+<p id="res-4233"><b>Proposed resolution:</b></p>
+<p>
+This wording is relative to <a href="https://wg21.link/N5008">N5008</a>.
+</p>
+
+<ol>
+
+<li><p>Modify 23.3.9.6 <a href="https://wg21.link/hive.erasure">[hive.erasure]</a> as indicated:</p>
+
+<blockquote>
+<pre>
+template&lt;class T, class Allocator, class U <ins>= T</ins>&gt;
+  typename hive&lt;T, Allocator&gt;::size_type
+    erase(hive&lt;T, Allocator&gt;&amp; c, const U&amp; value);
+</pre>
+<blockquote>
+<p>
+-1- <i>Effects</i>: Equivalent to:
+</p>
+<blockquote><pre>
+return erase_if(c, [&amp;](<ins>const</ins> auto&amp; elem) <ins>-&gt; bool</ins> { return elem == value; });
+</pre></blockquote>
+</blockquote>
+</blockquote>
+</li>
+
+</ol>
+
+
+
+
+
+<hr>
+<h3 id="4234"><a href="#4234">4234</a><sup><a href="https://cplusplus.github.io/LWG/issue4234">(i)</a></sup>. Including <code>&lt;hive&gt;</code> doesn't provide <code>std::begin/end</code></h3>
+<p><b>Section:</b> 24.7 <a href="https://wg21.link/iterator.range">[iterator.range]</a> <b>Status:</b> <a href="lwg-active.html#Ready">Tentatively Ready</a>
+ <b>Submitter:</b> Hewill Kang <b>Opened:</b> 2025-03-25 <b>Last modified:</b> 2025-06-12</p>
+<p><b>Priority: </b>Not Prioritized
+</p>
+<p><b>View other</b> <a href="lwg-index-open.html#iterator.range">active issues</a> in [iterator.range].</p>
+<p><b>View all other</b> <a href="lwg-index.html#iterator.range">issues</a> in [iterator.range].</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#Tentatively Ready">Tentatively Ready</a> status.</p>
+<p><b>Discussion:</b></p>
+<p>
+24.7 <a href="https://wg21.link/iterator.range">[iterator.range]</a> should add <code>&lt;hive&gt;</code> to the list as the latter provides
+a series of range access member functions such as <code>begin/end</code>.
+</p>
+
+<p><i>[2025-06-12; Reflector poll]</i></p>
+
+<p>
+Set status to Tentatively Ready after six votes in favour during reflector poll.
+</p>
+
+
+
+<p id="res-4234"><b>Proposed resolution:</b></p>
+<p>
+This wording is relative to <a href="https://wg21.link/N5008">N5008</a>.
+</p>
+
+<ol>
+
+<li><p>Modify 24.7 <a href="https://wg21.link/iterator.range">[iterator.range]</a> as indicated:</p>
+
+<blockquote>
+<p>
+-1- In addition to being available via inclusion of the <code>&lt;iterator&gt;</code> header, the function
+templates in 24.7 <a href="https://wg21.link/iterator.range">[iterator.range]</a> are available when any of the following headers are included: 
+<code>&lt;array&gt;</code>,
+<code>&lt;deque&gt;</code>, <code>&lt;flat_map&gt;</code>, <code>&lt;flat_set&gt;</code>,
+<code>&lt;forward_list&gt;</code>,
+<ins><code>&lt;hive&gt;</code>,</ins>
+<code>&lt;inplace_vector&gt;</code>, <code>&lt;list&gt;</code>, <code>&lt;map&gt;</code>,
+<code>&lt;regex&gt;</code>, <code>&lt;set&gt;</code>, <code>&lt;span&gt;</code>, <code>&lt;string&gt;</code>,
+<code>&lt;string_view&gt;</code>,
+<code>&lt;unordered_map&gt;</code>, <code>&lt;unordered_set&gt;</code>, and <code>&lt;vector&gt;</code>.
+</p>
+</blockquote>
+</li>
+
+</ol>
+
+
+
+
+
+<hr>
+<h3 id="4236"><a href="#4236">4236</a><sup><a href="https://cplusplus.github.io/LWG/issue4236">(i)</a></sup>. <code>chunk_view::<i>outer-iterator</i>::value_type</code> should provide <code>reserve_hint</code></h3>
+<p><b>Section:</b> 25.7.29.4 <a href="https://wg21.link/range.chunk.outer.value">[range.chunk.outer.value]</a> <b>Status:</b> <a href="lwg-active.html#Ready">Tentatively Ready</a>
+ <b>Submitter:</b> Hewill Kang <b>Opened:</b> 2025-03-26 <b>Last modified:</b> 2025-06-12</p>
+<p><b>Priority: </b>Not Prioritized
+</p>
+<p><b>View other</b> <a href="lwg-index-open.html#range.chunk.outer.value">active issues</a> in [range.chunk.outer.value].</p>
+<p><b>View all other</b> <a href="lwg-index.html#range.chunk.outer.value">issues</a> in [range.chunk.outer.value].</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#Tentatively Ready">Tentatively Ready</a> status.</p>
+<p><b>Discussion:</b></p>
+<p>
+Consider:
+</p>
+<blockquote><pre>
+views::istream&lt;int&gt;(is) | views::chunk(N) | ranges::to&lt;std::list&lt;std::vector&lt;int&gt;&gt;&gt;();
+</pre></blockquote>
+<p>
+When the stream is large enough, each chunk will be of size <code>N</code> in most cases, except it is the
+last chunk.
+</p>
+<p>
+In this case, there is no reason not to provide a <code>reserve_hint</code> as this can be easily done by just
+return <code><i>remainder_</i></code>. Otherwise, when <code>N</code> is large, each vector will be reallocated
+multiple times unnecessarily.
+</p>
+<p>
+This is also consistent with the <code>forward_range</code> version, since its value type is
+<code>views::take(subrange(<i>current_</i>, <i>end_</i>), <i>n_</i>)</code>, which always has a
+<code>reserve_hint</code> as <code>take_view</code> unconditionally provides it.
+</p>
+
+<p><i>[2025-06-12; Reflector poll]</i></p>
+
+<p>
+Set status to Tentatively Ready after five votes in favour during reflector poll.
+</p>
+
+
+
+<p id="res-4236"><b>Proposed resolution:</b></p>
+<p>
+This wording is relative to <a href="https://wg21.link/N5008">N5008</a>.
+</p>
+
+<ol>
+
+<li><p>Modify 25.7.29.4 <a href="https://wg21.link/range.chunk.outer.value">[range.chunk.outer.value]</a> as indicated:</p>
+
+<blockquote>
+<blockquote>
+<pre>
+namespace std::ranges {
+  template&lt;view V&gt;
+    requires input_range&lt;V&gt;
+  struct chunk_view&lt;V&gt;::<i>outer-iterator</i>::value_type : view_interface&lt;value_type&gt; {
+    [&hellip;]
+    constexpr auto size() const
+      requires sized_sentinel_for&lt;sentinel_t&lt;V&gt;, iterator_t&lt;V&gt;&gt;;
+
+    <ins>constexpr auto reserve_hint() const noexcept;</ins>
+  };
+}  
+</pre>
+</blockquote>
+[&hellip;]
+<pre>
+constexpr auto size() const
+  requires sized_sentinel_for&lt;sentinel_t&lt;V&gt;, iterator_t&lt;V&gt;&gt;;
+</pre>
+<blockquote>
+<p>
+-4- <i>Effects</i>: Equivalent to:
+</p>
+<blockquote><pre>
+return <i>to-unsigned-like</i>(ranges::min(<i>parent_</i>-&gt;remainder_,
+                                    ranges::end(<i>parent_</i>-&gt;<i>base_</i>) - *<i>parent_</i>-&gt;<i>current_</i>));
+</pre></blockquote>
+</blockquote>
+<pre>
+<ins>constexpr auto reserve_hint() const noexcept;</ins>
+</pre>
+<blockquote>
+<p>
+<ins> -?- <i>Effects</i>: Equivalent to:</ins>
+</p>
+<blockquote><pre>
+<ins>return <i>to-unsigned-like</i>(<i>parent_</i>-><i>remainder_</i>);</ins>
+</pre></blockquote>
+</blockquote>
+</blockquote>
+
+</li>
+
+</ol>
+
+
+
+
+
+<hr>
+<h3 id="4242"><a href="#4242">4242</a><sup><a href="https://cplusplus.github.io/LWG/issue4242">(i)</a></sup>. <code class='backtick'>ranges::distance</code> does not work with volatile iterators</h3>
+<p><b>Section:</b> 24.4.4.3 <a href="https://wg21.link/range.iter.op.distance">[range.iter.op.distance]</a> <b>Status:</b> <a href="lwg-active.html#Ready">Tentatively Ready</a>
+ <b>Submitter:</b> Hewill Kang <b>Opened:</b> 2025-04-12 <b>Last modified:</b> 2025-06-12</p>
+<p><b>Priority: </b>Not Prioritized
+</p>
+<p><b>View all other</b> <a href="lwg-index.html#range.iter.op.distance">issues</a> in [range.iter.op.distance].</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#Tentatively Ready">Tentatively Ready</a> status.</p>
+<p><b>Discussion:</b></p>
+<p>
+After LWG <a href="lwg-defects.html#3664" title="LWG 3392 broke std::ranges::distance(a, a+3) (Status: C++23)">3664</a><sup><a href="https://cplusplus.github.io/LWG/issue3664" title="Latest snapshot">(i)</a></sup>, <code class='backtick'>ranges::distance</code> computes the distance between <code class='backtick'>last</code> and <code class='backtick'>first</code>
+by returning <code>last - static_cast&lt;const decay_t&lt;I&gt;&amp;&gt;(first)</code> when the 
+two are subtractable. However, this will cause a hard error if <code>first</code> is volatile-qualified
+(<a href="https://godbolt.org/z/Pz1cGxKEW">demo</a>):
+</p>
+<blockquote><pre>
+#include &lt;iterator&gt;
+
+int main() {
+  int arr[] = {1, 2, 3};
+  int* volatile ptr = arr;
+  // return std::distance(ptr, arr + 3);      // this is ok
+  return std::ranges::distance(ptr, arr + 3); // <span  style="color:#C80000;font-weight:bold">hard error</span>
+}
+</pre></blockquote>
+<p>
+The resolution changes the <i>Effects</i> of LWG <a href="lwg-defects.html#3664" title="LWG 3392 broke std::ranges::distance(a, a+3) (Status: C++23)">3664</a><sup><a href="https://cplusplus.github.io/LWG/issue3664" title="Latest snapshot">(i)</a></sup> from "cute" to "noncute".
+</p>
+
+<p><i>[2025-06-12; Reflector poll]</i></p>
+
+<p>
+Set status to Tentatively Ready after eight votes in favour during reflector poll.
+</p>
+<p>"Would prefer <code class='backtick'>auto(first)</code> but the current wording is correct."</p>
+
+
+
+<p id="res-4242"><b>Proposed resolution:</b></p>
+<p>
+This wording is relative to <a href="https://wg21.link/N5008">N5008</a>.
+</p>
+
+<ol>
+
+<li><p>Modify 24.4.4.3 <a href="https://wg21.link/range.iter.op.distance">[range.iter.op.distance]</a> as indicated:</p>
+
+<blockquote>
+<pre>
+template&lt;class I, sized_sentinel_for&lt;decay_t&lt;I&gt;&gt; S&gt;
+  constexpr iter_difference_t&lt;decay_t&lt;I&gt;&gt; ranges::distance(I&amp;&amp; first, S last);
+</pre>
+<blockquote>
+<p>
+-3- <i>Effects</i>: Equivalent to:
+</p>
+<pre>
+<ins>if constexpr (!is_array_v&lt;remove_reference_t&lt;I&gt;&gt;)
+  return last - first;
+else</ins>
+  return last - static_cast&lt;<del>const</del> decay_t&lt;I&gt;<del>&amp;</del>&gt;(first);
+</pre>
+</blockquote>
+</blockquote>
+
+</li>
+
+</ol>
+
+
+
+
+
+<hr>
+<h3 id="4245"><a href="#4245">4245</a><sup><a href="https://cplusplus.github.io/LWG/issue4245">(i)</a></sup>. Operators that interact with <code class='backtick'>counted_iterator</code> and <code class='backtick'>default_sentinel_t</code> should be <code class='backtick'>noexcept</code></h3>
+<p><b>Section:</b> 24.5.7.1 <a href="https://wg21.link/counted.iterator">[counted.iterator]</a>, 24.5.7.5 <a href="https://wg21.link/counted.iter.nav">[counted.iter.nav]</a>, 24.5.7.6 <a href="https://wg21.link/counted.iter.cmp">[counted.iter.cmp]</a> <b>Status:</b> <a href="lwg-active.html#Ready">Tentatively Ready</a>
+ <b>Submitter:</b> Hewill Kang <b>Opened:</b> 2025-04-18 <b>Last modified:</b> 2025-06-12</p>
+<p><b>Priority: </b>Not Prioritized
+</p>
+<p><b>View all other</b> <a href="lwg-index.html#counted.iterator">issues</a> in [counted.iterator].</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#Tentatively Ready">Tentatively Ready</a> status.</p>
+<p><b>Discussion:</b></p>
+<p>
+<code class='backtick'>counted_iterator</code> can be compared or subtracted from <code class='backtick'>default_sentinel_t</code>,
+which only involves simple integer arithmetic and does not have any <i>Preconditions</i>.
+<p/>
+In this case, it is reasonable to declare them as <code>noexcept</code>.
+</p>
+
+<p><i>[2025-06-12; Reflector poll]</i></p>
+
+<p>
+Set status to Tentatively Ready after seven votes in favour during reflector poll.
+</p>
+
+
+
+<p id="res-4245"><b>Proposed resolution:</b></p>
+<p>
+This wording is relative to <a href="https://wg21.link/N5008">N5008</a>.
+</p>
+
+<ol>
+
+<li><p>Modify 24.5.7.1 <a href="https://wg21.link/counted.iterator">[counted.iterator]</a> as indicated:</p>
+
+<blockquote>
+<pre>
+namespace std {
+  template&lt;input_or_output_iterator I&gt;
+  class counted_iterator {
+  public:
+    [&hellip;]
+    friend constexpr iter_difference_t&lt;I&gt; operator-(
+      const counted_iterator&amp; x, default_sentinel_t) <ins>noexcept</ins>;
+    friend constexpr iter_difference_t&lt;I&gt; operator-(
+      default_sentinel_t, const counted_iterator&amp; y) <ins>noexcept</ins>;
+    [&hellip;]
+    friend constexpr bool operator==(
+      const counted_iterator&amp; x, default_sentinel_t) <ins>noexcept</ins>;
+    [&hellip;]
+  };
+  [&hellip;]
+}
+</pre>
+</blockquote>
+
+</li>
+
+<li><p>Modify 24.5.7.5 <a href="https://wg21.link/counted.iter.nav">[counted.iter.nav]</a> as indicated:</p>
+
+<blockquote>
+<pre>
+friend constexpr iter_difference_t&lt;I&gt; operator-(
+  const counted_iterator&amp; x, default_sentinel_t) <ins>noexcept</ins>;
+</pre>
+<blockquote>
+<p>
+-15- <i>Effects</i>: Equivalent to: <code>return -x.length;</code>
+</p>
+</blockquote>
+<pre>
+friend constexpr iter_difference_t&lt;I&gt; operator-(
+  default_sentinel_t, const counted_iterator&amp; y) <ins>noexcept</ins>;
+</pre>
+<blockquote>
+<p>
+-16- <i>Effects</i>: Equivalent to: <code>return y.length;</code>
+</p>
+</blockquote>
+</blockquote>
+
+</li>
+
+<li><p>Modify 24.5.7.6 <a href="https://wg21.link/counted.iter.cmp">[counted.iter.cmp]</a> as indicated:</p>
+
+<blockquote>
+<pre>
+friend constexpr bool operator==(
+  const counted_iterator&amp; x, default_sentinel_t) <ins>noexcept</ins>;
+</pre>
+<blockquote>
+<p>
+-3- <i>Effects</i>: Equivalent to: <code>return x.length == 0;</code>
+</p>
+</blockquote>
+</blockquote>
+
+</li>
+
+</ol>
+
+
+
+
+
+<hr>
+<h3 id="4246"><a href="#4246">4246</a><sup><a href="https://cplusplus.github.io/LWG/issue4246">(i)</a></sup>. Redundant constraint in <code class='backtick'>range_formatter::format</code></h3>
+<p><b>Section:</b> 28.5.7.2 <a href="https://wg21.link/format.range.formatter">[format.range.formatter]</a> <b>Status:</b> <a href="lwg-active.html#NAD">Tentatively NAD</a>
+ <b>Submitter:</b> Hewill Kang <b>Opened:</b> 2025-04-18 <b>Last modified:</b> 2025-06-12</p>
+<p><b>Priority: </b>Not Prioritized
+</p>
+<p><b>View all other</b> <a href="lwg-index.html#format.range.formatter">issues</a> in [format.range.formatter].</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#Tentatively NAD">Tentatively NAD</a> status.</p>
+<p><b>Discussion:</b></p>
+<p>
+Currently, the signature of <code class='backtick'>range_formatter::format</code> is as follows:
+</p>
+<blockquote><pre>
+template&lt;ranges::input_range R, class FormatContext&gt;
+  requires formattable&lt;ranges::range_reference_t&lt;R&gt;, charT&gt; &amp;&amp;
+           same_as&lt;remove_cvref_t&lt;ranges::range_reference_t&lt;R&gt;&gt;, T&gt;
+typename FormatContext::iterator
+  format(R&amp;&amp; r, FormatContext&amp; ctx) const;
+</pre></blockquote>
+<p>
+which requires that the reference type of the range parameter must be <code class='backtick'>formattable</code>,
+and such type must be exactly <code class='backtick'>T</code> after removing the <i>cvref</i>-qualifiers.
+</p>
+<p>
+However, satisfying the latter always implies satisfying the former, as the <code class='backtick'>range_formatter</code> class
+already requires that <code class='backtick'>T</code> must be <code class='backtick'>formattable</code>.
+</p>
+<p>
+There is no need to perform a redundant check here.
+</p>
+
+<p><i>[2025-06-12; Reflector poll]</i></p>
+
+<p>
+Set status to Tentatively NAD. This is not redundant, it might check that
+<code class='backtick'>const T</code> is formattable, which is not the same as checking that
+<code class='backtick'>T</code> is formattable.
+</p>
+
+
+
+<p id="res-4246"><b>Proposed resolution:</b></p>
+<p>
+This wording is relative to <a href="https://wg21.link/N5008">N5008</a>.
+</p>
+
+<ol>
+
+<li><p>Modify 28.5.7.2 <a href="https://wg21.link/format.range.formatter">[format.range.formatter]</a> as indicated:</p>
+
+<blockquote>
+<blockquote>
+<pre>
+namespace std {
+  template&lt;class T, class charT = char&gt;
+    requires same_as&lt;remove_cvref_t&lt;T>, T> &amp;&amp; formattable&lt;T, charT&gt;
+  class range_formatter {
+    [&hellip;]
+    template&lt;ranges::input_range R, class FormatContext&gt;
+        requires <del>formattable&lt;ranges::range_reference_t&lt;R&gt;, charT&gt; &amp;&amp;</del>
+                 same_as&lt;remove_cvref_t&lt;ranges::range_reference_t&lt;R&gt;&gt;, T&gt;
+      typename FormatContext::iterator
+        format(R&amp;&amp; r, FormatContext&amp; ctx) const;
+  };
+}
+</pre>
+</blockquote>
+[&hellip;]
+<pre>
+template&lt;ranges::input_range R, class FormatContext&gt;
+  requires <del>formattable&lt;ranges::range_reference_t&lt;R&gt;, charT&gt; &amp;&amp;</del>
+           same_as&lt;remove_cvref_t&lt;ranges::range_reference_t&lt;R&gt;&gt;, T&gt;
+typename FormatContext::iterator
+  format(R&amp;&amp; r, FormatContext&amp; ctx) const;
+</pre>
+<blockquote>
+<p>
+-11- <i>Effects</i>: Writes the following into <code>ctx.out()</code>, adjusted according to the
+<i>range-format-spec</i>:
+</p>
+</blockquote>
+</blockquote>
+
+</li>
+
+</ol>
+
+
+
+
+
+<hr>
+<h3 id="4247"><a href="#4247">4247</a><sup><a href="https://cplusplus.github.io/LWG/issue4247">(i)</a></sup>. Header <code>&lt;stdbit.h&gt;</code> is not yet freestanding</h3>
+<p><b>Section:</b> 22.12 <a href="https://wg21.link/stdbit.h.syn">[stdbit.h.syn]</a> <b>Status:</b> <a href="lwg-active.html#Ready">Tentatively Ready</a>
+ <b>Submitter:</b> Jiang An <b>Opened:</b> 2025-04-24 <b>Last modified:</b> 2025-06-12</p>
+<p><b>Priority: </b>Not Prioritized
+</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#Tentatively Ready">Tentatively Ready</a> status.</p>
+<p><b>Discussion:</b></p>
+<p>
+Per C23/WG14 <a href="https://www.open-std.org/jtc1/sc22/wg14/www/docs/n3220.pdf#page=22">N3220</a> 4 p7, <code>&lt;stdbit.h&gt;</code> 
+is freestanding in C23, but C++ hasn't required it for a freestanding implementation. 
+LWG <a href="lwg-active.html#4049" title="C &lt;foo.h&gt; headers not in freestanding (Status: New)">4049</a><sup><a href="https://cplusplus.github.io/LWG/issue4049" title="Latest snapshot">(i)</a></sup> is related but doesn't cover this, because there's no <code>&lt;cstdbit&gt;</code> standard header.
+</p>
+
+<p><i>[2025-06-12; Reflector poll]</i></p>
+
+<p>
+Set status to Tentatively Ready after six votes in favour during reflector poll.
+</p>
+
+
+
+<p id="res-4247"><b>Proposed resolution:</b></p>
+<p>
+This wording is relative to <a href="https://wg21.link/N5008">N5008</a>.
+</p>
+
+<ol>
+
+<li><p>Modify Table 27 [tab:headers.cpp.fs] as indicated:</p>
+
+<blockquote>
+<table border="1">
+<caption>Table 27: C++ headers for freestanding implementations [tab:headers.cpp.fs]</caption>
+<tr align="center">
+<th></th>
+<th>Subclause</th>
+<th>Header</th>
+</tr> 
+
+<tr>
+<td colspan="3" align="center">
+<code>[&hellip;]</code>
+</td>
+</tr>
+
+<tr>
+<td>
+22.11 <a href="https://wg21.link/bit">[bit]</a>
+</td>
+<td>
+Bit manipulation
+</td>
+<td>
+<code>&lt;bit&gt;</code>
+</td>
+</tr>
+
+<tr>
+<td>
+<ins>22.12 <a href="https://wg21.link/stdbit.h.syn">[stdbit.h.syn]</a></ins>
+</td>
+<td>
+<ins>C-compatible bit manipulation</ins>
+</td>
+<td>
+<ins><code>&lt;stdbit.h&gt;</code></ins>
+</td>
+</tr>
+
+<tr>
+<td>
+23.3.3 <a href="https://wg21.link/array">[array]</a>
+</td>
+<td>
+Class template <code class='backtick'>array</code>
+</td>
+<td>
+<code>&lt;array&gt;</code>
+</td>
+</tr>
+
+<tr>
+<td colspan="3" align="center">
+<code>[&hellip;]</code>
+</td>
+</tr>
+
+</table>
+
+</blockquote>
+
+</li>
+
+<li><p>Modify 22.12 <a href="https://wg21.link/stdbit.h.syn">[stdbit.h.syn]</a>, header <code>&lt;stdbit.h&gt;</code> synopsis, as indicated:</p>
+
+<blockquote>
+<pre>
+<ins><i>// all freestanding</i></ins>
+#define __STDC_VERSION_STDBIT_H__ 202311L
+
+#define __STDC_ENDIAN_BIG__    <i>see below</i>
+#define __STDC_ENDIAN_LITTLE__ <i>see below</i>
+#define __STDC_ENDIAN_NATIVE__ <i>see below</i>
+
+[&hellip;]
+</pre>
+</blockquote>
+
+</li>
+
 </ol>
 
 

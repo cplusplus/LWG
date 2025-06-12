@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <title>Issue 4247: Header &lt;stdbit.h&gt; is not yet freestanding</title>
 <meta property="og:title" content="Issue 4247: Header &lt;stdbit.h&gt; is not yet freestanding">
-<meta property="og:description" content="C++ library issue. Status: New">
+<meta property="og:description" content="C++ library issue. Status: Tentatively Ready">
 <meta property="og:url" content="https://cplusplus.github.io/LWG/issue4247.html">
 <meta property="og:type" content="website">
 <meta property="og:image" content="http://cplusplus.github.io/LWG/images/cpp_logo.png">
@@ -61,19 +61,26 @@
 </head>
 <body>
 <hr>
-<p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#New">New</a> status.</em></p>
+<p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#Ready">Tentatively Ready</a> status.</em></p>
 <h3 id="4247"><a href="lwg-active.html#4247">4247</a>. Header <code>&lt;stdbit.h&gt;</code> is not yet freestanding</h3>
-<p><b>Section:</b> 22.12 <a href="https://wg21.link/stdbit.h.syn">[stdbit.h.syn]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Jiang An <b>Opened:</b> 2025-04-24 <b>Last modified:</b> 2025-04-27</p>
+<p><b>Section:</b> 22.12 <a href="https://wg21.link/stdbit.h.syn">[stdbit.h.syn]</a> <b>Status:</b> <a href="lwg-active.html#Ready">Tentatively Ready</a>
+ <b>Submitter:</b> Jiang An <b>Opened:</b> 2025-04-24 <b>Last modified:</b> 2025-06-12</p>
 <p><b>Priority: </b>Not Prioritized
 </p>
-<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#Tentatively Ready">Tentatively Ready</a> status.</p>
 <p><b>Discussion:</b></p>
 <p>
 Per C23/WG14 <a href="https://www.open-std.org/jtc1/sc22/wg14/www/docs/n3220.pdf#page=22">N3220</a> 4 p7, <code>&lt;stdbit.h&gt;</code> 
 is freestanding in C23, but C++ hasn't required it for a freestanding implementation. 
 LWG <a href="lwg-active.html#4049" title="C &lt;foo.h&gt; headers not in freestanding (Status: New)">4049</a><sup><a href="https://cplusplus.github.io/LWG/issue4049" title="Latest snapshot">(i)</a></sup> is related but doesn't cover this, because there's no <code>&lt;cstdbit&gt;</code> standard header.
 </p>
+
+<p><i>[2025-06-12; Reflector poll]</i></p>
+
+<p>
+Set status to Tentatively Ready after six votes in favour during reflector poll.
+</p>
+
 
 
 <p id="res-4247"><b>Proposed resolution:</b></p>

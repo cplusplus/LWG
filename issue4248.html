@@ -64,8 +64,8 @@
 <p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#New">New</a> status.</em></p>
 <h3 id="4248"><a href="lwg-active.html#4248">4248</a>. Late domain-based dispatching of <code class='backtick'>schedule_from</code> and <code class='backtick'>continues_on</code> are flipped</h3>
 <p><b>Section:</b> 33.9.2 <a href="https://wg21.link/exec.snd.expos">[exec.snd.expos]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Eric Niebler <b>Opened:</b> 2025-04-26 <b>Last modified:</b> 2025-04-27</p>
-<p><b>Priority: </b>Not Prioritized
+ <b>Submitter:</b> Eric Niebler <b>Opened:</b> 2025-04-26 <b>Last modified:</b> 2025-06-12</p>
+<p><b>Priority: </b>1
 </p>
 <p><b>View other</b> <a href="lwg-index-open.html#exec.snd.expos">active issues</a> in [exec.snd.expos].</p>
 <p><b>View all other</b> <a href="lwg-index.html#exec.snd.expos">issues</a> in [exec.snd.expos].</p>
@@ -117,6 +117,16 @@ what they are for late customization. This is a bug. They should be consistent.
 and this inconsistency was a mistake on my part. The correct thing to do is to change 
 <code><i>get-domain-late</i></code> to treat <code class='backtick'>schedule_from</code> as special, not <code class='backtick'>continues_on</code>.
 </p>
+
+<p><i>[2025-06-12; Reflector poll]</i></p>
+
+<p>
+Set priority to 1 after reflector poll.
+</p>
+<p>
+"Names are a bit misleading but the change looks right."
+</p>
+
 
 
 <p id="res-4248"><b>Proposed resolution:</b></p>
