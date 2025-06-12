@@ -79,7 +79,7 @@
 </tr>
 </table>
 <h1>C++ Standard Library Active Issues List (Revision D125)</h1>
-<p>Revised 2025-06-12 at 20:45:26 UTC
+<p>Revised 2025-06-12 at 20:47:51 UTC
 </p>
   <p>Reference ISO/IEC IS 14882:2020(E)</p>
   <p>Also see:</p>
@@ -74204,7 +74204,7 @@ of <code class='backtick'>final</code>.</ins>
 <hr>
 <h3 id="4253"><a href="#4253">4253</a><sup><a href="https://cplusplus.github.io/LWG/issue4253">(i)</a></sup>. <code class='backtick'>basic_const_iterator</code> should provide <code class='backtick'>iterator_type</code></h3>
 <p><b>Section:</b> 24.5.3.3 <a href="https://wg21.link/const.iterators.iterator">[const.iterators.iterator]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Hewill Kang <b>Opened:</b> 2025-04-29 <b>Last modified:</b> 2025-05-04</p>
+ <b>Submitter:</b> Hewill Kang <b>Opened:</b> 2025-04-29 <b>Last modified:</b> 2025-06-12</p>
 <p><b>Priority: </b>Not Prioritized
 </p>
 <p><b>View other</b> <a href="lwg-index-open.html#const.iterators.iterator">active issues</a> in [const.iterators.iterator].</p>
@@ -74256,7 +74256,7 @@ namespace std {
       <i>iter-const-rvalue-reference-t</i>&lt;Iterator&gt;;
           
     public:
-      <ins>using iterator_type = I;</ins>
+      <ins>using iterator_type = Iterator;</ins>
       using iterator_concept = <i>see below</i>;
       using iterator_category = <i>see below</i>;  // <i>not always present</i>
       using value_type = iter_value_t&lt;Iterator&gt;;
