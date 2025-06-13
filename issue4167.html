@@ -67,8 +67,8 @@ max, and minmax is unclear">
 <h3 id="4167"><a href="lwg-active.html#4167">4167</a>. Use of "smaller" and "larger" in <code>min</code>,
 <code>max</code>, and <code>minmax</code> is unclear</h3>
 <p><b>Section:</b> 26.8.9 <a href="https://wg21.link/alg.min.max">[alg.min.max]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Casey Carter <b>Opened:</b> 2024-10-20 <b>Last modified:</b> 2024-10-20</p>
-<p><b>Priority: </b>Not Prioritized
+ <b>Submitter:</b> Casey Carter <b>Opened:</b> 2024-10-20 <b>Last modified:</b> 2025-06-13</p>
+<p><b>Priority: </b>3
 </p>
 <p><b>View other</b> <a href="lwg-index-open.html#alg.min.max">active issues</a> in [alg.min.max].</p>
 <p><b>View all other</b> <a href="lwg-index.html#alg.min.max">issues</a> in [alg.min.max].</p>
@@ -101,6 +101,13 @@ it returns <code>b</code> if
 <code>invoke(comp, invoke(proj, b), invoke(proj, a))</code> yields <code>true</code>
 and <code>a</code> otherwise.
 </p>
+
+<p><i>[2025-06-13; Reflector poll]</i></p>
+
+<p>
+Set priority to 3 after reflector poll.
+</p>
+
 
 
 <p id="res-4167"><b>Proposed resolution:</b></p>
@@ -178,7 +185,7 @@ For the first form, <code>T</code> meets the
 -6- <i>Returns</i>: <del>The smallest value in the input range.
 Returns a copy of the leftmost element
 when several elements are equivalent to the smallest.</del>
-<ins>Returns a copy of the leftmost element <code>e</code>
+<ins>A copy of the leftmost element <code>e</code>
 in the input range <code>r</code> for which
 <code>bool(invoke(comp, invoke(proj, x), invoke(proj, e)))</code>
 is <code>false</code> for all elements <code>x</code> in <code>r</code>.</ins>

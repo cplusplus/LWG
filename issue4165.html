@@ -64,8 +64,8 @@
 <p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#New">New</a> status.</em></p>
 <h3 id="4165"><a href="lwg-active.html#4165">4165</a>. Should swapping a built-in array or <code class='backtick'>std::array</code> with itself result in UB?</h3>
 <p><b>Section:</b> 18.4.9 <a href="https://wg21.link/concept.swappable">[concept.swappable]</a>, 22.2.2 <a href="https://wg21.link/utility.swap">[utility.swap]</a>, 23.3.3.3 <a href="https://wg21.link/array.members">[array.members]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Jiang An <b>Opened:</b> 2024-10-13 <b>Last modified:</b> 2024-10-13</p>
-<p><b>Priority: </b>Not Prioritized
+ <b>Submitter:</b> Jiang An <b>Opened:</b> 2024-10-13 <b>Last modified:</b> 2025-06-13</p>
+<p><b>Priority: </b>3
 </p>
 <p><b>View other</b> <a href="lwg-index-open.html#concept.swappable">active issues</a> in [concept.swappable].</p>
 <p><b>View all other</b> <a href="lwg-index.html#concept.swappable">issues</a> in [concept.swappable].</p>
@@ -84,6 +84,21 @@ don't refer to the same object. Should we make self-swapping of arrays well-defi
 perhaps we should change the semantics to plain loops that execute <code class='backtick'>swap</code> or <code class='backtick'>ranges::swap</code> on 
 elements.
 </p>
+
+<p><i>[2025-06-13; Reflector poll]</i></p>
+
+<p>
+Set priority to 3 after reflector poll.
+</p>
+<p>
+Instead of a loop I'd prefer something like:
+<blockquote>
+<i>Effects</i>:
+If <code class='backtick'>addressof(a) == addressof(b)</code>, no effects.
+Otherwise, equivalent to <code class='backtick'>swap_ranges(begin(a), end(a), begin(b))</code>.
+</blockquote>
+</p>
+
 
 
 <p id="res-4165"><b>Proposed resolution:</b></p>

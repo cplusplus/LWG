@@ -54,7 +54,7 @@
 </style>
 </head>
 <body>
-<p>Revised 2025-06-13 at 09:08:59 UTC
+<p>Revised 2025-06-13 at 11:47:07 UTC
 </p><h2>Unresolved Issues</h2>
 <hr>
 <h3 id="423"><a href="#423">423</a><sup><a href="https://cplusplus.github.io/LWG/issue423">(i)</a></sup>. Effects of negative <code>streamsize</code> in iostreams</h3>
@@ -63880,8 +63880,8 @@ on average.</ins>
 <hr>
 <h3 id="4165"><a href="#4165">4165</a><sup><a href="https://cplusplus.github.io/LWG/issue4165">(i)</a></sup>. Should swapping a built-in array or <code class='backtick'>std::array</code> with itself result in UB?</h3>
 <p><b>Section:</b> 18.4.9 <a href="https://wg21.link/concept.swappable">[concept.swappable]</a>, 22.2.2 <a href="https://wg21.link/utility.swap">[utility.swap]</a>, 23.3.3.3 <a href="https://wg21.link/array.members">[array.members]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Jiang An <b>Opened:</b> 2024-10-13 <b>Last modified:</b> 2024-10-13</p>
-<p><b>Priority: </b>Not Prioritized
+ <b>Submitter:</b> Jiang An <b>Opened:</b> 2024-10-13 <b>Last modified:</b> 2025-06-13</p>
+<p><b>Priority: </b>3
 </p>
 <p><b>View other</b> <a href="lwg-index-open.html#concept.swappable">active issues</a> in [concept.swappable].</p>
 <p><b>View all other</b> <a href="lwg-index.html#concept.swappable">issues</a> in [concept.swappable].</p>
@@ -63900,6 +63900,21 @@ don't refer to the same object. Should we make self-swapping of arrays well-defi
 perhaps we should change the semantics to plain loops that execute <code class='backtick'>swap</code> or <code class='backtick'>ranges::swap</code> on 
 elements.
 </p>
+
+<p><i>[2025-06-13; Reflector poll]</i></p>
+
+<p>
+Set priority to 3 after reflector poll.
+</p>
+<p>
+Instead of a loop I'd prefer something like:
+<blockquote>
+<i>Effects</i>:
+If <code class='backtick'>addressof(a) == addressof(b)</code>, no effects.
+Otherwise, equivalent to <code class='backtick'>swap_ranges(begin(a), end(a), begin(b))</code>.
+</blockquote>
+</p>
+
 
 
 <p id="res-4165"><b>Proposed resolution:</b></p>
@@ -64051,8 +64066,8 @@ if constexpr (<ins><i>all-forward</i>&lt;<i>is-const</i>, Views...&gt; &amp;&amp
 <h3 id="4167"><a href="#4167">4167</a><sup><a href="https://cplusplus.github.io/LWG/issue4167">(i)</a></sup>. Use of "smaller" and "larger" in <code>min</code>,
 <code>max</code>, and <code>minmax</code> is unclear</h3>
 <p><b>Section:</b> 26.8.9 <a href="https://wg21.link/alg.min.max">[alg.min.max]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Casey Carter <b>Opened:</b> 2024-10-20 <b>Last modified:</b> 2024-10-20</p>
-<p><b>Priority: </b>Not Prioritized
+ <b>Submitter:</b> Casey Carter <b>Opened:</b> 2024-10-20 <b>Last modified:</b> 2025-06-13</p>
+<p><b>Priority: </b>3
 </p>
 <p><b>View other</b> <a href="lwg-index-open.html#alg.min.max">active issues</a> in [alg.min.max].</p>
 <p><b>View all other</b> <a href="lwg-index.html#alg.min.max">issues</a> in [alg.min.max].</p>
@@ -64085,6 +64100,13 @@ it returns <code>b</code> if
 <code>invoke(comp, invoke(proj, b), invoke(proj, a))</code> yields <code>true</code>
 and <code>a</code> otherwise.
 </p>
+
+<p><i>[2025-06-13; Reflector poll]</i></p>
+
+<p>
+Set priority to 3 after reflector poll.
+</p>
+
 
 
 <p id="res-4167"><b>Proposed resolution:</b></p>
@@ -64162,7 +64184,7 @@ For the first form, <code>T</code> meets the
 -6- <i>Returns</i>: <del>The smallest value in the input range.
 Returns a copy of the leftmost element
 when several elements are equivalent to the smallest.</del>
-<ins>Returns a copy of the leftmost element <code>e</code>
+<ins>A copy of the leftmost element <code>e</code>
 in the input range <code>r</code> for which
 <code>bool(invoke(comp, invoke(proj, x), invoke(proj, e)))</code>
 is <code>false</code> for all elements <code>x</code> in <code>r</code>.</ins>
@@ -66033,8 +66055,8 @@ is specified.
 <hr>
 <h3 id="4210"><a href="#4210">4210</a><sup><a href="https://cplusplus.github.io/LWG/issue4210">(i)</a></sup>. Issue with <code>cache_latest_view::<i>iterator</i></code>'s reference type </h3>
 <p><b>Section:</b> 25.7.34.3 <a href="https://wg21.link/range.cache.latest.iterator">[range.cache.latest.iterator]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Hewill Kang <b>Opened:</b> 2025-02-09 <b>Last modified:</b> 2025-02-09</p>
-<p><b>Priority: </b>Not Prioritized
+ <b>Submitter:</b> Hewill Kang <b>Opened:</b> 2025-02-09 <b>Last modified:</b> 2025-06-13</p>
+<p><b>Priority: </b>3
 </p>
 <p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
 <p><b>Discussion:</b></p>
@@ -66079,6 +66101,13 @@ to preserve the original ref-qualifiers as much as possible (I don't see any dis
 in the original paper), or not provide a specialized <code>iter_move</code>, since it's intuitive to have 
 the default <code>iter_move</code> return an rvalue when it always returns an lvalue.
 </p>
+
+<p><i>[2025-06-13; Reflector poll]</i></p>
+
+<p>
+Set priority to 3 after reflector poll.
+</p>
+
 
 
 <p id="res-4210"><b>Proposed resolution:</b></p>
@@ -66244,8 +66273,8 @@ chain of links does not terminate in a <code class='backtick'>time_zone</code>.
 <hr>
 <h3 id="4212"><a href="#4212">4212</a><sup><a href="https://cplusplus.github.io/LWG/issue4212">(i)</a></sup>. Make the round states in [rand.eng.philox] explicit</h3>
 <p><b>Section:</b> 29.5.4.5 <a href="https://wg21.link/rand.eng.philox">[rand.eng.philox]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Thomas Köppe <b>Opened:</b> 2025-02-12 <b>Last modified:</b> 2025-02-24</p>
-<p><b>Priority: </b>Not Prioritized
+ <b>Submitter:</b> Thomas Köppe <b>Opened:</b> 2025-02-12 <b>Last modified:</b> 2025-06-13</p>
+<p><b>Priority: </b>3
 </p>
 <p><b>View other</b> <a href="lwg-index-open.html#rand.eng.philox">active issues</a> in [rand.eng.philox].</p>
 <p><b>View all other</b> <a href="lwg-index.html#rand.eng.philox">issues</a> in [rand.eng.philox].</p>
@@ -66270,6 +66299,13 @@ It seems convenient to change the round counter <math><mi>q</mi></math> to be 1-
 is an alias for the initial value, <math><mi>X</mi></math>), so that the final result is 
 <math><msup><mi>X</mi><mrow><mo>(</mo><mi>r</mi><mo>)</mo></mrow></msup></math>.
 </p>
+
+<p><i>[2025-06-13; Reflector poll]</i></p>
+
+<p>
+Set priority to 3 after reflector poll.
+</p>
+
 
 
 <p id="res-4212"><b>Proposed resolution:</b></p>
@@ -66561,8 +66597,8 @@ and <code>F</code> are indeterminately sequenced.
 <hr>
 <h3 id="4215"><a href="#4215">4215</a><sup><a href="https://cplusplus.github.io/LWG/issue4215">(i)</a></sup>. <code class='backtick'>run_loop::finish</code> should be <code class='backtick'>noexcept</code></h3>
 <p><b>Section:</b> 33.12.1 <a href="https://wg21.link/exec.run.loop">[exec.run.loop]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Eric Niebler <b>Opened:</b> 2025-02-13 <b>Last modified:</b> 2025-02-23</p>
-<p><b>Priority: </b>Not Prioritized
+ <b>Submitter:</b> Eric Niebler <b>Opened:</b> 2025-02-13 <b>Last modified:</b> 2025-06-13</p>
+<p><b>Priority: </b>2
 </p>
 <p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
 <p><b>Discussion:</b></p>
@@ -66617,6 +66653,17 @@ Simply put, <code class='backtick'>run_loop::finish()</code> has to be <code cla
 into the <code><i>finishing</i></code> state. If it cannot, it should terminate. Throwing an exception and foisting the 
 problem on the caller &mdash; who has no recourse &mdash; is simply wrong.
 </p>
+
+<p><i>[2025-06-13; Reflector poll]</i></p>
+
+<p>
+Set priority to 2 after reflector poll.
+</p>
+<p>
+"If this can call <code class='backtick'>terminate()</code>, we should explicitly say so
+(c.f. 32.7.4 <a href="https://wg21.link/thread.condition.condvar">[thread.condition.condvar]</a> p11)"
+</p>
+
 
 
 <p id="res-4215"><b>Proposed resolution:</b></p>
@@ -66688,8 +66735,8 @@ void finish() <ins>noexcept</ins>;
 <hr>
 <h3 id="4216"><a href="#4216">4216</a><sup><a href="https://cplusplus.github.io/LWG/issue4216">(i)</a></sup>. <code class='backtick'>num_put::do_put</code> and <code class='backtick'>void</code> pointers</h3>
 <p><b>Section:</b> 28.3.4.3.3.3 <a href="https://wg21.link/facet.num.put.virtuals">[facet.num.put.virtuals]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Nikolas Klauser <b>Opened:</b> 2025-02-26 <b>Last modified:</b> 2025-03-02</p>
-<p><b>Priority: </b>Not Prioritized
+ <b>Submitter:</b> Nikolas Klauser <b>Opened:</b> 2025-02-26 <b>Last modified:</b> 2025-06-13</p>
+<p><b>Priority: </b>3
 </p>
 <p><b>View other</b> <a href="lwg-index-open.html#facet.num.put.virtuals">active issues</a> in [facet.num.put.virtuals].</p>
 <p><b>View all other</b> <a href="lwg-index.html#facet.num.put.virtuals">issues</a> in [facet.num.put.virtuals].</p>
@@ -66711,6 +66758,25 @@ fix that, the output of <code class='backtick'>num_put::do_put</code> no longer 
 decades, indicating that nobody seems to have a problem with
 <code class='backtick'>num_put::do_put</code> and <code class='backtick'>printf</code> having different results in some rare cases.
 </p>
+
+<p><i>[2025-06-13; Reflector poll]</i></p>
+
+<p>
+Set priority to 3 after reflector poll.
+</p>
+<p>
+We could emphasize that calling <code class='backtick'>printf</code> isn't actually intended:
+<blockquote>
+The representations at the end of stage 1 consists of the <code class='backtick'>char</code>'s
+that would be printed by a call of <code class='backtick'>printf(s, val)</code>
+<ins>in a hypothetical implementation</ins>,
+where <code class='backtick'>s</code> is the conversion specifier determined above.
+</blockquote>
+</p>
+<p>
+Why is there an apostrophe in <code class='backtick'>char</code>'s?
+</p>
+
 
 
 <p id="res-4216"><b>Proposed resolution:</b></p>
@@ -66761,81 +66827,10 @@ implementation-defined behavior of <code class='backtick'>printf</code> may be d
 
 
 <hr>
-<h3 id="4217"><a href="#4217">4217</a><sup><a href="https://cplusplus.github.io/LWG/issue4217">(i)</a></sup>. Clarify <code class='backtick'>mdspan</code> layout mapping requirements for <code class='backtick'>rank == 0</code></h3>
-<p><b>Section:</b> 23.7.3.4.2 <a href="https://wg21.link/mdspan.layout.reqmts">[mdspan.layout.reqmts]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Mark Hoemmen <b>Opened:</b> 2025-03-03 <b>Last modified:</b> 2025-03-09</p>
-<p><b>Priority: </b>Not Prioritized
-</p>
-<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
-<p><b>Discussion:</b></p>
-<p>
-23.7.3.4.2 <a href="https://wg21.link/mdspan.layout.reqmts">[mdspan.layout.reqmts]</a> p19-21 says that a layout mapping needs to
-provide <code class='backtick'>m.stride(r)</code>. However, 23.7.3.4.5.3 <a href="https://wg21.link/mdspan.layout.left.obs">[mdspan.layout.left.obs]</a> p5 constrains
-<code>layout_left::mapping&lt;Extents&gt;::stride(r)</code> on <code>Extents::rank() &gt; 0</code>
-being <code class='backtick'>true</code>. The same is true of <code class='backtick'>layout_right::mapping</code>
-(23.7.3.4.6.3 <a href="https://wg21.link/mdspan.layout.right.obs">[mdspan.layout.right.obs]</a> p5). (The other Standard mappings in
-23.7.3 <a href="https://wg21.link/views.multidim">[views.multidim]</a> and 29.9 <a href="https://wg21.link/linalg">[linalg]</a> do not have this constraint.)  
-This suggests that a rank-zero <code class='backtick'>layout_{left,right}::mapping</code> does not
-conform with the layout mapping requirements.
-<p/>
-On the other hand, other parts of 23.7.3.4.2 <a href="https://wg21.link/mdspan.layout.reqmts">[mdspan.layout.reqmts]</a> imply that
-<code class='backtick'>r</code> must be in the range [0, <code class='backtick'>rank()</code>) for the layout mapping's
-extents type. If such an <code class='backtick'>r</code> does not exist, which is the case for a
-rank-zero layout mapping, then the <code class='backtick'>m.stride(r)</code> requirement is
-vacuous. This implies that a rank-zero <code class='backtick'>layout_{left,right}::mapping</code>
-fully conforms with the layout mapping requirements.
-<p/>
-It is definitely the design intent for rank-zero <code class='backtick'>mdspan</code> to work, and
-for it to represent a view of a single element. Users can create
-rank-zero <code class='backtick'>mdspan</code> by invoking its constructor, or by using
-<code class='backtick'>submdspan</code> where all the slice arguments are convertible to
-<code class='backtick'>index_type</code>. Even though the normative wording permits this, adding
-a <i>Note</i> would clarify the design intent without making the wording
-redundant. This was the preferred change per LWG reflector
-discussion.
-</p>
-
-
-<p id="res-4217"><b>Proposed resolution:</b></p>
-<p>
-This wording is relative to <a href="https://wg21.link/N5001">N5001</a>.
-</p>
-
-<ol>
-<li><p>Modify 23.7.3.4.2 <a href="https://wg21.link/mdspan.layout.reqmts">[mdspan.layout.reqmts]</a> as indicated:</p>
-
-<blockquote>
-<pre>
-m.stride(r)
-</pre>
-<blockquote>
-<p>
--19- <i>Preconditions</i>: <code class='backtick'>m.is_strided()</code> is <code class='backtick'>true</code>.
-<p/>
--20- <i>Result</i>: <code class='backtick'>typename M::index_type</code>
-<p/>
--21- <i>Returns</i>: <code class='backtick'>sr</code> as defined in <code class='backtick'>m.is_strided()</code> above.
-<p/>
-<ins>[<i>Note ?</i>: It is not required for <code class='backtick'>m.stride(r)</code> to be well-formed if
-<code class='backtick'>m.extents().rank()</code> is zero, even if <code class='backtick'>m.is_always_strided()</code> is <code class='backtick'>true</code>. &mdash; 
-<i>end note</i>]</ins>
-</p>
-</blockquote>
-</blockquote>
-</li>
-
-</ol>
-
-
-
-
-
-
-<hr>
 <h3 id="4218"><a href="#4218">4218</a><sup><a href="https://cplusplus.github.io/LWG/issue4218">(i)</a></sup>. Constraint recursion in <code class='backtick'>basic_const_iterator</code>'s relational operators due to ADL + CWG 2369</h3>
 <p><b>Section:</b> 24.5.3.5 <a href="https://wg21.link/const.iterators.ops">[const.iterators.ops]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Patrick Palka <b>Opened:</b> 2025-03-03 <b>Last modified:</b> 2025-03-09</p>
-<p><b>Priority: </b>Not Prioritized
+ <b>Submitter:</b> Patrick Palka <b>Opened:</b> 2025-03-03 <b>Last modified:</b> 2025-06-13</p>
+<p><b>Priority: </b>2
 </p>
 <p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
 <p><b>Discussion:</b></p>
@@ -66904,6 +66899,13 @@ operand that isn't a specialization of <code class='backtick'>basic_const_iterat
 LWG <a href="lwg-defects.html#3769" title="basic_const_iterator::operator== causes infinite constraint recursion (Status: C++23)">3769</a><sup><a href="https://cplusplus.github.io/LWG/issue3769" title="Latest snapshot">(i)</a></sup> is an earlier issue about constraint recursion in <code class='backtick'>basic_const_iterator</code>'s
 operators, but there the recursion was independent of CWG 2369.
 </p>
+
+<p><i>[2025-06-13; Reflector poll]</i></p>
+
+<p>
+Set priority to 2 after reflector poll.
+</p>
+
 
 
 <p id="res-4218"><b>Proposed resolution:</b></p>
@@ -67207,110 +67209,6 @@ ranges, which do not support all valid ranges.
 
 
 <hr>
-<h3 id="4222"><a href="#4222">4222</a><sup><a href="https://cplusplus.github.io/LWG/issue4222">(i)</a></sup>. <code class='backtick'>expected</code> constructor from a single value missing a constraint</h3>
-<p><b>Section:</b> 22.8.6.2 <a href="https://wg21.link/expected.object.cons">[expected.object.cons]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Bronek Kozicki <b>Opened:</b> 2025-03-12 <b>Last modified:</b> 2025-03-15</p>
-<p><b>Priority: </b>Not Prioritized
-</p>
-<p><b>View all other</b> <a href="lwg-index.html#expected.object.cons">issues</a> in [expected.object.cons].</p>
-<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
-<p><b>Discussion:</b></p>
-<p>
-When an <code class='backtick'>expected</code> object is initialized with a constructor taking first parameter of type <code class='backtick'>unexpect_t</code> , 
-the expectation is that the object will be always initialized in disengaged state (i.e. the user expected 
-postcondition is that <code class='backtick'>has_value()</code> will be <code class='backtick'>false</code>), as in the example:
-</p>
-<blockquote><pre>
-struct T { explicit T(auto) {} };
-struct E { E() {} };
-
-int main() {
-  expected&lt;T, E&gt; a(unexpect);
-  assert(!a.has_value());
-}
-</pre></blockquote>
-<p>
-This does not hold when both value type <code class='backtick'>T</code> and error type <code class='backtick'>E</code> have certain properties. Observe:
-</p>
-<blockquote><pre>
-struct T { explicit T(auto) {} };
-struct E { E(int) {} }; // <span style="color:red;font-weight:bolder">Only this line changed from the above example</span>
-
-int main() {
-  expected&lt;T, E&gt; a(unexpect);
-  assert(!a.has_value()); // <span style="color:red;font-weight:bolder">This assert will now fail</span>
-}
-</pre></blockquote>
-<p>
-In the example above the overload resolution of <code class='backtick'>a</code> finds the universal single parameter constructor for 
-initializing <code class='backtick'>expected</code> in engaged state (22.8.6.2 <a href="https://wg21.link/expected.object.cons">[expected.object.cons]</a> p23):
-</p>
-<blockquote><pre>
-template&lt;class U = remove_cv_t&lt;T&gt;&gt;
-  constexpr explicit(!is_convertible_v&lt;U, T&gt;) expected(U&amp;&amp; v);
-</pre></blockquote>
-<p>
-This constructor has a list of constraints which does not mention <code class='backtick'>unexpect_t</code> (but it mentions e.g. <code class='backtick'>unexpected</code> and 
-<code class='backtick'>in_place_t</code>). Email exchange with the author of <code class='backtick'>expected</code> confirmed that it is an omission.
-<p/>
-The proposed resolution is to add the following additional constraint to this constructor:
-</p>
-<blockquote><p>
-<ins><code>is_same_v&lt;remove_cvref_t&lt;U&gt;, unexpect_t&gt;</code> is <code class='backtick'>false</code></ins>
-</p></blockquote>
-<p>
-This will result in the above, most likely buggy, program to become ill-formed. If the user intent was for the object 
-to be constructed in an engaged state, passing <code class='backtick'>unexpect_t</code> to the <code class='backtick'>T</code> constructor, they can fix the compilation error 
-like so:
-</p>
-<blockquote><pre>
-expected&lt;T, E&gt; a(in_place, unexpect);
-</pre></blockquote>
-
-
-<p id="res-4222"><b>Proposed resolution:</b></p>
-<p>
-This wording is relative to <a href="https://wg21.link/N5001">N5001</a>.
-</p>
-
-<ol>
-
-<li><p>Modify 22.8.6.2 <a href="https://wg21.link/expected.object.cons">[expected.object.cons]</a> as indicated:</p>
-
-<blockquote>
-<pre>
-template&lt;class U = remove_cv_t&lt;T&gt;&gt;
-constexpr explicit(!is_convertible_v&lt;U, T&gt;) expected(U&amp;&amp; v);
-</pre>
-<blockquote>
-<p>
--23- <i>Constraints</i>:
-</p>
-<ol style="list-style-type: none">
-<li><p>(23.1) &mdash; <code>is_same_v&lt;remove_cvref_t&lt;U&gt;, in_place_t&gt;</code> is <code class='backtick'>false</code>; and</p></li>
-<li><p>(23.2) &mdash; <code>is_same_v&lt;expected, remove_cvref_t&lt;U&gt;&gt;</code> is <code class='backtick'>false</code>; and</p></li>
-<li><p><ins>(23.?) &mdash; <code>is_same_v&lt;remove_cvref_t&lt;U&gt;, unexpect_t&gt;</code> is <code class='backtick'>false</code>; and</ins></p></li>
-<li><p>(23.3) &mdash; <code>remove_cvref_t&lt;U&gt;</code> is not a specialization of <code class='backtick'>unexpected</code>; and</p></li>
-<li><p>(23.4) &mdash; <code>is_constructible_v&lt;T, U&gt;</code> is <code class='backtick'>true</code>; and</p></li>
-<li><p>(23.5) &mdash; if <code class='backtick'>T</code> is <i>cv</i> <code class='backtick'>bool</code>, <code>remove_cvref_t&lt;U&gt;</code> is not a specialization of <code class='backtick'>expected</code>.</p></li>
-</ol>
-<p>
--24- <i>Effects</i>: Direct-non-list-initializes <code><i>val</i></code> with <code>std::forward&lt;U&gt;(v)</code>.
-<p/>
--25- <i>Postconditions</i>: <code class='backtick'>has_value()</code> is <code class='backtick'>true</code>.
-<p/>
--26- <i>Throws</i>: Any exception thrown by the initialization of <code><i>val</i></code>.
-</p>
-</blockquote>
-</blockquote>
-</li>
-</ol>
-
-
-
-
-
-<hr>
 <h3 id="4223"><a href="#4223">4223</a><sup><a href="https://cplusplus.github.io/LWG/issue4223">(i)</a></sup>. Deduction guides for maps are mishandling tuples and references</h3>
 <p><b>Section:</b> 23.4.1 <a href="https://wg21.link/associative.general">[associative.general]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
  <b>Submitter:</b> Tomasz Kaminski <b>Opened:</b> 2025-03-14 <b>Last modified:</b> 2025-03-15</p>
@@ -67419,73 +67317,6 @@ template&lt;ranges::input_range Range&gt;
 
 
 <hr>
-<h3 id="4224"><a href="#4224">4224</a><sup><a href="https://cplusplus.github.io/LWG/issue4224">(i)</a></sup>. Philox engines should be freestanding</h3>
-<p><b>Section:</b> 29.5.4.5 <a href="https://wg21.link/rand.eng.philox">[rand.eng.philox]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Jiang An <b>Opened:</b> 2025-03-15 <b>Last modified:</b> 2025-03-15</p>
-<p><b>Priority: </b>Not Prioritized
-</p>
-<p><b>View other</b> <a href="lwg-index-open.html#rand.eng.philox">active issues</a> in [rand.eng.philox].</p>
-<p><b>View all other</b> <a href="lwg-index.html#rand.eng.philox">issues</a> in [rand.eng.philox].</p>
-<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
-<p><b>Discussion:</b></p>
-<p>
-Philox engines don't seem to require floating-point operations or support from the operating system, 
-so they are probably suitable for freestanding. However, as <a href="https://wg21.link/P2976R1" title=" Freestanding Library: algorithm, numeric, and random">P2976R1</a> was finished before 
-the adoption of <a href="https://wg21.link/P2075R6" title=" Philox as an extension of the C++ RNG engines">P2075R6</a>, these engines are not made freestanding yet.
-</p>
-
-
-<p id="res-4224"><b>Proposed resolution:</b></p>
-<p>
-This wording is relative to <a href="https://wg21.link/N5001">N5001</a>.
-</p>
-
-<ol>
-
-<li><p>Modify 29.5.2 <a href="https://wg21.link/rand.synopsis">[rand.synopsis]</a>, header <code>&lt;random&gt;</code> synopsis, as indicated:</p>
-
-<blockquote>
-<pre>
-[&hellip;]
-// <i>29.5.4.5 <a href="https://wg21.link/rand.eng.philox">[rand.eng.philox]</a>, class template philox_engine</i>
-template&lt;class UIntType, size_t w, size_t n, size_t r, UIntType... consts&gt;
-  class philox_engine;               <ins>// <i>partially freestanding</i></ins>
-
-[&hellip;]
-using philox4x32 = <i>see below</i>; <ins>// <i>freestanding</i></ins>
-using philox4x64 = <i>see below</i>; <ins>// <i>freestanding</i></ins>
-[&hellip;]
-</pre>
-</blockquote>
-</li>
-
-<li><p>Modify 29.5.4.5 <a href="https://wg21.link/rand.eng.philox">[rand.eng.philox]</a>, class template <code class='backtick'>philox_engine</code> synopsis, as indicated:</p>
-
-<blockquote>
-<pre>
-namespace std {
-  template&lt;class UIntType, size_t w, size_t n, size_t r, UIntType... consts&gt;
-  class philox_engine {
-    [&hellip;]  
-    // <i>inserters and extractors</i>
-    template&lt;class charT, class traits&gt;
-      friend basic_ostream&lt;charT, traits&gt;&amp;
-        operator&lt;&lt;(basic_ostream&lt;charT, traits&gt;&amp; os, const philox_engine&amp; x); <ins>// <i>hosted</i></ins>
-    template&lt;class charT, class traits&gt;
-      friend basic_istream&lt;charT, traits&gt;&amp;
-        operator&gt;&gt;(basic_istream&lt;charT, traits&gt;&amp; is, philox_engine&amp; x);       <ins>// <i>hosted</i></ins>
-  };
-}
-</pre>
-</blockquote>
-</li>
-</ol>
-
-
-
-
-
-<hr>
 <h3 id="4225"><a href="#4225">4225</a><sup><a href="https://cplusplus.github.io/LWG/issue4225">(i)</a></sup>. What should happen when an exception is thrown on resizing <code class='backtick'>std::deque</code>, <code class='backtick'>std::forward_list</code>, or <code class='backtick'>std::list</code>?</h3>
 <p><b>Section:</b> 23.3.5.3 <a href="https://wg21.link/deque.capacity">[deque.capacity]</a>, 23.3.7.5 <a href="https://wg21.link/forward.list.modifiers">[forward.list.modifiers]</a>, 23.3.11.3 <a href="https://wg21.link/list.capacity">[list.capacity]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
  <b>Submitter:</b> Jiang An <b>Opened:</b> 2025-03-15 <b>Last modified:</b> 2025-03-15</p>
@@ -67518,8 +67349,8 @@ as much as possible that of <code class='backtick'>std::vector</code>.
 <hr>
 <h3 id="4226"><a href="#4226">4226</a><sup><a href="https://cplusplus.github.io/LWG/issue4226">(i)</a></sup>. <code>to_input_view::<i>iterator</i></code> cannot be compared to its <code class='backtick'>const</code> sentinel</h3>
 <p><b>Section:</b> 25.7.35 <a href="https://wg21.link/range.to.input">[range.to.input]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Hewill Kang <b>Opened:</b> 2025-03-15 <b>Last modified:</b> 2025-03-22</p>
-<p><b>Priority: </b>Not Prioritized
+ <b>Submitter:</b> Hewill Kang <b>Opened:</b> 2025-03-15 <b>Last modified:</b> 2025-06-13</p>
+<p><b>Priority: </b>2
 </p>
 <p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
 <p><b>Discussion:</b></p>
@@ -67562,6 +67393,13 @@ sentinel type, which rules out <code>to_input_view::<i>iterator</i></code>, so t
 <p/>
 I believe we may need to introduce a custom sentinel class for <code>to_input_view</code>.
 </p>
+
+<p><i>[2025-06-13; Reflector poll]</i></p>
+
+<p>
+Set priority to 2 after reflector poll.
+</p>
+
 
 
 <p id="res-4226"><b>Proposed resolution:</b></p>
@@ -67775,124 +67613,6 @@ friend constexpr range_difference_t&lt;<i>maybe-const</i>&lt;OtherConst, V&gt;&g
 
 
 <hr>
-<h3 id="4227"><a href="#4227">4227</a><sup><a href="https://cplusplus.github.io/LWG/issue4227">(i)</a></sup>. Missing <code class='backtick'>noexcept</code> operator in [exec.when.all]</h3>
-<p><b>Section:</b> 33.9.12.11 <a href="https://wg21.link/exec.when.all">[exec.when.all]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Ian Petersen <b>Opened:</b> 2025-03-17 <b>Last modified:</b> 2025-03-22</p>
-<p><b>Priority: </b>Not Prioritized
-</p>
-<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
-<p><b>Discussion:</b></p>
-<p>
-In 33.9.12.11 <a href="https://wg21.link/exec.when.all">[exec.when.all]</a> p7, the <code><i>impls-for</i>&lt;when_all_t&gt;::<i>get-state</i></code> 
-member is defined to be equivalent to the following lambda:
-</p>
-<blockquote><pre>
-[]&lt;class Sndr, class Rcvr&gt;(Sndr&amp;&amp; sndr, Rcvr&amp; rcvr) noexcept(<i>e</i>) -> decltype(<i>e</i>) {
-  return <i>e</i>;
-}
-</pre></blockquote>
-<p>
-and <code><i>e</i></code> is later defined to be:
-</p>
-<blockquote><pre>
-std::forward&lt;Sndr&gt;(sndr).apply(<i>make-state</i>&lt;Rcvr&gt;())
-</pre></blockquote>
-<p>
-Together, the two definitions imply that the <code class='backtick'>noexcept</code> clause on the provided lambda is:
-</p>
-<blockquote><pre>
-noexcept(std::forward&lt;Sndr&gt;(sndr).apply(<i>make-state</i>&lt;Rcvr&gt;()))
-</pre></blockquote>
-<p>
-which is invalid.
-<p/>
-Presumably, the lambda should be defined like so (with an extra <code class='backtick'>noexcept</code> operator in the <code class='backtick'>noexcept</code> clause):
-</p>
-<blockquote><pre>
-[]&lt;class Sndr, class Rcvr&gt;(Sndr&amp;&amp; sndr, Rcvr&amp; rcvr) noexcept(<ins>noexcept(</ins><i>e</i><ins>)</ins>) -&gt; decltype(<i>e</i>) {
-  return <i>e</i>;
-}
-</pre></blockquote>
-
-
-<p id="res-4227"><b>Proposed resolution:</b></p>
-<p>
-This wording is relative to <a href="https://wg21.link/N5008">N5008</a>.
-</p>
-
-<ol>
-
-<li><p>Modify 33.9.12.11 <a href="https://wg21.link/exec.when.all">[exec.when.all]</a> as indicated:</p>
-
-<blockquote>
-<p>
--7- The member <code><i>impls-for</i>&lt;when_all_t&gt;::<i>get-state</i></code> is initialized with a callable object 
-equivalent to the following lambda expression:
-</p>
-<blockquote><pre>
-[]&lt;class Sndr, class Rcvr&gt;(Sndr&amp;&amp; sndr, Rcvr&amp; rcvr) noexcept(<ins>noexcept(</ins><i>e</i><ins>)</ins>) -&gt; decltype(<i>e</i>) {
-  return <i>e</i>;
-}
-</pre></blockquote>
-</blockquote>
-</li>
-
-</ol>
-
-
-
-
-
-<hr>
-<h3 id="4228"><a href="#4228">4228</a><sup><a href="https://cplusplus.github.io/LWG/issue4228">(i)</a></sup>. Does <code>vector&lt;bool, Allocator&gt;</code> mandate that <code class='backtick'>Allocator::value_type</code> is <code class='backtick'>bool</code>?</h3>
-<p><b>Section:</b> 23.3.14.1 <a href="https://wg21.link/vector.bool.pspc">[vector.bool.pspc]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Stephan T. Lavavej <b>Opened:</b> 2025-03-18 <b>Last modified:</b> 2025-03-22</p>
-<p><b>Priority: </b>Not Prioritized
-</p>
-<p><b>View all other</b> <a href="lwg-index.html#vector.bool.pspc">issues</a> in [vector.bool.pspc].</p>
-<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
-<p><b>Discussion:</b></p>
-<p>
-<a href="https://wg21.link/N5008">N5008</a> 23.3.14.1 <a href="https://wg21.link/vector.bool.pspc">[vector.bool.pspc]</a>/2 says:
-</p>
-<blockquote style="border-left: 3px solid #ccc;padding-left: 15px;">
-<p>
-Unless described below, all operations have the same requirements and semantics as the primary <code class='backtick'>vector</code> template, 
-except that operations dealing with the <code class='backtick'>bool</code> value type map to bit values in the container storage and 
-<code class='backtick'>allocator_traits::construct</code> (20.2.9.3 <a href="https://wg21.link/allocator.traits.members">[allocator.traits.members]</a>) is not used to construct these values.
-</p>
-</blockquote>
-<p>
-23.2.2.5 <a href="https://wg21.link/container.alloc.reqmts">[container.alloc.reqmts]</a>/5 says:
-</p>
-<blockquote style="border-left: 3px solid #ccc;padding-left: 15px;">
-<p>
-<i>Mandates</i>: <code class='backtick'>allocator_type::value_type</code> is the same as <code class='backtick'>X::value_type</code>.
-</p>
-</blockquote>
-<p>
-Is <code>vector&lt;bool, allocator&lt;int&gt;&gt;</code> forbidden? There's implementation divergence: 
-MSVC's STL enforces the mandate, while libc++ and libstdc++ accept this code, discovered while 
-running libc++'s tests with MSVC's STL.
-<p/>
-Preferred resolution: I would be satisfied with resolving this as NAD, with a record that LWG believes 
-that "all operations have the same requirements" means that the <i>Mandate</i> applies. I suppose that 
-an editorial note could also be added to this effect, although I don't believe it's necessary.
-<p/>
-Alternate resolution: If LWG believes that the <i>Mandate</i> does not apply, and that <code>vector&lt;bool&gt;</code> 
-should be unique among containers in accepting <code>allocator&lt;Anything&gt;</code>, then I believe that 
-a normative sentence should be added to 23.3.14.1 <a href="https://wg21.link/vector.bool.pspc">[vector.bool.pspc]</a>/2, specifically creating an exemption 
-to 23.2.2.5 <a href="https://wg21.link/container.alloc.reqmts">[container.alloc.reqmts]</a>/5.
-</p>
-
-
-<p id="res-4228"><b>Proposed resolution:</b></p>
-
-
-
-
-
-<hr>
 <h3 id="4229"><a href="#4229">4229</a><sup><a href="https://cplusplus.github.io/LWG/issue4229">(i)</a></sup>. <code class='backtick'>std::ranges::to</code> with union return type</h3>
 <p><b>Section:</b> 25.5.7.2 <a href="https://wg21.link/range.utility.conv.to">[range.utility.conv.to]</a>, 25.5.7.3 <a href="https://wg21.link/range.utility.conv.adaptors">[range.utility.conv.adaptors]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
  <b>Submitter:</b> Jiang An <b>Opened:</b> 2025-03-20 <b>Last modified:</b> 2025-03-22</p>
@@ -68021,8 +67741,8 @@ template&lt;template&lt;class...&gt; class C, class... Args&gt;
 <hr>
 <h3 id="4230"><a href="#4230">4230</a><sup><a href="https://cplusplus.github.io/LWG/issue4230">(i)</a></sup>. <code>simd&lt;complex&gt;::real/imag</code> is overconstrained</h3>
 <p><b>Section:</b> 29.10.7.4 <a href="https://wg21.link/simd.complex.access">[simd.complex.access]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Matthias Kretz <b>Opened:</b> 2025-03-18 <b>Last modified:</b> 2025-03-22</p>
-<p><b>Priority: </b>Not Prioritized
+ <b>Submitter:</b> Matthias Kretz <b>Opened:</b> 2025-03-18 <b>Last modified:</b> 2025-06-13</p>
+<p><b>Priority: </b>2
 </p>
 <p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
 <p><b>Discussion:</b></p>
@@ -68054,6 +67774,13 @@ complex&lt;double&gt; c{1., 1.f};
 simd&lt;complex&lt;double&gt;&gt; sc0(1., 1.);
 simd&lt;complex&lt;double&gt;, 4&gt; sc1(simd&lt;double, 4&gt;(1.), simd&lt;float, 4&gt;(1.f));
 </pre></blockquote>
+
+<p><i>[2025-06-13; Reflector poll]</i></p>
+
+<p>
+Set priority to 2 after reflector poll.
+</p>
+
 
 
 <p id="res-4230"><b>Proposed resolution:</b></p>
@@ -68157,80 +67884,6 @@ where the <code><i>i</i></code><sup>th</sup> element is initialized to the resul
 </ol>
 <p>
 [&hellip;]
-</p>
-</blockquote>
-</blockquote>
-</li>
-
-</ol>
-
-
-
-
-
-<hr>
-<h3 id="4231"><a href="#4231">4231</a><sup><a href="https://cplusplus.github.io/LWG/issue4231">(i)</a></sup>. <code>datapar::chunk&lt;N&gt;</code> should use <code><i>simd-size-type</i></code> instead of <code>size_t</code></h3>
-<p><b>Section:</b> 29.10.3 <a href="https://wg21.link/simd.syn">[simd.syn]</a>, 29.10.7.8 <a href="https://wg21.link/simd.creation">[simd.creation]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Matthias Kretz <b>Opened:</b> 2025-03-22 <b>Last modified:</b> 2025-03-22</p>
-<p><b>Priority: </b>Not Prioritized
-</p>
-<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
-<p><b>Discussion:</b></p>
-<p>
-All index values and simd widths in subclause "Data-parallel types" use the
-type <code><i>simd-size-type</i></code>. Specifically, the NTTP of <code class='backtick'>std::datapar::resize</code> 
-uses <code><i>simd-size-type</i></code> and <code class='backtick'>std::datapar::chunk</code> is "implemented" 
-using <code class='backtick'>std::datapar::resize</code>.
-<p/>
-For <code>chunk&lt;N&gt;</code>, <code>N</code> is of type <code class='backtick'>size_t</code> and needs to be 
-converted to <code><i>simd-size-type</i></code> in the effects clause where it is 
-passed to resize. The NTTP of chunk should use <code><i>simd-size-type</i></code> 
-instead of <code class='backtick'>size_t</code>.
-</p>
-
-
-<p id="res-4231"><b>Proposed resolution:</b></p>
-<p>
-This wording is relative to <a href="https://wg21.link/N5008">N5008</a>.
-</p>
-
-<ol>
-
-<li><p>Modify 29.10.3 <a href="https://wg21.link/simd.syn">[simd.syn]</a>, header <code>&lt;simd&gt;</code> synopsis, as indicated:</p>
-
-<blockquote>
-<pre>
-namespace std::datapar {
-  [&hellip;]
-  template&lt;<ins><i>simd-size-type</i></ins><del>size_t</del> N, class T, class Abi&gt;
-    constexpr auto chunk(const basic_simd&lt;T, Abi&gt;&amp; x) noexcept;
-  template&lt;<ins><i>simd-size-type</i></ins><del>size_t</del> N, size_t Bytes, class Abi&gt;
-    constexpr auto chunk(const basic_simd_mask&lt;Bytes, Abi&gt;&amp; x) noexcept;
-  [&hellip;]
-}
-</pre>
-</blockquote>
-</li>
-
-<li><p>Modify 29.10.7.8 <a href="https://wg21.link/simd.creation">[simd.creation]</a> as indicated:</p>
-
-<blockquote>
-<pre>
-template&lt;<ins><i>simd-size-type</i></ins><del>size_t</del> N, class T, class Abi&gt;
-  constexpr auto chunk(const basic_simd&lt;T, Abi&gt;&amp; x) noexcept;
-</pre>
-<blockquote>
-<p>
--4- <i>Effects</i>: Equivalent to: <code>return chunk&lt;resize_t&lt;N, basic_simd&lt;T, Abi&gt;&gt;&gt;(x);</code>
-</p>
-</blockquote>
-<pre>
-template&lt;<ins><i>simd-size-type</i></ins><del>size_t</del> N, size_t Bytes, class Abi&gt;
-  constexpr auto chunk(const basic_simd_mask&lt;Bytes, Abi&gt;&amp; x) noexcept;
-</pre>
-<blockquote>
-<p>
--5- <i>Effects</i>: Equivalent to: <code>return chunk&lt;resize_t&lt;N, basic_simd_mask&lt;Bytes, Abi&gt;&gt;&gt;(x);</code>
 </p>
 </blockquote>
 </blockquote>

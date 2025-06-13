@@ -54,7 +54,7 @@
 </style>
 </head>
 <body>
-<p>Revised 2025-06-13 at 09:08:59 UTC
+<p>Revised 2025-06-13 at 11:47:07 UTC
 </p><h2>Tentative Issues</h2>
 <hr>
 <h3 id="3908"><a href="#3908">3908</a><sup><a href="https://cplusplus.github.io/LWG/issue3908">(i)</a></sup>. <code>enumerate_view::<i>iterator</i></code> constructor is explicit</h3>
@@ -1348,6 +1348,63 @@ specialization are standard-layout structs. They each have a trivial destructor.
 </li>
 
 </ol>
+
+
+
+
+
+<hr>
+<h3 id="4228"><a href="#4228">4228</a><sup><a href="https://cplusplus.github.io/LWG/issue4228">(i)</a></sup>. Does <code>vector&lt;bool, Allocator&gt;</code> mandate that <code class='backtick'>Allocator::value_type</code> is <code class='backtick'>bool</code>?</h3>
+<p><b>Section:</b> 23.3.14.1 <a href="https://wg21.link/vector.bool.pspc">[vector.bool.pspc]</a> <b>Status:</b> <a href="lwg-active.html#NAD">Tentatively NAD</a>
+ <b>Submitter:</b> Stephan T. Lavavej <b>Opened:</b> 2025-03-18 <b>Last modified:</b> 2025-06-13</p>
+<p><b>Priority: </b>Not Prioritized
+</p>
+<p><b>View all other</b> <a href="lwg-index.html#vector.bool.pspc">issues</a> in [vector.bool.pspc].</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#Tentatively NAD">Tentatively NAD</a> status.</p>
+<p><b>Discussion:</b></p>
+<p>
+<a href="https://wg21.link/N5008">N5008</a> 23.3.14.1 <a href="https://wg21.link/vector.bool.pspc">[vector.bool.pspc]</a>/2 says:
+</p>
+<blockquote style="border-left: 3px solid #ccc;padding-left: 15px;">
+<p>
+Unless described below, all operations have the same requirements and semantics as the primary <code class='backtick'>vector</code> template, 
+except that operations dealing with the <code class='backtick'>bool</code> value type map to bit values in the container storage and 
+<code class='backtick'>allocator_traits::construct</code> (20.2.9.3 <a href="https://wg21.link/allocator.traits.members">[allocator.traits.members]</a>) is not used to construct these values.
+</p>
+</blockquote>
+<p>
+23.2.2.5 <a href="https://wg21.link/container.alloc.reqmts">[container.alloc.reqmts]</a>/5 says:
+</p>
+<blockquote style="border-left: 3px solid #ccc;padding-left: 15px;">
+<p>
+<i>Mandates</i>: <code class='backtick'>allocator_type::value_type</code> is the same as <code class='backtick'>X::value_type</code>.
+</p>
+</blockquote>
+<p>
+Is <code>vector&lt;bool, allocator&lt;int&gt;&gt;</code> forbidden? There's implementation divergence: 
+MSVC's STL enforces the mandate, while libc++ and libstdc++ accept this code, discovered while 
+running libc++'s tests with MSVC's STL.
+<p/>
+Preferred resolution: I would be satisfied with resolving this as NAD, with a record that LWG believes 
+that "all operations have the same requirements" means that the <i>Mandate</i> applies. I suppose that 
+an editorial note could also be added to this effect, although I don't believe it's necessary.
+<p/>
+Alternate resolution: If LWG believes that the <i>Mandate</i> does not apply, and that <code>vector&lt;bool&gt;</code> 
+should be unique among containers in accepting <code>allocator&lt;Anything&gt;</code>, then I believe that 
+a normative sentence should be added to 23.3.14.1 <a href="https://wg21.link/vector.bool.pspc">[vector.bool.pspc]</a>/2, specifically creating an exemption 
+to 23.2.2.5 <a href="https://wg21.link/container.alloc.reqmts">[container.alloc.reqmts]</a>/5.
+</p>
+
+<p><i>[2025-06-13; Reflector poll]</i></p>
+
+<p>
+Set status to Tentatively NAD. This is just a bug in some implementations
+(now fixed in libstdc++).
+</p>
+
+
+
+<p id="res-4228"><b>Proposed resolution:</b></p>
 
 
 

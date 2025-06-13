@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <title>Issue 4228: Does vector&lt;bool, Allocator&gt; mandate that Allocator::value_type is bool?</title>
 <meta property="og:title" content="Issue 4228: Does vector&lt;bool, Allocator&gt; mandate that Allocator::value_type is bool?">
-<meta property="og:description" content="C++ library issue. Status: New">
+<meta property="og:description" content="C++ library issue. Status: Tentatively NAD">
 <meta property="og:url" content="https://cplusplus.github.io/LWG/issue4228.html">
 <meta property="og:type" content="website">
 <meta property="og:image" content="http://cplusplus.github.io/LWG/images/cpp_logo.png">
@@ -61,14 +61,14 @@
 </head>
 <body>
 <hr>
-<p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#New">New</a> status.</em></p>
+<p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#NAD">Tentatively NAD</a> status.</em></p>
 <h3 id="4228"><a href="lwg-active.html#4228">4228</a>. Does <code>vector&lt;bool, Allocator&gt;</code> mandate that <code class='backtick'>Allocator::value_type</code> is <code class='backtick'>bool</code>?</h3>
-<p><b>Section:</b> 23.3.14.1 <a href="https://wg21.link/vector.bool.pspc">[vector.bool.pspc]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Stephan T. Lavavej <b>Opened:</b> 2025-03-18 <b>Last modified:</b> 2025-03-22</p>
+<p><b>Section:</b> 23.3.14.1 <a href="https://wg21.link/vector.bool.pspc">[vector.bool.pspc]</a> <b>Status:</b> <a href="lwg-active.html#NAD">Tentatively NAD</a>
+ <b>Submitter:</b> Stephan T. Lavavej <b>Opened:</b> 2025-03-18 <b>Last modified:</b> 2025-06-13</p>
 <p><b>Priority: </b>Not Prioritized
 </p>
 <p><b>View all other</b> <a href="lwg-index.html#vector.bool.pspc">issues</a> in [vector.bool.pspc].</p>
-<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#Tentatively NAD">Tentatively NAD</a> status.</p>
 <p><b>Discussion:</b></p>
 <p>
 <a href="https://wg21.link/N5008">N5008</a> 23.3.14.1 <a href="https://wg21.link/vector.bool.pspc">[vector.bool.pspc]</a>/2 says:
@@ -102,6 +102,14 @@ should be unique among containers in accepting <code>allocator&lt;Anything&gt;</
 a normative sentence should be added to 23.3.14.1 <a href="https://wg21.link/vector.bool.pspc">[vector.bool.pspc]</a>/2, specifically creating an exemption 
 to 23.2.2.5 <a href="https://wg21.link/container.alloc.reqmts">[container.alloc.reqmts]</a>/5.
 </p>
+
+<p><i>[2025-06-13; Reflector poll]</i></p>
+
+<p>
+Set status to Tentatively NAD. This is just a bug in some implementations
+(now fixed in libstdc++).
+</p>
+
 
 
 <p id="res-4228"><b>Proposed resolution:</b></p>

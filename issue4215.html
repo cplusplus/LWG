@@ -64,8 +64,8 @@
 <p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#New">New</a> status.</em></p>
 <h3 id="4215"><a href="lwg-active.html#4215">4215</a>. <code class='backtick'>run_loop::finish</code> should be <code class='backtick'>noexcept</code></h3>
 <p><b>Section:</b> 33.12.1 <a href="https://wg21.link/exec.run.loop">[exec.run.loop]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Eric Niebler <b>Opened:</b> 2025-02-13 <b>Last modified:</b> 2025-02-23</p>
-<p><b>Priority: </b>Not Prioritized
+ <b>Submitter:</b> Eric Niebler <b>Opened:</b> 2025-02-13 <b>Last modified:</b> 2025-06-13</p>
+<p><b>Priority: </b>2
 </p>
 <p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
 <p><b>Discussion:</b></p>
@@ -120,6 +120,17 @@ Simply put, <code class='backtick'>run_loop::finish()</code> has to be <code cla
 into the <code><i>finishing</i></code> state. If it cannot, it should terminate. Throwing an exception and foisting the 
 problem on the caller &mdash; who has no recourse &mdash; is simply wrong.
 </p>
+
+<p><i>[2025-06-13; Reflector poll]</i></p>
+
+<p>
+Set priority to 2 after reflector poll.
+</p>
+<p>
+"If this can call <code class='backtick'>terminate()</code>, we should explicitly say so
+(c.f. 32.7.4 <a href="https://wg21.link/thread.condition.condvar">[thread.condition.condvar]</a> p11)"
+</p>
+
 
 
 <p id="res-4215"><b>Proposed resolution:</b></p>

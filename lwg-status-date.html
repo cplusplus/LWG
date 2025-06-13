@@ -67,8 +67,8 @@
 This document is the Index by Status and Date for the <a href="lwg-active.html">Library Active Issues List</a>,
 <a href="lwg-defects.html">Library Defect Reports and Accepted Issues</a>, and <a href="lwg-closed.html">Library Closed Issues List</a>.
 </p>
-<p>Revised 2025-06-13 at 09:08:59 UTC
-</p><h2 id="Voting">Voting (19 issues)</h2>
+<p>Revised 2025-06-13 at 11:47:07 UTC
+</p><h2 id="Voting">Voting (24 issues)</h2>
 <table class="issues-index">
 <tr>
   <th><a href="lwg-toc.html">Issue</a></th>
@@ -80,10 +80,28 @@ This document is the Index by Status and Date for the <a href="lwg-active.html">
   <th>Duplicates</th>
 </tr>
 <tr>
+<td id="4222"><a href="lwg-active.html#4222" title="expected constructor from a single value missing a constraint (Status: Voting)">4222</a><sup><a href="https://cplusplus.github.io/LWG/issue4222">(i)</a></sup></td>
+<td><a href="lwg-active.html#Voting">Voting</a></td>
+<td>22.8.6.2 [expected.object.cons]</td>
+<td><code class='backtick'>expected</code> constructor from a single value missing a constraint</td>
+<td>Yes</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
 <td id="4239"><a href="lwg-active.html#4239" title="flat_map's transparent comparator no longer works for string literals (Status: Voting)">4239</a><sup><a href="https://cplusplus.github.io/LWG/issue4239">(i)</a></sup></td>
 <td><a href="lwg-active.html#Voting">Voting</a></td>
 <td>23.6.8.7 [flat.map.modifiers]</td>
 <td><code class='backtick'>flat_map</code>'s transparent comparator no longer works for string literals</td>
+<td>Yes</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td id="4217"><a href="lwg-active.html#4217" title="Clarify mdspan layout mapping requirements for rank == 0 (Status: Voting)">4217</a><sup><a href="https://cplusplus.github.io/LWG/issue4217">(i)</a></sup></td>
+<td><a href="lwg-active.html#Voting">Voting</a></td>
+<td>23.7.3.4.2 [mdspan.layout.reqmts]</td>
+<td>Clarify <code class='backtick'>mdspan</code> layout mapping requirements for <code class='backtick'>rank == 0</code></td>
 <td>Yes</td>
 <td></td>
 <td></td>
@@ -95,6 +113,33 @@ This document is the Index by Status and Date for the <a href="lwg-active.html">
 <td><code>cache_latest_view</code> and <code>to_input_view</code> miss <code>reserve_hint</code></td>
 <td>Yes</td>
 <td>2</td>
+<td></td>
+</tr>
+<tr>
+<td id="4224"><a href="lwg-active.html#4224" title="Philox engines should be freestanding (Status: Voting)">4224</a><sup><a href="https://cplusplus.github.io/LWG/issue4224">(i)</a></sup></td>
+<td><a href="lwg-active.html#Voting">Voting</a></td>
+<td>29.5.4.5 [rand.eng.philox]</td>
+<td>Philox engines should be freestanding</td>
+<td>Yes</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td id="4231"><a href="lwg-active.html#4231" title="datapar::chunk&lt;N&gt; should use simd-size-type instead of size_t (Status: Voting)">4231</a><sup><a href="https://cplusplus.github.io/LWG/issue4231">(i)</a></sup></td>
+<td><a href="lwg-active.html#Voting">Voting</a></td>
+<td>29.10.3 [simd.syn]</td>
+<td><code>datapar::chunk&lt;N&gt;</code> should use <code><i>simd-size-type</i></code> instead of <code>size_t</code></td>
+<td>Yes</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td id="4227"><a href="lwg-active.html#4227" title="Missing noexcept operator in [exec.when.all] (Status: Voting)">4227</a><sup><a href="https://cplusplus.github.io/LWG/issue4227">(i)</a></sup></td>
+<td><a href="lwg-active.html#Voting">Voting</a></td>
+<td>33.9.12.11 [exec.when.all]</td>
+<td>Missing <code class='backtick'>noexcept</code> operator in [exec.when.all]</td>
+<td>Yes</td>
+<td></td>
 <td></td>
 </tr>
 <tr>
@@ -292,7 +337,7 @@ This document is the Index by Status and Date for the <a href="lwg-active.html">
 <td></td>
 </tr>
 </table>
-<h2 id="Tentatively_NAD">Tentatively NAD (13 issues)</h2>
+<h2 id="Tentatively_NAD">Tentatively NAD (14 issues)</h2>
 <table class="issues-index">
 <tr>
   <th><a href="lwg-toc.html">Issue</a></th>
@@ -302,6 +347,15 @@ This document is the Index by Status and Date for the <a href="lwg-active.html">
   <th>Proposed Resolution</th>
   <th><a href="unresolved-prioritized.html">Priority</a></th>
   <th>Duplicates</th>
+</tr>
+<tr>
+<td id="4228"><a href="lwg-active.html#4228" title="Does vector&lt;bool, Allocator&gt; mandate that Allocator::value_type is bool? (Status: Tentatively NAD)">4228</a><sup><a href="https://cplusplus.github.io/LWG/issue4228">(i)</a></sup></td>
+<td><a href="lwg-active.html#NAD">Tentatively NAD</a></td>
+<td>23.3.14.1 [vector.bool.pspc]</td>
+<td>Does <code>vector&lt;bool, Allocator&gt;</code> mandate that <code class='backtick'>Allocator::value_type</code> is <code class='backtick'>bool</code>?</td>
+<td><span class="no-pr">No</span></td>
+<td></td>
+<td></td>
 </tr>
 <tr>
 <td id="4246"><a href="lwg-active.html#4246" title="Redundant constraint in range_formatter::format (Status: Tentatively NAD)">4246</a><sup><a href="https://cplusplus.github.io/LWG/issue4246">(i)</a></sup></td>
@@ -421,7 +475,7 @@ This document is the Index by Status and Date for the <a href="lwg-active.html">
 <td></td>
 </tr>
 </table>
-<h2 id="New">New (500 issues)</h2>
+<h2 id="New">New (494 issues)</h2>
 <table class="issues-index">
 <tr>
   <th><a href="lwg-toc.html">Issue</a></th>
@@ -431,6 +485,89 @@ This document is the Index by Status and Date for the <a href="lwg-active.html">
   <th>Proposed Resolution</th>
   <th><a href="unresolved-prioritized.html">Priority</a></th>
   <th>Duplicates</th>
+</tr>
+<tr>
+<td id="4165"><a href="lwg-active.html#4165" title="Should swapping a built-in array or std::array with itself result in UB? (Status: New)">4165</a><sup><a href="https://cplusplus.github.io/LWG/issue4165">(i)</a></sup></td>
+<td><a href="lwg-active.html#New">New</a></td>
+<td>18.4.9 [concept.swappable]</td>
+<td>Should swapping a built-in array or <code class='backtick'>std::array</code> with itself result in UB?</td>
+<td><span class="no-pr">No</span></td>
+<td>3</td>
+<td></td>
+</tr>
+<tr>
+<td id="4218"><a href="lwg-active.html#4218" title="Constraint recursion in basic_const_iterator's relational operators due to ADL + CWG 2369 (Status: New)">4218</a><sup><a href="https://cplusplus.github.io/LWG/issue4218">(i)</a></sup></td>
+<td><a href="lwg-active.html#New">New</a></td>
+<td>24.5.3.5 [const.iterators.ops]</td>
+<td>Constraint recursion in <code class='backtick'>basic_const_iterator</code>'s relational operators due to ADL + CWG 2369</td>
+<td>Yes</td>
+<td>2</td>
+<td></td>
+</tr>
+<tr>
+<td id="4210"><a href="lwg-active.html#4210" title="Issue with cache_latest_view::iterator's reference type  (Status: New)">4210</a><sup><a href="https://cplusplus.github.io/LWG/issue4210">(i)</a></sup></td>
+<td><a href="lwg-active.html#New">New</a></td>
+<td>25.7.34.3 [range.cache.latest.iterator]</td>
+<td>Issue with <code>cache_latest_view::<i>iterator</i></code>'s reference type </td>
+<td><span class="no-pr">No</span></td>
+<td>3</td>
+<td></td>
+</tr>
+<tr>
+<td id="4226"><a href="lwg-active.html#4226" title="to_input_view::iterator cannot be compared to its const sentinel (Status: New)">4226</a><sup><a href="https://cplusplus.github.io/LWG/issue4226">(i)</a></sup></td>
+<td><a href="lwg-active.html#New">New</a></td>
+<td>25.7.35 [range.to.input]</td>
+<td><code>to_input_view::<i>iterator</i></code> cannot be compared to its <code class='backtick'>const</code> sentinel</td>
+<td>Yes</td>
+<td>2</td>
+<td></td>
+</tr>
+<tr>
+<td id="4167"><a href="lwg-active.html#4167" title="Use of &quot;smaller&quot; and &quot;larger&quot; in min,
+max, and minmax is unclear (Status: New)">4167</a><sup><a href="https://cplusplus.github.io/LWG/issue4167">(i)</a></sup></td>
+<td><a href="lwg-active.html#New">New</a></td>
+<td>26.8.9 [alg.min.max]</td>
+<td>Use of "smaller" and "larger" in <code>min</code>,
+<code>max</code>, and <code>minmax</code> is unclear</td>
+<td>Yes</td>
+<td>3</td>
+<td></td>
+</tr>
+<tr>
+<td id="4216"><a href="lwg-active.html#4216" title="num_put::do_put and void pointers (Status: New)">4216</a><sup><a href="https://cplusplus.github.io/LWG/issue4216">(i)</a></sup></td>
+<td><a href="lwg-active.html#New">New</a></td>
+<td>28.3.4.3.3.3 [facet.num.put.virtuals]</td>
+<td><code class='backtick'>num_put::do_put</code> and <code class='backtick'>void</code> pointers</td>
+<td>Yes</td>
+<td>3</td>
+<td></td>
+</tr>
+<tr>
+<td id="4212"><a href="lwg-active.html#4212" title="Make the round states in [rand.eng.philox] explicit (Status: New)">4212</a><sup><a href="https://cplusplus.github.io/LWG/issue4212">(i)</a></sup></td>
+<td><a href="lwg-active.html#New">New</a></td>
+<td>29.5.4.5 [rand.eng.philox]</td>
+<td>Make the round states in [rand.eng.philox] explicit</td>
+<td>Yes</td>
+<td>3</td>
+<td></td>
+</tr>
+<tr>
+<td id="4230"><a href="lwg-active.html#4230" title="simd&lt;complex&gt;::real/imag is overconstrained (Status: New)">4230</a><sup><a href="https://cplusplus.github.io/LWG/issue4230">(i)</a></sup></td>
+<td><a href="lwg-active.html#New">New</a></td>
+<td>29.10.7.4 [simd.complex.access]</td>
+<td><code>simd&lt;complex&gt;::real/imag</code> is overconstrained</td>
+<td>Yes</td>
+<td>2</td>
+<td></td>
+</tr>
+<tr>
+<td id="4215"><a href="lwg-active.html#4215" title="run_loop::finish should be noexcept (Status: New)">4215</a><sup><a href="https://cplusplus.github.io/LWG/issue4215">(i)</a></sup></td>
+<td><a href="lwg-active.html#New">New</a></td>
+<td>33.12.1 [exec.run.loop]</td>
+<td><code class='backtick'>run_loop::finish</code> should be <code class='backtick'>noexcept</code></td>
+<td>Yes</td>
+<td>2</td>
+<td></td>
 </tr>
 <tr>
 <td id="4251"><a href="lwg-active.html#4251" title="Move assignment for indirect unnecessarily requires copy construction (Status: New)">4251</a><sup><a href="https://cplusplus.github.io/LWG/issue4251">(i)</a></sup></td>
@@ -723,15 +860,6 @@ complexity for algorithms that are in fact &#x1d4aa;(n)</td>
 <td></td>
 </tr>
 <tr>
-<td id="4228"><a href="lwg-active.html#4228" title="Does vector&lt;bool, Allocator&gt; mandate that Allocator::value_type is bool? (Status: New)">4228</a><sup><a href="https://cplusplus.github.io/LWG/issue4228">(i)</a></sup></td>
-<td><a href="lwg-active.html#New">New</a></td>
-<td>23.3.14.1 [vector.bool.pspc]</td>
-<td>Does <code>vector&lt;bool, Allocator&gt;</code> mandate that <code class='backtick'>Allocator::value_type</code> is <code class='backtick'>bool</code>?</td>
-<td><span class="no-pr">No</span></td>
-<td></td>
-<td></td>
-</tr>
-<tr>
 <td id="3813"><a href="lwg-active.html#3813" title="std::span&lt;volatile T, E&gt; is made ill-formed by P2278R4 when T is a normal class type (Status: New)">3813</a><sup><a href="https://cplusplus.github.io/LWG/issue3813">(i)</a></sup></td>
 <td><a href="lwg-active.html#New">New</a></td>
 <td>23.7.2.2.1 [span.overview]</td>
@@ -745,42 +873,6 @@ complexity for algorithms that are in fact &#x1d4aa;(n)</td>
 <td><a href="lwg-active.html#New">New</a></td>
 <td>25.5.7.2 [range.utility.conv.to]</td>
 <td><code class='backtick'>std::ranges::to</code> with union return type</td>
-<td>Yes</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td id="4226"><a href="lwg-active.html#4226" title="to_input_view::iterator cannot be compared to its const sentinel (Status: New)">4226</a><sup><a href="https://cplusplus.github.io/LWG/issue4226">(i)</a></sup></td>
-<td><a href="lwg-active.html#New">New</a></td>
-<td>25.7.35 [range.to.input]</td>
-<td><code>to_input_view::<i>iterator</i></code> cannot be compared to its <code class='backtick'>const</code> sentinel</td>
-<td>Yes</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td id="4231"><a href="lwg-active.html#4231" title="datapar::chunk&lt;N&gt; should use simd-size-type instead of size_t (Status: New)">4231</a><sup><a href="https://cplusplus.github.io/LWG/issue4231">(i)</a></sup></td>
-<td><a href="lwg-active.html#New">New</a></td>
-<td>29.10.3 [simd.syn]</td>
-<td><code>datapar::chunk&lt;N&gt;</code> should use <code><i>simd-size-type</i></code> instead of <code>size_t</code></td>
-<td>Yes</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td id="4230"><a href="lwg-active.html#4230" title="simd&lt;complex&gt;::real/imag is overconstrained (Status: New)">4230</a><sup><a href="https://cplusplus.github.io/LWG/issue4230">(i)</a></sup></td>
-<td><a href="lwg-active.html#New">New</a></td>
-<td>29.10.7.4 [simd.complex.access]</td>
-<td><code>simd&lt;complex&gt;::real/imag</code> is overconstrained</td>
-<td>Yes</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td id="4227"><a href="lwg-active.html#4227" title="Missing noexcept operator in [exec.when.all] (Status: New)">4227</a><sup><a href="https://cplusplus.github.io/LWG/issue4227">(i)</a></sup></td>
-<td><a href="lwg-active.html#New">New</a></td>
-<td>33.9.12.11 [exec.when.all]</td>
-<td>Missing <code class='backtick'>noexcept</code> operator in [exec.when.all]</td>
 <td>Yes</td>
 <td></td>
 <td></td>
@@ -813,15 +905,6 @@ complexity for algorithms that are in fact &#x1d4aa;(n)</td>
 <td></td>
 </tr>
 <tr>
-<td id="4222"><a href="lwg-active.html#4222" title="expected constructor from a single value missing a constraint (Status: New)">4222</a><sup><a href="https://cplusplus.github.io/LWG/issue4222">(i)</a></sup></td>
-<td><a href="lwg-active.html#New">New</a></td>
-<td>22.8.6.2 [expected.object.cons]</td>
-<td><code class='backtick'>expected</code> constructor from a single value missing a constraint</td>
-<td>Yes</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
 <td id="4225"><a href="lwg-active.html#4225" title="What should happen when an exception is thrown on resizing std::deque, std::forward_list, or std::list? (Status: New)">4225</a><sup><a href="https://cplusplus.github.io/LWG/issue4225">(i)</a></sup></td>
 <td><a href="lwg-active.html#New">New</a></td>
 <td>23.3.5.3 [deque.capacity]</td>
@@ -840,37 +923,10 @@ complexity for algorithms that are in fact &#x1d4aa;(n)</td>
 <td></td>
 </tr>
 <tr>
-<td id="4224"><a href="lwg-active.html#4224" title="Philox engines should be freestanding (Status: New)">4224</a><sup><a href="https://cplusplus.github.io/LWG/issue4224">(i)</a></sup></td>
-<td><a href="lwg-active.html#New">New</a></td>
-<td>29.5.4.5 [rand.eng.philox]</td>
-<td>Philox engines should be freestanding</td>
-<td>Yes</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
 <td id="4219"><a href="lwg-active.html#4219" title="std::vector::erase[_if] should be based on ranges remove (Status: New)">4219</a><sup><a href="https://cplusplus.github.io/LWG/issue4219">(i)</a></sup></td>
 <td><a href="lwg-active.html#New">New</a></td>
 <td>23.3.13.6 [vector.erasure]</td>
 <td><code>std::vector::erase[_if]</code> should be based on ranges <code class='backtick'>remove</code></td>
-<td>Yes</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td id="4217"><a href="lwg-active.html#4217" title="Clarify mdspan layout mapping requirements for rank == 0 (Status: New)">4217</a><sup><a href="https://cplusplus.github.io/LWG/issue4217">(i)</a></sup></td>
-<td><a href="lwg-active.html#New">New</a></td>
-<td>23.7.3.4.2 [mdspan.layout.reqmts]</td>
-<td>Clarify <code class='backtick'>mdspan</code> layout mapping requirements for <code class='backtick'>rank == 0</code></td>
-<td>Yes</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td id="4218"><a href="lwg-active.html#4218" title="Constraint recursion in basic_const_iterator's relational operators due to ADL + CWG 2369 (Status: New)">4218</a><sup><a href="https://cplusplus.github.io/LWG/issue4218">(i)</a></sup></td>
-<td><a href="lwg-active.html#New">New</a></td>
-<td>24.5.3.5 [const.iterators.ops]</td>
-<td>Constraint recursion in <code class='backtick'>basic_const_iterator</code>'s relational operators due to ADL + CWG 2369</td>
 <td>Yes</td>
 <td></td>
 <td></td>
@@ -899,15 +955,6 @@ complexity for algorithms that are in fact &#x1d4aa;(n)</td>
 <td>28.5.7 [format.range]</td>
 <td>Cannot format const-iterable only ranges</td>
 <td><span class="no-pr">No</span></td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td id="4216"><a href="lwg-active.html#4216" title="num_put::do_put and void pointers (Status: New)">4216</a><sup><a href="https://cplusplus.github.io/LWG/issue4216">(i)</a></sup></td>
-<td><a href="lwg-active.html#New">New</a></td>
-<td>28.3.4.3.3.3 [facet.num.put.virtuals]</td>
-<td><code class='backtick'>num_put::do_put</code> and <code class='backtick'>void</code> pointers</td>
-<td>Yes</td>
 <td></td>
 <td></td>
 </tr>
@@ -948,15 +995,6 @@ complexity for algorithms that are in fact &#x1d4aa;(n)</td>
 <td></td>
 </tr>
 <tr>
-<td id="4212"><a href="lwg-active.html#4212" title="Make the round states in [rand.eng.philox] explicit (Status: New)">4212</a><sup><a href="https://cplusplus.github.io/LWG/issue4212">(i)</a></sup></td>
-<td><a href="lwg-active.html#New">New</a></td>
-<td>29.5.4.5 [rand.eng.philox]</td>
-<td>Make the round states in [rand.eng.philox] explicit</td>
-<td>Yes</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
 <td id="4211"><a href="lwg-active.html#4211" title="IANA time zone database allows links to refer to links (Status: New)">4211</a><sup><a href="https://cplusplus.github.io/LWG/issue4211">(i)</a></sup></td>
 <td><a href="lwg-active.html#New">New</a></td>
 <td>30.11.2.1 [time.zone.db.tzdb]</td>
@@ -970,24 +1008,6 @@ complexity for algorithms that are in fact &#x1d4aa;(n)</td>
 <td><a href="lwg-active.html#New">New</a></td>
 <td>33.9 [exec.snd]</td>
 <td>Sender spec depends on unspecified order of evaluation</td>
-<td><span class="no-pr">No</span></td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td id="4215"><a href="lwg-active.html#4215" title="run_loop::finish should be noexcept (Status: New)">4215</a><sup><a href="https://cplusplus.github.io/LWG/issue4215">(i)</a></sup></td>
-<td><a href="lwg-active.html#New">New</a></td>
-<td>33.12.1 [exec.run.loop]</td>
-<td><code class='backtick'>run_loop::finish</code> should be <code class='backtick'>noexcept</code></td>
-<td>Yes</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td id="4210"><a href="lwg-active.html#4210" title="Issue with cache_latest_view::iterator's reference type  (Status: New)">4210</a><sup><a href="https://cplusplus.github.io/LWG/issue4210">(i)</a></sup></td>
-<td><a href="lwg-active.html#New">New</a></td>
-<td>25.7.34.3 [range.cache.latest.iterator]</td>
-<td>Issue with <code>cache_latest_view::<i>iterator</i></code>'s reference type </td>
 <td><span class="no-pr">No</span></td>
 <td></td>
 <td></td>
@@ -1214,26 +1234,6 @@ complexity for algorithms that are in fact &#x1d4aa;(n)</td>
 <td>20.2.6 [obj.lifetime]</td>
 <td><code class='backtick'>std::start_lifetime_as</code> inadvertently has undefined behavior due to use of <code class='backtick'>std::bit_cast</code></td>
 <td>Yes</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td id="4167"><a href="lwg-active.html#4167" title="Use of &quot;smaller&quot; and &quot;larger&quot; in min,
-max, and minmax is unclear (Status: New)">4167</a><sup><a href="https://cplusplus.github.io/LWG/issue4167">(i)</a></sup></td>
-<td><a href="lwg-active.html#New">New</a></td>
-<td>26.8.9 [alg.min.max]</td>
-<td>Use of "smaller" and "larger" in <code>min</code>,
-<code>max</code>, and <code>minmax</code> is unclear</td>
-<td>Yes</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td id="4165"><a href="lwg-active.html#4165" title="Should swapping a built-in array or std::array with itself result in UB? (Status: New)">4165</a><sup><a href="https://cplusplus.github.io/LWG/issue4165">(i)</a></sup></td>
-<td><a href="lwg-active.html#New">New</a></td>
-<td>18.4.9 [concept.swappable]</td>
-<td>Should swapping a built-in array or <code class='backtick'>std::array</code> with itself result in UB?</td>
-<td><span class="no-pr">No</span></td>
 <td></td>
 <td></td>
 </tr>

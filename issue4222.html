@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <title>Issue 4222: expected constructor from a single value missing a constraint</title>
 <meta property="og:title" content="Issue 4222: expected constructor from a single value missing a constraint">
-<meta property="og:description" content="C++ library issue. Status: New">
+<meta property="og:description" content="C++ library issue. Status: Voting">
 <meta property="og:url" content="https://cplusplus.github.io/LWG/issue4222.html">
 <meta property="og:type" content="website">
 <meta property="og:image" content="http://cplusplus.github.io/LWG/images/cpp_logo.png">
@@ -61,14 +61,14 @@
 </head>
 <body>
 <hr>
-<p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#New">New</a> status.</em></p>
+<p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#Voting">Voting</a> status.</em></p>
 <h3 id="4222"><a href="lwg-active.html#4222">4222</a>. <code class='backtick'>expected</code> constructor from a single value missing a constraint</h3>
-<p><b>Section:</b> 22.8.6.2 <a href="https://wg21.link/expected.object.cons">[expected.object.cons]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Bronek Kozicki <b>Opened:</b> 2025-03-12 <b>Last modified:</b> 2025-03-15</p>
+<p><b>Section:</b> 22.8.6.2 <a href="https://wg21.link/expected.object.cons">[expected.object.cons]</a> <b>Status:</b> <a href="lwg-active.html#Voting">Voting</a>
+ <b>Submitter:</b> Bronek Kozicki <b>Opened:</b> 2025-03-12 <b>Last modified:</b> 2025-06-13</p>
 <p><b>Priority: </b>Not Prioritized
 </p>
 <p><b>View all other</b> <a href="lwg-index.html#expected.object.cons">issues</a> in [expected.object.cons].</p>
-<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#Voting">Voting</a> status.</p>
 <p><b>Discussion:</b></p>
 <p>
 When an <code class='backtick'>expected</code> object is initialized with a constructor taking first parameter of type <code class='backtick'>unexpect_t</code> , 
@@ -121,6 +121,13 @@ like so:
 <blockquote><pre>
 expected&lt;T, E&gt; a(in_place, unexpect);
 </pre></blockquote>
+
+<p><i>[2025-06-13; Reflector poll]</i></p>
+
+<p>
+Set status to Tentatively Ready after nine votes in favour during reflector poll.
+</p>
+
 
 
 <p id="res-4222"><b>Proposed resolution:</b></p>

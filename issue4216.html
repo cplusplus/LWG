@@ -64,8 +64,8 @@
 <p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#New">New</a> status.</em></p>
 <h3 id="4216"><a href="lwg-active.html#4216">4216</a>. <code class='backtick'>num_put::do_put</code> and <code class='backtick'>void</code> pointers</h3>
 <p><b>Section:</b> 28.3.4.3.3.3 <a href="https://wg21.link/facet.num.put.virtuals">[facet.num.put.virtuals]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Nikolas Klauser <b>Opened:</b> 2025-02-26 <b>Last modified:</b> 2025-03-02</p>
-<p><b>Priority: </b>Not Prioritized
+ <b>Submitter:</b> Nikolas Klauser <b>Opened:</b> 2025-02-26 <b>Last modified:</b> 2025-06-13</p>
+<p><b>Priority: </b>3
 </p>
 <p><b>View other</b> <a href="lwg-index-open.html#facet.num.put.virtuals">active issues</a> in [facet.num.put.virtuals].</p>
 <p><b>View all other</b> <a href="lwg-index.html#facet.num.put.virtuals">issues</a> in [facet.num.put.virtuals].</p>
@@ -87,6 +87,25 @@ fix that, the output of <code class='backtick'>num_put::do_put</code> no longer 
 decades, indicating that nobody seems to have a problem with
 <code class='backtick'>num_put::do_put</code> and <code class='backtick'>printf</code> having different results in some rare cases.
 </p>
+
+<p><i>[2025-06-13; Reflector poll]</i></p>
+
+<p>
+Set priority to 3 after reflector poll.
+</p>
+<p>
+We could emphasize that calling <code class='backtick'>printf</code> isn't actually intended:
+<blockquote>
+The representations at the end of stage 1 consists of the <code class='backtick'>char</code>'s
+that would be printed by a call of <code class='backtick'>printf(s, val)</code>
+<ins>in a hypothetical implementation</ins>,
+where <code class='backtick'>s</code> is the conversion specifier determined above.
+</blockquote>
+</p>
+<p>
+Why is there an apostrophe in <code class='backtick'>char</code>'s?
+</p>
+
 
 
 <p id="res-4216"><b>Proposed resolution:</b></p>

@@ -64,8 +64,8 @@
 <p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#New">New</a> status.</em></p>
 <h3 id="4218"><a href="lwg-active.html#4218">4218</a>. Constraint recursion in <code class='backtick'>basic_const_iterator</code>'s relational operators due to ADL + CWG 2369</h3>
 <p><b>Section:</b> 24.5.3.5 <a href="https://wg21.link/const.iterators.ops">[const.iterators.ops]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Patrick Palka <b>Opened:</b> 2025-03-03 <b>Last modified:</b> 2025-03-09</p>
-<p><b>Priority: </b>Not Prioritized
+ <b>Submitter:</b> Patrick Palka <b>Opened:</b> 2025-03-03 <b>Last modified:</b> 2025-06-13</p>
+<p><b>Priority: </b>2
 </p>
 <p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
 <p><b>Discussion:</b></p>
@@ -134,6 +134,13 @@ operand that isn't a specialization of <code class='backtick'>basic_const_iterat
 LWG <a href="lwg-defects.html#3769" title="basic_const_iterator::operator== causes infinite constraint recursion (Status: C++23)">3769</a><sup><a href="https://cplusplus.github.io/LWG/issue3769" title="Latest snapshot">(i)</a></sup> is an earlier issue about constraint recursion in <code class='backtick'>basic_const_iterator</code>'s
 operators, but there the recursion was independent of CWG 2369.
 </p>
+
+<p><i>[2025-06-13; Reflector poll]</i></p>
+
+<p>
+Set priority to 2 after reflector poll.
+</p>
+
 
 
 <p id="res-4218"><b>Proposed resolution:</b></p>

@@ -64,8 +64,8 @@
 <p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#New">New</a> status.</em></p>
 <h3 id="4230"><a href="lwg-active.html#4230">4230</a>. <code>simd&lt;complex&gt;::real/imag</code> is overconstrained</h3>
 <p><b>Section:</b> 29.10.7.4 <a href="https://wg21.link/simd.complex.access">[simd.complex.access]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Matthias Kretz <b>Opened:</b> 2025-03-18 <b>Last modified:</b> 2025-03-22</p>
-<p><b>Priority: </b>Not Prioritized
+ <b>Submitter:</b> Matthias Kretz <b>Opened:</b> 2025-03-18 <b>Last modified:</b> 2025-06-13</p>
+<p><b>Priority: </b>2
 </p>
 <p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
 <p><b>Discussion:</b></p>
@@ -97,6 +97,13 @@ complex&lt;double&gt; c{1., 1.f};
 simd&lt;complex&lt;double&gt;&gt; sc0(1., 1.);
 simd&lt;complex&lt;double&gt;, 4&gt; sc1(simd&lt;double, 4&gt;(1.), simd&lt;float, 4&gt;(1.f));
 </pre></blockquote>
+
+<p><i>[2025-06-13; Reflector poll]</i></p>
+
+<p>
+Set priority to 2 after reflector poll.
+</p>
+
 
 
 <p id="res-4230"><b>Proposed resolution:</b></p>

@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <title>Issue 4224: Philox engines should be freestanding</title>
 <meta property="og:title" content="Issue 4224: Philox engines should be freestanding">
-<meta property="og:description" content="C++ library issue. Status: New">
+<meta property="og:description" content="C++ library issue. Status: Voting">
 <meta property="og:url" content="https://cplusplus.github.io/LWG/issue4224.html">
 <meta property="og:type" content="website">
 <meta property="og:image" content="http://cplusplus.github.io/LWG/images/cpp_logo.png">
@@ -61,21 +61,28 @@
 </head>
 <body>
 <hr>
-<p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#New">New</a> status.</em></p>
+<p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#Voting">Voting</a> status.</em></p>
 <h3 id="4224"><a href="lwg-active.html#4224">4224</a>. Philox engines should be freestanding</h3>
-<p><b>Section:</b> 29.5.4.5 <a href="https://wg21.link/rand.eng.philox">[rand.eng.philox]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Jiang An <b>Opened:</b> 2025-03-15 <b>Last modified:</b> 2025-03-15</p>
+<p><b>Section:</b> 29.5.4.5 <a href="https://wg21.link/rand.eng.philox">[rand.eng.philox]</a> <b>Status:</b> <a href="lwg-active.html#Voting">Voting</a>
+ <b>Submitter:</b> Jiang An <b>Opened:</b> 2025-03-15 <b>Last modified:</b> 2025-06-13</p>
 <p><b>Priority: </b>Not Prioritized
 </p>
 <p><b>View other</b> <a href="lwg-index-open.html#rand.eng.philox">active issues</a> in [rand.eng.philox].</p>
 <p><b>View all other</b> <a href="lwg-index.html#rand.eng.philox">issues</a> in [rand.eng.philox].</p>
-<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#Voting">Voting</a> status.</p>
 <p><b>Discussion:</b></p>
 <p>
 Philox engines don't seem to require floating-point operations or support from the operating system, 
 so they are probably suitable for freestanding. However, as <a href="https://wg21.link/P2976R1" title=" Freestanding Library: algorithm, numeric, and random">P2976R1</a> was finished before 
 the adoption of <a href="https://wg21.link/P2075R6" title=" Philox as an extension of the C++ RNG engines">P2075R6</a>, these engines are not made freestanding yet.
 </p>
+
+<p><i>[2025-06-13; Reflector poll]</i></p>
+
+<p>
+Set status to Tentatively Ready after ten votes in favour during reflector poll.
+</p>
+
 
 
 <p id="res-4224"><b>Proposed resolution:</b></p>
