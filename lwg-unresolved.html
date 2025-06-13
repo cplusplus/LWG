@@ -54,7 +54,7 @@
 </style>
 </head>
 <body>
-<p>Revised 2025-06-12 at 21:02:39 UTC
+<p>Revised 2025-06-13 at 09:08:59 UTC
 </p><h2>Unresolved Issues</h2>
 <hr>
 <h3 id="423"><a href="#423">423</a><sup><a href="https://cplusplus.github.io/LWG/issue423">(i)</a></sup>. Effects of negative <code>streamsize</code> in iostreams</h3>
@@ -68243,123 +68243,6 @@ template&lt;<ins><i>simd-size-type</i></ins><del>size_t</del> N, size_t Bytes, c
 
 
 <hr>
-<h3 id="4235"><a href="#4235">4235</a><sup><a href="https://cplusplus.github.io/LWG/issue4235">(i)</a></sup>. <code>cache_latest_view</code> and <code>to_input_view</code> miss <code>reserve_hint</code></h3>
-<p><b>Section:</b> 25.7.34.2 <a href="https://wg21.link/range.cache.latest.view">[range.cache.latest.view]</a>, 25.7.35.2 <a href="https://wg21.link/range.to.input.view">[range.to.input.view]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Hewill Kang <b>Opened:</b> 2025-03-25 <b>Last modified:</b> 2025-06-12</p>
-<p><b>Priority: </b>2
-</p>
-<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
-<p><b>Discussion:</b></p>
-<p>
-Intuitively, both view classes should also have <code>reserve_hint</code> members.
-</p>
-
-<p><i>[2025-06-12; Reflector poll]</i></p>
-
-<p>
-Set priority to 2 after reflector poll.
-</p>
-
-
-
-<p id="res-4235"><b>Proposed resolution:</b></p>
-<p>
-This wording is relative to <a href="https://wg21.link/N5008">N5008</a>.
-</p>
-
-<ol>
-
-<li><p>Modify 25.7.34.2 <a href="https://wg21.link/range.cache.latest.view">[range.cache.latest.view]</a> as indicated:</p>
-
-<blockquote>
-<blockquote>
-<pre>
-namespace std::ranges {
-  template&lt;input_range V&gt;
-    requires view&lt;V&gt;
-  class cache_latest_view : public view_interface&lt;cache_latest_view&lt;V&gt;&gt; {
-    [&hellip;]
-    constexpr auto size() requires sized_range&lt;V&gt;;
-    constexpr auto size() const requires sized_range&lt;const V&gt;;
-
-    <ins>constexpr auto reserve_hint() requires approximately_sized_range&lt;V&gt;;
-    constexpr auto reserve_hint() const requires approximately_sized_range&lt;const V&gt;;</ins>
-  };
-  [&hellip;]
-}
-</pre>
-</blockquote>
-[&hellip;]
-<pre>
-constexpr auto size() requires sized_range&lt;V&gt;;
-constexpr auto size() const requires sized_range&lt;const V&gt;;
-</pre>
-<blockquote>
-<p>
--4- <i>Effects</i>: Equivalent to: <code>return ranges::size(<i>base_</i>);</code>
-</p>
-</blockquote>
-<pre><ins>
-constexpr auto reserve_hint() requires approximately_sized_range&lt;V&gt;;
-constexpr auto reserve_hint() const requires approximately_sized_range&lt;const V&gt;;</ins>
-</pre>
-<blockquote>
-<p>
-<ins>-?- <i>Effects</i>: Equivalent to: <code>return ranges::reserve_hint(<i>base_</i>);</code></ins>
-</p>
-</blockquote>
-</blockquote>
-
-</li>
-
-<li><p>Modify 25.7.35.2 <a href="https://wg21.link/range.to.input.view">[range.to.input.view]</a> as indicated:</p>
-
-<blockquote>
-<blockquote>
-<pre>
-template&lt;input_range V&gt;
-  requires view&lt;V&gt;
-class to_input_view : public view_interface&lt;to_input_view&lt;V&gt;&gt; {
-  [&hellip;]
-  constexpr auto size() requires sized_range&lt;V&gt;;
-  constexpr auto size() const requires sized_range&lt;const V&gt;;
-
-  <ins>constexpr auto reserve_hint() requires approximately_sized_range&lt;V&gt;;
-  constexpr auto reserve_hint() const requires approximately_sized_range&lt;const V&gt;;</ins>
-};
-[&hellip;]
-</pre>
-</blockquote>
-[&hellip;]
-<pre>
-constexpr auto size() requires sized_range&lt;V&gt;;
-constexpr auto size() const requires sized_range&lt;const V&gt;;
-</pre>
-<blockquote>
-<p>
--5- <i>Effects</i>: Equivalent to: <code>return ranges::size(<i>base_</i>);</code>
-</p>
-</blockquote>
-<pre><ins>
-constexpr auto reserve_hint() requires approximately_sized_range&lt;V&gt;;
-constexpr auto reserve_hint() const requires approximately_sized_range&lt;const V&gt;;</ins>
-</pre>
-<blockquote>
-<p>
-<ins>-?- <i>Effects</i>: Equivalent to: <code>return ranges::reserve_hint(<i>base_</i>);</code></ins>
-</p>
-</blockquote>
-</blockquote>
-
-</li>
-
-</ol>
-
-
-
-
-
-<hr>
 <h3 id="4237"><a href="#4237">4237</a><sup><a href="https://cplusplus.github.io/LWG/issue4237">(i)</a></sup>. The standard library iterator adaptor does not handle <code>iterator_category</code> correctly</h3>
 <p><b>Section:</b> 24.5.3.3 <a href="https://wg21.link/const.iterators.iterator">[const.iterators.iterator]</a>, 25.7 <a href="https://wg21.link/range.adaptors">[range.adaptors]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
  <b>Submitter:</b> Hewill Kang <b>Opened:</b> 2025-03-27 <b>Last modified:</b> 2025-06-12</p>
@@ -68513,86 +68396,6 @@ for all <code><i>i</i></code> in the range of <code>[0, size())</code>.
 <code class='backtick'>operator~()</code> are deleted.
 </ins>
 </p>
-</blockquote>
-</blockquote>
-
-</li>
-
-</ol>
-
-
-
-
-
-<hr>
-<h3 id="4239"><a href="#4239">4239</a><sup><a href="https://cplusplus.github.io/LWG/issue4239">(i)</a></sup>. <code class='backtick'>flat_map</code>'s transparent comparator no longer works for string literals</h3>
-<p><b>Section:</b> 23.6.8.7 <a href="https://wg21.link/flat.map.modifiers">[flat.map.modifiers]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Hui Xie <b>Opened:</b> 2025-03-29 <b>Last modified:</b> 2025-03-29</p>
-<p><b>Priority: </b>Not Prioritized
-</p>
-<p><b>View other</b> <a href="lwg-index-open.html#flat.map.modifiers">active issues</a> in [flat.map.modifiers].</p>
-<p><b>View all other</b> <a href="lwg-index.html#flat.map.modifiers">issues</a> in [flat.map.modifiers].</p>
-<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
-<p><b>Discussion:</b></p>
-<p>
-According to the spec, the following code should hard error
-</p>
-<blockquote><pre>
-std::flat_map&lt;std::string, int, std::less&lt;&gt;&gt; m;
-m.try_emplace("abc", 5);  // <span style="color:red;font-weight:bolder">hard error</span>
-</pre></blockquote>
-<p>
-The reason is that we specify in 23.6.8.7 <a href="https://wg21.link/flat.map.modifiers">[flat.map.modifiers]</a> p21 the effect to be 
-as if <code class='backtick'>ranges::upper_bound</code> is called.
-</p>
-
-<p>
-<code class='backtick'>ranges::upper_bound</code> requires <code class='backtick'>indirect_strict_weak_order</code>, which requires the comparator to be 
-invocable for all combinations. In this case, it requires
-</p>
-<blockquote><pre>
-const char (&amp;)[4] &lt; const char (&amp;)[4] 
-</pre></blockquote>
-<p>
-to be well-formed, which is no longer the case in C++26 after <a href="https://wg21.link/P2865R6">P2865R6</a>.
-<p/>
-We should just use <code class='backtick'>std::upper_bound</code> instead. libstdc++ already uses <code class='backtick'>std::upper_bound</code>. 
-libc++ uses <code class='backtick'>ranges::upper_bound</code> but clang has not yet implemented <a href="https://wg21.link/P2865" title=" Remove Deprecated Array Comparisons from C++26">P2865</a> 
-properly.
-</p>
-
-
-<p id="res-4239"><b>Proposed resolution:</b></p>
-<p>
-This wording is relative to <a href="https://wg21.link/N5008">N5008</a>.
-</p>
-
-<ol>
-
-<li><p>Modify 23.6.8.7 <a href="https://wg21.link/flat.map.modifiers">[flat.map.modifiers]</a> as indicated:</p>
-
-<blockquote>
-<pre>
-template&lt;class K, class... Args&gt;
-  constexpr pair&lt;iterator, bool&gt; try_emplace(K&amp;&amp; k, Args&amp;&amp;... args);
-template&lt;class K, class... Args&gt;
-  constexpr iterator try_emplace(const_iterator hint, K&amp;&amp; k, Args&amp;&amp;... args);
-</pre>
-<blockquote>
-<p>
--19- <i>Constraints</i>: [&hellip;]
-<p/>
--20- <i>Preconditions</i>: [&hellip;]
-<p/>
--21- <i>Effects</i>: If the map already contains an element whose key is equivalent to <code class='backtick'>k</code>, 
-<code class='backtick'>*this</code> and <code class='backtick'>args...</code> are unchanged. Otherwise equivalent to:
-</p>
-<blockquote><pre>
-auto key_it = <ins>upper_bound(<i>c</i>.keys.begin(), <i>c</i>.keys.end(), k, <i>compare</i>)</ins><del>ranges::upper_bound(<i>c</i>.keys, k, <i>compare</i>)</del>;
-auto value_it = <i>c</i>.values.begin() + distance(<i>c</i>.keys.begin(), key_it);
-<i>c</i>.keys.emplace(key_it, std::forward&lt;K&gt;(k));
-<i>c</i>.values.emplace(value_it, std::forward&lt;Args&gt;(args)...);
-</pre></blockquote>
 </blockquote>
 </blockquote>
 
@@ -71488,65 +71291,6 @@ inline constexpr execution::parallel_policy execution::par{ <del><i>unspecified<
 inline constexpr execution::parallel_unsequenced_policy execution::par_unseq{ <del><i>unspecified</i></del> };
 inline constexpr execution::unsequenced_policy execution::unseq{ <del><i>unspecified</i></del> };
 </pre>
-</blockquote>
-</li>
-
-</ol>
-
-
-
-
-
-<hr>
-<h3 id="4274"><a href="#4274">4274</a><sup><a href="https://cplusplus.github.io/LWG/issue4274">(i)</a></sup>. The <code class='backtick'>chrono::hh_mm_ss</code> constructor is ill-formed for unsigned durations</h3>
-<p><b>Section:</b> 30.9.2 <a href="https://wg21.link/time.hms.members">[time.hms.members]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Michael Welsh Duggan <b>Opened:</b> 2025-06-04 <b>Last modified:</b> 2025-06-12</p>
-<p><b>Priority: </b>Not Prioritized
-</p>
-<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
-<p><b>Discussion:</b></p>
-<p>
-In 30.9.2 <a href="https://wg21.link/time.hms.members">[time.hms.members]</a>, paragraph 3, the current wording for the
-constructor of <code class='backtick'>hh_mm_ss</code> expresses some of its requirements in terms of
-<code class='backtick'>abs(d)</code>, which is assumed to be <code class='backtick'>chrono::abs(chrono::duration)</code>.
-<code class='backtick'>chrono::abs</code> is not defined, however, for durations with an unsigned
-representation. I believe that not being able to create <code class='backtick'>hh_mm_ss</code>
-objects from unsigned durations is unintentional.
-<p/>
-Moreover, <code>is_constructible_v&lt;hh_mm_ss&lt;ud&gt;, ud&gt;</code> is required 
-to be true by the standard for any duration, so making it actually work makes 
-a lot of sense.
-</p>
-
-
-<p id="res-4274"><b>Proposed resolution:</b></p>
-<p>
-This wording is relative to <a href="https://wg21.link/N5008">N5008</a>.
-</p>
-
-<ol>
-<li><p>Modify 30.9.2 <a href="https://wg21.link/time.hms.members">[time.hms.members]</a> as indicated:</p>
-
-<blockquote>
-<pre>
-constexpr explicit hh_mm_ss(Duration d);
-</pre>
-<blockquote>
-<p>
--3- <i>Effects</i>: Constructs an object of type <code class='backtick'>hh_mm_ss</code> which represents the <code class='backtick'>Duration d</code> 
-with precision <code class='backtick'>precision</code>.
-</p>
-<ol style="list-style-type: none">
-<li><p>(3.1) &mdash; Initializes <code class='backtick'>is_neg</code> with <code>d &lt; Duration::zero()</code>. <ins>Let 
-<code><i>ABS_D</i></code> represent <code class='backtick'>-d</code> if <code class='backtick'>is_neg</code> is <code class='backtick'>true</code> and <code class='backtick'>d</code> otherwise.</ins></p></li>
-<li><p>(3.2) &mdash; Initializes <code class='backtick'>h</code> with <code>duration_cast&lt;chrono::hours&gt;(<del>abs(d)</del><ins><i>ABS_D</i></ins>)</code>.</p></li>
-<li><p>(3.3) &mdash; Initializes <code class='backtick'>m</code> with <code>duration_cast&lt;chrono::minutes&gt;(<del>abs(d)</del><ins><i>ABS_D</i></ins> - hours())</code>.</p></li>
-<li><p>(3.4) &mdash; Initializes <code class='backtick'>s</code> with <code>duration_cast&lt;chrono::seconds&gt;(<del>abs(d)</del><ins><i>ABS_D</i></ins> - hours() - minutes())</code>.</p></li>
-<li><p>(3.5) &mdash; If <code>treat_as_floating_point_v&lt;precision::rep&gt;</code> is <code class='backtick'>true</code>, initializes 
-<code class='backtick'>ss</code> with <code><del>abs(d)</del><ins><i>ABS_D</i></ins> - hours() - minutes() - seconds()</code>. Otherwise, initializes <code class='backtick'>ss</code> with 
-<code>duration_cast&lt;precision&gt;(<del>abs(d)</del><ins><i>ABS_D</i></ins> - hours() - minutes() - seconds())</code>.</p></li>
-</ol>
-</blockquote>
 </blockquote>
 </li>
 

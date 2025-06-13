@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <title>Issue 4239: flat_map's transparent comparator no longer works for string literals</title>
 <meta property="og:title" content="Issue 4239: flat_map's transparent comparator no longer works for string literals">
-<meta property="og:description" content="C++ library issue. Status: New">
+<meta property="og:description" content="C++ library issue. Status: Voting">
 <meta property="og:url" content="https://cplusplus.github.io/LWG/issue4239.html">
 <meta property="og:type" content="website">
 <meta property="og:image" content="http://cplusplus.github.io/LWG/images/cpp_logo.png">
@@ -61,15 +61,15 @@
 </head>
 <body>
 <hr>
-<p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#New">New</a> status.</em></p>
+<p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#Voting">Voting</a> status.</em></p>
 <h3 id="4239"><a href="lwg-active.html#4239">4239</a>. <code class='backtick'>flat_map</code>'s transparent comparator no longer works for string literals</h3>
-<p><b>Section:</b> 23.6.8.7 <a href="https://wg21.link/flat.map.modifiers">[flat.map.modifiers]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Hui Xie <b>Opened:</b> 2025-03-29 <b>Last modified:</b> 2025-03-29</p>
+<p><b>Section:</b> 23.6.8.7 <a href="https://wg21.link/flat.map.modifiers">[flat.map.modifiers]</a> <b>Status:</b> <a href="lwg-active.html#Voting">Voting</a>
+ <b>Submitter:</b> Hui Xie <b>Opened:</b> 2025-03-29 <b>Last modified:</b> 2025-06-13</p>
 <p><b>Priority: </b>Not Prioritized
 </p>
 <p><b>View other</b> <a href="lwg-index-open.html#flat.map.modifiers">active issues</a> in [flat.map.modifiers].</p>
 <p><b>View all other</b> <a href="lwg-index.html#flat.map.modifiers">issues</a> in [flat.map.modifiers].</p>
-<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#Voting">Voting</a> status.</p>
 <p><b>Discussion:</b></p>
 <p>
 According to the spec, the following code should hard error
@@ -97,6 +97,19 @@ We should just use <code class='backtick'>std::upper_bound</code> instead. libst
 libc++ uses <code class='backtick'>ranges::upper_bound</code> but clang has not yet implemented <a href="https://wg21.link/P2865" title=" Remove Deprecated Array Comparisons from C++26">P2865</a> 
 properly.
 </p>
+
+<p><i>[2025-06-13; Reflector poll]</i></p>
+
+<p>
+Set status to Tentatively Ready after six votes in favour during reflector poll.
+</p>
+<p>
+We should make <code class='backtick'>ranges::upper_bound</code> work for this case, but literals never met
+its <code class='backtick'>indirect_strict_weak_order</code> semantic requirements anyway.
+Making that work would be a new design to be seen be LEWG.
+The proposed resolution solves the immediate problem here.
+</p>
+
 
 
 <p id="res-4239"><b>Proposed resolution:</b></p>
