@@ -79,7 +79,7 @@
 </tr>
 </table>
 <h1>C++ Standard Library Active Issues List (Revision D125)</h1>
-<p>Revised 2025-06-14 at 10:10:00 UTC
+<p>Revised 2025-06-14 at 10:15:29 UTC
 </p>
   <p>Reference ISO/IEC IS 14882:2020(E)</p>
   <p>Also see:</p>
@@ -75451,7 +75451,7 @@ void f2() noexcept;
 function_ref&lt;void() noexcept&gt; r1(&amp;r1);
 function_ref&lt;void()&gt; r2(r1);
 r1 = &amp;f2;
-r2(); // it is unspecified if <code class='backtick'>f1</code> or <code class='backtick'>f2</code> is invoked</ins>
+f2(); // it is unspecified if <code class='backtick'>f1</code> or <code class='backtick'>f2</code> is invoked</ins>
 </pre>
 <p> 
 <ins>&mdash; <i>end example</i>]</ins>
