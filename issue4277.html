@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Issue 4277: &sect;[algorithms.requirements] It is unclear what an algorithm is</title>
+<meta property="og:title" content="Issue 4277: &sect;[algorithms.requirements] It is unclear what an algorithm is">
+<meta property="og:description" content="C++ library issue. Status: New">
+<meta property="og:url" content="https://cplusplus.github.io/LWG/issue4277.html">
+<meta property="og:type" content="website">
+<meta property="og:image" content="http://cplusplus.github.io/LWG/images/cpp_logo.png">
+<meta property="og:image:alt" content="C++ logo">
+<style>
+  p {text-align:justify}
+  li {text-align:justify}
+  pre code.backtick::before { content: "`" }
+  pre code.backtick::after { content: "`" }
+  blockquote.note
+  {
+    background-color:#E0E0E0;
+    padding-left: 15px;
+    padding-right: 15px;
+    padding-top: 1px;
+    padding-bottom: 1px;
+  }
+  ins {background-color:#A0FFA0}
+  del {background-color:#FFA0A0}
+  table.issues-index { border: 1px solid; border-collapse: collapse; }
+  table.issues-index th { text-align: center; padding: 4px; border: 1px solid; }
+  table.issues-index td { padding: 4px; border: 1px solid; }
+  table.issues-index td:nth-child(1) { text-align: right; }
+  table.issues-index td:nth-child(2) { text-align: left; }
+  table.issues-index td:nth-child(3) { text-align: left; }
+  table.issues-index td:nth-child(4) { text-align: left; }
+  table.issues-index td:nth-child(5) { text-align: center; }
+  table.issues-index td:nth-child(6) { text-align: center; }
+  table.issues-index td:nth-child(7) { text-align: left; }
+  table.issues-index td:nth-child(5) span.no-pr { color: red; }
+  @media (prefers-color-scheme: dark) {
+     html {
+        color: #ddd;
+        background-color: black;
+     }
+     ins {
+        background-color: #225522
+     }
+     del {
+        background-color: #662222
+     }
+     a {
+        color: #6af
+     }
+     a:visited {
+        color: #6af
+     }
+     blockquote.note
+     {
+        background-color: rgba(255, 255, 255, .10)
+     }
+  }
+</style>
+</head>
+<body>
+<hr>
+<p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#New">New</a> status.</em></p>
+<h3 id="4277"><a href="lwg-active.html#4277">4277</a>. &sect;[algorithms.requirements] It is unclear what an algorithm is</h3>
+<p><b>Section:</b> 26.2 <a href="https://wg21.link/algorithms.requirements">[algorithms.requirements]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
+ <b>Submitter:</b> Jan Schultke <b>Opened:</b> 2025-06-08 <b>Last modified:</b> 2025-06-14</p>
+<p><b>Priority: </b>Not Prioritized
+</p>
+<p><b>View other</b> <a href="lwg-index-open.html#algorithms.requirements">active issues</a> in [algorithms.requirements].</p>
+<p><b>View all other</b> <a href="lwg-index.html#algorithms.requirements">issues</a> in [algorithms.requirements].</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
+<p><b>Discussion:</b></p>
+<p>
+26.2 <a href="https://wg21.link/algorithms.requirements">[algorithms.requirements]</a> paragraph 15 states:
+</p>
+<blockquote style="border-left: 3px solid #ccc;padding-left: 15px;">
+<p>
+The well-formedness and behavior of a call to an algorithm with an explicitly-specified 
+template argument list is unspecified, except where explicitly stated otherwise.
+</p>
+</blockquote>
+<p>
+It is unclear what this applies to because "algorithm" is never defined. 26.2 <a href="https://wg21.link/algorithms.requirements">[algorithms.requirements]</a> 
+paragraph 1 uses the term while mentioning iterators and containers, but  [algorithm] specifies 
+function templates such as <code class='backtick'>std::gcd</code> which do not accept iterators.
+<p/>
+The <i>Remarks</i> specifications in 26.8.9 <a href="https://wg21.link/alg.min.max">[alg.min.max]</a> providing exemptions from 
+26.2 <a href="https://wg21.link/algorithms.requirements">[algorithms.requirements]</a> paragraph 15 suggest that even function templates not 
+accepting iterators are considered algorithms.
+</p>
+
+
+<p id="res-4277"><b>Proposed resolution:</b></p>
+<p>
+This wording is relative to <a href="https://wg21.link/N5008">N5008</a>.
+</p>
+
+<ol>
+<li><p>Modify 26.2 <a href="https://wg21.link/algorithms.requirements">[algorithms.requirements]</a> as indicated:</p>
+
+<blockquote>
+<p>
+-15- The well-formedness and behavior of a call to <del>an algorithm</del><ins>a function template specified in Clause 
+26 <a href="https://wg21.link/algorithms">[algorithms]</a> (including call operators of algorithm function objects denoted as algorithms throughout Clause 
+26.2 <a href="https://wg21.link/algorithms.requirements">[algorithms.requirements]</a>)</ins> with an explicitly-specified template argument list is unspecified, 
+except where explicitly stated otherwise.
+<p/>
+[<i>Note 3</i>: Consequently, an implementation can declare an algorithm with different template parameters than those
+presented. &mdash; <i>end note</i>]
+</p>
+</blockquote>
+</li>
+
+</ol>
+
+
+
+
+
+</body>
+</html>
