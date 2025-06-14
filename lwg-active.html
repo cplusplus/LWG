@@ -79,7 +79,7 @@
 </tr>
 </table>
 <h1>C++ Standard Library Active Issues List (Revision D125)</h1>
-<p>Revised 2025-06-14 at 09:47:03 UTC
+<p>Revised 2025-06-14 at 10:02:39 UTC
 </p>
   <p>Reference ISO/IEC IS 14882:2020(E)</p>
   <p>Also see:</p>
@@ -74880,7 +74880,7 @@ require accepting <code class='backtick'>size_t</code> values?
 <hr>
 <h3 id="4259"><a href="#4259">4259</a><sup><a href="https://cplusplus.github.io/LWG/issue4259">(i)</a></sup>. P1148R0 changed the return values of searching functions of <code class='backtick'>std::basic_string</code> on some platforms</h3>
 <p><b>Section:</b> 27.4.3.8.2 <a href="https://wg21.link/string.find">[string.find]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Jiang An <b>Opened:</b> 2025-05-05 <b>Last modified:</b> 2025-05-18</p>
+ <b>Submitter:</b> Jiang An <b>Opened:</b> 2025-05-05 <b>Last modified:</b> 2025-06-14</p>
 <p><b>Priority: </b>Not Prioritized
 </p>
 <p><b>View other</b> <a href="lwg-index-open.html#string.find">active issues</a> in [string.find].</p>
@@ -74899,6 +74899,51 @@ and when the basic_string type <code class='backtick'>S</code> uses such an allo
 type, which in turn makes <code class='backtick'>S::size_type(std::size_t(-1))</code> not equal to <code class='backtick'>S::size_type(-1)</code>.
 <p/>
 Do we want to restore the old return values?
+</p>
+
+<p><strong>Previous resolution [SUPERSEDED]:</strong></p>
+<blockquote class="note">
+
+<p>
+This wording is relative to <a href="https://wg21.link/N5008">N5008</a>.
+</p>
+<ol>
+
+<li><p>Modify 27.4.3.8.2 <a href="https://wg21.link/string.find">[string.find]</a> as indicated:</p>
+
+<blockquote>
+<pre>
+template&lt;class T&gt;
+  constexpr size_type find(const T&amp; t, size_type pos = 0) const noexcept(<i>see below</i>);
+[&hellip;]
+template&lt;class T&gt;
+  constexpr size_type find_last_not_of(const T&amp; t, size_type pos = npos) const noexcept(<i>see below</i>);
+</pre>
+<blockquote>
+<p>
+-2- <i>Constraints</i>: [&hellip;]
+<p/>
+-3- <i>Effects</i>: Let <code><i>G</i></code> be the name of the function. Equivalent to:
+</p>
+<blockquote><pre>
+basic_string_view&lt;charT, traits&gt; s = *this, sv = t;
+<del>return s.<i>G</i>(sv, pos);</del>
+<ins>if (auto result = s.<i>G</i>(sv, pos); result == size_t(-1))
+  return npos;
+else
+  return result;</ins>
+</pre></blockquote>
+</blockquote>
+</blockquote>
+</li>
+</ol>
+</blockquote>
+
+<p><i>[2025-06-10, reflector discussion]</i></p>
+
+<p>
+During reflector discussion of this issue there was a preference to adjust the
+proposed wording to use <code class='backtick'>s.npos</code> instead of <code class='backtick'>size_t(-1)</code>. 
 </p>
 
 
@@ -74927,7 +74972,7 @@ template&lt;class T&gt;
 <blockquote><pre>
 basic_string_view&lt;charT, traits&gt; s = *this, sv = t;
 <del>return s.<i>G</i>(sv, pos);</del>
-<ins>if (auto result = s.<i>G</i>(sv, pos); result == size_t(-1))
+<ins>if (auto result = s.<i>G</i>(sv, pos); result == s.npos)
   return npos;
 else
   return result;</ins>
