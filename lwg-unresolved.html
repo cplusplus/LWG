@@ -54,7 +54,7 @@
 </style>
 </head>
 <body>
-<p>Revised 2025-06-14 at 10:15:29 UTC
+<p>Revised 2025-06-14 at 10:25:20 UTC
 </p><h2>Unresolved Issues</h2>
 <hr>
 <h3 id="423"><a href="#423">423</a><sup><a href="https://cplusplus.github.io/LWG/issue423">(i)</a></sup>. Effects of negative <code>streamsize</code> in iostreams</h3>
@@ -4674,6 +4674,7 @@ Alisdair says that his paper <a href="https://wg21.link/P0178">P0178</a> address
  <b>Submitter:</b> Daryle Walker <b>Opened:</b> 2012-05-08 <b>Last modified:</b> 2021-03-14</p>
 <p><b>Priority: </b>3
 </p>
+<p><b>View other</b> <a href="lwg-index-open.html#array.zero">active issues</a> in [array.zero].</p>
 <p><b>View all other</b> <a href="lwg-index.html#array.zero">issues</a> in [array.zero].</p>
 <p><b>View all issues with</b> <a href="lwg-status.html#Open">Open</a> status.</p>
 <p><b>Discussion:</b></p>
@@ -71073,6 +71074,47 @@ header,
 <code class='backtick'>dynamic_extent</code> is available when the header <code>&lt;mdspan&gt;</code>
 is included.
 </ins>
+</p>
+</blockquote>
+</li>
+
+</ol>
+
+
+
+
+
+<hr>
+<h3 id="4276"><a href="#4276">4276</a><sup><a href="https://cplusplus.github.io/LWG/issue4276">(i)</a></sup>. <code class='backtick'>front()</code> and <code class='backtick'>back()</code> are not hardened for zero-length <code class='backtick'>std::array</code>s</h3>
+<p><b>Section:</b> 23.3.3.5 <a href="https://wg21.link/array.zero">[array.zero]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
+ <b>Submitter:</b> Jan Schultke <b>Opened:</b> 2025-06-08 <b>Last modified:</b> 2025-06-14</p>
+<p><b>Priority: </b>Not Prioritized
+</p>
+<p><b>View other</b> <a href="lwg-index-open.html#array.zero">active issues</a> in [array.zero].</p>
+<p><b>View all other</b> <a href="lwg-index.html#array.zero">issues</a> in [array.zero].</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
+<p><b>Discussion:</b></p>
+<p>
+The intent of <a href="https://wg21.link/P3471" title=" Standard library hardening">P3471</a> "Standard library hardening" is clearly to provide hardened preconditions 
+for members of sequence containers, including <code class='backtick'>std::array</code>. However, a zero-length <code class='backtick'>std::array</code> dodges this 
+hardening by having undefined behavior for <code class='backtick'>front()</code> and <code class='backtick'>back()</code> explicitly specified in 
+23.3.3.5 <a href="https://wg21.link/array.zero">[array.zero]</a> paragraph 3.
+<p/>
+Without this paragraph, <code class='backtick'>front()</code> and <code class='backtick'>back()</code> would be hardened as well, as specified in 23.2.4 <a href="https://wg21.link/sequence.reqmts">[sequence.reqmts]</a>.
+</p>
+
+
+<p id="res-4276"><b>Proposed resolution:</b></p>
+<p>
+This wording is relative to <a href="https://wg21.link/N5008">N5008</a>.
+</p>
+
+<ol>
+<li><p>Modify 23.3.3.5 <a href="https://wg21.link/array.zero">[array.zero]</a> as indicated:</p>
+
+<blockquote>
+<p>
+<del>-3- The effect of calling <code class='backtick'>front()</code> or <code class='backtick'>back()</code> for a zero-sized array is undefined.</del>
 </p>
 </blockquote>
 </li>
