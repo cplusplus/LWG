@@ -64,7 +64,7 @@
 <p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#New">New</a> status.</em></p>
 <h3 id="4272"><a href="lwg-active.html#4272">4272</a>. For <code class='backtick'>rank == 0</code>, <code class='backtick'>layout_stride</code> is atypically convertible</h3>
 <p><b>Section:</b> 23.7.3.4 <a href="https://wg21.link/mdspan.layout">[mdspan.layout]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Luc Grosheintz <b>Opened:</b> 2025-06-02 <b>Last modified:</b> 2025-06-12</p>
+ <b>Submitter:</b> Luc Grosheintz <b>Opened:</b> 2025-06-02 <b>Last modified:</b> 2025-06-14</p>
 <p><b>Priority: </b>2
 </p>
 <p><b>View all other</b> <a href="lwg-index.html#mdspan.layout">issues</a> in [mdspan.layout].</p>
@@ -74,8 +74,9 @@
 Commonly, two layouts are considered convertible, if the underlying
 <code class='backtick'>extent_types</code> are convertible.
 <p/>
-However, for the two ctors <code class='backtick'>layout_left(layout_stride)</code> and
-<code class='backtick'>layout_right(layout_stride)</code>, the condition is <code>rank &gt; 0</code>. Therefore,
+However, for the two ctors <code class='backtick'>layout_left::mapping(layout_stride::mapping)</code> and
+<code class='backtick'>layout_right::mapping(layout_stride::mapping)</code>, the condition is <code>rank &gt; 0</code>. 
+Therefore,
 </p>
 <blockquote><pre>
 using E1 = std::extents&lt;int&gt;;
@@ -116,7 +117,7 @@ This wording is relative to <a href="https://wg21.link/N5008">N5008</a>.
 [<i>Drafting note</i>: As drive-by fixes the edits for <code>layout_left_padded&lt;&gt;::mapping</code> and
 <code>layout_right_padded&lt;&gt;::mapping</code> also correct an editorial asymmetry between class
 header synopsis declaration form and prototype specification form of the corresponding
-constructors and adjust to the correct spelling of the exposition-only data member <code><i>rank_</i></code>.]
+constructors and adjust to the correct formatting of the exposition-only data member <code><i>rank_</i></code>.]
 </p>
 </blockquote>
 
