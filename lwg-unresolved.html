@@ -54,7 +54,7 @@
 </style>
 </head>
 <body>
-<p>Revised 2025-06-14 at 10:02:39 UTC
+<p>Revised 2025-06-14 at 10:10:00 UTC
 </p><h2>Unresolved Issues</h2>
 <hr>
 <h3 id="423"><a href="#423">423</a><sup><a href="https://cplusplus.github.io/LWG/issue423">(i)</a></sup>. Effects of negative <code>streamsize</code> in iostreams</h3>
@@ -69808,7 +69808,7 @@ exception is thrown.
 <hr>
 <h3 id="4264"><a href="#4264">4264</a><sup><a href="https://cplusplus.github.io/LWG/issue4264">(i)</a></sup>. Skipping indirection is not allowed for <code>function_ref</code></h3>
 <p><b>Section:</b> 22.10.17.1 <a href="https://wg21.link/func.wrap.general">[func.wrap.general]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Tomasz Kami&nacute;ski <b>Opened:</b> 2025-05-15 <b>Last modified:</b> 2025-05-26</p>
+ <b>Submitter:</b> Tomasz Kami&nacute;ski <b>Opened:</b> 2025-05-15 <b>Last modified:</b> 2025-06-14</p>
 <p><b>Priority: </b>Not Prioritized
 </p>
 <p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
@@ -70023,7 +70023,7 @@ void f2() noexcept;
 function_ref&lt;void() noexcept&gt; r1(&amp;r1);
 function_ref&lt;void()&gt; r2(r1);
 r1 = &amp;f2;
-f2(); // it is unspecified if <code class='backtick'>f1</code> or <code class='backtick'>f2</code> is invoked</ins>
+r2(); // it is unspecified if <code class='backtick'>f1</code> or <code class='backtick'>f2</code> is invoked</ins>
 </pre>
 <p> 
 <ins>&mdash; <i>end example</i>]</ins>
