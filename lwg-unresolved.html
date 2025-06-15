@@ -54,7 +54,7 @@
 </style>
 </head>
 <body>
-<p>Revised 2025-06-14 at 10:41:13 UTC
+<p>Revised 2025-06-15 at 10:32:17 UTC
 </p><h2>Unresolved Issues</h2>
 <hr>
 <h3 id="423"><a href="#423">423</a><sup><a href="https://cplusplus.github.io/LWG/issue423">(i)</a></sup>. Effects of negative <code>streamsize</code> in iostreams</h3>
@@ -56862,7 +56862,7 @@ instead of "an object whose type models <code class='backtick'>Concept</code>" o
 <hr>
 <h3 id="4070"><a href="#4070">4070</a><sup><a href="https://cplusplus.github.io/LWG/issue4070">(i)</a></sup>. Transcoding by <code>std::formatter&lt;std::filesystem::path&gt;</code></h3>
 <p><b>Section:</b> 31.12.6.9.2 <a href="https://wg21.link/fs.path.fmtr.funcs">[fs.path.fmtr.funcs]</a> <b>Status:</b> <a href="lwg-active.html#SG16">SG16</a>
- <b>Submitter:</b> Jonathan Wakely <b>Opened:</b> 2024-04-19 <b>Last modified:</b> 2024-05-08</p>
+ <b>Submitter:</b> Jonathan Wakely <b>Opened:</b> 2024-04-19 <b>Last modified:</b> 2025-06-15</p>
 <p><b>Priority: </b>2
 </p>
 <p><b>View all issues with</b> <a href="lwg-status.html#SG16">SG16</a> status.</p>
@@ -56925,16 +56925,15 @@ For a non-escaped string, we want the ill-formed sequence to be
 formatted as &#xfffd;, which the proposed resolution tries to ensure.
 </p>
 
-
 <p><i>[2024-05-08; Reflector poll]</i></p>
 
 <p>
 Set priority to 2 after reflector poll.
 </p>
 
+<p><strong>Previous resolution [SUPERSEDED]:</strong></p>
+<blockquote class="note">
 
-
-<p id="res-4070"><b>Proposed resolution:</b></p>
 <p>
 This wording is relative to <a href="https://wg21.link/N4981" title=" Working Draft, Programming Languages — C++">N4981</a>.
 </p>
@@ -56971,6 +56970,72 @@ Modify the entry in the index of implementation-defined behavior as indicated:
 <blockquote>
 transcoding of a formatted <code class='backtick'>path</code> when <code class='backtick'>charT</code> and <code class='backtick'>path::value_type</code> differ
 <ins>and not converting from <code class='backtick'>wchar_t</code> to UTF-8</ins>
+</blockquote>
+</li>
+
+</ol>
+</blockquote>
+
+<p><i>[2025-06-11; SG16 comments and improves wording]</i></p>
+
+<p>
+The "and not converting from <code class='backtick'>wchar_t</code> to UTF-8" wording added in the index of implementation-defined 
+behavior by the current proposed resolution should be changed to "and the literal encoding is not UTF-8".
+<p/>
+It was noted that "the literal encoding" is ambiguous in both the normative wording in 
+31.12.6.9.2 <a href="https://wg21.link/fs.path.fmtr.funcs">[fs.path.fmtr.funcs]</a> p5 and in the new wording quoted above. In both cases, the intent 
+is to refer to the "ordinary literal encoding". However, some SG16 participants were reluctant to include 
+a drive-by fix with the proposed resolution for this issue since the ambiguous literal encoding reference i
+s a pre-existing and separable issue. Those same SG16 participants were more concerned that the same 
+wording was used in both 31.12.6.9.2 <a href="https://wg21.link/fs.path.fmtr.funcs">[fs.path.fmtr.funcs]</a> p5 and in the corresponding entry of the 
+implementation-defined behavior index. I would defer to the LWG chair to decide whether to address this 
+as an additional related clarification with this change or as a separate editorial or LWG issue.
+<p/>
+The minimal change is to replace "and not converting from <code class='backtick'>wchar_t</code> to UTF-8" with "and the literal encoding 
+is not UTF-8". The optional change is to insert "ordinary" before "literal encoding" as well. Once that is done, 
+I'll have SG16 confirm they are content with the new proposed resolution.
+</p>
+
+
+<p id="res-4070"><b>Proposed resolution:</b></p>
+<p>
+This wording is relative to <a href="https://wg21.link/N5008">N5008</a>.
+</p>
+<ol>
+<li><p>Modify 31.12.6.9.2 <a href="https://wg21.link/fs.path.fmtr.funcs">[fs.path.fmtr.funcs]</a> as indicated:</p>
+
+<blockquote>
+<pre><code>
+template&lt;class FormatContext&gt;
+  typename FormatContext::iterator
+    format(const filesystem::path&amp; p, FormatContext&amp; ctx) const;
+</code></pre>
+<blockquote>
+<p>
+-5-
+<em>Effects</em>:
+Let <code class='backtick'>s</code> be <code>p.generic_string&lt;filesystem::path::value_type&gt;()</code>
+if the <code class='backtick'>g</code> option is used, otherwise <code class='backtick'>p.native()</code>.
+Writes <code class='backtick'>s</code> into <code class='backtick'>ctx.out()</code>, adjusted according to the <i>path-format-spec</i>.
+If <code class='backtick'>charT</code> is <code class='backtick'>char</code>, <code class='backtick'>path::value_type</code> is <code class='backtick'>wchar_t</code>, and the literal encoding 
+is UTF-8, then the <del>escaped path</del> <ins>(possibly escaped) string</ins>
+is transcoded from the native encoding for wide character strings to UTF-8
+with maximal subparts of ill-formed subsequences substituted with
+<span style="font-variant:small-caps">u+fffd replacement character</span> per
+the Unicode Standard, Chapter 3.9 <span style="font-variant:small-caps">u+fffd</span>
+Substitution in Conversion.
+If <code class='backtick'>charT</code> and <code class='backtick'>path::value_type</code> are the same then no transcoding is performed.
+Otherwise, transcoding is implementation-defined.
+</p>
+</blockquote>
+</blockquote>
+</li>
+
+<li>
+Modify the entry in the index of implementation-defined behavior as indicated:
+<blockquote>
+transcoding of a formatted <code class='backtick'>path</code> when <code class='backtick'>charT</code> and <code class='backtick'>path::value_type</code> differ
+<ins>and the ordinary literal encoding is not UTF-8</ins>
 </blockquote>
 </li>
 
