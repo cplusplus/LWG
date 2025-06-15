@@ -23,7 +23,7 @@ jobs:
         fetch-depth: 1
 
     - name: Compile binary programs
-      run: make pgms
+      run: make CXX=g++-14 pgms
 
     - name: Check for carriage returns
       run: |
