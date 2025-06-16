@@ -54,7 +54,7 @@
 </style>
 </head>
 <body>
-<p>Revised 2025-06-16 at 05:25:02 UTC
+<p>Revised 2025-06-16 at 11:25:15 UTC
 </p><h2>Unresolved Issues</h2>
 <hr>
 <h3 id="423"><a href="#423">423</a><sup><a href="https://cplusplus.github.io/LWG/issue423">(i)</a></sup>. Effects of negative <code>streamsize</code> in iostreams</h3>
@@ -39867,7 +39867,7 @@ Set priority to 4 after reflector poll. One vote for NAD.
 <hr>
 <h3 id="3696"><a href="#3696">3696</a><sup><a href="https://cplusplus.github.io/LWG/issue3696">(i)</a></sup>. "Basic integral types" should not be used</h3>
 <p><b>Section:</b> 31.2.2 <a href="https://wg21.link/stream.types">[stream.types]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Jiang An <b>Opened:</b> 2022-05-07 <b>Last modified:</b> 2022-05-17</p>
+ <b>Submitter:</b> Jiang An <b>Opened:</b> 2022-05-07 <b>Last modified:</b> 2025-06-16</p>
 <p><b>Priority: </b>3
 </p>
 <p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
@@ -39895,9 +39895,47 @@ So I think we should just use "signed integer types" instead of "signed basic in
 Set priority to 3 after reflector poll.
 </p>
 
+<p><i>[2025-06-16; Jonathan adds wording]</i></p>
+
+
 
 
 <p id="res-3696"><b>Proposed resolution:</b></p>
+<p>
+This wording is relative to <a href="https://wg21.link/N5008">N5008</a>.
+</p>
+
+<ol>
+<li><p>Modify 31.2.2 <a href="https://wg21.link/stream.types">[stream.types]</a> as indicated:</p>
+
+<blockquote>
+<pre>using streamoff = implementation-defined;</pre>
+<p>
+-1- The type <code class='backtick'>streamoff</code> is a synonym for one of the
+signed <del>basic</del> integral types
+of sufficient size to represent the maximum possible file size
+for the operating system.<sup>256</sup>
+</p>
+<pre>using streamsize = implementation-defined;</pre>
+<p>
+-2-
+The type <code class='backtick'>streamsize</code> is a synonym for one of the
+signed <del>basic</del> integral types.
+It is used to represent the number of characters transferred
+in an I/O operation, or the size of I/O buffers.<sup>257</sup>
+</p>
+
+<p>
+256) Typically <code class='backtick'>long long</code>.
+</p>
+<p>
+257) Most places where <code class='backtick'>streamsize</code> is used would use <code class='backtick'>size_t</code> in C,
+or <code class='backtick'>ssize_t</code> in POSIX.
+</p>
+</blockquote>
+</li>
+</ol>
+
 
 
 
