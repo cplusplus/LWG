@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Issue 4280: simd::partial_load uses undefined identifier T</title>
+<meta property="og:title" content="Issue 4280: simd::partial_load uses undefined identifier T">
+<meta property="og:description" content="C++ library issue. Status: New">
+<meta property="og:url" content="https://cplusplus.github.io/LWG/issue4280.html">
+<meta property="og:type" content="website">
+<meta property="og:image" content="http://cplusplus.github.io/LWG/images/cpp_logo.png">
+<meta property="og:image:alt" content="C++ logo">
+<style>
+  p {text-align:justify}
+  li {text-align:justify}
+  pre code.backtick::before { content: "`" }
+  pre code.backtick::after { content: "`" }
+  blockquote.note
+  {
+    background-color:#E0E0E0;
+    padding-left: 15px;
+    padding-right: 15px;
+    padding-top: 1px;
+    padding-bottom: 1px;
+  }
+  ins {background-color:#A0FFA0}
+  del {background-color:#FFA0A0}
+  table.issues-index { border: 1px solid; border-collapse: collapse; }
+  table.issues-index th { text-align: center; padding: 4px; border: 1px solid; }
+  table.issues-index td { padding: 4px; border: 1px solid; }
+  table.issues-index td:nth-child(1) { text-align: right; }
+  table.issues-index td:nth-child(2) { text-align: left; }
+  table.issues-index td:nth-child(3) { text-align: left; }
+  table.issues-index td:nth-child(4) { text-align: left; }
+  table.issues-index td:nth-child(5) { text-align: center; }
+  table.issues-index td:nth-child(6) { text-align: center; }
+  table.issues-index td:nth-child(7) { text-align: left; }
+  table.issues-index td:nth-child(5) span.no-pr { color: red; }
+  @media (prefers-color-scheme: dark) {
+     html {
+        color: #ddd;
+        background-color: black;
+     }
+     ins {
+        background-color: #225522
+     }
+     del {
+        background-color: #662222
+     }
+     a {
+        color: #6af
+     }
+     a:visited {
+        color: #6af
+     }
+     blockquote.note
+     {
+        background-color: rgba(255, 255, 255, .10)
+     }
+  }
+</style>
+</head>
+<body>
+<hr>
+<p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#New">New</a> status.</em></p>
+<h3 id="4280"><a href="lwg-active.html#4280">4280</a>. <code class='backtick'>simd::partial_load</code> uses undefined identifier <code class='backtick'>T</code></h3>
+<p><b>Section:</b> 29.10.7.7 <a href="https://wg21.link/simd.loadstore">[simd.loadstore]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
+ <b>Submitter:</b> Tim Song <b>Opened:</b> 2025-06-21 <b>Last modified:</b> 2025-06-21</p>
+<p><b>Priority: </b>Not Prioritized
+</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
+<p><b>Discussion:</b></p>
+<p>
+The <i>Effects:</i> element of <code class='backtick'>std::simd::partial_load</code> (after the latest rename) uses <code class='backtick'>T</code> 
+but that is not defined anywhere. It should be <code class='backtick'>V::value_type</code>.
+<p/>
+Also, this paragraph should be a <i>Returns:</i> element.
+</p>
+
+
+<p id="res-4280"><b>Proposed resolution:</b></p>
+<p>
+This wording is relative to <a href="https://wg21.link/N5008">N5008</a>.
+</p>
+
+<ol>
+<li><p>Modify 29.10.7.7 <a href="https://wg21.link/simd.loadstore">[simd.loadstore]</a> as indicated:</p>
+
+<blockquote>
+<pre><code>
+template&lt;class V = <i>see below</i>, ranges::contiguous_range R, class... Flags&gt;
+  requires ranges::sized_range&lt;R&gt;
+  constexpr V partial_load(R&amp;&amp; r, flags&lt;Flags...&gt; f = {});
+[&hellip;]
+template&lt;class V = <i>see below</i>, contiguous_iterator I, sized_sentinel_for&lt;I&gt; S, class... Flags&gt;
+  constexpr V partial_load(I first, S last, const typename V::mask_type&amp; mask,
+                           flags&lt;Flags...&gt; f = {});
+</code></pre>
+<blockquote>
+<p>
+-6- [&hellip;]
+<p/>
+-7- <i>Mandates</i>: [&hellip;]
+<p/>
+-8- <i>Preconditions</i>: [&hellip;]
+<p/>
+-9- <del><i>Effects</i>: Initializes the</del><ins><i>Returns</i>: A <code class='backtick'>basic_simd</code> object 
+whose</ins> <code><i>i</i></code><sup>th</sup> element <ins>is initialized</ins> with
+<code>mask[<i>i</i>] &amp;&amp; <i>i</i> &lt; ranges::size(r) ? static_cast&lt;T&gt;(ranges::data(r)[<i>i</i>]) : T()</code> 
+for all <code><i>i</i></code> in the range of <code>[0, V::size())</code><ins>, where <code class='backtick'>T</code> is <code class='backtick'>V::value_type</code></ins>.
+<p/>
+-10- <i>Remarks</i>: The default argument for template parameter <code class='backtick'>V</code> is <code>basic_simd&lt;ranges::range_value_t&lt;R&gt;&gt;</code>.
+</p>
+</blockquote>
+</blockquote>
+</li>
+
+</ol>
+
+
+
+
+
+</body>
+</html>
