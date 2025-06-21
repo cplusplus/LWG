@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Issue 4278: Consider changing how get-domain-early(sndr) works</title>
+<meta property="og:title" content="Issue 4278: Consider changing how get-domain-early(sndr) works">
+<meta property="og:description" content="C++ library issue. Status: New">
+<meta property="og:url" content="https://cplusplus.github.io/LWG/issue4278.html">
+<meta property="og:type" content="website">
+<meta property="og:image" content="http://cplusplus.github.io/LWG/images/cpp_logo.png">
+<meta property="og:image:alt" content="C++ logo">
+<style>
+  p {text-align:justify}
+  li {text-align:justify}
+  pre code.backtick::before { content: "`" }
+  pre code.backtick::after { content: "`" }
+  blockquote.note
+  {
+    background-color:#E0E0E0;
+    padding-left: 15px;
+    padding-right: 15px;
+    padding-top: 1px;
+    padding-bottom: 1px;
+  }
+  ins {background-color:#A0FFA0}
+  del {background-color:#FFA0A0}
+  table.issues-index { border: 1px solid; border-collapse: collapse; }
+  table.issues-index th { text-align: center; padding: 4px; border: 1px solid; }
+  table.issues-index td { padding: 4px; border: 1px solid; }
+  table.issues-index td:nth-child(1) { text-align: right; }
+  table.issues-index td:nth-child(2) { text-align: left; }
+  table.issues-index td:nth-child(3) { text-align: left; }
+  table.issues-index td:nth-child(4) { text-align: left; }
+  table.issues-index td:nth-child(5) { text-align: center; }
+  table.issues-index td:nth-child(6) { text-align: center; }
+  table.issues-index td:nth-child(7) { text-align: left; }
+  table.issues-index td:nth-child(5) span.no-pr { color: red; }
+  @media (prefers-color-scheme: dark) {
+     html {
+        color: #ddd;
+        background-color: black;
+     }
+     ins {
+        background-color: #225522
+     }
+     del {
+        background-color: #662222
+     }
+     a {
+        color: #6af
+     }
+     a:visited {
+        color: #6af
+     }
+     blockquote.note
+     {
+        background-color: rgba(255, 255, 255, .10)
+     }
+  }
+</style>
+</head>
+<body>
+<hr>
+<p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#New">New</a> status.</em></p>
+<h3 id="4278"><a href="lwg-active.html#4278">4278</a>. Consider changing how <code><i>get-domain-early</i>(sndr)</code> works</h3>
+<p><b>Section:</b> 33.9.2 <a href="https://wg21.link/exec.snd.expos">[exec.snd.expos]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
+ <b>Submitter:</b> Jonathan Wakely <b>Opened:</b> 2025-06-16 <b>Last modified:</b> 2025-06-21</p>
+<p><b>Priority: </b>Not Prioritized
+</p>
+<p><b>View other</b> <a href="lwg-index-open.html#exec.snd.expos">active issues</a> in [exec.snd.expos].</p>
+<p><b>View all other</b> <a href="lwg-index.html#exec.snd.expos">issues</a> in [exec.snd.expos].</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
+<p><b>Discussion:</b></p>
+<p>
+During LWG review of <a href="https://wg21.link/P3481R3">P3481R3</a> it was noted that we need to say "except that <code class='backtick'>sndr</code> 
+is only evaluated once" because it's used in <code><i>get-domain-early</i>(sndr)</code>, but that 
+exposition-only-function doesn't actually use its argument, it only cares about the type, and 
+it default constructs a <code class='backtick'>Domain</code> of a type determined by using the type of <code class='backtick'>sndr</code>.
+<p/>
+If we had something like:
+</p>
+<blockquote><pre>
+template&lt;class Sender&gt;
+using <i>get-domain-early-t</i> = decltype(<i>get-domain-early</i>(declval&lt;const Sender&amp;&gt;()));
+</pre></blockquote>
+<p>
+then we wouldn't need to use <code class='backtick'>sndr</code> twice in expressions that currently use <code><i>get-domain-early</i>(sndr)</code>.
+</p>
+
+
+<p id="res-4278"><b>Proposed resolution:</b></p>
+
+
+
+
+
+</body>
+</html>
