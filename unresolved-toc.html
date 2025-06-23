@@ -59,7 +59,7 @@
 <p>Reference ISO/IEC IS 14882:2024(E)</p>
 <p>This document is the Table of Contents for the <a href="lwg-active.html">Library Active Issues List</a>,
 <a href="lwg-defects.html">Library Defect Reports and Accepted Issues</a>, and <a href="lwg-closed.html">Library Closed Issues List</a>.</p>
-<p>Revised 2025-06-21 at 13:51:26 UTC
+<p>Revised 2025-06-23 at 16:38:26 UTC
 </p><table class="issues-index">
 <tr>
   <th><a href="lwg-toc.html">Issue</a></th>
@@ -248,15 +248,6 @@
 <td>Further incomplete constraints for type traits</td>
 <td><span class="no-pr">No</span></td>
 <td>3</td>
-<td></td>
-</tr>
-<tr>
-<td id="2095"><a href="lwg-active.html#2095" title="promise and packaged_task missing constructors needed for uses-allocator construction (Status: LEWG)">2095</a><sup><a href="https://cplusplus.github.io/LWG/issue2095">(i)</a></sup></td>
-<td><a href="lwg-active.html#LEWG">LEWG</a></td>
-<td>32.10.6 [futures.promise]</td>
-<td><code>promise</code> and <code>packaged_task</code> missing constructors needed for uses-allocator construction</td>
-<td>Yes</td>
-<td>4</td>
 <td></td>
 </tr>
 <tr>
@@ -1405,15 +1396,6 @@ regards to <code>ClassAtomCollatingElement</code></td>
 <td><code>variant</code> copy constructor missing <code>noexcept(<i>see below</i>)</code></td>
 <td>Yes</td>
 <td></td>
-<td></td>
-</tr>
-<tr>
-<td id="3003"><a href="lwg-active.html#3003" title="&lt;future&gt; still has type-erased allocators in promise (Status: LEWG)">3003</a><sup><a href="https://cplusplus.github.io/LWG/issue3003">(i)</a></sup></td>
-<td><a href="lwg-active.html#LEWG">LEWG</a></td>
-<td>32.10.6 [futures.promise]</td>
-<td><code>&lt;future&gt;</code> still has type-erased allocators in <code>promise</code></td>
-<td>Yes</td>
-<td>2</td>
 <td></td>
 </tr>
 <tr>
@@ -5421,15 +5403,6 @@ max, and minmax is unclear (Status: New)">4167</a><sup><a href="https://cplusplu
 <td></td>
 </tr>
 <tr>
-<td id="4243"><a href="lwg-active.html#4243" title="as_bytes/as_writable_bytes is broken with span&lt;volatile T&gt; (Status: Ready)">4243</a><sup><a href="https://cplusplus.github.io/LWG/issue4243">(i)</a></sup></td>
-<td><a href="lwg-active.html#Ready">Ready</a></td>
-<td>23.7.2.3 [span.objectrep]</td>
-<td><code class='backtick'>as_bytes</code>/<code class='backtick'>as_writable_bytes</code> is broken with <code>span&lt;volatile T&gt;</code></td>
-<td>Yes</td>
-<td>4</td>
-<td></td>
-</tr>
-<tr>
 <td id="4244"><a href="lwg-active.html#4244" title="Whether the spuriously failed comparison applies to compare_exchange_strong is unclear (Status: New)">4244</a><sup><a href="https://cplusplus.github.io/LWG/issue4244">(i)</a></sup></td>
 <td><a href="lwg-active.html#New">New</a></td>
 <td>32.5.7.2 [atomics.ref.ops]</td>
@@ -5479,15 +5452,6 @@ max, and minmax is unclear (Status: New)">4167</a><sup><a href="https://cplusplu
 <td><a href="lwg-active.html#New">New</a></td>
 <td>16.4.6.13 [derivation]</td>
 <td>Are exposition-only classes considered specified for the purpose of <code class='backtick'>final</code>?</td>
-<td>Yes</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td id="4253"><a href="lwg-active.html#4253" title="basic_const_iterator should provide iterator_type (Status: Tentatively Ready)">4253</a><sup><a href="https://cplusplus.github.io/LWG/issue4253">(i)</a></sup></td>
-<td><a href="lwg-active.html#Ready">Tentatively Ready</a></td>
-<td>24.5.3.3 [const.iterators.iterator]</td>
-<td><code class='backtick'>basic_const_iterator</code> should provide <code class='backtick'>iterator_type</code></td>
 <td>Yes</td>
 <td></td>
 <td></td>
@@ -5601,15 +5565,6 @@ max, and minmax is unclear (Status: New)">4167</a><sup><a href="https://cplusplu
 <td></td>
 </tr>
 <tr>
-<td id="4266"><a href="lwg-active.html#4266" title="layout_stride::mapping should treat empty mappings as exhaustive (Status: Tentatively Ready)">4266</a><sup><a href="https://cplusplus.github.io/LWG/issue4266">(i)</a></sup></td>
-<td><a href="lwg-active.html#Ready">Tentatively Ready</a></td>
-<td>23.7.3.4.7 [mdspan.layout.stride]</td>
-<td><code class='backtick'>layout_stride::mapping</code> should treat empty mappings as exhaustive</td>
-<td>Yes</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
 <td id="4267"><a href="lwg-active.html#4267" title="Uses-allocator construction is meaningless for tuple of references (Status: New)">4267</a><sup><a href="https://cplusplus.github.io/LWG/issue4267">(i)</a></sup></td>
 <td><a href="lwg-active.html#New">New</a></td>
 <td>22.4.4.2 [tuple.cnstr]</td>
@@ -5670,15 +5625,6 @@ complexity for algorithms that are in fact &#x1d4aa;(n)</td>
 <td><a href="lwg-active.html#New">New</a></td>
 <td>26.3.6 [execpol]</td>
 <td>Standard execution policy types should be conventional tag class types</td>
-<td>Yes</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td id="4274"><a href="lwg-active.html#4274" title="The chrono::hh_mm_ss constructor is ill-formed for unsigned durations (Status: Tentatively Ready)">4274</a><sup><a href="https://cplusplus.github.io/LWG/issue4274">(i)</a></sup></td>
-<td><a href="lwg-active.html#Ready">Tentatively Ready</a></td>
-<td>30.9.2 [time.hms.members]</td>
-<td>The <code class='backtick'>chrono::hh_mm_ss</code> constructor is ill-formed for unsigned durations</td>
 <td>Yes</td>
 <td></td>
 <td></td>

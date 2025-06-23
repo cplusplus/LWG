@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <title>Issue 2095: promise and packaged_task missing constructors needed for uses-allocator construction</title>
 <meta property="og:title" content="Issue 2095: promise and packaged_task missing constructors needed for uses-allocator construction">
-<meta property="og:description" content="C++ library issue. Status: LEWG">
+<meta property="og:description" content="C++ library issue. Status: Resolved">
 <meta property="og:url" content="https://cplusplus.github.io/LWG/issue2095.html">
 <meta property="og:type" content="website">
 <meta property="og:image" content="http://cplusplus.github.io/LWG/images/cpp_logo.png">
@@ -61,15 +61,14 @@
 </head>
 <body>
 <hr>
-<p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#LEWG">LEWG</a> status.</em></p>
-<h3 id="2095"><a href="lwg-active.html#2095">2095</a>. <code>promise</code> and <code>packaged_task</code> missing constructors needed for uses-allocator construction</h3>
-<p><b>Section:</b> 32.10.6 <a href="https://wg21.link/futures.promise">[futures.promise]</a>, 32.10.10 <a href="https://wg21.link/futures.task">[futures.task]</a> <b>Status:</b> <a href="lwg-active.html#LEWG">LEWG</a>
- <b>Submitter:</b> Jonathan Wakely <b>Opened:</b> 2011-11-01 <b>Last modified:</b> 2019-06-03</p>
+<p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#Resolved">Resolved</a> status.</em></p>
+<h3 id="2095"><a href="lwg-defects.html#2095">2095</a>. <code>promise</code> and <code>packaged_task</code> missing constructors needed for uses-allocator construction</h3>
+<p><b>Section:</b> 32.10.6 <a href="https://wg21.link/futures.promise">[futures.promise]</a>, 32.10.10 <a href="https://wg21.link/futures.task">[futures.task]</a> <b>Status:</b> <a href="lwg-active.html#Resolved">Resolved</a>
+ <b>Submitter:</b> Jonathan Wakely <b>Opened:</b> 2011-11-01 <b>Last modified:</b> 2025-06-23</p>
 <p><b>Priority: </b>4
 </p>
-<p><b>View other</b> <a href="lwg-index-open.html#futures.promise">active issues</a> in [futures.promise].</p>
 <p><b>View all other</b> <a href="lwg-index.html#futures.promise">issues</a> in [futures.promise].</p>
-<p><b>View all issues with</b> <a href="lwg-status.html#LEWG">LEWG</a> status.</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#Resolved">Resolved</a> status.</p>
 <p><b>Discussion:</b></p>
 
 <p>
@@ -126,7 +125,7 @@ this topic until the final outcome of that paper and its proposed resolution is 
 <p><i>[2019-06-03 Jonathan Wakely provides updated wording]</i></p>
 
 <p>Jonathan updates wording post-<a href="lwg-defects.html#2976" title="Dangling uses_allocator specialization for packaged_task (Status: C++20)">2976</a><sup><a href="https://cplusplus.github.io/LWG/issue2976" title="Latest snapshot">(i)</a></sup>
-and observes that this resolution conflicts with <a href="lwg-active.html#3003" title="&lt;future&gt; still has type-erased allocators in promise (Status: LEWG)">3003</a><sup><a href="https://cplusplus.github.io/LWG/issue3003" title="Latest snapshot">(i)</a></sup>.</p>
+and observes that this resolution conflicts with <a href="lwg-defects.html#3003" title="&lt;future&gt; still has type-erased allocators in promise (Status: Resolved)">3003</a><sup><a href="https://cplusplus.github.io/LWG/issue3003" title="Latest snapshot">(i)</a></sup>.</p>
 
 <p><strong>Previous resolution [SUPERSEDED]:</strong></p>
 <blockquote class="note">
@@ -249,6 +248,10 @@ to <code>*this</code>.
 </ol>
 
 </blockquote>
+
+<p><i>[2025-06-21 Status changed: LEWG &rarr; Resolved.]</i></p>
+
+Resolved by adoption of <a href="https://wg21.link/P3503R3">P3503R3</a> in Sofia.
 
 
 

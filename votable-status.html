@@ -62,8 +62,8 @@ This document is the Index by Status and Section for the <a href="lwg-active.htm
 <a href="lwg-defects.html">Library Defect Reports and Accepted Issues</a>, and <a href="lwg-closed.html">Library Closed Issues List</a>.
 </p>
 
-<p>Revised 2025-06-21 at 13:51:26 UTC
-</p><h2 id="Voting">Voting (24 issues)</h2>
+<p>Revised 2025-06-23 at 16:38:26 UTC
+</p><h2 id="Ready">Ready (1 issues)</h2>
 <table class="issues-index">
 <tr>
   <th><a href="lwg-toc.html">Issue</a></th>
@@ -75,219 +75,49 @@ This document is the Index by Status and Section for the <a href="lwg-active.htm
   <th>Duplicates</th>
 </tr>
 <tr>
-<td id="4222"><a href="lwg-active.html#4222" title="expected constructor from a single value missing a constraint (Status: Voting)">4222</a><sup><a href="https://cplusplus.github.io/LWG/issue4222">(i)</a></sup></td>
-<td><a href="lwg-active.html#Voting">Voting</a></td>
-<td>22.8.6.2 [expected.object.cons]</td>
-<td><code class='backtick'>expected</code> constructor from a single value missing a constraint</td>
+<td id="4243"><a href="lwg-active.html#4243" title="as_bytes/as_writable_bytes is broken with span&lt;volatile T&gt; (Status: Ready)">4243</a><sup><a href="https://cplusplus.github.io/LWG/issue4243">(i)</a></sup></td>
+<td><a href="lwg-active.html#Ready">Ready</a></td>
+<td>23.7.2.3 [span.objectrep]</td>
+<td><code class='backtick'>as_bytes</code>/<code class='backtick'>as_writable_bytes</code> is broken with <code>span&lt;volatile T&gt;</code></td>
+<td>Yes</td>
+<td>4</td>
+<td></td>
+</tr>
+</table>
+<h2 id="Tentatively_Ready">Tentatively Ready (3 issues)</h2>
+<table class="issues-index">
+<tr>
+  <th><a href="lwg-toc.html">Issue</a></th>
+  <th><a href="lwg-status.html">Status</a></th>
+  <th><a href="lwg-index.html">Section</a></th>
+  <th>Title</th>
+  <th>Proposed Resolution</th>
+  <th><a href="unresolved-prioritized.html">Priority</a></th>
+  <th>Duplicates</th>
+</tr>
+<tr>
+<td id="4266"><a href="lwg-active.html#4266" title="layout_stride::mapping should treat empty mappings as exhaustive (Status: Tentatively Ready)">4266</a><sup><a href="https://cplusplus.github.io/LWG/issue4266">(i)</a></sup></td>
+<td><a href="lwg-active.html#Ready">Tentatively Ready</a></td>
+<td>23.7.3.4.7 [mdspan.layout.stride]</td>
+<td><code class='backtick'>layout_stride::mapping</code> should treat empty mappings as exhaustive</td>
 <td>Yes</td>
 <td></td>
 <td></td>
 </tr>
 <tr>
-<td id="4247"><a href="lwg-active.html#4247" title="Header &lt;stdbit.h&gt; is not yet freestanding (Status: Voting)">4247</a><sup><a href="https://cplusplus.github.io/LWG/issue4247">(i)</a></sup></td>
-<td><a href="lwg-active.html#Voting">Voting</a></td>
-<td>22.12 [stdbit.h.syn]</td>
-<td>Header <code>&lt;stdbit.h&gt;</code> is not yet freestanding</td>
+<td id="4253"><a href="lwg-active.html#4253" title="basic_const_iterator should provide iterator_type (Status: Tentatively Ready)">4253</a><sup><a href="https://cplusplus.github.io/LWG/issue4253">(i)</a></sup></td>
+<td><a href="lwg-active.html#Ready">Tentatively Ready</a></td>
+<td>24.5.3.3 [const.iterators.iterator]</td>
+<td><code class='backtick'>basic_const_iterator</code> should provide <code class='backtick'>iterator_type</code></td>
 <td>Yes</td>
 <td></td>
 <td></td>
 </tr>
 <tr>
-<td id="4233"><a href="lwg-active.html#4233" title="The helper lambda of std::erase for hive should specify return type as
-    bool (Status: Voting)">4233</a><sup><a href="https://cplusplus.github.io/LWG/issue4233">(i)</a></sup></td>
-<td><a href="lwg-active.html#Voting">Voting</a></td>
-<td>23.3.9.6 [hive.erasure]</td>
-<td>The helper lambda of <code>std::erase</code> for <code>hive</code> should specify return type as
-    <code>bool</code></td>
-<td>Yes</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td id="4239"><a href="lwg-active.html#4239" title="flat_map's transparent comparator no longer works for string literals (Status: Voting)">4239</a><sup><a href="https://cplusplus.github.io/LWG/issue4239">(i)</a></sup></td>
-<td><a href="lwg-active.html#Voting">Voting</a></td>
-<td>23.6.8.7 [flat.map.modifiers]</td>
-<td><code class='backtick'>flat_map</code>'s transparent comparator no longer works for string literals</td>
-<td>Yes</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td id="4217"><a href="lwg-active.html#4217" title="Clarify mdspan layout mapping requirements for rank == 0 (Status: Voting)">4217</a><sup><a href="https://cplusplus.github.io/LWG/issue4217">(i)</a></sup></td>
-<td><a href="lwg-active.html#Voting">Voting</a></td>
-<td>23.7.3.4.2 [mdspan.layout.reqmts]</td>
-<td>Clarify <code class='backtick'>mdspan</code> layout mapping requirements for <code class='backtick'>rank == 0</code></td>
-<td>Yes</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td id="4242"><a href="lwg-active.html#4242" title="ranges::distance does not work with volatile iterators (Status: Voting)">4242</a><sup><a href="https://cplusplus.github.io/LWG/issue4242">(i)</a></sup></td>
-<td><a href="lwg-active.html#Voting">Voting</a></td>
-<td>24.4.4.3 [range.iter.op.distance]</td>
-<td><code class='backtick'>ranges::distance</code> does not work with volatile iterators</td>
-<td>Yes</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td id="4245"><a href="lwg-active.html#4245" title="Operators that interact with counted_iterator and default_sentinel_t should be noexcept (Status: Voting)">4245</a><sup><a href="https://cplusplus.github.io/LWG/issue4245">(i)</a></sup></td>
-<td><a href="lwg-active.html#Voting">Voting</a></td>
-<td>24.5.7.1 [counted.iterator]</td>
-<td>Operators that interact with <code class='backtick'>counted_iterator</code> and <code class='backtick'>default_sentinel_t</code> should be <code class='backtick'>noexcept</code></td>
-<td>Yes</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td id="4234"><a href="lwg-active.html#4234" title="Including &lt;hive&gt; doesn't provide std::begin/end (Status: Voting)">4234</a><sup><a href="https://cplusplus.github.io/LWG/issue4234">(i)</a></sup></td>
-<td><a href="lwg-active.html#Voting">Voting</a></td>
-<td>24.7 [iterator.range]</td>
-<td>Including <code>&lt;hive&gt;</code> doesn't provide <code>std::begin/end</code></td>
-<td>Yes</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td id="4236"><a href="lwg-active.html#4236" title="chunk_view::outer-iterator::value_type should provide reserve_hint (Status: Voting)">4236</a><sup><a href="https://cplusplus.github.io/LWG/issue4236">(i)</a></sup></td>
-<td><a href="lwg-active.html#Voting">Voting</a></td>
-<td>25.7.29.4 [range.chunk.outer.value]</td>
-<td><code>chunk_view::<i>outer-iterator</i>::value_type</code> should provide <code>reserve_hint</code></td>
-<td>Yes</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td id="4235"><a href="lwg-active.html#4235" title="cache_latest_view and to_input_view miss reserve_hint (Status: Voting)">4235</a><sup><a href="https://cplusplus.github.io/LWG/issue4235">(i)</a></sup></td>
-<td><a href="lwg-active.html#Voting">Voting</a></td>
-<td>25.7.34.2 [range.cache.latest.view]</td>
-<td><code>cache_latest_view</code> and <code>to_input_view</code> miss <code>reserve_hint</code></td>
-<td>Yes</td>
-<td>2</td>
-<td></td>
-</tr>
-<tr>
-<td id="4224"><a href="lwg-active.html#4224" title="Philox engines should be freestanding (Status: Voting)">4224</a><sup><a href="https://cplusplus.github.io/LWG/issue4224">(i)</a></sup></td>
-<td><a href="lwg-active.html#Voting">Voting</a></td>
-<td>29.5.4.5 [rand.eng.philox]</td>
-<td>Philox engines should be freestanding</td>
-<td>Yes</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td id="4231"><a href="lwg-active.html#4231" title="datapar::chunk&lt;N&gt; should use simd-size-type instead of size_t (Status: Voting)">4231</a><sup><a href="https://cplusplus.github.io/LWG/issue4231">(i)</a></sup></td>
-<td><a href="lwg-active.html#Voting">Voting</a></td>
-<td>29.10.3 [simd.syn]</td>
-<td><code>datapar::chunk&lt;N&gt;</code> should use <code><i>simd-size-type</i></code> instead of <code>size_t</code></td>
-<td>Yes</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td id="4232"><a href="lwg-active.html#4232" title="datapar::resize does not resize (Status: Voting)">4232</a><sup><a href="https://cplusplus.github.io/LWG/issue4232">(i)</a></sup></td>
-<td><a href="lwg-active.html#Voting">Voting</a></td>
-<td>29.10.4 [simd.traits]</td>
-<td><code class='backtick'>datapar::resize</code> does not resize</td>
-<td>Yes</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td id="4188"><a href="lwg-active.html#4188" title="ostream::sentry destructor should handle exceptions (Status: Voting)">4188</a><sup><a href="https://cplusplus.github.io/LWG/issue4188">(i)</a></sup></td>
-<td><a href="lwg-active.html#Voting">Voting</a></td>
-<td>31.7.6.2.4 [ostream.sentry]</td>
-<td><code>ostream::sentry</code> destructor should handle exceptions</td>
-<td>Yes</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td id="4200"><a href="lwg-active.html#4200" title="The operation_state concept can be simplified (Status: Voting)">4200</a><sup><a href="https://cplusplus.github.io/LWG/issue4200">(i)</a></sup></td>
-<td><a href="lwg-active.html#Voting">Voting</a></td>
-<td>33.8.1 [exec.opstate.general]</td>
-<td>The <code class='backtick'>operation_state</code> concept can be simplified</td>
-<td>Yes</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td id="4202"><a href="lwg-active.html#4202" title="enable-sender should be a variable template (Status: Voting)">4202</a><sup><a href="https://cplusplus.github.io/LWG/issue4202">(i)</a></sup></td>
-<td><a href="lwg-active.html#Voting">Voting</a></td>
-<td>33.9.3 [exec.snd.concepts]</td>
-<td><i><code>enable-sender</code></i> should be a variable template</td>
-<td>Yes</td>
-<td>1</td>
-<td></td>
-</tr>
-<tr>
-<td id="4201"><a href="lwg-active.html#4201" title="with-await-transform::await_transform should not use a deduced return type (Status: Voting)">4201</a><sup><a href="https://cplusplus.github.io/LWG/issue4201">(i)</a></sup></td>
-<td><a href="lwg-active.html#Voting">Voting</a></td>
-<td>33.9.4 [exec.awaitable]</td>
-<td><code class='backtick'>with-await-transform::await_transform</code> should not use a deduced return type</td>
-<td>Yes</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td id="4209"><a href="lwg-active.html#4209" title="default_domain::transform_env should be returning FWD-ENV(env) (Status: Voting)">4209</a><sup><a href="https://cplusplus.github.io/LWG/issue4209">(i)</a></sup></td>
-<td><a href="lwg-active.html#Voting">Voting</a></td>
-<td>33.9.5 [exec.domain.default]</td>
-<td><code>default_domain::transform_env</code> should be returning <code><i>FWD-ENV</i>(env)</code></td>
-<td>Yes</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td id="4208"><a href="lwg-active.html#4208" title="Wording needs to ensure that in connect(sndr, rcvr) that rcvr expression is only evaluated once (Status: Voting)">4208</a><sup><a href="https://cplusplus.github.io/LWG/issue4208">(i)</a></sup></td>
-<td><a href="lwg-active.html#Voting">Voting</a></td>
-<td>33.9.10 [exec.connect]</td>
-<td>Wording needs to ensure that in <code class='backtick'>connect(sndr, rcvr)</code> that <code class='backtick'>rcvr</code> expression is only evaluated once</td>
-<td>Yes</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td id="4198"><a href="lwg-active.html#4198" title="schedule_from isn't starting the schedule sender if decay-copying results throws (Status: Voting)">4198</a><sup><a href="https://cplusplus.github.io/LWG/issue4198">(i)</a></sup></td>
-<td><a href="lwg-active.html#Voting">Voting</a></td>
-<td>33.9.12.5 [exec.schedule.from]</td>
-<td><code class='backtick'>schedule_from</code> isn't starting the schedule sender if decay-copying results throws</td>
-<td>Yes</td>
-<td>1</td>
-<td></td>
-</tr>
-<tr>
-<td id="4203"><a href="lwg-active.html#4203" title="Constraints on get-state functions are incorrect (Status: Voting)">4203</a><sup><a href="https://cplusplus.github.io/LWG/issue4203">(i)</a></sup></td>
-<td><a href="lwg-active.html#Voting">Voting</a></td>
-<td>33.9.12.5 [exec.schedule.from]</td>
-<td>Constraints on <i><code class='backtick'>get-state</code></i> functions are incorrect</td>
-<td>Yes</td>
-<td>1</td>
-<td></td>
-</tr>
-<tr>
-<td id="4204"><a href="lwg-active.html#4204" title="specification of as-sndr2(Sig) in [exec.let] is incomplete (Status: Voting)">4204</a><sup><a href="https://cplusplus.github.io/LWG/issue4204">(i)</a></sup></td>
-<td><a href="lwg-active.html#Voting">Voting</a></td>
-<td>33.9.12.8 [exec.let]</td>
-<td>specification of <code><i>as-sndr2</i>(Sig)</code> in [exec.let] is incomplete</td>
-<td>Yes</td>
-<td>1</td>
-<td></td>
-</tr>
-<tr>
-<td id="4205"><a href="lwg-active.html#4205" title="let_[*].transform_env is specified in terms of the let_* sender itself instead of its child (Status: Voting)">4205</a><sup><a href="https://cplusplus.github.io/LWG/issue4205">(i)</a></sup></td>
-<td><a href="lwg-active.html#Voting">Voting</a></td>
-<td>33.9.12.8 [exec.let]</td>
-<td><code class='backtick'>let_[*].transform_env</code> is specified in terms of the <code class='backtick'>let_*</code> sender itself instead of its child</td>
-<td>Yes</td>
-<td>1</td>
-<td></td>
-</tr>
-<tr>
-<td id="4227"><a href="lwg-active.html#4227" title="Missing noexcept operator in [exec.when.all] (Status: Voting)">4227</a><sup><a href="https://cplusplus.github.io/LWG/issue4227">(i)</a></sup></td>
-<td><a href="lwg-active.html#Voting">Voting</a></td>
-<td>33.9.12.11 [exec.when.all]</td>
-<td>Missing <code class='backtick'>noexcept</code> operator in [exec.when.all]</td>
+<td id="4274"><a href="lwg-active.html#4274" title="The chrono::hh_mm_ss constructor is ill-formed for unsigned durations (Status: Tentatively Ready)">4274</a><sup><a href="https://cplusplus.github.io/LWG/issue4274">(i)</a></sup></td>
+<td><a href="lwg-active.html#Ready">Tentatively Ready</a></td>
+<td>30.9.2 [time.hms.members]</td>
+<td>The <code class='backtick'>chrono::hh_mm_ss</code> constructor is ill-formed for unsigned durations</td>
 <td>Yes</td>
 <td></td>
 <td></td>
