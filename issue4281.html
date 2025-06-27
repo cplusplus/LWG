@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Issue 4281: Inconsistency between value_or() and error_or() in std::expected</title>
+<meta property="og:title" content="Issue 4281: Inconsistency between value_or() and error_or() in std::expected">
+<meta property="og:description" content="C++ library issue. Status: New">
+<meta property="og:url" content="https://cplusplus.github.io/LWG/issue4281.html">
+<meta property="og:type" content="website">
+<meta property="og:image" content="http://cplusplus.github.io/LWG/images/cpp_logo.png">
+<meta property="og:image:alt" content="C++ logo">
+<style>
+  p {text-align:justify}
+  li {text-align:justify}
+  pre code.backtick::before { content: "`" }
+  pre code.backtick::after { content: "`" }
+  blockquote.note
+  {
+    background-color:#E0E0E0;
+    padding-left: 15px;
+    padding-right: 15px;
+    padding-top: 1px;
+    padding-bottom: 1px;
+  }
+  ins {background-color:#A0FFA0}
+  del {background-color:#FFA0A0}
+  table.issues-index { border: 1px solid; border-collapse: collapse; }
+  table.issues-index th { text-align: center; padding: 4px; border: 1px solid; }
+  table.issues-index td { padding: 4px; border: 1px solid; }
+  table.issues-index td:nth-child(1) { text-align: right; }
+  table.issues-index td:nth-child(2) { text-align: left; }
+  table.issues-index td:nth-child(3) { text-align: left; }
+  table.issues-index td:nth-child(4) { text-align: left; }
+  table.issues-index td:nth-child(5) { text-align: center; }
+  table.issues-index td:nth-child(6) { text-align: center; }
+  table.issues-index td:nth-child(7) { text-align: left; }
+  table.issues-index td:nth-child(5) span.no-pr { color: red; }
+  @media (prefers-color-scheme: dark) {
+     html {
+        color: #ddd;
+        background-color: black;
+     }
+     ins {
+        background-color: #225522
+     }
+     del {
+        background-color: #662222
+     }
+     a {
+        color: #6af
+     }
+     a:visited {
+        color: #6af
+     }
+     blockquote.note
+     {
+        background-color: rgba(255, 255, 255, .10)
+     }
+  }
+</style>
+</head>
+<body>
+<hr>
+<p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#New">New</a> status.</em></p>
+<h3 id="4281"><a href="lwg-active.html#4281">4281</a>. Inconsistency between <code class='backtick'>value_or()</code> and <code class='backtick'>error_or()</code> in <code class='backtick'>std::expected</code></h3>
+<p><b>Section:</b> 22.5.3.7 <a href="https://wg21.link/optional.observe">[optional.observe]</a>, 22.8.6.6 <a href="https://wg21.link/expected.object.obs">[expected.object.obs]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
+ <b>Submitter:</b> Hiroaki Ando <b>Opened:</b> 2025-06-27 <b>Last modified:</b> 2025-06-27</p>
+<p><b>Priority: </b>Not Prioritized
+</p>
+<p><b>View other</b> <a href="lwg-index-open.html#optional.observe">active issues</a> in [optional.observe].</p>
+<p><b>View all other</b> <a href="lwg-index.html#optional.observe">issues</a> in [optional.observe].</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
+<p><b>Discussion:</b></p>
+<p>
+In 22.8.6.6 <a href="https://wg21.link/expected.object.obs">[expected.object.obs]</a>/19, the return value of <code class='backtick'>value_or()</code>
+is specified as follows:
+<blockquote>
+<i>Returns</i>:
+<code>has_value() ? **this : static_cast&lt;T&gt;(std::forward&lt;U&gt;(v))</code>.
+</blockquote>
+
+Meanwhile, the return value of <code class='backtick'>error_or()</code> is specified as follows (22.8.6.6 <a href="https://wg21.link/expected.object.obs">[expected.object.obs]</a>/23):
+<blockquote>
+<i>Returns</i>:
+<code>std::forward&lt;G&gt;(e)</code> if <code>has_value()</code> is <code>true</code>, <code>error()</code> otherwise.
+</blockquote>
+Since these functions appear to be dual in nature,
+it would be preferable to maintain consistent notation.
+</p>
+<p>
+Jonathan adds:
+The wording in <code class='backtick'>expected::error_or</code> is newer, having been added by
+<a href="https://wg21.link/P2505R5" title=" Monadic Functions for std::expected">P2505R5</a>, and intentionally avoided a conditional expression
+(the problems with conditional expressions explained in <a href="https://wg21.link/P3177R0" title=" const prvalues in the conditional operator">P3177R0</a>
+don't actually affect these member functions, due to the non-const prvalue
+return type, but determining that there are no pessimized copies in <code class='backtick'>value_or</code>
+wouldn't be necessary if we didn't specify it with a conditional expression).
+The <code class='backtick'>error_or</code> wording also avoids using an explicit conversion when the
+<i>Mandates</i>: element requires implicit conversion to work anyway.
+We might want to rephrase the <code class='backtick'>value_or</code> wording to match <code class='backtick'>error_or</code>,
+or possibly make <code class='backtick'>value_or</code> and <code class='backtick'>error_or</code> even more explicit:
+</p>
+<blockquote>
+<i>Effects</i>: Equivalent to:
+<pre><code>
+if (has_value())
+  return **this;
+else
+  return std::forward&lt;U&gt;(v);
+</code></pre>
+</blockquote>
+
+
+<p id="res-4281"><b>Proposed resolution:</b></p>
+<p>
+</p>
+
+
+
+
+
+</body>
+</html>

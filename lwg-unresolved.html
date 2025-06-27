@@ -54,7 +54,7 @@
 </style>
 </head>
 <body>
-<p>Revised 2025-06-23 at 16:38:26 UTC
+<p>Revised 2025-06-27 at 10:15:21 UTC
 </p><h2>Unresolved Issues</h2>
 <hr>
 <h3 id="423"><a href="#423">423</a><sup><a href="https://cplusplus.github.io/LWG/issue423">(i)</a></sup>. Effects of negative <code>streamsize</code> in iostreams</h3>
@@ -70728,6 +70728,64 @@ for all <code><i>i</i></code> in the range of <code>[0, V::size())</code><ins>, 
 </li>
 
 </ol>
+
+
+
+
+
+<hr>
+<h3 id="4281"><a href="#4281">4281</a><sup><a href="https://cplusplus.github.io/LWG/issue4281">(i)</a></sup>. Inconsistency between <code class='backtick'>value_or()</code> and <code class='backtick'>error_or()</code> in <code class='backtick'>std::expected</code></h3>
+<p><b>Section:</b> 22.5.3.7 <a href="https://wg21.link/optional.observe">[optional.observe]</a>, 22.8.6.6 <a href="https://wg21.link/expected.object.obs">[expected.object.obs]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
+ <b>Submitter:</b> Hiroaki Ando <b>Opened:</b> 2025-06-27 <b>Last modified:</b> 2025-06-27</p>
+<p><b>Priority: </b>Not Prioritized
+</p>
+<p><b>View other</b> <a href="lwg-index-open.html#optional.observe">active issues</a> in [optional.observe].</p>
+<p><b>View all other</b> <a href="lwg-index.html#optional.observe">issues</a> in [optional.observe].</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
+<p><b>Discussion:</b></p>
+<p>
+In 22.8.6.6 <a href="https://wg21.link/expected.object.obs">[expected.object.obs]</a>/19, the return value of <code class='backtick'>value_or()</code>
+is specified as follows:
+<blockquote>
+<i>Returns</i>:
+<code>has_value() ? **this : static_cast&lt;T&gt;(std::forward&lt;U&gt;(v))</code>.
+</blockquote>
+
+Meanwhile, the return value of <code class='backtick'>error_or()</code> is specified as follows (22.8.6.6 <a href="https://wg21.link/expected.object.obs">[expected.object.obs]</a>/23):
+<blockquote>
+<i>Returns</i>:
+<code>std::forward&lt;G&gt;(e)</code> if <code>has_value()</code> is <code>true</code>, <code>error()</code> otherwise.
+</blockquote>
+Since these functions appear to be dual in nature,
+it would be preferable to maintain consistent notation.
+</p>
+<p>
+Jonathan adds:
+The wording in <code class='backtick'>expected::error_or</code> is newer, having been added by
+<a href="https://wg21.link/P2505R5" title=" Monadic Functions for std::expected">P2505R5</a>, and intentionally avoided a conditional expression
+(the problems with conditional expressions explained in <a href="https://wg21.link/P3177R0" title=" const prvalues in the conditional operator">P3177R0</a>
+don't actually affect these member functions, due to the non-const prvalue
+return type, but determining that there are no pessimized copies in <code class='backtick'>value_or</code>
+wouldn't be necessary if we didn't specify it with a conditional expression).
+The <code class='backtick'>error_or</code> wording also avoids using an explicit conversion when the
+<i>Mandates</i>: element requires implicit conversion to work anyway.
+We might want to rephrase the <code class='backtick'>value_or</code> wording to match <code class='backtick'>error_or</code>,
+or possibly make <code class='backtick'>value_or</code> and <code class='backtick'>error_or</code> even more explicit:
+</p>
+<blockquote>
+<i>Effects</i>: Equivalent to:
+<pre><code>
+if (has_value())
+  return **this;
+else
+  return std::forward&lt;U&gt;(v);
+</code></pre>
+</blockquote>
+
+
+<p id="res-4281"><b>Proposed resolution:</b></p>
+<p>
+</p>
 
 
 
