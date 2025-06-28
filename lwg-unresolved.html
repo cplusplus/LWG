@@ -54,7 +54,7 @@
 </style>
 </head>
 <body>
-<p>Revised 2025-06-28 at 17:28:20 UTC
+<p>Revised 2025-06-28 at 17:41:23 UTC
 </p><h2>Unresolved Issues</h2>
 <hr>
 <h3 id="423"><a href="#423">423</a><sup><a href="https://cplusplus.github.io/LWG/issue423">(i)</a></sup>. Effects of negative <code>streamsize</code> in iostreams</h3>
@@ -71338,6 +71338,46 @@ This wording is relative to <a href="https://wg21.link/N5008">N5008</a>.
 </li>
 
 </ol>
+
+
+
+
+
+<hr>
+<h3 id="4285"><a href="#4285">4285</a><sup><a href="https://cplusplus.github.io/LWG/issue4285">(i)</a></sup>. <code class='backtick'>time_get::do_get_date</code> is problematic even after LWG 461</h3>
+<p><b>Section:</b> 28.3.4.6.2.2 <a href="https://wg21.link/locale.time.get.members">[locale.time.get.members]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
+ <b>Submitter:</b> S. B. Tam <b>Opened:</b> 2025-06-27 <b>Last modified:</b> 2025-06-28</p>
+<p><b>Priority: </b>Not Prioritized
+</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
+<p><b>Discussion:</b></p>
+<p>
+Background: <a href="https://github.com/cplusplus/draft/pull/8009">https://github.com/cplusplus/draft/pull/8009</a>
+<p/>
+LWG <a href="lwg-defects.html#461" title="time_get hard or impossible to implement (Status: CD1)">461</a><sup><a href="https://cplusplus.github.io/LWG/issue461" title="Latest snapshot">(i)</a></sup> changed <code class='backtick'>time_get::do_get_date</code> to parse a set of fixed formats. For example, if 
+<code class='backtick'>time_get::date_order()</code> is <code class='backtick'>no_order</code> or <code class='backtick'>mdy</code>, the format parsed by <code class='backtick'>do_get_date</code> is <code class='backtick'>%m/%d/%y</code>.
+<p/>
+This has several problems:
+</p>
+<ol>
+<li><p>When the resolution of LWG <a href="lwg-defects.html#461" title="time_get hard or impossible to implement (Status: CD1)">461</a><sup><a href="https://cplusplus.github.io/LWG/issue461" title="Latest snapshot">(i)</a></sup> was applied to the draft standard, the slashes were lost. 
+This could mislead people into implementing <code class='backtick'>do_get_date</code> using the incorrect formats. Fortunately, none 
+of the standard library implementations are affected by this mistake.</p></li>
+<li><p>Only 2-digit years are accepted due to the use of <code class='backtick'>%y</code>. This could lead to incorrect parse if 
+<code class='backtick'>strftime</code> uses <code class='backtick'>%Y</code> for the locale's date format.</p></li>
+<li><p><code class='backtick'>date_order()</code> might need additional locale facets to find out the date order, but it doesn't have an 
+<code>ios_base&amp;</code> argument from which to get the locale.</p></li>
+<li><p>Many locales do not use any of the specified formats. For example, <code class='backtick'>de_DE</code> uses <code class='backtick'>%d.%m.%Y</code>, <code class='backtick'>zh_CN</code> 
+uses <code class='backtick'>%Y?%m?%d?</code>. Although 28.3.4.6.2.3 <a href="https://wg21.link/locale.time.get.virtuals">[locale.time.get.virtuals]</a>/5 gives an implementation the latitude 
+to accept additional formats, ambiguity could arise if the locale's format disagrees with <code class='backtick'>date_order()</code>.</p></li>
+</ol>
+<p>
+On POSIX systems, it is possible to query the locale's date format using <code class='backtick'>nl_langinfo(D_FMT)</code>. 
+Maybe an implementation should be allowed to use that format <b>instead</b> of the one indicated by <code class='backtick'>date_order()</code>.
+</p>
+
+
+<p id="res-4285"><b>Proposed resolution:</b></p>
 
 
 
