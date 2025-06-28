@@ -21,7 +21,7 @@ jobs:
         fetch-depth: 1
 
     - name: Compile binary programs
-      run: make pgms
+      run: make CXX=g++-14 pgms
 
     # This avoids fetching the full git history, because it's slow.
     - name: Extract issue timestamps from published files
