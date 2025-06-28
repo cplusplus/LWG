@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Issue 4282: Imprecise Throws: clause in std::relocate</title>
+<meta property="og:title" content="Issue 4282: Imprecise Throws: clause in std::relocate">
+<meta property="og:description" content="C++ library issue. Status: New">
+<meta property="og:url" content="https://cplusplus.github.io/LWG/issue4282.html">
+<meta property="og:type" content="website">
+<meta property="og:image" content="http://cplusplus.github.io/LWG/images/cpp_logo.png">
+<meta property="og:image:alt" content="C++ logo">
+<style>
+  p {text-align:justify}
+  li {text-align:justify}
+  pre code.backtick::before { content: "`" }
+  pre code.backtick::after { content: "`" }
+  blockquote.note
+  {
+    background-color:#E0E0E0;
+    padding-left: 15px;
+    padding-right: 15px;
+    padding-top: 1px;
+    padding-bottom: 1px;
+  }
+  ins {background-color:#A0FFA0}
+  del {background-color:#FFA0A0}
+  table.issues-index { border: 1px solid; border-collapse: collapse; }
+  table.issues-index th { text-align: center; padding: 4px; border: 1px solid; }
+  table.issues-index td { padding: 4px; border: 1px solid; }
+  table.issues-index td:nth-child(1) { text-align: right; }
+  table.issues-index td:nth-child(2) { text-align: left; }
+  table.issues-index td:nth-child(3) { text-align: left; }
+  table.issues-index td:nth-child(4) { text-align: left; }
+  table.issues-index td:nth-child(5) { text-align: center; }
+  table.issues-index td:nth-child(6) { text-align: center; }
+  table.issues-index td:nth-child(7) { text-align: left; }
+  table.issues-index td:nth-child(5) span.no-pr { color: red; }
+  @media (prefers-color-scheme: dark) {
+     html {
+        color: #ddd;
+        background-color: black;
+     }
+     ins {
+        background-color: #225522
+     }
+     del {
+        background-color: #662222
+     }
+     a {
+        color: #6af
+     }
+     a:visited {
+        color: #6af
+     }
+     blockquote.note
+     {
+        background-color: rgba(255, 255, 255, .10)
+     }
+  }
+</style>
+</head>
+<body>
+<hr>
+<p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#New">New</a> status.</em></p>
+<h3 id="4282"><a href="lwg-active.html#4282">4282</a>. Imprecise <i>Throws</i>: clause in <code class='backtick'>std::relocate</code></h3>
+<p><b>Section:</b> 20.2.6 <a href="https://wg21.link/obj.lifetime">[obj.lifetime]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
+ <b>Submitter:</b> Giuseppe D'Angelo <b>Opened:</b> 2025-06-23 <b>Last modified:</b> 2025-06-28</p>
+<p><b>Priority: </b>Not Prioritized
+</p>
+<p><b>View other</b> <a href="lwg-index-open.html#obj.lifetime">active issues</a> in [obj.lifetime].</p>
+<p><b>View all other</b> <a href="lwg-index.html#obj.lifetime">issues</a> in [obj.lifetime].</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
+<p><b>Discussion:</b></p>
+<p>
+The current specification of <code class='backtick'>std::relocate</code> in 20.2.6 <a href="https://wg21.link/obj.lifetime">[obj.lifetime]</a> says
+</p>
+<blockquote style="border-left: 3px solid #ccc;padding-left: 15px;">
+<p>
+<i>Throws</i>: Nothing.
+</p>
+</blockquote>
+<p>
+This is imprecise. A trivially relocatable type may feature a throwing
+move constructor (or a throwing destructor); for instance, a linked-list
+implementation with an externally allocated sentinel node may have a
+throwing move constructor, but still be trivially relocatable. Such a
+type is nothrow relocatable (as per <code class='backtick'>is_nothrow_relocatable_v</code>, cf.
+21.3.5.4 <a href="https://wg21.link/meta.unary.prop">[meta.unary.prop]</a>) and therefore one can call <code class='backtick'>std::relocate</code> 
+on objects of that type.
+<p/>
+During constant evaluation, a call to <code class='backtick'>std::relocate</code> is specified to
+relocate objects via move construction and destruction.
+(<code class='backtick'>std::trivially_relocate</code> is unavailable during constant evaluation.)
+<p/>
+Since <a href="https://wg21.link/P3068" title=" Allowing exception throwing in constant-evaluation">P3068</a> we are allowed to throw during constant evaluation, 
+and therefore it's unclear whether <code class='backtick'>std::relocate</code> should propagate such an
+exception to the caller or should instead make the evaluation not a
+constant expression (and therefore make the program ill-formed, since by
+construction we end up in this possibility during constant evaluation).
+<p/>
+Given the rationale brought forward for <code class='backtick'>std::relocate</code> in <a href="https://wg21.link/P2786" title=" Trivial Relocatability For C++26">P2786</a> 
+is to be always a nofail operation, I'm proposing a resolution that goes in
+that direction.
+</p>
+
+
+<p id="res-4282"><b>Proposed resolution:</b></p>
+<p>
+This wording is relative to <a href="https://wg21.link/N5008">N5008</a>.
+</p>
+
+<ol>
+<li><p>Modify 20.2.6 <a href="https://wg21.link/obj.lifetime">[obj.lifetime]</a> as indicated:</p>
+
+<blockquote>
+<pre>
+template&lt;class T&gt;
+  constexpr T* relocate(T* first, T* last, T* result);
+</pre>
+<blockquote>
+<p>
+-16 <i>Mandates</i>: [&hellip;]
+<p/>
+-17- <i>Preconditions</i>: [&hellip;]
+<p/>
+-18- <i>Effects</i>: [&hellip;]
+<p/>
+-19- <i>Returns</i>: <code class='backtick'>result + (last - first)</code>.
+<p/>
+-20- <i>Throws:</i>: Nothing.
+<p/>
+<ins>-?- <i>Remarks</i>: If <code class='backtick'>relocate</code> is called during constant evaluation, and an
+exception is thrown by a constructor or destructor of <code class='backtick'>T</code>, the call to <code class='backtick'>relocate</code> 
+is not a core constant expression (7.7 <a href="https://wg21.link/expr.const">[expr.const]</a>).</ins>
+<p/>
+[<i>Note 3</i>: Overlapping ranges are supported. &mdash; <i>end note</i>]
+</p>
+</blockquote>
+</blockquote>
+</li>
+
+</ol>
+
+
+
+
+
+</body>
+</html>
