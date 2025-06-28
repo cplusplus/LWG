@@ -54,7 +54,7 @@
 </style>
 </head>
 <body>
-<p>Revised 2025-06-28 at 14:44:57 UTC
+<p>Revised 2025-06-28 at 14:45:47 UTC
 </p><h2>Unresolved Issues</h2>
 <hr>
 <h3 id="423"><a href="#423">423</a><sup><a href="https://cplusplus.github.io/LWG/issue423">(i)</a></sup>. Effects of negative <code>streamsize</code> in iostreams</h3>
@@ -71114,6 +71114,156 @@ exception is thrown by a constructor or destructor of <code class='backtick'>T</
 is not a core constant expression (7.7 <a href="https://wg21.link/expr.const">[expr.const]</a>).</ins>
 <p/>
 [<i>Note 3</i>: Overlapping ranges are supported. &mdash; <i>end note</i>]
+</p>
+</blockquote>
+</blockquote>
+</li>
+
+</ol>
+
+
+
+
+
+<hr>
+<h3 id="4283"><a href="#4283">4283</a><sup><a href="https://cplusplus.github.io/LWG/issue4283">(i)</a></sup>. <code class='backtick'>std::trivially_relocate</code> needs stronger preconditions on "nested" objects with dynamic lifetime</h3>
+<p><b>Section:</b> 20.2.6 <a href="https://wg21.link/obj.lifetime">[obj.lifetime]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
+ <b>Submitter:</b> Giuseppe D'Angelo <b>Opened:</b> 2025-06-23 <b>Last modified:</b> 2025-06-28</p>
+<p><b>Priority: </b>Not Prioritized
+</p>
+<p><b>View other</b> <a href="lwg-index-open.html#obj.lifetime">active issues</a> in [obj.lifetime].</p>
+<p><b>View all other</b> <a href="lwg-index.html#obj.lifetime">issues</a> in [obj.lifetime].</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
+<p><b>Discussion:</b></p>
+<p>
+In 20.2.6 <a href="https://wg21.link/obj.lifetime">[obj.lifetime]</a> the <code class='backtick'>std::trivially_relocate</code> function 
+is missing a precondition, that is, that any object alive in the range being
+relocated is itself trivially relocatable.
+<p/>
+We know the objects in the range are trivially relocatable, because
+there is a <i>Mandates</i>: element for this. The current draft has precise
+rules to determine whether a type is trivially relocatable or not; in
+general, subobjects are considered there (cf. 11.2 <a href="https://wg21.link/class.prop">[class.prop]</a>, 
+"eligible for trivial relocation", which discusses base classes and non-static
+data members).
+<p/>
+However these rules do not take into account objects with dynamic
+lifetime whose storage is being provided by (sub)objects in the range.
+<p/>
+For instance, given a <code class='backtick'>wrapper</code> type like:
+</p>
+<blockquote><pre>
+// wraps a T
+template&lt;typename T&gt;
+struct wrapper {
+  alignas(T) std::byte data[sizeof(T)];
+};
+</pre></blockquote>
+<p>
+then one can build a non-trivially relocatable object into <code class='backtick'>wrapper</code>
+objects:
+</p>
+<blockquote><pre>
+struct NTR { ~NTR() {} };
+static_assert(not std::is_trivially_relocatable_v&lt;NTR&gt;);
+
+using WS = wrapper&lt;NTR&gt;;
+static_assert(std::is_trivially_relocatable_v&lt;WS&gt;); // OK
+</pre></blockquote>
+<p>
+And now one can do this:
+</p>
+<blockquote><pre>
+WS* ws = /* &hellip; */;     // create a wrapper
+new (&amp;ws-&gt;data) NTR();  // create a NTR object into it
+
+std::trivially_relocate(ws, ws+1, dest); // should be UB
+</pre></blockquote>
+<p>
+Attempting to trivially relocate <code class='backtick'>*ws</code> should result in undefined
+behavior because <code class='backtick'>NTR</code> isn't trivially relocatable. I don't believe that
+this fact is correctly captured by the preconditions of
+<code class='backtick'>std::trivially_relocate</code>.
+<p/>
+A similar issue is present for polymorphic types. In <a href="https://wg21.link/P2786" title=" Trivial Relocatability For C++26">P2786</a>'s 
+design polymorphic types can be trivially relocatable (assuming all the other
+conditions hold). Given a trivially relocatable polymorphic type <code class='backtick'>P</code>,
+then this code:
+</p>
+<blockquote><pre>
+struct P { virtual void f(); };
+static_assert(std::is_trivially_relocatable_v&lt;P&gt;);
+
+using WP = wrapper&lt;P&gt;;
+WP* wp = /* &hellip; */;   // create a wrapper
+new (&amp;wp-&gt;data) P();  // create a P object into it
+
+std::trivially_relocate(wp, wp+1, dest); // implementation defined
+</pre></blockquote>
+<p>
+is well-defined or UB, depending on the implementation. This is because
+on some implementations trivially relocating a polymorphic type requires
+patching its virtual table pointer; cf. the discussion in chapter 15.1
+of <a href="https://wg21.link/P2786R13">P2786R13</a>. However the "type erasure" done by 
+<code>wrapper&lt;P&gt;</code> in the example (ultimately, it is just an array 
+of bytes) does not allow implementations to do such patching, and the code 
+is going to fail at runtime. Therefore this case also needs to be discussed by
+<code class='backtick'>std::trivially_relocate</code>'s specification.
+</p>
+
+
+<p id="res-4283"><b>Proposed resolution:</b></p>
+<p>
+This wording is relative to <a href="https://wg21.link/N5008">N5008</a>.
+</p>
+
+<ol>
+<li><p>Modify 20.2.6 <a href="https://wg21.link/obj.lifetime">[obj.lifetime]</a> as indicated:</p>
+
+<blockquote class="note">
+<p>
+[<i>Drafting note</i>: For the general part of the issue (all objects in the range must be of
+trivially relocatable type), we append another point at the end of the existing 
+<i>Preconditions:</i> element of <code class='backtick'>trivially_relocate</code>.<br/>
+For the specifics of polymorphic types, we amend at the end of the description the existing 
+<i>Remarks</i>: element]
+</p>
+</blockquote>
+
+<blockquote>
+<pre>
+template&lt;class T&gt;
+  T* trivially_relocate(T* first, T* last, T* result);
+</pre>
+<blockquote>
+<p>
+-9- <i>Mandates</i>: [&hellip;]
+<p/>
+-10- <i>Preconditions</i>: 
+</p>
+<ol style="list-style-type: none">
+<li><p>(10.1) &mdash; <code class='backtick'>[first, last)</code> is a valid range.</p></li>
+<li><p>(10.2) &mdash; <code class='backtick'>[result, result + (last - first))</code> denotes a region of storage that is a subset of the region
+reachable through <code class='backtick'>result</code> (6.8.4 <a href="https://wg21.link/basic.compound">[basic.compound]</a>) and suitably aligned for the type <code class='backtick'>T</code>.</p></li>
+<li><p>(10.3) &mdash; No element in the range <code class='backtick'>[first, last)</code> is a potentially-overlapping subobject.</p></li>
+<li><p><ins>(10.?) &mdash; All objects whose storage is being provided for (6.7.2 <a href="https://wg21.link/intro.object">[intro.object]</a>) by
+objects in the <code class='backtick'>[first, last)</code> range are of trivially relocatable type.</ins></p></li>
+</ol>
+<p>
+-11- <i>Postconditions</i>: [&hellip;]
+<p/>
+-12- <i>Returns</i>: <code class='backtick'>result + (last - first)</code>.
+<p/>
+-13- <i>Throws</i>: Nothing.
+<p/>
+-14- <i>Complexity</i>: Linear in the length of the source range.
+<p/>
+-15- <i>Remarks</i>: The destination region of storage is considered reused (6.7.4 <a href="https://wg21.link/basic.life">[basic.life]</a>). 
+No constructors or destructors are invoked. <ins>If any polymorphic object (11.7.3 <a href="https://wg21.link/class.virtual">[class.virtual]</a>) 
+exists in storage provided for (6.7.2 <a href="https://wg21.link/intro.object">[intro.object]</a>) by objects in the <code class='backtick'>[first, last)</code> range,
+it is implementation-defined whether the behavior is undefined.</ins>
+<p/>
+[<i>Note 2</i>: Overlapping ranges are supported. &mdash; <i>end note</i>]
 </p>
 </blockquote>
 </blockquote>
