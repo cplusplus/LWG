@@ -79,7 +79,7 @@
 </tr>
 </table>
 <h1>C++ Standard Library Active Issues List (Revision D125)</h1>
-<p>Revised 2025-07-01 at 09:01:27 UTC
+<p>Revised 2025-07-01 at 09:31:11 UTC
 </p>
   <p>Reference ISO/IEC IS 14882:2020(E)</p>
   <p>Also see:</p>
@@ -74402,7 +74402,7 @@ for all <code><i>i</i></code> in the range of <code>[0, V::size())</code><ins>, 
 <hr>
 <h3 id="4281"><a href="#4281">4281</a><sup><a href="https://cplusplus.github.io/LWG/issue4281">(i)</a></sup>. Inconsistency between <code class='backtick'>value_or()</code> and <code class='backtick'>error_or()</code> in <code class='backtick'>std::expected</code></h3>
 <p><b>Section:</b> 22.5.3.7 <a href="https://wg21.link/optional.observe">[optional.observe]</a>, 22.8.6.6 <a href="https://wg21.link/expected.object.obs">[expected.object.obs]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Hiroaki Ando <b>Opened:</b> 2025-06-27 <b>Last modified:</b> 2025-06-27</p>
+ <b>Submitter:</b> Hiroaki Ando <b>Opened:</b> 2025-06-27 <b>Last modified:</b> 2025-07-01</p>
 <p><b>Priority: </b>Not Prioritized
 </p>
 <p><b>View other</b> <a href="lwg-index-open.html#optional.observe">active issues</a> in [optional.observe].</p>
@@ -74436,11 +74436,12 @@ wouldn't be necessary if we didn't specify it with a conditional expression).
 The <code class='backtick'>error_or</code> wording also avoids using an explicit conversion when the
 <i>Mandates</i>: element requires implicit conversion to work anyway.
 We might want to rephrase the <code class='backtick'>value_or</code> wording to match <code class='backtick'>error_or</code>,
-or possibly make <code class='backtick'>value_or</code> and <code class='backtick'>error_or</code> even more explicit:
+or possibly make <code class='backtick'>value_or</code> and <code class='backtick'>error_or</code> even more explicit,
+specifying them in terms of <code class='backtick'>if</code>-<code class='backtick'>else</code>:
+:
 </p>
 <blockquote>
-<i>Effects</i>: Equivalent to:
-<pre><code>
+<i>Effects</i>: Equivalent to: <pre><code>
 if (has_value())
   return **this;
 else
