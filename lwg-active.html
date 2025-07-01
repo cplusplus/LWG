@@ -79,7 +79,7 @@
 </tr>
 </table>
 <h1>C++ Standard Library Active Issues List (Revision D125)</h1>
-<p>Revised 2025-07-01 at 09:31:11 UTC
+<p>Revised 2025-07-01 at 09:33:44 UTC
 </p>
   <p>Reference ISO/IEC IS 14882:2020(E)</p>
   <p>Also see:</p>
@@ -74763,7 +74763,7 @@ This wording is relative to <a href="https://wg21.link/N5008">N5008</a>.
 <hr>
 <h3 id="4285"><a href="#4285">4285</a><sup><a href="https://cplusplus.github.io/LWG/issue4285">(i)</a></sup>. <code class='backtick'>time_get::do_get_date</code> is problematic even after LWG 461</h3>
 <p><b>Section:</b> 28.3.4.6.2.2 <a href="https://wg21.link/locale.time.get.members">[locale.time.get.members]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> S. B. Tam <b>Opened:</b> 2025-06-27 <b>Last modified:</b> 2025-06-28</p>
+ <b>Submitter:</b> S. B. Tam <b>Opened:</b> 2025-06-27 <b>Last modified:</b> 2025-07-01</p>
 <p><b>Priority: </b>Not Prioritized
 </p>
 <p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
@@ -74785,7 +74785,7 @@ of the standard library implementations are affected by this mistake.</p></li>
 <li><p><code class='backtick'>date_order()</code> might need additional locale facets to find out the date order, but it doesn't have an 
 <code>ios_base&amp;</code> argument from which to get the locale.</p></li>
 <li><p>Many locales do not use any of the specified formats. For example, <code class='backtick'>de_DE</code> uses <code class='backtick'>%d.%m.%Y</code>, <code class='backtick'>zh_CN</code> 
-uses <code class='backtick'>%Y?%m?%d?</code>. Although 28.3.4.6.2.3 <a href="https://wg21.link/locale.time.get.virtuals">[locale.time.get.virtuals]</a>/5 gives an implementation the latitude 
+uses <code class='backtick'>%Y年%m月%d日</code>. Although 28.3.4.6.2.3 <a href="https://wg21.link/locale.time.get.virtuals">[locale.time.get.virtuals]</a>/5 gives an implementation the latitude 
 to accept additional formats, ambiguity could arise if the locale's format disagrees with <code class='backtick'>date_order()</code>.</p></li>
 </ol>
 <p>
