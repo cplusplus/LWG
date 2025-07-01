@@ -67,7 +67,7 @@
 </tr>
 <tr>
   <td align="left">Date:</td>
-  <td align="left">2025-06-28</td>
+  <td align="left">2025-07-01</td>
 </tr>
 <tr>
   <td align="left">Project:</td>
@@ -79,7 +79,7 @@
 </tr>
 </table>
 <h1>C++ Standard Library Active Issues List (Revision D125)</h1>
-<p>Revised 2025-06-28 at 17:41:23 UTC
+<p>Revised 2025-07-01 at 09:01:27 UTC
 </p>
   <p>Reference ISO/IEC IS 14882:2020(E)</p>
   <p>Also see:</p>
@@ -34882,7 +34882,7 @@ and <code>[first2, last2)</code> contains <code><i>n</i></code> elements that ar
 <h3 id="3537"><a href="#3537">3537</a><sup><a href="https://cplusplus.github.io/LWG/issue3537">(i)</a></sup>. &sect;[iterator.range] Missing <code>noexcept</code> for <code>std::rbegin</code>/<code>rend</code> for arrays and 
 <code>initializer_list</code></h3>
 <p><b>Section:</b> 24.7 <a href="https://wg21.link/iterator.range">[iterator.range]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Jiang An <b>Opened:</b> 2021-03-21 <b>Last modified:</b> 2021-04-20</p>
+ <b>Submitter:</b> Jiang An <b>Opened:</b> 2021-03-21 <b>Last modified:</b> 2025-07-01</p>
 <p><b>Priority: </b>3
 </p>
 <p><b>View other</b> <a href="lwg-index-open.html#iterator.range">active issues</a> in [iterator.range].</p>
@@ -34941,6 +34941,10 @@ Casey: I don't think we should mark these rbegin/rend overloads noexcept
 without making the pertinent <code>reverse_iterator</code> constructors
 conditionally noexcept.
 </p>
+
+<p><i>[2025-07-01; <a href="https://wg21.link/P3623R0">P3623R0</a> would resolve this]</i></p>
+
+
 
 
 <p id="res-3537"><b>Proposed resolution:</b></p>

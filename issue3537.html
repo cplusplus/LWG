@@ -67,7 +67,7 @@ initializer_list">
 <h3 id="3537"><a href="lwg-active.html#3537">3537</a>. &sect;[iterator.range] Missing <code>noexcept</code> for <code>std::rbegin</code>/<code>rend</code> for arrays and 
 <code>initializer_list</code></h3>
 <p><b>Section:</b> 24.7 <a href="https://wg21.link/iterator.range">[iterator.range]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Jiang An <b>Opened:</b> 2021-03-21 <b>Last modified:</b> 2021-04-20</p>
+ <b>Submitter:</b> Jiang An <b>Opened:</b> 2021-03-21 <b>Last modified:</b> 2025-07-01</p>
 <p><b>Priority: </b>3
 </p>
 <p><b>View other</b> <a href="lwg-index-open.html#iterator.range">active issues</a> in [iterator.range].</p>
@@ -126,6 +126,10 @@ Casey: I don't think we should mark these rbegin/rend overloads noexcept
 without making the pertinent <code>reverse_iterator</code> constructors
 conditionally noexcept.
 </p>
+
+<p><i>[2025-07-01; <a href="https://wg21.link/P3623R0">P3623R0</a> would resolve this]</i></p>
+
+
 
 
 <p id="res-3537"><b>Proposed resolution:</b></p>
