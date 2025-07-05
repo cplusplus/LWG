@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Issue 4287: &sect;[locale.codecvt.virtuals] do_in and do_out could do with better specification</title>
+<meta property="og:title" content="Issue 4287: &sect;[locale.codecvt.virtuals] do_in and do_out could do with better specification">
+<meta property="og:description" content="C++ library issue. Status: New">
+<meta property="og:url" content="https://cplusplus.github.io/LWG/issue4287.html">
+<meta property="og:type" content="website">
+<meta property="og:image" content="http://cplusplus.github.io/LWG/images/cpp_logo.png">
+<meta property="og:image:alt" content="C++ logo">
+<style>
+  p {text-align:justify}
+  li {text-align:justify}
+  pre code.backtick::before { content: "`" }
+  pre code.backtick::after { content: "`" }
+  blockquote.note
+  {
+    background-color:#E0E0E0;
+    padding-left: 15px;
+    padding-right: 15px;
+    padding-top: 1px;
+    padding-bottom: 1px;
+  }
+  ins {background-color:#A0FFA0}
+  del {background-color:#FFA0A0}
+  table.issues-index { border: 1px solid; border-collapse: collapse; }
+  table.issues-index th { text-align: center; padding: 4px; border: 1px solid; }
+  table.issues-index td { padding: 4px; border: 1px solid; }
+  table.issues-index td:nth-child(1) { text-align: right; }
+  table.issues-index td:nth-child(2) { text-align: left; }
+  table.issues-index td:nth-child(3) { text-align: left; }
+  table.issues-index td:nth-child(4) { text-align: left; }
+  table.issues-index td:nth-child(5) { text-align: center; }
+  table.issues-index td:nth-child(6) { text-align: center; }
+  table.issues-index td:nth-child(7) { text-align: left; }
+  table.issues-index td:nth-child(5) span.no-pr { color: red; }
+  @media (prefers-color-scheme: dark) {
+     html {
+        color: #ddd;
+        background-color: black;
+     }
+     ins {
+        background-color: #225522
+     }
+     del {
+        background-color: #662222
+     }
+     a {
+        color: #6af
+     }
+     a:visited {
+        color: #6af
+     }
+     blockquote.note
+     {
+        background-color: rgba(255, 255, 255, .10)
+     }
+  }
+</style>
+</head>
+<body>
+<hr>
+<p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#New">New</a> status.</em></p>
+<h3 id="4287"><a href="lwg-active.html#4287">4287</a>. &sect;[locale.codecvt.virtuals] <code class='backtick'>do_in</code> and <code class='backtick'>do_out</code> could do with better specification</h3>
+<p><b>Section:</b> 28.3.4.2.5.3 <a href="https://wg21.link/locale.codecvt.virtuals">[locale.codecvt.virtuals]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
+ <b>Submitter:</b> S. B. Tam <b>Opened:</b> 2025-06-18 <b>Last modified:</b> 2025-07-05</p>
+<p><b>Priority: </b>Not Prioritized
+</p>
+<p><b>View other</b> <a href="lwg-index-open.html#locale.codecvt.virtuals">active issues</a> in [locale.codecvt.virtuals].</p>
+<p><b>View all other</b> <a href="lwg-index.html#locale.codecvt.virtuals">issues</a> in [locale.codecvt.virtuals].</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
+<p><b>Discussion:</b></p>
+<p>
+Background: <a href="https://github.com/cplusplus/draft/pull/7347">https://github.com/cplusplus/draft/pull/7347</a>
+<p/>
+The specification of <code class='backtick'>codecvt::do_in</code> and <code class='backtick'>codecvt::do_out</code> is unclear, and possibly incorrect:
+</p>
+<ol>
+<li><p>the meaning of <code class='backtick'>noconv</code> is specified twice (once in paragraph 3, once in Table 91 [tab:locale.codecvt.inout]);</p></li>
+<li><p>the effect on <code class='backtick'>from_next</code> is not specified;</p></li>
+<li><p>the specification talks about "the input sequence [from, from_next)", but <code class='backtick'>from_next</code> is supposed to be an out parameter. 
+I think it should say "[from, from_end)" instead.</p></li>
+</ol>
+
+
+<p id="res-4287"><b>Proposed resolution:</b></p>
+<p>
+This wording is relative to <a href="https://wg21.link/N5008">N5008</a>.
+</p>
+
+<blockquote class="note">
+<p>
+[<i>Drafting note</i>: This is modified from Jonathan Wakely's suggestion in 
+<a href="https://github.com/cplusplus/draft/pull/7347#issuecomment-2549982495">https://github.com/cplusplus/draft/pull/7347#issuecomment</a>]
+</p>
+</blockquote>
+
+<ol>
+<li><p>In 28.3.4.2.5.3 <a href="https://wg21.link/locale.codecvt.virtuals">[locale.codecvt.virtuals]</a> remove Table 91 [tab:locale.codecvt.inout] in its entirety:</p>
+
+<blockquote>
+<table border="1">
+<caption><del>Table 91 &mdash; <code class='backtick'>do_in</code>/<code class='backtick'>do_out</code> result values [tab:locale.codecvt.inout]</del></caption>
+<tr align="center">
+<th><del>Value</del></th>
+<th><del>Meaning</del></th>
+</tr> 
+
+<tr>
+<td>
+<del><code>ok</code></del>
+</td>
+<td>
+<del>completed the conversion</del>
+</td>
+</tr>
+
+<tr>
+<td>
+<del><code>partial</code></del>
+</td>
+<td>
+<del>not all source characters converted</del>
+</td>
+</tr>
+
+<tr>
+<td>
+<del><code>error</code></del>
+</td>
+<td>
+<del>encountered a character in <code class='backtick'>[from, from_end)</code> that
+cannot be converted</del>
+</td>
+</tr>
+
+<tr>
+<td>
+<del><code>noconv</code></del>
+</td>
+<td>
+<del><code class='backtick'>internT</code> and <code class='backtick'>externT</code> are the same type, and input
+sequence is identical to converted sequence</del>
+</td>
+</tr>
+
+</table>
+
+</blockquote>
+
+</li>
+
+<li><p>Modify 28.3.4.2.5.3 <a href="https://wg21.link/locale.codecvt.virtuals">[locale.codecvt.virtuals]</a> as indicated:</p>
+
+<blockquote>
+<pre>
+result do_out(
+  stateT&amp; state,
+  const internT* from, const internT* from_end, const internT*&amp; from_next,
+  externT* to, externT* to_end, externT*&amp; to_next) const;
+
+result do_in(
+  stateT&amp; state,
+  const externT* from, const externT* from_end, const externT*&amp; from_next,
+  internT* to, internT* to_end, internT*&amp; to_next) const;
+</pre>
+<blockquote>
+<p>
+-1- <i>Preconditions</i>: [&hellip;]
+<p/>
+-2- <i>Effects</i>: Translates characters in the source range <code class='backtick'>[from, from_end)</code>, 
+placing the results in sequential positions starting at destination to. Converts 
+no more than <code class='backtick'>(from_end - from)</code> source elements, and stores no more than 
+<code class='backtick'>(to_end - to)</code> destination elements.
+<p/>
+-3- <del>Stops if it encounters a character it cannot convert. It always leaves the 
+<code class='backtick'>from_next</code> and <code class='backtick'>to_next</code> pointers pointing one beyond the last element successfully 
+converted. If it returns <code class='backtick'>noconv</code>, <code class='backtick'>internT</code> and <code class='backtick'>externT</code> are the same type, and the 
+converted sequence is identical to the input sequence <code class='backtick'>[from, from_next)</code>, <code class='backtick'>to_next</code> 
+is set equal to <code class='backtick'>to</code>, the value of <code class='backtick'>state</code> is unchanged, and there are no changes to 
+the values in <code class='backtick'>[to, to_end)</code>.</del>
+<ins>If <code class='backtick'>internT</code> and <code class='backtick'>externT</code> are the same type 
+and the converted sequence would be identical to the input sequence 
+[<code class='backtick'>from</code>, <code class='backtick'>from_next</code>), then no elements are converted, the value of <code class='backtick'>state</code> is unchanged, 
+there are no changes to the values in [<code class='backtick'>to</code>, <code class='backtick'>to_end</code>), and the result is <code class='backtick'>noconv</code>. 
+Otherwise, if a character in [<code class='backtick'>from</code>,<code class='backtick'>from_end</code>) cannot be converted, conversion stops 
+at that character and the result is <code class='backtick'>error</code>. Otherwise, if all input characters are 
+successfully converted and placed in the output range, the result is <code class='backtick'>ok</code>. Otherwise, 
+the result is <code class='backtick'>partial</code>. In all cases, <code class='backtick'>from_next</code> is set to point to the first element 
+of the input that was not converted, <code class='backtick'>to_next</code> is set to point to the first unchanged 
+element in the output. [<i>Note</i>: When the result is <code class='backtick'>noconv</code>, <code class='backtick'>from_next</code> points 
+to <code class='backtick'>from</code> and <code class='backtick'>to_next</code> points to <code class='backtick'>to</code>. &mdash; <i>end note</i>]</ins>
+<p/>
+-4- A <code class='backtick'>codecvt</code> facet that is used by <code class='backtick'>basic_filebuf</code> [&hellip;]
+<p/>
+-5- <i>Returns</i>: <del>An enumeration value, as summarized in Table 91</del>
+<ins>The result as described above</ins>.
+</p>
+</blockquote>
+</blockquote>
+</li>
+
+</ol>
+
+
+
+
+
+</body>
+</html>
