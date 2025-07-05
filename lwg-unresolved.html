@@ -54,7 +54,7 @@
 </style>
 </head>
 <body>
-<p>Revised 2025-07-05 at 16:02:44 UTC
+<p>Revised 2025-07-05 at 16:22:11 UTC
 </p><h2>Unresolved Issues</h2>
 <hr>
 <h3 id="423"><a href="#423">423</a><sup><a href="https://cplusplus.github.io/LWG/issue423">(i)</a></sup>. Effects of negative <code>streamsize</code> in iostreams</h3>
@@ -71400,7 +71400,8 @@ Maybe an implementation should be allowed to use that format <b>instead</b> of t
 <p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
 <p><b>Discussion:</b></p>
 <p>
-LWG <a href="lwg-defects.html#4189" title="cache_latest_view should be freestanding (Status: WP)">4189</a><sup><a href="https://cplusplus.github.io/LWG/issue4189" title="Latest snapshot">(i)</a></sup> (accepted in Hagenberg) added nearly the entire <code>&lt;ranges&gt;</code> header to freestanding. 
+<a href="https://wg21.link/P1642R11" title=" Freestanding Library: Easy [utilities], [ranges], and [iterators]">P1642R11</a> (accepted in C++23) plus LWG <a href="lwg-defects.html#4189" title="cache_latest_view should be freestanding (Status: WP)">4189</a><sup><a href="https://cplusplus.github.io/LWG/issue4189" title="Latest snapshot">(i)</a></sup> (accepted in Hagenberg) added nearly the entire 
+<code>&lt;ranges&gt;</code> header to freestanding. 
 However, the only feature-test macro being added to freestanding is <code class='backtick'>__cpp_lib_ranges_cache_latest</code>, which seems weird, 
 since <code class='backtick'>views::enumerate</code> is also added to freestanding following the blanket comment strategy, but its feature-test 
 macro remains not in freestanding. In retrospective, since all range algorithms are in freestanding via 
@@ -71448,8 +71449,6 @@ This wording is relative to <a href="https://wg21.link/N5008">N5008</a>.
 #define __cpp_lib_ranges_fold                  202207L <i>// <ins>freestanding,</ins> also in &lt;algorithm&gt;</i>
 [&hellip;]
 #define __cpp_lib_ranges_iota                  202202L <i>// <ins>freestanding,</ins> also in &lt;numeric&gt;</i>
-[&hellip;]
-#define __cpp_lib_ranges_reserve_hint          202502L <i>// <ins>freestanding,</ins> also in &lt;ranges&gt;</i>
 [&hellip;]
 #define __cpp_lib_ranges_starts_ends_with      202106L <i>// <ins>freestanding,</ins> also in &lt;algorithm&gt;</i>
 [&hellip;]
