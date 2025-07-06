@@ -64,7 +64,7 @@
 <p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#New">New</a> status.</em></p>
 <h3 id="4283"><a href="lwg-active.html#4283">4283</a>. <code class='backtick'>std::trivially_relocate</code> needs stronger preconditions on "nested" objects with dynamic lifetime</h3>
 <p><b>Section:</b> 20.2.6 <a href="https://wg21.link/obj.lifetime">[obj.lifetime]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Giuseppe D'Angelo <b>Opened:</b> 2025-06-23 <b>Last modified:</b> 2025-06-28</p>
+ <b>Submitter:</b> Giuseppe D'Angelo <b>Opened:</b> 2025-06-23 <b>Last modified:</b> 2025-07-06</p>
 <p><b>Priority: </b>Not Prioritized
 </p>
 <p><b>View other</b> <a href="lwg-index-open.html#obj.lifetime">active issues</a> in [obj.lifetime].</p>
@@ -147,8 +147,9 @@ is going to fail at runtime. Therefore this case also needs to be discussed by
 <code class='backtick'>std::trivially_relocate</code>'s specification.
 </p>
 
+<p><strong>Previous resolution [SUPERSEDED]:</strong></p>
+<blockquote class="note">
 
-<p id="res-4283"><b>Proposed resolution:</b></p>
 <p>
 This wording is relative to <a href="https://wg21.link/N5008">N5008</a>.
 </p>
@@ -198,6 +199,69 @@ objects in the <code class='backtick'>[first, last)</code> range are of triviall
 No constructors or destructors are invoked. <ins>If any polymorphic object (11.7.3 <a href="https://wg21.link/class.virtual">[class.virtual]</a>) 
 exists in storage provided for (6.7.2 <a href="https://wg21.link/intro.object">[intro.object]</a>) by objects in the <code class='backtick'>[first, last)</code> range,
 it is implementation-defined whether the behavior is undefined.</ins>
+<p/>
+[<i>Note 2</i>: Overlapping ranges are supported. &mdash; <i>end note</i>]
+</p>
+</blockquote>
+</blockquote>
+</li>
+
+</ol>
+</blockquote>
+
+<p><i>[2025-07-01; Pablo and Giuseppe improve wording]</i></p>
+
+
+
+<p id="res-4283"><b>Proposed resolution:</b></p>
+<p>
+This wording is relative to <a href="https://wg21.link/N5008">N5008</a>.
+</p>
+
+<ol>
+<li><p>Modify 20.2.6 <a href="https://wg21.link/obj.lifetime">[obj.lifetime]</a> as indicated:</p>
+
+<blockquote class="note">
+<p>
+[<i>Drafting note</i>: For the general part of the issue (all objects in the range must be of
+trivially relocatable type), we append another point at the end of the existing 
+<i>Preconditions:</i> element of <code class='backtick'>trivially_relocate</code>.<br/>
+For the specifics of polymorphic types, we amend at the end of the description the existing 
+<i>Remarks</i>: element]
+</p>
+</blockquote>
+
+<blockquote>
+<pre>
+template&lt;class T&gt;
+  T* trivially_relocate(T* first, T* last, T* result);
+</pre>
+<blockquote>
+<p>
+-9- <i>Mandates</i>: [&hellip;]
+<p/>
+-10- <i>Preconditions</i>: 
+</p>
+<ol style="list-style-type: none">
+<li><p>(10.1) &mdash; <code class='backtick'>[first, last)</code> is a valid range.</p></li>
+<li><p>(10.2) &mdash; <code class='backtick'>[result, result + (last - first))</code> denotes a region of storage that is a subset of the region
+reachable through <code class='backtick'>result</code> (6.8.4 <a href="https://wg21.link/basic.compound">[basic.compound]</a>) and suitably aligned for the type <code class='backtick'>T</code>.</p></li>
+<li><p>(10.3) &mdash; No element in the range <code class='backtick'>[first, last)</code> is a potentially-overlapping subobject.</p></li>
+<li><p><ins>(10.?) &mdash; All objects whose storage is being provided for (6.7.2 <a href="https://wg21.link/intro.object">[intro.object]</a>) by
+objects in the <code class='backtick'>[first, last)</code> range are of a type such that a union containing a non-static member of that type 
+would be eligible for trivial relocation.</ins></p></li>
+</ol>
+<p>
+-11- <i>Postconditions</i>: [&hellip;]
+<p/>
+-12- <i>Returns</i>: <code class='backtick'>result + (last - first)</code>.
+<p/>
+-13- <i>Throws</i>: Nothing.
+<p/>
+-14- <i>Complexity</i>: Linear in the length of the source range.
+<p/>
+-15- <i>Remarks</i>: The destination region of storage is considered reused (6.7.4 <a href="https://wg21.link/basic.life">[basic.life]</a>). 
+No constructors or destructors are invoked.
 <p/>
 [<i>Note 2</i>: Overlapping ranges are supported. &mdash; <i>end note</i>]
 </p>
