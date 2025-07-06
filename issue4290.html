@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Issue 4290: Missing Mandates clauses on is_sufficiently_aligned</title>
+<meta property="og:title" content="Issue 4290: Missing Mandates clauses on is_sufficiently_aligned">
+<meta property="og:description" content="C++ library issue. Status: New">
+<meta property="og:url" content="https://cplusplus.github.io/LWG/issue4290.html">
+<meta property="og:type" content="website">
+<meta property="og:image" content="http://cplusplus.github.io/LWG/images/cpp_logo.png">
+<meta property="og:image:alt" content="C++ logo">
+<style>
+  p {text-align:justify}
+  li {text-align:justify}
+  pre code.backtick::before { content: "`" }
+  pre code.backtick::after { content: "`" }
+  blockquote.note
+  {
+    background-color:#E0E0E0;
+    padding-left: 15px;
+    padding-right: 15px;
+    padding-top: 1px;
+    padding-bottom: 1px;
+  }
+  ins {background-color:#A0FFA0}
+  del {background-color:#FFA0A0}
+  table.issues-index { border: 1px solid; border-collapse: collapse; }
+  table.issues-index th { text-align: center; padding: 4px; border: 1px solid; }
+  table.issues-index td { padding: 4px; border: 1px solid; }
+  table.issues-index td:nth-child(1) { text-align: right; }
+  table.issues-index td:nth-child(2) { text-align: left; }
+  table.issues-index td:nth-child(3) { text-align: left; }
+  table.issues-index td:nth-child(4) { text-align: left; }
+  table.issues-index td:nth-child(5) { text-align: center; }
+  table.issues-index td:nth-child(6) { text-align: center; }
+  table.issues-index td:nth-child(7) { text-align: left; }
+  table.issues-index td:nth-child(5) span.no-pr { color: red; }
+  @media (prefers-color-scheme: dark) {
+     html {
+        color: #ddd;
+        background-color: black;
+     }
+     ins {
+        background-color: #225522
+     }
+     del {
+        background-color: #662222
+     }
+     a {
+        color: #6af
+     }
+     a:visited {
+        color: #6af
+     }
+     blockquote.note
+     {
+        background-color: rgba(255, 255, 255, .10)
+     }
+  }
+</style>
+</head>
+<body>
+<hr>
+<p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#New">New</a> status.</em></p>
+<h3 id="4290"><a href="lwg-active.html#4290">4290</a>. Missing <i>Mandates</i> clauses on <code class='backtick'>is_sufficiently_aligned</code></h3>
+<p><b>Section:</b> 20.2.5 <a href="https://wg21.link/ptr.align">[ptr.align]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
+ <b>Submitter:</b> Damien Lebrun-Grandie <b>Opened:</b> 2025-07-03 <b>Last modified:</b> 2025-07-06</p>
+<p><b>Priority: </b>Not Prioritized
+</p>
+<p><b>View other</b> <a href="lwg-index-open.html#ptr.align">active issues</a> in [ptr.align].</p>
+<p><b>View all other</b> <a href="lwg-index.html#ptr.align">issues</a> in [ptr.align].</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
+<p><b>Discussion:</b></p>
+<p>
+<code class='backtick'>is_sufficiently_aligned</code> should mandate that the alignment template argument is a power of two 
+and that it is greater equal to the byte alignment of its type template argument.
+<p/>
+In 20.2.5 <a href="https://wg21.link/ptr.align">[ptr.align]</a> <code class='backtick'>is_sufficiently_aligned</code> has no <i>Mandates</i> element. It is an 
+oversight that we realized when implementing <a href="https://wg21.link/P2897R7">P2897R7</a> into libc++ 
+(in <a href="https://github.com/llvm/llvm-project/pull/122603">https://github.com/llvm/llvm-project/pull/122603</a>). 
+The function template was originally proposed as a static member function of the <code class='backtick'>aligned_accessor</code> 
+class template which has these two <i>Mandates</i> clauses and therefore applied 
+(see 23.7.3.5.4.1 <a href="https://wg21.link/mdspan.accessor.aligned.overview">[mdspan.accessor.aligned.overview]</a> p1). It revision <a href="https://wg21.link/P2897R4" title=" aligned_accessor: An mdspan accessor expressing pointer overalignment">P2897R4</a>, 
+<code class='backtick'>is_sufficiently_aligned</code> was moved out the class template definition to become the free function
+ memory helper that was voted into C++26 but the <i>Mandates</i> were lost in the process.
+<p/>
+We propose to correct that oversight and reintroduce the following <i>Mandates</i> clauses right above 
+20.2.5 <a href="https://wg21.link/ptr.align">[ptr.align]</a> p10.
+</p>
+
+
+<p id="res-4290"><b>Proposed resolution:</b></p>
+<p>
+This wording is relative to <a href="https://wg21.link/N5008">N5008</a>.
+</p>
+
+<ol>
+
+<li><p>Modify 20.2.5 <a href="https://wg21.link/ptr.align">[ptr.align]</a> as indicated:</p>
+
+<blockquote>
+<pre>
+template&lt;size_t Alignment, class T&gt;
+  bool is_sufficiently_aligned(T* ptr);
+</pre>
+<blockquote>
+<p>
+<ins>-?- <i>Mandates</i>:</ins>
+</p>
+<ol style="list-style-type: none">
+<li><p><ins>(?.1) &mdash; <code class='backtick'>Alignment</code> is a power of two, and</ins></p></li>
+<li><p><ins>(?.2) &mdash; <code>Alignment &gt;= alignof(T)</code> is <code class='backtick'>true</code>.</ins></p></li>
+</ol>
+<p>
+-10- <i>Preconditions</i>: <code class='backtick'>p</code> points to an object <code class='backtick'>X</code> of a type similar 
+(7.3.6 <a href="https://wg21.link/conv.qual">[conv.qual]</a>) to <code class='backtick'>T</code>.
+<p/>
+-11- <i>Returns</i>: <code class='backtick'>true</code> if <code class='backtick'>X</code> has alignment at least <code class='backtick'>Alignment</code>, otherwise <code class='backtick'>false</code>.
+<p/>
+-12- <i>Throws</i>: Nothing.
+</p>
+</blockquote>
+</blockquote>
+</li>
+
+</ol>
+
+
+
+
+
+</body>
+</html>

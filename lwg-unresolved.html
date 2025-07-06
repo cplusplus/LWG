@@ -54,7 +54,7 @@
 </style>
 </head>
 <body>
-<p>Revised 2025-07-06 at 10:19:50 UTC
+<p>Revised 2025-07-06 at 10:38:08 UTC
 </p><h2>Unresolved Issues</h2>
 <hr>
 <h3 id="423"><a href="#423">423</a><sup><a href="https://cplusplus.github.io/LWG/issue423">(i)</a></sup>. Effects of negative <code>streamsize</code> in iostreams</h3>
@@ -10197,6 +10197,7 @@ the behavior is undefined unless otherwise specified.</ins>
  <b>Submitter:</b> Melissa Mears <b>Opened:</b> 2014-08-06 <b>Last modified:</b> 2014-11-03</p>
 <p><b>Priority: </b>3
 </p>
+<p><b>View other</b> <a href="lwg-index-open.html#ptr.align">active issues</a> in [ptr.align].</p>
 <p><b>View all other</b> <a href="lwg-index.html#ptr.align">issues</a> in [ptr.align].</p>
 <p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
 <p><b>Discussion:</b></p>
@@ -71933,6 +71934,74 @@ quantities <del>that depend on the</del><br/>
 
 </table>
 
+</blockquote>
+</blockquote>
+</li>
+
+</ol>
+
+
+
+
+
+<hr>
+<h3 id="4290"><a href="#4290">4290</a><sup><a href="https://cplusplus.github.io/LWG/issue4290">(i)</a></sup>. Missing <i>Mandates</i> clauses on <code class='backtick'>is_sufficiently_aligned</code></h3>
+<p><b>Section:</b> 20.2.5 <a href="https://wg21.link/ptr.align">[ptr.align]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
+ <b>Submitter:</b> Damien Lebrun-Grandie <b>Opened:</b> 2025-07-03 <b>Last modified:</b> 2025-07-06</p>
+<p><b>Priority: </b>Not Prioritized
+</p>
+<p><b>View other</b> <a href="lwg-index-open.html#ptr.align">active issues</a> in [ptr.align].</p>
+<p><b>View all other</b> <a href="lwg-index.html#ptr.align">issues</a> in [ptr.align].</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
+<p><b>Discussion:</b></p>
+<p>
+<code class='backtick'>is_sufficiently_aligned</code> should mandate that the alignment template argument is a power of two 
+and that it is greater equal to the byte alignment of its type template argument.
+<p/>
+In 20.2.5 <a href="https://wg21.link/ptr.align">[ptr.align]</a> <code class='backtick'>is_sufficiently_aligned</code> has no <i>Mandates</i> element. It is an 
+oversight that we realized when implementing <a href="https://wg21.link/P2897R7">P2897R7</a> into libc++ 
+(in <a href="https://github.com/llvm/llvm-project/pull/122603">https://github.com/llvm/llvm-project/pull/122603</a>). 
+The function template was originally proposed as a static member function of the <code class='backtick'>aligned_accessor</code> 
+class template which has these two <i>Mandates</i> clauses and therefore applied 
+(see 23.7.3.5.4.1 <a href="https://wg21.link/mdspan.accessor.aligned.overview">[mdspan.accessor.aligned.overview]</a> p1). It revision <a href="https://wg21.link/P2897R4" title=" aligned_accessor: An mdspan accessor expressing pointer overalignment">P2897R4</a>, 
+<code class='backtick'>is_sufficiently_aligned</code> was moved out the class template definition to become the free function
+ memory helper that was voted into C++26 but the <i>Mandates</i> were lost in the process.
+<p/>
+We propose to correct that oversight and reintroduce the following <i>Mandates</i> clauses right above 
+20.2.5 <a href="https://wg21.link/ptr.align">[ptr.align]</a> p10.
+</p>
+
+
+<p id="res-4290"><b>Proposed resolution:</b></p>
+<p>
+This wording is relative to <a href="https://wg21.link/N5008">N5008</a>.
+</p>
+
+<ol>
+
+<li><p>Modify 20.2.5 <a href="https://wg21.link/ptr.align">[ptr.align]</a> as indicated:</p>
+
+<blockquote>
+<pre>
+template&lt;size_t Alignment, class T&gt;
+  bool is_sufficiently_aligned(T* ptr);
+</pre>
+<blockquote>
+<p>
+<ins>-?- <i>Mandates</i>:</ins>
+</p>
+<ol style="list-style-type: none">
+<li><p><ins>(?.1) &mdash; <code class='backtick'>Alignment</code> is a power of two, and</ins></p></li>
+<li><p><ins>(?.2) &mdash; <code>Alignment &gt;= alignof(T)</code> is <code class='backtick'>true</code>.</ins></p></li>
+</ol>
+<p>
+-10- <i>Preconditions</i>: <code class='backtick'>p</code> points to an object <code class='backtick'>X</code> of a type similar 
+(7.3.6 <a href="https://wg21.link/conv.qual">[conv.qual]</a>) to <code class='backtick'>T</code>.
+<p/>
+-11- <i>Returns</i>: <code class='backtick'>true</code> if <code class='backtick'>X</code> has alignment at least <code class='backtick'>Alignment</code>, otherwise <code class='backtick'>false</code>.
+<p/>
+-12- <i>Throws</i>: Nothing.
+</p>
 </blockquote>
 </blockquote>
 </li>
