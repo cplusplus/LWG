@@ -54,7 +54,7 @@
 </style>
 </head>
 <body>
-<p>Revised 2025-07-05 at 17:09:45 UTC
+<p>Revised 2025-07-06 at 10:02:05 UTC
 </p><h2>Unresolved Issues</h2>
 <hr>
 <h3 id="423"><a href="#423">423</a><sup><a href="https://cplusplus.github.io/LWG/issue423">(i)</a></sup>. Effects of negative <code>streamsize</code> in iostreams</h3>
@@ -71659,6 +71659,216 @@ using system_clock::rep = <i>unspecified</i>;
 <code>system_clock::duration::min() &lt; system_clock::duration::zero()</code> is <code>true</code>.
 [<i>Note 1</i>: This implies that <code class='backtick'>rep</code> is a signed type. &mdash; <i>end note</i>]
 </p>
+</blockquote>
+</blockquote>
+</li>
+
+</ol>
+
+
+
+
+
+<hr>
+<h3 id="4289"><a href="#4289">4289</a><sup><a href="https://cplusplus.github.io/LWG/issue4289">(i)</a></sup>. Seed sequence is overspecified</h3>
+<p><b>Section:</b> 29.5.3.2 <a href="https://wg21.link/rand.req.seedseq">[rand.req.seedseq]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
+ <b>Submitter:</b> Magnus Fromreide <b>Opened:</b> 2025-06-22 <b>Last modified:</b> 2025-07-06</p>
+<p><b>Priority: </b>Not Prioritized
+</p>
+<p><b>View all other</b> <a href="lwg-index.html#rand.req.seedseq">issues</a> in [rand.req.seedseq].</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
+<p><b>Discussion:</b></p>
+<p>
+The requirements on a seed sequence are so strict that it is forbidden to initialize a random number 
+generator directly from a hardware random number generator without lots of boiler plate and intermediary objects.
+<p/>
+The main problem is that the seed sequence requirements state that a seed sequence must be "kind of copyable" 
+and that calls to the copy must generate the same output as calls to the original.
+<p/>
+If one checks the uses of seed sequences then nothing makes use of this capability so I propose to just drop it.
+<p/>
+There has been a previous attempt to handle this issue using <a href="https://wg21.link/P0205" title=" Efficient Seeding of Random Number Engines">P0205</a> which preserved the old seed 
+sequence and added a new concept that it used to seed generators. That effort stalled with the comment that 
+it should be solved without the new <code class='backtick'>std::seed_adapter</code>. This DR sidesteps that whole issue by simply removing 
+the unused requirements from the seed sequence concept.
+<p/>
+I will admit that I am unsure about the deletion of Note 1 but since it only seems to attempt to motivate the 
+copyability I opted to let it go along with the requirements.
+</p>
+
+
+<p id="res-4289"><b>Proposed resolution:</b></p>
+<p>
+This wording is relative to <a href="https://wg21.link/N5008">N5008</a>.
+</p>
+
+<ol>
+
+<li><p>Modify 29.5.3.2 <a href="https://wg21.link/rand.req.seedseq">[rand.req.seedseq]</a> as indicated:</p>
+
+<blockquote>
+<p>
+-1- A <i>seed sequence</i> is an object that <del>consumes a sequence of integer-valued data and</del> #
+produces a requested number of unsigned integer values <code><i>i</i></code>, <code>0 = i &lt; 2<sup>32</sup></code><del>, 
+based on the consumed data</del>.
+<p/>
+<del>[<i>Note 1</i>: Such an object provides a mechanism to avoid replication of streams of random variates. This can be 
+useful, for example, in applications requiring large numbers of random number engines. &mdash; <i>end note</i>]</del>
+<p/>
+-2- A class <code class='backtick'>S</code> meets the requirements of a seed sequence if the expressions shown in 
+Table 124  [tab:rand.req.seedseq] are valid and have the indicated semantics, and if <code class='backtick'>S</code> also meets 
+all other requirements of 29.5.3.2 <a href="https://wg21.link/rand.req.seedseq">[rand.req.seedseq]</a>. In Table 124 [tab:rand.req.seedseq] and throughout
+this subclause:
+</p>
+<ol style="list-style-type: none">
+<li><p>(2.1) &mdash; <code class='backtick'>T</code> is the type named by <code class='backtick'>S</code>' s associated <code class='backtick'>result_type</code>;</p></li>
+<li><p>(2.2) &mdash; <code class='backtick'>q</code> is a value of type <code class='backtick'>S</code> <del>and <code class='backtick'>r</code> is a value of type <code class='backtick'>S</code> or <code class='backtick'>const S</code></del>; <ins>and</ins></p></li>
+<li><p><del>(2.3) &mdash; <code class='backtick'>ib</code> and <code class='backtick'>ie</code> are input iterators with an unsigned integer <code class='backtick'>value_type</code> of at least 32 bits;</del></p></li>
+<li><p>(2.4) &mdash; <code class='backtick'>rb</code> and <code class='backtick'>re</code> are mutable random access iterators with an unsigned integer <code class='backtick'>value_type</code> of 
+at least 32 bits<del>;</del><ins>.</ins></p></li>
+<li><p><del>(2.5) &mdash; <code class='backtick'>ob</code> is an output iterator; and</del></p></li>
+<li><p><del>(2.6) &mdash; <code class='backtick'>il</code> is a value of type <code>initializer_list&lt;T&gt;</code>.</del></p></li>
+</ol>
+<blockquote>
+<table border="1">
+<caption>Table 124 &mdash; Seed sequence requirements [tab:rand.req.seedseq]</caption>
+<tr>
+<th align="center">Expression</th>
+<th align="center">Return type</th>
+<th align="center">Pre/post-condition</th>
+<th align="center">Complexity</th>
+</tr>
+
+<tr>
+<td>
+<code class='backtick'>S::result_type</code>
+</td>
+<td>
+<code class='backtick'>T</code>
+</td>
+<td>
+<code class='backtick'>T</code> is an unsigned integer<br/>
+type (6.8.2 <a href="https://wg21.link/basic.fundamental">[basic.fundamental]</a>) of at least 32 bits.
+</td>
+<td>
+</td>
+</tr>
+
+<tr>
+<td>
+<del><code>S()</code></del>
+</td>
+<td>
+<code></code>
+</td>
+<td>
+<del>Creates a seed sequence with</del><br/>
+<del>the same initial state as all</del><br/>
+<del>other default-constructed seed</del><br/>
+<del>sequences of type <code class='backtick'>S</code>.</del>
+</td>
+<td>
+<del>constant</del>
+</td>
+</tr>
+
+<tr>
+<td>
+<del><code class='backtick'>S(ib,ie)</code></del>
+</td>
+<td>
+<code></code>
+</td>
+<td>
+<del>Creates a seed sequence having</del><br/>
+<del>internal state that depends on</del><br/>
+<del>some or all of the bits of the</del><br/>
+<del>supplied sequence <code class='backtick'>[ib, ie)</code>.</del>
+</td>
+<td>
+<del>&#x1d4aa;(ie - ib)</del>
+</td>
+</tr>
+
+<tr>
+<td>
+<del><code class='backtick'>S(il)</code></del>
+</td>
+<td>
+<code></code>
+</td>
+<td>
+<del>Same as <code>S(il.begin(), il.end())</code>.</del>
+</td>
+<td>
+<del>same as <code>S(il.begin(), il.end())</code></del>
+</td>
+</tr>
+
+<tr>
+<td>
+<code>q.generate(rb,re)</code>
+</td>
+<td>
+<code>void</code>
+</td>
+<td>
+Does nothing if <code class='backtick'>rb == re</code>.<br/>
+Otherwise, fills the supplied<br/>
+sequence <code class='backtick'>[rb, re)</code> with 32-bit<br/>
+quantities <del>that depend on the</del><br/>
+<del>sequence supplied to the</del><br/>
+<del>constructor and possibly also</del><br/>
+<del>depend on the history of</del><br/>
+<del><code class='backtick'>generate</code>'s previous</del><br/>
+<del>invocations</del>.
+</td>
+<td>
+&#x1d4aa;(re - rb)
+</td>
+</tr>
+
+<tr>
+<td>
+<del><code>r.size()</code></del>
+</td>
+<td>
+<del><code>size_t</code></del>
+</td>
+<td>
+<del>The number of 32-bit units that</del><br/>
+<del>would be copied by a call to</del><br/>
+<del><code class='backtick'>r.param</code>.</del>
+</td>
+<td>
+<del>constant</del>
+</td>
+</tr>
+
+<tr>
+<td>
+<del><code>r.param(ob)</code></del>
+</td>
+<td>
+<del><code>void</code></del>
+</td>
+<td>
+<del>Copies to the given destination</del><br/>
+<del>a sequence of 32-bit units that</del><br/>
+<del>can be provided to the</del><br/>
+<del>constructor of a second object of</del><br/>
+<del>type <code class='backtick'>S</code>, and that would</del><br/>
+<del>reproduce in that second object</del><br/>
+<del>a state indistinguishable from</del><br/>
+<del>the state of the first object.</del>
+</td>
+<td>
+<del>&#x1d4aa;(r.size())</del>
+</td>
+</tr>
+
+</table>
+
 </blockquote>
 </blockquote>
 </li>
