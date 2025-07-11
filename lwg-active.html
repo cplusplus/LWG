@@ -79,7 +79,7 @@
 </tr>
 </table>
 <h1>C++ Standard Library Active Issues List (Revision D125)</h1>
-<p>Revised 2025-07-11 at 09:49:31 UTC
+<p>Revised 2025-07-11 at 09:52:16 UTC
 </p>
   <p>Reference ISO/IEC IS 14882:2020(E)</p>
   <p>Also see:</p>
@@ -75580,7 +75580,7 @@ This can be reproduced on GCC 15.1 for subspan, first, and last:
 <p>
 A proposed fix (thanks to Jonathan Wakely) could look like this following:
 <blockquote>
-<code class='backtick'>return span&lt;element_type&gt;(data(), count);</code>
+<code>return span&lt;element_type&gt;(data(), count);</code>
 </blockquote>
 for the affected paragraphs,
 which would explicitly specify the constructor used.
