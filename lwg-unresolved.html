@@ -54,7 +54,7 @@
 </style>
 </head>
 <body>
-<p>Revised 2025-07-10 at 12:56:39 UTC
+<p>Revised 2025-07-11 at 09:46:48 UTC
 </p><h2>Unresolved Issues</h2>
 <hr>
 <h3 id="423"><a href="#423">423</a><sup><a href="https://cplusplus.github.io/LWG/issue423">(i)</a></sup>. Effects of negative <code>streamsize</code> in iostreams</h3>
@@ -72133,6 +72133,170 @@ meet the constexpr iterator requirements
 </blockquote>
 </li>
 
+</ol>
+
+
+
+
+
+
+<hr>
+<h3 id="4293"><a href="#4293">4293</a><sup><a href="https://cplusplus.github.io/LWG/issue4293">(i)</a></sup>. span::subspan/first/last chooses wrong constructor when T is const-qualified bool</h3>
+<p><b>Section:</b> 23.7.2.2.4 <a href="https://wg21.link/span.sub">[span.sub]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
+ <b>Submitter:</b> Yuhan Liu <b>Opened:</b> 2025-07-11 <b>Last modified:</b> 2025-07-11</p>
+<p><b>Priority: </b>Not Prioritized
+</p>
+<p><b>View all other</b> <a href="lwg-index.html#span.sub">issues</a> in [span.sub].</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
+<p><b>Discussion:</b></p>
+<p>
+In section 23.7.2.2.4 <a href="https://wg21.link/span.sub">[span.sub]</a>, paragraphs p12, p14, and p16 erroneously
+use the initializer list constructor for span instead of the intended
+iterator/count constructor.
+</p>
+<p>
+Specifically, in these paragraphs, the standard states:
+<blockquote>
+<i>Effects</i>: Equivalent to: <code class='backtick'>return {data(), count};</code>
+</blockquote>
+or some variant of <code class='backtick'>return {pointer, size}</code>.  As reported in
+<a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=120997">GCC bug 120997</a>
+this results in a span that points to invalid stack memory.
+This can be reproduced on GCC 15.1 for subspan, first, and last:
+<a href="https://godbolt.org/z/r9nrdWscq">https://godbolt.org/z/r9nrdWscq</a>.
+</p>
+<p>
+A proposed fix (thanks to Jonathan Wakely) could look like this following:
+<blockquote>
+<code class='backtick'>return span&lt;element_type&gt;(data(), count);</code>
+</blockquote>
+for the affected paragraphs,
+which would explicitly specify the constructor used.
+</p>
+
+<p><i>[2025-07-11; Jonathan adds proposed resolution]</i></p>
+
+<p>
+The meaning of those <i>Effects</i>: paragraphs was changed for C++26 by
+<a href="https://wg21.link/P2447R6" title=" std::span over an initializer list">P2447R6</a> which added the <code class='backtick'>span(initializer_list)</code> constructor.
+A simpler demo is:
+<blockquote><pre><code>
+bool a[5]{};
+std::span&lt;const bool&gt; s(a);
+std::span&lt;const bool&gt; s2 = s.first(5);
+assert(s2.size() == 5); // OK in C++23, fails in C++26
+assert(s2.data() == a); // OK in C++23, fails in C++26
+</code></pre></blockquote>
+The proposed resolution is to use <code class='backtick'>R(data(), count)</code> instead of
+<code class='backtick'>{data(), count}</code>. The former always (uniformly) means the same thing,
+but for the latter the meaning of list-initialization depends on the types.
+The list-initialization form will choose the initializer-list constructor
+when <code class='backtick'>data()</code> and <code class='backtick'>count</code> are both convertible to the element type.
+</p>
+
+
+<p id="res-4293"><b>Proposed resolution:</b></p>
+<p>
+This wording is relative to <a href="https://wg21.link/N5008">N5008</a>.
+</p>
+
+<ol>
+
+<li><p>Modify 23.7.2.2.4 <a href="https://wg21.link/span.sub">[span.sub]</a> as indicated:</p>
+
+<blockquote>
+
+<pre><code>
+template&lt;size_t Count&gt; constexpr span&lt;element_type, Count&gt; first() const;
+</code></pre>
+<blockquote>
+<p>-1- <i>Mandates</i>: <code>Count &lt;= Extent</code> is <code class='backtick'>true</code>.</p>
+<p>-2- <i>Hardened preconditions</i>: <code>Count &lt;= size()</code> is <code class='backtick'>true</code>.</p>
+<p>-3- <i>Effects</i>: Equivalent to:
+<code>return R<ins>(</ins><del>{</del>data(), Count<del>}</del><ins>)</ins>;</code>
+where <code class='backtick'>R</code> is the return type.
+</p>
+</blockquote>
+
+<pre><code>
+template&lt;size_t Count&gt; constexpr span&lt;element_type, Count&gt; last() const;
+</code></pre>
+<blockquote>
+<p>-4- <i>Mandates</i>: <code>Count &lt;= Extent</code> is <code class='backtick'>true</code>.</p>
+<p>-5- <i>Hardened preconditions</i>: <code>Count &lt;= size()</code> is <code class='backtick'>true</code>.</p>
+<p>-6- <i>Effects</i>: Equivalent to:
+<code>return R<ins>(</ins><del>{</del>data() + (size() - Count), Count<del>}</del><ins>)</ins>;</code>
+where <code class='backtick'>R</code> is the return type.
+</p>
+</blockquote>
+
+<pre><code>
+template&lt;size_t Offset, size_t Count = dynamic_extent&gt;
+  constexpr span&lt;element_type, <i>see below</i>&gt; subspan() const;
+</code></pre>
+<blockquote>
+<p>-7- <i>Mandates</i>:
+<pre><code>  Offset &lt;= Extent &amp;&amp; (Count == dynamic_extent || Count &lt;= Extent - Offset)
+</code></pre>
+is <code class='backtick'>true</code>.</p>
+<p>-8- <i>Hardened preconditions</i>:
+<pre><code>  Offset &lt;= size() &amp;&amp; (Count == dynamic_extent || Count &lt;= size() - Offset)
+</code></pre>
+is <code class='backtick'>true</code>.</p>
+<p>-9- <i>Effects</i>: Equivalent to:
+<pre><code>  return span&lt;ElementType, <i>see below</i>&gt;(
+    data() + Offset, Count != dynamic_extent ? Count : size() - Offset);
+</code></pre>
+</p>
+<p>-10- <i>Remarks</i>:
+The second template argument of the returned <code class='backtick'>span</code> type is:
+<pre><code>  Count != dynamic_extent ? Count
+                          : (Extent != dynamic_extent ? Extent - Offset
+                                                      : dynamic_extent)
+</code></pre>
+</p>
+</blockquote>
+
+<pre><code>
+constexpr span&lt;element_type, dynamic_extent&gt; first(size_type count) const;
+</code></pre>
+<blockquote>
+<p>-11- <i>Hardened preconditions</i>: <code>count &lt;= size()</code> is <code class='backtick'>true</code>.</p>
+<p>-12- <i>Effects</i>: Equivalent to:
+<code>return <ins>R(</ins><del>{</del>data(), count<del>}</del><ins>)</ins>;</code>
+<ins>where <code class='backtick'>R</code> is the return type</ins>.
+</p>
+</blockquote>
+
+<pre><code>
+constexpr span&lt;element_type, dynamic_extent&gt; last(size_type count) const;
+</code></pre>
+<blockquote>
+<p>-13- <i>Hardened preconditions</i>: <code>count &lt;= size()</code> is <code class='backtick'>true</code>.</p>
+<p>-14- <i>Effects</i>: Equivalent to:
+<code>return <ins>R(</ins><del>{</del>data() + (size() - count), count<del>}</del><ins>)</ins>;</code>
+<ins>where <code class='backtick'>R</code> is the return type</ins>.
+</p>
+</blockquote>
+
+<pre><code>
+constexpr span&lt;element_type, dynamic_extent&gt; subspan(
+  size_type offset, size_type count = dynamic_extent) const;
+</code></pre>
+<blockquote>
+<p>-15- <i>Hardened preconditions</i>:
+<pre><code>  offset &lt;= size() &amp;&amp; (count == dynamic_extent || count &lt;= size() - offset
+</code></pre>
+is <code class='backtick'>true</code>.</p>
+<p>-16- <i>Effects</i>: Equivalent to:
+<pre><code>  return <ins>R(</ins><del>{</del>data() + offset, count == dynamic_extent ? size() - offset :  count<del>}</del><ins>)</ins>;
+</code></pre>
+<ins>where <code class='backtick'>R</code> is the return type</ins>.
+</p>
+</blockquote>
+
+</blockquote>
+</li>
 </ol>
 
 
