@@ -54,7 +54,7 @@
 </style>
 </head>
 <body>
-<p>Revised 2025-07-11 at 09:52:16 UTC
+<p>Revised 2025-07-12 at 11:22:37 UTC
 </p><h2>Unresolved Issues</h2>
 <hr>
 <h3 id="423"><a href="#423">423</a><sup><a href="https://cplusplus.github.io/LWG/issue423">(i)</a></sup>. Effects of negative <code>streamsize</code> in iostreams</h3>
@@ -72297,6 +72297,77 @@ is <code class='backtick'>true</code>.</p>
 </blockquote>
 </li>
 </ol>
+
+
+
+
+
+
+<hr>
+<h3 id="4294"><a href="#4294">4294</a><sup><a href="https://cplusplus.github.io/LWG/issue4294">(i)</a></sup>. <code class='backtick'>bitset(const CharT*)</code> constructor needs to be constrained</h3>
+<p><b>Section:</b> 22.9.2.2 <a href="https://wg21.link/bitset.cons">[bitset.cons]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
+ <b>Submitter:</b> Jonathan Wakely <b>Opened:</b> 2025-07-12 <b>Last modified:</b> 2025-07-12</p>
+<p><b>Priority: </b>Not Prioritized
+</p>
+<p><b>View all other</b> <a href="lwg-index.html#bitset.cons">issues</a> in [bitset.cons].</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
+<p><b>Discussion:</b></p>
+<p>
+This code might be ill-formed, with an error outside the immediate context
+that users cannot prevent:
+<blockquote><pre><code>
+#include &lt;bitset&gt;
+struct NonTrivial { ~NonTrivial() { } };
+static_assert( ! std::is_constructible_v&lt;std::bitset&lt;1&gt;, NonTrivial*&gt; );
+</code></pre></blockquote>
+</p>
+<p>
+The problem is that the <code class='backtick'>bitset(const CharT*)</code> constructor tries to instantiate
+<code>basic_string_view&lt;NonTrivial&gt;</code> to find its <code class='backtick'>size_type</code>,
+and that instantiation might ill-formed (e.g. if <code class='backtick'>std::basic_string_view</code> or
+<code class='backtick'>std::char_traits</code> has a static assert enforcing the requirement for their
+character type to be sufficiently char-like (27.1 <a href="https://wg21.link/strings.general">[strings.general]</a>).
+</p>
+
+
+<p id="res-4294"><b>Proposed resolution:</b></p>
+<p>
+This wording is relative to <a href="https://wg21.link/N5008">N5008</a>.
+</p>
+
+<ol>
+
+<li><p>Modify 22.9.2.2 <a href="https://wg21.link/bitset.cons">[bitset.cons]</a> as indicated:</p>
+
+<blockquote>
+<pre><code>
+template&lt;class charT&gt;
+  constexpr explicit bitset(
+    const charT* str,
+    typename basic_string_view&lt;charT&gt;::size_type n = basic_string_view&lt;charT&gt;::npos,
+    charT zero = charT(’0’),
+    charT one = charT(’1’));
+</code></pre>
+<blockquote>
+<p>
+<ins>-?- <i>Constraints</i>:
+<code>is_trivially_default_constructible_v&lt;charT&gt;</code> is <code class='backtick'>true</code>.
+</ins>
+</p>
+<p>-8- <i>Effects</i>: As if by:
+<blockquote>
+<pre><code>bitset(n == basic_string_view&lt;charT&gt;::npos
+          ? basic_string_view&lt;charT&gt;(str)
+          : basic_string_view&lt;charT&gt;(str, n),
+       0, n, zero, one)
+</code></pre>
+</blockquote>
+</p>
+</blockquote>
+</blockquote>
+</li>
+</ol>
+
 
 
 
