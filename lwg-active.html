@@ -79,7 +79,7 @@
 </tr>
 </table>
 <h1>C++ Standard Library Active Issues List (Revision D125)</h1>
-<p>Revised 2025-07-12 at 11:22:37 UTC
+<p>Revised 2025-07-12 at 12:07:38 UTC
 </p>
   <p>Reference ISO/IEC IS 14882:2020(E)</p>
   <p>Also see:</p>
@@ -75762,9 +75762,21 @@ template&lt;class charT&gt;
 </code></pre>
 <blockquote>
 <p>
-<ins>-?- <i>Constraints</i>:
-<code>is_trivially_default_constructible_v&lt;charT&gt;</code> is <code class='backtick'>true</code>.
-</ins>
+<ins>-?- <i>Constraints</i>:</ins>
+<ul>
+<li>
+<ins><code>is_array_v&lt;charT&gt;</code> is <code class='backtick'>false</code>.</ins>
+</li>
+<li>
+<ins><code>is_trivially_copyable_v&lt;charT&gt;</code> is <code class='backtick'>true</code>.</ins>
+</li>
+<li>
+<ins><code>is_standard_layout_v&lt;charT&gt;</code> is <code class='backtick'>true</code>.</ins>
+</li>
+<li>
+<ins><code>is_trivially_default_constructible_v&lt;charT&gt;</code> is <code class='backtick'>true</code>.</ins>
+</li>
+</ul>
 </p>
 <p>-8- <i>Effects</i>: As if by:
 <blockquote>
