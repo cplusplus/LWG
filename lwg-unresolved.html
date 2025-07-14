@@ -54,7 +54,7 @@
 </style>
 </head>
 <body>
-<p>Revised 2025-07-12 at 12:07:38 UTC
+<p>Revised 2025-07-14 at 11:28:41 UTC
 </p><h2>Unresolved Issues</h2>
 <hr>
 <h3 id="423"><a href="#423">423</a><sup><a href="https://cplusplus.github.io/LWG/issue423">(i)</a></sup>. Effects of negative <code>streamsize</code> in iostreams</h3>
@@ -72380,6 +72380,225 @@ template&lt;class charT&gt;
 </li>
 </ol>
 
+
+
+
+
+
+
+<hr>
+<h3 id="4295"><a href="#4295">4295</a><sup><a href="https://cplusplus.github.io/LWG/issue4295">(i)</a></sup>. [fund.ts.v3] <code class='backtick'>experimental::observer_ptr</code> should have more constexpr</h3>
+<p><b>Section:</b> 8.2.6 <a href="https://cplusplus.github.io/fundamentals-ts/v3.html#memory.observer.ptr.special">[fund.ts.v3::memory.observer.ptr.special]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
+ <b>Submitter:</b> Jonathan Wakely <b>Opened:</b> 2025-07-14 <b>Last modified:</b> 2025-07-14</p>
+<p><b>Priority: </b>Not Prioritized
+</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
+<p><b>Discussion:</b></p>
+<p>
+In the Library Fundamentals TS, the <code class='backtick'>swap</code> overload, <code class='backtick'>make_observer_ptr</code>
+function, and comparisons for <code class='backtick'>observer_ptr</code> could be constexpr, but are not.
+The member <code class='backtick'>swap</code> is already constexpr in the TS, and the non-member <code class='backtick'>swap</code>
+is constexpr in libc++ but not the comparisons. The proposed resolution has
+been implemented and tested in libstdc++.
+</p>
+<p>
+If we ever rebase the TS on a new C++ standard the comparisons should all be
+updated like so:
+</p>
+
+<blockquote>
+<pre><code>
+template &lt;class W1, class W2&gt;
+<ins>constexpr</ins> bool operator==(observer_ptr&lt;W1&gt; p1, observer_ptr&lt;W2&gt; p2);
+</code></pre>
+<blockquote>
+<i>Returns</i>: <code class='backtick'>p1.get() == p2.get()</code>.
+</blockquote>
+
+<pre><code><del>bool operator!=(...);</del></code></pre>
+
+<pre><code>
+template &lt;class W&gt;
+<ins>constexpr</ins> bool operator==(observer_ptr&lt;W&gt; p, nullptr_t) noexcept;
+<del>bool operator==(...);</del>
+</code></pre>
+<blockquote>
+<i>Returns</i>: <code class='backtick'>not p</code>.
+</blockquote>
+
+<pre><code><del>bool operator!=(...);
+bool operator!=(...);</del></code></pre>
+
+<pre><code>
+template &lt;class W1, class W2&gt;
+<ins>constexpr</ins> bool operator&lt;<ins>=&gt;</ins>(observer_ptr&lt;W1&gt; p1, observer_ptr&lt;W2&gt; p2);
+</code></pre>
+<blockquote>
+<i>Returns</i>:
+    <code><del>less&lt;W3&gt;</del><ins>compare_three_way</ins>()(p1.get(), p2.get())</code>,
+    where <code class='backtick'>W3</code> is the composite pointer type (C++20 §7) of <code class='backtick'>W1*</code> and <code class='backtick'>W2*</code>.
+</blockquote>
+
+<pre><code><del>bool operator&gt;(...);
+bool operator&lt;=(...);
+bool operator&gt;=(...);</del></code></pre>
+</blockquote>
+
+
+
+<p id="res-4295"><b>Proposed resolution:</b></p>
+<p>
+This wording is relative to <a href="https://wg21.link/N4939" title=" Working Draft, C++ Extensions for Library Fundamentals, Version 3">N4939</a>.
+</p>
+
+<ol>
+<li>
+Modify 8.1 <a href="https://cplusplus.github.io/fundamentals-ts/v3.html#memory.syn">[fund.ts.v3::memory.syn]</a> as indicated:
+<blockquote>
+<pre><code>
+#include &lt;memory&gt;
+
+namespace std {
+  namespace experimental::inline fundamentals_v3 {
+
+    <i>// 8.2, Non-owning (observer) pointers</i>
+    template &lt;class W&gt; class observer_ptr;
+
+    <i>// 8.2.6, observer_ptr specialized algorithms</i>
+    template &lt;class W&gt;
+    <ins>constexpr</ins> void swap(observer_ptr&lt;W&gt;&amp;, observer_ptr&lt;W&gt;&amp;) noexcept;
+    template &lt;class W&gt;
+    <ins>constexpr</ins> observer_ptr&lt;W&gt; make_observer(W*) noexcept;
+    <i>// (in)equality operators</i>
+    template &lt;class W1, class W2&gt;
+    <ins>constexpr</ins> bool operator==(observer_ptr&lt;W1&gt;, observer_ptr&lt;W2&gt;);
+
+    template &lt;class W1, class W2&gt;
+    <ins>constexpr</ins> bool operator!=(observer_ptr&lt;W1&gt;, observer_ptr&lt;W2&gt;);
+    template &lt;class W&gt;
+    <ins>constexpr</ins> bool operator==(observer_ptr&lt;W&gt;, nullptr_t) noexcept;
+    template &lt;class W&gt;
+    <ins>constexpr</ins> bool operator!=(observer_ptr&lt;W&gt;, nullptr_t) noexcept;
+    template &lt;class W&gt;
+    <ins>constexpr</ins> bool operator==(nullptr_t, observer_ptr&lt;W&gt;) noexcept;
+    template &lt;class W&gt;
+    <ins>constexpr</ins> bool operator!=(nullptr_t, observer_ptr&lt;W&gt;) noexcept;
+    <i>// ordering operators</i>
+    template &lt;class W1, class W2&gt;
+    <ins>constexpr</ins> bool operator&lt;(observer_ptr&lt;W1&gt;, observer_ptr&lt;W2&gt;);
+    template &lt;class W1, class W2&gt;
+    <ins>constexpr</ins> bool operator&gt;(observer_ptr&lt;W1&gt;, observer_ptr&lt;W2&gt;);
+    template &lt;class W1, class W2&gt;
+    <ins>constexpr</ins> bool operator&lt;=(observer_ptr&lt;W1&gt;, observer_ptr&lt;W2&gt;);
+    template &lt;class W1, class W2&gt;
+    <ins>constexpr</ins> bool operator&gt;=(observer_ptr&lt;W1&gt;, observer_ptr&lt;W2&gt;);
+
+  } <i>// namespace experimental::inline fundamentals_v3</i>
+
+  <i>// 8.2.7, observer_ptr hash support</i>
+  template &lt;class T&gt; struct hash;
+  template &lt;class T&gt; struct hash&lt;experimental::observer_ptr&lt;T&gt;&gt;;
+
+} <i>// namespace std</i>
+</code></pre>
+</blockquote>
+</li>
+
+<li>
+Modify 8.2.6 <a href="https://cplusplus.github.io/fundamentals-ts/v3.html#memory.observer.ptr.special">[fund.ts.v3::memory.observer.ptr.special]</a> as indicated:
+<blockquote>
+
+
+<pre><code>
+template &lt;class W&gt;
+  <ins>constexpr</ins> void swap(observer_ptr&lt;W&gt;&amp; p1, observer_ptr&lt;W&gt;&amp; p2) noexcept;
+</code></pre>
+<blockquote>
+-2- <i>Effects</i>: <code class='backtick'>p1.swap(p2)</code>.
+</blockquote>
+
+<pre><code>
+template &lt;class W&gt; <ins>constexpr</ins> observer_ptr&lt;W&gt; make_observer(W* p) noexcept;
+</code></pre>
+<blockquote>
+-4- <i>Returns</i>: <code>observer_ptr&lt;W&gt;{p}</code>.
+</blockquote>
+
+
+<pre><code>
+template &lt;class W1, class W2&gt;
+  <ins>constexpr</ins> bool operator==(observer_ptr&lt;W1&gt; p1, observer_ptr&lt;W2&gt; p2);
+</code></pre>
+<blockquote>
+-6- <i>Returns</i>: <code class='backtick'>p1.get() == p2.get()</code>.
+</blockquote>
+
+<pre><code>
+template &lt;class W1, class W2&gt;
+  <ins>constexpr</ins> bool operator!=(observer_ptr&lt;W1&gt; p1, observer_ptr&lt;W2&gt; p2);
+</code></pre>
+<blockquote>
+-8- <i>Returns</i>: <code class='backtick'>not (p1 == p2)</code>.
+</blockquote>
+
+<pre><code>
+template &lt;class W&gt;
+  <ins>constexpr</ins> bool operator==(observer_ptr&lt;W&gt; p, nullptr_t) noexcept;
+template &lt;class W&gt;
+  <ins>constexpr</ins> bool operator==(nullptr_t, observer_ptr&lt;W&gt; p) noexcept;
+</code></pre>
+<blockquote>
+-10- <i>Returns</i>: <code class='backtick'>not p</code>.
+</blockquote>
+
+<pre><code>
+template &lt;class W&gt;
+  <ins>constexpr</ins> bool operator!=(observer_ptr&lt;W&gt; p, nullptr_t) noexcept;
+template &lt;class W&gt;
+  <ins>constexpr</ins> bool operator!=(nullptr_t, observer_ptr&lt;W&gt; p) noexcept;
+</code></pre>
+<blockquote>
+-12- <i>Returns</i>: <code class='backtick'>(bool)p</code>.
+</blockquote>
+
+<pre><code>
+template &lt;class W1, class W2&gt;
+  <ins>constexpr</ins> bool operator&lt;(observer_ptr&lt;W1&gt; p1, observer_ptr&lt;W2&gt; p2);
+</code></pre>
+<blockquote>
+-14- <i>Returns</i>:
+    <code>less&lt;W3&gt;()(p1.get(), p2.get())</code>,
+    where <code class='backtick'>W3</code> is the composite pointer type (C++20 §7) of <code class='backtick'>W1*</code> and <code class='backtick'>W2*</code>.
+</blockquote>
+
+<pre><code>
+template &lt;class W1, class W2&gt;
+  <ins>constexpr</ins> bool operator&gt;(observer_ptr&lt;W1&gt; p1, observer_ptr&lt;W2&gt; p2);
+</code></pre>
+<blockquote>
+-16- <i>Returns</i>: <code>p2 &lt; p1</code>.
+</blockquote>
+
+<pre><code>
+template &lt;class W1, class W2&gt;
+  <ins>constexpr</ins> bool operator&lt;=(observer_ptr&lt;W1&gt; p1, observer_ptr&lt;W2&gt; p2);
+</code></pre>
+<blockquote>
+-16- <i>Returns</i>: <code>not p2 &lt; p1</code>.
+</blockquote>
+
+<pre><code>
+template &lt;class W1, class W2&gt;
+  <ins>constexpr</ins> bool operator&gt;=(observer_ptr&lt;W1&gt; p1, observer_ptr&lt;W2&gt; p2);
+</code></pre>
+<blockquote>
+-16- <i>Returns</i>: <code>not p1 &lt; p2</code>.
+</blockquote>
+
+
+</blockquote>
+</li>
+</ol>
 
 
 
