@@ -54,7 +54,7 @@
 </style>
 </head>
 <body>
-<p>Revised 2025-07-14 at 19:19:57 UTC
+<p>Revised 2025-07-14 at 19:24:09 UTC
 </p><h2>Unresolved Issues</h2>
 <hr>
 <h3 id="423"><a href="#423">423</a><sup><a href="https://cplusplus.github.io/LWG/issue423">(i)</a></sup>. Effects of negative <code>streamsize</code> in iostreams</h3>
@@ -72306,7 +72306,7 @@ is <code class='backtick'>true</code>.</p>
 <hr>
 <h3 id="4294"><a href="#4294">4294</a><sup><a href="https://cplusplus.github.io/LWG/issue4294">(i)</a></sup>. <code class='backtick'>bitset(const CharT*)</code> constructor needs to be constrained</h3>
 <p><b>Section:</b> 22.9.2.2 <a href="https://wg21.link/bitset.cons">[bitset.cons]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Jonathan Wakely <b>Opened:</b> 2025-07-12 <b>Last modified:</b> 2025-07-12</p>
+ <b>Submitter:</b> Jonathan Wakely <b>Opened:</b> 2025-07-12 <b>Last modified:</b> 2025-07-14</p>
 <p><b>Priority: </b>Not Prioritized
 </p>
 <p><b>View all other</b> <a href="lwg-index.html#bitset.cons">issues</a> in [bitset.cons].</p>
@@ -72324,9 +72324,12 @@ static_assert( ! std::is_constructible_v&lt;std::bitset&lt;1&gt;, NonTrivial*&gt
 <p>
 The problem is that the <code class='backtick'>bitset(const CharT*)</code> constructor tries to instantiate
 <code>basic_string_view&lt;NonTrivial&gt;</code> to find its <code class='backtick'>size_type</code>,
-and that instantiation might ill-formed (e.g. if <code class='backtick'>std::basic_string_view</code> or
+and that instantiation might ill-formed, e.g. if <code class='backtick'>std::basic_string_view</code> or
 <code class='backtick'>std::char_traits</code> has a static assert enforcing the requirement for their
-character type to be sufficiently char-like (27.1 <a href="https://wg21.link/strings.general">[strings.general]</a>).
+character type to be sufficiently char-like. 27.1 <a href="https://wg21.link/strings.general">[strings.general]</a>
+defines a char-like type as "any non-array trivially copyable standard-layout
+(6.8.1 <a href="https://wg21.link/basic.types.general">[basic.types.general]</a>) type <code class='backtick'>T</code>
+where <code>is_trivially_default_constructible_v&lt;T&gt;</code> is <code class='backtick'>true</code>."
 </p>
 
 
