@@ -64,7 +64,7 @@
 <p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#New">New</a> status.</em></p>
 <h3 id="4288"><a href="lwg-active.html#4288">4288</a>. The <i>Constraints:</i> element in [time.clock.system.members] is probably wrong</h3>
 <p><b>Section:</b> 30.7.2.2 <a href="https://wg21.link/time.clock.system.members">[time.clock.system.members]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Jiang An <b>Opened:</b> 2025-06-19 <b>Last modified:</b> 2025-07-05</p>
+ <b>Submitter:</b> Jiang An <b>Opened:</b> 2025-06-19 <b>Last modified:</b> 2025-07-15</p>
 <p><b>Priority: </b>Not Prioritized
 </p>
 <p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
@@ -73,6 +73,43 @@
 Currently, the <i>Constraints:</i> element in 30.7.2.2 <a href="https://wg21.link/time.clock.system.members">[time.clock.system.members]</a> for the member typedef
 <code class='backtick'>system_clock::rep</code> imposes a requirement for the implementation, without establishing any condition for user 
 code. Perhaps it's wrong to use a <i>Constraints:</i> element there.
+</p>
+
+<p><strong>Previous resolution [SUPERSEDED]:</strong></p>
+<blockquote class="note">
+
+<p>
+This wording is relative to <a href="https://wg21.link/N5008">N5008</a>.
+</p>
+
+<ol>
+
+<li><p>Modify 30.7.2.2 <a href="https://wg21.link/time.clock.system.members">[time.clock.system.members]</a> as indicated:</p>
+
+<blockquote>
+<pre>
+using system_clock::rep = <i>unspecified</i>;
+</pre>
+<blockquote>
+<p>
+-1- <del><i>Constraints:</i></del><ins>The implementation shall ensure that</ins> 
+<code>system_clock::duration::min() &lt; system_clock::duration::zero()</code> is <code>true</code>.
+[<i>Note 1</i>: This implies that <code class='backtick'>rep</code> is a signed type. &mdash; <i>end note</i>]
+</p>
+</blockquote>
+</blockquote>
+</li>
+
+</ol>
+</blockquote>
+
+<p><i>[2025-07-15; Reflector discussion]</i></p>
+
+<p>
+The discussion revealed a preference to not insert the additional 
+"The implementation shall ensure that", because its not really needed, 
+since this is just a normal implementation requirement that falls out of
+the specification. 
 </p>
 
 
@@ -91,8 +128,8 @@ using system_clock::rep = <i>unspecified</i>;
 </pre>
 <blockquote>
 <p>
--1- <del><i>Constraints:</i></del><ins>The implementation shall ensure that</ins> 
-<code>system_clock::duration::min() &lt; system_clock::duration::zero()</code> is <code>true</code>.
+-1- <del><i>Constraints:</i></del> <code>system_clock::duration::min() &lt; system_clock::duration::zero()</code> 
+is <code>true</code>.
 [<i>Note 1</i>: This implies that <code class='backtick'>rep</code> is a signed type. &mdash; <i>end note</i>]
 </p>
 </blockquote>
