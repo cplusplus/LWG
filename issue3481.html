@@ -63,7 +63,7 @@
 <hr>
 <p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#C++23">C++23</a> status.</em></p>
 <h3 id="3481"><a href="lwg-defects.html#3481">3481</a>. <code>viewable_range</code> mishandles lvalue move-only views</h3>
-<p><b>Section:</b> 25.4.5 <a href="https://wg21.link/range.refinements">[range.refinements]</a> <b>Status:</b> <a href="lwg-active.html#C++23">C++23</a>
+<p><b>Section:</b> 25.4.6 <a href="https://wg21.link/range.refinements">[range.refinements]</a> <b>Status:</b> <a href="lwg-active.html#C++23">C++23</a>
  <b>Submitter:</b> Casey Carter <b>Opened:</b> 2020-08-29 <b>Last modified:</b> 2023-11-22</p>
 <p><b>Priority: </b>2
 </p>
@@ -71,7 +71,7 @@
 <p><b>View all issues with</b> <a href="lwg-status.html#C++23">C++23</a> status.</p>
 <p><b>Discussion:</b></p>
 <p>
-The <code>viewable_range concept</code> (25.4.5 <a href="https://wg21.link/range.refinements">[range.refinements]</a>) and the <code>views:all</code> 
+The <code>viewable_range concept</code> (25.4.6 <a href="https://wg21.link/range.refinements">[range.refinements]</a>) and the <code>views:all</code> 
 range adaptor (25.7.6 <a href="https://wg21.link/range.all">[range.all]</a>) are duals: <code>viewable_range</code> is intended to admit 
 exactly types <code>T</code> for which <code>views::all(declval&lt;T&gt;())</code> is well-formed. (Recall 
 that <code>views::all(<i>meow</i>)</code> is a prvalue whose type models <code>view</code> when it is 
@@ -111,7 +111,7 @@ This wording is relative to <a href="https://wg21.link/n4861">N4861</a>.
 </p>
 
 <ol>
-<li><p>Modify 25.4.5 <a href="https://wg21.link/range.refinements">[range.refinements]</a> as indicated:</p>
+<li><p>Modify 25.4.6 <a href="https://wg21.link/range.refinements">[range.refinements]</a> as indicated:</p>
 
 <blockquote>
 <p>

@@ -181,12 +181,12 @@ realize that.
 struct make_signed;</code>
 </td>
 <td>
-If <code>T</code> names a (possibly <i>cv</i>-qualified) signed integer type (6.8.2 <a href="https://wg21.link/basic.fundamental">[basic.fundamental]</a>) then<br/>
+If <code>T</code> names a (possibly <i>cv</i>-qualified) signed integer type (6.9.2 <a href="https://wg21.link/basic.fundamental">[basic.fundamental]</a>) then<br/>
 the member typedef <code>type</code> names the type <code>T</code>; otherwise, if <code>T</code> names a<br/>
 (possibly <i>cv</i>-qualified) unsigned integer type then <code>type</code> names the<br/>
 corresponding signed integer type, with the same <i>cv</i>-qualifiers as <code>T</code>;<br/>
 otherwise, <code>type</code> names the signed integer type with smallest<br/>
-rank (6.8.6 <a href="https://wg21.link/conv.rank">[conv.rank]</a>) for which <code>sizeof(T) == sizeof(type)</code>, with the same<br/>
+rank (6.9.6 <a href="https://wg21.link/conv.rank">[conv.rank]</a>) for which <code>sizeof(T) == sizeof(type)</code>, with the same<br/>
 <i>cv</i>-qualifiers as <code>T</code>.<br/>
 <i><del>Requires</del><ins>Mandates</ins>:</i> <code>T</code> <del>shall be</del><ins>is</ins> a<ins>n</ins> <del>(possibly <i>cv</i>-qualified)</del> integral <del>type</del> or enumeration <ins>type other than <i>cv</i></ins> <del>but not a</del> <code>bool</code> <del>type</del>.
 </td>
@@ -198,12 +198,12 @@ rank (6.8.6 <a href="https://wg21.link/conv.rank">[conv.rank]</a>) for which <co
 struct make_unsigned;</code>
 </td>
 <td>
-If <code>T</code> names a (possibly <i>cv</i>-qualified) unsigned integer type (6.8.2 <a href="https://wg21.link/basic.fundamental">[basic.fundamental]</a>) then<br/>
+If <code>T</code> names a (possibly <i>cv</i>-qualified) unsigned integer type (6.9.2 <a href="https://wg21.link/basic.fundamental">[basic.fundamental]</a>) then<br/>
 the member typedef <code>type</code> names the type <code>T</code>; otherwise, if <code>T</code> names a<br/>
 (possibly <i>cv</i>-qualified) signed integer type then <code>type</code> names the<br/>
 corresponding unsigned integer type, with the same <i>cv</i>-qualifiers as <code>T</code>;<br/>
 otherwise, <code>type</code> names the unsigned integer type with smallest<br/>
-rank (6.8.6 <a href="https://wg21.link/conv.rank">[conv.rank]</a>) for which <code>sizeof(T) == sizeof(type)</code>, with the same<br/>
+rank (6.9.6 <a href="https://wg21.link/conv.rank">[conv.rank]</a>) for which <code>sizeof(T) == sizeof(type)</code>, with the same<br/>
 <i>cv</i>-qualifiers as <code>T</code>.<br/>
 <i><del>Requires</del><ins>Mandates</ins>:</i> <code>T</code> <del>shall be</del><ins>is</ins> a<ins>n</ins> <del>(possibly <i>cv</i>-qualified)</del> integral <del>type</del> or enumeration <ins>type other than <i>cv</i></ins> <del>but not a</del> <code>bool</code> <del>type</del>.
 </td>

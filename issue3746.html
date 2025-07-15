@@ -66,7 +66,7 @@ causes infinite constraint meta-recursion">
 <p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#C++23">C++23</a> status.</em></p>
 <h3 id="3746"><a href="lwg-defects.html#3746">3746</a>. <code>optional</code>'s spaceship with <code>U</code> with a type derived from <code>optional</code> 
 causes infinite constraint meta-recursion</h3>
-<p><b>Section:</b> 22.5.8 <a href="https://wg21.link/optional.comp.with.t">[optional.comp.with.t]</a> <b>Status:</b> <a href="lwg-active.html#C++23">C++23</a>
+<p><b>Section:</b> 22.5.9 <a href="https://wg21.link/optional.comp.with.t">[optional.comp.with.t]</a> <b>Status:</b> <a href="lwg-active.html#C++23">C++23</a>
  <b>Submitter:</b> Ville Voutilainen <b>Opened:</b> 2022-07-25 <b>Last modified:</b> 2023-11-22</p>
 <p><b>Priority: </b>Not Prioritized
 </p>
@@ -88,7 +88,7 @@ All implementations end up with infinite meta-recursion.
 The solution to the problem is to stop the meta-recursion by constraining
 the spaceship with <code>U</code> so that <code>U</code> is not publicly and unambiguously derived
 from a specialization of optional, SFINAEing that candidate out, and letting 
-22.5.6 <a href="https://wg21.link/optional.relops">[optional.relops]</a>/20 perform the comparison instead.
+22.5.7 <a href="https://wg21.link/optional.relops">[optional.relops]</a>/20 perform the comparison instead.
 </p>
 
 <p><i>[2022-08-23; Reflector poll]</i></p>
@@ -132,7 +132,7 @@ namespace std {
       []&lt;class U&gt;(const optional&lt;U&gt;&amp;){ }(t);
     };</ins>
   [&hellip;]
-  <i>// 22.5.8 <a href="https://wg21.link/optional.comp.with.t">[optional.comp.with.t]</a>, comparison with T</i>
+  <i>// 22.5.9 <a href="https://wg21.link/optional.comp.with.t">[optional.comp.with.t]</a>, comparison with T</i>
   [&hellip;]
   template&lt;class T, class U&gt; constexpr bool operator&gt;=(const T&amp;, const optional&lt;U&gt;&amp;);
   template&lt;class T, class U&gt; requires (!<i>is-<ins>derived-from-</ins>optional</i>&lt;U&gt;) &amp;&amp; three_way_comparable_with&lt;T, U&gt;
@@ -144,7 +144,7 @@ namespace std {
 </blockquote>
 </li>
 
-<li><p>Modify 22.5.8 <a href="https://wg21.link/optional.comp.with.t">[optional.comp.with.t]</a> as indicated:</p>
+<li><p>Modify 22.5.9 <a href="https://wg21.link/optional.comp.with.t">[optional.comp.with.t]</a> as indicated:</p>
 
 <blockquote>
 <pre>

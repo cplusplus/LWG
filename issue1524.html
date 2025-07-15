@@ -109,7 +109,7 @@ the first part of the issue.
 <blockquote><p>
 1 <del>The library versions of <code>operator new</code> and <code>operator delete</code>, user replacement versions of global 
 <code>operator new</code> and <code>operator delete</code>, and the C standard library functions <code>calloc</code>, <code>malloc</code>, 
-<code>realloc</code>, and <code>free</code> shall not introduce data races (6.9.2 <a href="https://wg21.link/intro.multithread">[intro.multithread]</a>) as a result 
+<code>realloc</code>, and <code>free</code> shall not introduce data races (6.10.2 <a href="https://wg21.link/intro.multithread">[intro.multithread]</a>) as a result 
 of concurrent calls from different threads.</del><ins> For purposes of determining the existence of data races,
 the library versions of <code>operator new</code>, user replacement versions of global <code>operator new</code>, and the C 
 standard library functions <code>calloc</code> and <code>malloc</code> shall behave as though they accessed and modified only 

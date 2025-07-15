@@ -63,7 +63,7 @@
 <hr>
 <p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#Resolved">Resolved</a> status.</em></p>
 <h3 id="1389"><a href="lwg-defects.html#1389">1389</a>. Compile-time rational arithmetic and overflow</h3>
-<p><b>Section:</b> 21.4.4 <a href="https://wg21.link/ratio.arithmetic">[ratio.arithmetic]</a> <b>Status:</b> <a href="lwg-active.html#Resolved">Resolved</a>
+<p><b>Section:</b> 21.5.4 <a href="https://wg21.link/ratio.arithmetic">[ratio.arithmetic]</a> <b>Status:</b> <a href="lwg-active.html#Resolved">Resolved</a>
  <b>Submitter:</b> BSI <b>Opened:</b> 2010-08-25 <b>Last modified:</b> 2016-01-28</p>
 <p><b>Priority: </b>Not Prioritized
 </p>
@@ -80,7 +80,7 @@ instantiation. For example
 alias <code>ratio&lt;2*LLONG_MAX, LLONG_MAX*2&gt;</code>, which
 overflows, so is ill-formed. However, this is trivially equal
 to <code>ratio&lt;1, 1&gt;</code>. It also contradicts the opening statement of
-21.4.4 <a href="https://wg21.link/ratio.arithmetic">[ratio.arithmetic]</a> p. 1 "implementations may use other algorithms to
+21.5.4 <a href="https://wg21.link/ratio.arithmetic">[ratio.arithmetic]</a> p. 1 "implementations may use other algorithms to
 compute these values".
 </p>
 
@@ -100,7 +100,7 @@ Accepting <a href="http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2010/n3131
 
 
 <p id="res-1389"><b>Proposed resolution:</b></p>
-<p>Change the wording in 21.4.4 <a href="https://wg21.link/ratio.arithmetic">[ratio.arithmetic]</a> p. 2-5 as follows:</p>
+<p>Change the wording in 21.5.4 <a href="https://wg21.link/ratio.arithmetic">[ratio.arithmetic]</a> p. 2-5 as follows:</p>
 <blockquote><pre>
 template &lt;class R1, class R2&gt; using ratio_add = <em>see below</em>;
 </pre><blockquote><p>

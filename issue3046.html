@@ -96,7 +96,7 @@ are not required to diagnose such invalid specializations, but also don't have t
 to an object or function of type <code>T</code>. <ins><code>T</code> shall be a referenceable type (3.45 <a href="https://wg21.link/defns.referenceable">[defns.referenceable]</a>) that 
 is not a reference type.</ins>
 <p/>
--2- <code>reference_wrapper&lt;T&gt;</code> shall be a trivially copyable type (6.8 <a href="https://wg21.link/basic.types">[basic.types]</a>).
+-2- <code>reference_wrapper&lt;T&gt;</code> shall be a trivially copyable type (6.9 <a href="https://wg21.link/basic.types">[basic.types]</a>).
 </p>
 </blockquote>
 </li>
@@ -145,7 +145,7 @@ as the argument for the template parameter <code>T</code>.
 to an object or function of type <code>T</code>. <ins>If <code>reference_wrapper</code> is instantiated with a non-referenceable type 
 (3.45 <a href="https://wg21.link/defns.referenceable">[defns.referenceable]</a>) as the argument for the template parameter <code>T</code>, the program is ill-formed.</ins>
 <p/>
--2- <code>reference_wrapper&lt;T&gt;</code> is a trivially copyable type (6.8 <a href="https://wg21.link/basic.types">[basic.types]</a>).
+-2- <code>reference_wrapper&lt;T&gt;</code> is a trivially copyable type (6.9 <a href="https://wg21.link/basic.types">[basic.types]</a>).
 <p/>
 -3- The template parameter <code>T</code> of <code>reference_wrapper</code> may be an incomplete type.
 </p>

@@ -63,7 +63,7 @@
 <hr>
 <p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#C++20">C++20</a> status.</em></p>
 <h3 id="3381"><a href="lwg-defects.html#3381">3381</a>. <code>begin</code> and <code>data</code> must agree for <code>contiguous_range</code></h3>
-<p><b>Section:</b> 25.4.5 <a href="https://wg21.link/range.refinements">[range.refinements]</a> <b>Status:</b> <a href="lwg-active.html#C++20">C++20</a>
+<p><b>Section:</b> 25.4.6 <a href="https://wg21.link/range.refinements">[range.refinements]</a> <b>Status:</b> <a href="lwg-active.html#C++20">C++20</a>
  <b>Submitter:</b> Casey Carter <b>Opened:</b> 2020-01-25 <b>Last modified:</b> 2021-02-25</p>
 <p><b>Priority: </b>0
 </p>
@@ -71,7 +71,7 @@
 <p><b>View all issues with</b> <a href="lwg-status.html#C++20">C++20</a> status.</p>
 <p><b>Discussion:</b></p>
 <p>
-The definition of the <code>contiguous_range</code> concept in 25.4.5 <a href="https://wg21.link/range.refinements">[range.refinements]</a>/2 
+The definition of the <code>contiguous_range</code> concept in 25.4.6 <a href="https://wg21.link/range.refinements">[range.refinements]</a>/2 
 requires that <code>ranges::data(r)</code> be valid for a <code>contiguous_range r</code>, but fails to 
 impose the obvious semantic requirement that <code>to_address(ranges::begin(r)) == ranges::data(r)</code>. 
 In other words, <code>data</code> and <code>begin</code> must agree so that <code>[begin(r), end(r))</code> and 
@@ -88,12 +88,12 @@ the same sequence of elements.
 <p>This wording is relative to <a href="https://wg21.link/n4849">N4849</a>.</p>
 
 <ol>
-<li><p>Modify 25.4.5 <a href="https://wg21.link/range.refinements">[range.refinements]</a> as indicated:</p>
+<li><p>Modify 25.4.6 <a href="https://wg21.link/range.refinements">[range.refinements]</a> as indicated:</p>
 
 <blockquote>
 <p>
 -2- <code>contiguous_range</code> additionally requires that the <code>ranges::data</code> customization point 
-(25.3.15 <a href="https://wg21.link/range.prim.data">[range.prim.data]</a>) is usable with the range.
+(25.3.14 <a href="https://wg21.link/range.prim.data">[range.prim.data]</a>) is usable with the range.
 </p>
 <pre>
 template&lt;class T&gt;

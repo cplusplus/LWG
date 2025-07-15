@@ -144,7 +144,7 @@ than <code>alignof(T)</code>, <code>required_alignment</code> equals <code>align
 <code>required_alignment</code> equals <code>A</code></ins>.
 <p/>
 -2- [<i>Note:</i> Hardware could require an object referenced by an <code>atomic_ref</code> to have 
-stricter alignment (6.7.3 <a href="https://wg21.link/basic.align">[basic.align]</a>) than other objects of type <code>T</code>. <del>Further, 
+stricter alignment (6.8.3 <a href="https://wg21.link/basic.align">[basic.align]</a>) than other objects of type <code>T</code>. <del>Further, 
 whether operations on an <code>atomic_ref</code> are lock-free could depend on the alignment of the 
 referenced object.</del> For example, lock-free operations on <code>std::complex&lt;double&gt;</code>
 could be supported only if aligned to <code>2*alignof(double)</code>. &mdash; <i>end note</i>]

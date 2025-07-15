@@ -62,7 +62,7 @@ This document is the Index by Status and Section for the <a href="lwg-active.htm
 <a href="lwg-defects.html">Library Defect Reports and Accepted Issues</a>, and <a href="lwg-closed.html">Library Closed Issues List</a>.
 </p>
 
-<p>Revised 2025-07-15 at 15:25:12 UTC
+<p>Revised 2025-07-15 at 19:12:12 UTC
 </p><h2 id="New">New (513 issues)</h2>
 <table class="issues-index">
 <tr>
@@ -985,15 +985,6 @@ passed to allocator <code>construct</code> and <code>destroy</code></td>
 <td></td>
 </tr>
 <tr>
-<td id="4251"><a href="lwg-active.html#4251" title="Move assignment for indirect unnecessarily requires copy construction (Status: New)">4251</a><sup><a href="https://cplusplus.github.io/LWG/issue4251">(i)</a></sup></td>
-<td><a href="lwg-active.html#New">New</a></td>
-<td>20.4.1.5 [indirect.asgn]</td>
-<td>Move assignment for <code class='backtick'>indirect</code> unnecessarily requires copy construction</td>
-<td>Yes</td>
-<td>1</td>
-<td></td>
-</tr>
-<tr>
 <td id="4250"><a href="lwg-active.html#4250" title="swap overloads for indirect and polymorphic only found by ADL (Status: New)">4250</a><sup><a href="https://cplusplus.github.io/LWG/issue4250">(i)</a></sup></td>
 <td><a href="lwg-active.html#New">New</a></td>
 <td>20.4.1.7 [indirect.swap]</td>
@@ -1297,7 +1288,7 @@ the evaluation of type traits</td>
 <tr>
 <td id="3613"><a href="lwg-active.html#3613" title="Specify that nullopt_t is copyable (Status: New)">3613</a><sup><a href="https://cplusplus.github.io/LWG/issue3613">(i)</a></sup></td>
 <td><a href="lwg-active.html#New">New</a></td>
-<td>22.5.4 [optional.nullopt]</td>
+<td>22.5.5 [optional.nullopt]</td>
 <td>Specify that <code>nullopt_t</code> is copyable</td>
 <td>Yes</td>
 <td>3</td>
@@ -1306,7 +1297,7 @@ the evaluation of type traits</td>
 <tr>
 <td id="3627"><a href="lwg-active.html#3627" title="Inconsistent specifications for std::make_optional overloads (Status: New)">3627</a><sup><a href="https://cplusplus.github.io/LWG/issue3627">(i)</a></sup></td>
 <td><a href="lwg-active.html#New">New</a></td>
-<td>22.5.9 [optional.specalg]</td>
+<td>22.5.10 [optional.specalg]</td>
 <td>Inconsistent specifications for <code>std::make_optional</code> overloads</td>
 <td>Yes</td>
 <td>3</td>
@@ -2342,7 +2333,7 @@ initializer_list (Status: New)">3537</a><sup><a href="https://cplusplus.github.i
 <tr>
 <td id="4062"><a href="lwg-active.html#4062" title="ranges::empty has no semantic requirements for forward_ranges (Status: New)">4062</a><sup><a href="https://cplusplus.github.io/LWG/issue4062">(i)</a></sup></td>
 <td><a href="lwg-active.html#New">New</a></td>
-<td>25.3.14 [range.prim.empty]</td>
+<td>25.3.13 [range.prim.empty]</td>
 <td><code>ranges::empty</code> has no semantic requirements for <code>forward_range</code>s</td>
 <td><span class="no-pr">No</span></td>
 <td></td>
@@ -2351,7 +2342,7 @@ initializer_list (Status: New)">3537</a><sup><a href="https://cplusplus.github.i
 <tr>
 <td id="3896"><a href="lwg-active.html#3896" title="The definition of viewable_range is not quite right (Status: New)">3896</a><sup><a href="https://cplusplus.github.io/LWG/issue3896">(i)</a></sup></td>
 <td><a href="lwg-active.html#New">New</a></td>
-<td>25.4.5 [range.refinements]</td>
+<td>25.4.6 [range.refinements]</td>
 <td>The definition of <code>viewable_range</code> is not quite right</td>
 <td>Yes</td>
 <td>4</td>
@@ -4674,6 +4665,15 @@ fetch_meow members don't (Status: New)">3047</a><sup><a href="https://cplusplus.
 <td></td>
 </tr>
 <tr>
+<td id="4251"><a href="lwg-active.html#4251" title="Move assignment for indirect unnecessarily requires copy construction (Status: New)">4251</a><sup><a href="https://cplusplus.github.io/LWG/issue4251">(i)</a></sup></td>
+<td><a href="lwg-active.html#New">New</a></td>
+<td>99 [indirect.asgn]</td>
+<td>Move assignment for <code class='backtick'>indirect</code> unnecessarily requires copy construction</td>
+<td>Yes</td>
+<td>1</td>
+<td></td>
+</tr>
+<tr>
 <td id="3812"><a href="lwg-active.html#3812" title="[fund.ts.v3] Incorrect constraint on propagate_const conversion function (Status: New)">3812</a><sup><a href="https://cplusplus.github.io/LWG/issue3812">(i)</a></sup></td>
 <td><a href="lwg-active.html#New">New</a></td>
 <td>6.1.2.6 [fund.ts.v3::propagate_const.const_observers]</td>
@@ -5455,7 +5455,7 @@ don't support <code>DynamicBuffer</code> lvalues</td>
 <tr>
 <td id="3840"><a href="lwg-active.html#3840" title="filesystem::u8path should be undeprecated (Status: Open)">3840</a><sup><a href="https://cplusplus.github.io/LWG/issue3840">(i)</a></sup></td>
 <td><a href="lwg-active.html#Open">Open</a></td>
-<td>D.21 [depr.fs.path.factory]</td>
+<td>D.22 [depr.fs.path.factory]</td>
 <td><code>filesystem::u8path</code> should be undeprecated</td>
 <td>Yes</td>
 <td>3</td>
@@ -5738,7 +5738,7 @@ types &mdash; this is inconsistent with other types in the library</td>
 <tr>
 <td id="2506"><a href="lwg-active.html#2506" title="Underspecification of atomics (Status: SG1)">2506</a><sup><a href="https://cplusplus.github.io/LWG/issue2506">(i)</a></sup></td>
 <td><a href="lwg-active.html#SG1">SG1</a></td>
-<td>6.9.2 [intro.multithread]</td>
+<td>6.10.2 [intro.multithread]</td>
 <td>Underspecification of atomics</td>
 <td><span class="no-pr">No</span></td>
 <td>3</td>

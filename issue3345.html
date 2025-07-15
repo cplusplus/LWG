@@ -500,7 +500,7 @@ expression-equivalent to:
 <ol style="list-style-type: none">
 <li><p>(1.1) &mdash; [&hellip;]</p></li>
 <li><p>(1.2) &mdash; Otherwise, if <code>disable_sized_range&lt;remove_cv_t&lt;T&gt;&gt;</code> 
-(25.4.3 <a href="https://wg21.link/range.sized">[range.sized]</a>) is <code>false</code>:</p>
+(25.4.4 <a href="https://wg21.link/range.sized">[range.sized]</a>) is <code>false</code>:</p>
 <ol style="list-style-type: none">
 <li><p>(1.2.1) &mdash; <code><i>decay-copy</i>(E.size())</code> if it is a valid expression and <del>its type <code>I</code> 
 is integer-like</del><ins><code><i>is-integer-like</i>&lt;I&gt;</code> is <code>true</code></ins> 
@@ -525,7 +525,7 @@ and does not include a declaration of <code>ranges::size</code>.</p></li>
 </blockquote>
 </li>
 
-<li><p>Modify 25.3.14 <a href="https://wg21.link/range.prim.empty">[range.prim.empty]</a> as indicated:</p>
+<li><p>Modify 25.3.13 <a href="https://wg21.link/range.prim.empty">[range.prim.empty]</a> as indicated:</p>
 
 <blockquote>
 <p>
@@ -544,7 +544,7 @@ except that <code>E</code> is only evaluated once, if <code>EQ</code> is a valid
 </blockquote>
 </li>
 
-<li><p>Modify 25.3.15 <a href="https://wg21.link/range.prim.data">[range.prim.data]</a> as indicated:</p>
+<li><p>Modify 25.3.14 <a href="https://wg21.link/range.prim.data">[range.prim.data]</a> as indicated:</p>
 
 <blockquote>
 <p>

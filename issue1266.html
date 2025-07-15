@@ -130,7 +130,7 @@ the associated state.
 <p><ins>
 <i>Synchronization:</i> if the associated state was created by a
 <code>promise</code> object, the completion of <code>set_value()</code> or
-<code>set_exception()</code> to that <code>promise</code> happens before (6.9.2 <a href="https://wg21.link/intro.multithread">[intro.multithread]</a>) <code>wait()</code> returns. If the associated state
+<code>set_exception()</code> to that <code>promise</code> happens before (6.10.2 <a href="https://wg21.link/intro.multithread">[intro.multithread]</a>) <code>wait()</code> returns. If the associated state
 was created by a <code>packaged_task</code> object, the completion of the associated
 task happens before <code>wait()</code> returns. If the associated state is
 associated with a thread created for an <code>async</code> call (32.10.9 <a href="https://wg21.link/futures.async">[futures.async]</a>), the completion of the associated thread happens-before

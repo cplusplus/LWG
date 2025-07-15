@@ -108,11 +108,11 @@ template&lt;class T&gt; [[nodiscard]] constexpr T* launder(T* p) noexcept;
 -1- <i>Mandates</i>: <code>!is_function_v&lt;T&gt; &amp;&amp; !is_void_v&lt;T&gt;</code> is <code>true</code>.
 <p/>
 -2- <i>Preconditions</i>: <code>p</code> represents the address <i>A</i> of a byte in memory.
-An object <i>X</i> <del>that is within its lifetime (6.7.4 <a href="https://wg21.link/basic.life">[basic.life]</a>) and</del>
+An object <i>X</i> <del>that is within its lifetime (6.8.4 <a href="https://wg21.link/basic.life">[basic.life]</a>) and</del>
 whose type is similar (7.3.6 <a href="https://wg21.link/conv.qual">[conv.qual]</a>) to <code>T</code> is located at the address
-<i>A</i><ins>, and is either within its lifetime (6.7.4 <a href="https://wg21.link/basic.life">[basic.life]</a>) or is an array
+<i>A</i><ins>, and is either within its lifetime (6.8.4 <a href="https://wg21.link/basic.life">[basic.life]</a>) or is an array
 element subobject whose containing array object is within its lifetime</ins>. All bytes of storage
-that would be reachable through (6.8.4 <a href="https://wg21.link/basic.compound">[basic.compound]</a>) the result are reachable through
+that would be reachable through (6.9.4 <a href="https://wg21.link/basic.compound">[basic.compound]</a>) the result are reachable through
 <code>p</code>.
 <p/>
 -3- <i>Returns</i>: A value of type <code>T*</code> that points to <i>X</i>.

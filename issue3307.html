@@ -94,7 +94,7 @@ doesn't have an explicit precondition that the value type is complete.
 [[nodiscard]] constexpr T* allocate(size_t n);
 </pre>
 <p>
-<ins>-?- <i>Mandates:</i> <code>T</code> is not an incomplete type (6.8 <a href="https://wg21.link/basic.types">[basic.types]</a>).</ins>
+<ins>-?- <i>Mandates:</i> <code>T</code> is not an incomplete type (6.9 <a href="https://wg21.link/basic.types">[basic.types]</a>).</ins>
 <p/>
 -2- <i>Returns:</i> A pointer to the initial element of an array of storage of size 
 <code>n * sizeof(T)</code>, aligned appropriately for objects of type <code>T</code>.

@@ -87,7 +87,7 @@ union {
 to view memory as the other type: C++14 CD [class.mem]p18.
 </p>
 I believe it's sufficient to add "<code>array&lt;T, N&gt;</code> shall be
-layout-compatible (6.8 <a href="https://wg21.link/basic.types">[basic.types]</a>) with <code>T[N]</code>." to 
+layout-compatible (6.9 <a href="https://wg21.link/basic.types">[basic.types]</a>) with <code>T[N]</code>." to 
 23.3.3.1 <a href="https://wg21.link/array.overview">[array.overview]</a>, but we might also need some extension to 
 11.4 <a href="https://wg21.link/class.mem">[class.mem]</a> to address the possibility of layout-compatibility 
 between struct and array types.

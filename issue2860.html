@@ -118,7 +118,7 @@ template &lt;class T&gt; constexpr T* launder(T* p) noexcept;
 <blockquote>
 <p>
 -1- <i>Requires:</i> <code>p</code> represents the address <code><i>A</i></code> of a byte in memory. An object <code><i>X</i></code> 
-that is within its lifetime (6.7.4 <a href="https://wg21.link/basic.life">[basic.life]</a>) and whose type is similar (7.3.6 <a href="https://wg21.link/conv.qual">[conv.qual]</a>) to <code>T</code> 
+that is within its lifetime (6.8.4 <a href="https://wg21.link/basic.life">[basic.life]</a>) and whose type is similar (7.3.6 <a href="https://wg21.link/conv.qual">[conv.qual]</a>) to <code>T</code> 
 is located at the address <code><i>A</i></code>. <ins><code><i>X</i></code> shall either be a most derived object, or 
 pointer-interconvertible with a most derived object that is within its lifetime.</ins> All bytes of storage that would be 
 reachable through the result are reachable through <code>p</code> (see below).
@@ -141,7 +141,7 @@ template &lt;class T&gt; constexpr T* launder(T* p) noexcept;
 <blockquote>
 <p>
 -1- <i>Requires:</i> <code>p</code> represents the address <code><i>A</i></code> of a byte in memory. An object <code><i>X</i></code> 
-that is within its lifetime (6.7.4 <a href="https://wg21.link/basic.life">[basic.life]</a>) and whose type is similar (7.3.6 <a href="https://wg21.link/conv.qual">[conv.qual]</a>) to <code>T</code> 
+that is within its lifetime (6.8.4 <a href="https://wg21.link/basic.life">[basic.life]</a>) and whose type is similar (7.3.6 <a href="https://wg21.link/conv.qual">[conv.qual]</a>) to <code>T</code> 
 is located at the address <code><i>A</i></code>. <ins>If <code>T</code> is a polymorphic class type, then <code><i>X</i></code> shall 
 be a most derived object.</ins> All bytes of storage that would be reachable through the result are reachable through 
 <code>p</code> (see below).

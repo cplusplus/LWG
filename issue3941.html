@@ -104,7 +104,7 @@ immediately following load.</p></li>
 </ol>
 <p>
 On the other hand, the initial load in each thread is sequenced-before and thus strongly-happens-before 
-6.9.2.2 <a href="https://wg21.link/intro.races">[intro.races]</a> p12.1 the final load in that thread. Thus coherence-ordered-before union strongly-happens-before 
+6.10.2.2 <a href="https://wg21.link/intro.races">[intro.races]</a> p12.1 the final load in that thread. Thus coherence-ordered-before union strongly-happens-before 
 is cyclic. But the S relation 32.5.4 <a href="https://wg21.link/atomics.order">[atomics.order]</a> p4 must order all the loads, consistent with both strongly-happens-before 
 (p4) and coherence-ordered-before (p4.1), which is clearly impossible.
 <p/>

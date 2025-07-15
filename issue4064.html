@@ -112,7 +112,7 @@ This wording is relative to <a href="https://wg21.link/N4971" title=" Working Dr
 <blockquote>
 <p>
 -3- The functions <code>memcpy</code> and <code>memmove</code> are signal-safe (17.14.5 <a href="https://wg21.link/support.signal">[support.signal]</a>). 
-Both functions implicitly create objects (6.7.2 <a href="https://wg21.link/intro.object">[intro.object]</a>) in the destination region of 
+Both functions implicitly create objects (6.8.2 <a href="https://wg21.link/intro.object">[intro.object]</a>) in the destination region of 
 storage immediately prior to copying the sequence of characters to the destination. <ins>Both functions 
 return a pointer to a suitable created object.</ins>
 </p>
@@ -146,7 +146,7 @@ This wording is relative to <a href="https://wg21.link/N4981" title=" Working Dr
 The functions <code>memcpy</code> and <code>memmove</code> are signal-safe
 (17.14.5 <a href="https://wg21.link/support.signal">[support.signal]</a>).
 <del>Both</del> <ins>Each of these</ins> functions implicitly
-<del>create</del> <ins>creates</ins> objects (6.7.2 <a href="https://wg21.link/intro.object">[intro.object]</a>)
+<del>create</del> <ins>creates</ins> objects (6.8.2 <a href="https://wg21.link/intro.object">[intro.object]</a>)
 in the destination region of storage immediately prior to copying
 the sequence of characters to the destination.
 <ins>Each of these functions returns a pointer to a suitable created object,

@@ -134,7 +134,7 @@ static constexpr bool is_modulo;
 on values of that type whose result would fall outside the range <code>[min(), max()]</code>, the value returned differs from
 the true value by an integer multiple of <code>max() - min() + 1</code>.
 <p/>
-<ins>-??- [<i>Note</i>: <code>is_modulo</code> shall be <code>true</code> for unsigned integer types (6.8.2 <a href="https://wg21.link/basic.fundamental">[basic.fundamental]</a>). &mdash; 
+<ins>-??- [<i>Note</i>: <code>is_modulo</code> shall be <code>true</code> for unsigned integer types (6.9.2 <a href="https://wg21.link/basic.fundamental">[basic.fundamental]</a>). &mdash; 
 <i>end note</i>]</ins>
 <p/>
 <ins>-??- [<i>Note</i>: <code>is_modulo</code> shall be <code>false</code> for types for which overflow is undefined on the implementation, 
@@ -176,10 +176,10 @@ static constexpr bool is_modulo;
 or <code>*</code> on values of that type whose result would fall outside the range <code>[min(), max()]</code>, the value 
 returned differs from the true value by an integer multiple of <code>max() - min() + 1</code>.
 <p/>
-<ins>-??- [<i>Note</i>: <code>is_modulo</code> is <code>true</code> for unsigned integer types (6.8.2 <a href="https://wg21.link/basic.fundamental">[basic.fundamental]</a>). &mdash; 
+<ins>-??- [<i>Note</i>: <code>is_modulo</code> is <code>true</code> for unsigned integer types (6.9.2 <a href="https://wg21.link/basic.fundamental">[basic.fundamental]</a>). &mdash; 
 <i>end note</i>]</ins>
 <p/>
-<ins>-??- [<i>Note</i>: <code>is_modulo</code> is <code>false</code> for signed integer types (6.8.2 <a href="https://wg21.link/basic.fundamental">[basic.fundamental]</a>) 
+<ins>-??- [<i>Note</i>: <code>is_modulo</code> is <code>false</code> for signed integer types (6.9.2 <a href="https://wg21.link/basic.fundamental">[basic.fundamental]</a>) 
 unless an implementation, as an extension to this International Standard, defines signed integer overflow to wrap as
 specified by the reference mentioned in footnote 217. &mdash; <i>end note</i>]</ins>
 <p/>
@@ -223,7 +223,7 @@ static constexpr bool is_modulo;
 or <code>*</code> on values of that type whose result would fall outside the range <code>[min(), max()]</code>, the value 
 returned differs from the true value by an integer multiple of <code>max() - min() + 1</code>.
 <p/>
-<ins>-??- [<i>Example</i>: <code>is_modulo</code> is <code>false</code> for signed integer types (6.8.2 <a href="https://wg21.link/basic.fundamental">[basic.fundamental]</a>) 
+<ins>-??- [<i>Example</i>: <code>is_modulo</code> is <code>false</code> for signed integer types (6.9.2 <a href="https://wg21.link/basic.fundamental">[basic.fundamental]</a>) 
 unless an implementation, as an extension to this International Standard, defines signed integer overflow to wrap. &mdash; 
 <i>end example</i>]</ins>
 <p/>

@@ -72,8 +72,8 @@
 <p><b>Discussion:</b></p>
 <p>
 20.5.2.3 <a href="https://wg21.link/mem.res.private">[mem.res.private]</a> says that <code>pmr::memory_resource::do_allocate</code> 
-returns "a pointer to allocated storage" and references 6.7.6.5.2 <a href="https://wg21.link/basic.stc.dynamic.allocation">[basic.stc.dynamic.allocation]</a>. 
-But it's not really clear which parts of 6.7.6.5.2 <a href="https://wg21.link/basic.stc.dynamic.allocation">[basic.stc.dynamic.allocation]</a> define 
+returns "a pointer to allocated storage" and references 6.8.6.5.2 <a href="https://wg21.link/basic.stc.dynamic.allocation">[basic.stc.dynamic.allocation]</a>. 
+But it's not really clear which parts of 6.8.6.5.2 <a href="https://wg21.link/basic.stc.dynamic.allocation">[basic.stc.dynamic.allocation]</a> define 
 "allocated storage". <code>pmr::memory_resource::allocate</code> is not "an allocation function" 
 and not a "replaceable allocation function", so "the value returned by a replaceable allocation 
 function is a non-null pointer value" doesn't apply here, and neither does "different from any 
@@ -85,7 +85,7 @@ allowed to return the same address twice, without an intervening deallocation? W
 <p/>
 When discussed on the reflector the consensus was that returning null should not be allowed, 
 it should throw an exception or return a valid dereferenceable pointer. The reference to 
-6.7.6.5.2 <a href="https://wg21.link/basic.stc.dynamic.allocation">[basic.stc.dynamic.allocation]</a> doesn't work to specify this though, so we should 
+6.8.6.5.2 <a href="https://wg21.link/basic.stc.dynamic.allocation">[basic.stc.dynamic.allocation]</a> doesn't work to specify this though, so we should 
 restate the requirements without directly using the core wording for <code>operator new</code>.
 <p/>
 It was also suggested that returning the same value should not be allowed without an intervening 

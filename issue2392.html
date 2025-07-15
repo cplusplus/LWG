@@ -73,7 +73,7 @@
 The term "character type" is used in 3.36 <a href="https://wg21.link/defns.ntcts">[defns.ntcts]</a>, 28.3.3.1.2.1 <a href="https://wg21.link/locale.category">[locale.category]</a>,
 31.2.3 <a href="https://wg21.link/iostreams.limits.pos">[iostreams.limits.pos]</a>, 31.7.6.3.1 <a href="https://wg21.link/ostream.formatted.reqmts">[ostream.formatted.reqmts]</a>, and
 31.7.6.3.4 <a href="https://wg21.link/ostream.inserters.character">[ostream.inserters.character]</a>, but the core language only defines
-"narrow character types" (6.8.2 <a href="https://wg21.link/basic.fundamental">[basic.fundamental]</a>).
+"narrow character types" (6.9.2 <a href="https://wg21.link/basic.fundamental">[basic.fundamental]</a>).
 <p/>
 "wide-character type" is used in 99 [depr.locale.stdcvt], but the core
 language only defines a "wide-character set" and "wide-character literal".
@@ -83,7 +83,7 @@ language only defines a "wide-character set" and "wide-character literal".
 
 <p>
 Given the resolution of <a href="https://wg21.link/P2314" title=" Character sets and encodings">P2314</a> which had introduced to
-6.8.2 <a href="https://wg21.link/basic.fundamental">[basic.fundamental]</a> p11 a definition of "character type":
+6.9.2 <a href="https://wg21.link/basic.fundamental">[basic.fundamental]</a> p11 a definition of "character type":
 </p>
 <blockquote><p>
 The types <code>char</code>, <code>wchar_t</code>, <code>char8_t</code>, <code>char16_t</code>, <code>char32_t</code> are collectively
@@ -115,7 +115,7 @@ approach to solve the definition problem here, because it only occurs in an alre
 component specification: My suggestion is to simply get rid of that term
 by just identifying <code>Elem</code> with being one of <code>wchar_t</code>, <code>char16_t</code>, or, 
 <code>char32_t</code>. (This result is identical to identifying "wide-character type" with
-a "character type that is not a narrow character type (6.8.2 <a href="https://wg21.link/basic.fundamental">[basic.fundamental]</a>)", but this
+a "character type that is not a narrow character type (6.9.2 <a href="https://wg21.link/basic.fundamental">[basic.fundamental]</a>)", but this
 seemingly more general definition doesn't provide a real advantage.)
 </p>
 

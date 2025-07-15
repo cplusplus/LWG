@@ -63,7 +63,7 @@
 <hr>
 <p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#C++20">C++20</a> status.</em></p>
 <h3 id="3264"><a href="lwg-defects.html#3264">3264</a>. <code>sized_range</code> and <code>ranges::size</code> redundantly use <code>disable_sized_range</code></h3>
-<p><b>Section:</b> 25.4.3 <a href="https://wg21.link/range.sized">[range.sized]</a> <b>Status:</b> <a href="lwg-active.html#C++20">C++20</a>
+<p><b>Section:</b> 25.4.4 <a href="https://wg21.link/range.sized">[range.sized]</a> <b>Status:</b> <a href="lwg-active.html#C++20">C++20</a>
  <b>Submitter:</b> Casey Carter <b>Opened:</b> 2019-08-26 <b>Last modified:</b> 2021-02-25</p>
 <p><b>Priority: </b>1
 </p>
@@ -71,7 +71,7 @@
 <p><b>View all issues with</b> <a href="lwg-status.html#C++20">C++20</a> status.</p>
 <p><b>Discussion:</b></p>
 <p>
-<code>disable_sized_range</code> (25.4.3 <a href="https://wg21.link/range.sized">[range.sized]</a>) is an opt-out trait that users may
+<code>disable_sized_range</code> (25.4.4 <a href="https://wg21.link/range.sized">[range.sized]</a>) is an opt-out trait that users may
 specialize when their <code>range</code> type conforms to the syntax of <code>sized_range</code> but not its
 semantics, or when the type is so poorly suited to the Standard Library that even testing the
 validity of the expressions <code>r.size()</code> or <code>size(r)</code> for a range <code>r</code> is
@@ -133,7 +133,7 @@ on the validity of <code>ranges::size</code> in the <code>sized_range</code> con
 <p>This wording is relative to <a href="https://wg21.link/n4830">N4830</a>.</p>
 
 <ol>
-<li><p>Modify 25.4.3 <a href="https://wg21.link/range.sized">[range.sized]</a> as follows:</p>
+<li><p>Modify 25.4.4 <a href="https://wg21.link/range.sized">[range.sized]</a> as follows:</p>
 
 <blockquote><pre>
 template&lt;class T&gt;

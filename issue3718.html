@@ -163,7 +163,7 @@ overloads succeeds. &mdash; <i> end note</i>]</ins>.
 with <code>v</code>;</del></p></li>
 <li><p><del>(5.2) &mdash; otherwise, if <code>T</code> is <code>char</code> and <code>char_type</code> is <code>wchar_t</code>,
 initializes <code>value</code> with <code>static_cast&lt;wchar_t&gt;(v)</code>;</del></p></li>
-<li><p><del>(5.3) &mdash; otherwise, if <code>T</code> is a signed integer type (6.8.2 <a href="https://wg21.link/basic.fundamental">[basic.fundamental]</a>)
+<li><p><del>(5.3) &mdash; otherwise, if <code>T</code> is a signed integer type (6.9.2 <a href="https://wg21.link/basic.fundamental">[basic.fundamental]</a>)
 and <code>sizeof(T) &lt;= sizeof(int)</code>, initializes <code>value</code> with <code>static_cast&lt;int&gt;(v)</code>;</del></p></li>
 <li><p><del>(5.4) &mdash; otherwise, if <code>T</code> is an unsigned integer type and <code>sizeof(T) &lt;=
 sizeof(unsigned int)</code>, initializes <code>value</code> with <code>static_cast&lt;unsigned int&gt;(v)</code>;</del></p></li>
@@ -203,7 +203,7 @@ requirements is unspecified, except that as a minimum the expression</ins>
 with <code>v</code>;</ins></p></li>
 <li><p><ins>(?.2) &mdash; otherwise, if <code>T</code> is <code>char</code> and <code>char_type</code> is <code>wchar_t</code>,
 initializes <code>value</code> with <code>static_cast&lt;wchar_t&gt;(v)</code>;</ins></p></li>
-<li><p><ins>(?.3) &mdash; otherwise, if <code>T</code> is a signed integer type (6.8.2 <a href="https://wg21.link/basic.fundamental">[basic.fundamental]</a>)
+<li><p><ins>(?.3) &mdash; otherwise, if <code>T</code> is a signed integer type (6.9.2 <a href="https://wg21.link/basic.fundamental">[basic.fundamental]</a>)
 and <code>sizeof(T) &lt;= sizeof(int)</code>, initializes <code>value</code> with <code>static_cast&lt;int&gt;(v)</code>;</ins></p></li>
 <li><p><ins>(?.4) &mdash; otherwise, if <code>T</code> is an unsigned integer type and <code>sizeof(T) &lt;=
 sizeof(unsigned int)</code>, initializes <code>value</code> with <code>static_cast&lt;unsigned int&gt;(v)</code>;</ins></p></li>

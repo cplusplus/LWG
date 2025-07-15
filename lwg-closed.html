@@ -79,7 +79,7 @@
 </tr>
 </table>
 <h1>C++ Standard Library Closed Issues List (Revision D125)</h1>
-<p>Revised 2025-07-15 at 15:25:12 UTC
+<p>Revised 2025-07-15 at 19:12:12 UTC
 </p>
   <p>Reference ISO/IEC IS 14882:2020(E)</p>
   <p>Also see:</p>
@@ -9524,7 +9524,7 @@ technique to perform the comparison:</p>
 
 <hr>
 <h3 id="462"><a href="#462">462</a><sup><a href="https://cplusplus.github.io/LWG/issue462">(i)</a></sup>. Destroying objects with static storage duration</h3>
-<p><b>Section:</b> 6.9.3.4 <a href="https://wg21.link/basic.start.term">[basic.start.term]</a>, 17.2.2 <a href="https://wg21.link/cstdlib.syn">[cstdlib.syn]</a> <b>Status:</b> <a href="lwg-active.html#NAD">NAD</a>
+<p><b>Section:</b> 6.10.3.4 <a href="https://wg21.link/basic.start.term">[basic.start.term]</a>, 17.2.2 <a href="https://wg21.link/cstdlib.syn">[cstdlib.syn]</a> <b>Status:</b> <a href="lwg-active.html#NAD">NAD</a>
  <b>Submitter:</b> Bill Plauger <b>Opened:</b> 2004-03-23 <b>Last modified:</b> 2023-02-07</p>
 <p><b>Priority: </b>Not Prioritized
 </p>
@@ -22876,7 +22876,7 @@ the third element of the result will be assigned the value of the first element 
 
 <hr>
 <h3 id="873"><a href="#873">873</a><sup><a href="https://cplusplus.github.io/LWG/issue873">(i)</a></sup>. signed integral type and unsigned integral type are not clearly defined</h3>
-<p><b>Section:</b> 6.8.2 <a href="https://wg21.link/basic.fundamental">[basic.fundamental]</a> <b>Status:</b> <a href="lwg-active.html#NAD_Editorial">NAD Editorial</a>
+<p><b>Section:</b> 6.9.2 <a href="https://wg21.link/basic.fundamental">[basic.fundamental]</a> <b>Status:</b> <a href="lwg-active.html#NAD_Editorial">NAD Editorial</a>
  <b>Submitter:</b> Travis Vitek <b>Opened:</b> 2008-06-30 <b>Last modified:</b> 2016-01-28</p>
 <p><b>Priority: </b>Not Prioritized
 </p>
@@ -22887,7 +22887,7 @@ the third element of the result will be assigned the value of the first element 
       integral type" is defined in the core language section of the
       standard, therefore the library section should avoid its use.  The
       terms <i>signed integer type</i> and <i>unsigned integer type</i> are
-      indeed defined (in 6.8.2 <a href="https://wg21.link/basic.fundamental">[basic.fundamental]</a>), thus the usages should be
+      indeed defined (in 6.9.2 <a href="https://wg21.link/basic.fundamental">[basic.fundamental]</a>), thus the usages should be
       replaced accordingly.
     </p>
 
@@ -22898,7 +22898,7 @@ the third element of the result will be assigned the value of the first element 
       The types <code>bool</code>, <code>char</code>, <code>char16_t</code>,
       <code>char32_t</code> and <code>wchar_t</code> are all listed as
       integral types, but are neither of <i>signed integer type</i> or
-      <i>unsigned integer type</i>. According to 6.8 <a href="https://wg21.link/basic.types">[basic.types]</a> p7, a synonym for
+      <i>unsigned integer type</i>. According to 6.9 <a href="https://wg21.link/basic.types">[basic.types]</a> p7, a synonym for
       integral type is <i>integer type</i>.
       
       Given this, one may choose to assume that an <i>integral type</i> that
@@ -29539,7 +29539,7 @@ probably be users do not supply their own <code>concept_map</code>
 specializations. The program will almost certainly supply
 <code>concept_maps</code> - the standard itself supplies a specialization
 for <code>RvalueOf</code> references. Note that the term <i>program</i> is
-defined in 6.6 <a href="https://wg21.link/basic.link">[basic.link]</a>p1 and makes no account of the
+defined in 6.7 <a href="https://wg21.link/basic.link">[basic.link]</a>p1 and makes no account of the
 standard library being treated differently to user written code.
 </p>
 
@@ -31834,7 +31834,7 @@ indicated:</i></p>
 <p>
 Object state is using a definition of object (instance of a class) from
 outside the standard, rather than the 'region of storage' definiton in
-6.7.2 <a href="https://wg21.link/intro.object">[intro.object]</a>p1
+6.8.2 <a href="https://wg21.link/intro.object">[intro.object]</a>p1
 </p>
 
 <p><i>[
@@ -34696,7 +34696,7 @@ are removed but not pointers.</p>
 
 <hr>
 <h3 id="1121"><a href="#1121">1121</a><sup><a href="https://cplusplus.github.io/LWG/issue1121">(i)</a></sup>. Support for multiple arguments</h3>
-<p><b>Section:</b> 21.4.4 <a href="https://wg21.link/ratio.arithmetic">[ratio.arithmetic]</a> <b>Status:</b> <a href="lwg-active.html#NAD">NAD</a>
+<p><b>Section:</b> 21.5.4 <a href="https://wg21.link/ratio.arithmetic">[ratio.arithmetic]</a> <b>Status:</b> <a href="lwg-active.html#NAD">NAD</a>
  <b>Submitter:</b> Alisdair Meredith <b>Opened:</b> 2009-05-25 <b>Last modified:</b> 2019-02-26</p>
 <p><b>Priority: </b>Not Prioritized
 </p>
@@ -34778,7 +34778,7 @@ Does not have sufficient support at this time. May wish to reconsider for a futu
 <p id="res-1121"><b>Proposed resolution:</b></p>
 
 <p>
-Add the following type traits to p3 21.4 <a href="https://wg21.link/ratio">[ratio]</a>
+Add the following type traits to p3 21.5 <a href="https://wg21.link/ratio">[ratio]</a>
 </p>
 
 <blockquote><pre>
@@ -34792,7 +34792,7 @@ template &lt;class R1, class R2&gt; struct ratio_divide;
 </pre></blockquote>
 
 <p>
-after 21.4.4 <a href="https://wg21.link/ratio.arithmetic">[ratio.arithmetic]</a> p1: add
+after 21.5.4 <a href="https://wg21.link/ratio.arithmetic">[ratio.arithmetic]</a> p1: add
 </p>
 
 <blockquote><pre>
@@ -34819,7 +34819,7 @@ template &lt;class R1, class R2, class ... RList&gt;
 </blockquote>
 
 <p>
-after 21.4.4 <a href="https://wg21.link/ratio.arithmetic">[ratio.arithmetic]</a> p3: add
+after 21.5.4 <a href="https://wg21.link/ratio.arithmetic">[ratio.arithmetic]</a> p3: add
 </p>
 
 <blockquote><pre>
@@ -40370,7 +40370,7 @@ to be <code>nullptr</code></ins>.
 </p></blockquote>
 
 <p>
-C.8.3.7 <a href="https://wg21.link/diff.null">[diff.null]</a>
+C.8.3.4 <a href="https://wg21.link/diff.null">[diff.null]</a>
 </p>
 
 <blockquote><p>
@@ -41775,7 +41775,7 @@ thrown by the attempt to copy the exception object to which <code>p</code> refer
 <p/>
 <ins>? <i>Synchronization</i>: Calls to <code>rethrow_exception</code> on <code>exception_ptr</code> objects
 that refer to the same exception object shall appear to occur in a single total order. The completion 
-of each call shall synchronize with (6.9.2 <a href="https://wg21.link/intro.multithread">[intro.multithread]</a>) the next call in that total order.</ins>
+of each call shall synchronize with (6.10.2 <a href="https://wg21.link/intro.multithread">[intro.multithread]</a>) the next call in that total order.</ins>
 </p>
 </blockquote></blockquote>
 </li>
@@ -43131,7 +43131,7 @@ of variables as computed by the last prior assignment in the
 sequence.
 </p></blockquote>
 <p>
-... but 6.9.1 <a href="https://wg21.link/intro.execution">[intro.execution]</a> p.13 states:
+... but 6.10.1 <a href="https://wg21.link/intro.execution">[intro.execution]</a> p.13 states:
 </p>
 <blockquote><p>
 If A is not sequenced before B and B is not sequenced before A,
@@ -45745,7 +45745,7 @@ In that Table and throughout this section:
 </td>
 <td>
 <del><code>T</code> is an unsigned integer<br/>
-type (6.8.2 <a href="https://wg21.link/basic.fundamental">[basic.fundamental]</a>) of at least 32 bits.</del>
+type (6.9.2 <a href="https://wg21.link/basic.fundamental">[basic.fundamental]</a>) of at least 32 bits.</del>
 </td>
 <td>
 <del>compile-time</del>
@@ -48390,11 +48390,11 @@ independent_bits_engine
 <ol style="list-style-type:lower-alpha;" start="4">
 <li><p>[&hellip;]</p></li>
 <li><p>that has a template type parameter named <code>IntType</code> is undefined unless the corresponding template
-argument is cv-unqualified and is <ins>a standard integer type (6.8.2 <a href="https://wg21.link/basic.fundamental">[basic.fundamental]</a>)</ins><del>one of 
+argument is cv-unqualified and is <ins>a standard integer type (6.9.2 <a href="https://wg21.link/basic.fundamental">[basic.fundamental]</a>)</ins><del>one of 
 <code>short</code>, <code>int</code>, <code>long</code>, <code>long long</code>, <code>unsigned short</code>, <code>unsigned int</code>, 
 <code>unsigned long</code>, or <code>unsigned long long</code></del>.</p></li>
 <li><p>that has a template type parameter named <code>UIntType</code> is undefined unless the corresponding template
-argument is cv-unqualified and is <ins>a standard unsigned integer type (6.8.2 <a href="https://wg21.link/basic.fundamental">[basic.fundamental]</a>)</ins><del>one 
+argument is cv-unqualified and is <ins>a standard unsigned integer type (6.9.2 <a href="https://wg21.link/basic.fundamental">[basic.fundamental]</a>)</ins><del>one 
 of <code>unsigned short</code>, <code>unsigned int</code>, <code>unsigned long</code>, or <code>unsigned long long</code></del>.</p></li>
 </ol>
 </li>
@@ -48540,7 +48540,7 @@ union {
 to view memory as the other type: C++14 CD [class.mem]p18.
 </p>
 I believe it's sufficient to add "<code>array&lt;T, N&gt;</code> shall be
-layout-compatible (6.8 <a href="https://wg21.link/basic.types">[basic.types]</a>) with <code>T[N]</code>." to 
+layout-compatible (6.9 <a href="https://wg21.link/basic.types">[basic.types]</a>) with <code>T[N]</code>." to 
 23.3.3.1 <a href="https://wg21.link/array.overview">[array.overview]</a>, but we might also need some extension to 
 11.4 <a href="https://wg21.link/class.mem">[class.mem]</a> to address the possibility of layout-compatibility 
 between struct and array types.
@@ -53572,7 +53572,7 @@ template &lt;class T&gt; constexpr T* launder(T* p) noexcept;
 <blockquote>
 <p>
 -1- <i>Requires:</i> <code>p</code> represents the address <code><i>A</i></code> of a byte in memory. An object <code><i>X</i></code> 
-that is within its lifetime (6.7.4 <a href="https://wg21.link/basic.life">[basic.life]</a>) and whose type is similar (7.3.6 <a href="https://wg21.link/conv.qual">[conv.qual]</a>) to <code>T</code> 
+that is within its lifetime (6.8.4 <a href="https://wg21.link/basic.life">[basic.life]</a>) and whose type is similar (7.3.6 <a href="https://wg21.link/conv.qual">[conv.qual]</a>) to <code>T</code> 
 is located at the address <code><i>A</i></code>. <ins><code><i>X</i></code> shall either be a most derived object, or 
 pointer-interconvertible with a most derived object that is within its lifetime.</ins> All bytes of storage that would be 
 reachable through the result are reachable through <code>p</code> (see below).
@@ -53595,7 +53595,7 @@ template &lt;class T&gt; constexpr T* launder(T* p) noexcept;
 <blockquote>
 <p>
 -1- <i>Requires:</i> <code>p</code> represents the address <code><i>A</i></code> of a byte in memory. An object <code><i>X</i></code> 
-that is within its lifetime (6.7.4 <a href="https://wg21.link/basic.life">[basic.life]</a>) and whose type is similar (7.3.6 <a href="https://wg21.link/conv.qual">[conv.qual]</a>) to <code>T</code> 
+that is within its lifetime (6.8.4 <a href="https://wg21.link/basic.life">[basic.life]</a>) and whose type is similar (7.3.6 <a href="https://wg21.link/conv.qual">[conv.qual]</a>) to <code>T</code> 
 is located at the address <code><i>A</i></code>. <ins>If <code>T</code> is a polymorphic class type, then <code><i>X</i></code> shall 
 be a most derived object.</ins> All bytes of storage that would be reachable through the result are reachable through 
 <code>p</code> (see below).
@@ -54595,7 +54595,7 @@ same rule be added for <code>std::optional</code> as well?
 <p>
 [&hellip;] The contained value shall be allocated in a region of the <code>optional&lt;T&gt;</code> storage suitably aligned 
 for the type <code>T</code>. <ins>It is implementation-defined whether over-aligned types are supported 
-(6.7.3 <a href="https://wg21.link/basic.align">[basic.align]</a>).</ins> When an object of type <code>optional&lt;T&gt;</code> is contextually converted to 
+(6.8.3 <a href="https://wg21.link/basic.align">[basic.align]</a>).</ins> When an object of type <code>optional&lt;T&gt;</code> is contextually converted to 
 <code>bool</code>, the conversion returns <code>true</code> if the object contains a value; otherwise the conversion returns 
 <code>false</code>.
 </p>
@@ -56403,7 +56403,7 @@ friend constexpr range_difference_t&lt;<del><i>Base</i></del><ins><i>maybe-const
 
 <hr>
 <h3 id="3562"><a href="#3562">3562</a><sup><a href="https://cplusplus.github.io/LWG/issue3562">(i)</a></sup>. Superseding <code>nullopt_t</code>'s requirement to not be <i>DefaultConstructible</i></h3>
-<p><b>Section:</b> 22.5.4 <a href="https://wg21.link/optional.nullopt">[optional.nullopt]</a> <b>Status:</b> <a href="lwg-active.html#NAD">NAD</a>
+<p><b>Section:</b> 22.5.5 <a href="https://wg21.link/optional.nullopt">[optional.nullopt]</a> <b>Status:</b> <a href="lwg-active.html#NAD">NAD</a>
  <b>Submitter:</b> David Friberg <b>Opened:</b> 2021-06-04 <b>Last modified:</b> 2021-06-14</p>
 <p><b>Priority: </b>Not Prioritized
 </p>
@@ -56411,7 +56411,7 @@ friend constexpr range_difference_t&lt;<del><i>Base</i></del><ins><i>maybe-const
 <p><b>View all issues with</b> <a href="lwg-status.html#NAD">NAD</a> status.</p>
 <p><b>Discussion:</b></p>
 <p>
-22.5.4 <a href="https://wg21.link/optional.nullopt">[optional.nullopt]</a> p2 requires that <code>nullopt_t</code> shall not have a default constructor 
+22.5.5 <a href="https://wg21.link/optional.nullopt">[optional.nullopt]</a> p2 requires that <code>nullopt_t</code> shall not have a default constructor 
 ([&hellip;] or an initializer-list constructor, and shall not be an aggregate). However, after the final 
 resolution of LWG issue <a href="lwg-defects.html#2510" title="Tag types should not be DefaultConstructible (Status: C++17)">2510</a><sup><a href="https://cplusplus.github.io/LWG/issue2510" title="Latest snapshot">(i)</a></sup> and <a href="https://wg21.link/cwg1518">CWG 1518</a> it seems 
 as if the following synopsis would suffice:
@@ -56422,7 +56422,7 @@ struct nullopt_t { explicit nullopt_t() = default; };
 <p>
 Which would also be consistent with other tag types.
 <p/>
-22.5.4 <a href="https://wg21.link/optional.nullopt">[optional.nullopt]</a> p2 in its current form was written prior to the final resolution of LWG issue 
+22.5.5 <a href="https://wg21.link/optional.nullopt">[optional.nullopt]</a> p2 in its current form was written prior to the final resolution of LWG issue 
 <a href="lwg-defects.html#2510" title="Tag types should not be DefaultConstructible (Status: C++17)">2510</a><sup><a href="https://cplusplus.github.io/LWG/issue2510" title="Latest snapshot">(i)</a></sup> and <a href="https://wg21.link/cwg1518">CWG 1518</a>, and is arguably based on using an 
 earlier proposed approach for tag types which was later superseded.
 <p/>
@@ -56471,7 +56471,7 @@ This wording is relative to <a href="https://wg21.link/n4885">N4885</a>.
 <pre>
 [&hellip;]
 
-<i>// 22.5.4 <a href="https://wg21.link/optional.nullopt">[optional.nullopt]</a>, no-value state indicator</i>
+<i>// 22.5.5 <a href="https://wg21.link/optional.nullopt">[optional.nullopt]</a>, no-value state indicator</i>
 struct nullopt_t{<del><i>see below</i></del> <ins>explicit nullopt_t() = default;</ins> };
 inline constexpr nullopt_t nullopt<ins>{}</ins><del>(<i>unspecified</i>)</del>;
 
@@ -56480,7 +56480,7 @@ inline constexpr nullopt_t nullopt<ins>{}</ins><del>(<i>unspecified</i>)</del>;
 </blockquote>
 </li>
 
-<li><p>Modify 22.5.4 <a href="https://wg21.link/optional.nullopt">[optional.nullopt]</a> as indicated:</p>
+<li><p>Modify 22.5.5 <a href="https://wg21.link/optional.nullopt">[optional.nullopt]</a> as indicated:</p>
 
 <blockquote>
 <blockquote>
@@ -56980,8 +56980,8 @@ This wording is relative to <a href="https://wg21.link/N4901" title=" Working Dr
 <p>
 IMO the UB in 17.14.3 <a href="https://wg21.link/csetjmp.syn">[csetjmp.syn]</a>/2 is because of the design that "every destructor call 
 for an object shall be in effect when the lifetime of that object ends". A similar requirement is 
-in 6.7.4 <a href="https://wg21.link/basic.life">[basic.life]</a>/5, but it's more relaxed than the requirement for <code>setjmp</code>/<code>longjmp</code>.
-It seems better to harmonize the requirements in 6.7.4 <a href="https://wg21.link/basic.life">[basic.life]</a>/5 and 
+in 6.8.4 <a href="https://wg21.link/basic.life">[basic.life]</a>/5, but it's more relaxed than the requirement for <code>setjmp</code>/<code>longjmp</code>.
+It seems better to harmonize the requirements in 6.8.4 <a href="https://wg21.link/basic.life">[basic.life]</a>/5 and 
 17.14.3 <a href="https://wg21.link/csetjmp.syn">[csetjmp.syn]</a>/2, which allows <code>longjmp</code> to skip non-trivial but no-op destructor calls. 
 Given that Microsoft UCRT's <code>longjmp</code> can sometimes (but not always) call destructors, 
 IMO we should say that it's unspecified whether <code>longjmp</code> calls destructor for any object 

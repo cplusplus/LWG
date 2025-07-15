@@ -110,7 +110,7 @@ put my finger on anything in particular that's broken by this behavior, it seems
 -1- The name <code>ranges::begin</code> denotes a customization point object (16.3.3.3.5 <a href="https://wg21.link/customization.point.object">[customization.point.object]</a>). The expression <code>ranges::begin(E)</code> for some
 subexpression <code>E</code> is expression-equivalent to:
 </p><p>
-(1.1) &mdash; <code>E + 0</code> if <code>E</code> is an lvalue of array type (6.8.4 <a href="https://wg21.link/basic.compound">[basic.compound]</a>).
+(1.1) &mdash; <code>E + 0</code> if <code>E</code> is an lvalue of array type (6.9.4 <a href="https://wg21.link/basic.compound">[basic.compound]</a>).
 </p><p>
 (1.2) &mdash; Otherwise, if <code>E</code> is an lvalue, <code><i>decay-copy</i>(E.begin())</code> if it
 is a valid expression and its type <code>I</code> models <code>input_or_output_iterator</code>.
@@ -134,7 +134,7 @@ and does not include a declaration of <code>ranges::begin</code>.
 -1- The name <code>ranges::end</code> denotes a customization point object (16.3.3.3.5 <a href="https://wg21.link/customization.point.object">[customization.point.object]</a>). The expression <code>ranges::end(E)</code> for some
 subexpression <code>E</code> is expression-equivalent to:
 </p><p>
-(1.1) &mdash; <code>E + extent_v&lt;T&gt;</code> if <code>E</code> is an lvalue of array type (6.8.4 <a href="https://wg21.link/basic.compound">[basic.compound]</a>) <code>T</code>.
+(1.1) &mdash; <code>E + extent_v&lt;T&gt;</code> if <code>E</code> is an lvalue of array type (6.9.4 <a href="https://wg21.link/basic.compound">[basic.compound]</a>) <code>T</code>.
 </p><p>
 (1.2) &mdash; Otherwise, if <code>E</code> is an lvalue, <code><i>decay-copy</i>(E.end())</code> if it is a
 valid expression and its type <code>S</code> models <code>sentinel_for&lt;decltype(ranges::begin(E))&gt;</code>

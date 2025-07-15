@@ -95,13 +95,13 @@ This wording is relative to <a href="https://wg21.link/N4986" title=" Working Dr
 <blockquote>
 <p>
 -2- A C++ standard library function shall not directly or indirectly access objects 
-(6.9.2 <a href="https://wg21.link/intro.multithread">[intro.multithread]</a>) accessible by threads other than the current thread 
+(6.10.2 <a href="https://wg21.link/intro.multithread">[intro.multithread]</a>) accessible by threads other than the current thread 
 unless the objects are accessed directly or indirectly via the function's 
 <del>arguments</del><ins>parameters</ins>, including <del><code>this</code></del><ins>the 
 object parameter (if any)</ins>.
 <p/>
 -3- A C++ standard library function shall not directly or indirectly modify objects 
-(6.9.2 <a href="https://wg21.link/intro.multithread">[intro.multithread]</a>) accessible by threads other than the current thread 
+(6.10.2 <a href="https://wg21.link/intro.multithread">[intro.multithread]</a>) accessible by threads other than the current thread 
 unless the objects are accessed directly or indirectly via the function's non-const
 <del>arguments</del><ins>parameters</ins>, including <del><code>this</code></del><ins>the 
 object parameter (if any)</ins>.

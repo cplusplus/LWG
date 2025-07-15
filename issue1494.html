@@ -137,9 +137,9 @@ there are passive executions only if there is a returning execution.
 earlier returning execution. &mdash; <i>end note</i>]</ins>
 <p/>
 3 <em>Synchronization</em>: <del>The completion of an effective call to <code>call_once</code> on a <code>once_flag</code> 
-object <em>synchronizes with</em> (6.9.2 <a href="https://wg21.link/intro.multithread">[intro.multithread]</a>) all subsequent calls to <code>call_once</code> 
+object <em>synchronizes with</em> (6.10.2 <a href="https://wg21.link/intro.multithread">[intro.multithread]</a>) all subsequent calls to <code>call_once</code> 
 on the same <code>once_flag</code> object.</del><ins>For any given <code>once_flag</code>: all active executions occur in a total 
-order; completion of an active execution synchronizes with (6.9.2 <a href="https://wg21.link/intro.multithread">[intro.multithread]</a>) the start of 
+order; completion of an active execution synchronizes with (6.10.2 <a href="https://wg21.link/intro.multithread">[intro.multithread]</a>) the start of 
 the next one in this total order; and the returning execution synchronizes with the return from all passive 
 executions.</ins>
 </p></blockquote></blockquote>

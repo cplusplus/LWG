@@ -73,7 +73,7 @@
 For a sized common range, <code>enumerate_view::end()</code> is specified to call
 <code>ranges::distance</code>. But <code>ranges::distance</code> is not necessarily well-defined
 for a sized non-forward range after calling <code>ranges::begin</code> (according to
-25.4.3 <a href="https://wg21.link/range.sized">[range.sized]</a>).
+25.4.4 <a href="https://wg21.link/range.sized">[range.sized]</a>).
 <p/>
 So for a sized common non-forward underlying range, it seems calling
 <code>enumerate_view::begin()</code> followed by <code>enumerate_view::end()</code> may invoke UB

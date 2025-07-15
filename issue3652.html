@@ -72,8 +72,8 @@
 <p>
 IMO the UB in 17.14.3 <a href="https://wg21.link/csetjmp.syn">[csetjmp.syn]</a>/2 is because of the design that "every destructor call 
 for an object shall be in effect when the lifetime of that object ends". A similar requirement is 
-in 6.7.4 <a href="https://wg21.link/basic.life">[basic.life]</a>/5, but it's more relaxed than the requirement for <code>setjmp</code>/<code>longjmp</code>.
-It seems better to harmonize the requirements in 6.7.4 <a href="https://wg21.link/basic.life">[basic.life]</a>/5 and 
+in 6.8.4 <a href="https://wg21.link/basic.life">[basic.life]</a>/5, but it's more relaxed than the requirement for <code>setjmp</code>/<code>longjmp</code>.
+It seems better to harmonize the requirements in 6.8.4 <a href="https://wg21.link/basic.life">[basic.life]</a>/5 and 
 17.14.3 <a href="https://wg21.link/csetjmp.syn">[csetjmp.syn]</a>/2, which allows <code>longjmp</code> to skip non-trivial but no-op destructor calls. 
 Given that Microsoft UCRT's <code>longjmp</code> can sometimes (but not always) call destructors, 
 IMO we should say that it's unspecified whether <code>longjmp</code> calls destructor for any object 

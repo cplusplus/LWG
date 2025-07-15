@@ -76,14 +76,14 @@
 </p>
 <blockquote><p>
 <i>Synchronization</i>: The call to <code>notify_all_at_thread_exit</code> and the completion of the destructors 
-for all the current thread's variables of thread storage duration <em>synchronize with</em> (6.9.2 <a href="https://wg21.link/intro.multithread">[intro.multithread]</a>) 
+for all the current thread's variables of thread storage duration <em>synchronize with</em> (6.10.2 <a href="https://wg21.link/intro.multithread">[intro.multithread]</a>) 
 calls to functions waiting on <code>cond</code>.
 </p></blockquote>
 <p>
 The functions waiting on <code>cond</code> have already been called, otherwise they wouldn't be waiting. So how can a subsequent 
 call to <code>notify_all_at_thread_exit</code> synchronize with them?
 <p/>
-Also, "synchronizes with" is a relationship between library calls (6.9.2 <a href="https://wg21.link/intro.multithread">[intro.multithread]</a>&#47;8), so it's not 
+Also, "synchronizes with" is a relationship between library calls (6.10.2 <a href="https://wg21.link/intro.multithread">[intro.multithread]</a>&#47;8), so it's not 
 meaningful for completion of destructors for non-library objects. Presumably the intention wasn't so make library 
 destructors special here.
 </p>
@@ -141,7 +141,7 @@ void notify_all_at_thread_exit(condition_variable&amp; cond, unique_lock&lt;mute
 [&hellip;]
 <p/>
 -8- <i>Synchronization</i>: <del>The call to <code>notify_all_at_thread_exit</code> and the completion of the destructors for
-all the current thread's variables of thread storage duration synchronize with (6.9.2 <a href="https://wg21.link/intro.multithread">[intro.multithread]</a>) 
+all the current thread's variables of thread storage duration synchronize with (6.10.2 <a href="https://wg21.link/intro.multithread">[intro.multithread]</a>) 
 calls to functions waiting on <code>cond</code></del> <ins>The implied <code>lk.unlock()</code> call is sequenced after the 
 destruction of all objects with thread storage duration associated with the current thread</ins>.
 </p>

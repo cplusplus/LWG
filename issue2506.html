@@ -63,7 +63,7 @@
 <hr>
 <p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#SG1">SG1</a> status.</em></p>
 <h3 id="2506"><a href="lwg-active.html#2506">2506</a>. Underspecification of atomics</h3>
-<p><b>Section:</b> 6.9.2 <a href="https://wg21.link/intro.multithread">[intro.multithread]</a>, 32.5.8 <a href="https://wg21.link/atomics.types.generic">[atomics.types.generic]</a>, 17.14 <a href="https://wg21.link/support.runtime">[support.runtime]</a> <b>Status:</b> <a href="lwg-active.html#SG1">SG1</a>
+<p><b>Section:</b> 6.10.2 <a href="https://wg21.link/intro.multithread">[intro.multithread]</a>, 32.5.8 <a href="https://wg21.link/atomics.types.generic">[atomics.types.generic]</a>, 17.14 <a href="https://wg21.link/support.runtime">[support.runtime]</a> <b>Status:</b> <a href="lwg-active.html#SG1">SG1</a>
  <b>Submitter:</b> Geoffrey Romer <b>Opened:</b> 2015-05-29 <b>Last modified:</b> 2018-03-15</p>
 <p><b>Priority: </b>3
 </p>
@@ -72,9 +72,9 @@
 <p><b>Discussion:</b></p>
 <p>
 The concurrency libraries specified in clauses 29 and 30 do not adequately specify how they relate to the concurrency model 
-specified in 6.9.2 <a href="https://wg21.link/intro.multithread">[intro.multithread]</a>. In particular:
+specified in 6.10.2 <a href="https://wg21.link/intro.multithread">[intro.multithread]</a>. In particular:
 <p/>
-6.9.2 <a href="https://wg21.link/intro.multithread">[intro.multithread]</a> specifies "atomic objects" as having certain properties. I can only assume that instances 
+6.10.2 <a href="https://wg21.link/intro.multithread">[intro.multithread]</a> specifies "atomic objects" as having certain properties. I can only assume that instances 
 of the classes defined in Clause 29 are intended to be "atomic objects" in this sense, but I can't find any wording to 
 specify that, and it's genuinely unclear whether Clause 30 objects are atomic objects. In fact, on a literal reading the 
 C++ Standard doesn't appear to provide <em>any</em> portable way to create an atomic object, or even determine whether an 
@@ -84,12 +84,12 @@ object is an atomic object.
 and non-atomic objects can have atomic operations. But even if the term itself goes away, there still needs to be some 
 indication that Clause 29 objects have the properties currently attributed to atomic objects).
 <p/>
-Similarly, 6.9.2 <a href="https://wg21.link/intro.multithread">[intro.multithread]</a> uses "atomic operation" as a term of art, but the standard never unambiguously 
+Similarly, 6.10.2 <a href="https://wg21.link/intro.multithread">[intro.multithread]</a> uses "atomic operation" as a term of art, but the standard never unambiguously 
 identifies any operation as an "atomic operation" (although in one case it unambiguously identifies an operation that is 
 <em>not</em> atomic). It does come close in a few cases, but not close enough:
 </p>
 <ul>
-<li><p>6.9.2 <a href="https://wg21.link/intro.multithread">[intro.multithread]</a>/p7 could be read to imply that "synchronization operations" in Clauses 29 and 30 
+<li><p>6.10.2 <a href="https://wg21.link/intro.multithread">[intro.multithread]</a>/p7 could be read to imply that "synchronization operations" in Clauses 29 and 30 
 are also atomic operations. However, that's vague and indirect, and somewhat belied by 32.6.4.2 <a href="https://wg21.link/thread.mutex.requirements.mutex">[thread.mutex.requirements.mutex]</a>/p5, 
 which specifies that mutex lock and unlock operations "behave as atomic operations", but only "for purposes of determining 
 the existence of a data race". Furthermore, not a single operation in Clause 29 explicitly identifies itself as a 
@@ -103,7 +103,7 @@ rather than a use of "atomic object" as Words of Power. Incidentally, "atomic ty
 in a standard where an "integral constant expression" isn't necessarily a "constant expression", I do not feel safe assuming 
 that a "plain lock-free atomic operation" is an "atomic operation".</p></li>
 <li><p>Hans Boehm tells me the operations with "atomically" in the Effects element are intended to be atomic operations, 
-but since "atomic operation" is a term of art (e.g. in 6.9.2 <a href="https://wg21.link/intro.multithread">[intro.multithread]</a>/p27.4), I think this needs to be 
+but since "atomic operation" is a term of art (e.g. in 6.10.2 <a href="https://wg21.link/intro.multithread">[intro.multithread]</a>/p27.4), I think this needs to be 
 spelled out rather than assumed. Furthermore, this does not help with 32.5.11 <a href="https://wg21.link/atomics.fences">[atomics.fences]</a>, or anything in Clause 30.</p></li>
 </ul>
 

@@ -63,7 +63,7 @@
 <hr>
 <p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#Resolved">Resolved</a> status.</em></p>
 <h3 id="2075"><a href="lwg-defects.html#2075">2075</a>. Progress guarantees, lock-free property, and scheduling assumptions</h3>
-<p><b>Section:</b> 6.9.2 <a href="https://wg21.link/intro.multithread">[intro.multithread]</a>, 32.5.5 <a href="https://wg21.link/atomics.lockfree">[atomics.lockfree]</a>, 99 [atomics.types.operations.req] <b>Status:</b> <a href="lwg-active.html#Resolved">Resolved</a>
+<p><b>Section:</b> 6.10.2 <a href="https://wg21.link/intro.multithread">[intro.multithread]</a>, 32.5.5 <a href="https://wg21.link/atomics.lockfree">[atomics.lockfree]</a>, 99 [atomics.types.operations.req] <b>Status:</b> <a href="lwg-active.html#Resolved">Resolved</a>
  <b>Submitter:</b> Torvald Riegel <b>Opened:</b> 2011-08-18 <b>Last modified:</b> 2016-01-28</p>
 <p><b>Priority: </b>Not Prioritized
 </p>
@@ -72,7 +72,7 @@
 <p><b>Discussion:</b></p>
 
 <p>
-According to 6.9.2 <a href="https://wg21.link/intro.multithread">[intro.multithread]</a> p2: 
+According to 6.10.2 <a href="https://wg21.link/intro.multithread">[intro.multithread]</a> p2: 
 </p>
 <blockquote><p>
 "Implementations should ensure that all unblocked threads eventually make progress."
@@ -80,7 +80,7 @@ According to 6.9.2 <a href="https://wg21.link/intro.multithread">[intro.multithr
 <ul>
 <li>If taken literally, this cannot be achieved with lock-free atomics in
  general because they only guarantee that some thread makes progress
- (i.e., minimal progress, whereas 6.9.2 <a href="https://wg21.link/intro.multithread">[intro.multithread]</a> p2 seems to 
+ (i.e., minimal progress, whereas 6.10.2 <a href="https://wg21.link/intro.multithread">[intro.multithread]</a> p2 seems to 
  require maximal progress).
 </li>
 <li>What does it mean precisely to "make progress"? Does "unblocked
@@ -164,7 +164,7 @@ understanding of which user expectations they have to implement.
 </p>
 <ol>
 <li><p>Elaborate on the intentions of the progress guarantee in 
-6.9.2 <a href="https://wg21.link/intro.multithread">[intro.multithread]</a> p2. As I don't know about your intentions, 
+6.10.2 <a href="https://wg21.link/intro.multithread">[intro.multithread]</a> p2. As I don't know about your intentions, 
 it's hard to suggest a resolution.
 </p>
 <ul>
@@ -204,7 +204,7 @@ to space overheads I suppose, see the cacheline sharing example above.
 
 
 <p>
-6.9.2 <a href="https://wg21.link/intro.multithread">[intro.multithread]</a> p2 was an intentional compromise, and it was understood at the 
+6.10.2 <a href="https://wg21.link/intro.multithread">[intro.multithread]</a> p2 was an intentional compromise, and it was understood at the 
 time that it was not a precise statement.  The wording was introduced by 
 <a href="http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2010/n3209.htm">N3209</a>, which 
 discusses some of the issues. There were additional reflector discussions.
@@ -224,7 +224,7 @@ for progress. It would take a lot of effort to try to do better.
 <p><i>[2012, Portland: move to Open]</i></p>
 
 <p>
-The current wording of 6.9.2 <a href="https://wg21.link/intro.multithread">[intro.multithread]</a> p2 doesn't really say very much.
+The current wording of 6.10.2 <a href="https://wg21.link/intro.multithread">[intro.multithread]</a> p2 doesn't really say very much.
 As far as we can tell the term <i>lock-free</i> is nowhere defined in the standard.
 </p>
 <p>

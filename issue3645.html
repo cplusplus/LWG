@@ -176,7 +176,7 @@ template&lt;class Operation&gt; constexpr void resize_and_overwrite(size_type n,
 <li><p>(7.2) &mdash; <code>k</code> be <code>min(o, n)</code>.</p></li>
 <li><p>(7.3) &mdash; <code>p</code> be a <code>charT*</code>, such that the range <code>[p, p + n]</code> is valid 
 and <code>this-&gt;compare(0, k, p, k) == 0</code> is <code>true</code> before the call. The values in the range 
-<code>[p + k, p + n]</code> may be indeterminate (6.7.5 <a href="https://wg21.link/basic.indet">[basic.indet]</a>).</p></li>
+<code>[p + k, p + n]</code> may be indeterminate (6.8.5 <a href="https://wg21.link/basic.indet">[basic.indet]</a>).</p></li>
 <li><p>(7.4) &mdash; <code><i>OP</i></code> be the expression <code>std::move(op)(<ins>auto(</ins>p<ins>)</ins>, <ins>auto(</ins>n<ins>)</ins>)</code>.</p></li>
 <li><p>(7.5) &mdash; <code>r = <i>OP</i></code>.</p></li>
 </ol>
@@ -244,7 +244,7 @@ template&lt;class Operation&gt; constexpr void resize_and_overwrite(size_type n,
 such that the range <code>[p, p + n]</code> is valid
 and <code>this-&gt;compare(0, k, p, k) == 0</code> is <code>true</code> before the call.
 The values in the range
-<code>[p + k, p + n]</code> may be indeterminate (6.7.5 <a href="https://wg21.link/basic.indet">[basic.indet]</a>).</p></li>
+<code>[p + k, p + n]</code> may be indeterminate (6.8.5 <a href="https://wg21.link/basic.indet">[basic.indet]</a>).</p></li>
 <li><p><ins>(7.?) &mdash;
 <code>m</code> be a value of type <code>size_type</code> or
 <code>const size_type</code> equal to <code>n</code>.

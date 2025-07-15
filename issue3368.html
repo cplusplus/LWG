@@ -116,11 +116,11 @@ expression-equivalent to:
 </p>
 <ol style="list-style-type: none">
 <li><p>(1.1) &mdash; <code><i>decay-copy</i>(extent_v&lt;T&gt;)</code> if <code>T</code> is an array type 
-(6.8.4 <a href="https://wg21.link/basic.compound">[basic.compound]</a>).</p></li>
+(6.9.4 <a href="https://wg21.link/basic.compound">[basic.compound]</a>).</p></li>
 <li><p><del>(1.2) &mdash; Otherwise, if <code>disable_sized_range&lt;remove_cv_t&lt;T&gt;&gt;</code> 
-(25.4.3 <a href="https://wg21.link/range.sized">[range.sized]</a>) is <code>false</code>:</del></p>
+(25.4.4 <a href="https://wg21.link/range.sized">[range.sized]</a>) is <code>false</code>:</del></p>
 <li><p>(1.<ins>?</ins><del>2.1</del>) &mdash; <ins>Otherwise, if 
-<code>disable_sized_range&lt;remove_cv_t&lt;T&gt;&gt;</code> (25.4.3 <a href="https://wg21.link/range.sized">[range.sized]</a>) is <code>false</code> 
+<code>disable_sized_range&lt;remove_cv_t&lt;T&gt;&gt;</code> (25.4.4 <a href="https://wg21.link/range.sized">[range.sized]</a>) is <code>false</code> 
 and</ins> <code><i>decay-copy</i>(E.size())</code> <del>if it</del> is a valid expression <del>and its 
 type <code>I</code> is</del><ins>of</ins> integer-like <ins>type</ins> 
 (24.3.4.4 <a href="https://wg21.link/iterator.concept.winc">[iterator.concept.winc]</a>)<ins>, <code><i>decay-copy</i>(E.size())</code></ins>.</p></li>

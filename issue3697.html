@@ -123,7 +123,7 @@ struct reference_constructs_from_temporary;</code>
 <td>
 <code>conjunction_v&lt;is_reference&lt;T&gt;, is_constructible&lt;T, U&gt;&gt;</code> is<br/> 
 <code>true</code>, and the initialization <code>T t(<i>VAL</i>&lt;U&gt;);</code> binds <code>t</code> to a<br/> 
-temporary object whose lifetime is extended (6.7.7 <a href="https://wg21.link/class.temporary">[class.temporary]</a>).
+temporary object whose lifetime is extended (6.8.7 <a href="https://wg21.link/class.temporary">[class.temporary]</a>).
 </td>
 
 <td>
@@ -142,7 +142,7 @@ struct reference_converts_from_temporary;</code>
 <td>
 <code>conjunction_v&lt;is_reference&lt;T&gt;, is_convertible&lt;U, T&gt;&gt;</code> is<br/> 
 <code>true</code>, and the initialization <code>T t = <i>VAL</i>&lt;U&gt;;</code> binds <code>t</code> to a<br/> 
-temporary object whose lifetime is extended (6.7.7 <a href="https://wg21.link/class.temporary">[class.temporary]</a>).
+temporary object whose lifetime is extended (6.8.7 <a href="https://wg21.link/class.temporary">[class.temporary]</a>).
 </td>
 
 <td>

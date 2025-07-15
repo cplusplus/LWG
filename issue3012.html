@@ -124,7 +124,7 @@ Casey Carter says that we might want to still require trivially copy assignable 
 <blockquote>
 <p>
 -1- <ins>If <code>is_trivially_copy_constructible_v&lt;T&gt;</code> is <code>false</code>, the program is ill-formed</ins><del>The
-template argument for <code>T</code> shall be trivially copyable (6.8 <a href="https://wg21.link/basic.types">[basic.types]</a>)</del>. [<i>Note:</i> Type
+template argument for <code>T</code> shall be trivially copyable (6.9 <a href="https://wg21.link/basic.types">[basic.types]</a>)</del>. [<i>Note:</i> Type
 arguments that are not also statically initializable may be difficult to use. &mdash; <i>end note</i>]
 </p>
 </blockquote>
@@ -143,7 +143,7 @@ arguments that are not also statically initializable may be difficult to use. &m
 <p>
 -1- <ins>If <code>is_copy_constructible_v&lt;T&gt;</code> is <code>false</code> or if
 <code>is_trivially_copyable_v&lt;T&gt;</code> is <code>false</code>, the program is ill-formed</ins><del>The
-template argument for <code>T</code> shall be trivially copyable (6.8 <a href="https://wg21.link/basic.types">[basic.types]</a>)</del>. [<i>Note:</i> Type
+template argument for <code>T</code> shall be trivially copyable (6.9 <a href="https://wg21.link/basic.types">[basic.types]</a>)</del>. [<i>Note:</i> Type
 arguments that are not also statically initializable may be difficult to use. &mdash; <i>end note</i>]
 </p>
 </blockquote>
@@ -178,7 +178,7 @@ implementation without heroic efforts.
 -1- The template argument for <code>T</code> shall <ins>meet the <code>CopyConstructible</code> and <code>CopyAssignable</code>
 requirements. If <code>is_trivially_copyable_v&lt;T&gt; &amp;&amp; is_copy_constructible_v&lt;T&gt; &amp;&amp; 
 is_move_constructible_v&lt;T&gt; &amp;&amp; is_copy_assignable_v&lt;T&gt; &amp;&amp; is_move_assignable_v&lt;T&gt;</code> 
-is <code>false</code>, the program is ill-formed</ins><del>be trivially copyable (6.8 <a href="https://wg21.link/basic.types">[basic.types]</a>)</del>. 
+is <code>false</code>, the program is ill-formed</ins><del>be trivially copyable (6.9 <a href="https://wg21.link/basic.types">[basic.types]</a>)</del>. 
 [<i>Note:</i> Type arguments that are not also statically initializable may be difficult to use. &mdash; <i>end note</i>]
 </p>
 </blockquote>

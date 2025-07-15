@@ -77,7 +77,7 @@ Since turning <code class='backtick'>execution::connect(sndr, rcvr)</code>'s <i>
 to a <i>mandates</i>, the <code class='backtick'>connect</code> customization point is now unconstrained.
 </p>
 <p>
-But there is at least one place in the algorithms (33.9.12.8 <a href="https://wg21.link/exec.let">[exec.let]</a>)
+But there is at least one place in the algorithms (33.9.12.10 <a href="https://wg21.link/exec.let">[exec.let]</a>)
 that is using <code class='backtick'>connect_result_t</code> in an immediate context of a function template
 with the expectation that <code>connect_result_t&lt;Sndr, Rcvr&gt;</code>
 will be well-formed only when <code class='backtick'>Sndr</code> and <code class='backtick'>Rcvr</code> can actually be connected.

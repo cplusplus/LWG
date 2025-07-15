@@ -125,7 +125,7 @@ This wording is relative to N4606.
 until</del><ins>schedule the shared state to be made ready when</ins> the
 calling thread exits. <ins>This associates a reference to the shared state with the calling thread.</ins> The 
 destruction of each of that thread's objects with thread storage duration 
-(6.7.6.3 <a href="https://wg21.link/basic.stc.thread">[basic.stc.thread]</a>) is sequenced before making that shared state ready. <ins>When the calling 
+(6.8.6.3 <a href="https://wg21.link/basic.stc.thread">[basic.stc.thread]</a>) is sequenced before making that shared state ready. <ins>When the calling 
 thread makes the shared state ready, if the thread holds the last reference to the shared state, the shared state 
 is destroyed. [<i>Note:</i> This means that the shared state may not become ready until after the <em>asynchronous 
 provider</em> has been destroyed. &mdash; <i>end note</i>]</ins>

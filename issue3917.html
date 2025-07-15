@@ -86,7 +86,7 @@ any more. We fall now under the constraints for template "components" specified 
 </p>
 <ol style="list-style-type: none">
 <li><p>[&hellip;]</p></li>
-<li><p>(2.5) &mdash; If an incomplete type (6.8.1 <a href="https://wg21.link/basic.types.general">[basic.types.general]</a>) is used as a template argument when instantiating a 
+<li><p>(2.5) &mdash; If an incomplete type (6.9.1 <a href="https://wg21.link/basic.types.general">[basic.types.general]</a>) is used as a template argument when instantiating a 
 template component or evaluating a concept, unless specifically allowed for that component.</p></li>
 </ol>
 </blockquote>
@@ -188,7 +188,7 @@ here, but we cannot rely on the "equivalent to" magic formula, because that is d
 </pre>
 <blockquote>
 <p>
-<ins>-?- <i>Mandates:</i> <code>Tp</code> is not an incomplete type (6.8.1 <a href="https://wg21.link/basic.types.general">[basic.types.general]</a>).</ins>
+<ins>-?- <i>Mandates:</i> <code>Tp</code> is not an incomplete type (6.9.1 <a href="https://wg21.link/basic.types.general">[basic.types.general]</a>).</ins>
 <p/>
 -1- <i>Effects:</i> If <code>numeric_limits&lt;size_t&gt;::max() / sizeof(Tp) &lt; n</code>, throws <code>bad_array_new_length</code>.
 Otherwise equivalent to:

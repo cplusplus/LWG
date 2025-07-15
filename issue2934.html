@@ -63,7 +63,7 @@
 <hr>
 <p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#C++17">C++17</a> status.</em></p>
 <h3 id="2934"><a href="lwg-defects.html#2934">2934</a>. <code>optional&lt;const T&gt;</code> doesn't compare with <code>T</code></h3>
-<p><b>Section:</b> 22.5.8 <a href="https://wg21.link/optional.comp.with.t">[optional.comp.with.t]</a> <b>Status:</b> <a href="lwg-active.html#C++17">C++17</a>
+<p><b>Section:</b> 22.5.9 <a href="https://wg21.link/optional.comp.with.t">[optional.comp.with.t]</a> <b>Status:</b> <a href="lwg-active.html#C++17">C++17</a>
  <b>Submitter:</b> Ville Voutilainen <b>Opened:</b> 2017-02-17 <b>Last modified:</b> 2021-06-06</p>
 <p><b>Priority: </b>Not Prioritized
 </p>
@@ -113,7 +113,7 @@ allowing comparing optionals with <code>T</code> and types comparable with <code
 <pre>
 [&hellip;]
 
-<i>// 22.5.6 <a href="https://wg21.link/optional.relops">[optional.relops]</a>, relational operators</i>
+<i>// 22.5.7 <a href="https://wg21.link/optional.relops">[optional.relops]</a>, relational operators</i>
 template &lt;class T<ins>, class U</ins>&gt;
 constexpr bool operator==(const optional&lt;T&gt;&amp;, const optional&lt;<del>T</del><ins>U</ins>&gt;&amp;);
 template &lt;class T<ins>, class U</ins>&gt;
@@ -146,7 +146,7 @@ template &lt;class T<ins>, class U</ins>&gt; constexpr bool operator&gt;=(const 
 </blockquote>
 </li>
 
-<li><p>Modify 22.5.6 <a href="https://wg21.link/optional.relops">[optional.relops]</a> as indicated:</p>
+<li><p>Modify 22.5.7 <a href="https://wg21.link/optional.relops">[optional.relops]</a> as indicated:</p>
 <blockquote>
 <pre>
 template &lt;class T<ins>, class U</ins>&gt; constexpr bool operator==(const optional&lt;T&gt;&amp; x, const optional&lt;<del>T</del><ins>U</ins>&gt;&amp; y);

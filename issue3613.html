@@ -63,7 +63,7 @@
 <hr>
 <p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#New">New</a> status.</em></p>
 <h3 id="3613"><a href="lwg-active.html#3613">3613</a>. Specify that <code>nullopt_t</code> is copyable</h3>
-<p><b>Section:</b> 22.5.4 <a href="https://wg21.link/optional.nullopt">[optional.nullopt]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
+<p><b>Section:</b> 22.5.5 <a href="https://wg21.link/optional.nullopt">[optional.nullopt]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
  <b>Submitter:</b> Frank Birbacher <b>Opened:</b> 2021-10-01 <b>Last modified:</b> 2024-01-29</p>
 <p><b>Priority: </b>3
 </p>
@@ -75,7 +75,7 @@ The Standard defines a number of types that are used to create overload disambig
 like <code>nullopt_t</code> and <code>allocator_tag_t</code>. Values of such types are passed by value to such 
 constructors to give it particular meaning. For pass-by-value these types need to be copy-constructible 
 and for consistency should also be copy-assignable. Of those types the specification of <code>nullopt_t</code> 
-doesn't clearly state that the type is copyable, 22.5.4 <a href="https://wg21.link/optional.nullopt">[optional.nullopt]</a>.
+doesn't clearly state that the type is copyable, 22.5.5 <a href="https://wg21.link/optional.nullopt">[optional.nullopt]</a>.
 <p/>
 The reason that <code>nullopt_t</code> is defined differently from other such types is to avoid ambiguity 
 in expressions that assign an empty brace initializer to an <code>optional</code>.
@@ -123,7 +123,7 @@ This wording is relative to <a href="https://wg21.link/n4892">N4892</a>.
 </p>
 
 <ol>
-<li><p>Modify 22.5.4 <a href="https://wg21.link/optional.nullopt">[optional.nullopt]</a> as indicated:</p>
+<li><p>Modify 22.5.5 <a href="https://wg21.link/optional.nullopt">[optional.nullopt]</a> as indicated:</p>
 
 <blockquote>
 <pre>

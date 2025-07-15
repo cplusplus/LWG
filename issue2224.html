@@ -147,7 +147,7 @@ of any object of a class type defined in the standard library happens before any
 invocation on that object and, unless otherwise specified, to ensure that completion of any member function 
 invocation other than destruction on such an object happens before destruction of that object. This applies 
 even to objects such as mutexes intended for thread synchronization. &mdash; <i>end note</i>]</del>
-<ins>If an object of a standard library type is accessed outside of the object's lifetime (6.7.4 <a href="https://wg21.link/basic.life">[basic.life]</a>), 
+<ins>If an object of a standard library type is accessed outside of the object's lifetime (6.8.4 <a href="https://wg21.link/basic.life">[basic.life]</a>), 
 the behavior is undefined unless otherwise specified.</ins></p>
 </li>
 </ol>
@@ -183,7 +183,7 @@ invocation on that object and, unless otherwise specified, to ensure that comple
 invocation other than destruction on such an object happens before destruction of that object. This applies 
 even to objects such as mutexes intended for thread synchronization. &mdash; <i>end note</i>]</del>
 <ins>If an object of a standard library type is accessed, and the beginning of the object's lifetime 
-(6.7.4 <a href="https://wg21.link/basic.life">[basic.life]</a>) does not happen before the access, or the access does not happen before the end 
+(6.8.4 <a href="https://wg21.link/basic.life">[basic.life]</a>) does not happen before the access, or the access does not happen before the end 
 of the object's lifetime, the behavior is undefined unless otherwise specified. [<i>Note</i>: This applies even to 
 objects such as mutexes intended for thread synchronization. &mdash; <i>end note</i>]</ins></p>
 </li>

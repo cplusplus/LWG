@@ -128,7 +128,7 @@ shall be well-formed when treated as an unevaluated operand (7.2.3 <a href="http
 <li><p>(5.1) &mdash; if <code>T<ins>D</ins></code> is <code>bool</code> or <code>char_type</code>, initializes <code>value</code> with <code>v</code>;</p></li>
 <li><p>(5.2) &mdash; otherwise, if <code>T<ins>D</ins></code> is <code>char</code> and <code>char_type</code> is <code>wchar_t</code>,
 initializes <code>value</code> with <code>static_cast&lt;wchar_t&gt;(v)</code>;</p></li>
-<li><p>(5.3) &mdash; otherwise, if <code>T<ins>D</ins></code> is a signed integer type (6.8.2 <a href="https://wg21.link/basic.fundamental">[basic.fundamental]</a>) and
+<li><p>(5.3) &mdash; otherwise, if <code>T<ins>D</ins></code> is a signed integer type (6.9.2 <a href="https://wg21.link/basic.fundamental">[basic.fundamental]</a>) and
 <code>sizeof(T<ins>D</ins>) &lt;= sizeof(int)</code>, initializes <code>value</code> with <code>static_cast&lt;int&gt;(v)</code>;</p></li>
 <li><p>(5.4) &mdash; otherwise, if <code>T<ins>D</ins></code> is an unsigned integer type and <code>sizeof(T<ins>D</ins>) &lt;= sizeof(unsigned int)</code>,
 initializes <code>value</code> with <code>static_cast&lt;unsigned int&gt;(v)</code>;</p></li>
@@ -205,7 +205,7 @@ If <code>decay_t&lt;T&gt;</code> is <code>char_type*</code> or <code>const char_
 <li><p>(5.1) &mdash; if <code>T<ins>D</ins></code> is <code>bool</code> or <code>char_type</code>, initializes <code>value</code> with <code>v</code>;</p></li>
 <li><p>(5.2) &mdash; otherwise, if <code>T<ins>D</ins></code> is <code>char</code> and <code>char_type</code> is <code>wchar_t</code>,
 initializes <code>value</code> with <code>static_cast&lt;wchar_t&gt;(v)</code>;</p></li>
-<li><p>(5.3) &mdash; otherwise, if <code>T<ins>D</ins></code> is a signed integer type (6.8.2 <a href="https://wg21.link/basic.fundamental">[basic.fundamental]</a>) and
+<li><p>(5.3) &mdash; otherwise, if <code>T<ins>D</ins></code> is a signed integer type (6.9.2 <a href="https://wg21.link/basic.fundamental">[basic.fundamental]</a>) and
 <code>sizeof(T<ins>D</ins>) &lt;= sizeof(int)</code>, initializes <code>value</code> with <code>static_cast&lt;int&gt;(v)</code>;</p></li>
 <li><p>(5.4) &mdash; otherwise, if <code>T<ins>D</ins></code> is an unsigned integer type and <code>sizeof(T<ins>D</ins>) &lt;= sizeof(unsigned int)</code>,
 initializes <code>value</code> with <code>static_cast&lt;unsigned int&gt;(v)</code>;</p></li>
@@ -476,7 +476,7 @@ If <code>decay_t&lt;T&gt;</code> is <code>char_type*</code> or <code>const char_
 <li><p>(5.1) &mdash; <ins>If</ins> <del>if</del> <code>T<ins>D</ins></code> is <code>bool</code> or <code>char_type</code>, initializes <code>value</code> with <code>v</code>;</p></li>
 <li><p>(5.2) &mdash; otherwise, if <code>T<ins>D</ins></code> is <code>char</code> and <code>char_type</code> is <code>wchar_t</code>,
 initializes <code>value</code> with <code>static_cast&lt;wchar_t&gt;(v)</code>;</p></li>
-<li><p>(5.3) &mdash; otherwise, if <code>T<ins>D</ins></code> is a signed integer type (6.8.2 <a href="https://wg21.link/basic.fundamental">[basic.fundamental]</a>) and
+<li><p>(5.3) &mdash; otherwise, if <code>T<ins>D</ins></code> is a signed integer type (6.9.2 <a href="https://wg21.link/basic.fundamental">[basic.fundamental]</a>) and
 <code>sizeof(T<ins>D</ins>) &lt;= sizeof(int)</code>, initializes <code>value</code> with <code>static_cast&lt;int&gt;(v)</code>;</p></li>
 <li><p>(5.4) &mdash; otherwise, if <code>T<ins>D</ins></code> is an unsigned integer type and <code>sizeof(T<ins>D</ins>) &lt;= sizeof(unsigned int)</code>,
 initializes <code>value</code> with <code>static_cast&lt;unsigned int&gt;(v)</code>;</p></li>

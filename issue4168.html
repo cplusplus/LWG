@@ -133,11 +133,11 @@ template&lt;class T&gt;
 <p/>
 -2- <i>Preconditions</i>: [&hellip;]
 <p/>
--3- <i>Effects</i>: Implicitly creates objects (6.7.2 <a href="https://wg21.link/intro.object">[intro.object]</a>) within the denoted region 
+-3- <i>Effects</i>: Implicitly creates objects (6.8.2 <a href="https://wg21.link/intro.object">[intro.object]</a>) within the denoted region 
 consisting of an object <code><i>a</i></code> of type <code class='backtick'>T</code> whose address is <code class='backtick'>p</code>, and objects nested within 
 <code><i>a</i></code>, as follows: The object representation of <code><i>a</i></code> is the contents of the 
 storage prior to the call to <code class='backtick'>start_lifetime_as</code>. The value of each created object <code><i>o</i></code> 
-of trivially copyable type (6.8.1 <a href="https://wg21.link/basic.types.general">[basic.types.general]</a>) <code class='backtick'>U</code> is determined in the same manner 
+of trivially copyable type (6.9.1 <a href="https://wg21.link/basic.types.general">[basic.types.general]</a>) <code class='backtick'>U</code> is determined in the same manner 
 as for a call to <code>bit_cast&lt;U&gt;(E)</code> (22.11.3 <a href="https://wg21.link/bit.cast">[bit.cast]</a>), where <code class='backtick'>E</code> is an lvalue of 
 type <code class='backtick'>U</code> denoting <code><i>o</i></code>, except that the storage is not accessed <ins>and that 
 for each indeterminate bit <code><i>b</i></code> in the value representation of the result, the smallest 

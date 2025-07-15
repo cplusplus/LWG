@@ -81,7 +81,7 @@ for (const directory_entry&amp; x : directory_iterator(from))
 <p/>
 Presumably this does not actually mean that the implementation is free to set whatever <code>copy_option</code> element it wishes 
 (<code>directories_only</code>? <code>recursive</code>? <code>create_hard_links</code>?), or <code>none</code> at all, or &ndash; since 
-unspecified behavior corresponds to the nondeterministic aspects of the abstract machine (6.9.1 <a href="https://wg21.link/intro.execution">[intro.execution]</a>/3) 
+unspecified behavior corresponds to the nondeterministic aspects of the abstract machine (6.10.1 <a href="https://wg21.link/intro.execution">[intro.execution]</a>/3) 
 &ndash; a nondeterministically picked element for every iteration of the loop. That would be outright insane.
 <p/>
 I'm fairly sure that what's intended here is to set an otherwise-unused bit in <code>options</code> so as to prevent recursion in the <code>options == copy_options::none</code> case.

@@ -108,12 +108,12 @@ conflict when accessing that value.</p>
 <p>Modify 32.10.5 <a href="https://wg21.link/futures.state">[futures.state]</a> p10 as follows:</p>
 
 <blockquote><p>
-10 <del>Accesses to the same shared state conflict (6.9.2 <a href="https://wg21.link/intro.multithread">[intro.multithread]</a>).</del><ins>Some 
+10 <del>Accesses to the same shared state conflict (6.10.2 <a href="https://wg21.link/intro.multithread">[intro.multithread]</a>).</del><ins>Some 
   operations, e.g. <code>shared_future::get()</code>
  ( [futures.shared_future]), may return a reference to a
  value held in their shared state. Accesses and modifications through
  those references by concurrent threads to the same 
- shared state may potentially conflict (6.9.2 <a href="https://wg21.link/intro.multithread">[intro.multithread]</a>).
+ shared state may potentially conflict (6.10.2 <a href="https://wg21.link/intro.multithread">[intro.multithread]</a>).
  [<i>Note:</i> As a consequence, accesses must either use
  read-only operations or provide additional synchronization.
  &mdash; <i>end note</i>]</ins>
@@ -127,7 +127,7 @@ conflict when accessing that value.</p>
 <p>Modify 32.10.5 <a href="https://wg21.link/futures.state">[futures.state]</a> p10 as follows:</p>
 
 <blockquote><p>
-10 Accesses to the same shared state conflict (6.9.2 <a href="https://wg21.link/intro.multithread">[intro.multithread]</a>). <ins>[<i>Note</i>: 
+10 Accesses to the same shared state conflict (6.10.2 <a href="https://wg21.link/intro.multithread">[intro.multithread]</a>). <ins>[<i>Note</i>: 
 This explicitely specifies that the shared state is visible in the objects that reference this state 
 in the sense of data race avoidance 16.4.6.10 <a href="https://wg21.link/res.on.data.races">[res.on.data.races]</a>. &mdash; <i>end note</i>]</ins>
 </p></blockquote>

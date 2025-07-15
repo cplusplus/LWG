@@ -139,9 +139,9 @@ that the normative wording is already in 32.10.5 <a href="https://wg21.link/futu
 <blockquote><p>
 5 The implementation shall provide lock and unlock operations, as described below. <del>The implementation 
 shall serialize those operations.</del><ins>For purposes of determining the existence of a data race, these
-behave as atomic operations (6.9.2 <a href="https://wg21.link/intro.multithread">[intro.multithread]</a>).  The lock and unlock operations on
+behave as atomic operations (6.10.2 <a href="https://wg21.link/intro.multithread">[intro.multithread]</a>).  The lock and unlock operations on
 a single mutex shall appear to occur in a single total order. [<i>Note</i>: this can be viewed as the 
-modification order (6.9.2 <a href="https://wg21.link/intro.multithread">[intro.multithread]</a>) of the mutex. &mdash; <i>end note</i>]</ins> [ <i>Note</i>: 
+modification order (6.10.2 <a href="https://wg21.link/intro.multithread">[intro.multithread]</a>) of the mutex. &mdash; <i>end note</i>]</ins> [ <i>Note</i>: 
 Construction and destruction of an object of a mutex type need not be thread-safe; other synchronization 
 should be used to ensure that mutex objects are initialized and visible to other threads. &mdash; <i>end note</i> ]
 </p></blockquote>
@@ -173,7 +173,7 @@ cond.notify_all();
 <p>
 <ins>-?- <i>Synchronization:</i> The call to <code>notify_all_at_thread_exit</code>
 and the completion of the destructors for all the current thread's variables of 
-thread storage duration synchronize with (6.9.2 <a href="https://wg21.link/intro.multithread">[intro.multithread]</a>) calls 
+thread storage duration synchronize with (6.10.2 <a href="https://wg21.link/intro.multithread">[intro.multithread]</a>) calls 
 to functions waiting on <code>cond</code>.</ins>
 <p/>
 -8- <i>Note</i>: The supplied lock will be held until the thread exits, and care must be taken to ensure that
@@ -221,10 +221,10 @@ ready (32.10.5 <a href="https://wg21.link/futures.state">[futures.state]</a>).
 <code>promise</code> object are serialized. [ <i>Note</i>: And they synchronize and serialize with other functions 
 through the referred shared state. &mdash; <i>end note</i> ]</del><ins>For purposes of determining the 
 existence of a data race, <code>set_value</code>, <code>set_exception</code>, <code>set_value_at_thread_exit</code>,
-and <code>set_exception_at_thread_exit</code> behave as atomic operations (6.9.2 <a href="https://wg21.link/intro.multithread">[intro.multithread]</a>) on
+and <code>set_exception_at_thread_exit</code> behave as atomic operations (6.10.2 <a href="https://wg21.link/intro.multithread">[intro.multithread]</a>) on
 the memory location associated with the <code>promise</code>. Calls to these operations on a single promise shall 
 appear to occur in a single total order.  [<i>Note</i>: this can be viewed as the modification order
-(6.9.2 <a href="https://wg21.link/intro.multithread">[intro.multithread]</a>) of the promise. &mdash; <i>end note</i>] These operations do not 
+(6.10.2 <a href="https://wg21.link/intro.multithread">[intro.multithread]</a>) of the promise. &mdash; <i>end note</i>] These operations do not 
 provide any ordering guarantees with respect to other operations, except through operations on futures
 that reference the same shared state.</ins>
 </p>
@@ -256,10 +256,10 @@ state ready (32.10.5 <a href="https://wg21.link/futures.state">[futures.state]</
 <code>promise</code> object are serialized. [ <i>Note</i>: And they synchronize and serialize with 
 other functions through the referred shared state. &mdash; <i>end note</i> ]</del><ins>For purposes of determining the 
 existence of a data race, <code>set_value</code>, <code>set_exception</code>, <code>set_value_at_thread_exit</code>,
-and <code>set_exception_at_thread_exit</code> behave as atomic operations (6.9.2 <a href="https://wg21.link/intro.multithread">[intro.multithread]</a>) on
+and <code>set_exception_at_thread_exit</code> behave as atomic operations (6.10.2 <a href="https://wg21.link/intro.multithread">[intro.multithread]</a>) on
 the memory location associated with the <code>promise</code>. Calls to these operations on a single promise shall 
 appear to occur in a single total order.  [<i>Note</i>: this can be viewed as the modification order
-(6.9.2 <a href="https://wg21.link/intro.multithread">[intro.multithread]</a>) of the promise. &mdash; <i>end note</i>] These operations do not 
+(6.10.2 <a href="https://wg21.link/intro.multithread">[intro.multithread]</a>) of the promise. &mdash; <i>end note</i>] These operations do not 
 provide any ordering guarantees with respect to other operations, except through operations on futures
 that reference the same shared state.</ins>
 </p>
@@ -288,9 +288,9 @@ all objects of thread storage duration associated with the current thread have b
 <p>
 <ins>-??- <i>Synchronization</i>: For purposes of determining the existence of a data race, <code>set_value</code>, 
 <code>set_exception</code>, <code>set_value_at_thread_exit</code>, and <code>set_exception_at_thread_exit</code> behave as 
-atomic operations (6.9.2 <a href="https://wg21.link/intro.multithread">[intro.multithread]</a>) on the memory location associated with the <code>promise</code>. 
+atomic operations (6.10.2 <a href="https://wg21.link/intro.multithread">[intro.multithread]</a>) on the memory location associated with the <code>promise</code>. 
 Calls to these operations on a single promise shall appear to occur in a single total order.  [<i>Note</i>: 
-this can be viewed as the modification order (6.9.2 <a href="https://wg21.link/intro.multithread">[intro.multithread]</a>) of the promise. &mdash; 
+this can be viewed as the modification order (6.10.2 <a href="https://wg21.link/intro.multithread">[intro.multithread]</a>) of the promise. &mdash; 
 <i>end note</i>] These operations do not provide any ordering guarantees with respect to other operations, 
 except through operations on futures that reference the same shared state.</ins>
 </p>
@@ -317,9 +317,9 @@ thread have been destroyed.
 <p>
 <ins>-??- <i>Synchronization</i>: For purposes of determining the existence of a data race, <code>set_value</code>, 
 <code>set_exception</code>, <code>set_value_at_thread_exit</code>, and <code>set_exception_at_thread_exit</code> behave as 
-atomic operations (6.9.2 <a href="https://wg21.link/intro.multithread">[intro.multithread]</a>) on the memory location associated with the <code>promise</code>. 
+atomic operations (6.10.2 <a href="https://wg21.link/intro.multithread">[intro.multithread]</a>) on the memory location associated with the <code>promise</code>. 
 Calls to these operations on a single promise shall appear to occur in a single total order.  [<i>Note</i>: 
-this can be viewed as the modification order (6.9.2 <a href="https://wg21.link/intro.multithread">[intro.multithread]</a>) of the promise. &mdash; 
+this can be viewed as the modification order (6.10.2 <a href="https://wg21.link/intro.multithread">[intro.multithread]</a>) of the promise. &mdash; 
 <i>end note</i>] These operations do not provide any ordering guarantees with respect to other operations, 
 except through operations on futures that reference the same shared state.</ins>
 </p>
@@ -350,10 +350,10 @@ task has already been invoked.
 <li><code>no_state</code> if <code>*this</code> has no shared state.</li>
 </ul>
 <p>
--18- <i>Synchronization</i>: a successful call to <code>operator()</code> synchronizes with (6.9.2 <a href="https://wg21.link/intro.multithread">[intro.multithread]</a>) 
+-18- <i>Synchronization</i>: a successful call to <code>operator()</code> synchronizes with (6.10.2 <a href="https://wg21.link/intro.multithread">[intro.multithread]</a>) 
 a call to any member function of a <code>future</code> or <code>shared_future</code> object that shares the 
 shared state of <code>*this</code>. The completion of the invocation of the stored task and the storage 
-of the result (whether normal or exceptional) into the shared state synchronizes with (6.9.2 <a href="https://wg21.link/intro.multithread">[intro.multithread]</a>) 
+of the result (whether normal or exceptional) into the shared state synchronizes with (6.10.2 <a href="https://wg21.link/intro.multithread">[intro.multithread]</a>) 
 the successful return from any member function that detects that the state is set to ready. [ <i>Note</i>: 
 <code>operator()</code> synchronizes and serializes with other functions through the shared state. &mdash; <i>end note</i> ]
 </p>
@@ -382,7 +382,7 @@ thread storage duration associated with the current thread have been destroyed.
 </ul>
 <p>
 <ins>-??- <i>Synchronization:</i> a successful call to <code>make_ready_at_thread_exit</code>
-synchronizes with (6.9.2 <a href="https://wg21.link/intro.multithread">[intro.multithread]</a>) a call to any member function of
+synchronizes with (6.10.2 <a href="https://wg21.link/intro.multithread">[intro.multithread]</a>) a call to any member function of
 a <code>future</code> or <code>shared_future</code> object that shares the shared state of 
 <code>*this</code>. The completion of</ins>
 </p>
@@ -392,7 +392,7 @@ exceptional) into the shared state</ins></p></li>
 <li><p><ins>the destructors for all the current thread's variables of thread storage duration</ins></p></li>
 </ul>
 <p>
-<ins>synchronize with (6.9.2 <a href="https://wg21.link/intro.multithread">[intro.multithread]</a>) the successful return from any member function
+<ins>synchronize with (6.10.2 <a href="https://wg21.link/intro.multithread">[intro.multithread]</a>) the successful return from any member function
 that detects that the state is set to ready. [<i>Note:</i> <code>make_ready_at_thread_exit</code>
 synchronizes and serializes with other functions through the shared state. &mdash; <i>end note</i>]</ins>
 </p>

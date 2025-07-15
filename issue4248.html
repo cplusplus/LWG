@@ -78,7 +78,7 @@ is described in 33.9.2 <a href="https://wg21.link/exec.snd.expos">[exec.snd.expo
 <blockquote style="border-left: 3px solid #ccc;padding-left: 15px;">
 <p>
 [<i>Note 1</i>: The <code class='backtick'>continues_on</code> algorithm works in tandem with <code class='backtick'>schedule_from</code> 
-(33.9.12.5 <a href="https://wg21.link/exec.schedule.from">[exec.schedule.from]</a>) to give scheduler authors a way to customize 
+(33.9.12.7 <a href="https://wg21.link/exec.schedule.from">[exec.schedule.from]</a>) to give scheduler authors a way to customize 
 both how to transition onto (<code class='backtick'>continues_on</code>) and off of (<code class='backtick'>schedule_from</code>) a given 
 execution context. Thus, <code class='backtick'>continues_on</code> ignores the domain of the predecessor and 
 uses the domain of the destination scheduler to select a customization, a property 
@@ -94,14 +94,14 @@ is used to find customizations at connect time.
 However, customizations are also searched for early when the sender is first constructed. 
 And here the dispatching of <code class='backtick'>continues_on</code> and <code class='backtick'>schedule_from</code> are reversed.
 <p/>
-<code class='backtick'>continues_on(sndr, sch)</code> is defined as (33.9.12.4 <a href="https://wg21.link/exec.continues.on">[exec.continues.on]</a>):
+<code class='backtick'>continues_on(sndr, sch)</code> is defined as (33.9.12.6 <a href="https://wg21.link/exec.continues.on">[exec.continues.on]</a>):
 </p>
 <blockquote><pre>
 transform_sender(<i>get-domain-early</i>(sndr), <i>make-sender</i>(continues_on, sch, sndr))
 </pre></blockquote>
 <p>
 which is using the domain of the predecessor rather than ignoring it as 33.9.2 <a href="https://wg21.link/exec.snd.expos">[exec.snd.expos]</a> p14.1 
-says it does. And <code class='backtick'>schedule_from(sch, sndr)</code> is currently defined as (33.9.12.5 <a href="https://wg21.link/exec.schedule.from">[exec.schedule.from]</a>):
+says it does. And <code class='backtick'>schedule_from(sch, sndr)</code> is currently defined as (33.9.12.7 <a href="https://wg21.link/exec.schedule.from">[exec.schedule.from]</a>):
 </p>
 <blockquote><pre>
 transform_sender(
@@ -164,7 +164,7 @@ where <code class='backtick'>Domain</code> is the type of the following expressi
 <p>
 [<i>Note 1</i>: The <code><del>continues_on</del><ins>schedule_from</ins></code> algorithm 
 works in tandem with <code><del>schedule_from</del><ins>continues_on</ins></code> 
-(<del>33.9.12.5 <a href="https://wg21.link/exec.schedule.from">[exec.schedule.from]</a></del><ins>33.9.12.4 <a href="https://wg21.link/exec.continues.on">[exec.continues.on]</a></ins>) 
+(<del>33.9.12.7 <a href="https://wg21.link/exec.schedule.from">[exec.schedule.from]</a></del><ins>33.9.12.6 <a href="https://wg21.link/exec.continues.on">[exec.continues.on]</a></ins>) 
 to give scheduler authors a way to customize both how to transition onto 
 (<code><del>continues_on</del><ins>schedule_from</ins></code>) and off of 
 (<code><del>schedule_from</del><ins>continues_on</ins></code>) a given execution context. 

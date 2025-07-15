@@ -116,7 +116,7 @@ consteval bool is_within_lifetime(const <ins>T</ins><del>auto</del>* p) noexcept
 <ins>-?- <i>Mandates</i>: <code>is_object_v&lt;T&gt;</code> is <code>true</code>.</ins>
 <p/>
 -3- <i>Returns</i>: <code>true</code> if <code>p</code> is a pointer to an object that is 
-within its lifetime (6.7.4 <a href="https://wg21.link/basic.life">[basic.life]</a>); otherwise, <code>false</code>.
+within its lifetime (6.8.4 <a href="https://wg21.link/basic.life">[basic.life]</a>); otherwise, <code>false</code>.
 <p/>
 -4- <i>Remarks</i>: During the evaluation of an expression <code>E</code> as a core 
 constant expression, a call to this function is ill-formed unless <code>p</code> 

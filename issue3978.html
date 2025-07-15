@@ -80,7 +80,7 @@
 which is unimplementable for <code>volatile</code>-qualified bit-field glvalues.
 <p/>
 In order to passing such a value to the <code>operator=</code> function, a distinct object needs to be created and thus the read from 
-the <code>volatile</code> glvalue, which is a side effect (6.9.1 <a href="https://wg21.link/intro.execution">[intro.execution]</a>/7), is unavoidable.
+the <code>volatile</code> glvalue, which is a side effect (6.10.1 <a href="https://wg21.link/intro.execution">[intro.execution]</a>/7), is unavoidable.
 <p/>
 <a href="https://wg21.link/P2968R0" title=" Make std::ignore a first-class object">P2968R0</a> addresses the impossibility of assignment from <code>void</code> values, but doesn't talk about 
 <code>volatile</code> bit-fields. Perhaps we should explicitly say that the program is ill-formed if a <code>volatile</code> bit-field 

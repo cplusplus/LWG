@@ -132,7 +132,7 @@ return launder(new (p) byte[bytes]);</ins>
 <p>
 <code>memory_resource::allocate</code> is the PMR equivalent of <code>malloc</code>
 and <code>operator new</code>. It therefore needs the "suitable created object"
-wording (see 6.7.2 <a href="https://wg21.link/intro.object">[intro.object]</a>, 20.2.12 <a href="https://wg21.link/c.malloc">[c.malloc]</a>).
+wording (see 6.8.2 <a href="https://wg21.link/intro.object">[intro.object]</a>, 20.2.12 <a href="https://wg21.link/c.malloc">[c.malloc]</a>).
 This ensures that it creates the requisite array object automatically for all
 the allocation functions of <code>polymorphic_allocator</code>,
 and returns the correct pointer value in all cases.
@@ -167,7 +167,7 @@ This wording is relative to <a href="https://wg21.link/n4885">N4885</a>.
 <ins>and implicitly creates objects within the allocated region of storage.</ins>
 <p/>
 <ins>-?- <i>Returns:</i> A pointer to a suitable created object
-(6.7.2 <a href="https://wg21.link/intro.object">[intro.object]</a>) in the allocated region of storage.</ins>
+(6.8.2 <a href="https://wg21.link/intro.object">[intro.object]</a>) in the allocated region of storage.</ins>
 <p/>
 <ins>-?- <i>Throws:</i> What and when the call to <code>do_allocate</code> throws.</ins>
 </p>

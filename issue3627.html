@@ -63,14 +63,14 @@
 <hr>
 <p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#New">New</a> status.</em></p>
 <h3 id="3627"><a href="lwg-active.html#3627">3627</a>. Inconsistent specifications for <code>std::make_optional</code> overloads</h3>
-<p><b>Section:</b> 22.5.9 <a href="https://wg21.link/optional.specalg">[optional.specalg]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
+<p><b>Section:</b> 22.5.10 <a href="https://wg21.link/optional.specalg">[optional.specalg]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
  <b>Submitter:</b> Jiang An <b>Opened:</b> 2021-10-23 <b>Last modified:</b> 2022-01-29</p>
 <p><b>Priority: </b>3
 </p>
 <p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
 <p><b>Discussion:</b></p>
 <p>
-Three <code>std::make_optional</code> overloads are specified in 22.5.9 <a href="https://wg21.link/optional.specalg">[optional.specalg]</a>. 
+Three <code>std::make_optional</code> overloads are specified in 22.5.10 <a href="https://wg21.link/optional.specalg">[optional.specalg]</a>. 
 The first one is specified by "<i>Returns:</i>" and the other two are specified by "<i>Effects:</i> Equivalent to:".
 According to 16.3.2.4 <a href="https://wg21.link/structure.specifications">[structure.specifications]</a>/4, such uses of "<i>Effects:</i> Equivalent to:" 
 propagate the <i>Constraints</i> specified for constructors. As the selected constructor for the first 
@@ -96,7 +96,7 @@ This wording is relative to <a href="https://wg21.link/n4901">N4901</a>.
 </p>
 
 <ol>
-<li><p>Modify 22.5.9 <a href="https://wg21.link/optional.specalg">[optional.specalg]</a> as indicated:</p>
+<li><p>Modify 22.5.10 <a href="https://wg21.link/optional.specalg">[optional.specalg]</a> as indicated:</p>
 
 <blockquote>
 <pre>

@@ -63,7 +63,7 @@
 <hr>
 <p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#C++20">C++20</a> status.</em></p>
 <h3 id="3326"><a href="lwg-defects.html#3326">3326</a>. <code>enable_view</code> has false positives</h3>
-<p><b>Section:</b> 25.4.4 <a href="https://wg21.link/range.view">[range.view]</a> <b>Status:</b> <a href="lwg-active.html#C++20">C++20</a>
+<p><b>Section:</b> 25.4.5 <a href="https://wg21.link/range.view">[range.view]</a> <b>Status:</b> <a href="lwg-active.html#C++20">C++20</a>
  <b>Submitter:</b> Germany <b>Opened:</b> 2019-11-06 <b>Last modified:</b> 2021-02-25</p>
 <p><b>Priority: </b>0
 </p>
@@ -102,7 +102,7 @@ need to opt-in to being a view now.
 <p>
 <b>Casey Carter:</b>
 <p/>
-<code>enable_view</code> (25.4.4 <a href="https://wg21.link/range.view">[range.view]</a>) is designed as on opt-in trait to specify that a type 
+<code>enable_view</code> (25.4.5 <a href="https://wg21.link/range.view">[range.view]</a>) is designed as on opt-in trait to specify that a type 
 is a view. It defaults to <code>true</code> for types derived from <code>view_base</code> &mdash; which is a 
 form of opt-in &mdash; and it also employs a heuristic. Unfortunately, the heuristic has false positives. 
 The working draft itself includes six exceptions to the heuristic for standard library types. Since 
@@ -116,7 +116,7 @@ false positives are much more problematic for users than false negatives, we sho
 <p>This wording is relative to <a href="https://wg21.link/n4835">N4835</a>.</p>
 
 <ol>
-<li><p>Modify 25.4.4 <a href="https://wg21.link/range.view">[range.view]</a> as indicated:</p>
+<li><p>Modify 25.4.5 <a href="https://wg21.link/range.view">[range.view]</a> as indicated:</p>
 
 <blockquote>
 <pre>

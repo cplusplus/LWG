@@ -185,7 +185,7 @@ future&lt;R&gt; get_future();
 <p>
 -12- <i>Returns</i>: A <code>future&lt;R&gt;</code> object with the same shared state as <code>*this</code>.
 <p/>
-<ins>-?- <i>Synchronization</i>: Calls to this function do not conflict (6.9.2 <a href="https://wg21.link/intro.multithread">[intro.multithread]</a>) 
+<ins>-?- <i>Synchronization</i>: Calls to this function do not conflict (6.10.2 <a href="https://wg21.link/intro.multithread">[intro.multithread]</a>) 
 with calls to <code>set_value</code>, <code>set_exception</code>, <code>set_value_at_thread_exit</code>, or
 <code>set_exception_at_thread_exit</code>. [<i>Note</i>: Such calls need not be synchronized, but implementations 
 must ensure they do not introduce data races. &mdash; <i>end note</i>]</ins>
@@ -209,7 +209,7 @@ future&lt;R&gt; get_future();
 <p>
 -13- <i>Returns</i>: A <code>future&lt;R&gt;</code> object that shares the same shared state as <code>*this</code>.
 <p/>
-<ins>-?- <i>Synchronization</i>: Calls to this function do not conflict (6.9.2 <a href="https://wg21.link/intro.multithread">[intro.multithread]</a>) 
+<ins>-?- <i>Synchronization</i>: Calls to this function do not conflict (6.10.2 <a href="https://wg21.link/intro.multithread">[intro.multithread]</a>) 
 with calls to <code>operator()</code> or <code>make_ready_at_thread_exit</code>. [<i>Note</i>: Such calls need not be 
 synchronized, but implementations must ensure they do not introduce data races. &mdash; <i>end note</i>]</ins>
 <p/>
@@ -264,7 +264,7 @@ future&lt;R&gt; get_future();
 <p>
 -12- <i>Returns</i>: A <code>future&lt;R&gt;</code> object with the same shared state as <code>*this</code>.
 <p/>
-<ins>-?- <i>Synchronization</i>: Calls to this function do not introduce data races (6.9.2 <a href="https://wg21.link/intro.multithread">[intro.multithread]</a>) with 
+<ins>-?- <i>Synchronization</i>: Calls to this function do not introduce data races (6.10.2 <a href="https://wg21.link/intro.multithread">[intro.multithread]</a>) with 
 calls to <code>set_value</code>, <code>set_exception</code>, <code>set_value_at_thread_exit</code>, or <code>set_exception_at_thread_exit</code>. 
 [<i>Note</i>: Such calls need not synchronize with each other. &mdash; <i>end note</i>]</ins>
 <p/>
@@ -287,7 +287,7 @@ future&lt;R&gt; get_future();
 <p>
 -13- <i>Returns</i>: A <code>future</code> object that shares the same shared state as <code>*this</code>.
 <p/>
-<ins>-?- <i>Synchronization</i>: Calls to this function do not introduce data races (6.9.2 <a href="https://wg21.link/intro.multithread">[intro.multithread]</a>) with calls 
+<ins>-?- <i>Synchronization</i>: Calls to this function do not introduce data races (6.10.2 <a href="https://wg21.link/intro.multithread">[intro.multithread]</a>) with calls 
 to <code>operator()</code> or <code>make_ready_at_thread_exit</code>. [<i>Note</i>: Such calls need not synchronize with each other. 
 &mdash; <i>end note</i>]</ins>
 <p/>

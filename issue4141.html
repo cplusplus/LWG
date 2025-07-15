@@ -93,7 +93,7 @@ raised about the form of this wording and whether it's normatively meaningful.
 Except for the special case of standard-layout class types, the standard has
 very few requirements on where or how storage for subobjects is allocated.
 The library should not be trying to dictate more than the language guarantees.
-It would be better to refer to wording from 6.7.2 <a href="https://wg21.link/intro.object">[intro.object]</a>
+It would be better to refer to wording from 6.8.2 <a href="https://wg21.link/intro.object">[intro.object]</a>
 such as <i>subobject</i>, <i>provides storage</i>, or <i>nested within</i>.
 Any of these terms would provide the desired properties, without using
 different (and possibly inconsistent) terminology.
@@ -136,7 +136,7 @@ but that other issue intentionally doesn't touch the affected sentence here
 (except for removing the italics on "contained value").
 The intention is that the merge conflict can be resolved in the obvious way:
 "An optional object's contained value
-is nested within (6.7.2 <a href="https://wg21.link/intro.object">[intro.object]</a>) the optional object."]
+is nested within (6.8.2 <a href="https://wg21.link/intro.object">[intro.object]</a>) the optional object."]
 </blockquote>
 
 <blockquote>
@@ -149,7 +149,7 @@ it means that an object of type <code>T</code>,
 referred to as the optional object's <i>contained value</i>,
 is
 <del>allocated within the storage of</del>
-<ins>nested within (6.7.2 <a href="https://wg21.link/intro.object">[intro.object]</a>)</ins>
+<ins>nested within (6.8.2 <a href="https://wg21.link/intro.object">[intro.object]</a>)</ins>
 the optional object.
 <del>
 Implementations are not permitted to use additional storage,
@@ -175,7 +175,7 @@ it means that a value of type <code>T</code>,
 referred to as the <code class='backtick'>variant</code> object's <i>contained value</i>,
 is
 <del>allocated within the storage of</del>
-<ins>nested within (6.7.2 <a href="https://wg21.link/intro.object">[intro.object]</a>)</ins>
+<ins>nested within (6.8.2 <a href="https://wg21.link/intro.object">[intro.object]</a>)</ins>
 the <code class='backtick'>variant</code> object.
 <del>
 Implementations are not permitted to use additional storage,
@@ -193,7 +193,7 @@ such as dynamic memory, to allocate the contained value.
 Any object of type <code>expected&lt;T, E&gt;</code> either contains
 a value of type <code class='backtick'>T</code> or a value of type <code class='backtick'>E</code>
 <del>within its own storage</del>
-<ins>nested within (6.7.2 <a href="https://wg21.link/intro.object">[intro.object]</a>) it</ins>.
+<ins>nested within (6.8.2 <a href="https://wg21.link/intro.object">[intro.object]</a>) it</ins>.
 <del>
 Implementations are not permitted to use additional storage,
 such as dynamic memory,
@@ -213,7 +213,7 @@ Member <i><code>has_val</code></i> indicates whether the
 Any object of type <code>expected&lt;T, E&gt;</code> either represents
 a value of type <code class='backtick'>T</code>, or contains a value of type <code class='backtick'>E</code>
 <del>within its own storage</del>
-<ins>nested within (6.7.2 <a href="https://wg21.link/intro.object">[intro.object]</a>) it</ins>.
+<ins>nested within (6.8.2 <a href="https://wg21.link/intro.object">[intro.object]</a>) it</ins>.
 <del>
 Implementations are not permitted to use additional storage,
 such as dynamic memory, to allocate the object of type <code class='backtick'>E</code>.
