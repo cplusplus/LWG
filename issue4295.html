@@ -259,7 +259,7 @@ template &lt;class W1, class W2&gt;
   <ins>constexpr</ins> bool operator&lt;=(observer_ptr&lt;W1&gt; p1, observer_ptr&lt;W2&gt; p2);
 </code></pre>
 <blockquote>
--16- <i>Returns</i>: <code>not p2 &lt; p1</code>.
+-16- <i>Returns</i>: <code>not (p2 &lt; p1)</code>.
 </blockquote>
 
 <pre><code>
@@ -267,7 +267,7 @@ template &lt;class W1, class W2&gt;
   <ins>constexpr</ins> bool operator&gt;=(observer_ptr&lt;W1&gt; p1, observer_ptr&lt;W2&gt; p2);
 </code></pre>
 <blockquote>
--16- <i>Returns</i>: <code>not p1 &lt; p2</code>.
+-16- <i>Returns</i>: <code>not (p1 &lt; p2)</code>.
 </blockquote>
 
 
