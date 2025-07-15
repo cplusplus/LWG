@@ -64,7 +64,7 @@
 <p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#New">New</a> status.</em></p>
 <h3 id="4294"><a href="lwg-active.html#4294">4294</a>. <code class='backtick'>bitset(const CharT*)</code> constructor needs to be constrained</h3>
 <p><b>Section:</b> 22.9.2.2 <a href="https://wg21.link/bitset.cons">[bitset.cons]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Jonathan Wakely <b>Opened:</b> 2025-07-12 <b>Last modified:</b> 2025-07-14</p>
+ <b>Submitter:</b> Jonathan Wakely <b>Opened:</b> 2025-07-12 <b>Last modified:</b> 2025-07-15</p>
 <p><b>Priority: </b>Not Prioritized
 </p>
 <p><b>View all other</b> <a href="lwg-index.html#bitset.cons">issues</a> in [bitset.cons].</p>
@@ -114,13 +114,13 @@ template&lt;class charT&gt;
 <ins>-?- <i>Constraints</i>:</ins>
 <ul>
 <li>
-<ins><code>is_array_v&lt;charT&gt;</code> is <code class='backtick'>false</code>.</ins>
+<ins><code>is_array_v&lt;charT&gt;</code> is <code class='backtick'>false</code>,</ins>
 </li>
 <li>
-<ins><code>is_trivially_copyable_v&lt;charT&gt;</code> is <code class='backtick'>true</code>.</ins>
+<ins><code>is_trivially_copyable_v&lt;charT&gt;</code> is <code class='backtick'>true</code>,</ins>
 </li>
 <li>
-<ins><code>is_standard_layout_v&lt;charT&gt;</code> is <code class='backtick'>true</code>.</ins>
+<ins><code>is_standard_layout_v&lt;charT&gt;</code> is <code class='backtick'>true</code>, and</ins>
 </li>
 <li>
 <ins><code>is_trivially_default_constructible_v&lt;charT&gt;</code> is <code class='backtick'>true</code>.</ins>
