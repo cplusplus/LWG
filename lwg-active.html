@@ -79,7 +79,7 @@
 </tr>
 </table>
 <h1>C++ Standard Library Active Issues List (Revision D125)</h1>
-<p>Revised 2025-07-15 at 10:55:30 UTC
+<p>Revised 2025-07-15 at 10:57:10 UTC
 </p>
   <p>Reference ISO/IEC IS 14882:2020(E)</p>
   <p>Also see:</p>
@@ -75804,7 +75804,7 @@ template&lt;class charT&gt;
 <hr>
 <h3 id="4295"><a href="#4295">4295</a><sup><a href="https://cplusplus.github.io/LWG/issue4295">(i)</a></sup>. [fund.ts.v3] <code class='backtick'>experimental::observer_ptr</code> should have more constexpr</h3>
 <p><b>Section:</b> 8.2.6 <a href="https://cplusplus.github.io/fundamentals-ts/v3.html#memory.observer.ptr.special">[fund.ts.v3::memory.observer.ptr.special]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Jonathan Wakely <b>Opened:</b> 2025-07-14 <b>Last modified:</b> 2025-07-14</p>
+ <b>Submitter:</b> Jonathan Wakely <b>Opened:</b> 2025-07-14 <b>Last modified:</b> 2025-07-15</p>
 <p><b>Priority: </b>Not Prioritized
 </p>
 <p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
@@ -75850,8 +75850,8 @@ template &lt;class W1, class W2&gt;
 </code></pre>
 <blockquote>
 <i>Returns</i>:
-    <code><del>less&lt;W3&gt;</del><ins>compare_three_way</ins>()(p1.get(), p2.get())</code>,
-    where <code class='backtick'>W3</code> is the composite pointer type (C++20 §7) of <code class='backtick'>W1*</code> and <code class='backtick'>W2*</code>.
+    <code><del>less&lt;W3&gt;</del><ins>compare_three_way</ins>()(p1.get(), p2.get())</code><del>,
+    where <code class='backtick'>W3</code> is the composite pointer type (C++20 §7) of <code class='backtick'>W1*</code> and <code class='backtick'>W2*</code></del>.
 </blockquote>
 
 <pre><code><del>bool operator&gt;(...);
