@@ -54,7 +54,7 @@
 </style>
 </head>
 <body>
-<p>Revised 2025-07-15 at 19:12:12 UTC
+<p>Revised 2025-07-18 at 20:51:19 UTC
 </p><h2>Unresolved Issues</h2>
 <hr>
 <h3 id="423"><a href="#423">423</a><sup><a href="https://cplusplus.github.io/LWG/issue423">(i)</a></sup>. Effects of negative <code>streamsize</code> in iostreams</h3>
@@ -72640,6 +72640,60 @@ template &lt;class W1, class W2&gt;
 </li>
 </ol>
 
+
+
+
+
+
+<hr>
+<h3 id="4296"><a href="#4296">4296</a><sup><a href="https://cplusplus.github.io/LWG/issue4296">(i)</a></sup>. Clarify that Cpp17Hash does not imply stateless</h3>
+<p><b>Section:</b> 16.4.4.5 <a href="https://wg21.link/hash.requirements">[hash.requirements]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
+ <b>Submitter:</b> Jonathan Wakely <b>Opened:</b> 2025-07-18 <b>Last modified:</b> 2025-07-18</p>
+<p><b>Priority: </b>Not Prioritized
+</p>
+<p><b>View all other</b> <a href="lwg-index.html#hash.requirements">issues</a> in [hash.requirements].</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
+<p><b>Discussion:</b></p>
+<p>
+A colleague was mislead into thinking that the <i>Cpp17Hash</i> requirements
+imply hash functions must be stateless, so that every <code class='backtick'>h</code> would produce the
+same value for <code class='backtick'>h(k)</code>. The normative wording and the note can be interpreted
+as saying that the value of <code class='backtick'>h</code> is not relevant, only <code class='backtick'>k</code> matters.
+</p>
+<blockquote>
+The value returned shall depend only on the argument <code class='backtick'>k</code> for the duration
+of the program.
+<p>
+[<i>Note 1</i>: Thus all evaluations of the expression <code class='backtick'>h(k)</code> with the same
+value for <code class='backtick'>k</code> yield the same result for a given execution of the program.
+&mdash; <i>end note</i>]
+</p>
+</blockquote>
+<p>
+I initially proposed changing it to "with the same values for <code class='backtick'>h</code> and <code class='backtick'>k</code>
+but Jens observed that if <code class='backtick'>h(k)</code> is allowed to change <code class='backtick'>h</code> then a subsequent
+call would not meet the condition "the same value of <code class='backtick'>h</code>".
+We should also clarify that the evaluation of <code class='backtick'>h(k)</code> should not change <code class='backtick'>h</code>,
+so that we have the same value of <code class='backtick'>h</code> each time.
+</p>
+<p>
+Arguably, the wording in p2 "<code class='backtick'>h</code> is a value of type (possibly const) <code class='backtick'>H</code>"
+already covers this. It suggests to me that the effects in the table are for
+a particular value <code class='backtick'>h</code>, so for <i>that</i> value, the result of calling <code class='backtick'>h(k)</code>
+depends only on the value of <code class='backtick'>k</code>
+(and not on the current time, ambient temperature in Denmark,
+or the output of a random number generator). And the fact that <code class='backtick'>h</code> can be
+a value of type <code class='backtick'>const H</code> implies that calling <code class='backtick'>h(k)</code> doesn't change <code class='backtick'>h</code>.
+</p>
+<p>
+Maybe we want to clarify it in terms of equality-preserving
+18.2 <a href="https://wg21.link/concepts.equality">[concepts.equality]</a>.
+</p>
+
+
+<p id="res-4296"><b>Proposed resolution:</b></p>
+<p>
+</p>
 
 
 
