@@ -83,7 +83,9 @@ filter-net-ts-annex-f := sed 's/\\newlabel{\([^}]*\)}.*TitleReference {\([^}]*\)
 
 # Before running this, rebuild the C++ draft at the desired commit.
 # That ensures the .aux files match the content of the relevant draft.
-meta-data/annex-f: $(wildcard $(DRAFT)/source/*.aux)
+# We exclude back.aux, which contains some spurious \newlabels for indices
+# and shouldn't have any real labels.
+meta-data/annex-f: $(filter-out %/back.aux, $(wildcard $(DRAFT)/source/*.aux))
 	test -d "$(DRAFT)"
 	if grep -q TitleReference $^; then \
 	    grep '^\\newlabel{' $^ | $(filter-annex-f-old-memoir); \
