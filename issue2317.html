@@ -63,16 +63,16 @@
 <hr>
 <p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#C++14">C++14</a> status.</em></p>
 <h3 id="2317"><a href="lwg-defects.html#2317">2317</a>. The type property queries should be <code>UnaryTypeTraits</code> returning <code>size_t</code></h3>
-<p><b>Section:</b> 21.3.6 <a href="https://wg21.link/meta.unary.prop.query">[meta.unary.prop.query]</a> <b>Status:</b> <a href="lwg-active.html#C++14">C++14</a>
+<p><b>Section:</b> 21.3.7 <a href="https://wg21.link/meta.unary.prop.query">[meta.unary.prop.query]</a> <b>Status:</b> <a href="lwg-active.html#C++14">C++14</a>
  <b>Submitter:</b> Stephan T. Lavavej <b>Opened:</b> 2013-09-21 <b>Last modified:</b> 2017-07-05</p>
 <p><b>Priority: </b>0
 </p>
 <p><b>View all issues with</b> <a href="lwg-status.html#C++14">C++14</a> status.</p>
 <p><b>Discussion:</b></p>
 <p>
-The sibling sections 21.3.5 <a href="https://wg21.link/meta.unary">[meta.unary]</a>, 21.3.7 <a href="https://wg21.link/meta.rel">[meta.rel]</a>, and 21.3.8 <a href="https://wg21.link/meta.trans">[meta.trans]</a> respectively specify 
+The sibling sections 21.3.6 <a href="https://wg21.link/meta.unary">[meta.unary]</a>, 21.3.8 <a href="https://wg21.link/meta.rel">[meta.rel]</a>, and 21.3.9 <a href="https://wg21.link/meta.trans">[meta.trans]</a> respectively specify 
 <code>UnaryTypeTraits</code>, <code>BinaryTypeTraits</code>, and <code>TransformationTraits</code>, as stated by each /2 paragraph.  However, 
-21.3.6 <a href="https://wg21.link/meta.unary.prop.query">[meta.unary.prop.query]</a> is underspecified. <code>alignment_of</code>, <code>rank</code>, and <code>extent</code> are said to produce 
+21.3.7 <a href="https://wg21.link/meta.unary.prop.query">[meta.unary.prop.query]</a> is underspecified. <code>alignment_of</code>, <code>rank</code>, and <code>extent</code> are said to produce 
 "Values", but the type of that Value is not specified, and the struct templates are not required to derive from <code>integral_constant</code>.  
 Such derivation is more than stylistic &mdash; it allows the structs to be passed to functions taking <code>integral_constant</code>.
 <p/>
@@ -91,7 +91,7 @@ template parameter <code>I</code>.)
 <p>This wording is relative to N3691.</p>
 
 <ol>
-<li><p>Following 21.3.6 <a href="https://wg21.link/meta.unary.prop.query">[meta.unary.prop.query]</a>/1 add a new paragraph as indicated:</p>
+<li><p>Following 21.3.7 <a href="https://wg21.link/meta.unary.prop.query">[meta.unary.prop.query]</a>/1 add a new paragraph as indicated:</p>
 
 <blockquote><p>
 <ins>Each of these templates shall be a <code>UnaryTypeTrait</code> (21.3.2 <a href="https://wg21.link/meta.rqmts">[meta.rqmts]</a>) with a <code>BaseCharacteristic</code> of 

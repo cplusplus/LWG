@@ -66,7 +66,7 @@ and BinaryTypeTraits">
 <p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#C++17">C++17</a> status.</em></p>
 <h3 id="2567"><a href="lwg-defects.html#2567">2567</a>. Specification of logical operator traits uses <code>BaseCharacteristic</code>, which is defined only for <code>UnaryTypeTraits</code> 
 and <code>BinaryTypeTraits</code></h3>
-<p><b>Section:</b> 21.3.9 <a href="https://wg21.link/meta.logical">[meta.logical]</a> <b>Status:</b> <a href="lwg-active.html#C++17">C++17</a>
+<p><b>Section:</b> 21.3.10 <a href="https://wg21.link/meta.logical">[meta.logical]</a> <b>Status:</b> <a href="lwg-active.html#C++17">C++17</a>
  <b>Submitter:</b> Tim Song <b>Opened:</b> 2015-12-10 <b>Last modified:</b> 2017-07-30</p>
 <p><b>Priority: </b>2
 </p>
@@ -163,7 +163,7 @@ Last review of this with LWG turned up a true_type typo in the definition of dis
 <p>This wording is relative to N4606.</p>
 <ol>
 <li>
-<p>In 21.3.9 <a href="https://wg21.link/meta.logical">[meta.logical]</a> p3, edit as follows:</p>
+<p>In 21.3.10 <a href="https://wg21.link/meta.logical">[meta.logical]</a> p3, edit as follows:</p>
 <pre>
 template&lt;class... B&gt; struct conjunction : <em>see below</em> { };
 </pre>
@@ -187,7 +187,7 @@ of</del> <ins>inherit from</ins> either <code>true_type</code> or <code>false_ty
 </li>
 
 <li>
-<p>In 21.3.9 <a href="https://wg21.link/meta.logical">[meta.logical]</a> p6, edit as follows:</p>
+<p>In 21.3.10 <a href="https://wg21.link/meta.logical">[meta.logical]</a> p6, edit as follows:</p>
 <pre>
 template&lt;class... B&gt; struct disjunction : <em>see below</em> { };
 </pre>
@@ -211,7 +211,7 @@ of</del> <ins>inherit from</ins> either <code>true_type</code> or <code>false_ty
 </li>
 
 <li>
-<p>In 21.3.9 <a href="https://wg21.link/meta.logical">[meta.logical]</a> p8, edit as follows</p>
+<p>In 21.3.10 <a href="https://wg21.link/meta.logical">[meta.logical]</a> p8, edit as follows</p>
 <pre>
 template&lt;class B&gt; struct negation : bool_constant&lt;!<ins>bool(</ins>B::value<ins>)</ins>&gt; { };
 </pre>
@@ -235,7 +235,7 @@ template&lt;class B&gt; struct negation : bool_constant&lt;!<ins>bool(</ins>B::v
 
 <ol>
 <li>
-<p>In 21.3.9 <a href="https://wg21.link/meta.logical">[meta.logical]</a> p3, edit as follows:</p>
+<p>In 21.3.10 <a href="https://wg21.link/meta.logical">[meta.logical]</a> p3, edit as follows:</p>
 <pre>
 template&lt;class... B&gt; struct conjunction : <em>see below</em> { };
 </pre>
@@ -261,7 +261,7 @@ shall not be hidden and shall be unambiguously available in <code>conjunction</c
 </li>
 
 <li>
-<p>In 21.3.9 <a href="https://wg21.link/meta.logical">[meta.logical]</a> p6, edit as follows:</p>
+<p>In 21.3.10 <a href="https://wg21.link/meta.logical">[meta.logical]</a> p6, edit as follows:</p>
 <pre>
 template&lt;class... B&gt; struct disjunction : <em>see below</em> { };
 </pre>
@@ -287,7 +287,7 @@ shall not be hidden and shall be unambiguously available in <code>disjunction</c
 </li>
 
 <li>
-<p>In 21.3.9 <a href="https://wg21.link/meta.logical">[meta.logical]</a> p8, edit as follows</p>
+<p>In 21.3.10 <a href="https://wg21.link/meta.logical">[meta.logical]</a> p8, edit as follows</p>
 <pre>
 template&lt;class B&gt; struct negation : <ins><em>see below</em></ins><del><code>bool_constant&lt;!B::value&gt;</code></del> { };
 </pre>

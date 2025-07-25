@@ -67,7 +67,7 @@
 </tr>
 <tr>
   <td align="left">Date:</td>
-  <td align="left">2025-07-18</td>
+  <td align="left">2025-07-25</td>
 </tr>
 <tr>
   <td align="left">Project:</td>
@@ -79,7 +79,7 @@
 </tr>
 </table>
 <h1>C++ Standard Library Closed Issues List (Revision D125)</h1>
-<p>Revised 2025-07-18 at 20:51:19 UTC
+<p>Revised 2025-07-25 at 08:26:19 UTC
 </p>
   <p>Reference ISO/IEC IS 14882:2020(E)</p>
   <p>Also see:</p>
@@ -1298,7 +1298,7 @@ exists.)</p>
 
 
 <p id="res-2"><b>Proposed resolution:</b></p>
-<p>Change 21.3.5.4 <a href="https://wg21.link/meta.unary.prop">[meta.unary.prop]</a> paragraph 1 Effects from 
+<p>Change 21.3.6.4 <a href="https://wg21.link/meta.unary.prop">[meta.unary.prop]</a> paragraph 1 Effects from 
 &quot;Calls p-&gt;release()&quot; to &quot;Calls p.release()&quot;.</p>
 
 
@@ -19388,7 +19388,7 @@ slicing involved.
 
 <hr>
 <h3 id="747"><a href="#747">747</a><sup><a href="https://cplusplus.github.io/LWG/issue747">(i)</a></sup>. We have 3 separate type traits to identify classes supporting no-throw operations</h3>
-<p><b>Section:</b> 21.3.5.4 <a href="https://wg21.link/meta.unary.prop">[meta.unary.prop]</a> <b>Status:</b> <a href="lwg-active.html#NAD">NAD</a>
+<p><b>Section:</b> 21.3.6.4 <a href="https://wg21.link/meta.unary.prop">[meta.unary.prop]</a> <b>Status:</b> <a href="lwg-active.html#NAD">NAD</a>
  <b>Submitter:</b> Alisdair Meredith <b>Opened:</b> 2007-10-10 <b>Last modified:</b> 2016-01-28</p>
 <p><b>Priority: </b>Not Prioritized
 </p>
@@ -19480,7 +19480,7 @@ Move to NAD.
 
 <hr>
 <h3 id="748"><a href="#748">748</a><sup><a href="https://cplusplus.github.io/LWG/issue748">(i)</a></sup>. The is_abstract type trait is defined by reference to 10.4.</h3>
-<p><b>Section:</b> 21.3.5.4 <a href="https://wg21.link/meta.unary.prop">[meta.unary.prop]</a> <b>Status:</b> <a href="lwg-active.html#NAD">NAD</a>
+<p><b>Section:</b> 21.3.6.4 <a href="https://wg21.link/meta.unary.prop">[meta.unary.prop]</a> <b>Status:</b> <a href="lwg-active.html#NAD">NAD</a>
  <b>Submitter:</b> Alisdair Meredith <b>Opened:</b> 2007-10-10 <b>Last modified:</b> 2016-01-28</p>
 <p><b>Priority: </b>Not Prioritized
 </p>
@@ -19521,7 +19521,7 @@ Core has clarified that the definition abstract is adequate. Issue withdrawn by 
 <hr>
 <h3 id="750"><a href="#750">750</a><sup><a href="https://cplusplus.github.io/LWG/issue750">(i)</a></sup>. The current definition for <code>is_convertible</code> requires that the type be
 implicitly convertible, so explicit constructors are ignored.</h3>
-<p><b>Section:</b> 21.3.7 <a href="https://wg21.link/meta.rel">[meta.rel]</a> <b>Status:</b> <a href="lwg-active.html#Dup">Dup</a>
+<p><b>Section:</b> 21.3.8 <a href="https://wg21.link/meta.rel">[meta.rel]</a> <b>Status:</b> <a href="lwg-active.html#Dup">Dup</a>
  <b>Submitter:</b> Alisdair Meredith <b>Opened:</b> 2007-10-10 <b>Last modified:</b> 2016-01-28</p>
 <p><b>Priority: </b>Not Prioritized
 </p>
@@ -21935,7 +21935,7 @@ namespace std {
 
 <hr>
 <h3 id="849"><a href="#849">849</a><sup><a href="https://cplusplus.github.io/LWG/issue849">(i)</a></sup>. missing type traits to compute root class and derived class of types in a class hierachy</h3>
-<p><b>Section:</b> 21.3.8.7 <a href="https://wg21.link/meta.trans.other">[meta.trans.other]</a> <b>Status:</b> <a href="lwg-active.html#NAD">NAD</a>
+<p><b>Section:</b> 21.3.9.7 <a href="https://wg21.link/meta.trans.other">[meta.trans.other]</a> <b>Status:</b> <a href="lwg-active.html#NAD">NAD</a>
  <b>Submitter:</b> Thorsten Ottosen <b>Opened:</b> 2008-06-05 <b>Last modified:</b> 2016-01-28</p>
 <p><b>Priority: </b>Not Prioritized
 </p>
@@ -21982,7 +21982,7 @@ template&lt; class T &gt; struct root_base_class;
 </pre></blockquote>
 
 <p>
-Add three new entries to table 51 (21.3.8.7 <a href="https://wg21.link/meta.trans.other">[meta.trans.other]</a>) with the following content
+Add three new entries to table 51 (21.3.9.7 <a href="https://wg21.link/meta.trans.other">[meta.trans.other]</a>) with the following content
 </p>
 
 <blockquote>
@@ -23012,7 +23012,7 @@ concepts.
       The proposed change makes it clear that <code>make_signed&lt;T&gt;::type</code>
       must be one of the signed integer types as defined in 3.9.1. Ditto for
       <code>make_unsigned&lt;T&gt;type</code> and unsigned integer types.
-      21.3.8.4 <a href="https://wg21.link/meta.trans.sign">[meta.trans.sign]</a> table 48...
+      21.3.9.4 <a href="https://wg21.link/meta.trans.sign">[meta.trans.sign]</a> table 48...
     </p>
     <blockquote><p>
       Table 48: Sign modifications
@@ -29761,7 +29761,7 @@ at the next meeting.
 
 <hr>
 <h3 id="1020"><a href="#1020">1020</a><sup><a href="https://cplusplus.github.io/LWG/issue1020">(i)</a></sup>. Restore <code>aligned_union</code></h3>
-<p><b>Section:</b> 21.3.8.7 <a href="https://wg21.link/meta.trans.other">[meta.trans.other]</a> <b>Status:</b> <a href="lwg-active.html#NAD">NAD</a>
+<p><b>Section:</b> 21.3.9.7 <a href="https://wg21.link/meta.trans.other">[meta.trans.other]</a> <b>Status:</b> <a href="lwg-active.html#NAD">NAD</a>
  <b>Submitter:</b> Alisdair Meredith <b>Opened:</b> 2009-03-11 <b>Last modified:</b> 2016-01-28</p>
 <p><b>Priority: </b>Not Prioritized
 </p>
@@ -37213,7 +37213,7 @@ mechanism is used to synchronize the data.
 
 <hr>
 <h3 id="1228"><a href="#1228">1228</a><sup><a href="https://cplusplus.github.io/LWG/issue1228">(i)</a></sup>. User-specialized nothrow type traits</h3>
-<p><b>Section:</b> 21.3.5.4 <a href="https://wg21.link/meta.unary.prop">[meta.unary.prop]</a> <b>Status:</b> <a href="lwg-active.html#NAD">NAD</a>
+<p><b>Section:</b> 21.3.6.4 <a href="https://wg21.link/meta.unary.prop">[meta.unary.prop]</a> <b>Status:</b> <a href="lwg-active.html#NAD">NAD</a>
  <b>Submitter:</b> Alisdair Meredith <b>Opened:</b> 2009-10-07 <b>Last modified:</b> 2016-01-28</p>
 <p><b>Priority: </b>Not Prioritized
 </p>
@@ -37275,7 +37275,7 @@ operation is known not to throw.
 </p></blockquote>
 
 <p>
-to the following traits in 21.3.5.4 <a href="https://wg21.link/meta.unary.prop">[meta.unary.prop]</a> Table 43 Type
+to the following traits in 21.3.6.4 <a href="https://wg21.link/meta.unary.prop">[meta.unary.prop]</a> Table 43 Type
 property predicates.
 </p>
 
@@ -38401,7 +38401,7 @@ believe this rises to the level of a defect.
 
 <hr>
 <h3 id="1239"><a href="#1239">1239</a><sup><a href="https://cplusplus.github.io/LWG/issue1239">(i)</a></sup>. Defect report</h3>
-<p><b>Section:</b> 21.3.5.4 <a href="https://wg21.link/meta.unary.prop">[meta.unary.prop]</a> <b>Status:</b> <a href="lwg-active.html#NAD_Editorial">NAD Editorial</a>
+<p><b>Section:</b> 21.3.6.4 <a href="https://wg21.link/meta.unary.prop">[meta.unary.prop]</a> <b>Status:</b> <a href="lwg-active.html#NAD_Editorial">NAD Editorial</a>
  <b>Submitter:</b> David Abrahams <b>Opened:</b> 2009-10-16 <b>Last modified:</b> 2016-01-28</p>
 <p><b>Priority: </b>Not Prioritized
 </p>
@@ -42095,7 +42095,7 @@ See <a href="http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2010/n3165.pdf">
 
 <hr>
 <h3 id="1395"><a href="#1395">1395</a><sup><a href="https://cplusplus.github.io/LWG/issue1395">(i)</a></sup>. Inconsistent reference links should be unified</h3>
-<p><b>Section:</b> 21.3.7 <a href="https://wg21.link/meta.rel">[meta.rel]</a> <b>Status:</b> <a href="lwg-active.html#NAD_Editorial">NAD Editorial</a>
+<p><b>Section:</b> 21.3.8 <a href="https://wg21.link/meta.rel">[meta.rel]</a> <b>Status:</b> <a href="lwg-active.html#NAD_Editorial">NAD Editorial</a>
  <b>Submitter:</b> Japan <b>Opened:</b> 2010-08-25 <b>Last modified:</b> 2016-01-28</p>
 <p><b>Priority: </b>Not Prioritized
 </p>
@@ -53164,7 +53164,7 @@ compiles OK without the proposed change.
 
 <hr>
 <h3 id="2828"><a href="#2828">2828</a><sup><a href="https://cplusplus.github.io/LWG/issue2828">(i)</a></sup>. Clarify <code>&lt;cstdalign&gt;</code> (following adoption of P0063r3)</h3>
-<p><b>Section:</b> 21.3.5.4 <a href="https://wg21.link/meta.unary.prop">[meta.unary.prop]</a> <b>Status:</b> <a href="lwg-active.html#NAD_Editorial">NAD Editorial</a>
+<p><b>Section:</b> 21.3.6.4 <a href="https://wg21.link/meta.unary.prop">[meta.unary.prop]</a> <b>Status:</b> <a href="lwg-active.html#NAD_Editorial">NAD Editorial</a>
  <b>Submitter:</b> Thomas Koeppe <b>Opened:</b> 2016-11-20 <b>Last modified:</b> 2020-09-06</p>
 <p><b>Priority: </b>Not Prioritized
 </p>

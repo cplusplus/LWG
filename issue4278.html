@@ -72,7 +72,7 @@
 <p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
 <p><b>Discussion:</b></p>
 <p>
-During LWG review of <a href="https://wg21.link/P3481R3">P3481R3</a> it was noted that we need to say "except that <code class='backtick'>sndr</code> 
+During LWG review of <a href="https://wg21.link/P3481R3" title=" std::execution::bulk() issues">P3481R3</a> it was noted that we need to say "except that <code class='backtick'>sndr</code> 
 is only evaluated once" because it's used in <code><i>get-domain-early</i>(sndr)</code>, but that 
 exposition-only-function doesn't actually use its argument, it only cares about the type, and 
 it default constructs a <code class='backtick'>Domain</code> of a type determined by using the type of <code class='backtick'>sndr</code>.

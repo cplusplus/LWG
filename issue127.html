@@ -106,7 +106,7 @@ object parameter may be bound to an rvalue [13.3.3.1.4/3]
 
   <p>Tokyo: The LWG removed the following from the proposed resolution:</p>
 
-  <p>In 21.3.5 <a href="https://wg21.link/meta.unary">[meta.unary]</a>, paragraph 2, and 21.3.5.4 <a href="https://wg21.link/meta.unary.prop">[meta.unary.prop]</a>, 
+  <p>In 21.3.6 <a href="https://wg21.link/meta.unary">[meta.unary]</a>, paragraph 2, and 21.3.6.4 <a href="https://wg21.link/meta.unary.prop">[meta.unary.prop]</a>, 
   paragraph 2, make the conversion to auto_ptr_ref const:</p>
   <blockquote>
     <pre>template&lt;class Y&gt; operator auto_ptr_ref&lt;Y&gt;() const throw();</pre>
@@ -114,17 +114,17 @@ object parameter may be bound to an rvalue [13.3.3.1.4/3]
 
 
 <p id="res-127"><b>Proposed resolution:</b></p>
-<p>In 21.3.5 <a href="https://wg21.link/meta.unary">[meta.unary]</a>, paragraph 2, move
+<p>In 21.3.6 <a href="https://wg21.link/meta.unary">[meta.unary]</a>, paragraph 2, move
 the <code>auto_ptr_ref</code> definition to namespace scope.</p>
 
-<p>In 21.3.5 <a href="https://wg21.link/meta.unary">[meta.unary]</a>, paragraph 2, add
+<p>In 21.3.6 <a href="https://wg21.link/meta.unary">[meta.unary]</a>, paragraph 2, add
 a public assignment operator to the <code>auto_ptr</code> definition: </p>
 
 <blockquote>
   <pre>auto_ptr&amp; operator=(auto_ptr_ref&lt;X&gt; r) throw();</pre>
 </blockquote>
 
-<p>Also add the assignment operator to 21.3.5.4 <a href="https://wg21.link/meta.unary.prop">[meta.unary.prop]</a>: </p>
+<p>Also add the assignment operator to 21.3.6.4 <a href="https://wg21.link/meta.unary.prop">[meta.unary.prop]</a>: </p>
 
 <blockquote>
   <pre>auto_ptr&amp; operator=(auto_ptr_ref&lt;X&gt; r) throw()</pre>

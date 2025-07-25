@@ -140,7 +140,7 @@ std::trivially_relocate(wp, wp+1, dest); // implementation defined
 is well-defined or UB, depending on the implementation. This is because
 on some implementations trivially relocating a polymorphic type requires
 patching its virtual table pointer; cf. the discussion in chapter 15.1
-of <a href="https://wg21.link/P2786R13">P2786R13</a>. However the "type erasure" done by 
+of <a href="https://wg21.link/P2786R13" title=" Trivial Relocatability For C++26">P2786R13</a>. However the "type erasure" done by 
 <code>wrapper&lt;P&gt;</code> in the example (ultimately, it is just an array 
 of bytes) does not allow implementations to do such patching, and the code 
 is going to fail at runtime. Therefore this case also needs to be discussed by
@@ -151,7 +151,7 @@ is going to fail at runtime. Therefore this case also needs to be discussed by
 <blockquote class="note">
 
 <p>
-This wording is relative to <a href="https://wg21.link/N5008">N5008</a>.
+This wording is relative to <a href="https://wg21.link/N5008" title=" Working Draft, Programming Languages — C++">N5008</a>.
 </p>
 
 <ol>
@@ -215,7 +215,7 @@ it is implementation-defined whether the behavior is undefined.</ins>
 
 <p id="res-4283"><b>Proposed resolution:</b></p>
 <p>
-This wording is relative to <a href="https://wg21.link/N5008">N5008</a>.
+This wording is relative to <a href="https://wg21.link/N5008" title=" Working Draft, Programming Languages — C++">N5008</a>.
 </p>
 
 <ol>

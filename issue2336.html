@@ -63,7 +63,7 @@
 <hr>
 <p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#C++17">C++17</a> status.</em></p>
 <h3 id="2336"><a href="lwg-defects.html#2336">2336</a>. <code>is_trivially_constructible/is_trivially_assignable</code> traits are always false</h3>
-<p><b>Section:</b> 21.3.5.4 <a href="https://wg21.link/meta.unary.prop">[meta.unary.prop]</a> <b>Status:</b> <a href="lwg-active.html#C++17">C++17</a>
+<p><b>Section:</b> 21.3.6.4 <a href="https://wg21.link/meta.unary.prop">[meta.unary.prop]</a> <b>Status:</b> <a href="lwg-active.html#C++17">C++17</a>
  <b>Submitter:</b> Daniel Kr&uuml;gler <b>Opened:</b> 2013-10-01 <b>Last modified:</b> 2017-07-30</p>
 <p><b>Priority: </b>3
 </p>
@@ -72,7 +72,7 @@
 <p><b>View all issues with</b> <a href="lwg-status.html#C++17">C++17</a> status.</p>
 <p><b>Discussion:</b></p>
 <p>
-In 21.3.5.4 <a href="https://wg21.link/meta.unary.prop">[meta.unary.prop]</a> we have traits to allow testing for triviality of specific operations, such as
+In 21.3.6.4 <a href="https://wg21.link/meta.unary.prop">[meta.unary.prop]</a> we have traits to allow testing for triviality of specific operations, such as
 <code>is_trivially_constructible</code> and <code>is_trivially_assignable</code> (and their derived forms), which are specified
 in terms of the following initialization and assignment, respectively:
 </p>
@@ -95,7 +95,7 @@ but for none of these functions we can assume that they could be considered as t
 have this property and none of these is one. This problem became obvious, when the similar issue LWG <a href="lwg-defects.html#2298" title="[CD] is_nothrow_constructible is always false because of create&lt;&gt; (Status: C++14)">2298</a><sup><a href="https://cplusplus.github.io/LWG/issue2298" title="Latest snapshot">(i)</a></sup> 
 in regard to <code>is_nothrow_constructible</code> was opened.
 <p/>
-A possible approach to solve this specification problem is to make a blanket statement for sub-clause 21.3.5.4 <a href="https://wg21.link/meta.unary.prop">[meta.unary.prop]</a>
+A possible approach to solve this specification problem is to make a blanket statement for sub-clause 21.3.6.4 <a href="https://wg21.link/meta.unary.prop">[meta.unary.prop]</a>
 that these helper functions are considered trivial for the purpose of defining these traits.
 <p/>
 Using this kind of wording technique can also be used to get rid of the additional helper function template <code>create</code>, which
@@ -123,8 +123,8 @@ MC: move to Ready: in favor: 15, opposed: 0, abstain: 1
 <p>This wording is relative to N3936.</p>
 
 <ol>
-<li><p>Add a new paragraph after 21.3.5.4 <a href="https://wg21.link/meta.unary.prop">[meta.unary.prop]</a> p3 as indicated: <em>[Editorial note: The first change in
-21.3.5.4 <a href="https://wg21.link/meta.unary.prop">[meta.unary.prop]</a> p3 is recommended, because technically a Clause is always a "main chapter" &mdash; such as
+<li><p>Add a new paragraph after 21.3.6.4 <a href="https://wg21.link/meta.unary.prop">[meta.unary.prop]</a> p3 as indicated: <em>[Editorial note: The first change in
+21.3.6.4 <a href="https://wg21.link/meta.unary.prop">[meta.unary.prop]</a> p3 is recommended, because technically a Clause is always a "main chapter" &mdash; such as
 Clause 20 &mdash; but every child of a Clause or sub-clause is a sub-clause]</em></p>
 
 <blockquote>
@@ -145,7 +145,7 @@ notwithstanding the restrictions of 22.2.6 <a href="https://wg21.link/declval">[
 </blockquote>
 </li>
 
-<li><p>Modify 21.3.5.4 <a href="https://wg21.link/meta.unary.prop">[meta.unary.prop]</a> p7 as indicated:</p>
+<li><p>Modify 21.3.6.4 <a href="https://wg21.link/meta.unary.prop">[meta.unary.prop]</a> p7 as indicated:</p>
 
 <blockquote>
 <p>
@@ -168,7 +168,7 @@ T t(<del>create</del><ins>declval</ins>&lt;Args&gt;()...);
 </blockquote>
 </li>
 
-<li><p>Add a new paragraph after 21.3.7 <a href="https://wg21.link/meta.rel">[meta.rel]</a> p2 as indicated: <em>[Editorial note: Technically we don't need
+<li><p>Add a new paragraph after 21.3.8 <a href="https://wg21.link/meta.rel">[meta.rel]</a> p2 as indicated: <em>[Editorial note: Technically we don't need
 the guarantee of "a trivial function call" for the type relationship predicates at the very moment, but it seems more robust and
 consistent to have the exact same guarantee here as well]</em>
 </p>
@@ -188,7 +188,7 @@ notwithstanding the restrictions of 22.2.6 <a href="https://wg21.link/declval">[
 </blockquote>
 </li>
 
-<li><p>Modify 21.3.7 <a href="https://wg21.link/meta.rel">[meta.rel]</a> p4 as indicated:</p>
+<li><p>Modify 21.3.8 <a href="https://wg21.link/meta.rel">[meta.rel]</a> p4 as indicated:</p>
 
 <blockquote>
 <p>

@@ -76,7 +76,7 @@
 and that it is greater equal to the byte alignment of its type template argument.
 <p/>
 In 20.2.5 <a href="https://wg21.link/ptr.align">[ptr.align]</a> <code class='backtick'>is_sufficiently_aligned</code> has no <i>Mandates</i> element. It is an 
-oversight that we realized when implementing <a href="https://wg21.link/P2897R7">P2897R7</a> into libc++ 
+oversight that we realized when implementing <a href="https://wg21.link/P2897R7" title=" aligned_accessor: An mdspan accessor expressing pointer overalignment">P2897R7</a> into libc++ 
 (in <a href="https://github.com/llvm/llvm-project/pull/122603">https://github.com/llvm/llvm-project/pull/122603</a>). 
 The function template was originally proposed as a static member function of the <code class='backtick'>aligned_accessor</code> 
 class template which has these two <i>Mandates</i> clauses and therefore applied 
@@ -91,7 +91,7 @@ We propose to correct that oversight and reintroduce the following <i>Mandates</
 
 <p id="res-4290"><b>Proposed resolution:</b></p>
 <p>
-This wording is relative to <a href="https://wg21.link/N5008">N5008</a>.
+This wording is relative to <a href="https://wg21.link/N5008" title=" Working Draft, Programming Languages — C++">N5008</a>.
 </p>
 
 <ol>

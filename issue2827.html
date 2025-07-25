@@ -63,7 +63,7 @@
 <hr>
 <p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#New">New</a> status.</em></p>
 <h3 id="2827"><a href="lwg-active.html#2827">2827</a>. <code>is_trivially_constructible</code> and non-trivial destructors</h3>
-<p><b>Section:</b> 21.3.5.4 <a href="https://wg21.link/meta.unary.prop">[meta.unary.prop]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
+<p><b>Section:</b> 21.3.6.4 <a href="https://wg21.link/meta.unary.prop">[meta.unary.prop]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
  <b>Submitter:</b> Richard Smith <b>Opened:</b> 2016-11-17 <b>Last modified:</b> 2023-05-25</p>
 <p><b>Priority: </b>3
 </p>
@@ -82,7 +82,7 @@ static_assert(std::is_trivially_constructible&lt;S&gt;::value, "");
 <p>
 Should the assert pass? Implementations disagree.
 <p/>
-Per 21.3.5.4 <a href="https://wg21.link/meta.unary.prop">[meta.unary.prop]</a>'s Table 38, this trait looks at whether the following variable definition is 
+Per 21.3.6.4 <a href="https://wg21.link/meta.unary.prop">[meta.unary.prop]</a>'s Table 38, this trait looks at whether the following variable definition is 
 known to call no operation that is not trivial:
 </p>
 <blockquote><pre>

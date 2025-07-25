@@ -84,19 +84,19 @@ Specifically it's unclear
 
 <ul>
 <li>
-if a predicate trait (21.3.5 <a href="https://wg21.link/meta.unary">[meta.unary]</a>, 21.3.7 <a href="https://wg21.link/meta.rel">[meta.rel]</a>) could derive from both
+if a predicate trait (21.3.6 <a href="https://wg21.link/meta.unary">[meta.unary]</a>, 21.3.8 <a href="https://wg21.link/meta.rel">[meta.rel]</a>) could derive from both
 <code>true_type</code>&#47;<code>false_type</code>.
 </li>
 <li>
-if any of the type traits (21.3.2 <a href="https://wg21.link/meta.rqmts">[meta.rqmts]</a>, 21.3.5 <a href="https://wg21.link/meta.unary">[meta.unary]</a>, 21.3.7 <a href="https://wg21.link/meta.rel">[meta.rel]</a>) could ambiguously derive
+if any of the type traits (21.3.2 <a href="https://wg21.link/meta.rqmts">[meta.rqmts]</a>, 21.3.6 <a href="https://wg21.link/meta.unary">[meta.unary]</a>, 21.3.8 <a href="https://wg21.link/meta.rel">[meta.rel]</a>) could ambiguously derive
 from the same specified result type.
 </li>
 <li>
-if any of the type traits (21.3.2 <a href="https://wg21.link/meta.rqmts">[meta.rqmts]</a>, 21.3.5 <a href="https://wg21.link/meta.unary">[meta.unary]</a>, 21.3.7 <a href="https://wg21.link/meta.rel">[meta.rel]</a>) could derive from other
+if any of the type traits (21.3.2 <a href="https://wg21.link/meta.rqmts">[meta.rqmts]</a>, 21.3.6 <a href="https://wg21.link/meta.unary">[meta.unary]</a>, 21.3.8 <a href="https://wg21.link/meta.rel">[meta.rel]</a>) could derive from other
 <code>integral_constant</code> types making the contained names ambiguous
 </li>
 <li>
-if any of the type traits (21.3.2 <a href="https://wg21.link/meta.rqmts">[meta.rqmts]</a>, 21.3.5 <a href="https://wg21.link/meta.unary">[meta.unary]</a>, 21.3.7 <a href="https://wg21.link/meta.rel">[meta.rel]</a>) could have other base
+if any of the type traits (21.3.2 <a href="https://wg21.link/meta.rqmts">[meta.rqmts]</a>, 21.3.6 <a href="https://wg21.link/meta.unary">[meta.unary]</a>, 21.3.8 <a href="https://wg21.link/meta.rel">[meta.rel]</a>) could have other base
 classes that contain members hiding the name of the result type members
 or make the contained member names ambiguous.
 </li>
@@ -169,7 +169,7 @@ and unambiguously available in the <i>BinaryTypeTrait</i>.</ins>
 </li>
 <li>
 <p>
-Change 21.3.5 <a href="https://wg21.link/meta.unary">[meta.unary]</a> p.2 as indicated:
+Change 21.3.6 <a href="https://wg21.link/meta.unary">[meta.unary]</a> p.2 as indicated:
 </p>
 <blockquote><p>
 Each of these templates shall be a <i>UnaryTypeTrait</i> (20.6.1),
@@ -181,7 +181,7 @@ corresponding condition is true, otherwise <code>false_type</code></ins>.
 </li>
 <li>
 <p>
-Change 21.3.7 <a href="https://wg21.link/meta.rel">[meta.rel]</a> p.2 as indicated:
+Change 21.3.8 <a href="https://wg21.link/meta.rel">[meta.rel]</a> p.2 as indicated:
 </p>
 
 <blockquote><p>

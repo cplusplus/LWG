@@ -90,7 +90,7 @@ invocable for all combinations. In this case, it requires
 const char (&amp;)[4] &lt; const char (&amp;)[4] 
 </pre></blockquote>
 <p>
-to be well-formed, which is no longer the case in C++26 after <a href="https://wg21.link/P2865R6">P2865R6</a>.
+to be well-formed, which is no longer the case in C++26 after <a href="https://wg21.link/P2865R6" title=" Remove Deprecated Array Comparisons from C++26">P2865R6</a>.
 <p/>
 We should just use <code class='backtick'>std::upper_bound</code> instead. libstdc++ already uses <code class='backtick'>std::upper_bound</code>. 
 libc++ uses <code class='backtick'>ranges::upper_bound</code> but clang has not yet implemented <a href="https://wg21.link/P2865" title=" Remove Deprecated Array Comparisons from C++26">P2865</a> 
@@ -115,7 +115,7 @@ The proposed resolution solves the immediate problem here.
 
 <p id="res-4239"><b>Proposed resolution:</b></p>
 <p>
-This wording is relative to <a href="https://wg21.link/N5008">N5008</a>.
+This wording is relative to <a href="https://wg21.link/N5008" title=" Working Draft, Programming Languages — C++">N5008</a>.
 </p>
 
 <ol>

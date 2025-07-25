@@ -190,7 +190,7 @@ decltype(static_cast&lt;To&gt;(declval&lt;From&gt;())) convert(From&amp;&amp;);
 declares a function template <code>convert</code>, which only participates in
 overloading if the type <code>From</code> can be explicitly cast to type <code>To</code>.
 For another example see class template <code>common_type</code>
-(21.3.8.7 <a href="https://wg21.link/meta.trans.other">[meta.trans.other]</a>).
+(21.3.9.7 <a href="https://wg21.link/meta.trans.other">[meta.trans.other]</a>).
 &mdash; <i>end example</i>]</ins>
 </p>
 </blockquote>
@@ -201,7 +201,7 @@ For another example see class template <code>common_type</code>
 <p>
 This bullet just makes clear that after applying 
 <a href="http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2009/n2984.htm">N2984</a>, 
-the changes in 21.3.5.4 <a href="https://wg21.link/meta.unary.prop">[meta.unary.prop]</a>, before
+the changes in 21.3.6.4 <a href="https://wg21.link/meta.unary.prop">[meta.unary.prop]</a>, before
 table Type property queries should <em>not</em> use <code>declval</code>,
 because the well-formedness requirement of the specification of
 <code>is_constructible</code> would become more complicated, because we
@@ -212,7 +212,7 @@ unevaluated context.
 
 <li>
 <p>
-Also 21.3.7 <a href="https://wg21.link/meta.rel">[meta.rel]</a>/4 is not modified similar to the previous bullet,
+Also 21.3.8 <a href="https://wg21.link/meta.rel">[meta.rel]</a>/4 is not modified similar to the previous bullet,
 because with the stricter requirements of not using <code>declval()</code> the well-formedness condition
 would be harder to specify. The following changes are only editorial ones (e.g.
 the removal of the duplicate declaration of <code>create()</code>):
@@ -249,7 +249,7 @@ To test() {
 <li>
 <p>
 Change the entry in column "Comments" for <code>common_type</code> in Table 51 &mdash;
-Other transformations (21.3.8.7 <a href="https://wg21.link/meta.trans.other">[meta.trans.other]</a>):
+Other transformations (21.3.9.7 <a href="https://wg21.link/meta.trans.other">[meta.trans.other]</a>):
 </p>
 
 <p><i>[
@@ -272,7 +272,7 @@ only explicit conversions are desired among the template arguments.
 
 <li>
 <p>
-Change 21.3.8.7 <a href="https://wg21.link/meta.trans.other">[meta.trans.other]</a>/3 as indicated:
+Change 21.3.9.7 <a href="https://wg21.link/meta.trans.other">[meta.trans.other]</a>/3 as indicated:
 </p>
 
 <p><i>[

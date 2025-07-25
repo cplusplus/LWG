@@ -63,7 +63,7 @@
 <hr>
 <p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#C++23">C++23</a> status.</em></p>
 <h3 id="3152"><a href="lwg-defects.html#3152">3152</a>. <code>common_type</code> and <code>common_reference</code> have flaws in common</h3>
-<p><b>Section:</b> 21.3.8.7 <a href="https://wg21.link/meta.trans.other">[meta.trans.other]</a> <b>Status:</b> <a href="lwg-active.html#C++23">C++23</a>
+<p><b>Section:</b> 21.3.9.7 <a href="https://wg21.link/meta.trans.other">[meta.trans.other]</a> <b>Status:</b> <a href="lwg-active.html#C++23">C++23</a>
  <b>Submitter:</b> Casey Carter <b>Opened:</b> 2018-08-10 <b>Last modified:</b> 2023-11-22</p>
 <p><b>Priority: </b>3
 </p>
@@ -71,7 +71,7 @@
 <p><b>View all issues with</b> <a href="lwg-status.html#C++23">C++23</a> status.</p>
 <p><b>Discussion:</b></p>
 <p>
-21.3.8.7 <a href="https://wg21.link/meta.trans.other">[meta.trans.other]</a> p5 characterizes the requirements for
+21.3.9.7 <a href="https://wg21.link/meta.trans.other">[meta.trans.other]</a> p5 characterizes the requirements for
 program-defined specializations of <code>common_type</code> with the sentence:
 </p>
 <blockquote>
@@ -81,7 +81,7 @@ cv-unqualified non-reference type <code>C</code> to which each of the types
 <code>T1</code> and <code>T2</code> is explicitly convertible.
 </blockquote>
 <p>
-This sentence - which 21.3.8.7 <a href="https://wg21.link/meta.trans.other">[meta.trans.other]</a> p7 largely duplicates to
+This sentence - which 21.3.9.7 <a href="https://wg21.link/meta.trans.other">[meta.trans.other]</a> p7 largely duplicates to
 specify requirements on program-defined specializations of
 <code>basic_common_reference</code> - has two problems:
 </p><ol>
@@ -114,7 +114,7 @@ Set status to Tentatively Ready after seven votes in favour during reflector pol
 <p>This wording is relative to <a href="https://wg21.link/n4762">N4762</a>.</p>
 
 <ol>
-<li><p>Modify 21.3.8.7 <a href="https://wg21.link/meta.trans.other">[meta.trans.other]</a> p5 as follows:</p>
+<li><p>Modify 21.3.9.7 <a href="https://wg21.link/meta.trans.other">[meta.trans.other]</a> p5 as follows:</p>
 <blockquote>
 <p>
 -5- Note B: Notwithstanding the provisions of 21.3.3 <a href="https://wg21.link/meta.type.synop">[meta.type.synop]</a>,
@@ -131,7 +131,7 @@ and <code>T2</code> is explicitly convertible. Moreover, [&hellip;]
 </p>
 </blockquote>
 </li>
-<li><p>Modify 21.3.8.7 <a href="https://wg21.link/meta.trans.other">[meta.trans.other]</a> p7 similarly:</p>
+<li><p>Modify 21.3.9.7 <a href="https://wg21.link/meta.trans.other">[meta.trans.other]</a> p7 similarly:</p>
 <blockquote>
 <p>
 -7- Note D: Notwithstanding  the provisions of 21.3.3 <a href="https://wg21.link/meta.type.synop">[meta.type.synop]</a>,

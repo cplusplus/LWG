@@ -76,7 +76,7 @@ uses the following expression <code><i>INVOKE</i>(fd, std::forward&lt;V1&gt;(v1)
 std::forward&lt;VN&gt;(vN), result_of_t&lt;FD <i>cv</i> &amp; (V1, V2, ..., VN)&gt;)</code> to describe effects of 
 invocation of returned function.
 <p/>
-According to the definition from 21.3.8.7 <a href="https://wg21.link/meta.trans.other">[meta.trans.other]</a> <code>result_of_t&lt;FD cv &amp; (V1, V2, ..., VN)></code> 
+According to the definition from 21.3.9.7 <a href="https://wg21.link/meta.trans.other">[meta.trans.other]</a> <code>result_of_t&lt;FD cv &amp; (V1, V2, ..., VN)></code> 
 is equivalent to 
 <code>decltype(INVOKE(declval&lt;FD <i>cv</i> &amp;&gt;(), declval&lt;V1&gt;(), declval&lt;V2&gt;(), ..., declval&lt;VN&gt;()))</code>. 
 When combined with the definition of <code><i>INVOKE</i></code> from 22.10.4 <a href="https://wg21.link/func.require">[func.require]</a> p2, the expression 

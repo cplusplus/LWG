@@ -63,7 +63,7 @@
 <hr>
 <p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#C++20">C++20</a> status.</em></p>
 <h3 id="3354"><a href="lwg-defects.html#3354">3354</a>. <code>has_strong_structural_equality</code> has a meaningless definition</h3>
-<p><b>Section:</b> 21.3.5.4 <a href="https://wg21.link/meta.unary.prop">[meta.unary.prop]</a>, 17.3.2 <a href="https://wg21.link/version.syn">[version.syn]</a> <b>Status:</b> <a href="lwg-active.html#C++20">C++20</a>
+<p><b>Section:</b> 21.3.6.4 <a href="https://wg21.link/meta.unary.prop">[meta.unary.prop]</a>, 17.3.2 <a href="https://wg21.link/version.syn">[version.syn]</a> <b>Status:</b> <a href="lwg-active.html#C++20">C++20</a>
  <b>Submitter:</b> Daniel Kr&uuml;gler <b>Opened:</b> 2019-12-08 <b>Last modified:</b> 2021-02-25</p>
 <p><b>Priority: </b>1
 </p>
@@ -137,7 +137,7 @@ template&lt;class T&gt; struct has_unique_object_representations;
 
 template&lt;class T&gt; struct <del>has_strong_structural_equality</del><ins>is_template_parameter_type</ins>;
 
-<i>// 21.3.6 <a href="https://wg21.link/meta.unary.prop.query">[meta.unary.prop.query]</a>, type property queries</i>
+<i>// 21.3.7 <a href="https://wg21.link/meta.unary.prop.query">[meta.unary.prop.query]</a>, type property queries</i>
 [&hellip;]
 template&lt;class T&gt;
   inline constexpr bool has_unique_object_representations_v
@@ -147,7 +147,7 @@ template&lt;class T&gt;
   inline constexpr bool <del>has_strong_structural_equality_v</del><ins>is_template_parameter_type_v</ins>
     = <del>has_strong_structural_equality</del><ins>is_template_parameter_type</ins>&lt;T&gt;::value;
     
-<i>// 21.3.6 <a href="https://wg21.link/meta.unary.prop.query">[meta.unary.prop.query]</a>, type property queries</i>
+<i>// 21.3.7 <a href="https://wg21.link/meta.unary.prop.query">[meta.unary.prop.query]</a>, type property queries</i>
 [&hellip;]
 </pre>
 </blockquote>
@@ -235,7 +235,7 @@ template&lt;class T&gt; struct has_unique_object_representations;
 
 <del>template&lt;class T&gt; struct has_strong_structural_equality;</del>
 
-<i>// 21.3.6 <a href="https://wg21.link/meta.unary.prop.query">[meta.unary.prop.query]</a>, type property queries</i>
+<i>// 21.3.7 <a href="https://wg21.link/meta.unary.prop.query">[meta.unary.prop.query]</a>, type property queries</i>
 [&hellip;]
 template&lt;class T&gt;
   inline constexpr bool has_unique_object_representations_v
@@ -245,7 +245,7 @@ template&lt;class T&gt;
   inline constexpr bool has_strong_structural_equality_v
     = has_strong_structural_equality&lt;T&gt;::value;</del>
     
-<i>// 21.3.6 <a href="https://wg21.link/meta.unary.prop.query">[meta.unary.prop.query]</a>, type property queries</i>
+<i>// 21.3.7 <a href="https://wg21.link/meta.unary.prop.query">[meta.unary.prop.query]</a>, type property queries</i>
 [&hellip;]
 </pre>
 </blockquote>

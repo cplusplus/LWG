@@ -63,7 +63,7 @@
 <hr>
 <p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#C++17">C++17</a> status.</em></p>
 <h3 id="2587"><a href="lwg-defects.html#2587">2587</a>. "Convertible to <code>bool</code>" requirement in <code>conjunction</code> and <code>disjunction</code></h3>
-<p><b>Section:</b> 21.3.9 <a href="https://wg21.link/meta.logical">[meta.logical]</a> <b>Status:</b> <a href="lwg-active.html#C++17">C++17</a>
+<p><b>Section:</b> 21.3.10 <a href="https://wg21.link/meta.logical">[meta.logical]</a> <b>Status:</b> <a href="lwg-active.html#C++17">C++17</a>
  <b>Submitter:</b> Tim Song <b>Opened:</b> 2016-01-18 <b>Last modified:</b> 2017-12-05</p>
 <p><b>Priority: </b>3
 </p>
@@ -71,7 +71,7 @@
 <p><b>View all issues with</b> <a href="lwg-status.html#C++17">C++17</a> status.</p>
 <p><b>Discussion:</b></p>
 <p>
-The specification of <code>conjunction</code> and <code>disjunction</code> in 21.3.9 <a href="https://wg21.link/meta.logical">[meta.logical]</a> p2 and p5 requires 
+The specification of <code>conjunction</code> and <code>disjunction</code> in 21.3.10 <a href="https://wg21.link/meta.logical">[meta.logical]</a> p2 and p5 requires 
 <code>Bi::value</code> to be convertible to <code>bool</code>, but nothing in the specification of the actual behavior of the 
 templates, which instead uses the expressions <code>Bi::value == false</code> and <code>Bi::value != false</code> instead, 
 actually requires this conversion.
@@ -109,7 +109,7 @@ Walter, Nevin, and Jason provide initial Proposed Resolution.
 <p>This wording is relative to N4606.</p>
 
 <ol>
-<li><p>Change 21.3.9 <a href="https://wg21.link/meta.logical">[meta.logical]</a> as indicated:</p>
+<li><p>Change 21.3.10 <a href="https://wg21.link/meta.logical">[meta.logical]</a> as indicated:</p>
 
 <blockquote>
 <pre>

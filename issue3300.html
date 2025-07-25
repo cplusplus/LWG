@@ -74,7 +74,7 @@
 <p>
 The overload of <code>ssize</code> specified in 24.7 <a href="https://wg21.link/iterator.range">[iterator.range]</a>/18 has no constraints, 
 yet it specializes <code>make_signed_t</code> which has a precondition that its type parameter is an 
-integral type or enumeration but not <code>bool</code> (21.3.8.4 <a href="https://wg21.link/meta.trans.sign">[meta.trans.sign]</a>). This 
+integral type or enumeration but not <code>bool</code> (21.3.9.4 <a href="https://wg21.link/meta.trans.sign">[meta.trans.sign]</a>). This 
 precondition needs to be propagated to <code>ssize</code> as "<i>Mandates</i> [or <i>Constraints</i>]: 
 <code>decltype(c.size())</code> [meets the requirements for the type argument to <code>make_signed</code>]". 
 "<i>Mandates</i>" seems to be more in line with LWG guidance since there are no traits nor concepts 

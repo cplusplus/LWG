@@ -101,7 +101,7 @@ constraints to check. My proposed resolution is to unify the <i>Requires</i> and
 will be no need for <i>Requires</i> (when a constructor participates in overload resolution if and only if <code>X</code> is true, 
 then there's no need for it to <i>Require</i> that <code>X</code> is true).
 <p/>
-Note: 21.3.5.4 <a href="https://wg21.link/meta.unary.prop">[meta.unary.prop]</a>/6 specifies <code>is_constructible&lt;To, From&gt;</code> and 21.3.7 <a href="https://wg21.link/meta.rel">[meta.rel]</a>/4 specifies 
+Note: 21.3.6.4 <a href="https://wg21.link/meta.unary.prop">[meta.unary.prop]</a>/6 specifies <code>is_constructible&lt;To, From&gt;</code> and 21.3.8 <a href="https://wg21.link/meta.rel">[meta.rel]</a>/4 specifies 
 <code>is_convertible&lt;From, To&gt;</code>. Both are specified in terms of 
 "<code>template &lt;class T&gt; typename add_rvalue_reference&lt;T&gt;::type create();</code>".  
 Therefore, passing <code>From</code> and <code>From&amp;&amp;</code> is equivalent, regardless of whether <code>From</code> is an object type, 

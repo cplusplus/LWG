@@ -63,7 +63,7 @@
 <hr>
 <p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#LEWG">LEWG</a> status.</em></p>
 <h3 id="3486"><a href="lwg-active.html#3486">3486</a>. <code>is_constructible&lt;T[], T...&gt;</code> may be misleading in C++20</h3>
-<p><b>Section:</b> 21.3.5.4 <a href="https://wg21.link/meta.unary.prop">[meta.unary.prop]</a> <b>Status:</b> <a href="lwg-active.html#LEWG">LEWG</a>
+<p><b>Section:</b> 21.3.6.4 <a href="https://wg21.link/meta.unary.prop">[meta.unary.prop]</a> <b>Status:</b> <a href="lwg-active.html#LEWG">LEWG</a>
  <b>Submitter:</b> Jonathan Wakely <b>Opened:</b> 2020-10-01 <b>Last modified:</b> 2020-10-01</p>
 <p><b>Priority: </b>Not Prioritized
 </p>
@@ -128,12 +128,12 @@ new(x) T2(1, 2); <i>// ill-formed</i>
 We need to decide what behaviour we want here.
 Do we just want <code>is_constructible</code>
 to reflect the <code>T(declval&lt;Args...&gt;);</code> construct
-as currently specified in 21.3.5.4 <a href="https://wg21.link/meta.unary.prop">[meta.unary.prop]</a> p8,
+as currently specified in 21.3.6.4 <a href="https://wg21.link/meta.unary.prop">[meta.unary.prop]</a> p8,
 or do we want to give a more useful/meaningful answer here?
 </p>
 
 <p>
-Should we revisit 21.3.5.4 <a href="https://wg21.link/meta.unary.prop">[meta.unary.prop]</a> p8
+Should we revisit 21.3.6.4 <a href="https://wg21.link/meta.unary.prop">[meta.unary.prop]</a> p8
 in the light of parenthesized aggregate init,
 so that <code>is_constructible&lt;T[], T&gt;</code>
 and <code>is_constructible&lt;T[1], T&gt;</code> are false?

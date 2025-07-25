@@ -72,7 +72,7 @@
 <p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
 <p><b>Discussion:</b></p>
 <p>
-The intent of <a href="https://wg21.link/P3471" title=" Standard library hardening">P3471</a> "Standard library hardening" is clearly to provide hardened preconditions 
+The intent of <a href="https://wg21.link/P3471" title=" Standard Library Hardening">P3471</a> "Standard library hardening" is clearly to provide hardened preconditions 
 for members of sequence containers, including <code class='backtick'>std::array</code>. However, a zero-length <code class='backtick'>std::array</code> dodges this 
 hardening by having undefined behavior for <code class='backtick'>front()</code> and <code class='backtick'>back()</code> explicitly specified in 
 23.3.3.5 <a href="https://wg21.link/array.zero">[array.zero]</a> paragraph 3.
@@ -83,7 +83,7 @@ Without this paragraph, <code class='backtick'>front()</code> and <code class='b
 
 <p id="res-4276"><b>Proposed resolution:</b></p>
 <p>
-This wording is relative to <a href="https://wg21.link/N5008">N5008</a>.
+This wording is relative to <a href="https://wg21.link/N5008" title=" Working Draft, Programming Languages — C++">N5008</a>.
 </p>
 
 <ol>

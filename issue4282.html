@@ -85,7 +85,7 @@ move constructor (or a throwing destructor); for instance, a linked-list
 implementation with an externally allocated sentinel node may have a
 throwing move constructor, but still be trivially relocatable. Such a
 type is nothrow relocatable (as per <code class='backtick'>is_nothrow_relocatable_v</code>, cf.
-21.3.5.4 <a href="https://wg21.link/meta.unary.prop">[meta.unary.prop]</a>) and therefore one can call <code class='backtick'>std::relocate</code> 
+21.3.6.4 <a href="https://wg21.link/meta.unary.prop">[meta.unary.prop]</a>) and therefore one can call <code class='backtick'>std::relocate</code> 
 on objects of that type.
 <p/>
 During constant evaluation, a call to <code class='backtick'>std::relocate</code> is specified to
@@ -106,7 +106,7 @@ that direction.
 
 <p id="res-4282"><b>Proposed resolution:</b></p>
 <p>
-This wording is relative to <a href="https://wg21.link/N5008">N5008</a>.
+This wording is relative to <a href="https://wg21.link/N5008" title=" Working Draft, Programming Languages — C++">N5008</a>.
 </p>
 
 <ol>

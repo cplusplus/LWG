@@ -63,7 +63,7 @@
 <hr>
 <p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#C++17">C++17</a> status.</em></p>
 <h3 id="2738"><a href="lwg-defects.html#2738">2738</a>. <code>is_constructible</code> with <code>void</code> types</h3>
-<p><b>Section:</b> 21.3.5.4 <a href="https://wg21.link/meta.unary.prop">[meta.unary.prop]</a> <b>Status:</b> <a href="lwg-active.html#C++17">C++17</a>
+<p><b>Section:</b> 21.3.6.4 <a href="https://wg21.link/meta.unary.prop">[meta.unary.prop]</a> <b>Status:</b> <a href="lwg-active.html#C++17">C++17</a>
  <b>Submitter:</b> S. B. Tam <b>Opened:</b> 2016-06-22 <b>Last modified:</b> 2017-07-30</p>
 <p><b>Priority: </b>Not Prioritized
 </p>
@@ -73,7 +73,7 @@
 <p><b>Discussion:</b></p>
 <p>
 LWG <a href="lwg-defects.html#2560" title="is_constructible underspecified when applied to a function type (Status: C++17)">2560</a><sup><a href="https://cplusplus.github.io/LWG/issue2560" title="Latest snapshot">(i)</a></sup> mention that there is no variable of function type. There's also no variable of <code>void</code> type, 
-so should 21.3.5.4 <a href="https://wg21.link/meta.unary.prop">[meta.unary.prop]</a> also explicitly say that for a <code>void</code> type <code>T</code>, 
+so should 21.3.6.4 <a href="https://wg21.link/meta.unary.prop">[meta.unary.prop]</a> also explicitly say that for a <code>void</code> type <code>T</code>, 
 <code>is_constructible&lt;T, Args...&gt;::value</code> is <code>false</code>?
 </p>
 
@@ -89,7 +89,7 @@ so should 21.3.5.4 <a href="https://wg21.link/meta.unary.prop">[meta.unary.prop]
 <p>This wording is relative to N4594.</p>
 
 <ol>
-<li><p>Change 21.3.5.4 <a href="https://wg21.link/meta.unary.prop">[meta.unary.prop]</a>, Table 52 &mdash; "Type property predicates", as indicated:</p>
+<li><p>Change 21.3.6.4 <a href="https://wg21.link/meta.unary.prop">[meta.unary.prop]</a>, Table 52 &mdash; "Type property predicates", as indicated:</p>
 
 <blockquote>
 <table border="1">
