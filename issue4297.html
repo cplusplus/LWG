@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Issue 4297: Missing permutable constraint for iterator overloads in Parallel Range Algorithms</title>
+<meta property="og:title" content="Issue 4297: Missing permutable constraint for iterator overloads in Parallel Range Algorithms">
+<meta property="og:description" content="C++ library issue. Status: New">
+<meta property="og:url" content="https://cplusplus.github.io/LWG/issue4297.html">
+<meta property="og:type" content="website">
+<meta property="og:image" content="http://cplusplus.github.io/LWG/images/cpp_logo.png">
+<meta property="og:image:alt" content="C++ logo">
+<style>
+  p {text-align:justify}
+  li {text-align:justify}
+  pre code.backtick::before { content: "`" }
+  pre code.backtick::after { content: "`" }
+  blockquote.note
+  {
+    background-color:#E0E0E0;
+    padding-left: 15px;
+    padding-right: 15px;
+    padding-top: 1px;
+    padding-bottom: 1px;
+  }
+  ins {background-color:#A0FFA0}
+  del {background-color:#FFA0A0}
+  table.issues-index { border: 1px solid; border-collapse: collapse; }
+  table.issues-index th { text-align: center; padding: 4px; border: 1px solid; }
+  table.issues-index td { padding: 4px; border: 1px solid; }
+  table.issues-index td:nth-child(1) { text-align: right; }
+  table.issues-index td:nth-child(2) { text-align: left; }
+  table.issues-index td:nth-child(3) { text-align: left; }
+  table.issues-index td:nth-child(4) { text-align: left; }
+  table.issues-index td:nth-child(5) { text-align: center; }
+  table.issues-index td:nth-child(6) { text-align: center; }
+  table.issues-index td:nth-child(7) { text-align: left; }
+  table.issues-index td:nth-child(5) span.no-pr { color: red; }
+  @media (prefers-color-scheme: dark) {
+     html {
+        color: #ddd;
+        background-color: black;
+     }
+     ins {
+        background-color: #225522
+     }
+     del {
+        background-color: #662222
+     }
+     a {
+        color: #6af
+     }
+     a:visited {
+        color: #6af
+     }
+     blockquote.note
+     {
+        background-color: rgba(255, 255, 255, .10)
+     }
+  }
+</style>
+</head>
+<body>
+<hr>
+<p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#New">New</a> status.</em></p>
+<h3 id="4297"><a href="lwg-active.html#4297">4297</a>. Missing <code class='backtick'>permutable</code> constraint for iterator overloads in Parallel Range Algorithms</h3>
+<p><b>Section:</b> 26.4 <a href="https://wg21.link/algorithm.syn">[algorithm.syn]</a>, 26.7.8 <a href="https://wg21.link/alg.remove">[alg.remove]</a>, 26.8.5 <a href="https://wg21.link/alg.partitions">[alg.partitions]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
+ <b>Submitter:</b> Ruslan Arutyunyan <b>Opened:</b> 2025-06-27 <b>Last modified:</b> 2025-07-26</p>
+<p><b>Priority: </b>Not Prioritized
+</p>
+<p><b>View other</b> <a href="lwg-index-open.html#algorithm.syn">active issues</a> in [algorithm.syn].</p>
+<p><b>View all other</b> <a href="lwg-index.html#algorithm.syn">issues</a> in [algorithm.syn].</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
+<p><b>Discussion:</b></p>
+<p>
+The <a href="https://wg21.link/P3179R9" title=" C++ parallel range algorithms">P3179R9</a>: Parallel Range Algorithms paper was accepted to C++ working draft for C++ 26. 
+Unfortunately, there is an oversight for three algorithms &mdash; <code class='backtick'>remove</code>, <code class='backtick'>remove_if</code> and <code class='backtick'>partition</code> &mdash; 
+where the <code class='backtick'>permutable</code> constraint is missing. This applies to "Iterator and Sentinel" overloads only. The 
+issue exists in 26.4 <a href="https://wg21.link/algorithm.syn">[algorithm.syn]</a> as well as in per-algorithm sections: 
+26.8.5 <a href="https://wg21.link/alg.partitions">[alg.partitions]</a> and 26.7.8 <a href="https://wg21.link/alg.remove">[alg.remove]</a>.
+</p>
+
+
+<p id="res-4297"><b>Proposed resolution:</b></p>
+<p>
+This wording is relative to this 
+<a href="https://github.com/cplusplus/draft/actions/runs/16433597877/artifacts/3583518547">CD preview draft</a>.
+</p>
+
+
+<ol>
+
+<li><p>Modify 26.4 <a href="https://wg21.link/algorithm.syn">[algorithm.syn]</a>, header <code>&lt;algorithm&gt;</code>, as indicated:</p>
+
+<blockquote>
+<pre>
+[&hellip;]
+template&lt;<i>execution-policy</i> Ep, random_access_iterator I, sized_sentinel_for&lt;I&gt; S,
+         class Proj = identity, class T = projected_value_t&lt;I, Proj&gt;&gt;
+  requires <ins>permutable&lt;I&gt; &amp;&amp;</ins>
+           indirect_binary_predicate&lt;ranges::equal_to, projected&lt;I, Proj&gt;, const T*&gt;
+  subrange&lt;I&gt; remove(Ep&amp; exec, I first, S last, const T&amp; value,
+                     Proj proj = {}); <i>// freestanding-deleted</i>
+template&lt;<i>execution-policy</i> Ep, <i>sized-random-access-range</i> R, class Proj = identity,
+         class T = projected_value_t&lt;iterator_t&lt;R&gt;, Proj&gt;&gt;
+  requires permutable&lt;iterator_t&lt;R&gt;&gt; &amp;&amp;
+           indirect_binary_predicate&lt;ranges::equal_to,
+                                     projected&lt;iterator_t&lt;R&gt;, Proj&gt;, const T*&gt;
+  borrowed_subrange_t&lt;R&gt;
+    remove(Ep&amp;&amp; exec, R&amp;&amp; r, const T&amp; value, Proj proj = {}); <i>// freestanding-deleted</i>                                     
+[&hellip;]
+template&lt;<i>execution-policy</i> Ep, random_access_iterator I, sized_sentinel_for&lt;I&gt; S,
+         class Proj = identity, indirect_unary_predicate&lt;projected&lt;I, Proj&gt;&gt; Pred&gt;
+  <ins>requires permutable&lt;I&gt;</ins>
+  subrange&lt;I&gt;
+    remove_if(Ep&amp; exec, I first, S last, Pred pred, Proj proj = {}); <i>// freestanding-deleted</i>
+template&lt;<i>execution-policy</i> Ep, <i>sized-random-access-range</i> R, class Proj = identity,
+         indirect_unary_predicate&lt;projected&lt;iterator_t&lt;R&gt;, Proj&gt;&gt; Pred&gt;
+  requires permutable&lt;iterator_t&lt;R&gt;&gt;
+  borrowed_subrange_t&lt;R&gt;
+    remove_if(Ep&amp; exec, R&amp; r, Pred pred, Proj proj = {}); <i>// freestanding-deleted</i>
+[&hellip;]
+template&lt;execution-policy Ep, random_access_iterator I, sized_sentinel_for&lt;I&gt; S,
+         class Proj = identity, indirect_unary_predicate&lt;projected&lt;I, Proj&gt;&gt; Pred&gt;
+  <ins>requires permutable&lt;I&gt;</ins>
+  subrange&lt;I&gt;
+    partition(Ep&amp;&amp; exec, I first, S last, Pred pred, Proj proj = {}); <i>// freestanding-deleted</i>
+template&lt;<i>execution-policy</i> Ep, <i>sized-random-access-range</i> R, class Proj = identity,
+         indirect_unary_predicate&lt;projected&lt;iterator_t&lt;R&gt;, Proj&gt;&gt; Pred&gt;
+  requires permutable&lt;iterator_t&lt;R&gt;&gt;
+  borrowed_subrange_t&lt;R&gt;
+    partition(Ep&amp;&amp; exec, R&amp;&amp; r, Pred pred, Proj proj = {}); <i>// freestanding-deleted</i>
+[&hellip;]
+</pre>
+</blockquote>
+</li>
+
+
+<li><p>Modify 26.7.8 <a href="https://wg21.link/alg.remove">[alg.remove]</a> as indicated:</p>
+
+<blockquote>
+<pre>
+[&hellip;]
+template&lt;<i>execution-policy</i> Ep, random_access_iterator I, sized_sentinel_for&lt;I&gt; S,
+         class Proj = identity, class T = projected_value_t&lt;I, Proj&gt;&gt;
+  requires <ins>permutable&lt;I&gt; &amp;&amp;</ins>
+           indirect_binary_predicate&lt;ranges::equal_to, projected&lt;I, Proj&gt;, const T*&gt;
+  subrange&lt;I&gt; 
+    ranges::remove(Ep&amp; exec, I first, S last, const T&amp; value, Proj proj = {});
+template&lt;<i>execution-policy</i> Ep, <i>sized-random-access-range</i> R, class Proj = identity,
+         class T = projected_value_t&lt;iterator_t&lt;R&gt;, Proj&gt;&gt;
+  requires permutable&lt;iterator_t&lt;R&gt;&gt; &amp;&amp;
+           indirect_binary_predicate&lt;ranges::equal_to,
+                                     projected&lt;iterator_t&lt;R&gt;, Proj&gt;, const T*&gt;
+  borrowed_subrange_t&lt;R&gt;
+    ranges::remove(Ep&amp;&amp; exec, R&amp;&amp; r, const T&amp; value, Proj proj = {});                                  
+[&hellip;]
+template&lt;<i>execution-policy</i> Ep, random_access_iterator I, sized_sentinel_for&lt;I&gt; S,
+         class Proj = identity, indirect_unary_predicate&lt;projected&lt;I, Proj&gt;&gt; Pred&gt;
+  <ins>requires permutable&lt;I&gt;</ins>
+  subrange&lt;I&gt;
+    ranges::remove_if(Ep&amp; exec, I first, S last, Pred pred, Proj proj = {});
+template&lt;<i>execution-policy</i> Ep, <i>sized-random-access-range</i> R, class Proj = identity,
+         indirect_unary_predicate&lt;projected&lt;iterator_t&lt;R&gt;, Proj&gt;&gt; Pred&gt;
+  requires permutable&lt;iterator_t&lt;R&gt;&gt;
+  borrowed_subrange_t&lt;R&gt;
+    ranges::remove_if(Ep&amp; exec, R&amp; r, Pred pred, Proj proj = {});
+</pre>
+<blockquote>
+<p>
+-1- Let <code><i>E</i></code> be [&hellip;]
+</p>
+</blockquote>
+</blockquote>
+</li>
+
+
+<li><p>Modify 26.8.5 <a href="https://wg21.link/alg.partitions">[alg.partitions]</a> as indicated:</p>
+
+<blockquote>
+<pre>
+[&hellip;]
+template&lt;execution-policy Ep, random_access_iterator I, sized_sentinel_for&lt;I&gt; S,
+         class Proj = identity, indirect_unary_predicate&lt;projected&lt;I, Proj&gt;&gt; Pred&gt;
+  <ins>requires permutable&lt;I&gt;</ins>
+  subrange&lt;I&gt;
+    ranges::partition(Ep&amp;&amp; exec, I first, S last, Pred pred, Proj proj = {});
+template&lt;<i>execution-policy</i> Ep, <i>sized-random-access-range</i> R, class Proj = identity,
+         indirect_unary_predicate&lt;projected&lt;iterator_t&lt;R&gt;, Proj&gt;&gt; Pred&gt;
+  requires permutable&lt;iterator_t&lt;R&gt;&gt;
+  borrowed_subrange_t&lt;R&gt;
+    ranges::partition(Ep&amp;&amp; exec, R&amp;&amp; r, Pred pred, Proj proj = {});
+</pre>
+<blockquote>
+<p>
+-1- Let <code class='backtick'>proj</code> be <code class='backtick'>identity{}</code> for the overloads with no parameter named <code class='backtick'>proj</code>.
+</p>
+</blockquote>
+</blockquote>
+</li>
+
+</ol>
+
+
+
+
+
+</body>
+</html>
