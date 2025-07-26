@@ -54,7 +54,7 @@
 </style>
 </head>
 <body>
-<p>Revised 2025-07-26 at 12:01:52 UTC
+<p>Revised 2025-07-26 at 15:24:08 UTC
 </p><h2>Unresolved Issues</h2>
 <hr>
 <h3 id="423"><a href="#423">423</a><sup><a href="https://cplusplus.github.io/LWG/issue423">(i)</a></sup>. Effects of negative <code>streamsize</code> in iostreams</h3>
@@ -72832,6 +72832,77 @@ template&lt;<i>execution-policy</i> Ep, <i>sized-random-access-range</i> R, clas
 <p>
 -1- Let <code class='backtick'>proj</code> be <code class='backtick'>identity{}</code> for the overloads with no parameter named <code class='backtick'>proj</code>.
 </p>
+</blockquote>
+</blockquote>
+</li>
+
+</ol>
+
+
+
+
+
+<hr>
+<h3 id="4298"><a href="#4298">4298</a><sup><a href="https://cplusplus.github.io/LWG/issue4298">(i)</a></sup>. &sect;[meta.reflection.extract] Malformed "<code class='backtick'>F noexcept</code>" type</h3>
+<p><b>Section:</b> 21.4.12 <a href="https://wg21.link/meta.reflection.extract">[meta.reflection.extract]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
+ <b>Submitter:</b> Jan Schultke <b>Opened:</b> 2025-07-10 <b>Last modified:</b> 2025-07-26</p>
+<p><b>Priority: </b>Not Prioritized
+</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
+<p><b>Discussion:</b></p>
+<p>
+This is a follow-up from <a href="https://github.com/cplusplus/draft/pull/8008#discussion_r2190652506">https://github.com/cplusplus/#8008</a>
+<p/>
+In 21.4.12 <a href="https://wg21.link/meta.reflection.extract">[meta.reflection.extract]</a> paragraph 7, the type "<code class='backtick'>F noexcept</code>" is used, presumably 
+with the intent that <code class='backtick'>noexcept</code> would be "injected" into the <i>parameters-and-qualifiers</i> of 
+the declarator associated with <code class='backtick'>F</code>.
+<p/>
+However, the syntax <code class='backtick'>F noexcept</code> is ill-formed, and does not have that intended effect. There ought 
+to be a better way to phrase that.
+</p>
+
+
+<p id="res-4298"><b>Proposed resolution:</b></p>
+<p>
+This wording is relative to this 
+<a href="https://github.com/cplusplus/draft/actions/runs/16433597877/artifacts/3583518547">CD preview draft</a>.
+</p>
+
+<ol>
+
+<li><p>Modify 21.4.12 <a href="https://wg21.link/meta.reflection.extract">[meta.reflection.extract]</a> as indicated:</p>
+
+<blockquote class="note">
+<p>
+[<i>Drafting note</i>: In bullet (7.1) we apply an additional drive-by fix for the broken 
+"<code class='backtick'>T</code> is" construction before the <code class='backtick'>is_convertible_v</code> condition]
+</p>
+</blockquote>
+
+<blockquote>
+<pre>
+template&lt;class T&gt;
+  consteval T <i>extract-member-or-function</i>(info r); <i>// exposition only</i>
+</pre>
+<blockquote>
+<p>
+<ins>-?- Given a function type <code class='backtick'>F</code>, let the type <code class='backtick'>F</code> <i>with</i> <code class='backtick'>noexcept</code> be the same type, 
+except that the <i>parameters-and-qualifiers</i> in the <i>noptr-declarator</i> describing the 
+type contain <code class='backtick'>noexcept(true)</code>.</ins>
+<p/>
+-6- <i>Returns</i>: [&hellip;]
+<p/>
+-7- <i>Throws</i>: <code class='backtick'>meta::exception</code> unless
+</p>
+<ol style="list-style-type: none">
+<li><p>(7.1) &mdash; <code class='backtick'>r</code> represents a non-static data member with type <code><i>X</i></code>, 
+that is not a bit-field, that is a direct member of class <code class='backtick'>C</code>, <code class='backtick'>T</code> and <code class='backtick'>C</code> are similar types 
+(7.3.6 <a href="https://wg21.link/conv.qual">[conv.qual]</a>), and <del><code class='backtick'>T</code> is</del> <code>is_convertible_v&lt;<i>X</i> C::*, T&gt;</code> is <code class='backtick'>true</code>;</p></li>
+<li><p>(7.2) &mdash; <code class='backtick'>r</code> represents an implicit object member function with type <code class='backtick'>F</code> or <code class='backtick'>F</code> <ins>with</ins> <code class='backtick'>noexcept</code> 
+that is a direct member of a class <code class='backtick'>C</code>, and <code class='backtick'>T</code> is <code class='backtick'>F C::*</code>; or</p></li>
+<li><p>(7.3) &mdash; <code class='backtick'>r</code> represents a non-member function, static member function, or explicit object
+member function of function type <code class='backtick'>F</code> or <code class='backtick'>F</code> <ins>with</ins> <code class='backtick'>noexcept</code>, and <code class='backtick'>T</code> is <code class='backtick'>F*</code>.</p></li>
+</ol>
 </blockquote>
 </blockquote>
 </li>
