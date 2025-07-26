@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Issue 4299: Missing Mandates: part in optional&lt;T&amp;&gt;::transform</title>
+<meta property="og:title" content="Issue 4299: Missing Mandates: part in optional&lt;T&amp;&gt;::transform">
+<meta property="og:description" content="C++ library issue. Status: New">
+<meta property="og:url" content="https://cplusplus.github.io/LWG/issue4299.html">
+<meta property="og:type" content="website">
+<meta property="og:image" content="http://cplusplus.github.io/LWG/images/cpp_logo.png">
+<meta property="og:image:alt" content="C++ logo">
+<style>
+  p {text-align:justify}
+  li {text-align:justify}
+  pre code.backtick::before { content: "`" }
+  pre code.backtick::after { content: "`" }
+  blockquote.note
+  {
+    background-color:#E0E0E0;
+    padding-left: 15px;
+    padding-right: 15px;
+    padding-top: 1px;
+    padding-bottom: 1px;
+  }
+  ins {background-color:#A0FFA0}
+  del {background-color:#FFA0A0}
+  table.issues-index { border: 1px solid; border-collapse: collapse; }
+  table.issues-index th { text-align: center; padding: 4px; border: 1px solid; }
+  table.issues-index td { padding: 4px; border: 1px solid; }
+  table.issues-index td:nth-child(1) { text-align: right; }
+  table.issues-index td:nth-child(2) { text-align: left; }
+  table.issues-index td:nth-child(3) { text-align: left; }
+  table.issues-index td:nth-child(4) { text-align: left; }
+  table.issues-index td:nth-child(5) { text-align: center; }
+  table.issues-index td:nth-child(6) { text-align: center; }
+  table.issues-index td:nth-child(7) { text-align: left; }
+  table.issues-index td:nth-child(5) span.no-pr { color: red; }
+  @media (prefers-color-scheme: dark) {
+     html {
+        color: #ddd;
+        background-color: black;
+     }
+     ins {
+        background-color: #225522
+     }
+     del {
+        background-color: #662222
+     }
+     a {
+        color: #6af
+     }
+     a:visited {
+        color: #6af
+     }
+     blockquote.note
+     {
+        background-color: rgba(255, 255, 255, .10)
+     }
+  }
+</style>
+</head>
+<body>
+<hr>
+<p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#New">New</a> status.</em></p>
+<h3 id="4299"><a href="lwg-active.html#4299">4299</a>. Missing <i>Mandates:</i> part in <code>optional&lt;T&amp;&gt;::transform</code></h3>
+<p><b>Section:</b> 22.5.4.7 <a href="https://wg21.link/optional.ref.monadic">[optional.ref.monadic]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
+ <b>Submitter:</b> Giuseppe D'Angelo <b>Opened:</b> 2025-07-15 <b>Last modified:</b> 2025-07-26</p>
+<p><b>Priority: </b>Not Prioritized
+</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
+<p><b>Discussion:</b></p>
+<p>
+In 22.5.4.7 <a href="https://wg21.link/optional.ref.monadic">[optional.ref.monadic]</a> the specification of <code>optional&lt;T&amp;&gt;::transform</code>
+is missing an additional part of the <i>Mandates:</i> element compared to the primary template's
+<code class='backtick'>transform</code> (in 22.5.3.8 <a href="https://wg21.link/optional.monadic">[optional.monadic]</a> p8; that is, is missing to enforce that
+the <code class='backtick'>U</code> type is a valid contained type for <code class='backtick'>optional</code>.
+<p/>
+The definition of "valid contained type" comes from <a href="https://wg21.link/P2988R12" title=" std::optional<T&amp;>">P2988R12</a>. The paper
+amended the <i>Mandates:</i> element of the primary template's <code class='backtick'>transform</code> to
+use this definition. The fact that the same wording has not been applied to 
+<code>optional&lt;T&amp;&gt;::transform</code> as well looks like an oversight. I would
+suggest to apply it.
+</p>
+
+
+<p id="res-4299"><b>Proposed resolution:</b></p>
+<p>
+This wording is relative to this 
+<a href="https://github.com/cplusplus/draft/actions/runs/16433597877/artifacts/3583518547">CD preview draft</a>.
+</p>
+
+<ol>
+
+<li><p>Modify 22.5.4.7 <a href="https://wg21.link/optional.ref.monadic">[optional.ref.monadic]</a> as indicated:</p>
+
+<blockquote>
+<pre>
+template&lt;class F&gt;
+  constexpr optional&lt;remove_cv_t&lt;invoke_result_t&lt;F, T&amp;&gt;&gt;&gt; transform(F&amp;&amp; f) const;
+</pre>
+<blockquote>
+<p>
+-4- Let <code class='backtick'>U</code> be <code>remove_cv_t&lt;invoke_result_t&lt;F, T&amp;&gt;&gt;</code>.
+<p/>
+-5- <i>Mandates</i>: <ins><code class='backtick'>U</code> is a valid contained type for <code class='backtick'>optional</code>.</ins> The declaration
+</p>
+<blockquote><pre>
+U u(invoke(std::forward&lt;F&gt;(f), *val ));
+</pre></blockquote>
+<p>
+is well-formed for some invented variable <code class='backtick'>u</code>.
+</p>
+</blockquote>
+</blockquote>
+</li>
+
+</ol>
+
+
+
+
+
+</body>
+</html>
