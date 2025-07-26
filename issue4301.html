@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Issue 4301: condition_variable{_any}::wait_{for, until} should take timeout by value</title>
+<meta property="og:title" content="Issue 4301: condition_variable{_any}::wait_{for, until} should take timeout by value">
+<meta property="og:description" content="C++ library issue. Status: New">
+<meta property="og:url" content="https://cplusplus.github.io/LWG/issue4301.html">
+<meta property="og:type" content="website">
+<meta property="og:image" content="http://cplusplus.github.io/LWG/images/cpp_logo.png">
+<meta property="og:image:alt" content="C++ logo">
+<style>
+  p {text-align:justify}
+  li {text-align:justify}
+  pre code.backtick::before { content: "`" }
+  pre code.backtick::after { content: "`" }
+  blockquote.note
+  {
+    background-color:#E0E0E0;
+    padding-left: 15px;
+    padding-right: 15px;
+    padding-top: 1px;
+    padding-bottom: 1px;
+  }
+  ins {background-color:#A0FFA0}
+  del {background-color:#FFA0A0}
+  table.issues-index { border: 1px solid; border-collapse: collapse; }
+  table.issues-index th { text-align: center; padding: 4px; border: 1px solid; }
+  table.issues-index td { padding: 4px; border: 1px solid; }
+  table.issues-index td:nth-child(1) { text-align: right; }
+  table.issues-index td:nth-child(2) { text-align: left; }
+  table.issues-index td:nth-child(3) { text-align: left; }
+  table.issues-index td:nth-child(4) { text-align: left; }
+  table.issues-index td:nth-child(5) { text-align: center; }
+  table.issues-index td:nth-child(6) { text-align: center; }
+  table.issues-index td:nth-child(7) { text-align: left; }
+  table.issues-index td:nth-child(5) span.no-pr { color: red; }
+  @media (prefers-color-scheme: dark) {
+     html {
+        color: #ddd;
+        background-color: black;
+     }
+     ins {
+        background-color: #225522
+     }
+     del {
+        background-color: #662222
+     }
+     a {
+        color: #6af
+     }
+     a:visited {
+        color: #6af
+     }
+     blockquote.note
+     {
+        background-color: rgba(255, 255, 255, .10)
+     }
+  }
+</style>
+</head>
+<body>
+<hr>
+<p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#New">New</a> status.</em></p>
+<h3 id="4301"><a href="lwg-active.html#4301">4301</a>. <code class='backtick'>condition_variable{_any}::wait_{for, until}</code> should take timeout by value</h3>
+<p><b>Section:</b> 32.7.4 <a href="https://wg21.link/thread.condition.condvar">[thread.condition.condvar]</a>, 32.7.5 <a href="https://wg21.link/thread.condition.condvarany">[thread.condition.condvarany]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
+ <b>Submitter:</b> Hui Xie <b>Opened:</b> 2025-07-19 <b>Last modified:</b> 2025-07-26</p>
+<p><b>Priority: </b>Not Prioritized
+</p>
+<p><b>View other</b> <a href="lwg-index-open.html#thread.condition.condvar">active issues</a> in [thread.condition.condvar].</p>
+<p><b>View all other</b> <a href="lwg-index.html#thread.condition.condvar">issues</a> in [thread.condition.condvar].</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
+<p><b>Discussion:</b></p>
+<p>
+At the moment, both <code class='backtick'>condition_variable</code> and <code class='backtick'>condition_variable_any</code>'s 
+<code class='backtick'>wait_for</code> and <code class='backtick'>wait_until</code> take the timeout <code class='backtick'>time_point</code>/<code class='backtick'>duration</code> by 
+<code class='backtick'>const</code> reference. This can cause surprising behaviour. Given the following 
+example (thanks to Tim Song):
+</p>
+<blockquote><pre>
+struct Task {
+  system_clock::time_point deadline;
+  // stuff
+};
+
+std::mutex mtx;
+std::condition_variable cv;
+std::priority_queue&lt;Task, vector&lt;Task&gt;, CompareDeadlines&gt; queue;
+
+// thread 1
+std::unique_lock lck(mtx);
+if (queue.empty()) { cv.wait(lck); }
+else { cv.wait_until(lck, queue.top().deadline); }
+
+// thread 2
+std::lock_guard lck(mtx);
+queue.push(/* some task */);
+cv.notify_one();
+</pre></blockquote>
+<p>
+From the user's point of view, it is sufficiently locked on both threads. However, 
+due to the fact that the <code class='backtick'>time_point</code> is taken by reference, and that both libc++ 
+and libstdc++'s implementation will read the value again after waking up, this 
+will read a dangling reference of the <code class='backtick'>time_point</code>.
+<p/>
+Another example related to this issue:
+<p/>
+We (libc++) recently received a bug report on <code class='backtick'>condition_variable{_any}::wait_{for, until}</code>.
+<p/>
+Basically the user claims that these functions take <code class='backtick'>time_point</code>/<code class='backtick'>duration</code> by <code class='backtick'>const</code> 
+reference, if the user modifies the <code class='backtick'>time_point</code>/<code class='backtick'>duration</code> on another thread with 
+the same mutex, they can get unexpected return value for <code class='backtick'>condition_variable</code>, and 
+data race for <code class='backtick'>conditional_variable_any</code>.
+<p/>
+Bug report <a href="https://github.com/llvm/llvm-project/pull/148330#issuecomment-3065062889">here</a>.
+<p/>
+Reproducer (libstdc++ has the same behaviour as ours) <a href="https://godbolt.org/z/GnY35T3hn">on godbolt</a>.
+</p>
+<blockquote><pre>
+std::mutex mutex;
+std::condition_variable cv;
+auto timeout = std::chrono::steady_clock::time_point::max();
+
+// Thread 1:
+std::unique_lock lock(mutex);
+const auto status = cv.wait_until(lock, timeout);
+
+// Thread 2:
+std::unique_lock lock(mutex);
+cv.notify_one();
+timeout = std::chrono::steady_clock::time_point::min();
+</pre></blockquote>
+<p>
+So basically the problem was that when we return whether there is <code class='backtick'>no_timeout</code> or <code class='backtick'>timeout</code> 
+at the end of the function, we read the <code class='backtick'>const</code> reference again, which can be changed since 
+the beginning of the function. For <code class='backtick'>condition_variable</code>, it is "unexpected results" according 
+to the user. And in <code class='backtick'>conditional_variable_any</code>, we actually unlock the user lock and acquire 
+our internal lock, then read the input again, so this is actually a data race.
+<p/>
+For <code class='backtick'>wait_for</code>, the spec has 
+</p>
+<blockquote>
+<p>
+<i>Effects</i>: Equivalent to: <code>return wait_until(lock, chrono::steady_clock::now() + rel_time);</code>
+</p>
+</blockquote>
+<p>
+So the user can claim our implementation is not conforming because the spec says there needs 
+to be a temporary <code class='backtick'>time_point</code> (<code class='backtick'>now + duration</code>) created and since it should operate on this 
+temporary <code class='backtick'>time_point</code>. There shouldn't be any unexpected behaviour or data race .
+<p/>
+For <code class='backtick'>wait_until</code> it is unclear whether the spec has implications that implementations are allowed 
+to read <code class='backtick'>abs_time</code> while the user's lock is unlocked. 
+<p/>
+it is also unclear if an implementation is allowed to return <code class='backtick'>timeout</code> if <code class='backtick'>cv</code> indeed does 
+not wait longer than the original value of <code class='backtick'>timeout</code>. If it is not allowed, implementations 
+will have to make a local copy of the input <code class='backtick'>rel_time</code> or <code class='backtick'>abs_time</code>, which defeats the purpose 
+of taking arguments by <code class='backtick'>const</code> reference.
+<p/>
+For both of the examples, Ville has a great comment in the reflector:
+</p>
+<blockquote style="border-left: 3px solid #ccc;padding-left: 15px;">
+<p>
+It seems like a whole bag of problems goes away if these functions just take the timeout by value?
+</p>
+</blockquote>
+<p>
+libc++ implementers have strong preference just changing the API to take these arguments by value, 
+and it is not an ABI break for us as the function signature has changed.
+</p>
+
+
+<p id="res-4301"><b>Proposed resolution:</b></p>
+<p>
+This wording is relative to this 
+<a href="https://github.com/cplusplus/draft/actions/runs/16433597877/artifacts/3583518547">CD preview draft</a>.
+</p>
+
+<ol>
+
+<li><p>Modify 32.7.4 <a href="https://wg21.link/thread.condition.condvar">[thread.condition.condvar]</a> as indicated:</p>
+
+<blockquote>
+<blockquote>
+<pre>
+namespace std {
+  class condition_variable {
+  public:
+    [&hellip;]
+    template&lt;class Predicate&gt;
+      void wait(unique_lock&lt;mutex&gt;&amp; lock, Predicate pred);
+    template&lt;class Clock, class Duration&gt;
+      cv_status wait_until(unique_lock&lt;mutex&gt;&amp; lock,
+                           <del>const</del> chrono::time_point&lt;Clock, Duration&gt;<del>&amp;</del> abs_time);
+    template&lt;class Clock, class Duration, class Predicate&gt;
+      bool wait_until(unique_lock&lt;mutex&gt;&amp; lock,
+                      <del>const</del> chrono::time_point&lt;Clock, Duration&gt;<del>&amp;</del> abs_time,
+                      Predicate pred);
+    template&lt;class Rep, class Period&gt;
+      cv_status wait_for(unique_lock&lt;mutex&gt;&amp; lock,
+                         <del>const</del> chrono::duration&lt;Rep, Period&gt;<del>&amp;</del> rel_time);
+    template&lt;class Rep, class Period, class Predicate&gt;
+      bool wait_for(unique_lock&lt;mutex&gt;&amp; lock,
+                    <del>const</del> chrono::duration&lt;Rep, Period&gt;<del>&amp;</del> rel_time,
+                    Predicate pred);    
+    [&hellip;]
+  };
+}
+</pre>
+</blockquote>
+[&hellip;]
+<pre>
+template&lt;class Clock, class Duration&gt;
+  cv_status wait_until(unique_lock&lt;mutex&gt;&amp; lock,
+                       <del>const</del> chrono::time_point&lt;Clock, Duration&gt;<del>&amp;</del> abs_time);
+</pre>
+<blockquote>
+<p>
+-17- <i>Preconditions</i>: [&hellip;]
+<p/>
+[&hellip;]
+</p>
+</blockquote>
+<pre>
+template&lt;class Rep, class Period&gt;
+  cv_status wait_for(unique_lock&lt;mutex&gt;&amp; lock,
+                     <del>const</del> chrono::duration&lt;Rep, Period&gt;<del>&amp;</del> rel_time);
+</pre>
+<blockquote>
+<p>
+-23- <i>Preconditions</i>: [&hellip;]
+<p/>
+[&hellip;]
+</p>
+</blockquote>
+<pre>
+template&lt;class Clock, class Duration, class Predicate&gt;
+  bool wait_until(unique_lock&lt;mutex&gt;&amp; lock,
+                  <del>const</del> chrono::time_point&lt;Clock, Duration&gt;<del>&amp;</del> abs_time,
+                  Predicate pred);
+</pre>
+<blockquote>
+<p>
+-29- <i>Preconditions</i>: [&hellip;]
+<p/>
+[&hellip;]
+</p>
+</blockquote>
+<pre>
+template&lt;class Rep, class Period, class Predicate&gt;
+  bool wait_for(unique_lock&lt;mutex&gt;&amp; lock,
+                <del>const</del> chrono::duration&lt;Rep, Period&gt;<del>&amp;</del> rel_time,
+                Predicate pred);    
+</pre>
+<blockquote>
+<p>
+-35- <i>Preconditions</i>: [&hellip;]
+<p/>
+[&hellip;]
+</p>
+</blockquote>
+</blockquote>
+</li>
+
+<li><p>Modify 32.7.5.1 <a href="https://wg21.link/thread.condition.condvarany.general">[thread.condition.condvarany.general]</a> as indicated:</p>
+
+<blockquote>
+<pre>
+namespace std {
+  class condition_variable_any {
+  public:
+    [&hellip;]
+    // <i>32.7.5.2 <a href="https://wg21.link/thread.condvarany.wait">[thread.condvarany.wait]</a>, noninterruptible waits</i>
+    template&lt;class Lock&gt;
+      void wait(Lock&amp; lock);
+    template&lt;class Lock, class Predicate&gt;
+      void wait(Lock&amp; lock, Predicate pred);
+    
+    template&lt;class Lock, class Clock, class Duration&gt;
+      cv_status wait_until(Lock&amp; lock, <del>const</del> chrono::time_point&lt;Clock, Duration&gt;<del>&amp;</del> abs_time);
+    template&lt;class Lock, class Clock, class Duration, class Predicate&gt;
+      bool wait_until(Lock&amp; lock, <del>const</del> chrono::time_point&lt;Clock, Duration&gt;<del>&amp;</del> abs_time,
+                      Predicate pred);
+    template&lt;class Lock, class Rep, class Period&gt;
+      cv_status wait_for(Lock&amp; lock, <del>const</del> chrono::duration&lt;Rep, Period&gt;<del>&amp;</del> rel_time);
+    template&lt;class Lock, class Rep, class Period, class Predicate&gt;
+      bool wait_for(Lock&amp; lock, <del>const</del> chrono::duration&lt;Rep, Period&gt;<del>&amp;</del> rel_time, Predicate pred);
+   
+    // <i>32.7.5.3 <a href="https://wg21.link/thread.condvarany.intwait">[thread.condvarany.intwait]</a>, interruptible waits</i>
+    template&lt;class Lock, class Predicate&gt;
+      bool wait(Lock&amp; lock, stop_token stoken, Predicate pred);
+    template&lt;class Lock, class Clock, class Duration, class Predicate&gt;
+      bool wait_until(Lock&amp; lock, stop_token stoken,
+                      <del>const</del> chrono::time_point&lt;Clock, Duration&gt;<del>&amp;</del> abs_time, Predicate pred);
+    template&lt;class Lock, class Rep, class Period, class Predicate&gt;
+      bool wait_for(Lock&amp; lock, stop_token stoken,
+                    <del>const</del> chrono::duration&lt;Rep, Period&gt;<del>&amp;</del> rel_time, Predicate pred);
+  };
+}
+</pre>
+</blockquote>
+</li>
+
+<li><p>Modify 32.7.5.2 <a href="https://wg21.link/thread.condvarany.wait">[thread.condvarany.wait]</a> as indicated:</p>
+
+<blockquote>
+[&hellip;]
+<pre>
+template&lt;class Lock, class Clock, class Duration&gt;
+  cv_status wait_until(Lock&amp; lock, <del>const</del> chrono::time_point&lt;Clock, Duration&gt;<del>&amp;</del> abs_time);
+</pre>
+<blockquote>
+<p>
+-6- <i>Effects</i>: [&hellip;]
+<p/>
+[&hellip;]
+</p>
+</blockquote>
+<pre>
+template&lt;class Lock, class Rep, class Period&gt;
+  cv_status wait_for(Lock&amp; lock, <del>const</del> chrono::duration&lt;Rep, Period&gt;<del>&amp;</del> rel_time);
+</pre>
+<blockquote>
+<p>
+-11- <i>Effects</i>: [&hellip;]
+<p/>
+[&hellip;]
+</p>
+</blockquote>
+<pre>
+template&lt;class Lock, class Clock, class Duration, class Predicate&gt;
+  bool wait_until(Lock&amp; lock, <del>const</del> chrono::time_point&lt;Clock, Duration&gt;<del>&amp;</del> abs_time,
+                  Predicate pred);
+</pre>
+<blockquote>
+<p>
+-16- <i>Effects</i>: [&hellip;]
+<p/>
+[&hellip;]
+</p>
+</blockquote>
+<pre>
+template&lt;class Lock, class Rep, class Period, class Predicate&gt;
+  bool wait_for(Lock&amp; lock, <del>const</del> chrono::duration&lt;Rep, Period&gt;<del>&amp;</del> rel_time, Predicate pred);
+</pre>
+<blockquote>
+<p>
+-19- <i>Effects</i>: [&hellip;]
+</p>
+</blockquote>
+</blockquote>
+</li>
+
+<li><p>Modify 32.7.5.3 <a href="https://wg21.link/thread.condvarany.intwait">[thread.condvarany.intwait]</a> as indicated:</p>
+
+<blockquote>
+[&hellip;]
+<pre>
+template&lt;class Lock, class Clock, class Duration, class Predicate&gt;
+  bool wait_until(Lock&amp; lock, stop_token stoken,
+                  <del>const</del> chrono::time_point&lt;Clock, Duration&gt;<del>&amp;</del> abs_time, Predicate pred);
+</pre>
+<blockquote>
+<p>
+-7- <i>Effects</i>: [&hellip;]
+<p/>
+[&hellip;]
+</p>
+</blockquote>
+<pre>
+template&lt;class Lock, class Rep, class Period, class Predicate&gt;
+  bool wait_for(Lock&amp; lock, stop_token stoken,
+                <del>const</del> chrono::duration&lt;Rep, Period&gt;<del>&amp;</del> rel_time, Predicate pred);
+</pre>
+<blockquote>
+<p>
+-13- <i>Effects</i>: [&hellip;]
+</p>
+</blockquote>
+</blockquote>
+</li>
+
+</ol>
+
+
+
+
+
+</body>
+</html>
