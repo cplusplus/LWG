@@ -2,10 +2,10 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<title>Issue 2695: "As if" unclear in [member.functions]</title>
-<meta property="og:title" content="Issue 2695: &quot;As if&quot; unclear in [member.functions]">
+<title>Issue 4303: Interaction between LWG 2259 and Constraints of member functions</title>
+<meta property="og:title" content="Issue 4303: Interaction between LWG 2259 and Constraints of member functions">
 <meta property="og:description" content="C++ library issue. Status: New">
-<meta property="og:url" content="https://cplusplus.github.io/LWG/issue2695.html">
+<meta property="og:url" content="https://cplusplus.github.io/LWG/issue4303.html">
 <meta property="og:type" content="website">
 <meta property="og:image" content="http://cplusplus.github.io/LWG/images/cpp_logo.png">
 <meta property="og:image:alt" content="C++ logo">
@@ -62,50 +62,32 @@
 <body>
 <hr>
 <p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#New">New</a> status.</em></p>
-<h3 id="2695"><a href="lwg-active.html#2695">2695</a>. "As if" unclear in [member.functions]</h3>
+<h3 id="4303"><a href="lwg-active.html#4303">4303</a>. Interaction between LWG 2259 and <i>Constraints</i> of member functions</h3>
 <p><b>Section:</b> 16.4.6.5 <a href="https://wg21.link/member.functions">[member.functions]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Hubert Tong <b>Opened:</b> 2016-04-15 <b>Last modified:</b> 2017-02-02</p>
-<p><b>Priority: </b>3
+ <b>Submitter:</b> Jiang An <b>Opened:</b> 2025-07-24 <b>Last modified:</b> 2025-07-27</p>
+<p><b>Priority: </b>Not Prioritized
 </p>
 <p><b>View other</b> <a href="lwg-index-open.html#member.functions">active issues</a> in [member.functions].</p>
 <p><b>View all other</b> <a href="lwg-index.html#member.functions">issues</a> in [member.functions].</p>
 <p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
 <p><b>Discussion:</b></p>
 <p>
-In N4582 subclause 17.6.5.5 [member.functions], the requirement that:
-</p>
-<blockquote><p>
-any call to the member function that would select an overload from the set of declarations described in this 
-standard behaves as if that overload were selected
-</p></blockquote>
-<p>
-is unclear in the extent of the "as if". For example, in providing:
-</p>
-<blockquote><pre>
-basic_string(const charT* s);
-</pre></blockquote>
-<p>
-for a one-argument call to:
-</p>
-<blockquote><pre>
-basic_string(const charT* s, const Allocator&amp; a = Allocator());
-</pre></blockquote>
-<p>
-it can be read that an implementation may be required to call the copy constructor for the allocator since 
-the core language rules for copy elision would not allow the "a" argument to be constructed directly into 
-the member used to store the allocator.
+16.4.6.5 <a href="https://wg21.link/member.functions">[member.functions]</a>/2 seems to allow that even when the constraints are not met, 
+such a default constructor can be selected, because no restriction is imposed when no overload 
+is originally selected. Per the discussion in LWG <a href="lwg-closed.html#2563" title="LWG 2259 relaxes requirements, perhaps unintentionally (Status: NAD)">2563</a><sup><a href="https://cplusplus.github.io/LWG/issue2563" title="Latest snapshot">(i)</a></sup> (closed as NAD), it even 
+seems to allow the implementation to add a default constructor when there's originally none.
 <p/>
-Clarification (even if just a note) would be appreciated.
+However, we're constraining some member functions, e.g. default constructors of <code class='backtick'>unique_ptr</code>, 
+<code class='backtick'>tuple</code>, and <code class='backtick'>variant</code>. Allowance of more permissive overload sets of constructors effectively 
+renders the <i>Constraints</i> meaningless, because even if the implementation doesn't constrain 
+the default constructors at all, it can still satisfy the restriction in 
+16.4.6.5 <a href="https://wg21.link/member.functions">[member.functions]</a>/2 since LWG <a href="lwg-defects.html#2259" title="Issues in 17.6.5.5 rules for member functions (Status: C++17)">2259</a><sup><a href="https://cplusplus.github.io/LWG/issue2259" title="Latest snapshot">(i)</a></sup>.
+<p/>
+Perhaps some wording change is necessary to guarantee the <i>Constraints</i> of member functions to be meaningful.
 </p>
 
-<p><i>[2016-05 Issues Telecon]</i></p>
 
-<p>
-This is related to issue <a href="lwg-closed.html#2563" title="LWG 2259 relaxes requirements, perhaps unintentionally (Status: NAD)">2563</a><sup><a href="https://cplusplus.github.io/LWG/issue2563" title="Latest snapshot">(i)</a></sup>.
-</p>
-
-
-<p id="res-2695"><b>Proposed resolution:</b></p>
+<p id="res-4303"><b>Proposed resolution:</b></p>
 
 
 

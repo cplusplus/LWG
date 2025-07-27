@@ -54,7 +54,7 @@
 </style>
 </head>
 <body>
-<p>Revised 2025-07-27 at 08:29:31 UTC
+<p>Revised 2025-07-27 at 08:39:35 UTC
 </p><h2>Unresolved Issues</h2>
 <hr>
 <h3 id="423"><a href="#423">423</a><sup><a href="https://cplusplus.github.io/LWG/issue423">(i)</a></sup>. Effects of negative <code>streamsize</code> in iostreams</h3>
@@ -12462,6 +12462,7 @@ other format components. Where <code>value</code> appears, the absolute numeric 
  <b>Submitter:</b> Hubert Tong <b>Opened:</b> 2016-04-15 <b>Last modified:</b> 2017-02-02</p>
 <p><b>Priority: </b>3
 </p>
+<p><b>View other</b> <a href="lwg-index-open.html#member.functions">active issues</a> in [member.functions].</p>
 <p><b>View all other</b> <a href="lwg-index.html#member.functions">issues</a> in [member.functions].</p>
 <p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
 <p><b>Discussion:</b></p>
@@ -73645,6 +73646,38 @@ can use the <code class='backtick'>scaled_sum_of_squares</code> result from
 </li>
 
 </ol>
+
+
+
+
+
+<hr>
+<h3 id="4303"><a href="#4303">4303</a><sup><a href="https://cplusplus.github.io/LWG/issue4303">(i)</a></sup>. Interaction between LWG 2259 and <i>Constraints</i> of member functions</h3>
+<p><b>Section:</b> 16.4.6.5 <a href="https://wg21.link/member.functions">[member.functions]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
+ <b>Submitter:</b> Jiang An <b>Opened:</b> 2025-07-24 <b>Last modified:</b> 2025-07-27</p>
+<p><b>Priority: </b>Not Prioritized
+</p>
+<p><b>View other</b> <a href="lwg-index-open.html#member.functions">active issues</a> in [member.functions].</p>
+<p><b>View all other</b> <a href="lwg-index.html#member.functions">issues</a> in [member.functions].</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
+<p><b>Discussion:</b></p>
+<p>
+16.4.6.5 <a href="https://wg21.link/member.functions">[member.functions]</a>/2 seems to allow that even when the constraints are not met, 
+such a default constructor can be selected, because no restriction is imposed when no overload 
+is originally selected. Per the discussion in LWG <a href="lwg-closed.html#2563" title="LWG 2259 relaxes requirements, perhaps unintentionally (Status: NAD)">2563</a><sup><a href="https://cplusplus.github.io/LWG/issue2563" title="Latest snapshot">(i)</a></sup> (closed as NAD), it even 
+seems to allow the implementation to add a default constructor when there's originally none.
+<p/>
+However, we're constraining some member functions, e.g. default constructors of <code class='backtick'>unique_ptr</code>, 
+<code class='backtick'>tuple</code>, and <code class='backtick'>variant</code>. Allowance of more permissive overload sets of constructors effectively 
+renders the <i>Constraints</i> meaningless, because even if the implementation doesn't constrain 
+the default constructors at all, it can still satisfy the restriction in 
+16.4.6.5 <a href="https://wg21.link/member.functions">[member.functions]</a>/2 since LWG <a href="lwg-defects.html#2259" title="Issues in 17.6.5.5 rules for member functions (Status: C++17)">2259</a><sup><a href="https://cplusplus.github.io/LWG/issue2259" title="Latest snapshot">(i)</a></sup>.
+<p/>
+Perhaps some wording change is necessary to guarantee the <i>Constraints</i> of member functions to be meaningful.
+</p>
+
+
+<p id="res-4303"><b>Proposed resolution:</b></p>
 
 
 
