@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Issue 4305: Missing user requirements on type_order template</title>
+<meta property="og:title" content="Issue 4305: Missing user requirements on type_order template">
+<meta property="og:description" content="C++ library issue. Status: New">
+<meta property="og:url" content="https://cplusplus.github.io/LWG/issue4305.html">
+<meta property="og:type" content="website">
+<meta property="og:image" content="http://cplusplus.github.io/LWG/images/cpp_logo.png">
+<meta property="og:image:alt" content="C++ logo">
+<style>
+  p {text-align:justify}
+  li {text-align:justify}
+  pre code.backtick::before { content: "`" }
+  pre code.backtick::after { content: "`" }
+  blockquote.note
+  {
+    background-color:#E0E0E0;
+    padding-left: 15px;
+    padding-right: 15px;
+    padding-top: 1px;
+    padding-bottom: 1px;
+  }
+  ins {background-color:#A0FFA0}
+  del {background-color:#FFA0A0}
+  table.issues-index { border: 1px solid; border-collapse: collapse; }
+  table.issues-index th { text-align: center; padding: 4px; border: 1px solid; }
+  table.issues-index td { padding: 4px; border: 1px solid; }
+  table.issues-index td:nth-child(1) { text-align: right; }
+  table.issues-index td:nth-child(2) { text-align: left; }
+  table.issues-index td:nth-child(3) { text-align: left; }
+  table.issues-index td:nth-child(4) { text-align: left; }
+  table.issues-index td:nth-child(5) { text-align: center; }
+  table.issues-index td:nth-child(6) { text-align: center; }
+  table.issues-index td:nth-child(7) { text-align: left; }
+  table.issues-index td:nth-child(5) span.no-pr { color: red; }
+  @media (prefers-color-scheme: dark) {
+     html {
+        color: #ddd;
+        background-color: black;
+     }
+     ins {
+        background-color: #225522
+     }
+     del {
+        background-color: #662222
+     }
+     a {
+        color: #6af
+     }
+     a:visited {
+        color: #6af
+     }
+     blockquote.note
+     {
+        background-color: rgba(255, 255, 255, .10)
+     }
+  }
+</style>
+</head>
+<body>
+<hr>
+<p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#New">New</a> status.</em></p>
+<h3 id="4305"><a href="lwg-active.html#4305">4305</a>. Missing user requirements on <code class='backtick'>type_order</code> template</h3>
+<p><b>Section:</b> 17.12.7 <a href="https://wg21.link/compare.type">[compare.type]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
+ <b>Submitter:</b> Daniel Krügler <b>Opened:</b> 2025-07-27 <b>Last modified:</b> 2025-07-27</p>
+<p><b>Priority: </b>Not Prioritized
+</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
+<p><b>Discussion:</b></p>
+<p>
+The recently approved paper <a href="https://wg21.link/P2830R10" title=" Standardized Constexpr Type Ordering">P2830R10</a> proposes to add the new <code class='backtick'>type_order</code>
+type traits to 17.12 <a href="https://wg21.link/cmp">[cmp]</a> (and thus outside of 21.3 <a href="https://wg21.link/type.traits">[type.traits]</a>), 
+which has the subtle and most likely unintended effect, that it doesn't fall under the 
+general requirement expressed in 21.3.2 <a href="https://wg21.link/meta.rqmts">[meta.rqmts]</a> p4,
+</p>
+<blockquote><p>
+Unless otherwise specified, the behavior of a program that adds specializations for 
+any of the templates specified in 21.3.2 <a href="https://wg21.link/meta.rqmts">[meta.rqmts]</a> is undefined.
+</p></blockquote>
+<p>
+and so in principle the explicit allowance specified in 16.4.5.2.1 <a href="https://wg21.link/namespace.std">[namespace.std]</a> p2,
+</p>
+<blockquote><p>
+Unless explicitly prohibited, a program may add a template specialization for any standard 
+library class template to namespace <code class='backtick'>std</code> [&hellip;]
+</p></blockquote>
+<p>
+holds. So we need to add extra wording to the <code class='backtick'>type_order</code> specification in 
+17.12.7 <a href="https://wg21.link/compare.type">[compare.type]</a> to prohibit such program specializations.
+<p/>
+This was reported shortly before the Sofia meeting 
+<a href="https://lists.isocpp.org/lib/2025/06/31725.php">during reflector discussion</a>  
+but seems to be forgotten before the final paper appeared on plenary. 
+<p/>
+During the reflector discussion two possible ways to solve this issue were pointed out:
+</p>
+<ol>
+<li><p>The most simple one would mimic the wording in 21.3.2 <a href="https://wg21.link/meta.rqmts">[meta.rqmts]</a> p4
+quoted above.</p></li>
+<li><p>Instead of introducing just another undefined opportunity to run into undefined
+behaviour it has been pointed out that we could follow the approach taken by <code class='backtick'>std::initializer_list</code>
+and make the program ill-formed in this case, as specified in 17.11.2 <a href="https://wg21.link/initializer.list.syn">[initializer.list.syn]</a> p2:
+</p>
+<blockquote><p>
+If an explicit specialization or partial specialization of <code class='backtick'>initializer_list</code> is declared, 
+the program is ill-formed.
+</p></blockquote>
+</li>
+</ol>
+Jonathan Wakely responded to the reflector discussion:
+<blockquote><p>
+I think ill-formed would be better. It shouldn't be difficult for implementations to have special cases that are disallowed. 
+</p></blockquote>
+<p>
+Given the already existing experience with <code class='backtick'>std::initializer_list</code> the proposed wording below
+therefore follows the ill-formed program approach.
+</p>
+
+
+<p id="res-4305"><b>Proposed resolution:</b></p>
+<p>
+This wording is relative to this 
+<a href="https://github.com/cplusplus/draft/actions/runs/16433597877/artifacts/3583518547">CD preview draft</a>.
+</p>
+
+<ol>
+
+<li><p>Modify 17.12.7 <a href="https://wg21.link/compare.type">[compare.type]</a> as indicated:</p>
+
+<blockquote>
+<pre>
+template&lt;class T, class U&gt;
+  struct type_order;
+</pre>
+<blockquote>
+<p>
+-2- The name <code class='backtick'>type_order</code> denotes a <i>Cpp17BinaryTypeTrait</i> (21.3.2 <a href="https://wg21.link/meta.rqmts">[meta.rqmts]</a>) with a base 
+characteristic of <code>integral_constant&lt;strong_ordering, <i>TYPE-ORDER</i>(T, U)&gt;</code>.
+<p/>
+<ins>-?- If an explicit specialization or partial specialization of <code class='backtick'>type_order</code> is declared, the program is ill-formed.</ins>
+<p/>
+-3- <i>Recommended practice</i>: The order should be lexicographical on parameter-type-lists and template
+argument lists.
+</p>
+</blockquote>
+</blockquote>
+</li>
+
+</ol>
+
+
+
+
+
+
+</body>
+</html>
