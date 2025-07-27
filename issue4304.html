@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Issue 4304: std::optional&lt;NonReturnable&amp;&gt; is ill-formed due to value_or</title>
+<meta property="og:title" content="Issue 4304: std::optional&lt;NonReturnable&amp;&gt; is ill-formed due to value_or">
+<meta property="og:description" content="C++ library issue. Status: New">
+<meta property="og:url" content="https://cplusplus.github.io/LWG/issue4304.html">
+<meta property="og:type" content="website">
+<meta property="og:image" content="http://cplusplus.github.io/LWG/images/cpp_logo.png">
+<meta property="og:image:alt" content="C++ logo">
+<style>
+  p {text-align:justify}
+  li {text-align:justify}
+  pre code.backtick::before { content: "`" }
+  pre code.backtick::after { content: "`" }
+  blockquote.note
+  {
+    background-color:#E0E0E0;
+    padding-left: 15px;
+    padding-right: 15px;
+    padding-top: 1px;
+    padding-bottom: 1px;
+  }
+  ins {background-color:#A0FFA0}
+  del {background-color:#FFA0A0}
+  table.issues-index { border: 1px solid; border-collapse: collapse; }
+  table.issues-index th { text-align: center; padding: 4px; border: 1px solid; }
+  table.issues-index td { padding: 4px; border: 1px solid; }
+  table.issues-index td:nth-child(1) { text-align: right; }
+  table.issues-index td:nth-child(2) { text-align: left; }
+  table.issues-index td:nth-child(3) { text-align: left; }
+  table.issues-index td:nth-child(4) { text-align: left; }
+  table.issues-index td:nth-child(5) { text-align: center; }
+  table.issues-index td:nth-child(6) { text-align: center; }
+  table.issues-index td:nth-child(7) { text-align: left; }
+  table.issues-index td:nth-child(5) span.no-pr { color: red; }
+  @media (prefers-color-scheme: dark) {
+     html {
+        color: #ddd;
+        background-color: black;
+     }
+     ins {
+        background-color: #225522
+     }
+     del {
+        background-color: #662222
+     }
+     a {
+        color: #6af
+     }
+     a:visited {
+        color: #6af
+     }
+     blockquote.note
+     {
+        background-color: rgba(255, 255, 255, .10)
+     }
+  }
+</style>
+</head>
+<body>
+<hr>
+<p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#New">New</a> status.</em></p>
+<h3 id="4304"><a href="lwg-active.html#4304">4304</a>. <code>std::optional&lt;<i>NonReturnable</i>&amp;&gt;</code> is ill-formed due to <code class='backtick'>value_or</code></h3>
+<p><b>Section:</b> 22.5.4.6 <a href="https://wg21.link/optional.ref.observe">[optional.ref.observe]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
+ <b>Submitter:</b> Jiang An <b>Opened:</b> 2025-07-25 <b>Last modified:</b> 2025-07-27</p>
+<p><b>Priority: </b>Not Prioritized
+</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
+<p><b>Discussion:</b></p>
+<p>
+Currently, if <code class='backtick'>T</code> is an array type or a function type, instantiation of <code>std::optional&lt;T&amp;&gt;</code> 
+is still ill-formed, because the return type of its <code class='backtick'>value_or</code> member function is specified as 
+<code>remove_cv_t&lt;T&gt;</code>, which is invalid as a return type.
+<p/>
+However, we don't exclude such <code>T&amp;</code> from valid contained types. Given only <code class='backtick'>value_or</code> is 
+problematic here, perhaps we can avoid providing it if <code class='backtick'>T</code> is not returnable.
+</p>
+
+
+<p id="res-4304"><b>Proposed resolution:</b></p>
+<p>
+This wording is relative to this 
+<a href="https://github.com/cplusplus/draft/actions/runs/16433597877/artifacts/3583518547">CD preview draft</a>.
+</p>
+
+<ol>
+
+<li><p>Modify 22.5.4.1 <a href="https://wg21.link/optional.optional.ref.general">[optional.optional.ref.general]</a>, header <code>&lt;iterator&gt;</code> synopsis, as indicated:</p>
+
+<blockquote>
+<pre>
+namespace std {
+  template&lt;class T&gt;
+  class optional&lt;T&amp;&gt; {
+    [&hellip;]
+    constexpr T&amp; value() const; // freestanding-deleted
+    template&lt;class U = remove_cv_t&lt;T&gt;&gt;
+      constexpr remove_cv_t&lt;T&gt; value_or(U&amp;&amp; u) const; <ins>// <i>not always present</i></ins>
+    [&hellip;]
+  };
+}
+</pre>
+</blockquote>
+</li>
+
+<li><p>Modify 22.5.4.6 <a href="https://wg21.link/optional.ref.observe">[optional.ref.observe]</a> as indicated:</p>
+
+<blockquote>
+<pre>
+template&lt;class U = remove_cv_t&lt;T&gt;&gt; constexpr remove_cv_t&lt;T&gt; value_or(U&amp;&amp; u) const;
+</pre>
+<blockquote>
+<p>
+-8- Let <code class='backtick'>X</code> be <code>remove_cv_t&lt;T&gt;</code>.
+<p/>
+-9- <i>Mandates</i>: <code>is_constructible_v&lt;X, T&amp;&gt; &amp;&amp; is_convertible_v&lt;U, X&gt;</code> is <code class='backtick'>true</code>.
+<p/>
+-10- <i>Effects</i>: Equivalent to:
+</p>
+<blockquote><pre>
+return has_value() ? *<i>val</i> : static_cast&lt;X&gt;(std::forward&lt;U&gt;(u));
+</pre></blockquote>
+<p>
+<ins>-?- <i>Remarks</i>: This function template is present if and only if <code class='backtick'>T</code> is a non-array object type.</ins>
+</p>
+</blockquote>
+</blockquote>
+</li>
+</ol>
+
+
+
+
+
+</body>
+</html>
