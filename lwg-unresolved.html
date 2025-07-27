@@ -54,7 +54,7 @@
 </style>
 </head>
 <body>
-<p>Revised 2025-07-26 at 17:42:41 UTC
+<p>Revised 2025-07-27 at 06:45:09 UTC
 </p><h2>Unresolved Issues</h2>
 <hr>
 <h3 id="423"><a href="#423">423</a><sup><a href="https://cplusplus.github.io/LWG/issue423">(i)</a></sup>. Effects of negative <code>streamsize</code> in iostreams</h3>
@@ -67342,7 +67342,7 @@ template&lt;template&lt;class...&gt; class C, class... Args&gt;
 <hr>
 <h3 id="4230"><a href="#4230">4230</a><sup><a href="https://cplusplus.github.io/LWG/issue4230">(i)</a></sup>. <code>simd&lt;complex&gt;::real/imag</code> is overconstrained</h3>
 <p><b>Section:</b> 29.10.8.4 <a href="https://wg21.link/simd.complex.access">[simd.complex.access]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Matthias Kretz <b>Opened:</b> 2025-03-18 <b>Last modified:</b> 2025-06-13</p>
+ <b>Submitter:</b> Matthias Kretz <b>Opened:</b> 2025-03-18 <b>Last modified:</b> 2025-07-27</p>
 <p><b>Priority: </b>2
 </p>
 <p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
@@ -67382,9 +67382,9 @@ simd&lt;complex&lt;double&gt;, 4&gt; sc1(simd&lt;double, 4&gt;(1.), simd&lt;floa
 Set priority to 2 after reflector poll.
 </p>
 
+<p><strong>Previous resolution [SUPERSEDED]:</strong></p>
+<blockquote class="note">
 
-
-<p id="res-4230"><b>Proposed resolution:</b></p>
 <p>
 This wording is relative to <a href="https://wg21.link/N5008" title=" Working Draft, Programming Languages — C++">N5008</a>.
 </p>
@@ -67480,6 +67480,138 @@ where the <code><i>i</i></code><sup>th</sup> element is initialized to the resul
 </p>
 <ol style="list-style-type: none">
 <li><p><del>(3.1) &mdash;</del> <code><i>simd-complex</i>&lt;basic_simd&gt;</code> is modeled<ins>.</ins><del>,</del></p></li>
+<li><p><del>(3.2) &mdash; <code>same_as&lt;typename V::value_type, typename T::value_type&gt;</code> is modeled, and</del></p></li>
+<li><p><del>(3.3) &mdash; <code class='backtick'>V::size() == size()</code> is <code class='backtick'>true</code>.</del></p></li>
+</ol>
+<p>
+[&hellip;]
+</p>
+</blockquote>
+</blockquote>
+</li>
+
+</ol>
+</blockquote>
+
+<p><i>[2025-07-21; Matthias Kretz comments]</i></p>
+
+<p>
+The currently shown P/R says:
+</p>
+<blockquote><p>
+<i>Remarks</i>: The expression inside <code class='backtick'>explicit</code> evaluates to <code class='backtick'>false</code> if and only if
+the floating-point conversion rank of <code class='backtick'>T::value_type</code> is greater than or equal
+to the floating-point conversion rank of <code><i>real-type</i>::value_type</code>.
+</p></blockquote>
+<p>
+But, by construction, <code><i>real-type</i>::value_type</code> is the same as <code class='backtick'>T::value_type</code>. 
+So we get an elaborately worded <code class='backtick'>explicit(false)</code> here (which is correct).
+Consequently, the proposed resolution needs to strike <code class='backtick'>explicit(&lt;i&gt;see below&lt;/i&gt;)</code>
+from 29.10.7.1 <a href="https://wg21.link/simd.overview">[simd.overview]</a> and 29.10.7.2 <a href="https://wg21.link/simd.ctor">[simd.ctor]</a> and drop the Remarks paragraph (21).
+</p>
+
+
+<p id="res-4230"><b>Proposed resolution:</b></p>
+<p>
+This wording is relative to this 
+<a href="https://github.com/cplusplus/draft/actions/runs/16433597877/artifacts/3583518547">CD preview draft</a>.
+</p>
+
+
+<ol>
+
+<li><p>Modify 29.10.7.1 <a href="https://wg21.link/simd.overview">[simd.overview]</a>, class template <code class='backtick'>basic_vec</code> synopsis, as indicated:</p>
+
+<blockquote>
+<pre>
+namespace std::simd {
+  template&lt;class T, class Abi&gt; class basic_vec {
+  public:
+    using value_type = T;
+    using mask_type = basic_mask&lt;sizeof(T), Abi&gt;;
+    using abi_type = Abi;
+    using iterator = <i>simd-iterator</i>&lt;basic_vec&gt;;
+    using const_iterator = <i>simd-iterator</i>&lt;const basic_vec&gt;;
+    
+    <ins>using <i>real-type</i> = rebind_t&lt;typename T::value_type, basic_vec&gt; <i>// exposition-only</i></ins>
+    
+    <i>// 29.10.7.2 <a href="https://wg21.link/simd.ctor">[simd.ctor]</a>, basic_vec constructors</i>   
+    [&hellip;]
+    <del>template&lt;<i>simd-floating-point</i> V&gt;</del>
+      constexpr <del>explicit(<i>see below</i>)</del> basic_vec(const <ins><i>real-type</i></ins><del>V</del>&amp; reals, const <ins><i>real-type</i></ins><del>V</del>&amp; imags = {}) noexcept;
+    [&hellip;]
+    <i>// 29.10.8.4 <a href="https://wg21.link/simd.complex.access">[simd.complex.access]</a>, basic_vec complex-value accessors</i>
+    constexpr <ins><i>real-type</i></ins><del>auto</del> real() const noexcept;
+    constexpr <ins><i>real-type</i></ins><del>auto</del> imag() const noexcept;
+    <del>template&lt;<i>simd-floating-point</i> V&gt;</del>
+      constexpr void real(const <ins><i>real-type</i></ins><del>V</del>&amp; v) noexcept;
+    <del>template&lt;<i>simd-floating-point</i> V&gt;</del>
+      constexpr void imag(const <ins><i>real-type</i></ins><del>V</del>&amp; v) noexcept;
+    [&hellip;]
+  };
+  [&hellip;]
+}
+</pre>
+</blockquote>
+</li>
+
+<li><p>Modify 29.10.7.2 <a href="https://wg21.link/simd.ctor">[simd.ctor]</a> as indicated:</p>
+
+<blockquote>
+<pre>
+<del>template&lt;<i>simd-floating-point</i> V&gt;</del>
+  constexpr <del>explicit(<i>see below</i>)</del> 
+    basic_vec(const <ins><i>real-type</i></ins><del>V</del>&amp; reals, const <ins><i>real-type</i></ins><del>V</del>&amp; imags = {}) noexcept;
+</pre>
+<blockquote>
+<p>
+-19- <i>Constraints</i>:
+</p>
+<ol style="list-style-type: none">
+<li><p><del>(19.1) &mdash;</del> <code><i>simd-complex</i>&lt;basic_vec&gt;</code> is modeled<ins>.</ins><del>, and</del></p></li>
+<li><p><del>(19.2) &mdash; <code class='backtick'>V::size() == size()</code> is <code class='backtick'>true</code>.</del></p></li>
+</ol>
+<p>
+[&hellip;]
+<p/>
+<del>-21- <i>Remarks</i>: The expression inside <code class='backtick'>explicit</code> evaluates to <code class='backtick'>false</code> if and only if the 
+floating-point conversion rank of <code class='backtick'>T::value_type</code> is greater than or equal to the floating-point 
+conversion rank of <code>V::value_type</code>.</del>
+</p>
+</blockquote>
+</blockquote>
+</li>
+
+<li><p>Modify 29.10.8.4 <a href="https://wg21.link/simd.complex.access">[simd.complex.access]</a> as indicated:</p>
+
+<blockquote>
+<pre>
+constexpr <ins><i>real-type</i></ins><del>auto</del> real() const noexcept;
+constexpr <ins><i>real-type</i></ins><del>auto</del> imag() const noexcept;
+</pre>
+<blockquote>
+<p>
+-1- <i>Constraints</i>: <code><i>simd-complex</i>&lt;basic_vec&gt;</code> is modeled.
+<p/>
+-2- <i>Returns</i>: An object of type <code><ins><i>real-type</i></ins><del>rebind_t&lt;typename T::value_type, basic_vec&gt;</del></code> 
+where the <code><i>i</i></code><sup>th</sup> element is initialized to the result of 
+<code><i>cmplx-func</i>(operator[](<i>i</i>))</code> for all <code><i>i</i></code> in the range 
+<code class='backtick'>[0, size())</code>, where <code><i>cmplx-func</i></code> is the corresponding function from 
+<code>&lt;complex&gt;</code>.
+</p>
+</blockquote>
+<pre>
+<del>template&lt;<i>simd-floating-point</i> V&gt;</del>
+  constexpr void real(const <ins><i>real-type</i></ins><del>V</del>&amp; v) noexcept;
+<del>template&lt;<i>simd-floating-point</i> V&gt;</del>
+  constexpr void imag(const <ins><i>real-type</i></ins><del>V</del>&amp; v) noexcept;
+</pre>
+<blockquote>
+<p>
+-3- <i>Constraints</i>:
+</p>
+<ol style="list-style-type: none">
+<li><p><del>(3.1) &mdash;</del> <code><i>simd-complex</i>&lt;basic_vec&gt;</code> is modeled<ins>.</ins><del>,</del></p></li>
 <li><p><del>(3.2) &mdash; <code>same_as&lt;typename V::value_type, typename T::value_type&gt;</code> is modeled, and</del></p></li>
 <li><p><del>(3.3) &mdash; <code class='backtick'>V::size() == size()</code> is <code class='backtick'>true</code>.</del></p></li>
 </ol>
