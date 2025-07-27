@@ -1,6 +1,6 @@
 # The binaries that we want to build
 PGMS := bin/lists bin/section_data bin/toc_diff bin/list_issues bin/set_status
-CXXFLAGS := -std=c++17 -Wall -g -O2 -D_GLIBCXX_ASSERTIONS
+CXXFLAGS := -std=c++20 -Wall -g -O2 -D_GLIBCXX_ASSERTIONS
 CPPFLAGS := -MMD
 
 # Running 'make debug' is equivalent to 'make DEBUG=1'
@@ -35,13 +35,13 @@ pgms: $(PGMS)
 
 -include src/*.d
 
-bin/lists: src/date.o src/issues.o src/status.o src/sections.o src/mailing_info.o src/report_generator.o src/lists.o src/metadata.o
+bin/lists: src/issues.o src/status.o src/sections.o src/mailing_info.o src/report_generator.o src/lists.o src/metadata.o
 
 bin/section_data: src/section_data.o
 
 bin/toc_diff: src/toc_diff.o
 
-bin/list_issues: src/date.o src/issues.o src/status.o src/sections.o src/list_issues.o src/metadata.o
+bin/list_issues: src/issues.o src/status.o src/sections.o src/list_issues.o src/metadata.o
 
 bin/set_status: src/set_status.o src/status.o
 
