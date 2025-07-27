@@ -2,8 +2,8 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<title>Issue 4303: Interaction between LWG 2259 and Constraints of member functions</title>
-<meta property="og:title" content="Issue 4303: Interaction between LWG 2259 and Constraints of member functions">
+<title>Issue 4303: std::decay_t in the specification of ranges::distance is problematic</title>
+<meta property="og:title" content="Issue 4303: std::decay_t in the specification of ranges::distance is problematic">
 <meta property="og:description" content="C++ library issue. Status: New">
 <meta property="og:url" content="https://cplusplus.github.io/LWG/issue4303.html">
 <meta property="og:type" content="website">
@@ -62,32 +62,87 @@
 <body>
 <hr>
 <p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#New">New</a> status.</em></p>
-<h3 id="4303"><a href="lwg-active.html#4303">4303</a>. Interaction between LWG 2259 and <i>Constraints</i> of member functions</h3>
-<p><b>Section:</b> 16.4.6.5 <a href="https://wg21.link/member.functions">[member.functions]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
+<h3 id="4303"><a href="lwg-active.html#4303">4303</a>. <code class='backtick'>std::decay_t</code> in the specification of <code class='backtick'>ranges::distance</code> is problematic</h3>
+<p><b>Section:</b> 24.4.4.3 <a href="https://wg21.link/range.iter.op.distance">[range.iter.op.distance]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
  <b>Submitter:</b> Jiang An <b>Opened:</b> 2025-07-24 <b>Last modified:</b> 2025-07-27</p>
 <p><b>Priority: </b>Not Prioritized
 </p>
-<p><b>View other</b> <a href="lwg-index-open.html#member.functions">active issues</a> in [member.functions].</p>
-<p><b>View all other</b> <a href="lwg-index.html#member.functions">issues</a> in [member.functions].</p>
+<p><b>View all other</b> <a href="lwg-index.html#range.iter.op.distance">issues</a> in [range.iter.op.distance].</p>
 <p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
 <p><b>Discussion:</b></p>
 <p>
-16.4.6.5 <a href="https://wg21.link/member.functions">[member.functions]</a>/2 seems to allow that even when the constraints are not met, 
-such a default constructor can be selected, because no restriction is imposed when no overload 
-is originally selected. Per the discussion in LWG <a href="lwg-closed.html#2563" title="LWG 2259 relaxes requirements, perhaps unintentionally (Status: NAD)">2563</a><sup><a href="https://cplusplus.github.io/LWG/issue2563" title="Latest snapshot">(i)</a></sup> (closed as NAD), it even 
-seems to allow the implementation to add a default constructor when there's originally none.
+This is discovered when implementing the resolution LWG <a href="lwg-defects.html#4242" title="ranges::distance does not work with volatile iterators (Status: WP)">4242</a><sup><a href="https://cplusplus.github.io/LWG/issue4242" title="Latest snapshot">(i)</a></sup>. 
+Per LWG <a href="lwg-defects.html#4242" title="ranges::distance does not work with volatile iterators (Status: WP)">4242</a><sup><a href="https://cplusplus.github.io/LWG/issue4242" title="Latest snapshot">(i)</a></sup>, it is intended to allow <code class='backtick'>ranges::distance</code> to handle 
+<code class='backtick'>volatile</code>-qualified iterator values. 
+However, the uses of <code class='backtick'>decay_t</code> (established per LWG <a href="lwg-defects.html#3664" title="LWG 3392 broke std::ranges::distance(a, a+3) (Status: C++23)">3664</a><sup><a href="https://cplusplus.github.io/LWG/issue3664" title="Latest snapshot">(i)</a></sup>) are still problematic, 
+because when <code>sized_sentinel_for&lt;S, decay_t&lt;I&gt;&gt;</code> is modeled, there's no 
+semantic or syntactic requirement that <code class='backtick'>S</code> shall work with volatile-qualified <code class='backtick'>I</code>.
 <p/>
-However, we're constraining some member functions, e.g. default constructors of <code class='backtick'>unique_ptr</code>, 
-<code class='backtick'>tuple</code>, and <code class='backtick'>variant</code>. Allowance of more permissive overload sets of constructors effectively 
-renders the <i>Constraints</i> meaningless, because even if the implementation doesn't constrain 
-the default constructors at all, it can still satisfy the restriction in 
-16.4.6.5 <a href="https://wg21.link/member.functions">[member.functions]</a>/2 since LWG <a href="lwg-defects.html#2259" title="Issues in 17.6.5.5 rules for member functions (Status: C++17)">2259</a><sup><a href="https://cplusplus.github.io/LWG/issue2259" title="Latest snapshot">(i)</a></sup>.
+If we implement the constraint as is, there will still be some underconstrained cases. E.g. 
+When the <code class='backtick'>operator==</code> or <code class='backtick'>operator-</code> intendedly rejects volatile-qualified iterators. And 
+even when they accept volatile-qualified iterators, the additional semantic requirements 
+imposed by <code>sized_sentinel_for&lt;S, decay_t&lt;I&gt;&gt;</code> are still undesired.
 <p/>
-Perhaps some wording change is necessary to guarantee the <i>Constraints</i> of member functions to be meaningful.
+I think we should only decay arrays and keep <code class='backtick'>volatile</code> for non-array arguments.
 </p>
 
 
 <p id="res-4303"><b>Proposed resolution:</b></p>
+<p>
+This wording is relative to this 
+<a href="https://github.com/cplusplus/draft/actions/runs/16433597877/artifacts/3583518547">CD preview draft</a>.
+</p>
+
+<ol>
+
+<li><p>Modify 24.2 <a href="https://wg21.link/iterator.synopsis">[iterator.synopsis]</a>, header <code>&lt;iterator&gt;</code> synopsis, as indicated:</p>
+
+<blockquote>
+<pre>
+[&hellip;]
+namespace std: {
+  [&hellip;]
+  // <i>24.4.4.3 <a href="https://wg21.link/range.iter.op.distance">[range.iter.op.distance]</a>, ranges::distance</i>
+ 
+  <ins>template&lt;class T&gt;
+    using <i>distance-iterator-t</i> =               // <i>exposition only</i>
+      conditional_t&lt;is_array_v&lt;remove_reference_t&lt;T&gt;&gt;,
+        decay_t&lt;T&gt;, remove_const_t&lt;remove_reference_t&lt;T&gt;&gt;&gt;;
+</ins>  
+  template&lt;class I, sentinel_for&lt;I&gt; S&gt;
+    requires (!sized_sentinel_for&lt;S, I&gt;)
+    constexpr iter_difference_t&lt;I&gt; distance(I first, S last); // <i>freestanding</i>
+  template&lt;class I, sized_sentinel_for&lt;<del>decay_t</del><ins><i>distance-iterator-t</i></ins>&lt;I&gt;&gt; S&gt;
+    constexpr iter_difference_t&lt;<del>decay_t</del><ins><i>distance-iterator-t</i></ins>&lt;I&gt;&gt; distance(I&amp;&amp; first, S last); // <i>freestanding</i>
+  template&lt;range R&gt;
+    constexpr range_difference_t&lt;R&gt; distance(R&amp;&amp; r); // <i>freestanding</i>
+  [&hellip;]
+}
+</pre>
+</blockquote>
+</li>
+
+<li><p>Modify 24.4.4.3 <a href="https://wg21.link/range.iter.op.distance">[range.iter.op.distance]</a> as indicated:</p>
+
+<blockquote>
+<pre>
+template&lt;class I, sized_sentinel_for&lt;<del>decay_t</del><ins><i>distance-iterator-t</i></ins>&lt;I&gt;&gt; S&gt;
+  constexpr iter_difference_t&lt;<del>decay_t</del><ins><i>distance-iterator-t</i></ins>&lt;I&gt;&gt; distance(I&amp;&amp; first, S last);
+</pre>
+<blockquote>
+<p>
+-3- <i>Effects</i>: Equivalent to:
+</p>
+<blockquote><pre>
+if constexpr (!is_array_v&lt;remove_reference_t&lt;I&gt;&gt;)
+  return last - first;
+else
+  return last - static_cast&lt;decay_t&lt;I&gt;&gt;(first);
+</pre></blockquote>
+</blockquote>
+</blockquote>
+</li>
+</ol>
 
 
 
