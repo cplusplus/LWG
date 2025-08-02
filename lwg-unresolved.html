@@ -54,7 +54,7 @@
 </style>
 </head>
 <body>
-<p>Revised 2025-08-02 at 10:17:47 UTC
+<p>Revised 2025-08-02 at 13:18:15 UTC
 </p><h2>Unresolved Issues</h2>
 <hr>
 <h3 id="423"><a href="#423">423</a><sup><a href="https://cplusplus.github.io/LWG/issue423">(i)</a></sup>. Effects of negative <code>streamsize</code> in iostreams</h3>
@@ -39966,6 +39966,7 @@ accesses beyond what is required to determine the result of the comparison. &mda
  <b>Submitter:</b> Jiang An <b>Opened:</b> 2022-06-30 <b>Last modified:</b> 2022-07-08</p>
 <p><b>Priority: </b>4
 </p>
+<p><b>View other</b> <a href="lwg-index-open.html#ranges.syn">active issues</a> in [ranges.syn].</p>
 <p><b>View all other</b> <a href="lwg-index.html#ranges.syn">issues</a> in [ranges.syn].</p>
 <p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
 <p><b>Discussion:</b></p>
@@ -73954,6 +73955,515 @@ So perhaps some wording change is necessary to guarantee the <i>Constraints</i> 
 
 
 <p id="res-4306"><b>Proposed resolution:</b></p>
+
+
+
+
+
+<hr>
+<h3 id="4307"><a href="#4307">4307</a><sup><a href="https://cplusplus.github.io/LWG/issue4307">(i)</a></sup>. Make good use of <code><i>sized-random-access-range</i></code> and <code><i>bidirectional-common</i></code>
+in <code>&lt;ranges&gt;</code></h3>
+<p><b>Section:</b> 25.2 <a href="https://wg21.link/ranges.syn">[ranges.syn]</a>, 25.4.6 <a href="https://wg21.link/range.refinements">[range.refinements]</a>, 25.5.3.1 <a href="https://wg21.link/view.interface.general">[view.interface.general]</a>, 25.7.10.1 <a href="https://wg21.link/range.take.overview">[range.take.overview]</a>, 25.7.12.1 <a href="https://wg21.link/range.drop.overview">[range.drop.overview]</a>, 25.7.12.2 <a href="https://wg21.link/range.drop.view">[range.drop.view]</a>, 25.7.14.3 <a href="https://wg21.link/range.join.iterator">[range.join.iterator]</a>, 25.7.15.2 <a href="https://wg21.link/range.join.with.view">[range.join.with.view]</a>, 25.7.15.3 <a href="https://wg21.link/range.join.with.iterator">[range.join.with.iterator]</a>, 25.7.20.2 <a href="https://wg21.link/range.common.view">[range.common.view]</a>, 25.7.25.2 <a href="https://wg21.link/range.zip.view">[range.zip.view]</a>, 25.7.30.2 <a href="https://wg21.link/range.slide.view">[range.slide.view]</a>, 25.7.33.2 <a href="https://wg21.link/range.cartesian.view">[range.cartesian.view]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
+ <b>Submitter:</b> Hewill Kang <b>Opened:</b> 2025-07-28 <b>Last modified:</b> 2025-08-02</p>
+<p><b>Priority: </b>Not Prioritized
+</p>
+<p><b>View other</b> <a href="lwg-index-open.html#ranges.syn">active issues</a> in [ranges.syn].</p>
+<p><b>View all other</b> <a href="lwg-index.html#ranges.syn">issues</a> in [ranges.syn].</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
+<p><b>Discussion:</b></p>
+<p>
+<a href="https://wg21.link/P3179" title=" C++ parallel range algorithms">P3179</a> introduces a new
+exposition-only concept, <code><i>sized-random-access-range</i></code>, into <code>&lt;ranges&gt;</code> to simplify
+the signature of parallel range algorithms.
+However, this also applies more broadly to <code>&lt;ranges&gt;</code>, as we often need to determine whether a range satisfies
+both <code>sized_range</code> and <code>random_access_range</code> in order to dispatch optimized branches.
+<p/>
+In addition, we often need to determine whether a range satisfies both <code>common_range</code> and
+<code>bidirectional_range</code> to decide whether to provide backward traversal capabilities,
+which is expressed by the exposition-only concept <code><i>bidirectional-common</i></code> introduced in 
+<a href="https://wg21.link/P2441" title=" views::join_with">P2441</a>.
+Unfortunately, this concept currently only applies to a single section.
+<p/>
+It would be much simpler and more readable if both concepts were available throughout <code>&lt;ranges&gt;</code>,
+which would also allow newly introduced adapters or other library features to take advantage of them.
+Note that since some of these simplifications change the order in which the concepts are spelled, they may not be
+purely editorial.
+</p>
+
+
+<p id="res-4307"><b>Proposed resolution:</b></p>
+<p>
+This wording is relative to this 
+<a href="https://github.com/cplusplus/draft/actions/runs/16433597877/artifacts/3583518547">CD preview draft</a>.
+</p>
+
+<ol>
+<li><p>Modify 25.2 <a href="https://wg21.link/ranges.syn">[ranges.syn]</a>, header <code>&lt;ranges&gt;</code>
+        synopsis, as indicated:</p>
+
+<blockquote>
+<pre>
+// <i>mostly freestanding</i>
+#include &lt;compare&gt;              // <i>see 17.12.1 <a href="https://wg21.link/compare.syn">[compare.syn]</a></i>
+#include &lt;initializer_list&gt;     // <i>see 17.11.2 <a href="https://wg21.link/initializer.list.syn">[initializer.list.syn]</a></i>
+#include &lt;iterator&gt;             // <i>see 24.2 <a href="https://wg21.link/iterator.synopsis">[iterator.synopsis]</a></i>
+
+namespace std::ranges {
+  [&hellip;]
+  template&lt;class T&gt;
+    concept <i>sized-random-access-range</i> = <i>see below</i>;              // <i>exposition only</i>
+  
+  <ins>template&lt;class T&gt;
+    concept <i>common-bidirectional-range</i> = <i>see below</i>;             // <i>exposition only</i></ins>
+  [&hellip;]
+}
+</pre>
+</blockquote>
+</li>
+
+<li><p>Modify 25.4.6 <a href="https://wg21.link/range.refinements">[range.refinements]</a> as indicated:</p>
+
+<blockquote>
+[&hellip;]
+<p>
+-8- The exposition-only concept <code><i>sized-random-access-range</i></code> specifies the requirements 
+of a <code>range</code> type that is sized and allows random access to its elements.
+</p>
+<pre>
+template&lt;class T&gt;
+  concept <i>sized-random-access-range</i> =           // <i>exposition only</i>
+    random_access_range&lt;T&gt; &amp;&amp; sized_range&lt;T&gt;;
+</pre>
+<p>
+[<i>Note 1</i>: This concept constrains some parallel algorithm overloads; see [algorithms]. &mdash; <i>end
+    note</i>]
+<p/>
+<ins>-?- The exposition-only concept <code><i>common-bidirectional-range</i></code> specifies the
+requirements of a <code>range</code> type that is bidirectional and whose iterator and sentinel types are
+the same.</ins>
+</p>
+<pre>
+<ins>template&lt;class T&gt;
+  concept <i>common-bidirectional-range</i> =           // <i>exposition only</i>
+    bidirectional_range&lt;T&gt; &amp;&amp; common_range&lt;T&gt;;</ins>
+</pre>
+</blockquote>
+
+</li>
+
+<li><p>Modify 25.5.3.1 <a href="https://wg21.link/view.interface.general">[view.interface.general]</a> as indicated:</p>
+
+<blockquote>
+<p>
+-1- The class template <code>view_interface</code> is a helper for defining view-like types that offer a
+  container-like interface. It is parameterized with the type that is derived from it.
+</p>
+<pre>
+namespace std::ranges {
+  template&lt;class D&gt;
+    requires is_class_v&lt;D&gt; &amp;&amp; same_as&lt;D, remove_cv_t&lt;D&gt;&gt;
+  class view_interface {
+  private:
+    [&hellip;]
+  public:
+    [&hellip;]
+    constexpr decltype(auto) back() requires <del>bidirectional_range&lt;D&gt; &amp;&amp; common_range&lt;D&gt;</del><ins><i>common-bidirectional-range</i>&lt;D&gt;</ins>;
+    constexpr decltype(auto) back() const
+      requires <del>bidirectional_range&lt;const D&gt; &amp;&amp; common_range&lt;const D&gt;</del><ins><i>common-bidirectional-range</i>&lt;const D&gt;</ins>;
+    [&hellip;]
+  };
+}
+</pre>
+</blockquote>
+
+</li>
+
+<li><p>Modify 25.5.3.2 <a href="https://wg21.link/view.interface.members">[view.interface.members]</a> as indicated:</p>
+
+<blockquote>
+ <pre>
+constexpr decltype(auto) back() requires <del>bidirectional_range&lt;D&gt; &amp;&amp; common_range&lt;D&gt;</del><ins><i>common-bidirectional-range</i>&lt;D&gt;</ins>;
+constexpr decltype(auto) back() const
+  requires <del>bidirectional_range&lt;const D&gt; &amp;&amp; common_range&lt;const D&gt;</del><ins><i>common-bidirectional-range</i>&lt;const D&gt;</ins>;
+</pre>
+<blockquote>
+<p>
+-3- <i>Hardened preconditions</i>: <code>!empty()</code> is <code>true</code>.
+<p/>
+-4- <i>Effects</i>: Equivalent to: <code>return *ranges::prev(ranges::end(<i>derived</i>()));</code>
+</p>
+</blockquote>
+</blockquote>
+
+</li>
+
+<li><p>Modify 25.7.10.1 <a href="https://wg21.link/range.take.overview">[range.take.overview]</a> as indicated:</p>
+
+<blockquote>
+<p>
+-2- The name <code>views::take</code> denotes a range adaptor object (25.7.2 <a href="https://wg21.link/range.adaptor.object">[range.adaptor.object]</a>).
+Let <code>E</code> and <code>F</code> be expressions, let <code>T</code> be
+<code>remove_cvref_t&lt;decltype((E))&gt;</code>, and let <code>D</code> be 
+<code>range_difference_t&lt;decltype((E))&gt;</code>.
+If <code>decltype((F))</code> does not model <code>convertible_to&lt;D&gt;</code>,
+<code>views::take(E, F)</code> is ill-formed. Otherwise, the expression <code>views::take(E, F)</code> 
+is expression-equivalent to:
+</p>
+<ol style="list-style-type: none">
+<li>
+[&hellip;]
+</li>
+<li>
+<p>(2.2) &mdash; Otherwise, if <code>T</code> models <del><code>random_access_range</code> and
+<code>sized_range</code></del><ins><code><i>sized-random-access-range</i></code></ins>
+and is a specialization of <code>span</code> (23.7.2.2 <a href="https://wg21.link/views.span">[views.span]</a>),
+<code>basic_string_view</code> (27.3 <a href="https://wg21.link/string.view">[string.view]</a>), or <code>ranges::subrange</code>
+(25.5.4 <a href="https://wg21.link/range.subrange">[range.subrange]</a>), then <code>U(ranges::begin(E), ranges::begin(E) + 
+std::min&lt;D&gt;(ranges::distance(E), F))</code>, except that <code>E</code> is evaluated only once,
+where <code>U</code> is a type determined as follows:
+</p>
+[&hellip;]
+</li>
+<li>
+<p>(2.3) &mdash; otherwise, if <code>T</code> is a specialization of <code>iota_view</code>
+(25.6.4.2 <a href="https://wg21.link/range.iota.view">[range.iota.view]</a>) that models <del><code>random_access_range</code> and
+<code>sized_range</code></del><ins><code><i>sized-random-access-range</i></code></ins>, then
+<code>iota_view(*ranges::begin(E), *(ranges::begin(E) + std::min&lt;D&gt;(ranges::distance(E), F)))</code>,
+except that <code>E</code> is evaluated only once.
+</p>
+</li>
+</ol>
+</blockquote>
+
+</li>
+
+<li><p>Modify 25.7.12.1 <a href="https://wg21.link/range.drop.overview">[range.drop.overview]</a> as indicated:</p>
+
+<blockquote>
+<p>
+-2- The name <code>views::drop</code> denotes a range adaptor object (25.7.2 <a href="https://wg21.link/range.adaptor.object">[range.adaptor.object]</a>).
+Let <code>E</code> and <code>F</code> be expressions, let <code>T</code> be
+<code>remove_cvref_t&lt;decltype((E))&gt;</code>, and let <code>D</code> be 
+<code>range_difference_t&lt;decltype((E))&gt;</code>.
+If <code>decltype((F))</code> does not model <code>convertible_to&lt;D&gt;</code>,
+<code>views::drop(E, F)</code> is ill-formed. Otherwise, the expression <code>views::drop(E, F)</code> 
+is expression-equivalent to:
+</p>
+<ol style="list-style-type: none">
+<li>
+[&hellip;]
+</li>
+<li>
+<p>(2.2) &mdash; Otherwise, if <code>T</code> models <del><code>random_access_range</code> and
+<code>sized_range</code></del><ins><code><i>sized-random-access-range</i></code></ins> and is
+</p>
+[&hellip;]
+</li>
+<li>
+<p>(2.3) &mdash; Otherwise, if <code>T</code> is a specialization of <code>subrange</code>
+(25.5.4 <a href="https://wg21.link/range.subrange">[range.subrange]</a>) that models <del><code>random_access_range</code> and
+<code>sized_range</code></del><ins><code><i>sized-random-access-range</i></code></ins>, then
+<code>T(ranges::begin(E) + std::min&lt;D&gt;(ranges::distance(E), F), ranges::end(E),
+<i>to-unsigned-like</i>(ranges::distance(E) - std::min&lt;D&gt;(ranges::distance(E), F)))</code>,
+except that <code>E</code> and <code>F</code> are each evaluated only once.
+</p>
+</li>
+</ol>
+</blockquote>
+
+</li>
+
+<li><p>Modify 25.7.12.2 <a href="https://wg21.link/range.drop.view">[range.drop.view]</a> as indicated:</p>
+
+<blockquote>
+<pre>
+namespace std::ranges {
+  template&lt;view V&gt;
+  class drop_view : public view_interface&lt;drop_view&lt;V&gt;&gt; {
+  public:
+    [&hellip;]
+    constexpr auto begin()
+      requires (!(<i>simple-view</i>&lt;V&gt; &amp;&amp;
+                  <del>random_access_range&lt;const V&gt; &amp;&amp; sized_range&lt;const V&gt;</del><ins><code><i>sized-random-access-range</i>&lt;const V&gt;</code></ins>));
+    constexpr auto begin() const
+      requires <del>random_access_range&lt;const V&gt; &amp;&amp; sized_range&lt;const V&gt;</del><ins><code><i>sized-random-access-range</i>&lt;const V&gt;</code></ins>;
+    [&hellip;]
+  };
+  [&hellip;]
+}
+</pre>
+[&hellip;]
+<pre>
+constexpr auto begin()
+  requires (!(<i>simple-view</i>&lt;V&gt; &amp;&amp;
+              <del>random_access_range&lt;const V&gt; &amp;&amp; sized_range&lt;const V&gt;</del><ins><code><i>sized-random-access-range</i>&lt;const V&gt;</code></ins>));
+constexpr auto begin() const
+  requires <del>random_access_range&lt;const V&gt; &amp;&amp; sized_range&lt;const V&gt;</del><ins><code><i>sized-random-access-range</i>&lt;const V&gt;</code></ins>;
+</pre>
+<blockquote>
+<p>
+-3- <i>Returns</i>:
+<code>ranges::next(ranges::begin(<i>base_</i>), <i>count_</i>, ranges::end(<i>base_</i>))</code>.
+</p>
+</blockquote>
+</blockquote>
+
+</li>
+
+<li><p>Modify 25.7.14.3 <a href="https://wg21.link/range.join.iterator">[range.join.iterator]</a> as indicated:</p>
+
+<blockquote>
+<pre>
+namespace std::ranges {
+  template&lt;input_range V&gt;
+    requires view&lt;V&gt; &amp;&amp; input_range&lt;range_reference_t&lt;V&gt;&gt;
+  template&lt;bool Const&gt;
+  struct join_view&lt;V&gt;::<i>iterator</i> {
+  private:
+    [&hellip;]
+  public:
+    [&hellip;]
+    constexpr <i>iterator</i>&amp; operator--()
+      requires <i>ref-is-glvalue</i> &amp;&amp; bidirectional_range&lt;<i>Base</i>&gt; &amp;&amp;
+               <del>bidirectional_range&lt;range_reference_t&lt;<i>Base</i>&gt;&gt; &amp;&amp;
+               common_range&lt;range_reference_t&lt;<i>Base</i>&gt;&gt;</del><ins><i>common-bidirectional-range</i>&lt;range_reference_t&lt;<i>Base</i>&gt;&gt;</ins>;
+
+    constexpr <i>iterator</i> operator--(int)
+      requires <i>ref-is-glvalue</i> &amp;&amp; bidirectional_range&lt;<i>Base</i>&gt; &amp;&amp;
+               <del>bidirectional_range&lt;range_reference_t&lt;<i>Base</i>&gt;&gt; &amp;&amp;
+               common_range&lt;range_reference_t&lt;<i>Base</i>&gt;&gt;</del><ins><i>common-bidirectional-range</i>&lt;range_reference_t&lt;<i>Base</i>&gt;&gt;</ins>;
+    [&hellip;]
+  };
+}
+</pre>
+<p>
+-1- <code><i>iterator</i>::iterator_concept</code> is defined as follows::
+</p>
+<ol style="list-style-type: none">
+<li>
+<p>(1.1) &mdash; If <code><i>ref-is-glvalue</i></code> is <code>true</code>, <code><i>Base</i></code> models
+  <code>bidirectional_range</code>,
+  and <code>range_reference_t&lt;<i>Base</i>&gt;</code> models <del>both <code>bidirectional_range</code>
+    and <code>common_range</code></del><ins><code><i>common-bidirectional-range</i></code></ins>, then
+  <code>iterator_concept</code> denotes <code>bidirectional_iterator_tag</code>.
+</p>
+[&hellip;]
+</li>
+</ol>
+[&hellip;]
+<pre>
+constexpr <i>iterator</i>&amp; operator--()
+  requires <i>ref-is-glvalue</i> &amp;&amp; bidirectional_range&lt;<i>Base</i>&gt; &amp;&amp;
+           <del>bidirectional_range&lt;range_reference_t&lt;<i>Base</i>&gt;&gt; &amp;&amp;
+           common_range&lt;range_reference_t&lt;<i>Base</i>&gt;&gt;</del><ins><i>common-bidirectional-range</i>&lt;range_reference_t&lt;<i>Base</i>&gt;&gt;</ins>;
+</pre>
+<blockquote>
+<p>
+-16- <i>Effects</i>: Equivalent to:
+</p>
+[&hellip;]
+</blockquote>
+<pre>
+constexpr <i>iterator</i> operator--(int)
+  requires <i>ref-is-glvalue</i> &amp;&amp; bidirectional_range&lt;<i>Base</i>&gt; &amp;&amp;
+           <del>bidirectional_range&lt;range_reference_t&lt;<i>Base</i>&gt;&gt; &amp;&amp;
+           common_range&lt;range_reference_t&lt;<i>Base</i>&gt;&gt;</del><ins><i>common-bidirectional-range</i>&lt;range_reference_t&lt;<i>Base</i>&gt;&gt;</ins>;
+</pre>
+<blockquote>
+<p>
+-17- <i>Effects</i>: Equivalent to:
+</p>
+[&hellip;]
+</blockquote>
+</blockquote>
+
+</li>
+
+<li><p>Modify 25.7.15.2 <a href="https://wg21.link/range.join.with.view">[range.join.with.view]</a> as indicated:</p>
+
+<blockquote>
+<pre>
+namespace std::ranges {
+  <del>template&lt;class R&gt;
+  concept <i>bidirectional-common</i> = bidirectional_range&lt;R&gt; &amp;&amp; common_range&lt;R&gt;;    // <i>exposition only</i></del>
+  [&hellip;]
+}
+</pre>
+</blockquote>
+
+</li>
+
+<li><p>Modify 25.7.15.3 <a href="https://wg21.link/range.join.with.iterator">[range.join.with.iterator]</a> as indicated:</p>
+
+<blockquote>
+<pre>
+namespace std::ranges {
+  template&lt;input_range V, forward_range Pattern&gt;
+    requires view&lt;V&gt; &amp;&amp; input_range&lt;range_reference_t&lt;V&gt;&gt;
+          &amp;&amp; view&lt;Pattern&gt; &amp;&amp; <i>concatable</i>&lt;range_reference_t&lt;V&gt;, Pattern&gt;
+  template&lt;bool Const&gt;
+  class join_with_view&lt;V, Pattern&gt;::<i>iterator</i> {
+  private:
+    [&hellip;]
+  public:
+    [&hellip;]
+    constexpr <i>iterator</i>&amp; operator--()
+      requires <i>ref-is-glvalue</i> &amp;&amp; bidirectional_range&lt;<i>Base</i>&gt; &amp;&amp;
+               <del><i>bidirectional-common</i></del><ins><i>common-bidirectional-range</i></ins>&lt;<i>InnerBase</i>&gt; &amp;&amp; <del><i>bidirectional-common</i></del><ins><i>common-bidirectional-range</i></ins>&lt;<i>PatternBase</i>&gt;;
+    constexpr <i>iterator</i> operator--(int)
+      requires <i>ref-is-glvalue</i> &amp;&amp; bidirectional_range&lt;<i>Base</i>&gt; &amp;&amp;
+               <del><i>bidirectional-common</i></del><ins><i>common-bidirectional-range</i></ins>&lt;<i>InnerBase</i>&gt; &amp;&amp; <del><i>bidirectional-common</i></del><ins><i>common-bidirectional-range</i></ins>&lt;<i>PatternBase</i>&gt;;
+    [&hellip;]
+  };
+}
+</pre>
+<p>
+-1- <code><i>iterator</i>::iterator_concept</code> is defined as follows::
+</p>
+<ol style="list-style-type: none">
+<li>
+<p>(1.1) &mdash; If <code><i>ref-is-glvalue</i></code> is <code>true</code>, <code><i>Base</i></code> models
+<code>bidirectional_range</code>, and <code><i>InnerBase</i></code> and <code><i>PatternBase</i></code>
+each model <del><code><i>bidirectional-common</i></code></del><ins><code><i>common-bidirectional-range</i></code></ins>,
+then <code>iterator_concept</code> denotes <code>bidirectional_iterator_tag</code>.
+</p>
+[&hellip;]
+</li>
+</ol>
+[&hellip;]
+<pre>
+constexpr <i>iterator</i>&amp; operator--()
+  requires <i>ref-is-glvalue</i> &amp;&amp; bidirectional_range&lt;<i>Base</i>&gt; &amp;&amp;
+           <del><i>bidirectional-common</i></del><ins><i>common-bidirectional-range</i></ins>&lt;<i>InnerBase</i>&gt; &amp;&amp; <del><i>bidirectional-common</i></del><ins><i>common-bidirectional-range</i></ins>&lt;<i>PatternBase</i>&gt;;
+</pre>
+<blockquote>
+<p>
+-16- <i>Effects</i>: Equivalent to:
+</p>
+</blockquote>
+[&hellip;]
+<pre>
+constexpr <i>iterator</i> operator--(int)
+  requires <i>ref-is-glvalue</i> &amp;&amp; bidirectional_range&lt;<i>Base</i>&gt; &amp;&amp;
+           <del><i>bidirectional-common</i></del><ins><i>common-bidirectional-range</i></ins>&lt;<i>InnerBase</i>&gt; &amp;&amp; <del><i>bidirectional-common</i></del><ins><i>common-bidirectional-range</i></ins>&lt;<i>PatternBase</i>&gt;;
+</pre>
+<blockquote>
+<p>
+-17- <i>Effects</i>: Equivalent to:
+</p>
+[&hellip;]
+</blockquote>
+</blockquote>
+
+</li>
+
+<li><p>Modify 25.7.20.2 <a href="https://wg21.link/range.common.view">[range.common.view]</a> as indicated:</p>
+
+<blockquote>
+<pre>
+namespace std::ranges {
+  template&lt;view V&gt;
+    requires (!common_range&lt;V&gt; &amp;&amp; copyable&lt;iterator_t&lt;V&gt;&gt;)
+  class common_view : public view_interface&lt;common_view&lt;V&gt;&gt; {
+  private:
+    V <i>base_</i> = V();  // <i>exposition only</i>
+
+  public:
+    [&hellip;]
+    constexpr auto begin() requires (!<i>simple-view</i>&lt;V&gt;) {
+      if constexpr (<del>random_access_range&lt;V&gt; &amp;&amp; sized_range&lt;V&gt;</del><ins><code><i>sized-random-access-range</i>&lt;V&gt;</code></ins>)
+        return ranges::begin(<i>base_</i>);
+      else
+        return common_iterator&lt;iterator_t&lt;V&gt;, sentinel_t&lt;V&gt;&gt;(ranges::begin(<i>base_</i>));
+    }
+
+    constexpr auto begin() const requires range&lt;const V&gt; {
+      if constexpr (<del>random_access_range&lt;const V&gt; &amp;&amp; sized_range&lt;const V&gt;</del><ins><code><i>sized-random-access-range</i>&lt;const V&gt;</code></ins>)
+        return ranges::begin(<i>base_</i>);
+      else
+        return common_iterator&lt;iterator_t&lt;const V&gt;, sentinel_t&lt;const V&gt;&gt;(ranges::begin(<i>base_</i>));
+    }
+
+    constexpr auto end() requires (!<i>simple-view</i>&lt;V&gt;) {
+      if constexpr (<del>random_access_range&lt;V&gt; &amp;&amp; sized_range&lt;V&gt;</del><ins><code><i>sized-random-access-range</i>&lt;V&gt;</code></ins>)
+        return ranges::begin(<i>base_</i>) + ranges::distance(<i>base_</i>);
+      else
+        return common_iterator&lt;iterator_t&lt;V&gt;, sentinel_t&lt;V&gt;&gt;(ranges::end(<i>base_</i>));
+    }
+
+    constexpr auto end() const requires range&lt;const V&gt; {
+      if constexpr (<del>random_access_range&lt;const V&gt; &amp;&amp; sized_range&lt;const V&gt;</del><ins><code><i>sized-random-access-range</i>&lt;const V&gt;</code></ins>)
+        return ranges::begin(<i>base_</i>) + ranges::distance(<i>base_</i>);
+      else
+        return common_iterator&lt;iterator_t&lt;const V&gt;, sentinel_t&lt;const V&gt;&gt;(ranges::end(<i>base_</i>));
+    }
+    [&hellip;]
+  };
+  [&hellip;]
+}
+</pre>
+</blockquote>
+
+</li>
+
+<li><p>Modify 25.7.25.2 <a href="https://wg21.link/range.zip.view">[range.zip.view]</a> as indicated:</p>
+
+<blockquote>
+<pre>
+namespace std::ranges {
+  template&lt;class... Rs&gt;
+  concept <i>zip-is-common</i> =                             // <i>exposition only</i>
+    (sizeof...(Rs) == 1 &amp;&amp; (common_range&lt;Rs&gt; &amp;&amp; ...)) ||
+    (!(bidirectional_range&lt;Rs&gt; &amp;&amp; ...) &amp;&amp; (common_range&lt;Rs&gt; &amp;&amp; ...)) ||
+    (<del>(random_access_range&lt;Rs&gt; &amp;&amp; ...) &amp;&amp; (sized_range&lt;Rs&gt; &amp;&amp; ...)</del><ins><i>sized-random-access-range</i>&lt;Rs&gt; &amp;&amp; ...</ins>);
+  [&hellip;]
+}
+</pre>
+</blockquote>
+
+</li>
+
+<li><p>Modify 25.7.30.2 <a href="https://wg21.link/range.slide.view">[range.slide.view]</a> as indicated:</p>
+
+<blockquote>
+<pre>
+namespace std::ranges {
+  template&lt;class V&gt;
+  concept <i>slide-caches-nothing</i> = <del>random_access_range&lt;V&gt; &amp;&amp; sized_range&lt;V&gt;</del><ins><i>sized-random-access-range</i>&lt;V&gt;</ins>;       // <i>exposition only</i>
+  
+  template&lt;class V&gt;
+  concept <i>slide-caches-last</i> =                                            // <i>exposition only</i>
+    !<i>slide-caches-nothing</i>&lt;V&gt; &amp;&amp; <del>bidirectional_range&lt;V&gt; &amp;&amp; common_range&lt;V&gt;</del><ins><i>common-bidirectional-range</i>&lt;V&gt;</ins>;
+  
+  [&hellip;]
+}
+</pre>
+</blockquote>
+
+</li>
+
+<li><p>Modify 25.7.33.2 <a href="https://wg21.link/range.cartesian.view">[range.cartesian.view]</a> as indicated:</p>
+
+<blockquote>
+<pre>
+namespace std::ranges {
+  template&lt;bool Const, class First, class... Vs&gt;
+  concept <i>cartesian-product-is-random-access</i> =          // <i>exposition only</i>
+    (random_access_range&lt;<i>maybe-const</i>&lt;Const, First&gt;&gt; &amp;&amp; ... &amp;&amp;
+      <del>(random_access_range&lt;<i>maybe-const</i>&lt;Const, Vs&gt;&gt;
+        &amp;&amp; sized_range&lt;<i>maybe-const</i>&lt;Const, Vs&gt;&gt;)</del><ins><i>sized-random-access-range</i>&lt;<i>maybe-const</i>&lt;Const, Vs&gt;&gt;</ins>);
+
+  template&lt;class R&gt;
+  concept <i>cartesian-product-common-arg</i> =                // <i>exposition only</i>
+    common_range&lt;R&gt; || <del>(sized_range&lt;R&gt; &amp;&amp; random_access_range&lt;R&gt;)</del><ins><i>sized-random-access-range</i>&lt;R&gt;</ins>;
+  [&hellip;]
+}
+</pre>
+</blockquote>
+
+</li>
+
+</ol>
 
 
 
