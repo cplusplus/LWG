@@ -54,7 +54,7 @@
 </style>
 </head>
 <body>
-<p>Revised 2025-08-09 at 15:53:49 UTC
+<p>Revised 2025-08-09 at 16:06:24 UTC
 </p><h2>Unresolved Issues</h2>
 <hr>
 <h3 id="423"><a href="#423">423</a><sup><a href="https://cplusplus.github.io/LWG/issue423">(i)</a></sup>. Effects of negative <code>streamsize</code> in iostreams</h3>
@@ -31245,6 +31245,7 @@ template&lt;class ExecutionPolicy,
  <b>Submitter:</b> Billy O'Neal III <b>Opened:</b> 2020-08-14 <b>Last modified:</b> 2020-09-06</p>
 <p><b>Priority: </b>3
 </p>
+<p><b>View other</b> <a href="lwg-index-open.html#thread.thread.constr">active issues</a> in [thread.thread.constr].</p>
 <p><b>View all other</b> <a href="lwg-index.html#thread.thread.constr">issues</a> in [thread.thread.constr].</p>
 <p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
 <p><b>Discussion:</b></p>
@@ -74593,6 +74594,63 @@ either <i>A</i> precedes <i>B</i> or <i>B</i> precedes <i>A</i>, but it is unspe
 
 
 <p id="res-4309"><b>Proposed resolution:</b></p>
+
+
+
+
+
+<hr>
+<h3 id="4310"><a href="#4310">4310</a><sup><a href="https://cplusplus.github.io/LWG/issue4310">(i)</a></sup>. Is "the completion of the invocation of the constructor" considered as an expression?</h3>
+<p><b>Section:</b> 32.4.3.3 <a href="https://wg21.link/thread.thread.constr">[thread.thread.constr]</a>, 32.4.3.6 <a href="https://wg21.link/thread.thread.member">[thread.thread.member]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
+ <b>Submitter:</b> jim x <b>Opened:</b> 2025-08-06 <b>Last modified:</b> 2025-08-09</p>
+<p><b>Priority: </b>Not Prioritized
+</p>
+<p><b>View other</b> <a href="lwg-index-open.html#thread.thread.constr">active issues</a> in [thread.thread.constr].</p>
+<p><b>View all other</b> <a href="lwg-index.html#thread.thread.constr">issues</a> in [thread.thread.constr].</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
+<p><b>Discussion:</b></p>
+<p>
+32.4.3.3 <a href="https://wg21.link/thread.thread.constr">[thread.thread.constr]</a> p6 says
+</p>
+<blockquote style="border-left: 3px solid #ccc;padding-left: 15px;">
+<p>
+The completion of the invocation of the constructor synchronizes with the beginning of the invocation of the copy of <code class='backtick'>f</code>.
+</p>
+</blockquote>
+<p>
+The intended meaning is that "The completion of the invocation of the constructor" happens-before 
+"the beginning of the invocation of the copy of <code class='backtick'>f</code>.", so we can infer other happen-before relationships 
+based on this point. 
+<p/>
+However, according to the definition of "happens-before" (6.10.2.2 <a href="https://wg21.link/intro.races">[intro.races]</a> p7),
+</p>
+<blockquote style="border-left: 3px solid #ccc;padding-left: 15px;">
+<p>
+An evaluation <i>A</i> <i>happens before</i> an evaluation <i>B</i> (or, equivalently, <i>B</i> 
+happens after <i>A</i>) if either
+</p>
+<ol style="list-style-type: none">
+<li><p>(7.1) &mdash; [&hellip;]</p></li>
+<li><p>(7.2) &mdash; <i>A</i> synchronizes with <i>B</i>, or</p></li>
+</ol>
+</blockquote>
+<p>
+That means <i>A</i> and <i>B</i> are first required to be expressions because the evaluation is 
+in terms of expressions. 
+<p/>
+However, "The completion of the invocation of the constructor" and "the beginning of the invocation 
+of the copy of <code class='backtick'>f</code>" are not expressions. 
+<p/>
+The similar issue is 32.4.3.6 <a href="https://wg21.link/thread.thread.member">[thread.thread.member]</a> p4
+</p>
+<blockquote style="border-left: 3px solid #ccc;padding-left: 15px;">
+<p>
+The completion of the thread represented by <code class='backtick'>*this</code> synchronizes with (6.10.2 <a href="https://wg21.link/intro.multithread">[intro.multithread]</a>) 
+the corresponding successful <code class='backtick'>join()</code> return.
+</p></blockquote>
+
+
+<p id="res-4310"><b>Proposed resolution:</b></p>
 
 
 
