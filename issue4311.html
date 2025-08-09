@@ -92,6 +92,15 @@ This wording is relative to this
 <a href="https://github.com/cplusplus/draft/actions/runs/16749320058/artifacts/3690555293">CD preview draft</a>.
 </p>
 
+<blockquote class="note">
+<p>
+[<i>Drafting note</i>: The <i>Mandates</i>: element allows implementations not to add constraints even if 
+<code class='backtick'>uninitialized_construct_using_allocator</code> is constrained in the future. The <i>Throws</i>: element is made 
+redundant by "<i>Effects</i>: Equivalent to", and it's already wrong because the exception can be thrown 
+by a conversion function.]
+</p>
+</blockquote>
+
 <ol>
 
 <li><p>Modify 20.5.3.3 <a href="https://wg21.link/mem.poly.allocator.mem">[mem.poly.allocator.mem]</a> as indicated:</p>

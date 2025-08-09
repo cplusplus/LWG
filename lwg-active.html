@@ -79,7 +79,7 @@
 </tr>
 </table>
 <h1>C++ Standard Library Active Issues List (Revision D125)</h1>
-<p>Revised 2025-08-09 at 16:41:13 UTC
+<p>Revised 2025-08-09 at 16:45:35 UTC
 </p>
   <p>Reference ISO/IEC IS 14882:2020(E)</p>
   <p>Also see:</p>
@@ -78100,6 +78100,15 @@ perhaps we can just respecify <code class='backtick'>polymorphic_allocator::cons
 This wording is relative to this 
 <a href="https://github.com/cplusplus/draft/actions/runs/16749320058/artifacts/3690555293">CD preview draft</a>.
 </p>
+
+<blockquote class="note">
+<p>
+[<i>Drafting note</i>: The <i>Mandates</i>: element allows implementations not to add constraints even if 
+<code class='backtick'>uninitialized_construct_using_allocator</code> is constrained in the future. The <i>Throws</i>: element is made 
+redundant by "<i>Effects</i>: Equivalent to", and it's already wrong because the exception can be thrown 
+by a conversion function.]
+</p>
+</blockquote>
 
 <ol>
 
