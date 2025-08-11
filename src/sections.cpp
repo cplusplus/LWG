@@ -6,20 +6,6 @@
 #include <cctype>
 #include <utility>
 
-auto lwg::operator<(section_tag const & x, section_tag const & y) noexcept -> bool {
-   return (x.prefix < y.prefix) ?  true
-        : (y.prefix < x.prefix) ? false
-        : x.name < y.name;
-}
-
-auto lwg::operator==(section_tag const & x, section_tag const & y) noexcept -> bool {
-   return x.prefix == y.prefix && x.name == y.name;
-}
-
-auto lwg::operator!=(section_tag const & x, section_tag const & y) noexcept -> bool {
-   return !(x == y);
-}
-
 auto lwg::operator << (std::ostream& os, section_tag const & tag) -> std::ostream & {
   os << '[';
    if (!tag.prefix.empty()) { os << tag.prefix << "::"; }
@@ -32,23 +18,6 @@ std::string lwg::as_string(section_tag const & x)
   return x.prefix.empty()
     ? x.name
     : x.prefix + "::" + x.name;
-}
-
-auto lwg::operator < (section_num const & x, section_num const & y) noexcept -> bool {
-   // prefixes are unique, so there should be no need for a tiebreak.
-   return (x.prefix < y.prefix) ?  true
-        : (y.prefix < x.prefix) ? false
-        : x.num < y.num;
-}
-
-auto lwg::operator == (section_num const & x, section_num const & y) noexcept -> bool {
-   return (x.prefix != y.prefix)
-        ? false
-        : x.num == y.num;
-}
-
-auto lwg::operator != (section_num const & x, section_num const & y) noexcept -> bool {
-   return !(x == y);
 }
 
 auto lwg::operator >> (std::istream& is, section_num& sn) -> std::istream & {
@@ -180,7 +149,7 @@ auto lwg::format_section_tag_as_link(section_map & section_db, section_tag const
    std::string url;
    if  (!tag.prefix.empty()) {
       std::string_view fund_ts = "fund.ts";
-      if (tag.prefix.compare(0, fund_ts.size(), fund_ts) == 0) {
+      if (tag.prefix.starts_with(fund_ts)) {
          std::string_view version = tag.prefix;
          version.remove_prefix(fund_ts.size());
          if (version.empty())
