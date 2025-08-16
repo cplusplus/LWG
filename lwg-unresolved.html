@@ -54,7 +54,7 @@
 </style>
 </head>
 <body>
-<p>Revised 2025-08-16 at 14:20:46 UTC
+<p>Revised 2025-08-16 at 15:05:37 UTC
 </p><h2>Unresolved Issues</h2>
 <hr>
 <h3 id="423"><a href="#423">423</a><sup><a href="https://cplusplus.github.io/LWG/issue423">(i)</a></sup>. Effects of negative <code>streamsize</code> in iostreams</h3>
@@ -73488,7 +73488,7 @@ template&lt;class Lock, class Rep, class Period, class Predicate&gt;
 <p><b>Discussion:</b></p>
 <p>
 The current wording for <code class='backtick'>vector_sum_of_squares</code>
-29.9.13.8 <a href="https://wg21.link/linalg.algs.blas1.ssq">[linalg.algs.blas1.ssq]</a> has two problems with its specification of the
+29.9.13.8 <a href="https://wg21.link/linalg.algs.blas1.ssq">[linalg.algs.blas1.ssq]</a> has three problems with its specification of the
 value of <code class='backtick'>result.scaling_factor</code>.
 </p>
 <ol>
@@ -73505,6 +73505,14 @@ division won't help here.</p></li>
 so that the scaling factor is no longer necessarily the maximum of the input
 scaling factor and the absolute value of all the input elements. It's
 a better algorithm and we would like to be able to use it.</p></li>
+<li><p>
+Both members of <code>sum_of_squares_result&lt;Scalar&gt;</code> have the same type,
+<code class='backtick'>Scalar</code>. If the input <code class='backtick'>mdspan</code>'s <code class='backtick'>value_type</code> represents a quantity
+with units, this would not be correct. For example, if <code class='backtick'>value_type</code>
+has units of distance (say <code>[m]</code>), the sum of squares should have units
+of area (<code>[m<sup>2</sup>]</code>), while the scaling factor should have units of
+distance (<code>[m]</code>).
+</p></li>
 </ol>
 <p>
 Problem (1) means that the current wording is broken. I suggest two
