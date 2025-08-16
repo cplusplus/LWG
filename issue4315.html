@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Issue 4315: Insufficient specification of vector_two_norm and matrix_frob_norm</title>
+<meta property="og:title" content="Issue 4315: Insufficient specification of vector_two_norm and matrix_frob_norm">
+<meta property="og:description" content="C++ library issue. Status: New">
+<meta property="og:url" content="https://cplusplus.github.io/LWG/issue4315.html">
+<meta property="og:type" content="website">
+<meta property="og:image" content="http://cplusplus.github.io/LWG/images/cpp_logo.png">
+<meta property="og:image:alt" content="C++ logo">
+<style>
+  p {text-align:justify}
+  li {text-align:justify}
+  pre code.backtick::before { content: "`" }
+  pre code.backtick::after { content: "`" }
+  blockquote.note
+  {
+    background-color:#E0E0E0;
+    padding-left: 15px;
+    padding-right: 15px;
+    padding-top: 1px;
+    padding-bottom: 1px;
+  }
+  ins {background-color:#A0FFA0}
+  del {background-color:#FFA0A0}
+  table.issues-index { border: 1px solid; border-collapse: collapse; }
+  table.issues-index th { text-align: center; padding: 4px; border: 1px solid; }
+  table.issues-index td { padding: 4px; border: 1px solid; }
+  table.issues-index td:nth-child(1) { text-align: right; }
+  table.issues-index td:nth-child(2) { text-align: left; }
+  table.issues-index td:nth-child(3) { text-align: left; }
+  table.issues-index td:nth-child(4) { text-align: left; }
+  table.issues-index td:nth-child(5) { text-align: center; }
+  table.issues-index td:nth-child(6) { text-align: center; }
+  table.issues-index td:nth-child(7) { text-align: left; }
+  table.issues-index td:nth-child(5) span.no-pr { color: red; }
+  @media (prefers-color-scheme: dark) {
+     html {
+        color: #ddd;
+        background-color: black;
+     }
+     ins {
+        background-color: #225522
+     }
+     del {
+        background-color: #662222
+     }
+     a {
+        color: #6af
+     }
+     a:visited {
+        color: #6af
+     }
+     blockquote.note
+     {
+        background-color: rgba(255, 255, 255, .10)
+     }
+  }
+</style>
+</head>
+<body>
+<hr>
+<p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#New">New</a> status.</em></p>
+<h3 id="4315"><a href="lwg-active.html#4315">4315</a>. Insufficient specification of <code class='backtick'>vector_two_norm</code> and <code class='backtick'>matrix_frob_norm</code></h3>
+<p><b>Section:</b> 29.9.13.9 <a href="https://wg21.link/linalg.algs.blas1.nrm2">[linalg.algs.blas1.nrm2]</a>, 29.9.13.12 <a href="https://wg21.link/linalg.algs.blas1.matfrobnorm">[linalg.algs.blas1.matfrobnorm]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
+ <b>Submitter:</b> Mark Hoemmen <b>Opened:</b> 2025-08-14 <b>Last modified:</b> 2025-08-16</p>
+<p><b>Priority: </b>Not Prioritized
+</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
+<p><b>Discussion:</b></p>
+<p>
+The wording for <code class='backtick'>vector_two_norm</code> 29.9.13.9 <a href="https://wg21.link/linalg.algs.blas1.nrm2">[linalg.algs.blas1.nrm2]</a> and
+<code class='backtick'>matrix_frob_norm</code> 29.9.13.12 <a href="https://wg21.link/linalg.algs.blas1.matfrobnorm">[linalg.algs.blas1.matfrobnorm]</a> has two issues.
+</p>
+<ol>
+<li><p>Their <i>Returns</i> clauses say that the functions return the "square
+root" of the sum of squares of the initial value and the absolute
+values of the elements of the input <code class='backtick'>mdspan</code>. However, nowhere in
+29.9 <a href="https://wg21.link/linalg">[linalg]</a> explains how to compute a square root.</p>
+<ol style="list-style-type: none">
+<li><p>1.a. The input <code class='backtick'>mdspan</code>'s <code class='backtick'>value_type</code> and the initial value type
+are not constrained in a way that would ensure that calling
+<code class='backtick'>std::sqrt</code> on this expression would be well-formed.</p></li>
+<li><p>1.b. There is no provision to find <code class='backtick'>sqrt</code> via argument-dependent
+lookup, even though 29.9 <a href="https://wg21.link/linalg">[linalg]</a> has provisions to find <code class='backtick'>abs</code>, <code class='backtick'>conj</code>,
+<code class='backtick'>real</code>, and <code class='backtick'>imag</code> via argument-dependent lookup.  There is no
+"<code class='backtick'>sqrt-if-needed</code>" analog to <code class='backtick'>abs-if-needed</code>, <code class='backtick'>conj-if-needed</code>,
+<code class='backtick'>real-if-needed</code>, and <code class='backtick'>imag-if-needed</code>.</p></li>
+</ol>
+</li>
+<li><p>The overloads that take an initial value parameter <code class='backtick'>Scalar init</code>
+return <code class='backtick'>Scalar</code>.</p>
+<ol style="list-style-type: none">
+<li><p>2.a. This may silently lose information if the function uses
+<code class='backtick'>std::sqrt</code> to compute square roots. For example, if <code class='backtick'>Scalar</code> and the
+input <code class='backtick'>mdspan</code>'s <code class='backtick'>value_type</code> are both <code class='backtick'>int</code>, the square root computed
+via <code class='backtick'>std::sqrt</code> would return <code class='backtick'>double</code>. However, <code class='backtick'>vector_two_norm</code> and
+<code class='backtick'>matrix_frob_norm</code> returning <code class='backtick'>Scalar</code> would force a rounding
+conversion back to <code class='backtick'>int</code>.</p></li>
+</ol>
+</li>
+</ol>
+<p>
+<b>Suggested fix:</b>
+<p/>
+The easiest fix for both issues is just to <i>Constrain</i> both <code class='backtick'>Scalar</code> and
+the input <code class='backtick'>mdspan</code>'s <code class='backtick'>value_type</code> to be floating-point numbers or
+specializations of <code class='backtick'>std::complex</code> for these two functions. This
+presumes that relaxing this <i>Constraint</i> and fixing the above two issues
+later would be a non-breaking change. If that is <em>not</em> the case, then
+I would suggest removing the two functions entirely.
+</p>
+
+
+<p id="res-4315"><b>Proposed resolution:</b></p>
+
+
+
+
+
+</body>
+</html>
