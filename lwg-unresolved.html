@@ -54,7 +54,7 @@
 </style>
 </head>
 <body>
-<p>Revised 2025-08-16 at 09:30:25 UTC
+<p>Revised 2025-08-16 at 13:53:31 UTC
 </p><h2>Unresolved Issues</h2>
 <hr>
 <h3 id="423"><a href="#423">423</a><sup><a href="https://cplusplus.github.io/LWG/issue423">(i)</a></sup>. Effects of negative <code>streamsize</code> in iostreams</h3>
@@ -70238,6 +70238,7 @@ within the <code class='backtick'>chunk_by_view</code> for use on subsequent cal
  <b>Submitter:</b> Luc Grosheintz <b>Opened:</b> 2025-06-02 <b>Last modified:</b> 2025-06-28</p>
 <p><b>Priority: </b>2
 </p>
+<p><b>View other</b> <a href="lwg-index-open.html#mdspan.layout">active issues</a> in [mdspan.layout].</p>
 <p><b>View all other</b> <a href="lwg-index.html#mdspan.layout">issues</a> in [mdspan.layout].</p>
 <p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
 <p><b>Discussion:</b></p>
@@ -74840,6 +74841,286 @@ template&lt;class Alloc, tuple-like UTuple&gt;
 with uses-allocator construction (20.2.8.2 <a href="https://wg21.link/allocator.uses.construction">[allocator.uses.construction]</a>)<ins>, except that the 
 construction behaves as if there were only one <code class='backtick'>uses_allocator_construction_args</code> overload and the 
 overload behaved the same as the first actual overload without <i>Constraints</i></ins>.
+</p>
+</blockquote>
+</blockquote>
+
+</li>
+
+</ol>
+
+
+
+
+
+<hr>
+<h3 id="4314"><a href="#4314">4314</a><sup><a href="https://cplusplus.github.io/LWG/issue4314">(i)</a></sup>. Missing move in <code class='backtick'>mdspan</code> layout <code class='backtick'>mapping::operator()</code></h3>
+<p><b>Section:</b> 23.7.3.4 <a href="https://wg21.link/mdspan.layout">[mdspan.layout]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
+ <b>Submitter:</b> Luc Grosheintz <b>Opened:</b> 2025-08-13 <b>Last modified:</b> 2025-08-16</p>
+<p><b>Priority: </b>Not Prioritized
+</p>
+<p><b>View other</b> <a href="lwg-index-open.html#mdspan.layout">active issues</a> in [mdspan.layout].</p>
+<p><b>View all other</b> <a href="lwg-index.html#mdspan.layout">issues</a> in [mdspan.layout].</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
+<p><b>Discussion:</b></p>
+<p>
+Numerous template classes in <code>&lt;mdspan&gt;</code> have template parameter <code class='backtick'>IndexType</code>.
+While this template parameter is restricted to be a signed or unsigned integer, 
+these classes often accept user-defined classes that convert to <code class='backtick'>IndexType</code>.
+<p/>
+They're either passed as an array/span of <code class='backtick'>OtherIndexType</code>; or as a template parameter pack. 
+When passed as a template parameter pack, the common pattern is
+</p>
+<blockquote><pre>
+template&lt;class... OtherIndexTypes&gt;
+  requires std::is_convertible_v&lt;OtherIndexTypes, IndexType> &amp;&amp; ...
+  void <i>dummy</i>(OtherIndexTypes... indices)
+  {
+    <i>something</i>(static_cast&lt;IndexType&gt;(std::move(indices))...);
+  }
+</pre></blockquote>
+<p>
+This pattern allows passing in objects that convert to IndexType only as
+an rvalue reference, e.g.
+</p>
+<blockquote><pre>
+class RValueInt
+{
+  constexpr
+  operator int() &amp;&amp; noexcept
+  { return m_int; }
+
+private:
+  int m_int;
+};
+</pre></blockquote>
+<p>
+This pattern can be found in:
+</p>
+<ul>
+<li><p>a ctor of <code class='backtick'>extents</code>,</p></li>
+<li><p>a ctor of <code class='backtick'>mdspan</code>,</p></li>
+<li><p><code class='backtick'>mdspan::operator[]</code>.</p></li>
+</ul>
+<p>
+The five standardized layout mappings use a different pattern in their
+operator(), namely,
+</p>
+<blockquote><pre>
+static_cast&lt;IndexType&gt;(indices)...
+</pre></blockquote>
+<p>
+This prevents the passing in objects of type <code class='backtick'>RValueInt</code>, because the
+conversion isn't happening from an rvalue reference. This is addressed by
+Items 1 - 5 in the Proposed Resolution.
+<p/>
+A different pattern can be found a ctor for <code class='backtick'>layout_{left,right}_padded</code>.
+Namely, directly passing an object of type <code class='backtick'>OtherIndexType</code> to
+<code><i>LEAST-MULTIPLE-AT-LEAST</i></code>. This is addressed in Items 6 and 7 
+in the Proposed Resolution.
+<p/>
+This inconsistency was noticed while fixing 
+<a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=121061">PR121061</a> 
+and these changes have been applied to all layout mappings implemented in libstdc++.
+</p>
+
+
+<p id="res-4314"><b>Proposed resolution:</b></p>
+<p>
+This wording is relative to <a href="https://wg21.link/N5014">N5014</a>.
+</p>
+
+<ol>
+
+<li><p>Modify 23.7.3.4.5.3 <a href="https://wg21.link/mdspan.layout.left.obs">[mdspan.layout.left.obs]</a> as indicated:</p>
+
+<blockquote>
+<pre>
+template&lt;class... Indices&gt;
+  constexpr index_type operator()(Indices... i) const noexcept;
+</pre>
+<blockquote>
+<p>
+-2- <i>Constraints</i>: [&hellip;]
+<p/>
+-3- <i>Preconditions</i>: [&hellip;]
+<p/>
+-4- <i>Effects</i>: Let <code class='backtick'>P</code> be a parameter pack such that
+</p>
+<blockquote><pre>
+is_same_v&lt;index_sequence_for&lt;Indices...&gt;, index_sequence&lt;P...&gt;&gt;
+</pre></blockquote>
+<p>
+is <code class='backtick'>true</code>. Equivalent to:
+</p>
+<blockquote><pre>
+return ((static_cast&lt;index_type&gt;(<ins>std::move(</ins>i<ins>)</ins>) * stride(P)) + ... + 0);
+</pre></blockquote>
+</blockquote>
+</blockquote>
+
+</li>
+
+<li><p>Modify 23.7.3.4.6.3 <a href="https://wg21.link/mdspan.layout.right.obs">[mdspan.layout.right.obs]</a> as indicated:</p>
+
+<blockquote>
+<pre>
+template&lt;class... Indices&gt;
+  constexpr index_type operator()(Indices... i) const noexcept;
+</pre>
+<blockquote>
+<p>
+-2- <i>Constraints</i>: [&hellip;]
+<p/>
+-3- <i>Preconditions</i>: [&hellip;]
+<p/>
+-4- <i>Effects</i>: Let <code class='backtick'>P</code> be a parameter pack such that
+</p>
+<blockquote><pre>
+is_same_v&lt;index_sequence_for&lt;Indices...&gt;, index_sequence&lt;P...&gt;&gt;
+</pre></blockquote>
+<p>
+is <code class='backtick'>true</code>. Equivalent to:
+</p>
+<blockquote><pre>
+return ((static_cast&lt;index_type&gt;(<ins>std::move(</ins>i<ins>)</ins>) * stride(P)) + ... + 0);
+</pre></blockquote>
+</blockquote>
+</blockquote>
+
+</li>
+
+<li><p>Modify 23.7.3.4.7.4 <a href="https://wg21.link/mdspan.layout.stride.obs">[mdspan.layout.stride.obs]</a> as indicated:</p>
+
+<blockquote>
+<pre>
+template&lt;class... Indices&gt;
+  constexpr index_type operator()(Indices... i) const noexcept;
+</pre>
+<blockquote>
+<p>
+-2- <i>Constraints</i>: [&hellip;]
+<p/>
+-3- <i>Preconditions</i>: [&hellip;]
+<p/>
+-4- <i>Effects</i>: Let <code class='backtick'>P</code> be a parameter pack such that
+</p>
+<blockquote><pre>
+is_same_v&lt;index_sequence_for&lt;Indices...&gt;, index_sequence&lt;P...&gt;&gt;
+</pre></blockquote>
+<p>
+is <code class='backtick'>true</code>. Equivalent to:
+</p>
+<blockquote><pre>
+return ((static_cast&lt;index_type&gt;(<ins>std::move(</ins>i<ins>)</ins>) * stride(P)) + ... + 0);
+</pre></blockquote>
+</blockquote>
+</blockquote>
+
+</li>
+
+<li><p>Modify 23.7.3.4.8.4 <a href="https://wg21.link/mdspan.layout.leftpad.obs">[mdspan.layout.leftpad.obs]</a> as indicated:</p>
+
+<blockquote>
+<pre>
+template&lt;class... Indices&gt;
+  constexpr index_type operator()(Indices... idxs) const noexcept;
+</pre>
+<blockquote>
+<p>
+-3- <i>Constraints</i>: [&hellip;]
+<p/>
+-4- <i>Preconditions</i>: [&hellip;]
+<p/>
+-5- <i>Returns</i>: <code>((static_cast&lt;index_type&gt;(<ins>std::move(</ins>idxs<ins>)</ins>) * stride(P_rank)) + ... + 0)</code>.
+</p>
+</blockquote>
+</blockquote>
+
+</li>
+
+<li><p>Modify 23.7.3.4.9.4 <a href="https://wg21.link/mdspan.layout.rightpad.obs">[mdspan.layout.rightpad.obs]</a> as indicated:</p>
+
+<blockquote>
+<pre>
+template&lt;class... Indices&gt;
+  constexpr index_type operator()(Indices... idxs) const noexcept;
+</pre>
+<blockquote>
+<p>
+-3- <i>Constraints</i>: [&hellip;]
+<p/>
+-4- <i>Preconditions</i>: [&hellip;]
+<p/>
+-5- <i>Returns</i>: <code>((static_cast&lt;index_type&gt;(<ins>std::move(</ins>idxs<ins>)</ins>) * stride(P_rank)) + ... + 0)</code>.
+</p>
+</blockquote>
+</blockquote>
+
+</li>
+
+<li><p>Modify 23.7.3.4.8.3 <a href="https://wg21.link/mdspan.layout.leftpad.cons">[mdspan.layout.leftpad.cons]</a> as indicated:</p>
+
+<blockquote>
+<pre>
+template&lt;class OtherIndexType&gt;
+constexpr mapping(const extents_type&amp; ext, OtherIndexType pad<ins>ding</ins>);
+</pre>
+<blockquote>
+<p>
+<ins><ins>Let <code>pad = static_cast&lt;index_type&gt;(std::move(padding))</code>.</ins></ins>
+<p/>
+-3- <i>Constraints</i>: [&hellip;]
+<p/>
+-4- <i>Preconditions</i>: 
+</p>
+<ol style="list-style-type: none">
+<li><p>(4.1) &mdash; <code>pad<ins>ding</ins></code> is representable as a value of type <code class='backtick'>index_type</code>.</p></li>
+<li><p>(4.2) &mdash; <del><code>extents_type::<i>index-cast</i>(pad)</code></del><ins>pad</ins> is greater than zero.</p></li>
+<li><p>(4.3) &mdash; If <code><i>rank_</i></code> is greater than one, then 
+<code><i>LEAST-MULTIPLE-AT-LEAST</i>(pad, ext.extent(0))</code> is representable as a value of type <code class='backtick'>index_type</code>.</p></li>
+<li><p>(4.4) &mdash; If <code><i>rank_</i></code> is greater than one, then the product of 
+<code><i>LEAST-MULTIPLE-AT-LEAST</i>(pad, ext.extent(0))</code> and all values <code>ext.extent(<i>k</i>)</code> with 
+<code><i>k</i></code> in the range of <code>[1, <i>rank_</i>)</code> is representable as a value of type <code class='backtick'>index_type</code>.</p></li>
+<li><p>(4.5) &mdash; If <code class='backtick'>padding_value</code> is not equal to <code class='backtick'>dynamic_extent</code>, <code class='backtick'>padding_value</code> equals 
+<code><del>extents_type::<i>index-cast</i>(pad)</del><ins>pad</ins></code>.</p></li>
+</ol>
+<p>
+-5- <i>Effects</i>: [&hellip;]
+</p>
+</blockquote>
+</blockquote>
+
+</li>
+
+<li><p>Modify 23.7.3.4.9.3 <a href="https://wg21.link/mdspan.layout.rightpad.cons">[mdspan.layout.rightpad.cons]</a> as indicated:</p>
+
+<blockquote>
+<pre>
+template&lt;class OtherIndexType&gt;
+constexpr mapping(const extents_type&amp; ext, OtherIndexType pad<ins>ding</ins>);
+</pre>
+<blockquote>
+<p>
+<ins><ins>Let <code>pad = static_cast&lt;index_type&gt;(std::move(padding))</code>.</ins></ins>
+<p/>
+-3- <i>Constraints</i>: [&hellip;]
+<p/>
+-4- <i>Preconditions</i>: 
+</p>
+<ol style="list-style-type: none">
+<li><p>(4.1) &mdash; <code>pad<ins>ding</ins></code> is representable as a value of type <code class='backtick'>index_type</code>.</p></li>
+<li><p>(4.2) &mdash; <del><code>extents_type::<i>index-cast</i>(pad)</code></del><ins>pad</ins> is greater than zero.</p></li>
+<li><p>(4.3) &mdash; If <code><i>rank_</i></code> is greater than one, then 
+<code><i>LEAST-MULTIPLE-AT-LEAST</i>(pad, ext.extent(<i>rank_</i> - 1))</code> is representable as a value of type <code class='backtick'>index_type</code>.</p></li>
+<li><p>(4.4) &mdash; If <code><i>rank_</i></code> is greater than one, then the product of 
+<code><i>LEAST-MULTIPLE-AT-LEAST</i>(pad, ext.extent(<i>rank_</i> - 1))</code> and all values <code>ext.extent(<i>k</i>)</code> with 
+<code><i>k</i></code> in the range of <code>[1, <i>rank_</i> - 1)</code> is representable as a value of type <code class='backtick'>index_type</code>.</p></li>
+<li><p>(4.5) &mdash; If <code class='backtick'>padding_value</code> is not equal to <code class='backtick'>dynamic_extent</code>, <code class='backtick'>padding_value</code> equals 
+<code><del>extents_type::<i>index-cast</i>(pad)</del><ins>pad</ins></code>.</p></li>
+</ol>
+<p>
+-5- <i>Effects</i>: [&hellip;]
 </p>
 </blockquote>
 </blockquote>
