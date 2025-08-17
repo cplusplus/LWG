@@ -79,7 +79,7 @@
 </tr>
 </table>
 <h1>C++ Standard Library Active Issues List (Revision D125)</h1>
-<p>Revised 2025-08-17 at 09:31:33 UTC
+<p>Revised 2025-08-17 at 15:09:36 UTC
 </p>
   <p>Reference ISO/IEC IS 14882:2020(E)</p>
   <p>Also see:</p>
@@ -78295,6 +78295,18 @@ did not change these constructors (<a href="https://godbolt.org/z/6vnP78nqW">dem
 Given that implementations did not recognize changes of <code class='backtick'>allocator_arg_t</code> constructors as part of the paper, 
 and special handling of <code class='backtick'>pair</code> would significantly complicate these constructors, perhaps we should 
 explicitly specify that these constructors behave as if special handling for <code class='backtick'>pair</code> were missing.
+</p>
+
+<p><i>[2025-08-17; Pablo comments]</i></p>
+
+<p>
+I don't agree with it or the PR. It seems like the implementations are simply lagging behind. 
+Since <code class='backtick'>make_obj_using_allocator</code> is in the standard, <code class='backtick'>tuple</code> is easy enough to implement simply 
+by delegating to that function. I regard the failure to handle <code class='backtick'>pair</code> in a general way to be a 
+defect in the C++11 specification and that handling it correctly, though technically a change 
+of behavior, is more likely to fix bugs than to create them. It is exactly this scattershot 
+restatement of uses-allocator construction for <code class='backtick'>pair</code> that I hoped to fix with P0591, even 
+though I missed <code class='backtick'>tuple</code> in my exposition.
 </p>
 
 
