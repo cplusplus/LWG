@@ -54,7 +54,7 @@
 </style>
 </head>
 <body>
-<p>Revised 2025-08-17 at 09:00:24 UTC
+<p>Revised 2025-08-17 at 09:31:33 UTC
 </p><h2>Unresolved Issues</h2>
 <hr>
 <h3 id="423"><a href="#423">423</a><sup><a href="https://cplusplus.github.io/LWG/issue423">(i)</a></sup>. Effects of negative <code>streamsize</code> in iostreams</h3>
@@ -75363,6 +75363,72 @@ This wording is relative to <a href="https://wg21.link/N5014">N5014</a>.
 </tr>
 </table>
 
+</blockquote>
+
+</li>
+
+</ol>
+
+
+
+
+
+<hr>
+<h3 id="4318"><a href="#4318">4318</a><sup><a href="https://cplusplus.github.io/LWG/issue4318">(i)</a></sup>. Have <code class='backtick'>hive::erase_if</code> reevaluate <code class='backtick'>end()</code> to avoid UB</h3>
+<p><b>Section:</b> 23.3.9.6 <a href="https://wg21.link/hive.erasure">[hive.erasure]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
+ <b>Submitter:</b> Frank Birbacher <b>Opened:</b> 2025-08-16 <b>Last modified:</b> 2025-08-17</p>
+<p><b>Priority: </b>Not Prioritized
+</p>
+<p><b>View all other</b> <a href="lwg-index.html#hive.erasure">issues</a> in [hive.erasure].</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
+<p><b>Discussion:</b></p>
+<p>
+Background:  <a href="https://github.com/cplusplus/draft/pull/8162">https://github.com/cplusplus/draft/pull/8162</a>
+<p/>
+For 23.3.9.6 <a href="https://wg21.link/hive.erasure">[hive.erasure]</a> p2, the defining code must not cache the end-iterator. In case the last 
+element of the sequence is removed, the past-the-end iterator will be invalidated. This will trigger UB 
+in the loop condition. Instead, re-evaluate <code class='backtick'>end()</code> each time.
+</p>
+
+
+<p id="res-4318"><b>Proposed resolution:</b></p>
+<p>
+This wording is relative to <a href="https://wg21.link/N5014">N5014</a>.
+</p>
+
+<blockquote class="note">
+<p>
+[<i>Drafting note:</i> There are other ways to fix this code while keeping the caching behaviour, but I don't 
+see any particular reason to do so for the definition of the effects.]
+</p>
+</blockquote>
+
+<ol>
+
+<li><p>Modify 23.3.9.6 <a href="https://wg21.link/hive.erasure">[hive.erasure]</a> as indicated:</p>
+
+<blockquote>
+<pre>
+template&lt;class T, class Allocator, class Predicate&gt;
+  typename hive&lt;T, Allocator&gt;::size_type
+    erase_if(hive&lt;T, Allocator&gt;&amp; c, Predicate pred);
+</pre>
+<blockquote>
+<p>
+-2- <i>Effects</i>: Equivalent to:
+</p>
+<blockquote><pre>
+auto original_size = c.size();
+for (auto i = c.begin()<del>, last = c.end()</del>; i != <del>last</del><ins>c.end()</ins>; ) {
+  if (pred(*i)) {
+    i = c.erase(i);
+  } else {
+    ++i;
+  }
+}
+return original_size - c.size();
+</pre></blockquote>
+</blockquote>
 </blockquote>
 
 </li>
