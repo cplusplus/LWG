@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Issue 4317: The meaning of "resource" in the Cpp17Destructible requirements is undefined</title>
+<meta property="og:title" content="Issue 4317: The meaning of &quot;resource&quot; in the Cpp17Destructible requirements is undefined">
+<meta property="og:description" content="C++ library issue. Status: New">
+<meta property="og:url" content="https://cplusplus.github.io/LWG/issue4317.html">
+<meta property="og:type" content="website">
+<meta property="og:image" content="http://cplusplus.github.io/LWG/images/cpp_logo.png">
+<meta property="og:image:alt" content="C++ logo">
+<style>
+  p {text-align:justify}
+  li {text-align:justify}
+  pre code.backtick::before { content: "`" }
+  pre code.backtick::after { content: "`" }
+  blockquote.note
+  {
+    background-color:#E0E0E0;
+    padding-left: 15px;
+    padding-right: 15px;
+    padding-top: 1px;
+    padding-bottom: 1px;
+  }
+  ins {background-color:#A0FFA0}
+  del {background-color:#FFA0A0}
+  table.issues-index { border: 1px solid; border-collapse: collapse; }
+  table.issues-index th { text-align: center; padding: 4px; border: 1px solid; }
+  table.issues-index td { padding: 4px; border: 1px solid; }
+  table.issues-index td:nth-child(1) { text-align: right; }
+  table.issues-index td:nth-child(2) { text-align: left; }
+  table.issues-index td:nth-child(3) { text-align: left; }
+  table.issues-index td:nth-child(4) { text-align: left; }
+  table.issues-index td:nth-child(5) { text-align: center; }
+  table.issues-index td:nth-child(6) { text-align: center; }
+  table.issues-index td:nth-child(7) { text-align: left; }
+  table.issues-index td:nth-child(5) span.no-pr { color: red; }
+  @media (prefers-color-scheme: dark) {
+     html {
+        color: #ddd;
+        background-color: black;
+     }
+     ins {
+        background-color: #225522
+     }
+     del {
+        background-color: #662222
+     }
+     a {
+        color: #6af
+     }
+     a:visited {
+        color: #6af
+     }
+     blockquote.note
+     {
+        background-color: rgba(255, 255, 255, .10)
+     }
+  }
+</style>
+</head>
+<body>
+<hr>
+<p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#New">New</a> status.</em></p>
+<h3 id="4317"><a href="lwg-active.html#4317">4317</a>. The meaning of "resource" in the <i>Cpp17Destructible</i> requirements is undefined</h3>
+<p><b>Section:</b> 16.4.4.2 <a href="https://wg21.link/utility.arg.requirements">[utility.arg.requirements]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
+ <b>Submitter:</b> Jiang An <b>Opened:</b> 2025-08-15 <b>Last modified:</b> 2025-08-17</p>
+<p><b>Priority: </b>Not Prioritized
+</p>
+<p><b>View other</b> <a href="lwg-index-open.html#utility.arg.requirements">active issues</a> in [utility.arg.requirements].</p>
+<p><b>View all other</b> <a href="lwg-index.html#utility.arg.requirements">issues</a> in [utility.arg.requirements].</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
+<p><b>Discussion:</b></p>
+<p>
+The meaning of "resource" in the <i>Cpp17Destructible</i> requirements cannot be inferred 
+from the standard wording and it seems unlikely that the standard will determine its meaning 
+in the future. What are considered as resources generally depends on users' intent, so the 
+standard shouldn't determine the well-definedness of a program execution due to it. Moreover, 
+the wording doesn't seem to consider shared ownership, which can be represented by <code class='backtick'>shared_ptr</code>.
+</p>
+
+
+<p id="res-4317"><b>Proposed resolution:</b></p>
+<p>
+This wording is relative to <a href="https://wg21.link/N5014">N5014</a>.
+</p>
+
+<ol>
+
+<li><p>Modify 16.4.4.2 <a href="https://wg21.link/utility.arg.requirements">[utility.arg.requirements]</a>, Table 35 [tab:cpp17.destructible] as indicated:</p>
+
+<blockquote>
+<table border="1">
+<caption>Table 35 &mdash; <code>Cpp17Destructible</code> requirements [tab:cpp17.destructible]</caption>
+<tr>
+<th>Expression</th>
+<th>Post-condition</th>
+</tr>
+<tr>
+<td>
+<code>u.~T()</code>
+</td>
+<td>
+<del>All resources owned by <code class='backtick'>u</code> are reclaimed, n</del><ins>N</ins>o exception is propagated.
+</td>
+</tr>
+<tr>
+<td colspan="2">
+[<i>Note 3:</i> Array types and non-object types are not <i>Cpp17Destructible</i>. &mdash; <i>end note</i>]
+</td>
+</tr>
+</table>
+
+</blockquote>
+
+</li>
+
+</ol>
+
+
+
+
+
+</body>
+</html>
