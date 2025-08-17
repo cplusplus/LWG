@@ -64,7 +64,7 @@
 <p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#New">New</a> status.</em></p>
 <h3 id="4313"><a href="lwg-active.html#4313">4313</a>. Uses-allocator construction of <code class='backtick'>pair</code> in <code class='backtick'>tuple</code>'s <code class='backtick'>allocator_arg_t</code> constructors</h3>
 <p><b>Section:</b> 22.4.4.2 <a href="https://wg21.link/tuple.cnstr">[tuple.cnstr]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Jiang An <b>Opened:</b> 2025-08-07 <b>Last modified:</b> 2025-08-16</p>
+ <b>Submitter:</b> Jiang An <b>Opened:</b> 2025-08-07 <b>Last modified:</b> 2025-08-17</p>
 <p><b>Priority: </b>Not Prioritized
 </p>
 <p><b>View other</b> <a href="lwg-index-open.html#tuple.cnstr">active issues</a> in [tuple.cnstr].</p>
@@ -72,13 +72,86 @@
 <p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
 <p><b>Discussion:</b></p>
 <p>
-<a href="https://wg21.link/P0591R4" title=" Utility functions to implement uses-allocator construction">P0591R4</a> updated the definition of uses-allocator construction to specially handle <code class='backtick'>pair</code>. 
-Per 22.4.4.2 <a href="https://wg21.link/tuple.cnstr">[tuple.cnstr]</a>/33, it seems that the <code class='backtick'>allocator_arg_t</code> constructors should also be 
-updated to handle <code class='backtick'>pair</code>. However, such a change doesn't seem intended in <a href="https://wg21.link/P0591R4" title=" Utility functions to implement uses-allocator construction">P0591R4</a>, 
-and it would significantly complicate tuple. Currently, implementations consistently don't update 
-these constructors in C++20.
+Before <a href="https://wg21.link/P0591R4" title=" Utility functions to implement uses-allocator construction">P0591R4</a>, only <code class='backtick'>scoped_allocator_adaptor::construct</code> and 
+<code class='backtick'>polymorphic_allocator::construct</code> specially handled <code class='backtick'>pair</code> for the purpose of uses-allocator 
+construction. The primary definition of uses-allocator construction (in e.g., 
+<a href="https://wg21.link/N4659" title=" Working Draft, Standard for Programming Language C++ Note:">N4659</a> [allocator.uses.construction]) did not specially handle <code class='backtick'>pair</code>. 
+The <code class='backtick'>allocator_arg_t</code> constructors of <code class='backtick'>tuple</code>, which were specified to construct <code class='backtick'>tuple</code> 
+elements with uses-allocator constructor (per e.g., <a href="https://wg21.link/N4659" title=" Working Draft, Standard for Programming Language C++ Note:">N4659</a> [tuple.cnstr] p26), 
+did not specially handle <code class='backtick'>pair</code> either.
 <p/>
-Perhaps we should explicitly say that the <code class='backtick'>allocator_arg_t</code> constructors don't specially handle <code class='backtick'>pair</code>.
+<a href="https://wg21.link/P0591R4" title=" Utility functions to implement uses-allocator construction">P0591R4</a> redefined uses-allocator construction in terms of <code class='backtick'>make_obj_using_allocator</code> 
+in [allocator.uses.construction] p1 as:
+</p>
+<blockquote style="border-left: 3px solid #ccc;padding-left: 15px;">
+<p>
+When applied to the construction of an object of type <code class='backtick'>T</code>, it is equivalent to initializing it 
+with the value of the expression <code>make_obj_using_allocator&lt;T&gt;(alloc, args...)</code>, described below.
+</p>
+</blockquote>
+<p>
+And the new definition does handle <code class='backtick'>pair</code>. As the specification of <code class='backtick'>allocator_arg_t</code> constructors of 
+<code class='backtick'>tuple</code> (now in 22.4.4.2 <a href="https://wg21.link/tuple.cnstr">[tuple.cnstr]</a> p33) still refer to uses-allocator construction as-is, 
+these constructors should construct a <code class='backtick'>pair</code> element in a way equivalent to <code class='backtick'>make_obj_using_allocator</code> now.
+<p/>
+The following example shows the behavioral difference.
+</p>
+<blockquote><pre>
+#include &lt;cstddef&gt;
+#include &lt;utility&gt;
+#include &lt;tuple&gt;
+#include &lt;memory&gt;
+#include &lt;vector&gt;
+#include &lt;cassert&gt;
+
+template&lt;class T&gt;
+class payload_ator {
+  int payload{};
+   
+public:
+  using value_type = T;
+
+  payload_ator() = default;
+
+  constexpr explicit payload_ator(int n) noexcept : payload{n} {}
+
+  template&lt;class U&gt;
+  constexpr explicit payload_ator(payload_ator&lt;U&gt; a) noexcept : payload{a.payload} {}  
+
+  friend bool operator==(payload_ator, payload_ator) = default;
+
+  template&lt;class U&gt;
+  friend constexpr bool operator==(payload_ator x, payload_ator&lt;U&gt; y) noexcept {
+    return x.payload == y.payload;
+  }  
+
+  constexpr T* allocate(std::size_t n) { return std::allocator&lt;T&gt;{}.allocate(n); }
+
+  constexpr void deallocate(T* p, std::size_t n) { return std::allocator&lt;T&gt;{}.deallocate(p, n); }  
+
+  constexpr int get_payload() const noexcept { return payload; }
+};
+
+bool test() {
+  constexpr int in_v = 42;
+  using my_pair_t = std::pair&lt;int, std::vector&lt;int, payload_ator&lt;int&gt;&gt;&gt;;
+  std::tuple&lt;my_pair_t&gt; t(std::allocator_arg, payload_ator&lt;int&gt;{in_v});
+  auto out_v = std::get&lt;0&gt;(t).second.get_allocator().get_payload();
+  return in_v == out_v;
+}
+
+int main() {
+  assert(test()); // <span style="color:#C80000;font-weight:bold">passes only if allocator_arg_t constructors of tuple specially handle pair</span>
+}
+</pre></blockquote>
+<p>
+However, the behavioral changes of these constructors were not discussed in <a href="https://wg21.link/P0591R4" title=" Utility functions to implement uses-allocator construction">P0591R4</a>, 
+and existing implementations that claim full implementation of <a href="https://wg21.link/P0591R4" title=" Utility functions to implement uses-allocator construction">P0591R4</a> (MSVC STL and libstdc++) 
+did not change these constructors (<a href="https://godbolt.org/z/6vnP78nqW">demo</a>).
+<p/>
+Given that implementations did not recognize changes of <code class='backtick'>allocator_arg_t</code> constructors as part of the paper, 
+and special handling of <code class='backtick'>pair</code> would significantly complicate these constructors, perhaps we should 
+explicitly specify that these constructors behave as if special handling for <code class='backtick'>pair</code> were missing.
 </p>
 
 
