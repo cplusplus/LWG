@@ -64,56 +64,123 @@
 <p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#New">New</a> status.</em></p>
 <h3 id="4315"><a href="lwg-active.html#4315">4315</a>. Insufficient specification of <code class='backtick'>vector_two_norm</code> and <code class='backtick'>matrix_frob_norm</code></h3>
 <p><b>Section:</b> 29.9.13.9 <a href="https://wg21.link/linalg.algs.blas1.nrm2">[linalg.algs.blas1.nrm2]</a>, 29.9.13.12 <a href="https://wg21.link/linalg.algs.blas1.matfrobnorm">[linalg.algs.blas1.matfrobnorm]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Mark Hoemmen <b>Opened:</b> 2025-08-14 <b>Last modified:</b> 2025-08-16</p>
+ <b>Submitter:</b> Mark Hoemmen <b>Opened:</b> 2025-08-14 <b>Last modified:</b> 2025-08-22</p>
 <p><b>Priority: </b>Not Prioritized
 </p>
 <p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
 <p><b>Discussion:</b></p>
 <p>
-The wording for <code class='backtick'>vector_two_norm</code> 29.9.13.9 <a href="https://wg21.link/linalg.algs.blas1.nrm2">[linalg.algs.blas1.nrm2]</a> and
-<code class='backtick'>matrix_frob_norm</code> 29.9.13.12 <a href="https://wg21.link/linalg.algs.blas1.matfrobnorm">[linalg.algs.blas1.matfrobnorm]</a> has two issues.
+The Returns clauses <code class='backtick'>vector_two_norm</code> 29.9.13.9 <a href="https://wg21.link/linalg.algs.blas1.nrm2">[linalg.algs.blas1.nrm2]</a> and
+<code class='backtick'>matrix_frob_norm</code> 29.9.13.12 <a href="https://wg21.link/linalg.algs.blas1.matfrobnorm">[linalg.algs.blas1.matfrobnorm]</a> say that the
+functions return the "square root" of the sum of squares of the initial value and 
+the absolute values of the elements of the input <code class='backtick'>mdspan</code>. However, nowhere in 
+29.9 <a href="https://wg21.link/linalg">[linalg]</a> explains how to compute a square root.
 </p>
 <ol>
-<li><p>Their <i>Returns</i> clauses say that the functions return the "square
-root" of the sum of squares of the initial value and the absolute
-values of the elements of the input <code class='backtick'>mdspan</code>. However, nowhere in
-29.9 <a href="https://wg21.link/linalg">[linalg]</a> explains how to compute a square root.</p>
-<ol style="list-style-type: none">
-<li><p>1.a. The input <code class='backtick'>mdspan</code>'s <code class='backtick'>value_type</code> and the initial value type
-are not constrained in a way that would ensure that calling
-<code class='backtick'>std::sqrt</code> on this expression would be well-formed.</p></li>
-<li><p>1.b. There is no provision to find <code class='backtick'>sqrt</code> via argument-dependent
-lookup, even though 29.9 <a href="https://wg21.link/linalg">[linalg]</a> has provisions to find <code class='backtick'>abs</code>, <code class='backtick'>conj</code>,
-<code class='backtick'>real</code>, and <code class='backtick'>imag</code> via argument-dependent lookup.  There is no
-"<code class='backtick'>sqrt-if-needed</code>" analog to <code class='backtick'>abs-if-needed</code>, <code class='backtick'>conj-if-needed</code>,
-<code class='backtick'>real-if-needed</code>, and <code class='backtick'>imag-if-needed</code>.</p></li>
-</ol>
-</li>
-<li><p>The overloads that take an initial value parameter <code class='backtick'>Scalar init</code>
-return <code class='backtick'>Scalar</code>.</p>
-<ol style="list-style-type: none">
-<li><p>2.a. This may silently lose information if the function uses
-<code class='backtick'>std::sqrt</code> to compute square roots. For example, if <code class='backtick'>Scalar</code> and the
-input <code class='backtick'>mdspan</code>'s <code class='backtick'>value_type</code> are both <code class='backtick'>int</code>, the square root computed
-via <code class='backtick'>std::sqrt</code> would return <code class='backtick'>double</code>. However, <code class='backtick'>vector_two_norm</code> and
-<code class='backtick'>matrix_frob_norm</code> returning <code class='backtick'>Scalar</code> would force a rounding
-conversion back to <code class='backtick'>int</code>.</p></li>
-</ol>
-</li>
+<li><p>The input <code class='backtick'>mdspan</code>'s <code class='backtick'>value_type</code> and the initial value type are
+not constrained in a way that would ensure that calling <code class='backtick'>std::sqrt</code> on
+this expression would be well-formed.</p></li>
+<li><p>There is no provision to find <code class='backtick'>sqrt</code> via argument-dependent lookup,
+even though [linalg] has provisions to find <code class='backtick'>abs</code>, <code class='backtick'>conj</code>, <code class='backtick'>real</code>, and
+<code class='backtick'>imag</code> via argument-dependent lookup.  There is no "<code class='backtick'>sqrt-if-needed</code>"
+analog to <code class='backtick'>abs-if-needed</code>, <code class='backtick'>conj-if-needed</code>, <code class='backtick'>real-if-needed</code>, and
+<code class='backtick'>imag-if-needed</code>.</p></li>
 </ol>
 <p>
-<b>Suggested fix:</b>
-<p/>
-The easiest fix for both issues is just to <i>Constrain</i> both <code class='backtick'>Scalar</code> and
+The easiest fix for both issues is just to Constrain both <code class='backtick'>Scalar</code> and
 the input <code class='backtick'>mdspan</code>'s <code class='backtick'>value_type</code> to be floating-point numbers or
 specializations of <code class='backtick'>std::complex</code> for these two functions. This
-presumes that relaxing this <i>Constraint</i> and fixing the above two issues
+presumes that relaxing this Constraint and fixing the above two issues
 later would be a non-breaking change. If that is <em>not</em> the case, then
 I would suggest removing the two functions entirely.
 </p>
 
 
 <p id="res-4315"><b>Proposed resolution:</b></p>
+<p>
+This wording is relative to <a href="https://wg21.link/N5014">N5014</a>.
+</p>
+
+<blockquote class="note">
+<p>
+[<i>Drafting note:</i> As a drive-by fix the proposed wording adds a missing closing parentheses in 
+29.9.13.9 <a href="https://wg21.link/linalg.algs.blas1.nrm2">[linalg.algs.blas1.nrm2]</a> p2.]
+</p>
+</blockquote>
+
+<ol>
+
+<li><p>Modify 29.9.13.9 <a href="https://wg21.link/linalg.algs.blas1.nrm2">[linalg.algs.blas1.nrm2]</a> as indicated:</p>
+
+<blockquote>
+<pre>
+template&lt;<i>in-vector</i> InVec, class Scalar&gt;
+  Scalar vector_two_norm(InVec v, Scalar init);
+template&lt;class ExecutionPolicy, <i>in-vector</i> InVec, class Scalar&gt;
+  Scalar vector_two_norm(ExecutionPolicy&amp;&amp; exec, InVec v, Scalar init);
+</pre>
+<blockquote>
+<p>
+-1- [<i>Note 1</i>: [&hellip;] &mdash; <i>end note</i>]
+<p/>
+<ins>-?- <i>Constraints</i>: <code class='backtick'>InVec::value_type</code> and <code class='backtick'>Scalar</code> are either a floating-point type, or
+a specialization of <code class='backtick'>complex</code>.</ins>
+<p/>
+-2- <i>Mandates</i>: Let <code class='backtick'>a</code> be <code><i>abs-if-needed</i>(declval&lt;typename InVec::value_type&gt;())</code>. 
+Then, <code>decltype(init + a * a<ins>)</ins></code> is convertible to <code class='backtick'>Scalar</code>.
+<p/>
+-3- <i>Returns</i>: The square root of the sum of the square of <code class='backtick'>init</code> and the squares of the 
+absolute values of the elements of <code class='backtick'>v</code>.
+<p/>
+[<i>Note 2</i>: For <code class='backtick'>init</code> equal to zero, this is the Euclidean norm (also called 2-norm) of the vector 
+<code class='backtick'>v</code>. &mdash; <i>end note</i>]
+<p/>
+-4- <i>Remarks</i>: If <del><code class='backtick'>InVec::value_type</code>, and <code class='backtick'>Scalar</code> are all floating-point types or specializations of <code class='backtick'>complex</code>,
+and if</del> <code class='backtick'>Scalar</code> has higher precision than <code class='backtick'>InVec::value_type</code>, then intermediate terms in the sum use
+<code class='backtick'>Scalar</code>'s precision or greater.
+<p/>
+[<i>Note 3</i>: An implementation of this function for floating-point types <code class='backtick'>T</code> can use the <code class='backtick'>scaled_sum_of_squares</code>
+result <code class='backtick'>from vector_sum_of_squares(x, {.scaling_factor=1.0, .scaled_sum_of_squares=init})</code>. &mdash; <i>end note</i>]
+</p>
+</blockquote>
+</blockquote>
+
+</li>
+
+<li><p>Modify 29.9.13.12 <a href="https://wg21.link/linalg.algs.blas1.matfrobnorm">[linalg.algs.blas1.matfrobnorm]</a> as indicated:</p>
+
+<blockquote>
+<pre>
+template&lt;<i>in-matrix</i> InMat, class Scalar&gt;
+  Scalar matrix_frob_norm(InMat A, Scalar init);
+template&lt;class ExecutionPolicy, <i>in-matrix</i> InMat, class Scalar&gt;
+  Scalar matrix_frob_norm(ExecutionPolicy&amp;&amp; exec, InMat A, Scalar init);
+</pre>
+<blockquote>
+<p>
+<ins>-?- <i>Constraints</i>: <code class='backtick'>InVec::value_type</code> and <code class='backtick'>Scalar</code> are either a floating-point type, or
+a specialization of <code class='backtick'>complex</code>.</ins>
+<p/>
+-2- <i>Mandates</i>: Let <code class='backtick'>a</code> be <code><i>abs-if-needed</i>(declval&lt;typename InMat::value_type&gt;())</code>. 
+Then, <code>decltype(init + a * a)</code> is convertible to <code class='backtick'>Scalar</code>.
+<p/>
+-3- <i>Returns</i>: The square root of the sum of squares of <code class='backtick'>init</code> and the absolute values 
+of the elements of <code class='backtick'>A</code>.
+<p/>
+[<i>Note 2</i>: For <code class='backtick'>init</code> equal to zero, this is the Frobenius norm of the matrix <code class='backtick'>A</code>. &mdash; <i>end note</i>]
+<p/>
+-4- <i>Remarks</i>: If <del><code class='backtick'>InMat::value_type</code> and <code class='backtick'>Scalar</code> are all floating-point types or specializations of 
+<code class='backtick'>complex</code>, and if</del> <code class='backtick'>Scalar</code> has higher precision than <code class='backtick'>InMat::value_type</code>, then intermediate terms in the 
+sum use <code class='backtick'>Scalar</code>'s precision or greater.
+</p>
+<blockquote><pre>
+</pre></blockquote>
+</blockquote>
+</blockquote>
+
+</li>
+
+</ol>
 
 
 
