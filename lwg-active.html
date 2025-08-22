@@ -79,7 +79,7 @@
 </tr>
 </table>
 <h1>C++ Standard Library Active Issues List (Revision D125)</h1>
-<p>Revised 2025-08-22 at 17:07:18 UTC
+<p>Revised 2025-08-22 at 17:17:58 UTC
 </p>
   <p>Reference ISO/IEC IS 14882:2020(E)</p>
   <p>Also see:</p>
@@ -78775,7 +78775,7 @@ constexpr mapping(const extents_type&amp; ext, OtherIndexType pad<ins>ding</ins>
 <p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
 <p><b>Discussion:</b></p>
 <p>
-The Returns clauses <code class='backtick'>vector_two_norm</code> 29.9.13.9 <a href="https://wg21.link/linalg.algs.blas1.nrm2">[linalg.algs.blas1.nrm2]</a> and
+The Returns clauses of <code class='backtick'>vector_two_norm</code> 29.9.13.9 <a href="https://wg21.link/linalg.algs.blas1.nrm2">[linalg.algs.blas1.nrm2]</a> and
 <code class='backtick'>matrix_frob_norm</code> 29.9.13.12 <a href="https://wg21.link/linalg.algs.blas1.matfrobnorm">[linalg.algs.blas1.matfrobnorm]</a> say that the
 functions return the "square root" of the sum of squares of the initial value and 
 the absolute values of the elements of the input <code class='backtick'>mdspan</code>. However, nowhere in 
@@ -78786,16 +78786,16 @@ the absolute values of the elements of the input <code class='backtick'>mdspan</
 not constrained in a way that would ensure that calling <code class='backtick'>std::sqrt</code> on
 this expression would be well-formed.</p></li>
 <li><p>There is no provision to find <code class='backtick'>sqrt</code> via argument-dependent lookup,
-even though [linalg] has provisions to find <code class='backtick'>abs</code>, <code class='backtick'>conj</code>, <code class='backtick'>real</code>, and
-<code class='backtick'>imag</code> via argument-dependent lookup.  There is no "<code class='backtick'>sqrt-if-needed</code>"
-analog to <code class='backtick'>abs-if-needed</code>, <code class='backtick'>conj-if-needed</code>, <code class='backtick'>real-if-needed</code>, and
-<code class='backtick'>imag-if-needed</code>.</p></li>
+even though 29.9 <a href="https://wg21.link/linalg">[linalg]</a> has provisions to find <code class='backtick'>abs</code>, <code class='backtick'>conj</code>, <code class='backtick'>real</code>, and
+<code class='backtick'>imag</code> via argument-dependent lookup. There is no "<code><i>sqrt-if-needed</i></code>"
+analog to <code><i>abs-if-needed</i></code>, <code><i>conj-if-needed</i></code>, 
+<code><i>real-if-needed</i></code>, and <code><i>imag-if-needed</i></code>.</p></li>
 </ol>
 <p>
-The easiest fix for both issues is just to Constrain both <code class='backtick'>Scalar</code> and
+The easiest fix for both issues is just to <i>Constrain</i> both <code class='backtick'>Scalar</code> and
 the input <code class='backtick'>mdspan</code>'s <code class='backtick'>value_type</code> to be floating-point numbers or
 specializations of <code class='backtick'>std::complex</code> for these two functions. This
-presumes that relaxing this Constraint and fixing the above two issues
+presumes that relaxing this <i>Constraint</i> and fixing the above two issues
 later would be a non-breaking change. If that is <em>not</em> the case, then
 I would suggest removing the two functions entirely.
 </p>
