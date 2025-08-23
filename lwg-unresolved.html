@@ -54,7 +54,7 @@
 </style>
 </head>
 <body>
-<p>Revised 2025-08-23 at 12:32:24 UTC
+<p>Revised 2025-08-23 at 13:40:39 UTC
 </p><h2>Unresolved Issues</h2>
 <hr>
 <h3 id="423"><a href="#423">423</a><sup><a href="https://cplusplus.github.io/LWG/issue423">(i)</a></sup>. Effects of negative <code>streamsize</code> in iostreams</h3>
@@ -76153,6 +76153,301 @@ but how about these evaluations occurring within these functions?
 
 
 <p id="res-4321"><b>Proposed resolution:</b></p>
+
+
+
+
+
+<hr>
+<h3 id="4322"><a href="#4322">4322</a><sup><a href="https://cplusplus.github.io/LWG/issue4322">(i)</a></sup>. Constraints on incomplete types in indirect and polymorphic</h3>
+<p><b>Section:</b> 20.4 <a href="https://wg21.link/mem.composite.types">[mem.composite.types]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
+ <b>Submitter:</b> Jonathan B. Coe <b>Opened:</b> 2025-08-20 <b>Last modified:</b> 2025-08-23</p>
+<p><b>Priority: </b>Not Prioritized
+</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
+<p><b>Discussion:</b></p>
+<p>
+The class templates <code>indirect&lt;T&gt;</code> and <code>polymorphic&lt;T&gt;</code> allow the template argument <code class='backtick'>T</code> 
+to be an incomplete type.
+<p/>
+Both classes can be instantiated when the type <code class='backtick'>T</code> is incomplete: constraints are written so that requirements 
+on incomplete types are not evaluated at class instantiation time.
+<p/>
+For constructors with additional template parameters, there are currently constraints written on the potentially 
+incomplete type <code class='backtick'>T</code> and the additional template parameters. Such constraints will not be evaluated at class 
+instantiation time but could be explicitly evaluated in contexts where support for an incomplete <code class='backtick'>T</code> is required.
+</p>
+<blockquote><pre>
+template&lt;typename U&gt;
+class A {
+  U u;
+public:
+  A(const <i>SomeType</i>&amp;) requires std::is_constructible_v&lt;U, <i>SomeType</i>&gt; 
+  {
+    // [&hellip;]
+  }
+};
+</pre></blockquote>
+<p>
+when <code class='backtick'>U</code> is <code>indirect&lt;T&gt;</code> or <code>polymorphic&lt;T&gt;</code> for some type <code class='backtick'>T</code>, the existence 
+of the requires clause will require that <code class='backtick'>T</code> is a complete type for constraints on indirect or polymorphic 
+to be evaluated.
+<p/>
+<i>Constraints</i> on <code class='backtick'>T</code> should be converted to <i>Mandates</i> on <code class='backtick'>T</code> so that constraint evaluation 
+does not require <code class='backtick'>T</code> to be a complete type.
+</p>
+
+
+<p id="res-4322"><b>Proposed resolution:</b></p>
+<p>
+This wording is relative to <a href="https://wg21.link/N5014">N5014</a>.
+</p>
+
+<ol>
+
+<li><p>Modify 20.4.1.3 <a href="https://wg21.link/indirect.ctor">[indirect.ctor]</a> as indicated:</p>
+
+<blockquote>
+<pre>
+template&lt;class U = T&gt;
+  constexpr explicit indirect(U&amp;&amp; u);
+</pre>
+<blockquote>
+<p>
+-17- <i>Constraints</i>:
+</p>
+<ol style="list-style-type: none">
+<li><p>(17.1) &mdash; <code>is_same_v&lt;remove_cvref_t&lt;U&gt;, indirect&gt;</code> is <code class='backtick'>false</code>,</p></li>
+<li><p>(17.2) &mdash; <code>is_same_v&lt;remove_cvref_t&lt;U&gt;, in_place_t&gt;</code> is <code class='backtick'>false</code>, <ins>and</ins></p></li>
+<li><p><del>(17.3) &mdash; <code>is_constructible_v&lt;T, U&gt;</code> is <code class='backtick'>true</code>, and</del></p></li>
+<li><p>(17.4) &mdash; <code>is_default_constructible_v&lt;Allocator&gt;</code> is <code class='backtick'>true</code>.</p></li>
+</ol>
+<p>
+<ins>-?- <i>Mandates:</i> <code>is_constructible_v&lt;T, U&gt;</code> is <code class='backtick'>true</code>.</ins>
+<p/>
+-18- <i>Effects</i>: [&hellip;]
+</p>
+</blockquote>
+<pre>
+template&lt;class U = T&gt;
+  constexpr explicit indirect(allocator_arg_t, const Allocator&amp; a, U&amp;&amp; u);
+</pre>
+<blockquote>
+<p>
+-19- <i>Constraints</i>:
+</p>
+<ol style="list-style-type: none">
+<li><p>(19.1) &mdash; <code>is_same_v&lt;remove_cvref_t&lt;U&gt;, indirect&gt;</code> is <code class='backtick'>false</code>, <ins>and</ins></p></li>
+<li><p>(19.2) &mdash; <code>is_same_v&lt;remove_cvref_t&lt;U&gt;, in_place_t&gt;</code> is <code class='backtick'>false</code><ins>.</ins><del>, and</del></p></li>
+<li><p><del>(19.3) &mdash; <code>is_constructible_v&lt;T, U&gt;</code> is <code class='backtick'>true</code></del></p></li>
+</ol>
+<p>
+<ins>-?- <i>Mandates:</i> <code>is_constructible_v&lt;T, U&gt;</code> is <code class='backtick'>true</code>.</ins>
+<p/>
+-20- <i>Effects</i>: [&hellip;]
+</p>
+</blockquote>
+<pre>
+template&lt;class... Us&gt;
+  constexpr explicit indirect(in_place_t, Us&amp;&amp;... us);
+</pre>
+<blockquote>
+<p>
+-21- <i>Constraints</i>:
+</p>
+<ol style="list-style-type: none">
+<li><p><del>(21.1) &mdash; <code>is_constructible_v&lt;T, Us...&gt;</code> is <code class='backtick'>true</code>, and</del></p></li>
+<li><p><del>(21.2) &mdash;</del> <code>is_default_constructible_v&lt;Allocator&gt;</code> is <code class='backtick'>true</code>.</p></li>
+</ol>
+<p>
+<ins>-?- <i>Mandates:</i> <code>is_constructible_v&lt;T, Us...&gt;</code> is <code class='backtick'>true</code>.</ins>
+<p/>
+-22- <i>Effects</i>: [&hellip;]
+</p>
+</blockquote>
+<pre>
+template&lt;class... Us&gt;
+  constexpr explicit indirect(allocator_arg_t, const Allocator&amp; a,
+                              in_place_t, Us&amp;&amp; ...us);
+</pre>
+<blockquote>
+<p>
+-23- <i><del>Constraints</del><ins>Mandates</ins></i>: <code>is_constructible_v&lt;T, Us...&gt;</code> is <code class='backtick'>true</code>
+<p/>
+-24- <i>Effects</i>: [&hellip;]
+</p>
+</blockquote>
+<pre>
+template&lt;class I, class... Us&gt;
+  constexpr explicit indirect(in_place_t, initializer_list&lt;I&gt; ilist, Us&amp;&amp;... us);
+</pre>
+<blockquote>
+<p>
+-25- <i>Constraints</i>:
+</p>
+<ol style="list-style-type: none">
+<li><p><del>(25.1) &mdash; <code>is_constructible_v&lt;T, initializer_list&lt;I&gt;&amp;, Us...&gt;</code> is <code class='backtick'>true</code>, and</del></p></li>
+<li><p><del>(25.2) &mdash;</del> <code>is_default_constructible_v&lt;Allocator&gt;</code> is <code class='backtick'>true</code>.</p></li>
+</ol>
+<p>
+<ins>-?- <i>Mandates:</i> <code>is_constructible_v&lt;T, initializer_list&lt;I&gt;&amp;, Us...&gt;</code> is <code class='backtick'>true</code>.</ins>
+<p/>
+<p/>
+-26- <i>Effects</i>: [&hellip;]
+</p>
+</blockquote>
+<pre>
+template&lt;class I, class... Us&gt;
+  constexpr explicit indirect(allocator_arg_t, const Allocator&amp; a,
+                              in_place_t, initializer_list&lt;I&gt; ilist, Us&amp;&amp;... us);
+</pre>
+<blockquote>
+<p>
+-27- <i><del>Constraints</del><ins>Mandates</ins></i>: <code>is_constructible_v&lt;T, initializer_list&lt;I&gt;&amp;, Us...&gt;</code> 
+is <code class='backtick'>true</code>
+<p/>
+-28- <i>Effects</i>: [&hellip;]
+</p>
+</blockquote>
+
+</blockquote>
+
+</li>
+
+<li><p>Modify 20.4.2.3 <a href="https://wg21.link/polymorphic.ctor">[polymorphic.ctor]</a> as indicated:</p>
+
+<blockquote>
+<pre>
+template&lt;class U = T&gt;
+  constexpr explicit polymorphic(U&amp;&amp; u);
+</pre>
+<blockquote>
+<p>
+-12- <i>Constraints</i>: Where <code class='backtick'>UU</code> is <code>remove_cvref_t&lt;U&gt;</code>,
+</p>
+<ol style="list-style-type: none">
+<li><p>(12.1) &mdash; <code>is_same_v&lt;UU, polymorphic&gt;</code> is <code class='backtick'>false</code>,</p></li>
+<li><p><del>(12.2) &mdash; <code>derived_from&lt;UU, T&gt;</code> is <code class='backtick'>true</code>,</del></p></li>
+<li><p>(12.3) &mdash; <code>is_constructible_v&lt;UU, U&gt;</code> is <code class='backtick'>true</code>,</p></li>
+<li><p>(12.4) &mdash; <code>is_copy_constructible_v&lt;UU&gt;</code> is <code class='backtick'>true</code>,</p></li>
+<li><p>(12.5) &mdash; <code class='backtick'>UU</code> is not a specialization of <code class='backtick'>in_place_type_t</code>, and</p></li>
+<li><p>(12.6) &mdash; <code>is_default_constructible_v&lt;Allocator&gt;</code> is <code class='backtick'>true</code>.</p></li>
+</ol>
+<p>
+<ins>-?- <i>Mandates:</i> <code>derived_from&lt;UU, T&gt;</code> is <code class='backtick'>true</code>.</ins>
+<p/>
+-13- <i>Effects</i>: [&hellip;]
+</p>
+</blockquote>
+<pre>
+template&lt;class U = T&gt;
+  constexpr explicit polymorphic(allocator_arg_t, const Allocator&amp; a, U&amp;&amp; u);
+</pre>
+<blockquote>
+<p>
+-14- <i>Constraints</i>: Where <code class='backtick'>UU</code> is <code>remove_cvref_t&lt;U&gt;</code>,
+</p>
+<ol style="list-style-type: none">
+<li><p>(14.1) &mdash; <code>is_same_v&lt;UU, polymorphic&gt;</code> is <code class='backtick'>false</code>,</p></li>
+<li><p><del>(14.2) &mdash; <code>derived_from&lt;UU, T&gt;</code> is <code class='backtick'>true</code>,</del></p></li>
+<li><p>(14.3) &mdash; <code>is_constructible_v&lt;UU, U&gt;</code> is <code class='backtick'>true</code>,</p></li>
+<li><p>(14.4) &mdash; <code>is_copy_constructible_v&lt;UU&gt;</code> is <code class='backtick'>true</code>, and</p></li>
+<li><p>(14.5) &mdash; <code class='backtick'>UU</code> is not a specialization of <code class='backtick'>in_place_type_t</code>.</p></li>
+</ol>
+<p>
+<ins>-?- <i>Mandates:</i> <code>derived_from&lt;UU, T&gt;</code> is <code class='backtick'>true</code>.</ins>
+<p/>
+-15- <i>Effects</i>: [&hellip;]
+</p>
+</blockquote>
+<pre>
+template&lt;class U, class... Ts&gt;
+  constexpr explicit polymorphic(in_place_type_t&lt;U&gt;, Ts&amp;&amp;... ts);
+</pre>
+<blockquote>
+<p>
+-16- <i>Constraints</i>:
+</p>
+<ol style="list-style-type: none">
+<li><p>(16.1) &mdash; <code>is_same_v&lt;remove_cvref_t&lt;U&gt;, U&gt;</code> is <code class='backtick'>true</code>,</p></li>
+<li><p><del>(16.2) &mdash; <code>derived_from&lt;U, T&gt;</code> is <code class='backtick'>true</code>,</del></p></li>
+<li><p>(16.3) &mdash; <code>is_constructible_v&lt;U, Ts&gt;</code> is <code class='backtick'>true</code>,</p></li>
+<li><p>(16.4) &mdash; <code>is_copy_constructible_v&lt;U&gt;</code> is <code class='backtick'>true</code>, and</p></li>
+<li><p>(16.5) &mdash; <code>is_default_constructible_v&lt;Allocator&gt;</code> is <code class='backtick'>true</code>.</p></li>
+</ol>
+<p>
+<ins>-?- <i>Mandates:</i> <code>derived_from&lt;U, T&gt;</code> is <code class='backtick'>true</code>.</ins>
+<p/>
+-17- <i>Effects</i>: [&hellip;]
+</p>
+</blockquote>
+<pre>
+template&lt;class U, class... Ts&gt;
+  constexpr explicit polymorphic(allocator_arg_t, const Allocator&amp; a,
+                                 in_place_type_t&lt;U&gt;, Ts&amp;&amp;... ts);
+</pre>
+<blockquote>
+<p>
+-18- <i>Constraints</i>:
+</p>
+<ol style="list-style-type: none">
+<li><p>(18.1) &mdash; <code>is_same_v&lt;remove_cvref_t&lt;U&gt;, U&gt;</code> is <code class='backtick'>true</code>,</p></li>
+<li><p><del>(18.2) &mdash; <code>derived_from&lt;U, T&gt;</code> is <code class='backtick'>true</code>,</del></p></li>
+<li><p>(18.3) &mdash; <code>is_constructible_v&lt;U, Ts&gt;</code> is <code class='backtick'>true</code>, and</p></li>
+<li><p>(18.4) &mdash; <code>is_copy_constructible_v&lt;U&gt;</code> is <code class='backtick'>true</code>.</p></li>
+</ol>
+<p>
+<ins>-?- <i>Mandates:</i> <code>derived_from&lt;U, T&gt;</code> is <code class='backtick'>true</code>.</ins>
+<p/>
+-19- <i>Effects</i>: [&hellip;]
+</p>
+</blockquote>
+<pre>
+template&lt;class U, class I, class... Us&gt;
+  constexpr explicit polymorphic(in_place_type_t&lt;U&gt;, initializer_list&lt;I&gt; ilist, Us&amp;&amp;... us);
+</pre>
+<blockquote>
+<p>
+-20- <i>Constraints</i>:
+</p>
+<ol style="list-style-type: none">
+<li><p>(20.1) &mdash; <code>is_same_v&lt;remove_cvref_t&lt;U&gt;, U&gt;</code> is <code class='backtick'>true</code>,</p></li>
+<li><p><del>(20.2) &mdash; <code>derived_from&lt;U, T&gt;</code> is <code class='backtick'>true</code>,</del></p></li>
+<li><p>(20.3) &mdash; <code>is_constructible_v&lt;U, initializer_list&lt;I&gt;&amp;, Us...&gt;</code> is <code class='backtick'>true</code>,</p></li>
+<li><p>(20.4) &mdash; <code>is_copy_constructible_v&lt;U&gt;</code> is <code class='backtick'>true</code>, and</p></li>
+<li><p>(20.5) &mdash; <code>is_default_constructible_v&lt;Allocator&gt;</code> is <code class='backtick'>true</code>.</p></li>
+</ol>
+<p>
+<ins>-?- <i>Mandates:</i> <code>derived_from&lt;U, T&gt;</code> is <code class='backtick'>true</code>.</ins>
+<p/>
+-21- <i>Effects</i>: [&hellip;]
+</p>
+</blockquote>
+<pre>
+template&lt;class U, class I, class... Us&gt;
+  constexpr explicit polymorphic(in_place_type_t&lt;U&gt;, initializer_list&lt;I&gt; ilist, Us&amp;&amp;... us);
+</pre>
+<blockquote>
+<p>
+-22- <i>Constraints</i>:
+</p>
+<ol style="list-style-type: none">
+<li><p>(22.1) &mdash; <code>is_same_v&lt;remove_cvref_t&lt;U&gt;, U&gt;</code> is <code class='backtick'>true</code>,</p></li>
+<li><p><del>(22.2) &mdash; <code>derived_from&lt;U, T&gt;</code> is <code class='backtick'>true</code>,</del></p></li>
+<li><p>(22.3) &mdash; <code>is_constructible_v&lt;U, initializer_list&lt;I&gt;&amp;, Us...&gt;</code> is <code class='backtick'>true</code>, and</p></li>
+<li><p>(22.4) &mdash; <code>is_copy_constructible_v&lt;U&gt;</code> is <code class='backtick'>true</code>.</p></li>
+</ol>
+<p>
+<ins>-?- <i>Mandates:</i> <code>derived_from&lt;U, T&gt;</code> is <code class='backtick'>true</code>.</ins>
+<p/>
+-23- <i>Effects</i>: [&hellip;]
+</p>
+</blockquote>
+</blockquote>
+
+</li>
+
+</ol>
 
 
 
