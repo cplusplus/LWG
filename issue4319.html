@@ -75,7 +75,8 @@
 The wording for argument forwarding call wrappers in 22.10.4 <a href="https://wg21.link/func.require">[func.require]</a> p3,
 </p>
 <blockquote><p>
-This forwarding step delivers rvalue arguments as rvalue references and lvalue arguments as lvalue references.
+This forwarding step delivers rvalue arguments as rvalue references and lvalue arguments 
+as lvalue references.
 </p></blockquote>
 <p>
 requires that each wrapper binds a temporary to rvalue reference
@@ -87,7 +88,7 @@ For some wrappers more efficient implementation strategies are possible:
 </p>
 <ul>
 <li><p><code class='backtick'>bind_front(f)/bind_back(f)</code> without bound args could return a copy of <code class='backtick'>f</code></p></li>
-<li><p><code>bind_front&lt;f&gt;()/bind_back&lt;f&gt;</code> could produce a 
+<li><p><code>bind_front&lt;f&gt;()/bind_back&lt;f&gt;()</code> could produce a 
 <code>__function_wrapper&lt;f&gt;</code>, that for function pointers can be invoked using 
 a surrogate function call.</p></li>
 </ul>
