@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Issue 4319: Supporting copy-elision in function wrappers</title>
+<meta property="og:title" content="Issue 4319: Supporting copy-elision in function wrappers">
+<meta property="og:description" content="C++ library issue. Status: New">
+<meta property="og:url" content="https://cplusplus.github.io/LWG/issue4319.html">
+<meta property="og:type" content="website">
+<meta property="og:image" content="http://cplusplus.github.io/LWG/images/cpp_logo.png">
+<meta property="og:image:alt" content="C++ logo">
+<style>
+  p {text-align:justify}
+  li {text-align:justify}
+  pre code.backtick::before { content: "`" }
+  pre code.backtick::after { content: "`" }
+  blockquote.note
+  {
+    background-color:#E0E0E0;
+    padding-left: 15px;
+    padding-right: 15px;
+    padding-top: 1px;
+    padding-bottom: 1px;
+  }
+  ins {background-color:#A0FFA0}
+  del {background-color:#FFA0A0}
+  table.issues-index { border: 1px solid; border-collapse: collapse; }
+  table.issues-index th { text-align: center; padding: 4px; border: 1px solid; }
+  table.issues-index td { padding: 4px; border: 1px solid; }
+  table.issues-index td:nth-child(1) { text-align: right; }
+  table.issues-index td:nth-child(2) { text-align: left; }
+  table.issues-index td:nth-child(3) { text-align: left; }
+  table.issues-index td:nth-child(4) { text-align: left; }
+  table.issues-index td:nth-child(5) { text-align: center; }
+  table.issues-index td:nth-child(6) { text-align: center; }
+  table.issues-index td:nth-child(7) { text-align: left; }
+  table.issues-index td:nth-child(5) span.no-pr { color: red; }
+  @media (prefers-color-scheme: dark) {
+     html {
+        color: #ddd;
+        background-color: black;
+     }
+     ins {
+        background-color: #225522
+     }
+     del {
+        background-color: #662222
+     }
+     a {
+        color: #6af
+     }
+     a:visited {
+        color: #6af
+     }
+     blockquote.note
+     {
+        background-color: rgba(255, 255, 255, .10)
+     }
+  }
+</style>
+</head>
+<body>
+<hr>
+<p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#New">New</a> status.</em></p>
+<h3 id="4319"><a href="lwg-active.html#4319">4319</a>. Supporting copy-elision in function wrappers</h3>
+<p><b>Section:</b> 22.10.4 <a href="https://wg21.link/func.require">[func.require]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
+ <b>Submitter:</b> Tomasz Kamiński <b>Opened:</b> 2025-08-19 <b>Last modified:</b> 2025-08-23</p>
+<p><b>Priority: </b>Not Prioritized
+</p>
+<p><b>View other</b> <a href="lwg-index-open.html#func.require">active issues</a> in [func.require].</p>
+<p><b>View all other</b> <a href="lwg-index.html#func.require">issues</a> in [func.require].</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
+<p><b>Discussion:</b></p>
+<p>
+The wording for argument forwarding call wrappers in 22.10.4 <a href="https://wg21.link/func.require">[func.require]</a> p3,
+</p>
+<blockquote><p>
+This forwarding step delivers rvalue arguments as rvalue references and lvalue arguments as lvalue references.
+</p></blockquote>
+<p>
+requires that each wrapper binds a temporary to rvalue reference
+(materializing it), and then pass that xvalue. This essentially
+codifies an implementation where wrappers provide an <code class='backtick'>operator()</code> that
+accepts <code>Args&amp;&amp;...</code>. This is fine for most of the wrappers.
+<p/>
+For some wrappers more efficient implementation strategies are possible:
+</p>
+<ul>
+<li><p><code class='backtick'>bind_front(f)/bind_back(f)</code> without bound args could return a copy of <code class='backtick'>f</code></p></li>
+<li><p><code>bind_front&lt;f&gt;()/bind_back&lt;f&gt;</code> could produce a 
+<code>__function_wrapper&lt;f&gt;</code>, that for function pointers can be invoked using 
+a surrogate function call.</p></li>
+</ul>
+<p>
+However, such implementation strategies are currently disallowed per
+22.10.4 <a href="https://wg21.link/func.require">[func.require]</a> p3, as invoking the function wrapper with 
+a prvalue <code class='backtick'>bind_front(f)(T())</code> requires a temporary to be materialized, 
+and then moved into the parameter of <code class='backtick'>f</code>. For example:
+</p>
+<blockquote><pre>
+struct M 
+{
+  M() { std::cout &lt;&lt; "Default" &lt; std::endl; }
+  M(M&amp;&amp; m) { std::cout &lt;&lt; "Move" &lt; std::endl; }
+};
+
+struct F
+{ 
+  void operator()(M m) {} 
+} f;
+</pre></blockquote>
+<p>
+The call <code class='backtick'>f(M{})</code> will print only "<code class='backtick'>Default</code>" but <code class='backtick'>bind_front(f)(M{})</code> is
+required to produce "<code class='backtick'>Default</code>" and "<code class='backtick'>Move</code>". We should allow
+implementations to elide the move operations, but not require it.
+</p>
+
+
+<p id="res-4319"><b>Proposed resolution:</b></p>
+<p>
+This wording is relative to <a href="https://wg21.link/N5014">N5014</a>.
+</p>
+
+<ol>
+
+<li><p>Modify 22.10.4 <a href="https://wg21.link/func.require">[func.require]</a> as indicated:</p>
+
+<blockquote>
+<p>
+-3- Every call wrapper (22.10.3 <a href="https://wg21.link/func.def">[func.def]</a>) meets the <i>Cpp17MoveConstructible</i> and 
+<i>Cpp17Destructible</i> requirements. An <i>argument forwarding call wrapper</i> is a call wrapper 
+that can be called with an arbitrary argument list and delivers the arguments to the target object 
+<del>as references</del>. This forwarding step delivers <del>rvalue arguments as rvalue references 
+and lvalue arguments as lvalue references.</del><ins>:</ins>
+</p>
+<ol style="list-style-type: none">
+<li><p><ins>(3.?) &mdash; lvalue arguments as lvalues,</ins></p></li>
+<li><p><ins>(3.?) &mdash; xvalue arguments as xvalues,</ins></p></li>
+<li><p><ins>(3.?) &mdash; prvalue arguments as either prvalues or xvalues</ins></p></li>
+</ol>
+</blockquote>
+
+</li>
+
+</ol>
+
+
+
+
+
+</body>
+</html>
