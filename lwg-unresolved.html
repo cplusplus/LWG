@@ -54,7 +54,7 @@
 </style>
 </head>
 <body>
-<p>Revised 2025-08-23 at 09:21:30 UTC
+<p>Revised 2025-08-23 at 12:02:25 UTC
 </p><h2>Unresolved Issues</h2>
 <hr>
 <h3 id="423"><a href="#423">423</a><sup><a href="https://cplusplus.github.io/LWG/issue423">(i)</a></sup>. Effects of negative <code>streamsize</code> in iostreams</h3>
@@ -75719,6 +75719,359 @@ and lvalue arguments as lvalue references.</del><ins>:</ins>
 <li><p><ins>(3.?) &mdash; xvalue arguments as xvalues,</ins></p></li>
 <li><p><ins>(3.?) &mdash; prvalue arguments as either prvalues or xvalues</ins></p></li>
 </ol>
+</blockquote>
+
+</li>
+
+</ol>
+
+
+
+
+
+<hr>
+<h3 id="4320"><a href="#4320">4320</a><sup><a href="https://cplusplus.github.io/LWG/issue4320">(i)</a></sup>. <code class='backtick'>hive</code> operations involving insertion/erasure should have <code>&#x1d4aa;(log n)</code> time complexity</h3>
+<p><b>Section:</b> 23.3.9 <a href="https://wg21.link/hive">[hive]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
+ <b>Submitter:</b> Matt Bentley <b>Opened:</b> 2025-08-19 <b>Last modified:</b> 2025-08-23</p>
+<p><b>Priority: </b>Not Prioritized
+</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
+<p><b>Discussion:</b></p>
+<p>
+Under 23.3.9.4 <a href="https://wg21.link/hive.modifiers">[hive.modifiers]</a> p4 complexity is stated as "Constant.
+Exactly one object of type <code class='backtick'>T</code> is constructed."
+<p/>
+However the approach to implementation necessary to support 8/16-bit
+types without artificially widening the type storage, as described under
+<a href="https://www.open-std.org/jtc1/sc22/wg21/docs/papers/2024/p0447r28.html#non_reference_implementations_info">
+"Additional info for supporting small types" in P0447</a> basically specifies 
+time complexity which is <code class='backtick'>Log(n)</code> in the capacity of the element block selected 
+to insert into (when erased element memory locations are available for reuse) but 
+imposes a small maximum block capacity cap. This time complexity only occurs 
+during the operation to find an erased element memory location within a block 
+which is known to have one.
+<p/>
+This is both the simplest and fastest solution to supporting small types
+in hive without artificial widening that I have come across.
+<p/>
+Further, I have discovered that this approach can be extended to larger
+block capacities via 
+<a href="https://plflib.org/matt_bentley_-_bitset_stacking.pdf">"bitset stacking"</a>
+while retaining <code>&#x1d4aa;(log n)</code> intra-block lookup time complexity, 
+regardless of block capacity. Overall this approach would be useful for embedded 
+and other memory-scarse platforms as it reduces the 16-bit-per-element cost of the
+reference implementation down to a 1-bit-per-element cost. For 64-bit and larger types, 
+there are other ways to obtain this reduction without
+losing <code>&#x1d4aa;(1)</code> lookup but it is unclear whether those methods would 
+in fact be faster.
+<p/>
+Regardless, it is necessary for small types. In all cases <code>N</code> is capped by
+the maximum block capacity defined in the implementation.
+<p/>
+There is ambiguity as to whether this should result in a change to <code>hive::insert/emplace</code> 
+time complexity when discussed on the reflector, as it is unrelated to element numbers (unless 
+all elements fit within one block), but it is related to block capacities, which are defined 
+as part of the <code class='backtick'>hive</code> technical specification.
+<p/>
+The exact mechanism by which erased element locations are recorded (for later reuse 
+23.3.9.1 <a href="https://wg21.link/hive.overview">[hive.overview]</a> p3) in <code class='backtick'>hive</code> is not specified in the technical
+specification. The issue is therefore in some ways similar to <code class='backtick'>deque</code> <code class='backtick'>insert/emplace</code> 
+time complexity, where a <code class='backtick'>push_back</code> may in fact result in a <code>&#x1d4aa;(n)</code> 
+operation in the number of blocks &mdash; but because we do not specify the storage 
+mechanism in <code class='backtick'>deque</code>, we ignore the fact that deques are typically constructed as 
+vectors of pointers to blocks, and therefore any insert may trigger vector expansion. 
+This was also the reasoning discussed for <code class='backtick'>hive</code> during LWG talks, since it can also 
+be implemented as a vector of pointers to blocks.
+<p/>
+In addition, if we were to support approaches involving bitset stacking, this would 
+also affect functions which can erase elements, since the number of modifications to 
+the bitset-stack of a given block would increase by 1 with every 64x increase (assuming 
+64-bit words) in block capacity.
+</p>
+<blockquote class="note">
+<p>
+I do not personally believe any wording change are necessary here, based on
+precedents set by the existing standard and what has been conveyed to me
+in the past regarding this topic (<code>&#x1d4aa;</code> complexity within blocks). 
+However reflector discussion on the subject has not been entirely conclusive
+since the relevance of some time complexity involves a degree of subjectivity. 
+This issue has therefore been submitted in order for a definitive conclusion 
+to be reached on the issue.
+</p>
+</blockquote>
+<p>
+<b>Changes necessary:</b>
+<p/>
+Making this change would affect any functions which may reuse existing
+erased-element memory locations. This includes:
+<p/>
+23.3.9.4 <a href="https://wg21.link/hive.modifiers">[hive.modifiers]</a>:<br/>
+(<code class='backtick'>emplace</code>) p4<br/>
+(range <code class='backtick'>insert</code>) p9<br/>
+(fill <code class='backtick'>insert</code>) p13
+<p/>
+23.3.9.3 <a href="https://wg21.link/hive.capacity">[hive.capacity]</a>:<br/>
+(<code class='backtick'>shrink_to_fit</code>) p10<br/>
+(<code class='backtick'>reshape</code>) p24
+<p/>
+(both of the above functions may potentially relocate existing elements
+from one block to erased element locations in another)
+<p/>
+23.3.9.2 <a href="https://wg21.link/hive.cons">[hive.cons]</a>:<br/>
+(<code>operator= &amp;</code>) p27<br/>
+(<code>operator= &amp;&amp;</code>) p31
+<p/>
+(move assignment will switch to moving individual elements where
+allocators are not equal - and in the case of non-trivial/allocating
+types, move-assigning to existing elements in the source may be beneficial)
+<p/>
+In addition, if we were to support bitset-stacking approaches these also
+effect functions which erase individual elements. This includes:
+<p/>
+23.3.9.4 <a href="https://wg21.link/hive.modifiers">[hive.modifiers]</a>:<br/>
+(<code class='backtick'>erase</code>) p16
+<p/>
+23.3.9.5 <a href="https://wg21.link/hive.operations">[hive.operations]</a>:<br/>
+(<code class='backtick'>unique</code>) p11
+</p>
+
+
+<p id="res-4320"><b>Proposed resolution:</b></p>
+<p>
+This wording is relative to <a href="https://wg21.link/N5014">N5014</a>.
+</p>
+
+<blockquote class="note">
+<p>
+[<i>Drafting note:</i> I am unclear on whether <code class='backtick'>assign()</code> and <code class='backtick'>assign_range()</code> operations 
+would require specification since they also have the capability to reuse existing erased 
+element memory spaces, but we do not currently supply time complexity wording for these 
+in the standard in general and I'm unsure why that is.]
+</p>
+</blockquote>
+
+<ol>
+
+<li><p>Modify 23.3.9.1 <a href="https://wg21.link/hive.overview">[hive.overview]</a> as indicated:</p>
+
+<blockquote>
+<p>
+-1- A <code class='backtick'>hive</code> is a type of sequence container <del>that provides constant-time insertion and erasure 
+operations. S</del><ins>where s</ins>torage is automatically managed in multiple memory blocks, referred 
+to as element blocks. Insertion position is determined by the container, and <del>insertion</del> 
+may re-use the memory locations of erased elements. <ins>Insertions are either constant time
+or logarithmic in the capacity of the element block inserted into.</ins>
+<p/>
+-2- [&hellip;]
+<p/>
+-3- Erasures use unspecified techniques <del>of constant time complexity</del> to identify the memory 
+locations of erased elements, which are subsequently skipped during iteration <ins>in constant time</ins>, 
+as opposed to relocating subsequent elements during erasure. <ins>These techniques are either constant time 
+or logarithmic in the capacity of the element block erased from.</ins>
+</p>
+</blockquote>
+
+</li>
+
+<li><p>Modify 23.3.9.2 <a href="https://wg21.link/hive.cons">[hive.cons]</a> as indicated:</p>
+
+<blockquote>
+<pre>
+hive&amp; operator=(const hive&amp; x);
+</pre>
+<blockquote>
+<p>
+-25- <i>Preconditions</i>: [&hellip;]
+<p/>
+-26- <i>Effects</i>: [&hellip;]
+<p/>
+-27- <i>Complexity</i>: Linear in <code class='backtick'>size() + x.size()</code>. <ins>Additionally at worst 
+<code>&#x1d4aa;(log n)</code> in the capacity of each element block which an element 
+is constructed within.</ins>
+</p>
+</blockquote>
+<pre>
+hive&amp; operator=(hive&amp;&amp; x)
+  noexcept(allocator_traits&lt;Allocator&gt;::propagate_on_container_move_assignment::value ||
+           allocator_traits&lt;Allocator&gt;::is_always_equal::value);
+</pre>
+<blockquote>
+<p>
+-28- <i>Preconditions</i>: [&hellip;]
+<p/>
+-29- <i>Effects</i>: [&hellip;]
+<p/>
+-30- <i>Postconditions</i>: [&hellip;]
+<p/>
+-31- <i>Complexity</i>: Linear in <code class='backtick'>size()</code>. If
+</p>
+<blockquote><pre>
+(allocator_traits&lt;Allocator&gt;::propagate_on_container_move_assignment::value ||
+get_allocator() == x.get_allocator())
+</pre></blockquote>
+<p>
+is <code class='backtick'>false</code>, also linear in <code class='backtick'>x.size()</code> <ins>and additionally at worst 
+<code>&#x1d4aa;(log n)</code> in the capacity of each element block which 
+an element is constructed within</ins>.
+</p>
+</blockquote>
+</blockquote>
+
+</li>
+
+<li><p>Modify 23.3.9.3 <a href="https://wg21.link/hive.capacity">[hive.capacity]</a> as indicated:</p>
+
+<blockquote>
+<pre>
+void shrink_to_fit();
+</pre>
+<blockquote>
+<p>
+-8- <i>Preconditions</i>: [&hellip;]
+<p/>
+-9- <i>Effects</i>: [&hellip;]
+<p/>
+<p/>
+-10- <i>Complexity</i>: If reallocation happens, linear in the size of the sequence 
+<ins>and at worst <code>&#x1d4aa;(log n)</code> in the capacity of each element block which
+elements are reallocated into</ins>.
+<p/>
+-11- <i>Remarks</i>: [&hellip;]
+</p>
+</blockquote>
+<p>
+[&hellip;]
+</p>
+<pre>
+void reshape(hive_limits block_limits);
+</pre>
+<blockquote>
+<p>
+-21- <i>Preconditions</i>: [&hellip;]
+<p/>
+-22- <i>Effects</i>: [&hellip;]
+<p/>
+-23- <i>Postconditions</i>: [&hellip;]
+<p/>
+-24- <i>Complexity</i>: Linear in the number of element blocks in <code class='backtick'>*this</code>. If reallocation happens, 
+also linear in the number of elements reallocated <ins>and at worst <code>&#x1d4aa;(log n)</code> in 
+the capacity of each element block which elements are reallocated into</ins>.
+<p/>
+-25- <i>Remarks</i>: [&hellip;]
+</p>
+</blockquote>
+</blockquote>
+
+</li>
+
+<li><p>Modify 23.3.9.4 <a href="https://wg21.link/hive.modifiers">[hive.modifiers]</a> as indicated:</p>
+
+<blockquote>
+<pre>
+template&lt;class... Args&gt; iterator emplace(Args&amp;&amp;... args);
+template&lt;class... Args&gt; iterator emplace_hint(const_iterator hint, Args&amp;&amp;... args);
+</pre>
+<blockquote>
+<p>
+-1- <i>Preconditions</i>: [&hellip;]
+<p/>
+-2- <i>Effects</i>: [&hellip;]
+<p/>
+-3- <i>Returns</i>: [&hellip;]
+<p/>
+-4- <i>Complexity</i>: <del>Constant</del><ins>At worst <code>&#x1d4aa;(log n)</code> in the capacity 
+of the element block which the element is constructed within</ins>. Exactly one object of type <code class='backtick'>T</code> is constructed.
+</p>
+</blockquote>
+<p>
+[&hellip;]
+</p>
+<pre>
+void insert(initializer_list&lt;T&gt; rg);
+template&lt;<i>container-compatible-range</i>&lt;T&gt; R&gt;
+  void insert_range(R&amp;&amp; rg);
+</pre>
+<blockquote>
+<p>
+-7- <i>Preconditions</i>: [&hellip;]
+<p/>
+-8- <i>Effects</i>: [&hellip;]
+<p/>
+<p/>
+-9- <i>Complexity</i>: Linear in the number of elements inserted. <ins>Additionally at
+worst <code>&#x1d4aa;(log n)</code> in the capacity of each element block which an element is
+constructed within.</ins> Exactly one object of type <code class='backtick'>T</code> is constructed for each element 
+inserted.
+<p/>
+-10- <i>Remarks</i>: [&hellip;]
+</p>
+</blockquote>
+<pre>
+void insert(size_type n, const T&amp; x);
+</pre>
+<blockquote>
+<p>
+-11- <i>Preconditions</i>: [&hellip;]
+<p/>
+-12- <i>Effects</i>: [&hellip;]
+<p/>
+<p/>
+-13- <i>Complexity</i>: Linear in <code class='backtick'>n</code>. <ins>Additionally at worst <code>&#x1d4aa;(log n)</code> 
+in the capacity of each element block which an element is constructed within.</ins>. 
+Exactly one object of type <code class='backtick'>T</code> is constructed for each element inserted.
+<p/>
+-14- <i>Remarks</i>: [&hellip;]
+</p>
+</blockquote>
+<p>
+[&hellip;]
+</p>
+<pre>
+iterator erase(const_iterator position);
+iterator erase(const_iterator first, const_iterator last);
+</pre>
+<blockquote>
+<p>
+-16- Complexity: Linear in the number of elements erased. Additionally, if any active blocks 
+become empty of elements as a result of the function call, at worst linear in the number of 
+element blocks. <ins>For any active blocks which do not become empty of elements as a result
+of the function call, at worst <code>&#x1d4aa;(log n)</code> in the capacity of each block
+which has an element erased from it.</ins>
+</p>
+</blockquote>
+</blockquote>
+
+</li>
+
+<li><p>Modify 23.3.9.5 <a href="https://wg21.link/hive.operations">[hive.operations]</a> as indicated:</p>
+
+<blockquote>
+<pre>
+template&lt;class BinaryPredicate = equal_to&lt;T&gt;&gt;
+  size_type unique(BinaryPredicate binary_pred = BinaryPredicate());
+</pre>
+<blockquote>
+<p>
+-7- <i>Preconditions</i>: [&hellip;]
+<p/>
+-8- <i>Effects</i>: [&hellip;]
+<p/>
+-9- <i>Returns</i>: [&hellip;]
+<p/>
+-10- <i>Throws</i>: [&hellip;]
+<p/>
+-11- <i>Complexity</i>: If <code class='backtick'>empty()</code> is <code class='backtick'>false</code>, exactly <code class='backtick'>size() - 1</code> applications 
+of the corresponding predicate, otherwise no applications of the predicate. 
+<ins>If erasures occur, also linear in the number of elements erased.
+Additionally, if any active blocks become empty of elements as a result
+of the function call, at worst linear in the number of element blocks.
+For any active blocks which do not become empty of elements as a result
+of the function call, at worst <code>&#x1d4aa;(log n)</code> in the capacity of 
+each block which has an element erased from it.</ins>
+<p/>
+-12- <i>Remarks</i>: [&hellip;]
+</p>
+</blockquote>
 </blockquote>
 
 </li>
