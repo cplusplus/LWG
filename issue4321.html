@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Issue 4321: How are evaluations occurring within a store and a load operation ordered where the store synchronized with the load</title>
+<meta property="og:title" content="Issue 4321: How are evaluations occurring within a store and a load operation ordered where the store synchronized with the load">
+<meta property="og:description" content="C++ library issue. Status: New">
+<meta property="og:url" content="https://cplusplus.github.io/LWG/issue4321.html">
+<meta property="og:type" content="website">
+<meta property="og:image" content="http://cplusplus.github.io/LWG/images/cpp_logo.png">
+<meta property="og:image:alt" content="C++ logo">
+<style>
+  p {text-align:justify}
+  li {text-align:justify}
+  pre code.backtick::before { content: "`" }
+  pre code.backtick::after { content: "`" }
+  blockquote.note
+  {
+    background-color:#E0E0E0;
+    padding-left: 15px;
+    padding-right: 15px;
+    padding-top: 1px;
+    padding-bottom: 1px;
+  }
+  ins {background-color:#A0FFA0}
+  del {background-color:#FFA0A0}
+  table.issues-index { border: 1px solid; border-collapse: collapse; }
+  table.issues-index th { text-align: center; padding: 4px; border: 1px solid; }
+  table.issues-index td { padding: 4px; border: 1px solid; }
+  table.issues-index td:nth-child(1) { text-align: right; }
+  table.issues-index td:nth-child(2) { text-align: left; }
+  table.issues-index td:nth-child(3) { text-align: left; }
+  table.issues-index td:nth-child(4) { text-align: left; }
+  table.issues-index td:nth-child(5) { text-align: center; }
+  table.issues-index td:nth-child(6) { text-align: center; }
+  table.issues-index td:nth-child(7) { text-align: left; }
+  table.issues-index td:nth-child(5) span.no-pr { color: red; }
+  @media (prefers-color-scheme: dark) {
+     html {
+        color: #ddd;
+        background-color: black;
+     }
+     ins {
+        background-color: #225522
+     }
+     del {
+        background-color: #662222
+     }
+     a {
+        color: #6af
+     }
+     a:visited {
+        color: #6af
+     }
+     blockquote.note
+     {
+        background-color: rgba(255, 255, 255, .10)
+     }
+  }
+</style>
+</head>
+<body>
+<hr>
+<p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#New">New</a> status.</em></p>
+<h3 id="4321"><a href="lwg-active.html#4321">4321</a>. How are evaluations occurring within a store and a load operation ordered where the store synchronized with the load</h3>
+<p><b>Section:</b> 32.5.8.2 <a href="https://wg21.link/atomics.types.operations">[atomics.types.operations]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
+ <b>Submitter:</b> jim x <b>Opened:</b> 2025-08-20 <b>Last modified:</b> 2025-08-23</p>
+<p><b>Priority: </b>Not Prioritized
+</p>
+<p><b>View other</b> <a href="lwg-index-open.html#atomics.types.operations">active issues</a> in [atomics.types.operations].</p>
+<p><b>View all other</b> <a href="lwg-index.html#atomics.types.operations">issues</a> in [atomics.types.operations].</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
+<p><b>Discussion:</b></p>
+<p>
+Consider this example:
+</p>
+<blockquote><pre>
+std::atomic&lt;int&gt; v = 0;
+// thread 1:
+v.store(1, memory_order::release); // #1
+// thread 2:
+v.load(memory_order::acquire); // #2
+</pre></blockquote>
+<p>
+Say, <code class='backtick'>#2</code> reads the value written by <code class='backtick'>#1</code>, <code class='backtick'>#1</code> synchronizes with <code class='backtick'>#2</code>. According to 6.10.2.2 <a href="https://wg21.link/intro.races">[intro.races]</a> p7:
+</p>
+<blockquote>
+<p>
+ An evaluation <i>A</i> <i>happens before an evaluation</i> <i>B</i> (or, equivalently, <i>B</i> 
+ happens after <i>A</i>) if either
+</p>
+<ol style="list-style-type: none">
+<li><p>(7.1) &mdash; [&hellip;]</p></li>
+<li><p>(7.2) &mdash; <i>A</i> synchronizes with <i>B</i>, or</p></li>
+<li><p>(7.3) &mdash; [&hellip;]</p></li>
+</ol>
+</blockquote>
+<p>
+So, <code class='backtick'>#1</code> happens before <i>B</i>. However, 6.10.1 <a href="https://wg21.link/intro.execution">[intro.execution]</a> p12 says:
+</p>
+<blockquote>
+<p>
+For each
+</p>
+<ol style="list-style-type: none">
+<li><p>(12.1) &mdash; function invocation,</p></li>
+<li><p>(12.2) &mdash; [&hellip;]</p></li>
+<li><p>(12.3) &mdash; [&hellip;]</p></li>
+</ol>
+<p>
+<i>F</i>, each evaluation that does not occur within <i>F</i> but is evaluated 
+on the same thread and as part of the same signal handler (if any) is either 
+sequenced before all evaluations that occur within <i>F</i> or sequenced after 
+all evaluations that occur within <i>F</i>;
+</p>
+</blockquote>
+<p>
+Because both <code class='backtick'>v.store(...)</code> and <code class='backtick'>v.load(...)</code> are function invocations, and we can think that the member 
+functions comprise some evaluations to form the operation, therefore, how are these evaluations that 
+occur within the <code class='backtick'>store</code> ordered with those within the <code class='backtick'>load</code>?
+<p/>
+The rule only says the <code class='backtick'>store</code> synchronizes with the <code class='backtick'>load</code>, hence, the evaluation of the function 
+call expression <code class='backtick'>v.store(...)</code> happens before the evaluation of the function call expression <code class='backtick'>v.load(...)</code>, 
+but how about these evaluations occurring within these functions?
+</p>
+
+
+<p id="res-4321"><b>Proposed resolution:</b></p>
+
+
+
+
+
+</body>
+</html>

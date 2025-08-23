@@ -54,7 +54,7 @@
 </style>
 </head>
 <body>
-<p>Revised 2025-08-23 at 12:11:21 UTC
+<p>Revised 2025-08-23 at 12:32:24 UTC
 </p><h2>Unresolved Issues</h2>
 <hr>
 <h3 id="423"><a href="#423">423</a><sup><a href="https://cplusplus.github.io/LWG/issue423">(i)</a></sup>. Effects of negative <code>streamsize</code> in iostreams</h3>
@@ -29817,6 +29817,7 @@ into each <i>Throws:</i> element, but perhaps something more specific is necessa
  <b>Submitter:</b> Alisdair Meredith <b>Opened:</b> 2020-03-19 <b>Last modified:</b> 2025-08-23</p>
 <p><b>Priority: </b>3
 </p>
+<p><b>View other</b> <a href="lwg-index-open.html#atomics.types.operations">active issues</a> in [atomics.types.operations].</p>
 <p><b>View all other</b> <a href="lwg-index.html#atomics.types.operations">issues</a> in [atomics.types.operations].</p>
 <p><b>View all issues with</b> <a href="lwg-status.html#SG1">SG1</a> status.</p>
 <p><b>Discussion:</b></p>
@@ -76082,6 +76083,76 @@ each block which has an element erased from it.</ins>
 </li>
 
 </ol>
+
+
+
+
+
+<hr>
+<h3 id="4321"><a href="#4321">4321</a><sup><a href="https://cplusplus.github.io/LWG/issue4321">(i)</a></sup>. How are evaluations occurring within a store and a load operation ordered where the store synchronized with the load</h3>
+<p><b>Section:</b> 32.5.8.2 <a href="https://wg21.link/atomics.types.operations">[atomics.types.operations]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
+ <b>Submitter:</b> jim x <b>Opened:</b> 2025-08-20 <b>Last modified:</b> 2025-08-23</p>
+<p><b>Priority: </b>Not Prioritized
+</p>
+<p><b>View other</b> <a href="lwg-index-open.html#atomics.types.operations">active issues</a> in [atomics.types.operations].</p>
+<p><b>View all other</b> <a href="lwg-index.html#atomics.types.operations">issues</a> in [atomics.types.operations].</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
+<p><b>Discussion:</b></p>
+<p>
+Consider this example:
+</p>
+<blockquote><pre>
+std::atomic&lt;int&gt; v = 0;
+// thread 1:
+v.store(1, memory_order::release); // #1
+// thread 2:
+v.load(memory_order::acquire); // #2
+</pre></blockquote>
+<p>
+Say, <code class='backtick'>#2</code> reads the value written by <code class='backtick'>#1</code>, <code class='backtick'>#1</code> synchronizes with <code class='backtick'>#2</code>. According to 6.10.2.2 <a href="https://wg21.link/intro.races">[intro.races]</a> p7:
+</p>
+<blockquote>
+<p>
+ An evaluation <i>A</i> <i>happens before an evaluation</i> <i>B</i> (or, equivalently, <i>B</i> 
+ happens after <i>A</i>) if either
+</p>
+<ol style="list-style-type: none">
+<li><p>(7.1) &mdash; [&hellip;]</p></li>
+<li><p>(7.2) &mdash; <i>A</i> synchronizes with <i>B</i>, or</p></li>
+<li><p>(7.3) &mdash; [&hellip;]</p></li>
+</ol>
+</blockquote>
+<p>
+So, <code class='backtick'>#1</code> happens before <i>B</i>. However, 6.10.1 <a href="https://wg21.link/intro.execution">[intro.execution]</a> p12 says:
+</p>
+<blockquote>
+<p>
+For each
+</p>
+<ol style="list-style-type: none">
+<li><p>(12.1) &mdash; function invocation,</p></li>
+<li><p>(12.2) &mdash; [&hellip;]</p></li>
+<li><p>(12.3) &mdash; [&hellip;]</p></li>
+</ol>
+<p>
+<i>F</i>, each evaluation that does not occur within <i>F</i> but is evaluated 
+on the same thread and as part of the same signal handler (if any) is either 
+sequenced before all evaluations that occur within <i>F</i> or sequenced after 
+all evaluations that occur within <i>F</i>;
+</p>
+</blockquote>
+<p>
+Because both <code class='backtick'>v.store(...)</code> and <code class='backtick'>v.load(...)</code> are function invocations, and we can think that the member 
+functions comprise some evaluations to form the operation, therefore, how are these evaluations that 
+occur within the <code class='backtick'>store</code> ordered with those within the <code class='backtick'>load</code>?
+<p/>
+The rule only says the <code class='backtick'>store</code> synchronizes with the <code class='backtick'>load</code>, hence, the evaluation of the function 
+call expression <code class='backtick'>v.store(...)</code> happens before the evaluation of the function call expression <code class='backtick'>v.load(...)</code>, 
+but how about these evaluations occurring within these functions?
+</p>
+
+
+<p id="res-4321"><b>Proposed resolution:</b></p>
 
 
 
