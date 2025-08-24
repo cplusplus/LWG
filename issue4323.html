@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Issue 4323: hive::unique time complexity should incorporate potential block removal complexity</title>
+<meta property="og:title" content="Issue 4323: hive::unique time complexity should incorporate potential block removal complexity">
+<meta property="og:description" content="C++ library issue. Status: New">
+<meta property="og:url" content="https://cplusplus.github.io/LWG/issue4323.html">
+<meta property="og:type" content="website">
+<meta property="og:image" content="http://cplusplus.github.io/LWG/images/cpp_logo.png">
+<meta property="og:image:alt" content="C++ logo">
+<style>
+  p {text-align:justify}
+  li {text-align:justify}
+  pre code.backtick::before { content: "`" }
+  pre code.backtick::after { content: "`" }
+  blockquote.note
+  {
+    background-color:#E0E0E0;
+    padding-left: 15px;
+    padding-right: 15px;
+    padding-top: 1px;
+    padding-bottom: 1px;
+  }
+  ins {background-color:#A0FFA0}
+  del {background-color:#FFA0A0}
+  table.issues-index { border: 1px solid; border-collapse: collapse; }
+  table.issues-index th { text-align: center; padding: 4px; border: 1px solid; }
+  table.issues-index td { padding: 4px; border: 1px solid; }
+  table.issues-index td:nth-child(1) { text-align: right; }
+  table.issues-index td:nth-child(2) { text-align: left; }
+  table.issues-index td:nth-child(3) { text-align: left; }
+  table.issues-index td:nth-child(4) { text-align: left; }
+  table.issues-index td:nth-child(5) { text-align: center; }
+  table.issues-index td:nth-child(6) { text-align: center; }
+  table.issues-index td:nth-child(7) { text-align: left; }
+  table.issues-index td:nth-child(5) span.no-pr { color: red; }
+  @media (prefers-color-scheme: dark) {
+     html {
+        color: #ddd;
+        background-color: black;
+     }
+     ins {
+        background-color: #225522
+     }
+     del {
+        background-color: #662222
+     }
+     a {
+        color: #6af
+     }
+     a:visited {
+        color: #6af
+     }
+     blockquote.note
+     {
+        background-color: rgba(255, 255, 255, .10)
+     }
+  }
+</style>
+</head>
+<body>
+<hr>
+<p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#New">New</a> status.</em></p>
+<h3 id="4323"><a href="lwg-active.html#4323">4323</a>. <code class='backtick'>hive::unique</code> time complexity should incorporate potential block removal complexity</h3>
+<p><b>Section:</b> 23.3.9.5 <a href="https://wg21.link/hive.operations">[hive.operations]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
+ <b>Submitter:</b> Matt Bentley <b>Opened:</b> 2025-08-24 <b>Last modified:</b> 2025-08-24</p>
+<p><b>Priority: </b>Not Prioritized
+</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
+<p><b>Discussion:</b></p>
+<p>
+Currently we specify for <code class='backtick'>erase</code> 23.3.9.4 <a href="https://wg21.link/hive.modifiers">[hive.modifiers]</a> p16:
+</p>
+<blockquote><p>
+"<i>Complexity:</i> Linear in the number of elements erased. Additionally, if
+any active blocks become empty of elements as a result of the function
+call, at worst linear in the number of element blocks."
+</p></blockquote>
+<p>
+This is to allow for potential <code class='backtick'>hive</code> implementations as vectors of
+pointers to blocks, as opposed to linked-lists of blocks (reference
+implementation approach). In that scenario removing a block would
+involve a vector erasure and subsequent pointer-to-block relocations.
+swap-and-pop of block pointers would not work as this would re-arrange
+the sequence during erasure. Anyway, we have neglected to apply this
+same complexity to <code class='backtick'>hive::unique</code>. It would be rare that this would occur
+for <code class='backtick'>unique</code>, as it would involve (1) a block <i>A</i> with only one non-erased
+element left in it and (2) a block <i>B</i> preceding/following block 
+<i>A</i> in the sequence, whose last/first element is equal to the element 
+in block <i>A</i>. But it is possible, so the same consideration in terms 
+of time complexity applies.
+</p>
+<blockquote class="note">
+<p>
+This is a separate but related issue to LWG <a href="lwg-active.html#4320" title="hive operations involving insertion/erasure should have &#x1d4aa;(log n) time complexity (Status: New)">4320</a><sup><a href="https://cplusplus.github.io/LWG/issue4320" title="Latest snapshot">(i)</a></sup>, but it would 
+affect the outcome wording of that issue for <code class='backtick'>unique</code>.
+</p>
+</blockquote>
+
+
+<p id="res-4323"><b>Proposed resolution:</b></p>
+<p>
+This wording is relative to <a href="https://wg21.link/N5014">N5014</a>.
+</p>
+
+<ol>
+
+<li><p>Modify 23.3.9.5 <a href="https://wg21.link/hive.operations">[hive.operations]</a> as indicated:</p>
+
+<blockquote class="note">
+<p>
+[<i>Drafting note:</i> If issue LWG <a href="lwg-active.html#4320" title="hive operations involving insertion/erasure should have &#x1d4aa;(log n) time complexity (Status: New)">4320</a><sup><a href="https://cplusplus.github.io/LWG/issue4320" title="Latest snapshot">(i)</a></sup> is decided to be acted upon and 
+the proposed solution accepted, the proposed complexity wording becomes:
+</p>
+<blockquote><p>
+-11- <i>Complexity</i>: If <code class='backtick'>empty()</code> is <code class='backtick'>false</code>, exactly <code class='backtick'>size() - 1</code> applications 
+of the corresponding predicate, otherwise no applications of the predicate. 
+<ins>For each element erased as a result of this function call, at worst <code>&#x1d4aa;(log n)</code> 
+in the capacity of each block containing the element. Additionally, if any active blocks become 
+empty of elements as a result of the function call, at worst linear in the number of element 
+blocks.</ins>
+</p></blockquote>
+<p>
+]
+</p>
+</blockquote>
+
+
+<blockquote>
+<pre>
+template&lt;class BinaryPredicate = equal_to&lt;T&gt;&gt;
+  size_type unique(BinaryPredicate binary_pred = BinaryPredicate());
+</pre>
+<blockquote>
+<p>
+-7- <i>Preconditions</i>: [&hellip;]
+<p/>
+-8- <i>Effects</i>: [&hellip;]
+<p/>
+-9- <i>Returns</i>: [&hellip;]
+<p/>
+-10- <i>Throws</i>: [&hellip;]
+<p/>
+-11- <i>Complexity</i>: If <code class='backtick'>empty()</code> is <code class='backtick'>false</code>, exactly <code class='backtick'>size() - 1</code> applications 
+of the corresponding predicate, otherwise no applications of the predicate. 
+<ins>Additionally, if any active blocks become empty of elements as a result of the 
+function call, at worst linear in the number of element blocks.</ins>
+<p/>
+-12- <i>Remarks</i>: [&hellip;]
+</p>
+</blockquote>
+</blockquote>
+
+</li>
+
+</ol>
+
+
+
+
+
+</body>
+</html>
