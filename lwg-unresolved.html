@@ -54,7 +54,7 @@
 </style>
 </head>
 <body>
-<p>Revised 2025-08-24 at 11:43:35 UTC
+<p>Revised 2025-08-24 at 11:43:58 UTC
 </p><h2>Unresolved Issues</h2>
 <hr>
 <h3 id="423"><a href="#423">423</a><sup><a href="https://cplusplus.github.io/LWG/issue423">(i)</a></sup>. Effects of negative <code>streamsize</code> in iostreams</h3>
@@ -75842,6 +75842,14 @@ effect functions which erase individual elements. This includes:
 (<code class='backtick'>unique</code>) p11
 </p>
 
+<blockquote class="note">
+<p>
+This issue has some overlap to LWG <a href="lwg-active.html#4323" title="hive::unique time complexity should incorporate potential block removal complexity (Status: New)">4323</a><sup><a href="https://cplusplus.github.io/LWG/issue4323" title="Latest snapshot">(i)</a></sup>, and it would 
+affect the outcome wording of that issue for <code class='backtick'>unique</code>.
+</p>
+</blockquote>
+
+
 
 <p id="res-4320"><b>Proposed resolution:</b></p>
 <p>
@@ -76051,6 +76059,24 @@ element blocks.
 </li>
 
 <li><p>Modify 23.3.9.5 <a href="https://wg21.link/hive.operations">[hive.operations]</a> as indicated:</p>
+
+<blockquote class="note">
+<p>
+[<i>Drafting note:</i> If issue LWG <a href="lwg-active.html#4323" title="hive::unique time complexity should incorporate potential block removal complexity (Status: New)">4323</a><sup><a href="https://cplusplus.github.io/LWG/issue4323" title="Latest snapshot">(i)</a></sup> is decided to be acted upon and 
+the proposed solution accepted, the proposed complexity wording becomes:
+</p>
+<blockquote><p>
+-11- <i>Complexity</i>: If <code class='backtick'>empty()</code> is <code class='backtick'>false</code>, exactly <code class='backtick'>size() - 1</code> applications 
+of the corresponding predicate, otherwise no applications of the predicate. 
+<ins>For each element erased as a result of this function call, at worst <code>&#x1d4aa;(log n)</code> 
+in the capacity of each block containing the element. Additionally, if any active blocks become 
+empty of elements as a result of the function call, at worst linear in the number of element 
+blocks.</ins>
+</p></blockquote>
+<p>
+]
+</p>
+</blockquote>
 
 <blockquote>
 <pre>
