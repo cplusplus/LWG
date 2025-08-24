@@ -79,7 +79,7 @@
 </tr>
 </table>
 <h1>C++ Standard Library Active Issues List (Revision D125)</h1>
-<p>Revised 2025-08-24 at 11:43:58 UTC
+<p>Revised 2025-08-24 at 12:48:24 UTC
 </p>
   <p>Reference ISO/IEC IS 14882:2020(E)</p>
   <p>Also see:</p>
@@ -79902,10 +79902,10 @@ template&lt;class U, class I, class... Us&gt;
 <p>
 Currently we specify for <code class='backtick'>erase</code> 23.3.9.4 <a href="https://wg21.link/hive.modifiers">[hive.modifiers]</a> p16:
 </p>
-<blockquote><p>
-"<i>Complexity:</i> Linear in the number of elements erased. Additionally, if
+<blockquote style="border-left: 3px solid #ccc;padding-left: 15px;"><p>
+<i>Complexity:</i> Linear in the number of elements erased. Additionally, if
 any active blocks become empty of elements as a result of the function
-call, at worst linear in the number of element blocks."
+call, at worst linear in the number of element blocks.
 </p></blockquote>
 <p>
 This is to allow for potential <code class='backtick'>hive</code> implementations as vectors of
