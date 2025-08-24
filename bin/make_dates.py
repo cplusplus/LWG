@@ -1,6 +1,6 @@
 #!/usr/bin/python
 
-# usage: git whatchanged --no-show-signature --pretty=%ct | python bin/make_dates.py > dates
+# usage: git log --raw --no-show-signature --pretty=%ct | python bin/make_dates.py > dates
 
 import sys
 import re

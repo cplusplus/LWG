@@ -136,7 +136,7 @@ meta-data/dates: xml/issue[0-9]*.xml bin/make_dates.py
 	  rm $@.new; \
 	  $(call update,$@); \
 	else \
-	  git whatchanged --no-show-signature --pretty=%ct | $(python) bin/make_dates.py > $@; \
+	  git log --raw --no-show-signature --pretty=%ct | $(python) bin/make_dates.py > $@; \
 	fi
 
 new-papers:
