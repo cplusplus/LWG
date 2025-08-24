@@ -64,7 +64,7 @@
 <p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#New">New</a> status.</em></p>
 <h3 id="4320"><a href="lwg-active.html#4320">4320</a>. <code class='backtick'>hive</code> operations involving insertion/erasure should have <code>&#x1d4aa;(log n)</code> time complexity</h3>
 <p><b>Section:</b> 23.3.9 <a href="https://wg21.link/hive">[hive]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Matt Bentley <b>Opened:</b> 2025-08-19 <b>Last modified:</b> 2025-08-23</p>
+ <b>Submitter:</b> Matt Bentley <b>Opened:</b> 2025-08-19 <b>Last modified:</b> 2025-08-24</p>
 <p><b>Priority: </b>Not Prioritized
 </p>
 <p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
@@ -364,11 +364,11 @@ iterator erase(const_iterator first, const_iterator last);
 </pre>
 <blockquote>
 <p>
--16- Complexity: Linear in the number of elements erased. Additionally, if any active blocks 
-become empty of elements as a result of the function call, at worst linear in the number of 
-element blocks. <ins>For any active blocks which do not become empty of elements as a result
-of the function call, at worst <code>&#x1d4aa;(log n)</code> in the capacity of each block
-which has an element erased from it.</ins>
+-16- Complexity: Linear in the number of elements erased <ins>and for each
+erased element at worst <code>&#x1d4aa;(log n)</code> in the capacity of each block
+containing the element</ins>. Additionally, if any active blocks become empty of elements 
+as a result of the function call, at worst linear in the number of 
+element blocks.
 </p>
 </blockquote>
 </blockquote>
@@ -394,12 +394,8 @@ template&lt;class BinaryPredicate = equal_to&lt;T&gt;&gt;
 <p/>
 -11- <i>Complexity</i>: If <code class='backtick'>empty()</code> is <code class='backtick'>false</code>, exactly <code class='backtick'>size() - 1</code> applications 
 of the corresponding predicate, otherwise no applications of the predicate. 
-<ins>If erasures occur, also linear in the number of elements erased.
-Additionally, if any active blocks become empty of elements as a result
-of the function call, at worst linear in the number of element blocks.
-For any active blocks which do not become empty of elements as a result
-of the function call, at worst <code>&#x1d4aa;(log n)</code> in the capacity of 
-each block which has an element erased from it.</ins>
+<ins>Additionally, for each element erased as a result of this function call,
+at worst <code>&#x1d4aa;(log n)</code> in the capacity of each block containing the element.</ins>
 <p/>
 -12- <i>Remarks</i>: [&hellip;]
 </p>
