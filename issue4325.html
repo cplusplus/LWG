@@ -162,7 +162,7 @@ template&lt;class U&gt;
 <ins>bool <i>FUN</i>(bool) noexcept;</ins>
 </pre></blockquote>
 <p>
--1- <i>Mandates</i>: The expression <code><ins><i>FUN</i>(</ins>*lhs == *rhs<ins>)</ins></code> is well-formed <del>and its result is convertible to <code class='backtick'>bool</code></del>.
+-1- <i>Mandates</i>: The expression <code><ins><i>FUN</i>(</ins>*lhs == rhs<ins>)</ins></code> is well-formed <del>and its result is convertible to <code class='backtick'>bool</code></del>.
 <p/>
 -2- <i>Returns</i>: If <code class='backtick'>lhs</code> is valueless, <code class='backtick'>false</code>; otherwise <code class='backtick'>*lhs == rhs</code>.
 <p/>
