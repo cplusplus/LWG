@@ -54,7 +54,7 @@
 </style>
 </head>
 <body>
-<p>Revised 2025-08-24 at 17:31:20 UTC
+<p>Revised 2025-08-24 at 17:42:02 UTC
 </p><h2>Unresolved Issues</h2>
 <hr>
 <h3 id="423"><a href="#423">423</a><sup><a href="https://cplusplus.github.io/LWG/issue423">(i)</a></sup>. Effects of negative <code>streamsize</code> in iostreams</h3>
@@ -76701,7 +76701,11 @@ This wording is relative to <a href="https://wg21.link/N5014">N5014</a>.
 <p>
 [<i>Drafting note:</i>: We introduce the exposition-only function <code><i>FUN</i></code> below to mimic
 the implicit conversion to <code class='backtick'>bool</code>. As a drive-by effect this helps us simplifying (and clarifying, see
-LWG <a href="lwg-closed.html#408" title="Is vector&lt;reverse_iterator&lt;char*&gt; &gt; forbidden? (Status: NAD Editorial)">408</a><sup><a href="https://cplusplus.github.io/LWG/issue408" title="Latest snapshot">(i)</a></sup>) the existing <i>Mandates</i> element]
+LWG <a href="lwg-closed.html#408" title="Is vector&lt;reverse_iterator&lt;char*&gt; &gt; forbidden? (Status: NAD Editorial)">408</a><sup><a href="https://cplusplus.github.io/LWG/issue408" title="Latest snapshot">(i)</a></sup>) the existing <i>Mandates</i> element.
+<p/>
+Please note that the seemingly unresolved <code class='backtick'>T</code> in the <code class='backtick'>requires</code> expression below names the first template 
+parameter of the <code class='backtick'>indirect</code> class template.
+]
 </p>
 </blockquote>
 
