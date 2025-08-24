@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Issue 4325: std::indirect's operator== still does not support incomplete types</title>
+<meta property="og:title" content="Issue 4325: std::indirect's operator== still does not support incomplete types">
+<meta property="og:description" content="C++ library issue. Status: New">
+<meta property="og:url" content="https://cplusplus.github.io/LWG/issue4325.html">
+<meta property="og:type" content="website">
+<meta property="og:image" content="http://cplusplus.github.io/LWG/images/cpp_logo.png">
+<meta property="og:image:alt" content="C++ logo">
+<style>
+  p {text-align:justify}
+  li {text-align:justify}
+  pre code.backtick::before { content: "`" }
+  pre code.backtick::after { content: "`" }
+  blockquote.note
+  {
+    background-color:#E0E0E0;
+    padding-left: 15px;
+    padding-right: 15px;
+    padding-top: 1px;
+    padding-bottom: 1px;
+  }
+  ins {background-color:#A0FFA0}
+  del {background-color:#FFA0A0}
+  table.issues-index { border: 1px solid; border-collapse: collapse; }
+  table.issues-index th { text-align: center; padding: 4px; border: 1px solid; }
+  table.issues-index td { padding: 4px; border: 1px solid; }
+  table.issues-index td:nth-child(1) { text-align: right; }
+  table.issues-index td:nth-child(2) { text-align: left; }
+  table.issues-index td:nth-child(3) { text-align: left; }
+  table.issues-index td:nth-child(4) { text-align: left; }
+  table.issues-index td:nth-child(5) { text-align: center; }
+  table.issues-index td:nth-child(6) { text-align: center; }
+  table.issues-index td:nth-child(7) { text-align: left; }
+  table.issues-index td:nth-child(5) span.no-pr { color: red; }
+  @media (prefers-color-scheme: dark) {
+     html {
+        color: #ddd;
+        background-color: black;
+     }
+     ins {
+        background-color: #225522
+     }
+     del {
+        background-color: #662222
+     }
+     a {
+        color: #6af
+     }
+     a:visited {
+        color: #6af
+     }
+     blockquote.note
+     {
+        background-color: rgba(255, 255, 255, .10)
+     }
+  }
+</style>
+</head>
+<body>
+<hr>
+<p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#New">New</a> status.</em></p>
+<h3 id="4325"><a href="lwg-active.html#4325">4325</a>. <code class='backtick'>std::indirect</code>'s <code class='backtick'>operator==</code> still does not support incomplete types</h3>
+<p><b>Section:</b> 20.4.1.8 <a href="https://wg21.link/indirect.relops">[indirect.relops]</a>, 20.4.1.9 <a href="https://wg21.link/indirect.comp.with.t">[indirect.comp.with.t]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
+ <b>Submitter:</b> Hewill Kang <b>Opened:</b> 2025-08-24 <b>Last modified:</b> 2025-08-24</p>
+<p><b>Priority: </b>Not Prioritized
+</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
+<p><b>Discussion:</b></p>
+<p>
+<code class='backtick'>std::indirect</code>'s `operator== 
+<a href="https://github.com/cplusplus/papers/issues/1680#issuecomment-2646604309">intentionally</a> 
+uses <i>Mandates</i> instead of <i>Constraints</i> to support incomplete types. However, its 
+function signature has the following <code class='backtick'>noexcept</code> specification:
+</p>
+<blockquote><pre>
+template&lt;class U, class AA&gt;
+  constexpr bool operator==(const indirect&amp; lhs, const indirect&lt;U, AA&gt;&amp; rhs)
+    noexcept(noexcept(*lhs == *rhs));
+</pre></blockquote>
+<p>
+That is, we check whether the expression <code class='backtick'>*lhs == *rhs</code> throws, which unfortunately leads to 
+the following hard error:
+</p>
+<blockquote><pre>
+struct Incomplete;
+static_assert(std::equality_comparable&lt;std::indirect&lt;Incomplete&gt;&gt;);
+// <span  style="color:#C80000;font-weight:bold">hard error, no match for 'operator==' (operand types are 'const Incomplete' and 'const Incomplete')</span>
+</pre></blockquote>
+<p>
+This makes <code class='backtick'>operator==</code> not SFINAE-friendly for incomplete types, which defeats the purpose.
+<p/>
+Also, checking <code class='backtick'>noexcept(*lhs == *rhs)</code> seems insufficient because the result of <code class='backtick'>*lhs == *rhs</code> 
+might still throw during conversion to <code class='backtick'>bool</code>.
+</p>
+
+
+<p id="res-4325"><b>Proposed resolution:</b></p>
+<p>
+This wording is relative to <a href="https://wg21.link/N5014">N5014</a>.
+</p>
+
+<blockquote class="note">
+<p>
+[<i>Drafting note:</i>: We introduce the exposition-only function <code><i>FUN</i></code> below to mimic
+the implicit conversion to <code class='backtick'>bool</code>. As a drive-by effect this helps us simplifying (and clarifying, see
+LWG <a href="lwg-closed.html#408" title="Is vector&lt;reverse_iterator&lt;char*&gt; &gt; forbidden? (Status: NAD Editorial)">408</a><sup><a href="https://cplusplus.github.io/LWG/issue408" title="Latest snapshot">(i)</a></sup>) the existing <i>Mandates</i> element]
+</p>
+</blockquote>
+
+<ol>
+
+<li><p>Modify 20.4.1.8 <a href="https://wg21.link/indirect.relops">[indirect.relops]</a> as indicated:</p>
+
+<blockquote>
+<pre>
+template&lt;class U, class AA&gt;
+  constexpr bool operator==(const indirect&amp; lhs, const indirect&lt;U, AA&gt;&amp; rhs)
+    noexcept(<del>noexcept(*lhs == *rhs)</del><ins><i>see below</i></ins>);
+</pre>
+<blockquote>
+<p>
+<ins>-?- Let <code><i>FUN</i></code> denote the exposition-only function</ins>
+</p>
+<blockquote><pre>
+<ins>bool <i>FUN</i>(bool) noexcept;</ins>
+</pre></blockquote>
+<p>
+-1- <i>Mandates</i>: The expression <code><ins><i>FUN</i>(</ins>*lhs == *rhs<ins>)</ins></code> is well-formed <del>and its result is convertible to <code class='backtick'>bool</code></del>.
+<p/>
+-2- <i>Returns</i>: If <code class='backtick'>lhs</code> is valueless or <code class='backtick'>rhs</code> is valueless, 
+<code class='backtick'>lhs.valueless_after_move() == rhs.valueless_after_move()</code>; otherwise <code class='backtick'>*lhs == *rhs</code>.
+<p/>
+<ins>-?- <i>Remarks</i>: The exception specification is equivalent to:</ins>
+</p>
+<blockquote><pre>
+<ins>requires (const T&amp; lhs, const U&amp; rhs) { { <i>FUN</i>(lhs == rhs) } noexcept; }</ins>
+</pre></blockquote>
+</blockquote>
+</blockquote>
+
+</li>
+
+<li><p>Modify 20.4.1.9 <a href="https://wg21.link/indirect.comp.with.t">[indirect.comp.with.t]</a> as indicated:</p>
+
+<blockquote>
+<pre>
+template&lt;class U&gt;
+  constexpr bool operator==(const indirect&amp; lhs, const U&amp; rhs) noexcept(<del>noexcept(*lhs == rhs)</del><ins><i>see below</i></ins>);
+</pre>
+<blockquote>
+<p>
+<ins>-?- Let <code><i>FUN</i></code> denote the exposition-only function</ins>
+</p>
+<blockquote><pre>
+<ins>bool <i>FUN</i>(bool) noexcept;</ins>
+</pre></blockquote>
+<p>
+-1- <i>Mandates</i>: The expression <code><ins><i>FUN</i>(</ins>*lhs == *rhs<ins>)</ins></code> is well-formed <del>and its result is convertible to <code class='backtick'>bool</code></del>.
+<p/>
+-2- <i>Returns</i>: If <code class='backtick'>lhs</code> is valueless, <code class='backtick'>false</code>; otherwise <code class='backtick'>*lhs == rhs</code>.
+<p/>
+<ins>-?- <i>Remarks</i>: The exception specification is equivalent to:</ins>
+</p>
+<blockquote><pre>
+<ins>requires (const T&amp; lhs, const U&amp; rhs) { { <i>FUN</i>(lhs == rhs) } noexcept; }</ins>
+</pre></blockquote>
+</blockquote>
+</blockquote>
+
+</li>
+
+</ol>
+
+
+
+
+
+</body>
+</html>
