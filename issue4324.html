@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Issue 4324: unique_ptr&lt;void&gt;::operator* is not SFINAE-friendly</title>
+<meta property="og:title" content="Issue 4324: unique_ptr&lt;void&gt;::operator* is not SFINAE-friendly">
+<meta property="og:description" content="C++ library issue. Status: New">
+<meta property="og:url" content="https://cplusplus.github.io/LWG/issue4324.html">
+<meta property="og:type" content="website">
+<meta property="og:image" content="http://cplusplus.github.io/LWG/images/cpp_logo.png">
+<meta property="og:image:alt" content="C++ logo">
+<style>
+  p {text-align:justify}
+  li {text-align:justify}
+  pre code.backtick::before { content: "`" }
+  pre code.backtick::after { content: "`" }
+  blockquote.note
+  {
+    background-color:#E0E0E0;
+    padding-left: 15px;
+    padding-right: 15px;
+    padding-top: 1px;
+    padding-bottom: 1px;
+  }
+  ins {background-color:#A0FFA0}
+  del {background-color:#FFA0A0}
+  table.issues-index { border: 1px solid; border-collapse: collapse; }
+  table.issues-index th { text-align: center; padding: 4px; border: 1px solid; }
+  table.issues-index td { padding: 4px; border: 1px solid; }
+  table.issues-index td:nth-child(1) { text-align: right; }
+  table.issues-index td:nth-child(2) { text-align: left; }
+  table.issues-index td:nth-child(3) { text-align: left; }
+  table.issues-index td:nth-child(4) { text-align: left; }
+  table.issues-index td:nth-child(5) { text-align: center; }
+  table.issues-index td:nth-child(6) { text-align: center; }
+  table.issues-index td:nth-child(7) { text-align: left; }
+  table.issues-index td:nth-child(5) span.no-pr { color: red; }
+  @media (prefers-color-scheme: dark) {
+     html {
+        color: #ddd;
+        background-color: black;
+     }
+     ins {
+        background-color: #225522
+     }
+     del {
+        background-color: #662222
+     }
+     a {
+        color: #6af
+     }
+     a:visited {
+        color: #6af
+     }
+     blockquote.note
+     {
+        background-color: rgba(255, 255, 255, .10)
+     }
+  }
+</style>
+</head>
+<body>
+<hr>
+<p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#New">New</a> status.</em></p>
+<h3 id="4324"><a href="lwg-active.html#4324">4324</a>. <code>unique_ptr&lt;void&gt;::operator*</code> is not SFINAE-friendly</h3>
+<p><b>Section:</b> 20.3.1.3.5 <a href="https://wg21.link/unique.ptr.single.observers">[unique.ptr.single.observers]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
+ <b>Submitter:</b> Hewill Kang <b>Opened:</b> 2025-08-24 <b>Last modified:</b> 2025-08-24</p>
+<p><b>Priority: </b>Not Prioritized
+</p>
+<p><b>View other</b> <a href="lwg-index-open.html#unique.ptr.single.observers">active issues</a> in [unique.ptr.single.observers].</p>
+<p><b>View all other</b> <a href="lwg-index.html#unique.ptr.single.observers">issues</a> in [unique.ptr.single.observers].</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
+<p><b>Discussion:</b></p>
+<p>
+LWG <a href="lwg-defects.html#2762" title="unique_ptr operator*() should be noexcept (Status: C++23)">2762</a><sup><a href="https://cplusplus.github.io/LWG/issue2762" title="Latest snapshot">(i)</a></sup> added a conditional <code class='backtick'>noexcept</code> specification to <code class='backtick'>unique_ptr::operator*</code>
+to make it consistent with <code class='backtick'>shared_ptr::operator*</code>:
+</p>
+<pre>
+constexpr add_lvalue_reference_t&lt;T&gt; operator*() const <ins>noexcept(noexcept(*declval&lt;pointer&gt;()))</ins>;
+</pre>
+<p>
+This unexpectedly makes <code>unique_ptr&lt;void&gt;::operator*</code> no longer SFINAE-friendly, 
+<a href="https://godbolt.org/z/xd15jYPhz">for example</a>:
+</p>
+<blockquote><pre>
+#include &lt;memory&gt;
+
+template&lt;class T&gt; concept dereferenceable = requires(T&amp; t) { *t; };
+
+static_assert( dereferenceable&lt;int *&gt;);
+static_assert(!dereferenceable&lt;void*&gt;);
+
+static_assert( dereferenceable&lt;std::shared_ptr&lt;int &gt;&gt;);
+static_assert(!dereferenceable&lt;std::shared_ptr&lt;void&gt;&gt;);
+
+static_assert( dereferenceable&lt;std::unique_ptr&lt;int &gt;&gt;);
+static_assert( dereferenceable&lt;std::unique_ptr&lt;void&gt;&gt;); // <span  style="color:#C80000;font-weight:bold">hard error</span>
+</pre></blockquote>
+<p>
+Given that the standard intends for <code class='backtick'>operator*</code> of <code class='backtick'>shared_ptr</code> and <code class='backtick'>unique_ptr</code> to be 
+SFINAE-friendly based on 20.3.2.2.6 <a href="https://wg21.link/util.smartptr.shared.obs">[util.smartptr.shared.obs]</a>, regardless of the value of 
+<code class='backtick'>static_assert</code>, it is reasonable to assume that there should be no hard error here.
+</p>
+
+
+<p id="res-4324"><b>Proposed resolution:</b></p>
+<p>
+This wording is relative to <a href="https://wg21.link/N5014">N5014</a>.
+</p>
+
+<ol>
+
+<li><p>Modify 20.3.1.3.5 <a href="https://wg21.link/unique.ptr.single.observers">[unique.ptr.single.observers]</a> as indicated:</p>
+
+<blockquote>
+<pre>
+constexpr add_lvalue_reference_t&lt;T&gt; operator*() const noexcept(<del>noexcept(*declval&lt;pointer&gt;())</del><ins><i>see below</i></ins>);
+</pre>
+<blockquote>
+<p>
+-1- <i>Mandates</i>: <code>reference_converts_from_temporary_v&lt;add_lvalue_reference_t&lt;T&gt;, 
+decltype(*declval&lt;pointer&gt;())&gt;</code> is <code class='backtick'>false</code>.
+<p/>
+-2- <i>Preconditions</i>: <code class='backtick'>get() != nullptr</code> is <code class='backtick'>true</code>.
+<p/>
+-3- <i>Returns</i>: <code class='backtick'>*get()</code>.
+<p/>
+<ins>-?- <i>Remarks:</i>: The exception specification is equivalent to:</ins>
+</p>
+<blockquote><pre>
+<ins>!requires { *declval&lt;pointer&gt;(); } || requires { { *declval&lt;pointer&gt;() } noexcept; }</ins>
+</pre></blockquote>
+</blockquote>
+</blockquote>
+
+</li>
+
+</ol>
+
+
+
+
+
+</body>
+</html>
