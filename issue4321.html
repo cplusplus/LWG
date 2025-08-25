@@ -64,7 +64,7 @@
 <p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#New">New</a> status.</em></p>
 <h3 id="4321"><a href="lwg-active.html#4321">4321</a>. How are evaluations occurring within a store and a load operation ordered where the store synchronized with the load</h3>
 <p><b>Section:</b> 32.5.8.2 <a href="https://wg21.link/atomics.types.operations">[atomics.types.operations]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> jim x <b>Opened:</b> 2025-08-20 <b>Last modified:</b> 2025-08-23</p>
+ <b>Submitter:</b> jim x <b>Opened:</b> 2025-08-20 <b>Last modified:</b> 2025-08-25</p>
 <p><b>Priority: </b>Not Prioritized
 </p>
 <p><b>View other</b> <a href="lwg-index-open.html#atomics.types.operations">active issues</a> in [atomics.types.operations].</p>
@@ -122,6 +122,14 @@ occur within the <code class='backtick'>store</code> ordered with those within t
 The rule only says the <code class='backtick'>store</code> synchronizes with the <code class='backtick'>load</code>, hence, the evaluation of the function 
 call expression <code class='backtick'>v.store(...)</code> happens before the evaluation of the function call expression <code class='backtick'>v.load(...)</code>, 
 but how about these evaluations occurring within these functions?
+<p/>
+A possible resolution might be: The order between all evaluations occurring within a function invocation 
+and another evaluation <i>B</i> is determined by how the evaluation of the function call expression is 
+ordered in relation to the expression <i>B</i>.
+<p/>
+For example, if <code class='backtick'>v.store()</code> happens-before <i>E</i>, then all evaluations occurring within the <code class='backtick'>store</code> 
+happen-before <i>E</i>. As well, <code class='backtick'>v.store(...)</code> synchronizes with <code class='backtick'>v.load(...)</code>, then all evaluations 
+occurring within <code class='backtick'>v.store(...)</code> synchronize with all evaluations occurring within <code class='backtick'>v.load(...)</code>.
 </p>
 
 
