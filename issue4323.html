@@ -64,7 +64,7 @@
 <p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#New">New</a> status.</em></p>
 <h3 id="4323"><a href="lwg-active.html#4323">4323</a>. <code class='backtick'>hive::unique</code> time complexity should incorporate potential block removal complexity</h3>
 <p><b>Section:</b> 23.3.9.5 <a href="https://wg21.link/hive.operations">[hive.operations]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Matt Bentley <b>Opened:</b> 2025-08-24 <b>Last modified:</b> 2025-08-24</p>
+ <b>Submitter:</b> Matt Bentley <b>Opened:</b> 2025-08-24 <b>Last modified:</b> 2025-08-25</p>
 <p><b>Priority: </b>Not Prioritized
 </p>
 <p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
@@ -117,7 +117,7 @@ the proposed solution accepted, the proposed complexity wording becomes:
 -11- <i>Complexity</i>: If <code class='backtick'>empty()</code> is <code class='backtick'>false</code>, exactly <code class='backtick'>size() - 1</code> applications 
 of the corresponding predicate, otherwise no applications of the predicate. 
 <ins>For each element erased as a result of this function call, at worst <code>&#x1d4aa;(log n)</code> 
-in the capacity of each block containing the element. Additionally, if any active blocks become 
+in the capacity of the block containing the element. Additionally, if any active blocks become 
 empty of elements as a result of the function call, at worst linear in the number of element 
 blocks.</ins>
 </p></blockquote>

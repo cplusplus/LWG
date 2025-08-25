@@ -67,7 +67,7 @@
 </tr>
 <tr>
   <td align="left">Date:</td>
-  <td align="left">2025-08-24</td>
+  <td align="left">2025-08-25</td>
 </tr>
 <tr>
   <td align="left">Project:</td>
@@ -79,7 +79,7 @@
 </tr>
 </table>
 <h1>C++ Standard Library Active Issues List (Revision D125)</h1>
-<p>Revised 2025-08-24 at 17:49:35 UTC
+<p>Revised 2025-08-25 at 14:45:24 UTC
 </p>
   <p>Reference ISO/IEC IS 14882:2020(E)</p>
   <p>Also see:</p>
@@ -79155,7 +79155,7 @@ and lvalue arguments as lvalue references.</del><ins>:</ins>
 <hr>
 <h3 id="4320"><a href="#4320">4320</a><sup><a href="https://cplusplus.github.io/LWG/issue4320">(i)</a></sup>. <code class='backtick'>hive</code> operations involving insertion/erasure should have <code>&#x1d4aa;(log n)</code> time complexity</h3>
 <p><b>Section:</b> 23.3.9 <a href="https://wg21.link/hive">[hive]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Matt Bentley <b>Opened:</b> 2025-08-19 <b>Last modified:</b> 2025-08-24</p>
+ <b>Submitter:</b> Matt Bentley <b>Opened:</b> 2025-08-19 <b>Last modified:</b> 2025-08-25</p>
 <p><b>Priority: </b>Not Prioritized
 </p>
 <p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
@@ -79464,7 +79464,7 @@ iterator erase(const_iterator first, const_iterator last);
 <blockquote>
 <p>
 -16- Complexity: Linear in the number of elements erased <ins>and for each
-erased element at worst <code>&#x1d4aa;(log n)</code> in the capacity of each block
+erased element at worst <code>&#x1d4aa;(log n)</code> in the capacity of the block
 containing the element</ins>. Additionally, if any active blocks become empty of elements 
 as a result of the function call, at worst linear in the number of 
 element blocks.
@@ -79485,7 +79485,7 @@ the proposed solution accepted, the proposed complexity wording becomes:
 -11- <i>Complexity</i>: If <code class='backtick'>empty()</code> is <code class='backtick'>false</code>, exactly <code class='backtick'>size() - 1</code> applications 
 of the corresponding predicate, otherwise no applications of the predicate. 
 <ins>For each element erased as a result of this function call, at worst <code>&#x1d4aa;(log n)</code> 
-in the capacity of each block containing the element. Additionally, if any active blocks become 
+in the capacity of the block containing the element. Additionally, if any active blocks become 
 empty of elements as a result of the function call, at worst linear in the number of element 
 blocks.</ins>
 </p></blockquote>
@@ -79895,7 +79895,7 @@ template&lt;class U, class I, class... Us&gt;
 <hr>
 <h3 id="4323"><a href="#4323">4323</a><sup><a href="https://cplusplus.github.io/LWG/issue4323">(i)</a></sup>. <code class='backtick'>hive::unique</code> time complexity should incorporate potential block removal complexity</h3>
 <p><b>Section:</b> 23.3.9.5 <a href="https://wg21.link/hive.operations">[hive.operations]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Matt Bentley <b>Opened:</b> 2025-08-24 <b>Last modified:</b> 2025-08-24</p>
+ <b>Submitter:</b> Matt Bentley <b>Opened:</b> 2025-08-24 <b>Last modified:</b> 2025-08-25</p>
 <p><b>Priority: </b>Not Prioritized
 </p>
 <p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
@@ -79948,7 +79948,7 @@ the proposed solution accepted, the proposed complexity wording becomes:
 -11- <i>Complexity</i>: If <code class='backtick'>empty()</code> is <code class='backtick'>false</code>, exactly <code class='backtick'>size() - 1</code> applications 
 of the corresponding predicate, otherwise no applications of the predicate. 
 <ins>For each element erased as a result of this function call, at worst <code>&#x1d4aa;(log n)</code> 
-in the capacity of each block containing the element. Additionally, if any active blocks become 
+in the capacity of the block containing the element. Additionally, if any active blocks become 
 empty of elements as a result of the function call, at worst linear in the number of element 
 blocks.</ins>
 </p></blockquote>
