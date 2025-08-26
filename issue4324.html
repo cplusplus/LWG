@@ -162,7 +162,7 @@ constexpr add_lvalue_reference_t&lt;T&gt; operator*() const noexcept(noexcept(*d
 </pre>
 <blockquote>
 <p>
-<ins>-?- <i>Constraints:</i>: <code>*declval&lt;pointer&gt;()</code> is a well-formed expression.</ins>
+<ins>-?- <i>Constraints</i>: <code>*declval&lt;pointer&gt;()</code> is a well-formed expression.</ins>
 <p/>
 -1- <i>Mandates</i>: <code>reference_converts_from_temporary_v&lt;add_lvalue_reference_t&lt;T&gt;, 
 decltype(*declval&lt;pointer&gt;())&gt;</code> is <code class='backtick'>false</code>.
