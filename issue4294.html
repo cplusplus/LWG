@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <title>Issue 4294: bitset(const CharT*) constructor needs to be constrained</title>
 <meta property="og:title" content="Issue 4294: bitset(const CharT*) constructor needs to be constrained">
-<meta property="og:description" content="C++ library issue. Status: New">
+<meta property="og:description" content="C++ library issue. Status: Tentatively Ready">
 <meta property="og:url" content="https://cplusplus.github.io/LWG/issue4294.html">
 <meta property="og:type" content="website">
 <meta property="og:image" content="http://cplusplus.github.io/LWG/images/cpp_logo.png">
@@ -61,14 +61,14 @@
 </head>
 <body>
 <hr>
-<p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#New">New</a> status.</em></p>
+<p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#Ready">Tentatively Ready</a> status.</em></p>
 <h3 id="4294"><a href="lwg-active.html#4294">4294</a>. <code class='backtick'>bitset(const CharT*)</code> constructor needs to be constrained</h3>
-<p><b>Section:</b> 22.9.2.2 <a href="https://wg21.link/bitset.cons">[bitset.cons]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Jonathan Wakely <b>Opened:</b> 2025-07-12 <b>Last modified:</b> 2025-07-15</p>
+<p><b>Section:</b> 22.9.2.2 <a href="https://wg21.link/bitset.cons">[bitset.cons]</a> <b>Status:</b> <a href="lwg-active.html#Ready">Tentatively Ready</a>
+ <b>Submitter:</b> Jonathan Wakely <b>Opened:</b> 2025-07-12 <b>Last modified:</b> 2025-08-26</p>
 <p><b>Priority: </b>Not Prioritized
 </p>
 <p><b>View all other</b> <a href="lwg-index.html#bitset.cons">issues</a> in [bitset.cons].</p>
-<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#Tentatively Ready">Tentatively Ready</a> status.</p>
 <p><b>Discussion:</b></p>
 <p>
 This code might be ill-formed, with an error outside the immediate context
@@ -89,6 +89,13 @@ defines a char-like type as "any non-array trivially copyable standard-layout
 (6.9.1 <a href="https://wg21.link/basic.types.general">[basic.types.general]</a>) type <code class='backtick'>T</code>
 where <code>is_trivially_default_constructible_v&lt;T&gt;</code> is <code class='backtick'>true</code>."
 </p>
+
+<p><i>[2025-08-21; Reflector poll]</i></p>
+
+<p>
+Set status to Tentatively Ready after five votes in favour during reflector poll.
+</p>
+
 
 
 <p id="res-4294"><b>Proposed resolution:</b></p>

@@ -54,7 +54,7 @@
 </style>
 </head>
 <body>
-<p>Revised 2025-08-25 at 15:07:38 UTC
+<p>Revised 2025-08-26 at 14:54:30 UTC
 </p><h2>Unresolved Issues</h2>
 <hr>
 <h3 id="423"><a href="#423">423</a><sup><a href="https://cplusplus.github.io/LWG/issue423">(i)</a></sup>. Effects of negative <code>streamsize</code> in iostreams</h3>
@@ -69048,80 +69048,6 @@ template&lt;auto f, class T&gt; constexpr function_ref(nontype_t&lt;f&gt;, T <i>
 
 
 <hr>
-<h3 id="4257"><a href="#4257">4257</a><sup><a href="https://cplusplus.github.io/LWG/issue4257">(i)</a></sup>. Stream insertion for <code class='backtick'>chrono::local_time</code> should be constrained</h3>
-<p><b>Section:</b> 30.7.9 <a href="https://wg21.link/time.clock.local">[time.clock.local]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Jonathan Wakely <b>Opened:</b> 2025-05-16 <b>Last modified:</b> 2025-05-16</p>
-<p><b>Priority: </b>Not Prioritized
-</p>
-<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
-<p><b>Discussion:</b></p>
-<p>
-Stream insertion for <code class='backtick'>chrono::local_time</code> is defined in terms of conversion to
-<code class='backtick'>chrono::sys_time</code>, but not all <code class='backtick'>chrono::sys_time</code> specializations
-can be inserted into an ostream, because one of the overloads is
-constrained and the other requires convertibility to <code class='backtick'>chrono::sys_days</code>
-(see 30.7.2.3 <a href="https://wg21.link/time.clock.system.nonmembers">[time.clock.system.nonmembers]</a>).
-</p>
-<p>
-This means the following code fails to compile:
-<pre><code>
-#include &lt;iostream&gt;
-#include &lt;chrono&gt;
-
-template&lt;typename T&gt;
-concept ostream_insertable = requires (std::ostream&amp; o, const T&amp; t) { o &lt;&lt; t; };
-
-using D = std::chrono::duration&lt;double&gt;;
-
-int main() {
-  if constexpr (ostream_insertable&lt;std::chrono::sys_time&lt;D&gt;&gt;)
-    std::cout &lt;&lt; std::chrono::sys_time&lt;D&gt;{};
-  if constexpr (ostream_insertable&lt;std::chrono::local_time&lt;D&gt;&gt;)
-    std::cout &lt;&lt; std::chrono::local_time&lt;D&gt;{}; // <b>FAIL</b>
-}
-</code></pre>
-The first condition is false, because there's no overload that's suitable.
-The second is true, because the <code>operator&lt;&lt;</code> overload for
-<code class='backtick'>chrono::local_time</code> isn't constrained and so insertion appears to be valid.
-But actually trying to use it is ill-formed, because it tries to convert the
-<code>local_time&lt;D&gt;</code> to a <code>sys_time&lt;D&gt;</code>
-and then insert that, which isn't valid.
-</p>
-
-
-<p id="res-4257"><b>Proposed resolution:</b></p>
-<p>
-This wording is relative to <a href="https://wg21.link/N5008" title=" Working Draft, Programming Languages — C++">N5008</a>.
-</p>
-
-<ol>
-<li><p>Modify 30.7.9 <a href="https://wg21.link/time.clock.local">[time.clock.local]</a> as indicated:</p>
-
-<blockquote>
-<pre><code>
-template&lt;class charT, class traits, class Duration&gt;
-  basic_ostream&lt;charT, traits&gt;&amp;
-    operator&lt;&lt;(basic_ostream&lt;charT, traits&gt;&amp; os, const local_time&lt;Duration&gt;&amp; lt);
-</code></pre>
-<p><ins>-?- <i>Constraints</i>:
-<code>os &lt;&lt; sys_time&lt;Duration&gt;{lt.time_since_epoch()}</code>
-is a valid expression.</ins>
-</p>
-<p>-2- <i>Effects</i>:
-<pre><code> os &lt;&lt; sys_time&lt;Duration&gt;{lt.time_since_epoch()};
-</code></pre>
-</p>
-<p>-3- <i>Returns</i>: <code class='backtick'>os</code>.</p>
-</blockquote>
-</li>
-</ol>
-
-
-
-
-
-
-<hr>
 <h3 id="4258"><a href="#4258">4258</a><sup><a href="https://cplusplus.github.io/LWG/issue4258">(i)</a></sup>. Size type mismatch in constraints involving <i>Cpp17Allocator</i></h3>
 <p><b>Section:</b> 16.4.4.6.1 <a href="https://wg21.link/allocator.requirements.general">[allocator.requirements.general]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
  <b>Submitter:</b> Jiang An <b>Opened:</b> 2025-05-05 <b>Last modified:</b> 2025-05-18</p>
@@ -71036,47 +70962,6 @@ is included.
 
 
 <hr>
-<h3 id="4276"><a href="#4276">4276</a><sup><a href="https://cplusplus.github.io/LWG/issue4276">(i)</a></sup>. <code class='backtick'>front()</code> and <code class='backtick'>back()</code> are not hardened for zero-length <code class='backtick'>std::array</code>s</h3>
-<p><b>Section:</b> 23.3.3.5 <a href="https://wg21.link/array.zero">[array.zero]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Jan Schultke <b>Opened:</b> 2025-06-08 <b>Last modified:</b> 2025-06-14</p>
-<p><b>Priority: </b>Not Prioritized
-</p>
-<p><b>View other</b> <a href="lwg-index-open.html#array.zero">active issues</a> in [array.zero].</p>
-<p><b>View all other</b> <a href="lwg-index.html#array.zero">issues</a> in [array.zero].</p>
-<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
-<p><b>Discussion:</b></p>
-<p>
-The intent of <a href="https://wg21.link/P3471" title=" Standard Library Hardening">P3471</a> "Standard library hardening" is clearly to provide hardened preconditions 
-for members of sequence containers, including <code class='backtick'>std::array</code>. However, a zero-length <code class='backtick'>std::array</code> dodges this 
-hardening by having undefined behavior for <code class='backtick'>front()</code> and <code class='backtick'>back()</code> explicitly specified in 
-23.3.3.5 <a href="https://wg21.link/array.zero">[array.zero]</a> paragraph 3.
-<p/>
-Without this paragraph, <code class='backtick'>front()</code> and <code class='backtick'>back()</code> would be hardened as well, as specified in 23.2.4 <a href="https://wg21.link/sequence.reqmts">[sequence.reqmts]</a>.
-</p>
-
-
-<p id="res-4276"><b>Proposed resolution:</b></p>
-<p>
-This wording is relative to <a href="https://wg21.link/N5008" title=" Working Draft, Programming Languages — C++">N5008</a>.
-</p>
-
-<ol>
-<li><p>Modify 23.3.3.5 <a href="https://wg21.link/array.zero">[array.zero]</a> as indicated:</p>
-
-<blockquote>
-<p>
-<del>-3- The effect of calling <code class='backtick'>front()</code> or <code class='backtick'>back()</code> for a zero-sized array is undefined.</del>
-</p>
-</blockquote>
-</li>
-
-</ol>
-
-
-
-
-
-<hr>
 <h3 id="4277"><a href="#4277">4277</a><sup><a href="https://cplusplus.github.io/LWG/issue4277">(i)</a></sup>. &sect;[algorithms.requirements] It is unclear what an algorithm is</h3>
 <p><b>Section:</b> 26.2 <a href="https://wg21.link/algorithms.requirements">[algorithms.requirements]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
  <b>Submitter:</b> Jan Schultke <b>Opened:</b> 2025-06-08 <b>Last modified:</b> 2025-06-14</p>
@@ -71191,65 +71076,6 @@ clarifying that the normative wording is referring to "secondary storage").
 
 
 <p id="res-4279"><b>Proposed resolution:</b></p>
-
-
-
-
-
-<hr>
-<h3 id="4280"><a href="#4280">4280</a><sup><a href="https://cplusplus.github.io/LWG/issue4280">(i)</a></sup>. <code class='backtick'>simd::partial_load</code> uses undefined identifier <code class='backtick'>T</code></h3>
-<p><b>Section:</b> 29.10.8.7 <a href="https://wg21.link/simd.loadstore">[simd.loadstore]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Tim Song <b>Opened:</b> 2025-06-21 <b>Last modified:</b> 2025-06-21</p>
-<p><b>Priority: </b>Not Prioritized
-</p>
-<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
-<p><b>Discussion:</b></p>
-<p>
-The <i>Effects:</i> element of <code class='backtick'>std::simd::partial_load</code> (after the latest rename) uses <code class='backtick'>T</code> 
-but that is not defined anywhere. It should be <code class='backtick'>V::value_type</code>.
-<p/>
-Also, this paragraph should be a <i>Returns:</i> element.
-</p>
-
-
-<p id="res-4280"><b>Proposed resolution:</b></p>
-<p>
-This wording is relative to <a href="https://wg21.link/N5008" title=" Working Draft, Programming Languages — C++">N5008</a>.
-</p>
-
-<ol>
-<li><p>Modify 29.10.8.7 <a href="https://wg21.link/simd.loadstore">[simd.loadstore]</a> as indicated:</p>
-
-<blockquote>
-<pre><code>
-template&lt;class V = <i>see below</i>, ranges::contiguous_range R, class... Flags&gt;
-  requires ranges::sized_range&lt;R&gt;
-  constexpr V partial_load(R&amp;&amp; r, flags&lt;Flags...&gt; f = {});
-[&hellip;]
-template&lt;class V = <i>see below</i>, contiguous_iterator I, sized_sentinel_for&lt;I&gt; S, class... Flags&gt;
-  constexpr V partial_load(I first, S last, const typename V::mask_type&amp; mask,
-                           flags&lt;Flags...&gt; f = {});
-</code></pre>
-<blockquote>
-<p>
--6- [&hellip;]
-<p/>
--7- <i>Mandates</i>: [&hellip;]
-<p/>
--8- <i>Preconditions</i>: [&hellip;]
-<p/>
--9- <del><i>Effects</i>: Initializes the</del><ins><i>Returns</i>: A <code class='backtick'>basic_simd</code> object 
-whose</ins> <code><i>i</i></code><sup>th</sup> element <ins>is initialized</ins> with
-<code>mask[<i>i</i>] &amp;&amp; <i>i</i> &lt; ranges::size(r) ? static_cast&lt;T&gt;(ranges::data(r)[<i>i</i>]) : T()</code> 
-for all <code><i>i</i></code> in the range of <code>[0, V::size())</code><ins>, where <code class='backtick'>T</code> is <code class='backtick'>V::value_type</code></ins>.
-<p/>
--10- <i>Remarks</i>: The default argument for template parameter <code class='backtick'>V</code> is <code>basic_simd&lt;ranges::range_value_t&lt;R&gt;&gt;</code>.
-</p>
-</blockquote>
-</blockquote>
-</li>
-
-</ol>
 
 
 
@@ -71958,8 +71784,8 @@ to <code class='backtick'>from</code> and <code class='backtick'>to_next</code> 
 <hr>
 <h3 id="4288"><a href="#4288">4288</a><sup><a href="https://cplusplus.github.io/LWG/issue4288">(i)</a></sup>. The <i>Constraints:</i> element in [time.clock.system.members] is probably wrong</h3>
 <p><b>Section:</b> 30.7.2.2 <a href="https://wg21.link/time.clock.system.members">[time.clock.system.members]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Jiang An <b>Opened:</b> 2025-06-19 <b>Last modified:</b> 2025-07-15</p>
-<p><b>Priority: </b>Not Prioritized
+ <b>Submitter:</b> Jiang An <b>Opened:</b> 2025-06-19 <b>Last modified:</b> 2025-08-26</p>
+<p><b>Priority: </b>3
 </p>
 <p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
 <p><b>Discussion:</b></p>
@@ -72005,6 +71831,13 @@ The discussion revealed a preference to not insert the additional
 since this is just a normal implementation requirement that falls out of
 the specification. 
 </p>
+
+<p><i>[2025-08-21; Reflector poll]</i></p>
+
+<p>
+Set priority to 3 after reflector poll.
+</p>
+
 
 
 <p id="res-4288"><b>Proposed resolution:</b></p>
@@ -72315,59 +72148,6 @@ template&lt;size_t Alignment, class T&gt;
 
 
 <hr>
-<h3 id="4291"><a href="#4291">4291</a><sup><a href="https://cplusplus.github.io/LWG/issue4291">(i)</a></sup>.  <code>explicit map(const Allocator&amp;)</code> should be <code>constexpr</code> </h3>
-<p><b>Section:</b> 23.4.3.1 <a href="https://wg21.link/map.overview">[map.overview]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Jonathan Wakely <b>Opened:</b> 2025-07-10 <b>Last modified:</b> 2025-07-15</p>
-<p><b>Priority: </b>Not Prioritized
-</p>
-<p><b>View other</b> <a href="lwg-index-open.html#map.overview">active issues</a> in [map.overview].</p>
-<p><b>View all other</b> <a href="lwg-index.html#map.overview">issues</a> in [map.overview].</p>
-<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
-<p><b>Discussion:</b></p>
-<p>
-The intent of <a href="https://wg21.link/P3372R3" title=" constexpr containers and adapters">P3372R3</a> was for all container constructors to be
-constexpr, but during application of the paper to the working draft
-it was observed that one <code class='backtick'>map</code> constructor was missed.
-</p>
-
-
-<p id="res-4291"><b>Proposed resolution:</b></p>
-<p>
-This wording is relative to <a href="https://wg21.link/N5008" title=" Working Draft, Programming Languages — C++">N5008</a>.
-</p>
-
-<ol>
-
-<li><p>Modify 23.4.3.1 <a href="https://wg21.link/map.overview">[map.overview]</a> as indicated:</p>
-<blockquote>
-<pre><code>
-<i>// 23.4.3.2, construct/copy/destroy</i>
-constexpr map() : map(Compare()) { }
-constexpr explicit map(const Compare&amp; comp, const Allocator&amp; = Allocator());
-template&lt;class InputIterator&gt;
-  constexpr map(InputIterator first, InputIterator last,
-                const Compare&amp; comp = Compare(), const Allocator&amp; = Allocator());
-template&lt;<i>container-compatible-range</i> &lt;value_type&gt; R&gt;
-  constexpr map(from_range_t, R&amp;&amp; rg, const Compare&amp; comp = Compare(),
-                const Allocator&amp; = Allocator());
-constexpr map(const map&amp; x);
-constexpr map(map&amp;&amp; x);
-<ins>constexpr</ins> explicit map(const Allocator&amp;);
-constexpr map(const map&amp;, const type_identity_t&lt;Allocator&gt;&amp;);
-constexpr map(map&amp;&amp;, const type_identity_t&lt;Allocator&gt;&amp;);
-constexpr map(initializer_list&lt;value_type&gt;, const Compare&amp; = Compare(),
-              const Allocator&amp; = Allocator());
-</code></pre>
-</blockquote>
-</li>
-</ol>
-
-
-
-
-
-
-<hr>
 <h3 id="4292"><a href="#4292">4292</a><sup><a href="https://cplusplus.github.io/LWG/issue4292">(i)</a></sup>. Unordered container local iterators should be constexpr iterators</h3>
 <p><b>Section:</b> 23.5.3.1 <a href="https://wg21.link/unord.map.overview">[unord.map.overview]</a>, 23.5.4.1 <a href="https://wg21.link/unord.multimap.overview">[unord.multimap.overview]</a>, 23.5.6.1 <a href="https://wg21.link/unord.set.overview">[unord.set.overview]</a>, 23.5.7.1 <a href="https://wg21.link/unord.multiset.overview">[unord.multiset.overview]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
  <b>Submitter:</b> Jonathan Wakely <b>Opened:</b> 2025-07-10 <b>Last modified:</b> 2025-07-14</p>
@@ -72442,259 +72222,10 @@ meet the constexpr iterator requirements
 
 
 <hr>
-<h3 id="4293"><a href="#4293">4293</a><sup><a href="https://cplusplus.github.io/LWG/issue4293">(i)</a></sup>. span::subspan/first/last chooses wrong constructor when T is const-qualified bool</h3>
-<p><b>Section:</b> 23.7.2.2.4 <a href="https://wg21.link/span.sub">[span.sub]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Yuhan Liu <b>Opened:</b> 2025-07-11 <b>Last modified:</b> 2025-07-11</p>
-<p><b>Priority: </b>Not Prioritized
-</p>
-<p><b>View all other</b> <a href="lwg-index.html#span.sub">issues</a> in [span.sub].</p>
-<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
-<p><b>Discussion:</b></p>
-<p>
-In section 23.7.2.2.4 <a href="https://wg21.link/span.sub">[span.sub]</a>, paragraphs p12, p14, and p16 erroneously
-use the initializer list constructor for span instead of the intended
-iterator/count constructor.
-</p>
-<p>
-Specifically, in these paragraphs, the standard states:
-<blockquote>
-<i>Effects</i>: Equivalent to: <code class='backtick'>return {data(), count};</code>
-</blockquote>
-or some variant of <code class='backtick'>return {pointer, size}</code>.  As reported in
-<a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=120997">GCC bug 120997</a>
-this results in a span that points to invalid stack memory.
-This can be reproduced on GCC 15.1 for subspan, first, and last:
-<a href="https://godbolt.org/z/r9nrdWscq">https://godbolt.org/z/r9nrdWscq</a>.
-</p>
-<p>
-A proposed fix (thanks to Jonathan Wakely) could look like this following:
-<blockquote>
-<code>return span&lt;element_type&gt;(data(), count);</code>
-</blockquote>
-for the affected paragraphs,
-which would explicitly specify the constructor used.
-</p>
-
-<p><i>[2025-07-11; Jonathan adds proposed resolution]</i></p>
-
-<p>
-The meaning of those <i>Effects</i>: paragraphs was changed for C++26 by
-<a href="https://wg21.link/P2447R6" title=" std::span over an initializer list">P2447R6</a> which added the <code class='backtick'>span(initializer_list)</code> constructor.
-A simpler demo is:
-<blockquote><pre><code>bool a[5]{};
-std::span&lt;const bool&gt; s(a);
-std::span&lt;const bool&gt; s2 = s.first(5);
-assert(s2.size() == 5); // OK in C++23, fails in C++26
-assert(s2.data() == a); // OK in C++23, fails in C++26
-</code></pre></blockquote>
-The proposed resolution is to use <code class='backtick'>R(data(), count)</code> instead of
-<code class='backtick'>{data(), count}</code>. The former always (uniformly) means the same thing,
-but for the latter the meaning of list-initialization depends on the types.
-The list-initialization form will choose the initializer-list constructor
-when <code class='backtick'>data()</code> and <code class='backtick'>count</code> are both convertible to the element type.
-</p>
-
-
-<p id="res-4293"><b>Proposed resolution:</b></p>
-<p>
-This wording is relative to <a href="https://wg21.link/N5008" title=" Working Draft, Programming Languages — C++">N5008</a>.
-</p>
-
-<ol>
-
-<li><p>Modify 23.7.2.2.4 <a href="https://wg21.link/span.sub">[span.sub]</a> as indicated:</p>
-
-<blockquote>
-
-<pre><code>
-template&lt;size_t Count&gt; constexpr span&lt;element_type, Count&gt; first() const;
-</code></pre>
-<blockquote>
-<p>-1- <i>Mandates</i>: <code>Count &lt;= Extent</code> is <code class='backtick'>true</code>.</p>
-<p>-2- <i>Hardened preconditions</i>: <code>Count &lt;= size()</code> is <code class='backtick'>true</code>.</p>
-<p>-3- <i>Effects</i>: Equivalent to:
-<code>return R<ins>(</ins><del>{</del>data(), Count<del>}</del><ins>)</ins>;</code>
-where <code class='backtick'>R</code> is the return type.
-</p>
-</blockquote>
-
-<pre><code>
-template&lt;size_t Count&gt; constexpr span&lt;element_type, Count&gt; last() const;
-</code></pre>
-<blockquote>
-<p>-4- <i>Mandates</i>: <code>Count &lt;= Extent</code> is <code class='backtick'>true</code>.</p>
-<p>-5- <i>Hardened preconditions</i>: <code>Count &lt;= size()</code> is <code class='backtick'>true</code>.</p>
-<p>-6- <i>Effects</i>: Equivalent to:
-<code>return R<ins>(</ins><del>{</del>data() + (size() - Count), Count<del>}</del><ins>)</ins>;</code>
-where <code class='backtick'>R</code> is the return type.
-</p>
-</blockquote>
-
-<pre><code>
-template&lt;size_t Offset, size_t Count = dynamic_extent&gt;
-  constexpr span&lt;element_type, <i>see below</i>&gt; subspan() const;
-</code></pre>
-<blockquote>
-<p>-7- <i>Mandates</i>:
-<blockquote><pre><code>Offset &lt;= Extent &amp;&amp; (Count == dynamic_extent || Count &lt;= Extent - Offset)
-</code></pre></blockquote>
-is <code class='backtick'>true</code>.</p>
-<p>-8- <i>Hardened preconditions</i>:
-<blockquote><pre><code>Offset &lt;= size() &amp;&amp; (Count == dynamic_extent || Count &lt;= size() - Offset)
-</code></pre></blockquote>
-is <code class='backtick'>true</code>.</p>
-<p>-9- <i>Effects</i>: Equivalent to:
-<blockquote><pre><code>return span&lt;ElementType, <i>see below</i>&gt;(
-    data() + Offset, Count != dynamic_extent ? Count : size() - Offset);
-</code></pre></blockquote>
-</p>
-<p>-10- <i>Remarks</i>:
-The second template argument of the returned <code class='backtick'>span</code> type is:
-<blockquote><pre><code>Count != dynamic_extent ? Count
-                        : (Extent != dynamic_extent ? Extent - Offset
-                                                    : dynamic_extent)
-</code></pre></blockquote>
-</p>
-</blockquote>
-
-<pre><code>
-constexpr span&lt;element_type, dynamic_extent&gt; first(size_type count) const;
-</code></pre>
-<blockquote>
-<p>-11- <i>Hardened preconditions</i>: <code>count &lt;= size()</code> is <code class='backtick'>true</code>.</p>
-<p>-12- <i>Effects</i>: Equivalent to:
-<code>return <ins>R(</ins><del>{</del>data(), count<del>}</del><ins>)</ins>;</code>
-<ins>where <code class='backtick'>R</code> is the return type</ins>.
-</p>
-</blockquote>
-
-<pre><code>
-constexpr span&lt;element_type, dynamic_extent&gt; last(size_type count) const;
-</code></pre>
-<blockquote>
-<p>-13- <i>Hardened preconditions</i>: <code>count &lt;= size()</code> is <code class='backtick'>true</code>.</p>
-<p>-14- <i>Effects</i>: Equivalent to:
-<code>return <ins>R(</ins><del>{</del>data() + (size() - count), count<del>}</del><ins>)</ins>;</code>
-<ins>where <code class='backtick'>R</code> is the return type</ins>.
-</p>
-</blockquote>
-
-<pre><code>
-constexpr span&lt;element_type, dynamic_extent&gt; subspan(
-  size_type offset, size_type count = dynamic_extent) const;
-</code></pre>
-<blockquote>
-<p>-15- <i>Hardened preconditions</i>:
-<blockquote><pre><code>offset &lt;= size() &amp;&amp; (count == dynamic_extent || count &lt;= size() - offset
-</code></pre></blockquote>
-is <code class='backtick'>true</code>.</p>
-<p>-16- <i>Effects</i>: Equivalent to:
-<blockquote><pre><code>return <ins>R(</ins><del>{</del>data() + offset, count == dynamic_extent ? size() - offset :  count<del>}</del><ins>)</ins>;
-</code></pre></blockquote>
-<ins>where <code class='backtick'>R</code> is the return type</ins>.
-</p>
-</blockquote>
-
-</blockquote>
-</li>
-</ol>
-
-
-
-
-
-
-<hr>
-<h3 id="4294"><a href="#4294">4294</a><sup><a href="https://cplusplus.github.io/LWG/issue4294">(i)</a></sup>. <code class='backtick'>bitset(const CharT*)</code> constructor needs to be constrained</h3>
-<p><b>Section:</b> 22.9.2.2 <a href="https://wg21.link/bitset.cons">[bitset.cons]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Jonathan Wakely <b>Opened:</b> 2025-07-12 <b>Last modified:</b> 2025-07-15</p>
-<p><b>Priority: </b>Not Prioritized
-</p>
-<p><b>View all other</b> <a href="lwg-index.html#bitset.cons">issues</a> in [bitset.cons].</p>
-<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
-<p><b>Discussion:</b></p>
-<p>
-This code might be ill-formed, with an error outside the immediate context
-that users cannot prevent:
-<blockquote><pre><code>
-#include &lt;bitset&gt;
-struct NonTrivial { ~NonTrivial() { } };
-static_assert( ! std::is_constructible_v&lt;std::bitset&lt;1&gt;, NonTrivial*&gt; );
-</code></pre></blockquote>
-</p>
-<p>
-The problem is that the <code class='backtick'>bitset(const CharT*)</code> constructor tries to instantiate
-<code>basic_string_view&lt;NonTrivial&gt;</code> to find its <code class='backtick'>size_type</code>,
-and that instantiation might ill-formed, e.g. if <code class='backtick'>std::basic_string_view</code> or
-<code class='backtick'>std::char_traits</code> has a static assert enforcing the requirement for their
-character type to be sufficiently char-like. 27.1 <a href="https://wg21.link/strings.general">[strings.general]</a>
-defines a char-like type as "any non-array trivially copyable standard-layout
-(6.9.1 <a href="https://wg21.link/basic.types.general">[basic.types.general]</a>) type <code class='backtick'>T</code>
-where <code>is_trivially_default_constructible_v&lt;T&gt;</code> is <code class='backtick'>true</code>."
-</p>
-
-
-<p id="res-4294"><b>Proposed resolution:</b></p>
-<p>
-This wording is relative to <a href="https://wg21.link/N5008" title=" Working Draft, Programming Languages — C++">N5008</a>.
-</p>
-
-<ol>
-
-<li><p>Modify 22.9.2.2 <a href="https://wg21.link/bitset.cons">[bitset.cons]</a> as indicated:</p>
-
-<blockquote>
-<pre><code>
-template&lt;class charT&gt;
-  constexpr explicit bitset(
-    const charT* str,
-    typename basic_string_view&lt;charT&gt;::size_type n = basic_string_view&lt;charT&gt;::npos,
-    charT zero = charT(’0’),
-    charT one = charT(’1’));
-</code></pre>
-<blockquote>
-<p>
-<ins>-?- <i>Constraints</i>:</ins>
-<ul>
-<li>
-<ins><code>is_array_v&lt;charT&gt;</code> is <code class='backtick'>false</code>,</ins>
-</li>
-<li>
-<ins><code>is_trivially_copyable_v&lt;charT&gt;</code> is <code class='backtick'>true</code>,</ins>
-</li>
-<li>
-<ins><code>is_standard_layout_v&lt;charT&gt;</code> is <code class='backtick'>true</code>, and</ins>
-</li>
-<li>
-<ins><code>is_trivially_default_constructible_v&lt;charT&gt;</code> is <code class='backtick'>true</code>.</ins>
-</li>
-</ul>
-</p>
-<p>-8- <i>Effects</i>: As if by:
-<blockquote>
-<pre><code>bitset(n == basic_string_view&lt;charT&gt;::npos
-          ? basic_string_view&lt;charT&gt;(str)
-          : basic_string_view&lt;charT&gt;(str, n),
-       0, n, zero, one)
-</code></pre>
-</blockquote>
-</p>
-</blockquote>
-</blockquote>
-</li>
-</ol>
-
-
-
-
-
-
-
-<hr>
 <h3 id="4295"><a href="#4295">4295</a><sup><a href="https://cplusplus.github.io/LWG/issue4295">(i)</a></sup>. [fund.ts.v3] <code class='backtick'>experimental::observer_ptr</code> should have more constexpr</h3>
 <p><b>Section:</b> 8.2.6 <a href="https://cplusplus.github.io/fundamentals-ts/v3.html#memory.observer.ptr.special">[fund.ts.v3::memory.observer.ptr.special]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Jonathan Wakely <b>Opened:</b> 2025-07-14 <b>Last modified:</b> 2025-07-15</p>
-<p><b>Priority: </b>Not Prioritized
+ <b>Submitter:</b> Jonathan Wakely <b>Opened:</b> 2025-07-14 <b>Last modified:</b> 2025-08-26</p>
+<p><b>Priority: </b>4
 </p>
 <p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
 <p><b>Discussion:</b></p>
@@ -72747,6 +72278,14 @@ template &lt;class W1, class W2&gt;
 bool operator&lt;=(...);
 bool operator&gt;=(...);</del></code></pre>
 </blockquote>
+
+
+<p><i>[2025-08-21; Reflector poll]</i></p>
+
+<p>
+Set priority to 4 after reflector poll.
+Seven votes for P0 but one vote for NAD, so not made Tentatively Ready.
+</p>
 
 
 

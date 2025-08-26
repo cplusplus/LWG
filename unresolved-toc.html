@@ -59,7 +59,7 @@
 <p>Reference ISO/IEC IS 14882:2024(E)</p>
 <p>This document is the Table of Contents for the <a href="lwg-active.html">Library Active Issues List</a>,
 <a href="lwg-defects.html">Library Defect Reports and Accepted Issues</a>, and <a href="lwg-closed.html">Library Closed Issues List</a>.</p>
-<p>Revised 2025-08-25 at 15:07:38 UTC
+<p>Revised 2025-08-26 at 14:54:30 UTC
 </p><table class="issues-index">
 <tr>
   <th><a href="lwg-toc.html">Issue</a></th>
@@ -5484,15 +5484,6 @@ max, and minmax is unclear (Status: New)">4167</a><sup><a href="https://cplusplu
 <td></td>
 </tr>
 <tr>
-<td id="4257"><a href="lwg-active.html#4257" title="Stream insertion for chrono::local_time should be constrained (Status: New)">4257</a><sup><a href="https://cplusplus.github.io/LWG/issue4257">(i)</a></sup></td>
-<td><a href="lwg-active.html#New">New</a></td>
-<td>30.7.9 [time.clock.local]</td>
-<td>Stream insertion for <code class='backtick'>chrono::local_time</code> should be constrained</td>
-<td>Yes</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
 <td id="4258"><a href="lwg-active.html#4258" title="Size type mismatch in constraints involving Cpp17Allocator (Status: New)">4258</a><sup><a href="https://cplusplus.github.io/LWG/issue4258">(i)</a></sup></td>
 <td><a href="lwg-active.html#New">New</a></td>
 <td>16.4.4.6.1 [allocator.requirements.general]</td>
@@ -5639,15 +5630,6 @@ complexity for algorithms that are in fact &#x1d4aa;(n)</td>
 <td></td>
 </tr>
 <tr>
-<td id="4276"><a href="lwg-active.html#4276" title="front() and back() are not hardened for zero-length std::arrays (Status: New)">4276</a><sup><a href="https://cplusplus.github.io/LWG/issue4276">(i)</a></sup></td>
-<td><a href="lwg-active.html#New">New</a></td>
-<td>23.3.3.5 [array.zero]</td>
-<td><code class='backtick'>front()</code> and <code class='backtick'>back()</code> are not hardened for zero-length <code class='backtick'>std::array</code>s</td>
-<td>Yes</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
 <td id="4277"><a href="lwg-active.html#4277" title="&sect;[algorithms.requirements] It is unclear what an algorithm is (Status: New)">4277</a><sup><a href="https://cplusplus.github.io/LWG/issue4277">(i)</a></sup></td>
 <td><a href="lwg-active.html#New">New</a></td>
 <td>26.2 [algorithms.requirements]</td>
@@ -5671,15 +5653,6 @@ complexity for algorithms that are in fact &#x1d4aa;(n)</td>
 <td>31.12.13.2 [fs.op.absolute]</td>
 <td>&sect;[fs.op.absolute] Non-normative encouragement should be <i>Recommended practice</i></td>
 <td><span class="no-pr">No</span></td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td id="4280"><a href="lwg-active.html#4280" title="simd::partial_load uses undefined identifier T (Status: New)">4280</a><sup><a href="https://cplusplus.github.io/LWG/issue4280">(i)</a></sup></td>
-<td><a href="lwg-active.html#New">New</a></td>
-<td>29.10.8.7 [simd.loadstore]</td>
-<td><code class='backtick'>simd::partial_load</code> uses undefined identifier <code class='backtick'>T</code></td>
-<td>Yes</td>
 <td></td>
 <td></td>
 </tr>
@@ -5752,7 +5725,7 @@ complexity for algorithms that are in fact &#x1d4aa;(n)</td>
 <td>30.7.2.2 [time.clock.system.members]</td>
 <td>The <i>Constraints:</i> element in [time.clock.system.members] is probably wrong</td>
 <td>Yes</td>
-<td></td>
+<td>3</td>
 <td></td>
 </tr>
 <tr>
@@ -5774,37 +5747,10 @@ complexity for algorithms that are in fact &#x1d4aa;(n)</td>
 <td></td>
 </tr>
 <tr>
-<td id="4291"><a href="lwg-active.html#4291" title=" explicit map(const Allocator&amp;) should be constexpr  (Status: New)">4291</a><sup><a href="https://cplusplus.github.io/LWG/issue4291">(i)</a></sup></td>
-<td><a href="lwg-active.html#New">New</a></td>
-<td>23.4.3.1 [map.overview]</td>
-<td> <code>explicit map(const Allocator&amp;)</code> should be <code>constexpr</code> </td>
-<td>Yes</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
 <td id="4292"><a href="lwg-active.html#4292" title="Unordered container local iterators should be constexpr iterators (Status: New)">4292</a><sup><a href="https://cplusplus.github.io/LWG/issue4292">(i)</a></sup></td>
 <td><a href="lwg-active.html#New">New</a></td>
 <td>23.5.3.1 [unord.map.overview]</td>
 <td>Unordered container local iterators should be constexpr iterators</td>
-<td>Yes</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td id="4293"><a href="lwg-active.html#4293" title="span::subspan/first/last chooses wrong constructor when T is const-qualified bool (Status: New)">4293</a><sup><a href="https://cplusplus.github.io/LWG/issue4293">(i)</a></sup></td>
-<td><a href="lwg-active.html#New">New</a></td>
-<td>23.7.2.2.4 [span.sub]</td>
-<td>span::subspan/first/last chooses wrong constructor when T is const-qualified bool</td>
-<td>Yes</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td id="4294"><a href="lwg-active.html#4294" title="bitset(const CharT*) constructor needs to be constrained (Status: New)">4294</a><sup><a href="https://cplusplus.github.io/LWG/issue4294">(i)</a></sup></td>
-<td><a href="lwg-active.html#New">New</a></td>
-<td>22.9.2.2 [bitset.cons]</td>
-<td><code class='backtick'>bitset(const CharT*)</code> constructor needs to be constrained</td>
 <td>Yes</td>
 <td></td>
 <td></td>
@@ -5815,7 +5761,7 @@ complexity for algorithms that are in fact &#x1d4aa;(n)</td>
 <td>8.2.6 [fund.ts.v3::memory.observer.ptr.special]</td>
 <td>[fund.ts.v3] <code class='backtick'>experimental::observer_ptr</code> should have more constexpr</td>
 <td>Yes</td>
-<td></td>
+<td>4</td>
 <td></td>
 </tr>
 <tr>
