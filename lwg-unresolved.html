@@ -54,7 +54,7 @@
 </style>
 </head>
 <body>
-<p>Revised 2025-08-26 at 14:54:30 UTC
+<p>Revised 2025-08-26 at 17:06:45 UTC
 </p><h2>Unresolved Issues</h2>
 <hr>
 <h3 id="423"><a href="#423">423</a><sup><a href="https://cplusplus.github.io/LWG/issue423">(i)</a></sup>. Effects of negative <code>streamsize</code> in iostreams</h3>
@@ -76126,7 +76126,7 @@ function call, at worst linear in the number of element blocks.</ins>
 <hr>
 <h3 id="4324"><a href="#4324">4324</a><sup><a href="https://cplusplus.github.io/LWG/issue4324">(i)</a></sup>. <code>unique_ptr&lt;void&gt;::operator*</code> is not SFINAE-friendly</h3>
 <p><b>Section:</b> 20.3.1.3.5 <a href="https://wg21.link/unique.ptr.single.observers">[unique.ptr.single.observers]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Hewill Kang <b>Opened:</b> 2025-08-24 <b>Last modified:</b> 2025-08-24</p>
+ <b>Submitter:</b> Hewill Kang <b>Opened:</b> 2025-08-24 <b>Last modified:</b> 2025-08-26</p>
 <p><b>Priority: </b>Not Prioritized
 </p>
 <p><b>View other</b> <a href="lwg-index-open.html#unique.ptr.single.observers">active issues</a> in [unique.ptr.single.observers].</p>
@@ -76164,8 +76164,9 @@ SFINAE-friendly based on 20.3.2.2.6 <a href="https://wg21.link/util.smartptr.sha
 <code class='backtick'>static_assert</code>, it is reasonable to assume that there should be no hard error here.
 </p>
 
+<p><strong>Previous resolution [SUPERSEDED]:</strong></p>
+<blockquote class="note">
 
-<p id="res-4324"><b>Proposed resolution:</b></p>
 <p>
 This wording is relative to <a href="https://wg21.link/N5014">N5014</a>.
 </p>
@@ -76192,6 +76193,46 @@ decltype(*declval&lt;pointer&gt;())&gt;</code> is <code class='backtick'>false</
 <blockquote><pre>
 <ins>!requires { *declval&lt;pointer&gt;(); } || requires { { *declval&lt;pointer&gt;() } noexcept; }</ins>
 </pre></blockquote>
+</blockquote>
+</blockquote>
+
+</li>
+
+</ol>
+</blockquote>
+
+<p><i>[2025-08-26; Reflector discussion]</i></p>
+
+<p>
+During reflector triaging it had been pointed out that a better solution would be to constrain the 
+<code class='backtick'>operator*</code> directly. The proposed wording has been updated to that effect.
+</p>
+
+
+<p id="res-4324"><b>Proposed resolution:</b></p>
+<p>
+This wording is relative to <a href="https://wg21.link/N5014">N5014</a>.
+</p>
+
+<ol>
+
+<li><p>Modify 20.3.1.3.5 <a href="https://wg21.link/unique.ptr.single.observers">[unique.ptr.single.observers]</a> as indicated:</p>
+
+<blockquote>
+<pre>
+constexpr add_lvalue_reference_t&lt;T&gt; operator*() const noexcept(noexcept(*declval&lt;pointer&gt;()));
+</pre>
+<blockquote>
+<p>
+<ins>-?- <i>Constraints:</i>: <code>*declval&lt;pointer&gt;()</code> is a well-formed expression.</ins>
+<p/>
+-1- <i>Mandates</i>: <code>reference_converts_from_temporary_v&lt;add_lvalue_reference_t&lt;T&gt;, 
+decltype(*declval&lt;pointer&gt;())&gt;</code> is <code class='backtick'>false</code>.
+<p/>
+-2- <i>Preconditions</i>: <code class='backtick'>get() != nullptr</code> is <code class='backtick'>true</code>.
+<p/>
+-3- <i>Returns</i>: <code class='backtick'>*get()</code>.
+</p>
 </blockquote>
 </blockquote>
 
