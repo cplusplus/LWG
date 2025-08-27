@@ -54,7 +54,7 @@
 </style>
 </head>
 <body>
-<p>Revised 2025-08-27 at 15:34:48 UTC
+<p>Revised 2025-08-27 at 15:51:19 UTC
 </p><h2>Unresolved Issues</h2>
 <hr>
 <h3 id="423"><a href="#423">423</a><sup><a href="https://cplusplus.github.io/LWG/issue423">(i)</a></sup>. Effects of negative <code>streamsize</code> in iostreams</h3>
@@ -76429,6 +76429,70 @@ expression.
 </li>
 
 </ol>
+
+
+
+
+
+<hr>
+<h3 id="4327"><a href="#4327">4327</a><sup><a href="https://cplusplus.github.io/LWG/issue4327">(i)</a></sup>. Equal schedulers should be required to have same behaviour</h3>
+<p><b>Section:</b> 33.6 <a href="https://wg21.link/exec.sched">[exec.sched]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
+ <b>Submitter:</b> Lewis Baker <b>Opened:</b> 2025-08-25 <b>Last modified:</b> 2025-08-27</p>
+<p><b>Priority: </b>Not Prioritized
+</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
+<p><b>Discussion:</b></p>
+<p>
+The wording 33.6 <a href="https://wg21.link/exec.sched">[exec.sched]</a> p4 says:
+</p>
+<blockquote><p>
+For any two values <code class='backtick'>sch1</code> and <code class='backtick'>sch2</code> of some scheduler type <code class='backtick'>Sch</code>, <code class='backtick'>sch1 == sch2</code> shall return 
+<code class='backtick'>true</code> only if both <code class='backtick'>sch1</code> and <code class='backtick'>sch2</code> share the same associated execution resource.
+</p></blockquote>
+<p>
+However, I don't think this requirement is sufficient for schedulers to be considered equal 
+as it is possible to have two different schedulers that share the same associated execution 
+resource but that have different behaviour.
+<p/>
+For example, two schedulers of the same type and having the same associated execution resource 
+but where one schedules items with high priority and others with low priority.
+<p/>
+Ideally we want two schedulers to be equal if and only if they can be used interchangeably 
+such that using either scheduler to schedule work has the same behaviour.
+<p/>
+Note that some use cases may also want to compare two schedulers as to whether or not they 
+share the same associated execution resource, independently of their scheduling behaviour, 
+however this could be added as a separate operator later, e.g. 
+<code class='backtick'>std::execution::same_resource(sch1, sch2)</code>.
+<p/>
+While the above wording does still permit implementations to return <code class='backtick'>false</code> even if the associated 
+execution resources are the same, it is not clear how this definition applies to schedulers 
+such as an <code class='backtick'>inline_scheduler</code> (added in <a href="https://wg21.link/P3552" title=" Add a Coroutine Task Type">P3552</a>) in which has no specific associated 
+execution resource but where instances nevertheless have the same scheduling behaviour.
+<p/>
+One approach to improving this would be to change p4 to refer to the schedulers having the 
+same scheduling behaviour rather than having the same associated execution resource.
+<p/>
+For example, modify 33.6 <a href="https://wg21.link/exec.sched">[exec.sched]</a> p4 to refer to schedulers having the same 
+scheduling behaviour rather than having the same associated execution resource.
+</p>
+<blockquote><p>
+For any two values <code class='backtick'>sch1</code> and <code class='backtick'>sch2</code> of some scheduler type <code class='backtick'>Sch</code>, <code class='backtick'>sch1 == sch2</code> shall 
+return <code class='backtick'>true</code> only if both <code class='backtick'>sch1</code> and <code class='backtick'>sch2</code> <del>share the same associated execution 
+resource</del><ins>have the same scheduling behaviour</ins>.
+</p></blockquote>
+<p>
+However, this then raises the question of exactly what "the same scheduling behaviour" is.
+For example, what if two schedulers have the same associated execution resource and the 
+same behaviour for a <code class='backtick'>schedule()</code> operation, but have different behaviours for customizations 
+of the <code class='backtick'>bulk()</code> algorithm?
+<p/>
+Alternatively, we could talk about two schedulers being equal if and only if they can be used 
+interchangeably throughout the program.
+</p>
+
+
+<p id="res-4327"><b>Proposed resolution:</b></p>
 
 
 
