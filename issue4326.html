@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Issue 4326: Standard defined queries can't customize forwarding_query_t by inheriting from it</title>
+<meta property="og:title" content="Issue 4326: Standard defined queries can't customize forwarding_query_t by inheriting from it">
+<meta property="og:description" content="C++ library issue. Status: New">
+<meta property="og:url" content="https://cplusplus.github.io/LWG/issue4326.html">
+<meta property="og:type" content="website">
+<meta property="og:image" content="http://cplusplus.github.io/LWG/images/cpp_logo.png">
+<meta property="og:image:alt" content="C++ logo">
+<style>
+  p {text-align:justify}
+  li {text-align:justify}
+  pre code.backtick::before { content: "`" }
+  pre code.backtick::after { content: "`" }
+  blockquote.note
+  {
+    background-color:#E0E0E0;
+    padding-left: 15px;
+    padding-right: 15px;
+    padding-top: 1px;
+    padding-bottom: 1px;
+  }
+  ins {background-color:#A0FFA0}
+  del {background-color:#FFA0A0}
+  table.issues-index { border: 1px solid; border-collapse: collapse; }
+  table.issues-index th { text-align: center; padding: 4px; border: 1px solid; }
+  table.issues-index td { padding: 4px; border: 1px solid; }
+  table.issues-index td:nth-child(1) { text-align: right; }
+  table.issues-index td:nth-child(2) { text-align: left; }
+  table.issues-index td:nth-child(3) { text-align: left; }
+  table.issues-index td:nth-child(4) { text-align: left; }
+  table.issues-index td:nth-child(5) { text-align: center; }
+  table.issues-index td:nth-child(6) { text-align: center; }
+  table.issues-index td:nth-child(7) { text-align: left; }
+  table.issues-index td:nth-child(5) span.no-pr { color: red; }
+  @media (prefers-color-scheme: dark) {
+     html {
+        color: #ddd;
+        background-color: black;
+     }
+     ins {
+        background-color: #225522
+     }
+     del {
+        background-color: #662222
+     }
+     a {
+        color: #6af
+     }
+     a:visited {
+        color: #6af
+     }
+     blockquote.note
+     {
+        background-color: rgba(255, 255, 255, .10)
+     }
+  }
+</style>
+</head>
+<body>
+<hr>
+<p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#New">New</a> status.</em></p>
+<h3 id="4326"><a href="lwg-active.html#4326">4326</a>. Standard defined queries can't customize <code class='backtick'>forwarding_query_t</code> by inheriting from it</h3>
+<p><b>Section:</b> 33.5.1 <a href="https://wg21.link/exec.fwd.env">[exec.fwd.env]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
+ <b>Submitter:</b> Lewis Baker <b>Opened:</b> 2025-08-25 <b>Last modified:</b> 2025-08-27</p>
+<p><b>Priority: </b>Not Prioritized
+</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
+<p><b>Discussion:</b></p>
+<p>
+The definition of the <code class='backtick'>forwarding_query_t</code> (33.5.1 <a href="https://wg21.link/exec.fwd.env">[exec.fwd.env]</a>) states that a query 
+is a forwarding-query if either the expression <code class='backtick'>q.query(forwarding_query)</code> is a constant expression 
+that evaluates to <code class='backtick'>true</code> or the query type inherits from <code class='backtick'>forwarding_query_t</code>.
+<p/>
+However, all of the queries defined in 33 <a href="https://wg21.link/exec">[exec]</a> are defined similar to the following:
+</p>
+<blockquote><pre>
+struct get_allocator_t { <i>unspecified</i> };
+</pre></blockquote>
+<p>
+While this definition allows for the members of the class to be unspecified, it still explicitly 
+specifies that it has an empty list of base-classes and therefore cannot customize 
+<code class='backtick'>forwarding_query_t</code> by inheriting from <code class='backtick'>forwarding_query_t</code>.
+<p/>
+We should consider whether we want to change the specification of queries that are to be 
+forwarding-queries to allow inheritance from <code class='backtick'>forwarding_query_t</code> or otherwise remove the 
+support for customizing <code class='backtick'>forwarding_query_t</code> by inheriting from it.
+<p/>
+<b>Proposed Approach:</b>
+<p/>
+Remove the rule that checks for inheritance from <code class='backtick'>forwarding_query_t</code>. Any query can already 
+customize <code class='backtick'>forwarding_query_t</code> by defining a <code class='backtick'>query(forwarding_query_t)</code> member function, so 
+there is no loss of functionality from doing this and it would simplify the design.
+</p>
+
+
+<p id="res-4326"><b>Proposed resolution:</b></p>
+<p>
+This wording is relative to <a href="https://wg21.link/N5014">N5014</a>.
+</p>
+
+<ol>
+
+<li><p>Modify 33.5.1 <a href="https://wg21.link/exec.fwd.env">[exec.fwd.env]</a> as indicated:</p>
+
+<blockquote>
+<p>
+-2- The name <code class='backtick'>forwarding_query</code> denotes a query object. For some query object <code class='backtick'>q</code> of type <code class='backtick'>Q</code>, 
+<code class='backtick'>forwarding_query(q)</code> is expression-equivalent to:
+</p>
+<ol style="list-style-type: none">
+<li><p>(2.1) &mdash; <code><i>MANDATE-NOTHROW</i>(q.query(forwarding_query))</code> if that expression is well-formed.
+<p/>
+<i>Mandates</i>: The expression above has type <code class='backtick'>bool</code> and is a core constant expression if <code class='backtick'>q</code> is a core constant
+expression.
+</p></li>
+<li><p><del>(2.2) &mdash; Otherwise, <code class='backtick'>true</code> if <code>derived_from&lt;Q, forwarding_query_t&gt;</code> is <code class='backtick'>true</code>.</del></p></li>
+<li><p>(2.3) &mdash; Otherwise, <code class='backtick'>false</code>.</p></li>
+</ol>
+
+</blockquote>
+
+</li>
+
+</ol>
+
+
+
+
+
+</body>
+</html>
