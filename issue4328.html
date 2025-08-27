@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Issue 4328: Remove note in &sect;[exec.sched] regarding waiting for completion of scheduled operations</title>
+<meta property="og:title" content="Issue 4328: Remove note in &sect;[exec.sched] regarding waiting for completion of scheduled operations">
+<meta property="og:description" content="C++ library issue. Status: New">
+<meta property="og:url" content="https://cplusplus.github.io/LWG/issue4328.html">
+<meta property="og:type" content="website">
+<meta property="og:image" content="http://cplusplus.github.io/LWG/images/cpp_logo.png">
+<meta property="og:image:alt" content="C++ logo">
+<style>
+  p {text-align:justify}
+  li {text-align:justify}
+  pre code.backtick::before { content: "`" }
+  pre code.backtick::after { content: "`" }
+  blockquote.note
+  {
+    background-color:#E0E0E0;
+    padding-left: 15px;
+    padding-right: 15px;
+    padding-top: 1px;
+    padding-bottom: 1px;
+  }
+  ins {background-color:#A0FFA0}
+  del {background-color:#FFA0A0}
+  table.issues-index { border: 1px solid; border-collapse: collapse; }
+  table.issues-index th { text-align: center; padding: 4px; border: 1px solid; }
+  table.issues-index td { padding: 4px; border: 1px solid; }
+  table.issues-index td:nth-child(1) { text-align: right; }
+  table.issues-index td:nth-child(2) { text-align: left; }
+  table.issues-index td:nth-child(3) { text-align: left; }
+  table.issues-index td:nth-child(4) { text-align: left; }
+  table.issues-index td:nth-child(5) { text-align: center; }
+  table.issues-index td:nth-child(6) { text-align: center; }
+  table.issues-index td:nth-child(7) { text-align: left; }
+  table.issues-index td:nth-child(5) span.no-pr { color: red; }
+  @media (prefers-color-scheme: dark) {
+     html {
+        color: #ddd;
+        background-color: black;
+     }
+     ins {
+        background-color: #225522
+     }
+     del {
+        background-color: #662222
+     }
+     a {
+        color: #6af
+     }
+     a:visited {
+        color: #6af
+     }
+     blockquote.note
+     {
+        background-color: rgba(255, 255, 255, .10)
+     }
+  }
+</style>
+</head>
+<body>
+<hr>
+<p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#New">New</a> status.</em></p>
+<h3 id="4328"><a href="lwg-active.html#4328">4328</a>. Remove note in &sect;[exec.sched] regarding waiting for completion of scheduled operations</h3>
+<p><b>Section:</b> 33.6 <a href="https://wg21.link/exec.sched">[exec.sched]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
+ <b>Submitter:</b> Lewis Baker <b>Opened:</b> 2025-08-25 <b>Last modified:</b> 2025-08-27</p>
+<p><b>Priority: </b>Not Prioritized
+</p>
+<p><b>View other</b> <a href="lwg-index-open.html#exec.sched">active issues</a> in [exec.sched].</p>
+<p><b>View all other</b> <a href="lwg-index.html#exec.sched">issues</a> in [exec.sched].</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
+<p><b>Discussion:</b></p>
+<p>
+The note at the end of 33.6 <a href="https://wg21.link/exec.sched">[exec.sched]</a> says:
+</p>
+<blockquote><p>
+[<i>Note</i>: The ability to wait for completion of submitted function objects can be provided by the 
+associated execution resource of the scheduler &mdash; <i>end note</i>]
+</p></blockquote>
+<p>
+The suggestion that the execution resource should be used to join/wait on scheduled work is problematic 
+in situations that may involve more than one execution context, as an execution resource having an empty 
+queue of scheduled work does not necessarily imply that tasks currently running on another execution 
+context will not later schedule additional work on this execution resource.
+<p/>
+With the introduction of <code class='backtick'>counting_scope</code> with <a href="https://wg21.link/P3149" title=" async_scope — Creating scopes for non-sequential concurrency">P3149</a> we now have a better recommended 
+way of waiting for tasks that use a resource (including execution resources) to complete.
+<p/>
+The note as it stands represents bad guidance and should either be removed or updated to refer to 
+<code class='backtick'>counting_scope</code> and <code class='backtick'>simple_counting_scope</code> (33.14.2 <a href="https://wg21.link/exec.counting.scopes">[exec.counting.scopes]</a>).
+</p>
+
+
+<p id="res-4328"><b>Proposed resolution:</b></p>
+<p>
+This wording is relative to <a href="https://wg21.link/N5014">N5014</a>.
+</p>
+
+<ol>
+
+<li><p>Modify 33.6 <a href="https://wg21.link/exec.sched">[exec.sched]</a> as indicated:</p>
+
+<blockquote>
+<p>
+-7- A scheduler type's destructor shall not block pending completion of any receivers connected to the sender
+objects returned from schedule.
+<p/>
+<del>[<i>Note 1</i>: The ability to wait for completion of submitted function objects can be provided by 
+the associated execution resource of the scheduler. &mdash; <i>end note</i>]</del>
+</p>
+</blockquote>
+
+</li>
+
+</ol>
+
+
+
+
+
+</body>
+</html>
