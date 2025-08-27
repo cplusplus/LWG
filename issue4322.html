@@ -64,7 +64,7 @@
 <p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#New">New</a> status.</em></p>
 <h3 id="4322"><a href="lwg-active.html#4322">4322</a>. Problematic <i>Constraints</i> on incomplete types in indirect and polymorphic</h3>
 <p><b>Section:</b> 20.4 <a href="https://wg21.link/mem.composite.types">[mem.composite.types]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Jonathan B. Coe <b>Opened:</b> 2025-08-20 <b>Last modified:</b> 2025-08-23</p>
+ <b>Submitter:</b> Jonathan B. Coe <b>Opened:</b> 2025-08-20 <b>Last modified:</b> 2025-08-27</p>
 <p><b>Priority: </b>Not Prioritized
 </p>
 <p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
@@ -328,7 +328,7 @@ template&lt;class U, class I, class... Us&gt;
 </blockquote>
 <pre>
 template&lt;class U, class I, class... Us&gt;
-  constexpr explicit polymorphic(in_place_type_t&lt;U&gt;, initializer_list&lt;I&gt; ilist, Us&amp;&amp;... us);
+  constexpr explicit polymorphic(allocator_arg_t, const Allocator&amp; a, in_place_type_t&lt;U&gt;, initializer_list&lt;I&gt; ilist, Us&amp;&amp;... us);
 </pre>
 <blockquote>
 <p>
