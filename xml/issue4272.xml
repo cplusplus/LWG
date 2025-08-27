@@ -250,9 +250,8 @@ template&lt;class OtherExtents&gt;
 </superseded>
 
 <note>2025-06-20, Luc Grosheintz provides further wording improvements</note>
-</discussion>
 
-<resolution>
+<superseded>
 <p>
 This wording is relative to <paper num="N5008"/>.
 </p>
@@ -494,6 +493,254 @@ LayoutRightPaddedMapping::padding_value == dynamic_extent)
 </li>
 
 </ol>
+</superseded>
+
+<note>2025-09-27, Tomasz Kamiński fixes constrains in constructors from padded layouts</note>
+</discussion>
+
+<resolution>
+<p>
+This wording is relative to <paper num="N5008"/>.
+</p>
+
+<blockquote class="note">
+<p>
+[<i>Drafting note</i>: As drive-by fixes the edits for <tt>layout_left_padded&lt;&gt;::mapping</tt> and
+<tt>layout_right_padded&lt;&gt;::mapping</tt> also correct an editorial asymmetry between class
+header synopsis declaration form and prototype specification form of the corresponding
+constructors and adjust to the correct formatting of the exposition-only data member <tt><i>rank_</i></tt>.]
+</p>
+</blockquote>
+
+<ol>
+<li><p>Modify <sref ref="[mdspan.layout.left.overview]"/> as indicated:</p>
+
+<blockquote>
+<pre>
+namespace std {
+  template&lt;class Extents&gt;
+  class layout_left::mapping {
+    [&hellip;]
+    <i>// <sref ref="[mdspan.layout.left.cons]"/>, constructors</i>
+    [&hellip;]
+    template&lt;class OtherExtents&gt;
+      constexpr explicit(<del>extents_type::rank() &gt; 0</del><ins><i>see below</i></ins>)
+        mapping(const layout_stride::mapping&lt;OtherExtents&gt;&amp;);
+    
+    constexpr mapping&amp; operator=(const mapping&amp;) noexcept = default;
+    [&hellip;]
+  };
+}
+</pre>
+</blockquote>
+</li>
+
+<li><p>Modify <sref ref="[mdspan.layout.left.cons]"/> as indicated:</p>
+
+<blockquote>
+<pre>
+template&lt;class OtherExtents&gt;
+  constexpr explicit(<del>extents_type::rank() &gt; 0</del><ins><i>see below</i></ins>)
+    mapping(const layout_stride::mapping&lt;OtherExtents&gt;&amp; other);
+</pre>
+<blockquote>
+<p>
+-13- <i>Constraints</i>: [&hellip;]
+<p/>
+-14- <i>Preconditions</i>: [&hellip;]
+<p/>
+-15- <i>Effects</i>: [&hellip;]
+<p/>
+<ins>-?- <i>Remarks</i>: The expression inside `explicit` is equivalent to:</ins>
+</p>
+<blockquote><pre>
+<ins>!(extents_type::rank() == 0 &amp;&amp; is_convertible_v&lt;OtherExtents, extents_type&gt;)</ins>
+</pre></blockquote>
+</blockquote>
+</blockquote>
+</li>
+
+<li><p>Modify <sref ref="[mdspan.layout.right.overview]"/> as indicated:</p>
+
+<blockquote>
+<pre>
+namespace std {
+  template&lt;class Extents&gt;
+  class layout_right::mapping {
+    [&hellip;]
+    <i>// <sref ref="[mdspan.layout.right.cons]"/>, constructors</i>
+    [&hellip;]
+    template&lt;class OtherExtents&gt;
+      constexpr explicit(<del>extents_type::rank() &gt; 0</del><ins><i>see below</i></ins>)
+        mapping(const layout_stride::mapping&lt;OtherExtents&gt;&amp;);
+    
+    constexpr mapping&amp; operator=(const mapping&amp;) noexcept = default;
+    [&hellip;]
+  };
+}
+</pre>
+</blockquote>
+</li>
+
+<li><p>Modify <sref ref="[mdspan.layout.right.cons]"/> as indicated:</p>
+
+<blockquote>
+<pre>
+template&lt;class OtherExtents&gt;
+  constexpr explicit(<del>extents_type::rank() &gt; 0</del><ins><i>see below</i></ins>)
+    mapping(const layout_stride::mapping&lt;OtherExtents&gt;&amp; other);
+</pre>
+<blockquote>
+<p>
+-13- <i>Constraints</i>: [&hellip;]
+<p/>
+-14- <i>Preconditions</i>: [&hellip;]
+<p/>
+-15- <i>Effects</i>: [&hellip;]
+<p/>
+<ins>-?- <i>Remarks</i>: The expression inside `explicit` is equivalent to:</ins>
+</p>
+<blockquote><pre>
+<ins>!(extents_type::rank() == 0 &amp;&amp; is_convertible_v&lt;OtherExtents, extents_type&gt;)</ins>
+</pre></blockquote>
+</blockquote>
+</blockquote>
+</li>
+
+<li><p>Modify <sref ref="[mdspan.layout.leftpad.overview]"/> as indicated:</p>
+
+<blockquote>
+<pre>
+namespace std {
+  template&lt;size_t PaddingValue&gt;
+  template&lt;class Extents&gt;
+  class layout_left_padded&lt;PaddingValue&gt;::mapping {
+    [&hellip;]
+    <i>// <sref ref="[mdspan.layout.leftpad.cons]"/>, constructors</i>
+    [&hellip;]
+    template&lt;class OtherExtents&gt;
+      constexpr explicit(<del>extents_type::rank() &gt; 0</del><ins><i>see below</i></ins>)
+        mapping(const layout_stride::mapping&lt;OtherExtents&gt;&amp;);
+    [&hellip;]
+  };
+}
+</pre>
+</blockquote>
+</li>
+
+<li><p>Modify <sref ref="[mdspan.layout.leftpad.cons]"/> as indicated:</p>
+
+<blockquote>
+<pre>
+template&lt;class OtherExtents&gt;
+  constexpr explicit(<del>rank_ &gt; 0</del><ins><i>see below</i></ins>)
+    mapping(const layout_stride::mapping&lt;OtherExtents&gt;&amp; other);
+</pre>
+<blockquote>
+<p>
+-10- <i>Constraints</i>: [&hellip;]
+<p/>
+-11- <i>Preconditions</i>: [&hellip;]
+<p/>
+-12- <i>Effects</i>: [&hellip;]
+<p/>
+<ins>-?- <i>Remarks</i>: The expression inside `explicit` is equivalent to:</ins>
+</p>
+<blockquote><pre>
+<ins>!(<i>rank_</i> == 0 &amp;&amp; is_convertible_v&lt;OtherExtents, extents_type&gt;)</ins>
+</pre></blockquote>
+</blockquote>
+<pre>
+template&lt;class LayoutLeftPaddedMapping&gt;
+  constexpr explicit(<i>see below</i>)
+    mapping(const LayoutLeftPaddedMapping&amp; other);
+</pre>
+<blockquote>
+<p>
+-13- <i>Constraints</i>: [&hellip;]
+<p/>
+[&hellip;]
+<p/>
+-16- <i>Remarks</i>: The expression inside `explicit` is equivalent to:
+</p>
+<blockquote><pre>
+<ins>!is_convertible_v&lt;typename LayoutLeftPaddedMapping::extents_type, extents_type&gt; ||</ins>
+rank_&gt; 1 &amp;&amp;
+(padding_value != dynamic_extent ||
+ LayoutLeftPaddedMapping::padding_value == dynamic_extent)
+</pre></blockquote>
+</blockquote>
+</blockquote>
+</li>
+
+<li><p>Modify <sref ref="[mdspan.layout.rightpad.overview]"/> as indicated:</p>
+
+<blockquote>
+<pre>
+namespace std {
+  template&lt;size_t PaddingValue&gt;
+  template&lt;class Extents&gt;
+  class layout_right_padded&lt;PaddingValue&gt;::mapping {
+    [&hellip;]
+    <i>// <sref ref="[mdspan.layout.rightpad.cons]"/>, constructors</i>
+    [&hellip;]
+    template&lt;class OtherExtents&gt;
+      constexpr explicit(<del>rank_ &gt; 0</del><ins><i>see below</i></ins>)
+        mapping(const layout_stride::mapping&lt;OtherExtents&gt;&amp;);
+    [&hellip;]
+  };
+}
+</pre>
+</blockquote>
+</li>
+
+<li><p>Modify <sref ref="[mdspan.layout.rightpad.cons]"/> as indicated:</p>
+
+<blockquote>
+<pre>
+template&lt;class OtherExtents&gt;
+  constexpr explicit(<del>rank_ &gt; 0</del><ins><i>see below</i></ins>)
+    mapping(const layout_stride::mapping&lt;OtherExtents&gt;&amp; other);
+</pre>
+<blockquote>
+<p>
+-10- <i>Constraints</i>: [&hellip;]
+<p/>
+-11- <i>Preconditions</i>: [&hellip;]
+<p/>
+-12- <i>Effects</i>: [&hellip;]
+<p/>
+<ins>-?- <i>Remarks</i>: The expression inside `explicit` is equivalent to:</ins>
+</p>
+<blockquote><pre>
+<ins>!(<i>rank_</i> == 0 &amp;&amp; is_convertible_v&lt;OtherExtents, extents_type&gt;)</ins>
+</pre></blockquote>
+</blockquote>
+<pre>
+template&lt;class LayoutRightPaddedMapping&gt;
+  constexpr explicit(<i>see below</i>)
+    mapping(const LayoutRightPaddedMapping&amp; other);
+</pre>
+<blockquote>
+<p>
+-13- <i>Constraints</i>: [&hellip;]
+<p/>
+[&hellip;]
+<p/>
+-17- <i>Remarks</i>: The expression inside `explicit` is equivalent to:
+</p>
+<blockquote><pre>
+<ins>!is_convertible_v&lt;typename LayoutRightPaddedMapping::extents_type, extents_type&gt; ||</ins>
+<i>rank_</i> &gt; 1 &amp;&amp;
+(padding_value != dynamic_extent ||
+LayoutRightPaddedMapping::padding_value == dynamic_extent)
+</pre></blockquote>
+</blockquote>
+</blockquote>
+</li>
+
+</ol>
 </resolution>
+
 
 </issue>
