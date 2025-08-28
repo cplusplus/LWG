@@ -64,8 +64,8 @@
 <p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#New">New</a> status.</em></p>
 <h3 id="4298"><a href="lwg-active.html#4298">4298</a>. &sect;[meta.reflection.extract] Malformed "<code class='backtick'>F noexcept</code>" type</h3>
 <p><b>Section:</b> 21.4.12 <a href="https://wg21.link/meta.reflection.extract">[meta.reflection.extract]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Jan Schultke <b>Opened:</b> 2025-07-10 <b>Last modified:</b> 2025-08-16</p>
-<p><b>Priority: </b>Not Prioritized
+ <b>Submitter:</b> Jan Schultke <b>Opened:</b> 2025-07-10 <b>Last modified:</b> 2025-08-28</p>
+<p><b>Priority: </b>3
 </p>
 <p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
 <p><b>Discussion:</b></p>
@@ -79,6 +79,17 @@ the declarator associated with <code class='backtick'>F</code>.
 However, the syntax <code class='backtick'>F noexcept</code> is ill-formed, and does not have that intended effect. There ought 
 to be a better way to phrase that.
 </p>
+
+<p><i>[2025-08-27; Reflector poll]</i></p>
+
+<p>
+Set priority to 3 after reflector poll.
+</p>
+<p>
+"phrase this in terms of the quoted type description in 9.3.4.6 <a href="https://wg21.link/dcl.fct">[dcl.fct]</a>
+(see before bullet 1.6, <q>The type of the declarator-id in D is...</q>)."
+</p>
+
 
 
 <p id="res-4298"><b>Proposed resolution:</b></p>

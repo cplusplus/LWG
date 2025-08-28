@@ -62,7 +62,7 @@
 </tr>
 <tr>
 <td align="left">Date:</td>
-<td align="left">Revised 2025-08-28 at 03:24:27 UTC
+<td align="left">Revised 2025-08-28 at 11:24:55 UTC
 </td>
 </tr>
 <tr>
@@ -1005,6 +1005,61 @@ template&lt;class charT&gt;
 </ol>
 
 
+
+
+
+
+
+<hr>
+<h3 id="4300"><a href="#4300">4300</a><sup><a href="https://cplusplus.github.io/LWG/issue4300">(i)</a></sup>. Missing <i>Returns:</i> element in <code>optional&lt;T&amp;&gt;::emplace</code></h3>
+<p><b>Section:</b> 22.5.4.3 <a href="https://wg21.link/optional.ref.assign">[optional.ref.assign]</a> <b>Status:</b> <a href="lwg-active.html#Ready">Tentatively Ready</a>
+ <b>Submitter:</b> Giuseppe D'Angelo <b>Opened:</b> 2025-07-15 <b>Last modified:</b> 2025-08-28</p>
+<p><b>Priority: </b>Not Prioritized
+</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#Tentatively Ready">Tentatively Ready</a> status.</p>
+<p><b>Discussion:</b></p>
+<p>
+The specification for <code>optional&lt;T&amp;&gt;::emplace</code> in 22.5.4.3 <a href="https://wg21.link/optional.ref.assign">[optional.ref.assign]</a>
+is not specifying the returned value via a <i>Returns</i>: element; however the
+function does indeed return something (a <code>T&amp;</code>). Such a <i>Returns</i>: element is there
+for the primary template's <code class='backtick'>emplace</code> (cf. 22.5.3.4 <a href="https://wg21.link/optional.assign">[optional.assign]</a>).
+</p>
+
+<p><i>[2025-08-27; Reflector poll]</i></p>
+
+<p>
+Set status to Tentatively Ready after nine votes in favour during reflector poll.
+</p>
+
+
+
+<p id="res-4300"><b>Proposed resolution:</b></p>
+<p>
+This wording is relative to <a href="https://wg21.link/N5014">N5014</a>.
+</p>
+
+<ol>
+
+<li><p>Modify 22.5.4.3 <a href="https://wg21.link/optional.ref.assign">[optional.ref.assign]</a> as indicated:</p>
+
+<blockquote>
+<pre>
+template&lt;class U&gt;
+  constexpr T&amp; emplace(U&amp;&amp; u) noexcept(is_nothrow_constructible_v&lt;T&amp;, U&gt;);
+</pre>
+<blockquote>
+<p>
+-4- <i>Constraints</i>: [&hellip;]
+<p/>
+-5- <i>Effects</i>: Equivalent to: <code><i>convert-ref-init-val</i>(std::forward&lt;U&gt;(u))</code>.
+<p/>
+<ins>-?- <i>Returns</i>: <code>*<i>val</i></code>.</ins>
+</p>
+</blockquote>
+</blockquote>
+</li>
+
+</ol>
 
 
 
