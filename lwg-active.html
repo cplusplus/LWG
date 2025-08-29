@@ -79,7 +79,7 @@
 </tr>
 </table>
 <h1>C++ Standard Library Active Issues List (Revision D125)</h1>
-<p>Revised 2025-08-29 at 11:31:42 UTC
+<p>Revised 2025-08-29 at 17:49:31 UTC
 </p>
   <p>Reference ISO/IEC IS 14882:2020(E)</p>
   <p>Also see:</p>
@@ -73718,7 +73718,7 @@ within the <code class='backtick'>chunk_by_view</code> for use on subsequent cal
 <hr>
 <h3 id="4272"><a href="#4272">4272</a><sup><a href="https://cplusplus.github.io/LWG/issue4272">(i)</a></sup>. For <code class='backtick'>rank == 0</code>, <code class='backtick'>layout_stride</code> is atypically convertible</h3>
 <p><b>Section:</b> 23.7.3.4 <a href="https://wg21.link/mdspan.layout">[mdspan.layout]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Luc Grosheintz <b>Opened:</b> 2025-06-02 <b>Last modified:</b> 2025-06-28</p>
+ <b>Submitter:</b> Luc Grosheintz <b>Opened:</b> 2025-06-02 <b>Last modified:</b> 2025-08-29</p>
 <p><b>Priority: </b>2
 </p>
 <p><b>View other</b> <a href="lwg-index-open.html#mdspan.layout">active issues</a> in [mdspan.layout].</p>
@@ -73969,8 +73969,9 @@ template&lt;class OtherExtents&gt;
 <p><i>[2025-06-20, Luc Grosheintz provides further wording improvements]</i></p>
 
 
+<p><strong>Previous resolution [SUPERSEDED]:</strong></p>
+<blockquote class="note">
 
-<p id="res-4272"><b>Proposed resolution:</b></p>
 <p>
 This wording is relative to <a href="https://wg21.link/N5008" title=" Working Draft, Programming Languages — C++">N5008</a>.
 </p>
@@ -74212,6 +74213,255 @@ LayoutRightPaddedMapping::padding_value == dynamic_extent)
 </li>
 
 </ol>
+</blockquote>
+
+<p><i>[2025-09-27, Tomasz Kamiński fixes constraints in constructors from padded layouts]</i></p>
+
+
+
+<p id="res-4272"><b>Proposed resolution:</b></p>
+<p>
+This wording is relative to <a href="https://wg21.link/N5008" title=" Working Draft, Programming Languages — C++">N5008</a>.
+</p>
+
+<blockquote class="note">
+<p>
+[<i>Drafting note</i>: As drive-by fixes the edits for <code>layout_left_padded&lt;&gt;::mapping</code> and
+<code>layout_right_padded&lt;&gt;::mapping</code> also correct an editorial asymmetry between class
+header synopsis declaration form and prototype specification form of the corresponding
+constructors and adjust to the correct formatting of the exposition-only data member <code><i>rank_</i></code>.]
+</p>
+</blockquote>
+
+<ol>
+<li><p>Modify 23.7.3.4.5.1 <a href="https://wg21.link/mdspan.layout.left.overview">[mdspan.layout.left.overview]</a> as indicated:</p>
+
+<blockquote>
+<pre>
+namespace std {
+  template&lt;class Extents&gt;
+  class layout_left::mapping {
+    [&hellip;]
+    <i>// 23.7.3.4.5.2 <a href="https://wg21.link/mdspan.layout.left.cons">[mdspan.layout.left.cons]</a>, constructors</i>
+    [&hellip;]
+    template&lt;class OtherExtents&gt;
+      constexpr explicit(<del>extents_type::rank() &gt; 0</del><ins><i>see below</i></ins>)
+        mapping(const layout_stride::mapping&lt;OtherExtents&gt;&amp;);
+    
+    constexpr mapping&amp; operator=(const mapping&amp;) noexcept = default;
+    [&hellip;]
+  };
+}
+</pre>
+</blockquote>
+</li>
+
+<li><p>Modify 23.7.3.4.5.2 <a href="https://wg21.link/mdspan.layout.left.cons">[mdspan.layout.left.cons]</a> as indicated:</p>
+
+<blockquote>
+<pre>
+template&lt;class OtherExtents&gt;
+  constexpr explicit(<del>extents_type::rank() &gt; 0</del><ins><i>see below</i></ins>)
+    mapping(const layout_stride::mapping&lt;OtherExtents&gt;&amp; other);
+</pre>
+<blockquote>
+<p>
+-13- <i>Constraints</i>: [&hellip;]
+<p/>
+-14- <i>Preconditions</i>: [&hellip;]
+<p/>
+-15- <i>Effects</i>: [&hellip;]
+<p/>
+<ins>-?- <i>Remarks</i>: The expression inside <code class='backtick'>explicit</code> is equivalent to:</ins>
+</p>
+<blockquote><pre>
+<ins>!(extents_type::rank() == 0 &amp;&amp; is_convertible_v&lt;OtherExtents, extents_type&gt;)</ins>
+</pre></blockquote>
+</blockquote>
+</blockquote>
+</li>
+
+<li><p>Modify 23.7.3.4.6.1 <a href="https://wg21.link/mdspan.layout.right.overview">[mdspan.layout.right.overview]</a> as indicated:</p>
+
+<blockquote>
+<pre>
+namespace std {
+  template&lt;class Extents&gt;
+  class layout_right::mapping {
+    [&hellip;]
+    <i>// 23.7.3.4.6.2 <a href="https://wg21.link/mdspan.layout.right.cons">[mdspan.layout.right.cons]</a>, constructors</i>
+    [&hellip;]
+    template&lt;class OtherExtents&gt;
+      constexpr explicit(<del>extents_type::rank() &gt; 0</del><ins><i>see below</i></ins>)
+        mapping(const layout_stride::mapping&lt;OtherExtents&gt;&amp;);
+    
+    constexpr mapping&amp; operator=(const mapping&amp;) noexcept = default;
+    [&hellip;]
+  };
+}
+</pre>
+</blockquote>
+</li>
+
+<li><p>Modify 23.7.3.4.6.2 <a href="https://wg21.link/mdspan.layout.right.cons">[mdspan.layout.right.cons]</a> as indicated:</p>
+
+<blockquote>
+<pre>
+template&lt;class OtherExtents&gt;
+  constexpr explicit(<del>extents_type::rank() &gt; 0</del><ins><i>see below</i></ins>)
+    mapping(const layout_stride::mapping&lt;OtherExtents&gt;&amp; other);
+</pre>
+<blockquote>
+<p>
+-13- <i>Constraints</i>: [&hellip;]
+<p/>
+-14- <i>Preconditions</i>: [&hellip;]
+<p/>
+-15- <i>Effects</i>: [&hellip;]
+<p/>
+<ins>-?- <i>Remarks</i>: The expression inside <code class='backtick'>explicit</code> is equivalent to:</ins>
+</p>
+<blockquote><pre>
+<ins>!(extents_type::rank() == 0 &amp;&amp; is_convertible_v&lt;OtherExtents, extents_type&gt;)</ins>
+</pre></blockquote>
+</blockquote>
+</blockquote>
+</li>
+
+<li><p>Modify 23.7.3.4.8.1 <a href="https://wg21.link/mdspan.layout.leftpad.overview">[mdspan.layout.leftpad.overview]</a> as indicated:</p>
+
+<blockquote>
+<pre>
+namespace std {
+  template&lt;size_t PaddingValue&gt;
+  template&lt;class Extents&gt;
+  class layout_left_padded&lt;PaddingValue&gt;::mapping {
+    [&hellip;]
+    <i>// 23.7.3.4.8.3 <a href="https://wg21.link/mdspan.layout.leftpad.cons">[mdspan.layout.leftpad.cons]</a>, constructors</i>
+    [&hellip;]
+    template&lt;class OtherExtents&gt;
+      constexpr explicit(<del>extents_type::rank() &gt; 0</del><ins><i>see below</i></ins>)
+        mapping(const layout_stride::mapping&lt;OtherExtents&gt;&amp;);
+    [&hellip;]
+  };
+}
+</pre>
+</blockquote>
+</li>
+
+<li><p>Modify 23.7.3.4.8.3 <a href="https://wg21.link/mdspan.layout.leftpad.cons">[mdspan.layout.leftpad.cons]</a> as indicated:</p>
+
+<blockquote>
+<pre>
+template&lt;class OtherExtents&gt;
+  constexpr explicit(<del>rank_ &gt; 0</del><ins><i>see below</i></ins>)
+    mapping(const layout_stride::mapping&lt;OtherExtents&gt;&amp; other);
+</pre>
+<blockquote>
+<p>
+-10- <i>Constraints</i>: [&hellip;]
+<p/>
+-11- <i>Preconditions</i>: [&hellip;]
+<p/>
+-12- <i>Effects</i>: [&hellip;]
+<p/>
+<ins>-?- <i>Remarks</i>: The expression inside <code class='backtick'>explicit</code> is equivalent to:</ins>
+</p>
+<blockquote><pre>
+<ins>!(<i>rank_</i> == 0 &amp;&amp; is_convertible_v&lt;OtherExtents, extents_type&gt;)</ins>
+</pre></blockquote>
+</blockquote>
+<pre>
+template&lt;class LayoutLeftPaddedMapping&gt;
+  constexpr explicit(<i>see below</i>)
+    mapping(const LayoutLeftPaddedMapping&amp; other);
+</pre>
+<blockquote>
+<p>
+-13- <i>Constraints</i>: [&hellip;]
+<p/>
+[&hellip;]
+<p/>
+-16- <i>Remarks</i>: The expression inside <code class='backtick'>explicit</code> is equivalent to:
+</p>
+<blockquote><pre>
+<ins>!is_convertible_v&lt;typename LayoutLeftPaddedMapping::extents_type, extents_type&gt; ||</ins>
+rank_&gt; 1 &amp;&amp;
+(padding_value != dynamic_extent ||
+ LayoutLeftPaddedMapping::padding_value == dynamic_extent)
+</pre></blockquote>
+</blockquote>
+</blockquote>
+</li>
+
+<li><p>Modify 23.7.3.4.9.1 <a href="https://wg21.link/mdspan.layout.rightpad.overview">[mdspan.layout.rightpad.overview]</a> as indicated:</p>
+
+<blockquote>
+<pre>
+namespace std {
+  template&lt;size_t PaddingValue&gt;
+  template&lt;class Extents&gt;
+  class layout_right_padded&lt;PaddingValue&gt;::mapping {
+    [&hellip;]
+    <i>// 23.7.3.4.9.3 <a href="https://wg21.link/mdspan.layout.rightpad.cons">[mdspan.layout.rightpad.cons]</a>, constructors</i>
+    [&hellip;]
+    template&lt;class OtherExtents&gt;
+      constexpr explicit(<del>rank_ &gt; 0</del><ins><i>see below</i></ins>)
+        mapping(const layout_stride::mapping&lt;OtherExtents&gt;&amp;);
+    [&hellip;]
+  };
+}
+</pre>
+</blockquote>
+</li>
+
+<li><p>Modify 23.7.3.4.9.3 <a href="https://wg21.link/mdspan.layout.rightpad.cons">[mdspan.layout.rightpad.cons]</a> as indicated:</p>
+
+<blockquote>
+<pre>
+template&lt;class OtherExtents&gt;
+  constexpr explicit(<del>rank_ &gt; 0</del><ins><i>see below</i></ins>)
+    mapping(const layout_stride::mapping&lt;OtherExtents&gt;&amp; other);
+</pre>
+<blockquote>
+<p>
+-10- <i>Constraints</i>: [&hellip;]
+<p/>
+-11- <i>Preconditions</i>: [&hellip;]
+<p/>
+-12- <i>Effects</i>: [&hellip;]
+<p/>
+<ins>-?- <i>Remarks</i>: The expression inside <code class='backtick'>explicit</code> is equivalent to:</ins>
+</p>
+<blockquote><pre>
+<ins>!(<i>rank_</i> == 0 &amp;&amp; is_convertible_v&lt;OtherExtents, extents_type&gt;)</ins>
+</pre></blockquote>
+</blockquote>
+<pre>
+template&lt;class LayoutRightPaddedMapping&gt;
+  constexpr explicit(<i>see below</i>)
+    mapping(const LayoutRightPaddedMapping&amp; other);
+</pre>
+<blockquote>
+<p>
+-13- <i>Constraints</i>: [&hellip;]
+<p/>
+[&hellip;]
+<p/>
+-17- <i>Remarks</i>: The expression inside <code class='backtick'>explicit</code> is equivalent to:
+</p>
+<blockquote><pre>
+<ins>!is_convertible_v&lt;typename LayoutRightPaddedMapping::extents_type, extents_type&gt; ||</ins>
+<i>rank_</i> &gt; 1 &amp;&amp;
+(padding_value != dynamic_extent ||
+LayoutRightPaddedMapping::padding_value == dynamic_extent)
+</pre></blockquote>
+</blockquote>
+</blockquote>
+</li>
+
+</ol>
+
 
 
 
