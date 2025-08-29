@@ -54,7 +54,7 @@
 </style>
 </head>
 <body>
-<p>Revised 2025-08-29 at 17:49:31 UTC
+<p>Revised 2025-08-29 at 17:50:41 UTC
 </p><h2>Unresolved Issues</h2>
 <hr>
 <h3 id="423"><a href="#423">423</a><sup><a href="https://cplusplus.github.io/LWG/issue423">(i)</a></sup>. Effects of negative <code>streamsize</code> in iostreams</h3>
@@ -66943,8 +66943,8 @@ ranges, which do not support all valid ranges.
 <hr>
 <h3 id="4223"><a href="#4223">4223</a><sup><a href="https://cplusplus.github.io/LWG/issue4223">(i)</a></sup>. Deduction guides for maps are mishandling tuples and references</h3>
 <p><b>Section:</b> 23.4.1 <a href="https://wg21.link/associative.general">[associative.general]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Tomasz Kaminski <b>Opened:</b> 2025-03-14 <b>Last modified:</b> 2025-03-15</p>
-<p><b>Priority: </b>Not Prioritized
+ <b>Submitter:</b> Tomasz Kaminski <b>Opened:</b> 2025-03-14 <b>Last modified:</b> 2025-08-29</p>
+<p><b>Priority: </b>2
 </p>
 <p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
 <p><b>Discussion:</b></p>
@@ -66972,6 +66972,13 @@ std::map m1(fm.begin(), fm.end()); // OK, deduces std::map&lt;int, float&gt;
 auto tv = fm | std::views::transform(std::identity{}); // iterator value value_type is pair&lt;int const&amp;, float const&amp;&gt;
 std::map m3(tv.begin(), tv.end()); // <span style="color:red;font-weight:bolder">Ill-formed, deduces std::map&lt;int const&amp;, float&amp;&gt;</span>
 </pre></blockquote>
+
+
+<p><i>[2025-08-29; Reflector poll]</i></p>
+
+<p>
+Set priority to 2 after reflector poll.
+</p>
 
 
 
@@ -68784,8 +68791,8 @@ the allocator in <code class='backtick'>*this</code> is replaced with a copy of 
 <hr>
 <h3 id="4252"><a href="#4252">4252</a><sup><a href="https://cplusplus.github.io/LWG/issue4252">(i)</a></sup>. Are exposition-only classes considered specified for the purpose of <code class='backtick'>final</code>?</h3>
 <p><b>Section:</b> 16.4.6.13 <a href="https://wg21.link/derivation">[derivation]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Jiang An <b>Opened:</b> 2025-04-28 <b>Last modified:</b> 2025-05-04</p>
-<p><b>Priority: </b>Not Prioritized
+ <b>Submitter:</b> Jiang An <b>Opened:</b> 2025-04-28 <b>Last modified:</b> 2025-08-29</p>
+<p><b>Priority: </b>3
 </p>
 <p><b>View all other</b> <a href="lwg-index.html#derivation">issues</a> in [derivation].</p>
 <p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
@@ -68799,6 +68806,14 @@ However, libc++ marks <code class='backtick'>join_view</code>'s iterator <code c
 (<a href="https://reviews.llvm.org/D142811#inline-1383022">https://reviews.llvm.org/D142811#inline-1383022</a>). 
 Perhaps we should clarify that the <code class='backtick'>final</code>-ity of exposition-only class is unspecified.
 </p>
+
+<p><i>[2025-08-29; Reflector poll]</i></p>
+
+<p>
+Set priority to 3 after reflector poll.
+Votes for P2 (due to implementation divergence), NAD, and LEWG.
+</p>
+
 
 
 <p id="res-4252"><b>Proposed resolution:</b></p>
@@ -72121,12 +72136,12 @@ is <code>true</code>.
 
 <hr>
 <h3 id="4289"><a href="#4289">4289</a><sup><a href="https://cplusplus.github.io/LWG/issue4289">(i)</a></sup>. Seed sequence is overspecified</h3>
-<p><b>Section:</b> 29.5.3.2 <a href="https://wg21.link/rand.req.seedseq">[rand.req.seedseq]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Magnus Fromreide <b>Opened:</b> 2025-06-22 <b>Last modified:</b> 2025-07-06</p>
-<p><b>Priority: </b>Not Prioritized
+<p><b>Section:</b> 29.5.3.2 <a href="https://wg21.link/rand.req.seedseq">[rand.req.seedseq]</a> <b>Status:</b> <a href="lwg-active.html#LEWG">LEWG</a>
+ <b>Submitter:</b> Magnus Fromreide <b>Opened:</b> 2025-06-22 <b>Last modified:</b> 2025-08-29</p>
+<p><b>Priority: </b>3
 </p>
 <p><b>View all other</b> <a href="lwg-index.html#rand.req.seedseq">issues</a> in [rand.req.seedseq].</p>
-<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#LEWG">LEWG</a> status.</p>
 <p><b>Discussion:</b></p>
 <p>
 The requirements on a seed sequence are so strict that it is forbidden to initialize a random number 
@@ -72145,6 +72160,14 @@ the unused requirements from the seed sequence concept.
 I will admit that I am unsure about the deletion of Note 1 but since it only seems to attempt to motivate the 
 copyability I opted to let it go along with the requirements.
 </p>
+
+<p><i>[2025-08-29; Reflector poll]</i></p>
+
+<p>
+Set priority to 3 after reflector poll.
+This is a design change, send to LEWG.
+</p>
+
 
 
 <p id="res-4289"><b>Proposed resolution:</b></p>
@@ -72392,80 +72415,6 @@ template&lt;size_t Alignment, class T&gt;
 </li>
 
 </ol>
-
-
-
-
-
-<hr>
-<h3 id="4292"><a href="#4292">4292</a><sup><a href="https://cplusplus.github.io/LWG/issue4292">(i)</a></sup>. Unordered container local iterators should be constexpr iterators</h3>
-<p><b>Section:</b> 23.5.3.1 <a href="https://wg21.link/unord.map.overview">[unord.map.overview]</a>, 23.5.4.1 <a href="https://wg21.link/unord.multimap.overview">[unord.multimap.overview]</a>, 23.5.6.1 <a href="https://wg21.link/unord.set.overview">[unord.set.overview]</a>, 23.5.7.1 <a href="https://wg21.link/unord.multiset.overview">[unord.multiset.overview]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Jonathan Wakely <b>Opened:</b> 2025-07-10 <b>Last modified:</b> 2025-07-14</p>
-<p><b>Priority: </b>Not Prioritized
-</p>
-<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
-<p><b>Discussion:</b></p>
-<p>
-The intent of <a href="https://wg21.link/P3372R3" title=" constexpr containers and adapters">P3372R3</a> was for all container iterators to be
-constexpr iterators, but during application of the paper to the working draft
-it was observed that unordered containers don't say it for their
-local iterators.
-</p>
-
-
-<p id="res-4292"><b>Proposed resolution:</b></p>
-<p>
-This wording is relative to <a href="https://wg21.link/N5008" title=" Working Draft, Programming Languages — C++">N5008</a>.
-</p>
-
-<ol>
-
-<li><p>Modify 23.5.3.1 <a href="https://wg21.link/unord.map.overview">[unord.map.overview]</a> as indicated:</p>
-<blockquote>
-<p>-4-
-The types <code class='backtick'>iterator</code><ins>,</ins> <del>and</del> <code class='backtick'>const_iterator</code><ins>,
-<code class='backtick'>local_iterator</code>, and <code class='backtick'>const_local_iterator</code></ins>
-meet the constexpr iterator requirements
-(24.3.1 <a href="https://wg21.link/iterator.requirements.general">[iterator.requirements.general]</a>).
-</p>
-</blockquote>
-</li>
-
-<li><p>Modify 23.5.4.1 <a href="https://wg21.link/unord.multimap.overview">[unord.multimap.overview]</a> as indicated:</p>
-<blockquote>
-<p>-4-
-The types <code class='backtick'>iterator</code><ins>,</ins> <del>and</del> <code class='backtick'>const_iterator</code><ins>,
-<code class='backtick'>local_iterator</code>, and <code class='backtick'>const_local_iterator</code></ins>
-meet the constexpr iterator requirements
-(24.3.1 <a href="https://wg21.link/iterator.requirements.general">[iterator.requirements.general]</a>).
-</p>
-</blockquote>
-</li>
-
-<li><p>Modify 23.5.6.1 <a href="https://wg21.link/unord.set.overview">[unord.set.overview]</a> as indicated:</p>
-<blockquote>
-<p>-4-
-The types <code class='backtick'>iterator</code><ins>,</ins> <del>and</del> <code class='backtick'>const_iterator</code><ins>,
-<code class='backtick'>local_iterator</code>, and <code class='backtick'>const_local_iterator</code></ins>
-meet the constexpr iterator requirements
-(24.3.1 <a href="https://wg21.link/iterator.requirements.general">[iterator.requirements.general]</a>).
-</p>
-</blockquote>
-</li>
-
-<li><p>Modify 23.5.7.1 <a href="https://wg21.link/unord.multiset.overview">[unord.multiset.overview]</a> as indicated:</p>
-<blockquote>
-<p>-4-
-The types <code class='backtick'>iterator</code><ins>,</ins> <del>and</del> <code class='backtick'>const_iterator</code><ins>,
-<code class='backtick'>local_iterator</code>, and <code class='backtick'>const_local_iterator</code></ins>
-meet the constexpr iterator requirements
-(24.3.1 <a href="https://wg21.link/iterator.requirements.general">[iterator.requirements.general]</a>).
-</p>
-</blockquote>
-</li>
-
-</ol>
-
 
 
 
@@ -73214,8 +73163,8 @@ can use the <code class='backtick'>scaled_sum_of_squares</code> result from
 <hr>
 <h3 id="4303"><a href="#4303">4303</a><sup><a href="https://cplusplus.github.io/LWG/issue4303">(i)</a></sup>. <code class='backtick'>std::decay_t</code> in the specification of <code class='backtick'>ranges::distance</code> is problematic</h3>
 <p><b>Section:</b> 24.4.4.3 <a href="https://wg21.link/range.iter.op.distance">[range.iter.op.distance]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Jiang An <b>Opened:</b> 2025-07-24 <b>Last modified:</b> 2025-08-16</p>
-<p><b>Priority: </b>Not Prioritized
+ <b>Submitter:</b> Jiang An <b>Opened:</b> 2025-07-24 <b>Last modified:</b> 2025-08-29</p>
+<p><b>Priority: </b>4
 </p>
 <p><b>View all other</b> <a href="lwg-index.html#range.iter.op.distance">issues</a> in [range.iter.op.distance].</p>
 <p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
@@ -73235,6 +73184,13 @@ imposed by <code>sized_sentinel_for&lt;S, decay_t&lt;I&gt;&gt;</code> are still 
 <p/>
 I think we should only decay arrays and keep <code class='backtick'>volatile</code> for non-array arguments.
 </p>
+
+<p><i>[2025-08-29; Reflector poll]</i></p>
+
+<p>
+Set priority to 4 after reflector poll.
+</p>
+
 
 
 <p id="res-4303"><b>Proposed resolution:</b></p>
@@ -73465,8 +73421,8 @@ argument lists.
 <hr>
 <h3 id="4306"><a href="#4306">4306</a><sup><a href="https://cplusplus.github.io/LWG/issue4306">(i)</a></sup>. Interaction between LWG 2259 and <i>Constraints</i> of member functions</h3>
 <p><b>Section:</b> 16.4.6.5 <a href="https://wg21.link/member.functions">[member.functions]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Jiang An <b>Opened:</b> 2025-07-24 <b>Last modified:</b> 2025-08-02</p>
-<p><b>Priority: </b>Not Prioritized
+ <b>Submitter:</b> Jiang An <b>Opened:</b> 2025-07-24 <b>Last modified:</b> 2025-08-29</p>
+<p><b>Priority: </b>3
 </p>
 <p><b>View other</b> <a href="lwg-index-open.html#member.functions">active issues</a> in [member.functions].</p>
 <p><b>View all other</b> <a href="lwg-index.html#member.functions">issues</a> in [member.functions].</p>
@@ -73508,6 +73464,13 @@ As shown by the example, the allowance in 16.4.6.5 <a href="https://wg21.link/me
 <p/>
 So perhaps some wording change is necessary to guarantee the <i>Constraints</i> of member functions to be meaningful.
 </p>
+
+<p><i>[2025-08-29; Reflector poll]</i></p>
+
+<p>
+Set priority to 3 after reflector poll.
+</p>
+
 
 
 <p id="res-4306"><b>Proposed resolution:</b></p>
@@ -74027,8 +73990,8 @@ namespace std::ranges {
 <hr>
 <h3 id="4308"><a href="#4308">4308</a><sup><a href="https://cplusplus.github.io/LWG/issue4308">(i)</a></sup>. <code>std::optional&lt;T&amp;&gt;::iterator</code> can't be a contiguous iterator for some <code class='backtick'>T</code></h3>
 <p><b>Section:</b> 22.5.4.5 <a href="https://wg21.link/optional.ref.iterators">[optional.ref.iterators]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Jiang An <b>Opened:</b> 2025-08-05 <b>Last modified:</b> 2025-08-16</p>
-<p><b>Priority: </b>Not Prioritized
+ <b>Submitter:</b> Jiang An <b>Opened:</b> 2025-08-05 <b>Last modified:</b> 2025-08-29</p>
+<p><b>Priority: </b>1
 </p>
 <p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
 <p><b>Discussion:</b></p>
@@ -74043,6 +74006,18 @@ random access iterator, and additional models <code class='backtick'>contiguous_
 When <code class='backtick'>T</code> is a function type, the possibly intended iterator would be not even an actual iterator. 
 But it seems that range-for loop over such an <code>std::optional&lt;T&amp;&gt;</code> can work.
 </p>
+
+<p><i>[2025-08-29; Reflector poll]</i></p>
+
+<p>
+Set priority to 1 after reflector poll.
+</p>
+<p>
+"How can <code class='backtick'>end()</code> work for a pointer to incomplete type? <code class='backtick'>begin</code>/<code class='backtick'>end</code> should
+be constrained on object types, and Mandate complete object types.
+The aliases shouldn't be defined for non-object types, but probably harmless."
+</p>
+
 
 
 <p id="res-4308"><b>Proposed resolution:</b></p>

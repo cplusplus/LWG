@@ -64,8 +64,8 @@
 <p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#New">New</a> status.</em></p>
 <h3 id="4308"><a href="lwg-active.html#4308">4308</a>. <code>std::optional&lt;T&amp;&gt;::iterator</code> can't be a contiguous iterator for some <code class='backtick'>T</code></h3>
 <p><b>Section:</b> 22.5.4.5 <a href="https://wg21.link/optional.ref.iterators">[optional.ref.iterators]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Jiang An <b>Opened:</b> 2025-08-05 <b>Last modified:</b> 2025-08-16</p>
-<p><b>Priority: </b>Not Prioritized
+ <b>Submitter:</b> Jiang An <b>Opened:</b> 2025-08-05 <b>Last modified:</b> 2025-08-29</p>
+<p><b>Priority: </b>1
 </p>
 <p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
 <p><b>Discussion:</b></p>
@@ -80,6 +80,18 @@ random access iterator, and additional models <code class='backtick'>contiguous_
 When <code class='backtick'>T</code> is a function type, the possibly intended iterator would be not even an actual iterator. 
 But it seems that range-for loop over such an <code>std::optional&lt;T&amp;&gt;</code> can work.
 </p>
+
+<p><i>[2025-08-29; Reflector poll]</i></p>
+
+<p>
+Set priority to 1 after reflector poll.
+</p>
+<p>
+"How can <code class='backtick'>end()</code> work for a pointer to incomplete type? <code class='backtick'>begin</code>/<code class='backtick'>end</code> should
+be constrained on object types, and Mandate complete object types.
+The aliases shouldn't be defined for non-object types, but probably harmless."
+</p>
+
 
 
 <p id="res-4308"><b>Proposed resolution:</b></p>

@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <title>Issue 4289: Seed sequence is overspecified</title>
 <meta property="og:title" content="Issue 4289: Seed sequence is overspecified">
-<meta property="og:description" content="C++ library issue. Status: New">
+<meta property="og:description" content="C++ library issue. Status: LEWG">
 <meta property="og:url" content="https://cplusplus.github.io/LWG/issue4289.html">
 <meta property="og:type" content="website">
 <meta property="og:image" content="http://cplusplus.github.io/LWG/images/cpp_logo.png">
@@ -61,14 +61,14 @@
 </head>
 <body>
 <hr>
-<p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#New">New</a> status.</em></p>
+<p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#LEWG">LEWG</a> status.</em></p>
 <h3 id="4289"><a href="lwg-active.html#4289">4289</a>. Seed sequence is overspecified</h3>
-<p><b>Section:</b> 29.5.3.2 <a href="https://wg21.link/rand.req.seedseq">[rand.req.seedseq]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Magnus Fromreide <b>Opened:</b> 2025-06-22 <b>Last modified:</b> 2025-07-06</p>
-<p><b>Priority: </b>Not Prioritized
+<p><b>Section:</b> 29.5.3.2 <a href="https://wg21.link/rand.req.seedseq">[rand.req.seedseq]</a> <b>Status:</b> <a href="lwg-active.html#LEWG">LEWG</a>
+ <b>Submitter:</b> Magnus Fromreide <b>Opened:</b> 2025-06-22 <b>Last modified:</b> 2025-08-29</p>
+<p><b>Priority: </b>3
 </p>
 <p><b>View all other</b> <a href="lwg-index.html#rand.req.seedseq">issues</a> in [rand.req.seedseq].</p>
-<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#LEWG">LEWG</a> status.</p>
 <p><b>Discussion:</b></p>
 <p>
 The requirements on a seed sequence are so strict that it is forbidden to initialize a random number 
@@ -87,6 +87,14 @@ the unused requirements from the seed sequence concept.
 I will admit that I am unsure about the deletion of Note 1 but since it only seems to attempt to motivate the 
 copyability I opted to let it go along with the requirements.
 </p>
+
+<p><i>[2025-08-29; Reflector poll]</i></p>
+
+<p>
+Set priority to 3 after reflector poll.
+This is a design change, send to LEWG.
+</p>
+
 
 
 <p id="res-4289"><b>Proposed resolution:</b></p>

@@ -64,8 +64,8 @@
 <p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#New">New</a> status.</em></p>
 <h3 id="4303"><a href="lwg-active.html#4303">4303</a>. <code class='backtick'>std::decay_t</code> in the specification of <code class='backtick'>ranges::distance</code> is problematic</h3>
 <p><b>Section:</b> 24.4.4.3 <a href="https://wg21.link/range.iter.op.distance">[range.iter.op.distance]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Jiang An <b>Opened:</b> 2025-07-24 <b>Last modified:</b> 2025-08-16</p>
-<p><b>Priority: </b>Not Prioritized
+ <b>Submitter:</b> Jiang An <b>Opened:</b> 2025-07-24 <b>Last modified:</b> 2025-08-29</p>
+<p><b>Priority: </b>4
 </p>
 <p><b>View all other</b> <a href="lwg-index.html#range.iter.op.distance">issues</a> in [range.iter.op.distance].</p>
 <p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
@@ -85,6 +85,13 @@ imposed by <code>sized_sentinel_for&lt;S, decay_t&lt;I&gt;&gt;</code> are still 
 <p/>
 I think we should only decay arrays and keep <code class='backtick'>volatile</code> for non-array arguments.
 </p>
+
+<p><i>[2025-08-29; Reflector poll]</i></p>
+
+<p>
+Set priority to 4 after reflector poll.
+</p>
+
 
 
 <p id="res-4303"><b>Proposed resolution:</b></p>
