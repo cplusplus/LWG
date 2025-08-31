@@ -1,0 +1,27 @@
+<?xml version='1.0' encoding='utf-8' standalone='no'?>
+<!DOCTYPE issue SYSTEM "lwg-issue.dtd">
+
+<issue num="4348" status="New">
+<title><code>task</code> doesn't support symmetric transfer</title>
+<section><sref ref="[task.class]"/></section>
+<submitter>Dietmar Kühl</submitter>
+<date>01 Sep 2025</date>
+<priority>99</priority>
+
+<discussion>
+<p>
+The specification of <code>task</code> doesn't require symmetric
+transfer which can help with stack overflow. Also, when another
+<code>task</code> is <code>co_await</code>ed the scheduler on which
+the <code>task</code> resumes is known and can be used to avoid
+unnecessary scheduling by comparing the scheduler currently installed
+by in two <code>task</code>s involved.
+</p>
+</discussion>
+
+<resolution>
+<p>
+</p>
+</resolution>
+
+</issue>
