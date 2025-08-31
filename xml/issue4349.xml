@@ -1,0 +1,63 @@
+<?xml version='1.0' encoding='utf-8' standalone='no'?>
+<!DOCTYPE issue SYSTEM "lwg-issue.dtd">
+
+<issue num="4349" status="New">
+<title><code>task</code> is not actually started lazily</title>
+<section><sref ref="[task.promise]"/></section>
+<submitter>Dietmar Kühl</submitter>
+<date>01 Sep 2025</date>
+<priority>99</priority>
+
+<discussion>
+<p>
+The wording for <code>task&lt;...&gt;::promise_type::initial_suspend</code>
+in <a href="https://wg21.link/task.promise#6">[task.promise] paragraph 6</a>
+(second bullet) may imply that a task is eagerly started, i.e., that the
+awaiter return from <code>initial_suspend()</code> immediately starts
+the scheduling operation and cause the <code>task</code> to be resumed. At
+the very least the second bullet of the wording should be clarified such
+that the scheduling operation is only started when the coroutine gets
+resumed.
+</p>
+<p>
+An alternative resolution it have <code>initial_suspend()</code>
+return <code>std::suspend_always</code> implicitly requiring that
+the <code>task</code> gets <code>start()</code>ed from the correct
+execution context. This approach has the advantage of avoiding
+unnecessary scheduling operations for the likely common case when
+<code>task</code>s are started from the correct context.
+</p>
+</discussion>
+
+<resolution>
+<p>
+Change the declaration of <code>initial_suspend()</code> in the synopsis
+of <a href="https://wg21.link/task.promise#6">[task.promise]</a> to use
+<code>suspend_always</code>, directly provide a definition, and add
+various qualifiers:
+<blockquote>
+<pre>
+namespace std::execution {
+  template&lt;class T, class Environment&gt;
+  class task&lt;T, Environment&gt;::promise_type {
+    ...
+    <del>auto</del><ins>static constexpr suspend_always</ins> initial_suspend() noexcept<del>;</del><ins>{ return {}; }</ins>
+    ...
+  };
+
+}
+</pre>
+</blockquote>
+</p>
+<p>
+Remove <a href="https://wg21.link/task.promise#6">[task.promise] paragraph 6</a> entirely:
+<blockquote>
+<pre><del>auto initial_suspend() noexcept;</del></pre>
+<p><del>-6- <i>Returns:</i> An awaitable object of unspecified type ([expr.await]) whose member functions arrange for</del></p>
+<p><del>-6.1- - the calling coroutine to be suspended,</del></p>
+<p><del>-6.2- - the coroutine to be resumed on an execution agent of the execution resource associated with <code><i>SCHED</i>(*this)</code>.</del></p>
+</blockquote>
+</p>
+</resolution>
+
+</issue>
