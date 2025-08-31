@@ -26,7 +26,7 @@ support an optional allocator the coroutine definition needs to use
 an allocator and either gets duplicated not using an allocator or
 a forwarding function is added which adds the default allocator.
 With the flexible allocator position optional allocator support can be provided
-using a trailing argument list, i.e., adding <code>, auto&&...</code>.
+using a trailing argument list, i.e., adding <code>, auto&amp;&amp;...</code>.
 Instead of constraining <code>task</code> it may be more reasonable
 to add the flexibility to <code>generator</code>.
 </p>
