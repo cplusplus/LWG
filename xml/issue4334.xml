@@ -1,0 +1,40 @@
+<?xml version='1.0' encoding='utf-8' standalone='no'?>
+<!DOCTYPE issue SYSTEM "lwg-issue.dtd">
+
+<issue num="4334" status="New">
+<title><code>taskYour Titlelt;...Your Titlegt;::promise_type</code> supports arbitrary <code>allocator_arg</code> position</title>
+<section><sref ref="[task.promise]"/></section>
+<submitter>Dietmar Kühl</submitter>
+<date>31 Aug 2025</date>
+<priority>99</priority>
+
+<discussion>
+<p>
+Normally the <code>allocator_arg</code> argument has to be the first
+argument when present. For <code>task&lt;...&gt;::promise_type</code>
+the <code>allocator_arg</code> can appear at an arbitrary position
+(except the last because it always needs to be followed by the
+allocator). This permission is inconsistent and the position of the
+<code>allocator_arg</code> argument and the allocator should be
+limited to come first.
+</p>
+<p>
+For containers the optional support for allocators is implemented
+once for every container.  For coroutines the optional support for
+allocators is implemented once for every coroutine definition. To
+support an optional allocator the coroutine definition needs to use
+an allocator and either gets duplicated not using an allocator or
+a forwarding function is added which adds the default allocator.
+With the flexible allocator position optional allocator support can be provided
+using a trailing argument list, i.e., adding <code>, auto&&...</code>.
+Instead of constraining <code>task</code> it may be more reasonable
+to add the flexibility to <code>generator</code>.
+</p>
+</discussion>
+
+<resolution>
+<p>
+</p>
+</resolution>
+
+</issue>
