@@ -10,6 +10,13 @@
 
 <discussion>
 <p>
+<code>affine_on</code> is specified to take a sender and a scheduler
+as arguments. The scheduler is meant to match the scheduler obtained
+from the <code>get_scheduler</code> query on the receiver's
+environment.  Thus, the scheduler argument is redundant and the
+semantics become weird if these two schedulers don't match. The
+<code>affine_on</code> algorithm should only take the sender as
+argument.
 </p>
 </discussion>
 
