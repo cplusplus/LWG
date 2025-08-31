@@ -1,0 +1,45 @@
+<?xml version='1.0' encoding='utf-8' standalone='no'?>
+<!DOCTYPE issue SYSTEM "lwg-issue.dtd">
+
+<issue num="4346" status="New">
+<title><code>task::promise_type::return_void</code>/<code>value</code> lack a specification</title>
+<section><sref ref="[task.promise]"/></section>
+<submitter>Dietmar Kühl</submitter>
+<date>01 Sep 2025</date>
+<priority>99</priority>
+
+<discussion>
+<p>
+The synopsis for <code>std::execution::task&lt;T,
+E&gt;::promise_type</code> declares <code>return_void()</code> or
+<code>return_value(V&amp;&amp;)</code>. However, there is no
+specification of what these functions actually do.
+<code>return_void()</code> doesn’t need to do anything at all.
+<code>return_value(V&amp;&amp; v)</code> needs to store <code>v</code>
+into the <code><i>result</i></code>.
+</p>
+</discussion>
+
+<resolution>
+<p>
+Insert the following paragraphs after the specification of <code>unhandled_stopped</code>:
+</p>
+<p>
+<blockquote>
+<pre>coroutine_handle&lt;&gt; unhandled_stopped();</pre>
+<p>-13- <i>Effects</i>: Completes the asynchronous operation associated with <code><i>STATE</i>(*this)</code> by invoking <code>set_stopped(std::move(<i>RCVR</i>(*this)))</code>.</p>
+<p>-14- <i>Returns</i>: <code>noop_coroutine()</code>.</p>
+<pre><ins>void return_void();</ins></pre>
+<p><ins>-15- <i>Effects</i>: does nothing.</ins></p>
+<pre><ins>
+template&lt;class V&gt;
+  void return_value(V&amp;&amp; v);
+</ins></pre>
+<p><ins>-16- <i>Effects</i>: Equivalent to <code><i>result</i>.emplace(std::forward&lt;V&gt;(v))</code>.</ins></p>
+<pre>unspecified get_env() const noexcept;</pre>
+<p>-1<del>5</del><ins>7</ins>- <i>Returns</i>: An object <code>env</code> such that queries are forwarded as follows:</p>
+</blockquote>
+</p>
+</resolution>
+
+</issue>
