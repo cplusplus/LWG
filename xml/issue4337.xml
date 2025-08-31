@@ -1,0 +1,48 @@
+<?xml version='1.0' encoding='utf-8' standalone='no'?>
+<!DOCTYPE issue SYSTEM "lwg-issue.dtd">
+
+<issue num="4337" status="New">
+<title><code>co_await change_coroutine_scheduler(s)</code> requires assignable</title>
+<section><sref ref="[task.promise]"/></section>
+<submitter>Dietmar Kühl</submitter>
+<date>31 Aug 2025</date>
+<priority>99</priority>
+
+<discussion>
+<p>
+The specification of <code>change_coroutine_scheduler(sched)</code> uses
+<code>std::exchange</code> to put the scheduler into place (in <a
+href="https://wg21.link/task.promise#11">[task.promise] paragraph
+11</a>). The problem is that <code>std::exchange(x, v)</code> expects
+<code>x</code> to be assignable from <code>v</code> but there is
+no requirement for scheduler to be assignable.
+</p>
+</discussion>
+
+<resolution>
+<p>
+Change the wording in <a href="https://wg21.link/task.promise#11">[task.promise] paragraph 11</a>
+to avoid the use of <code>std::exchange</code> and transfer the using
+construction:
+<blockquote>
+<pre>
+template&lt;class Sch&gt;
+  auto await_transform(change_coroutine_scheduler&lt;Sch&gt; sch) noexcept;
+</pre>
+<p>
+-11- <i>Effects</i>: Equivalent to:
+</p>
+<pre>
+<del>return await_transform(just(exchange(SCHED(*this), scheduler_type(sch.scheduler))), *this);</del><ins>
+auto* s{address_of(<i>SCHED</i>(*this))};
+auto rc{std::move(*s)};
+s->~scheduler_type();
+new(s) scheduler_type(std::move(sch));
+return std::move(rc);
+</ins>
+</pre>
+</blockquote>
+</p>
+</resolution>
+
+</issue>
