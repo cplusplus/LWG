@@ -1,0 +1,28 @@
+<?xml version='1.0' encoding='utf-8' standalone='no'?>
+<!DOCTYPE issue SYSTEM "lwg-issue.dtd">
+
+<issue num="4331" status="New">
+<title><code>affine_on</code> shape may be wrong</title>
+<section><sref ref="[exec.affine.on]"/></section>
+<submitter>Dietmar Kühl</submitter>
+<date>31 Aug 2025</date>
+<priority>99</priority>
+
+<discussion>
+<p>
+<code>affine_on</code> is specified to take a sender and a scheduler
+as arguments. The scheduler is meant to match the scheduler obtained
+from the <code>get_scheduler</code> query on the receiver's
+environment.  Thus, the scheduler argument is redundant and the
+semantics become weird if these two schedulers don't match. The
+<code>affine_on</code> algorithm should only take the sender as
+argument.
+</p>
+</discussion>
+
+<resolution>
+<p>
+</p>
+</resolution>
+
+</issue>
