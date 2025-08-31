@@ -1,0 +1,25 @@
+<?xml version='1.0' encoding='utf-8' standalone='no'?>
+<!DOCTYPE issue SYSTEM "lwg-issue.dtd">
+
+<issue num="4329" status="New">
+<title>Customising affine_on for other algorithms</title>
+<section><sref ref="[exec.affine.on]"/></section>
+<submitter>Dietmar Kühl</submitter>
+<date>31 Aug 2025</date>
+<priority>99</priority>
+
+<discussion>
+<p>
+There are no customisations of <code>affine_on</code> for other
+algorithms specified. For example, <code>affine_on(just(), sched)</code>
+can be equivalent to <code>just()</code> because <code>just()</code>
+completes inline and, thus, on the correct execution context.
+</p>
+</discussion>
+
+<resolution>
+<p>
+</p>
+</resolution>
+
+</issue>
