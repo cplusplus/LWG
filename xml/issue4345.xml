@@ -1,0 +1,43 @@
+<?xml version='1.0' encoding='utf-8' standalone='no'?>
+<!DOCTYPE issue SYSTEM "lwg-issue.dtd">
+
+<issue num="4345" status="New">
+<title><code>task::promise_type::return_value</code> default template parameter</title>
+<section><sref ref="[task.promise]"/></section>
+<submitter>Dietmar Kühl</submitter>
+<date>01 Sep 2025</date>
+<priority>99</priority>
+
+<discussion>
+<p>
+The template parameter <code>V</code> of
+<code>task::promise_type::return_value</code> doesn't have a default
+template argument specified. Specifying a default template argument of <code>T</code>
+would enable use of <code>co_return { ... }</code> which would be
+consistent with normal <code>return</code> statements. This feature
+was not discussed in the design paper but based on the LEWG discussion
+on 2025-08-26 it is considered to be more a bug fix than a new feature.
+</p>
+</discussion>
+
+<resolution>
+<p>
+Add a default template argument of <code>T</code> to the template
+parameter <code>V</code> of <code>task::promise_type::return_value</code>
+in the synopsis of <a href="https://wg21.link/task.promise">[task.promise]</a>:
+<blockquote><pre>
+namespace std::execution {
+  template&lt;class T, class Environment&gt;
+  class task&lt;T, Environment&gt;::promise_type {
+     ...
+    template&lt;typename V <ins>= T</ins>&gt;
+    void return_value(V&amp;&amp; value);
+    ...
+  };
+
+}
+</pre></blockquote>
+</p>
+</resolution>
+
+</issue>
