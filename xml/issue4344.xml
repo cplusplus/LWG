@@ -1,0 +1,56 @@
+<?xml version='1.0' encoding='utf-8' standalone='no'?>
+<!DOCTYPE issue SYSTEM "lwg-issue.dtd">
+
+<issue num="4344" status="New">
+<title><code>affine_on</code> has no specification for the default</title>
+<section><sref ref="[exec.affine.on]"/></section>
+<submitter>Dietmar Kühl</submitter>
+<date>01 Sep 2025</date>
+<priority>99</priority>
+
+<discussion>
+<p>
+The wording of <code>affine_on</code> doesnt have a specification
+for the default implementation. For other algorithms the default
+implementation is specified.
+</p>
+<p>
+The intention for <code>affine_on</code> was to all
+optimisation/customisation in a way reducing the necessary scheduling:
+if the implementation can determine if a sender completed already
+on the correct execution agent it should be allowed to avoid
+scheduling. A specification should provide enough lattitude to
+allow that.
+</p>
+</discussion>
+
+<resolution>
+<p>
+Add a new paragraph to the specification of <code>affine_on</code>
+in <a href="https://wg21.link/exec.affine.on">[exec.affine.on]</a> providing
+a specification for the default implementation:
+</p>
+<p>
+<blockquote>
+<p><ins>
+-6- Let <code>sndr</code> and <code>env</code> be subexpressions
+such that <code>Sndr</code> is <code>decltype((sndr))</code>. If
+<code>sender-for&lt;Sndr, affine_on_t&gt;</code> is <code>false</code>, then the expression
+<code>affine_on.transform_sender(sndr, env)</code> is ill-formed; otherwise, it
+is equivalent to:
+</ins>
+</p>
+<pre>
+  <ins>
+auto [_, sch, child] = sndr;
+return transform_sender(
+  <i>query-with-default</i>(get_domain, sch, default_domain()),
+  continues_on(std::move(child), std::move(sch)));
+</ins>
+</pre>
+<p><ins>except that <code>sch</code> is only evaluated once. </ins></p>
+</blockquote>
+</p>
+</resolution>
+
+</issue>
