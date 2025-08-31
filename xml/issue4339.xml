@@ -1,0 +1,50 @@
+<?xml version='1.0' encoding='utf-8' standalone='no'?>
+<!DOCTYPE issue SYSTEM "lwg-issue.dtd">
+
+<issue num="4339" status="New">
+<title><code>task</code>'s coroutine frame may be released late</title>
+<section><sref ref="[exec.task]"/></section>
+<submitter>Dietmar Kühl</submitter>
+<date>31 Aug 2025</date>
+<priority>99</priority>
+
+<discussion>
+<p>
+The specification of <code>task</code> doesn't spell out when the
+coroutine frame is destroyed (i.e., when <code>handle.destroy()</code>
+is called). As a result the lifetime of arguments passed to the
+coroutine and/or of local variables in the coroutine body may be
+longer than expected.
+</p>
+<p>
+The intention is that the coroutine frame is destroyed before any
+of the completion functions is called. One implication of this
+requirement is that the result and error objects can't be stored
+in the <code>promise_type</code> when the completion function is
+called although the exposition-only members <code><i>result</i></code>
+and <code><i>errors</i></code> imply exactly that. Instead the data
+needs to be stored in the operation state object or it needs to be
+moved to a different place before calling <code>destroy()</code>.
+</p>
+<p>
+The proposed resolution is to add a paragraph to the specification
+of <code>promise_type</code> in <a href="https://wg21.link/task.promise">[task.promise]</a> that spells
+out that the coroutine frame is destroyed before any of the completion
+functions is called. To actually do that the exposition-only members
+<code><i>result</i></code> and <code><i>errors</i></code> can't
+remain as members of the <code>promise_type</code>. While writing
+the relevant change it turned out that <code><i>errors</i></code>
+is a <code>variant</code> which only ever stores an
+<code>exception_ptr</code> (the other potential errors are immediately
+reported via the awaiter return from <code>yield_value</code>).
+Thus, the <code>variant</code> can be replaced with an
+<code>exception_ptr</code>.
+</p>
+</discussion>
+
+<resolution>
+<p>
+</p>
+</resolution>
+
+</issue>
