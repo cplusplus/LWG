@@ -10,6 +10,21 @@
 
 <discussion>
 <p>
+The specification of <code>affine_on</code> uses "current execution
+resource" and it is unclear what that means exactly. Additionally,
+it is unclear what the difference between <code>affine_on</code>
+and <code>continues_on</code> is. The intended difference for
+<code>affine_on</code> is to avoid unnecessary scheduling which
+<code>continues_on</code> is already allowed to do in some cases,
+too.
+</p>
+<p>
+The intended semantics is that <code>affine_on</code> will either
+complete inline on whatever execution agent it was started on or
+it will complete asynchronously on the specified execution context.
+With this formulation <code>affine_on</code> may complete on one
+of two different execution context if it is started on an execution
+context that is different from the one specified by the scheduler.
 </p>
 </discussion>
 
