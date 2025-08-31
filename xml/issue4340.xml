@@ -1,0 +1,52 @@
+<?xml version='1.0' encoding='utf-8' standalone='no'?>
+<!DOCTYPE issue SYSTEM "lwg-issue.dtd">
+
+<issue num="4340" status="New">
+<title><code>task::promise_type::unhandled_stopped()</code> should be <code>noexcept</code></title>
+<section><sref ref="[task.promise]"/></section>
+<submitter>Dietmar Kühl</submitter>
+<date>31 Aug 2025</date>
+<priority>99</priority>
+
+<discussion>
+<p>
+The function <code>task::promise_type::unhandled_stopped()</code>
+is called from <code>set_stopped()</code> of a receiver and calls
+<code>set_stopped</code> itself. These functions are required to
+be <code>noexcept</code>. Thus, <code>unhandled_stopped()</code>
+can't throw an exception and should be marked <code>noexcept</code>.
+All other declarations of <code>unhandled_stopped()</code> are
+already marked <code>noexcept</code> but
+<code>task::promise_type::unhandled_stopped()</code> isn't.
+</p>
+</discussion>
+
+<resolution>
+<p>
+In the synopsis in <a href="https://wg21.link/task.promise">[task.promise]</a> add <code>noexcept</code>
+to the declaration of <code>task::promise_type::unhandled_stopped()</code>:
+<blockquote><pre>
+namespace std::execution {
+  template&lt;class T, class Environment&gt;
+  class task&lt;T, Environment&gt;::promise_type {
+     ...
+    coroutine_handle&lt;&gt; unhandled_stopped() <ins>noexcept</ins>;
+    ...
+  };
+}
+</pre></blockquote>
+</p>
+<p>
+In the specification in <a href="https://wg21.link/task.promise#13">[task.promise]</a> paragraph 13 add <code>noexcept</code>:
+<blockquote>
+<pre>
+coroutine_handle&lt;&gt; unhandled_stopped() <ins>noexcept</ins>;
+</pre>
+<p>-13- <i>Effects</i>: Completes the asynchronous operation
+associated with <code><i>STATE</i>(*this)</code> by invoking
+<code>set_stopped(std::move(<i>RCVR</i>(*this)))</code>.</p>
+</blockquote> 
+</p>
+</resolution>
+
+</issue>
