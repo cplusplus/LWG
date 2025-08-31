@@ -1,0 +1,29 @@
+<?xml version='1.0' encoding='utf-8' standalone='no'?>
+<!DOCTYPE issue SYSTEM "lwg-issue.dtd">
+
+<issue num="4332" status="New">
+<title><code>affine_on</code> shouldn't forward the stop token to the scheduling operation</title>
+<section><sref ref="[exec.affine.on]"/></section>
+<submitter>Dietmar Kühl</submitter>
+<date>31 Aug 2025</date>
+<priority>99</priority>
+
+<discussion>
+<p>
+The main purpose of <code>affine_on</code> is to make sure work
+resumes on a specific execution context. The scheduling operation
+may take some time and work may be cancelled in the meantime. If
+this cancellation causes the scheduling to be cancelled work cleaning
+up after the cancellation would be executed on the wrong execution
+context. Thus, the stop token from the receiver's environment should
+only be forwarded when <code>connect</code>ing the sender but not
+to the scheduling operation.
+</p>
+</discussion>
+
+<resolution>
+<p>
+</p>
+</resolution>
+
+</issue>
