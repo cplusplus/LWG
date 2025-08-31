@@ -1,0 +1,55 @@
+<?xml version='1.0' encoding='utf-8' standalone='no'?>
+<!DOCTYPE issue SYSTEM "lwg-issue.dtd">
+
+<issue num="4338" status="New">
+<title>sender unaware coroutines should be able to <code>co_await</code> a <code>task</code></title>
+<section><sref ref="[task.class]"/></section>
+<submitter>Dietmar Kühl</submitter>
+<date>31 Aug 2025</date>
+<priority>99</priority>
+
+<discussion>
+<p>
+The <code>task</code> type doesn't have an <code>operator
+co_await()</code>.  Thus, a <code>task</code> can't be
+<code>co_await</code>ed directly from a coroutine. Using
+<code>as_awaitable</code> on the <code>task</code> object also
+doesn't work because this function requires a reference to the
+promise as second argument.
+</p>
+<p>
+<code>task</code> could define an <code>operator co_await()</code> that
+returns an awaitable object or directly provide an awaiter
+interface. There are, however, two complications:
+</p> 
+<ol>  
+<li>For scheduler affinity the <code>task</code> needs to get a
+scheduler from the object starting the <code>task</code>. While
+the promise can be obtained from the coroutine handle passed to
+<code>await_suspend()</code> these normally wouldn't have an
+associated environment supporting a <code>get_scheduler</code> query.
+</li>
+<li>
+The approach to reporting cancellation is to call a function
+<code>unhandled_stopped()</code> on the promise type which is
+generally not available. It could be argued that cancellation isn't
+really a problem because the it is unlikely that the environment
+associated with the promise supports a <code>get_stop_token</code>
+query.
+</li>
+</ol>  
+<p>
+It is worth noting that senders in general do not support an
+<code>operator co_await()</code>, i.e., other senders are also not
+awaitable directly. On the other hand, <code>task</code> could
+become the generic adapater to make senders awaitable from
+coroutines.
+</p>
+</discussion>
+
+<resolution>
+<p>
+</p>
+</resolution>
+
+</issue>
