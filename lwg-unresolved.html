@@ -54,7 +54,7 @@
 </style>
 </head>
 <body>
-<p>Revised 2025-08-29 at 17:50:41 UTC
+<p>Revised 2025-08-31 at 21:17:11 UTC
 </p><h2>Unresolved Issues</h2>
 <hr>
 <h3 id="423"><a href="#423">423</a><sup><a href="https://cplusplus.github.io/LWG/issue423">(i)</a></sup>. Effects of negative <code>streamsize</code> in iostreams</h3>
@@ -76352,6 +76352,30 @@ the associated execution resource of the scheduler. &mdash; <i>end note</i>]</de
 </li>
 
 </ol>
+
+
+
+
+
+<hr>
+<h3 id="4329"><a href="#4329">4329</a><sup><a href="https://cplusplus.github.io/LWG/issue4329">(i)</a></sup>. Customising affine_on for other algorithms</h3>
+<p><b>Section:</b> 33.13.3 <a href="https://wg21.link/exec.affine.on">[exec.affine.on]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
+ <b>Submitter:</b> Dietmar Kühl <b>Opened:</b> 2025-08-31 <b>Last modified:</b> 2025-08-31</p>
+<p><b>Priority: </b>Not Prioritized
+</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
+<p><b>Discussion:</b></p>
+<p>
+There are no customisations of <code>affine_on</code> for other
+algorithms specified. For example, <code>affine_on(just(), sched)</code>
+can be equivalent to <code>just()</code> because <code>just()</code>
+completes inline and, thus, on the correct execution context.
+</p>
+
+
+<p id="res-4329"><b>Proposed resolution:</b></p>
+<p>
+</p>
 
 
 
