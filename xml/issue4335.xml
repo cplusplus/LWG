@@ -1,0 +1,37 @@
+<?xml version='1.0' encoding='utf-8' standalone='no'?>
+<!DOCTYPE issue SYSTEM "lwg-issue.dtd">
+
+<issue num="4335" status="New">
+<title><code>task</code> shadows the environment's allocator</title>
+<section><sref ref="[task.promise]"/></section>
+<submitter>Dietmar Kühl</submitter>
+<date>31 Aug 2025</date>
+<priority>99</priority>
+
+<discussion>
+<p>
+Normally, the <code>get_allocator</code> query forwards the allocator
+from the receiver's environment. For <code>task</code> the
+<code>get_allocator</code> query used for <code>co_await</code>ed
+senders uses the allocator passed when creating the coroutine or
+the default if there was none. It should use the receiver's
+environment, at least, if the receiver's environment supports a
+<code>get_allocator</code> query.
+</p>
+<p>
+Supporting the receiver's allocator isn't always possible: the used
+allocator type needs to be known when the coroutine is created. At
+that time the receiver isn't known, yet. As a result the receiver's
+environment may provide an allocator which is incompatible with the
+allocator type used by the coroutine. It may be possible to use the
+receiver's allcoator if it is convertible to the allocator type
+used by the coroutine and to produce a compile-time error otherwise.
+</p>
+</discussion>
+
+<resolution>
+<p>
+</p>
+</resolution>
+
+</issue>
