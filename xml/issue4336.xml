@@ -1,0 +1,102 @@
+<?xml version='1.0' encoding='utf-8' standalone='no'?>
+<!DOCTYPE issue SYSTEM "lwg-issue.dtd">
+
+<issue num="4336" status="New">
+<title><code>bulk</code> vs. <code>task_scheduler</code></title>
+<section><sref ref="[exec.task.scheduler]"/></section>
+<submitter>Dietmar Kühl</submitter>
+<date>31 Aug 2025</date>
+<priority>99</priority>
+
+<discussion>
+<p>
+Normally, the scheduler type used by an operation can be deduced
+when a sender is <code>connect</code>ed to a receiver from the
+receiver's environment. The body of a coroutine cannot know about
+the receiver the <code>task</code> sender gets <code>connect</code>ed
+to. The implication is that the type of the scheduler used by the
+coroutine needs to be known when the <code>task</code> is created.
+To still allow custom schedulers used when connecting, the type-erased
+scheduler <code>task_scheduler</code> is used. However, that leads
+to surprises when algorithms are customised for a scheduler as is,
+e.g., the case for <code>bulk</code> when used with a
+<code>parallel_scheduler</code>: if <code>bulk</code> is
+<code>co_awaited</code> within a coroutine using
+<code>task_scheduler</code> it will use the default implementation
+of <code>bulk</code> which sequentially executes the work, even if
+the <code>task_scheduler</code> was initialised with a
+<code>parallel_scheduler</code> (the exact invocation may actually
+be slightly different or need to use <code>bulk_chunked</code> or
+<code>bulk_unchunked</code> but that isn't the point being made):
+</p>
+
+<pre>
+struct env {
+    auto query(ex::get_scheduler_t) const noexcept { return ex::parallel_scheduler(); }
+};
+struct work {
+    auto operator()(std::size_t s){ /*...*/ };
+};
+
+ex::sync_wait(
+    ex::write_env(ex::bulk(ex::just(), 16u, work{}),
+    env{}
+));
+ex::sync_wait(ex::write_env(
+    []()->ex::task&lt;void, ex::env&lt;&gt;>&gt;{ co_await ex::bulk(ex::just(), 16u, work{}); }(),
+    env{}
+));
+</pre>
+
+<p>
+The two invocations should probably both execute the work in parallel
+but the coroutine version doesnt: it uses the <code>task_scheduler</code>
+which doesnt have a specialised version of <code>bulk</code> to
+potentially delegate in a type-erased form to the underlying
+scheduler. It is straight forward to move the <code>write_env</code>
+wrapper inside the coroutine which fixes the problem in this case
+but this need introduces the potential for a subtle performance
+bug. The problem is sadly not limited to a particular scheduler or
+a particular algorithm: any scheduler/algorithm combination which
+may get specialised can suffer from the specialised algorithm not
+being picked up.
+</p>
+
+<p>
+There are a few ways this problem can be addressed (this list of
+options is almost certainly incomplete):
+</p>
+
+<ul>
+<li>Accept the situation as is and advise users to be careful about
+customised algorithms like bulk when using
+<code>task_scheduler</code>.</li>
+<li>Extend the interface of <code>task_scheduler</code> to deal
+with a set of algorithms for which it provides a type-erased
+interface. The interface would likely be more constrained and it
+would use virtual dispatch at run-time. However, the set of covered
+algorithms would necessarily be limited in some form.</li>
+<li>To avoid the trap, make the use of known algorithms incompatible
+with the use of <code>task_scheduler</code>, i.e., customise these
+algorithms for <code>task_scheduler</code> such that a compile-time
+error is produced.</li>
+</ul>
+<p>
+A user who knows that the main purpose of a coroutine is to executed
+an algorithm customised for a certain scheduler can use <code>task&lt;T,
+E&gt;</code> with an environment <code>E</code> specifying exactly
+that scheduler type.  However, this use may be nested within some
+sender being <code>co_awaited</code> and users need to be aware
+that the customisation wouldnt be picked up. Any approach I'm
+currently aware of will have the problem that customised versions
+of an algorithm are not used for algorithms we are currently unaware
+of.
+</p>
+</discussion>
+
+<resolution>
+<p>
+</p>
+</resolution>
+
+</issue>
