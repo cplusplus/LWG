@@ -1,0 +1,37 @@
+<?xml version='1.0' encoding='utf-8' standalone='no'?>
+<!DOCTYPE issue SYSTEM "lwg-issue.dtd">
+
+<issue num="4333" status="New">
+<title><code>task</code> uses unusual allocator customisation</title>
+<section><sref ref="[task.promise]"/></section>
+<submitter>Dietmar Kühl</submitter>
+<date>31 Aug 2025</date>
+<priority>99</priority>
+
+<discussion>
+<p>
+Unlike <code>generator</code> the allocator customisation of
+<code>task</code> constraints the allocator type used for the
+coroutine to be convertible to the configured
+<code>allocator_type</code>. This prevents easy use of an allocator
+especially when no allocator is configured and the default
+(<code>std::allocator&lt;std::byte&gt;</code>) is used. The reason
+for this constraint is that the <code>get_allocator</code> is
+forwarded to <code>co_await</code>ed senders and is intended to be
+the same as the allocator used for the coroutine frame.
+</p>
+<p>
+It may be reasonable to allow use of an arbitrary allocator when
+there is no explicit configuration of the <code>allocator_type</code>.
+In this case it may also be resonable to not support the
+<code>get_allocator</code> query when <code>co_await</code>ing
+senders.
+</p>
+</discussion>
+
+<resolution>
+<p>
+</p>
+</resolution>
+
+</issue>
