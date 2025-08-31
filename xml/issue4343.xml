@@ -1,0 +1,56 @@
+<?xml version='1.0' encoding='utf-8' standalone='no'?>
+<!DOCTYPE issue SYSTEM "lwg-issue.dtd">
+
+<issue num="4343" status="New">
+<title>Missing default template arguments for <code>task</code></title>
+<section><sref ref="[task.class]"/></section>
+<submitter>Dietmar Kühl</submitter>
+<date>01 Sep 2025</date>
+<priority>99</priority>
+
+<discussion>
+<p>
+The design discussion of <code>task</code> describes defaults for
+the two template parameters <code>T</code> and <code>Environment</code>
+of <code>task</code> but these defaults are not reflected in the
+synopsis of <a href="https://wg21.link/task.class">[task.class]</a>.
+This is an oversight and should be fixed.  The default for
+<code>T</code> should be <code>void</code> and the default for
+<code>Environment</code> should be <code>env&lt;&gt;</code> (the
+design paper used <code>empty_env</code> but this <code>struct</code>
+was replaced by the class template <code>env</code> by <a
+href="https://wg21.link/p3325">P3325r5</a>).
+</p>
+<p>
+There could be a counter argument to defining a default for the
+<code>Environment</code> template parameter: this type is used to
+determine various customizations of <code>task</code>, e.g., the
+<code>allocator_type</code>, the <code>scheduler_type</code>, and
+the <code>stop_source_type</code>. Leaving the type a required
+argument means that a future standard could choose a possibly better
+default than the types determined when the <code>Environment</code>
+doesn't define them. On the other hand, a future standard could
+provide a suitable alias with modified types under a different
+name and/or a different namespace. Based on the LEWG discussion
+on 2025-08-26 the direction is to add the default arguments.
+</p>
+</discussion>
+
+<resolution>
+<p>
+Add default template arguments for <code>task</code> for
+<code>T = void</code> and <code>Environment = env&lt;&gt;</code>
+in the synopsis of <a
+href="https://wg21.link/task.class">[task.class]</a>:
+<blockquote><pre>
+namespace std::execution {
+  template&lt;class T <ins>= void</ins>, class Environment <ins>= env&lt;&gt;</ins>&gt;
+  class task {
+     ...
+  };
+}
+</pre></blockquote>
+</p>
+</resolution>
+
+</issue>
