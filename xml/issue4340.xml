@@ -23,7 +23,7 @@ already marked <code>noexcept</code> but
 
 <resolution>
 <p>
-In the synopsis in <a href="https://wg21.link/task.promise">[task.promise]</a> add <code>noexcept</code>
+In the synopsis in <sref ref="[task.promise]"/> add <code>noexcept</code>
 to the declaration of <code>task::promise_type::unhandled_stopped()</code>:
 <blockquote><pre>
 namespace std::execution {
