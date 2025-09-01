@@ -54,7 +54,7 @@
 </style>
 </head>
 <body>
-<p>Revised 2025-09-01 at 11:46:25 UTC
+<p>Revised 2025-09-01 at 11:47:13 UTC
 </p><h2>Unresolved Issues</h2>
 <hr>
 <h3 id="423"><a href="#423">423</a><sup><a href="https://cplusplus.github.io/LWG/issue423">(i)</a></sup>. Effects of negative <code>streamsize</code> in iostreams</h3>
@@ -76551,6 +76551,44 @@ to add the flexibility to <code>generator</code>.
 
 
 <p id="res-4334"><b>Proposed resolution:</b></p>
+<p>
+</p>
+
+
+
+
+
+<hr>
+<h3 id="4335"><a href="#4335">4335</a><sup><a href="https://cplusplus.github.io/LWG/issue4335">(i)</a></sup>. <code>task</code> shadows the environment's allocator</h3>
+<p><b>Section:</b> 33.13.6.5 <a href="https://wg21.link/task.promise">[task.promise]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
+ <b>Submitter:</b> Dietmar Kühl <b>Opened:</b> 2025-08-31 <b>Last modified:</b> 2025-09-01</p>
+<p><b>Priority: </b>Not Prioritized
+</p>
+<p><b>View other</b> <a href="lwg-index-open.html#task.promise">active issues</a> in [task.promise].</p>
+<p><b>View all other</b> <a href="lwg-index.html#task.promise">issues</a> in [task.promise].</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
+<p><b>Discussion:</b></p>
+<p>
+Normally, the <code>get_allocator</code> query forwards the allocator
+from the receiver's environment. For <code>task</code> the
+<code>get_allocator</code> query used for <code>co_await</code>ed
+senders uses the allocator passed when creating the coroutine or
+the default if there was none. It should use the receiver's
+environment, at least, if the receiver's environment supports a
+<code>get_allocator</code> query.
+</p>
+<p>
+Supporting the receiver's allocator isn't always possible: the used
+allocator type needs to be known when the coroutine is created. At
+that time the receiver isn't known, yet. As a result the receiver's
+environment may provide an allocator which is incompatible with the
+allocator type used by the coroutine. It may be possible to use the
+receiver's allcoator if it is convertible to the allocator type
+used by the coroutine and to produce a compile-time error otherwise.
+</p>
+
+
+<p id="res-4335"><b>Proposed resolution:</b></p>
 <p>
 </p>
 
