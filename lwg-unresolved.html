@@ -54,7 +54,7 @@
 </style>
 </head>
 <body>
-<p>Revised 2025-09-01 at 11:43:22 UTC
+<p>Revised 2025-09-01 at 11:44:04 UTC
 </p><h2>Unresolved Issues</h2>
 <hr>
 <h3 id="423"><a href="#423">423</a><sup><a href="https://cplusplus.github.io/LWG/issue423">(i)</a></sup>. Effects of negative <code>streamsize</code> in iostreams</h3>
@@ -76442,6 +76442,36 @@ argument.
 
 
 <p id="res-4331"><b>Proposed resolution:</b></p>
+<p>
+</p>
+
+
+
+
+
+<hr>
+<h3 id="4332"><a href="#4332">4332</a><sup><a href="https://cplusplus.github.io/LWG/issue4332">(i)</a></sup>. <code>affine_on</code> shouldn't forward the stop token to the scheduling operation</h3>
+<p><b>Section:</b> 33.13.3 <a href="https://wg21.link/exec.affine.on">[exec.affine.on]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
+ <b>Submitter:</b> Dietmar Kühl <b>Opened:</b> 2025-08-31 <b>Last modified:</b> 2025-09-01</p>
+<p><b>Priority: </b>Not Prioritized
+</p>
+<p><b>View other</b> <a href="lwg-index-open.html#exec.affine.on">active issues</a> in [exec.affine.on].</p>
+<p><b>View all other</b> <a href="lwg-index.html#exec.affine.on">issues</a> in [exec.affine.on].</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
+<p><b>Discussion:</b></p>
+<p>
+The main purpose of <code>affine_on</code> is to make sure work
+resumes on a specific execution context. The scheduling operation
+may take some time and work may be cancelled in the meantime. If
+this cancellation causes the scheduling to be cancelled work cleaning
+up after the cancellation would be executed on the wrong execution
+context. Thus, the stop token from the receiver's environment should
+only be forwarded when <code>connect</code>ing the sender but not
+to the scheduling operation.
+</p>
+
+
+<p id="res-4332"><b>Proposed resolution:</b></p>
 <p>
 </p>
 
