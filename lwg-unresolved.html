@@ -54,7 +54,7 @@
 </style>
 </head>
 <body>
-<p>Revised 2025-09-01 at 11:44:04 UTC
+<p>Revised 2025-09-01 at 11:44:58 UTC
 </p><h2>Unresolved Issues</h2>
 <hr>
 <h3 id="423"><a href="#423">423</a><sup><a href="https://cplusplus.github.io/LWG/issue423">(i)</a></sup>. Effects of negative <code>streamsize</code> in iostreams</h3>
@@ -76472,6 +76472,42 @@ to the scheduling operation.
 
 
 <p id="res-4332"><b>Proposed resolution:</b></p>
+<p>
+</p>
+
+
+
+
+
+<hr>
+<h3 id="4333"><a href="#4333">4333</a><sup><a href="https://cplusplus.github.io/LWG/issue4333">(i)</a></sup>. <code>task</code> uses unusual allocator customisation</h3>
+<p><b>Section:</b> 33.13.6.5 <a href="https://wg21.link/task.promise">[task.promise]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
+ <b>Submitter:</b> Dietmar Kühl <b>Opened:</b> 2025-08-31 <b>Last modified:</b> 2025-09-01</p>
+<p><b>Priority: </b>Not Prioritized
+</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
+<p><b>Discussion:</b></p>
+<p>
+Unlike <code>generator</code> the allocator customisation of
+<code>task</code> constraints the allocator type used for the
+coroutine to be convertible to the configured
+<code>allocator_type</code>. This prevents easy use of an allocator
+especially when no allocator is configured and the default
+(<code>std::allocator&lt;std::byte&gt;</code>) is used. The reason
+for this constraint is that the <code>get_allocator</code> is
+forwarded to <code>co_await</code>ed senders and is intended to be
+the same as the allocator used for the coroutine frame.
+</p>
+<p>
+It may be reasonable to allow use of an arbitrary allocator when
+there is no explicit configuration of the <code>allocator_type</code>.
+In this case it may also be resonable to not support the
+<code>get_allocator</code> query when <code>co_await</code>ing
+senders.
+</p>
+
+
+<p id="res-4333"><b>Proposed resolution:</b></p>
 <p>
 </p>
 
