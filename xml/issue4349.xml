@@ -11,7 +11,7 @@
 <discussion>
 <p>
 The wording for <code>task&lt;...&gt;::promise_type::initial_suspend</code>
-in <a href="https://wg21.link/task.promise#6">[task.promise] paragraph 6</a>
+in <paper num="[task.promise]"/> paragraph 6
 (second bullet) may imply that a task is eagerly started, i.e., that the
 awaiter return from <code>initial_suspend()</code> immediately starts
 the scheduling operation and cause the <code>task</code> to be resumed. At
@@ -32,7 +32,7 @@ unnecessary scheduling operations for the likely common case when
 <resolution>
 <p>
 Change the declaration of <code>initial_suspend()</code> in the synopsis
-of <a href="https://wg21.link/task.promise#6">[task.promise]</a> to use
+of <sref ref="[task.promise]"/> to use
 <code>suspend_always</code>, directly provide a definition, and add
 various qualifiers:
 <blockquote>
@@ -50,7 +50,7 @@ namespace std::execution {
 </blockquote>
 </p>
 <p>
-Remove <a href="https://wg21.link/task.promise#6">[task.promise] paragraph 6</a> entirely:
+Remove <sref ref="[task.promise]"/> paragraph 6 entirely:
 <blockquote>
 <pre><del>auto initial_suspend() noexcept;</del></pre>
 <p><del>-6- <i>Returns:</i> An awaitable object of unspecified type ([expr.await]) whose member functions arrange for</del></p>
