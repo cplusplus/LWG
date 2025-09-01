@@ -27,7 +27,7 @@ allow that.
 <resolution>
 <p>
 Add a new paragraph to the specification of <code>affine_on</code>
-in <a href="https://wg21.link/exec.affine.on">[exec.affine.on]</a> providing
+in <sref ref="[exec.affine.on]"/> providing
 a specification for the default implementation:
 </p>
 <p>
