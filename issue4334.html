@@ -2,10 +2,10 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<title>Issue 4333: task uses unusual allocator customisation</title>
-<meta property="og:title" content="Issue 4333: task uses unusual allocator customisation">
+<title>Issue 4334: task&lt;...&gt;::promise_type supports arbitrary allocator_arg position</title>
+<meta property="og:title" content="Issue 4334: task&lt;...&gt;::promise_type supports arbitrary allocator_arg position">
 <meta property="og:description" content="C++ library issue. Status: New">
-<meta property="og:url" content="https://cplusplus.github.io/LWG/issue4333.html">
+<meta property="og:url" content="https://cplusplus.github.io/LWG/issue4334.html">
 <meta property="og:type" content="website">
 <meta property="og:image" content="http://cplusplus.github.io/LWG/images/cpp_logo.png">
 <meta property="og:image:alt" content="C++ logo">
@@ -62,7 +62,7 @@
 <body>
 <hr>
 <p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#New">New</a> status.</em></p>
-<h3 id="4333"><a href="lwg-active.html#4333">4333</a>. <code>task</code> uses unusual allocator customisation</h3>
+<h3 id="4334"><a href="lwg-active.html#4334">4334</a>. <code>task&lt;...&gt;::promise_type</code> supports arbitrary <code>allocator_arg</code> position</h3>
 <p><b>Section:</b> 33.13.6.5 <a href="https://wg21.link/task.promise">[task.promise]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
  <b>Submitter:</b> Dietmar Kühl <b>Opened:</b> 2025-08-31 <b>Last modified:</b> 2025-09-01</p>
 <p><b>Priority: </b>Not Prioritized
@@ -72,26 +72,29 @@
 <p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
 <p><b>Discussion:</b></p>
 <p>
-Unlike <code>generator</code> the allocator customisation of
-<code>task</code> constraints the allocator type used for the
-coroutine to be convertible to the configured
-<code>allocator_type</code>. This prevents easy use of an allocator
-especially when no allocator is configured and the default
-(<code>std::allocator&lt;std::byte&gt;</code>) is used. The reason
-for this constraint is that the <code>get_allocator</code> is
-forwarded to <code>co_await</code>ed senders and is intended to be
-the same as the allocator used for the coroutine frame.
+Normally the <code>allocator_arg</code> argument has to be the first
+argument when present. For <code>task&lt;...&gt;::promise_type</code>
+the <code>allocator_arg</code> can appear at an arbitrary position
+(except the last because it always needs to be followed by the
+allocator). This permission is inconsistent and the position of the
+<code>allocator_arg</code> argument and the allocator should be
+limited to come first.
 </p>
 <p>
-It may be reasonable to allow use of an arbitrary allocator when
-there is no explicit configuration of the <code>allocator_type</code>.
-In this case it may also be resonable to not support the
-<code>get_allocator</code> query when <code>co_await</code>ing
-senders.
+For containers the optional support for allocators is implemented
+once for every container.  For coroutines the optional support for
+allocators is implemented once for every coroutine definition. To
+support an optional allocator the coroutine definition needs to use
+an allocator and either gets duplicated not using an allocator or
+a forwarding function is added which adds the default allocator.
+With the flexible allocator position optional allocator support can be provided
+using a trailing argument list, i.e., adding <code>, auto&amp;&amp;...</code>.
+Instead of constraining <code>task</code> it may be more reasonable
+to add the flexibility to <code>generator</code>.
 </p>
 
 
-<p id="res-4333"><b>Proposed resolution:</b></p>
+<p id="res-4334"><b>Proposed resolution:</b></p>
 <p>
 </p>
 

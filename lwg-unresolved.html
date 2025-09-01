@@ -54,7 +54,7 @@
 </style>
 </head>
 <body>
-<p>Revised 2025-09-01 at 11:44:58 UTC
+<p>Revised 2025-09-01 at 11:46:25 UTC
 </p><h2>Unresolved Issues</h2>
 <hr>
 <h3 id="423"><a href="#423">423</a><sup><a href="https://cplusplus.github.io/LWG/issue423">(i)</a></sup>. Effects of negative <code>streamsize</code> in iostreams</h3>
@@ -76485,6 +76485,8 @@ to the scheduling operation.
  <b>Submitter:</b> Dietmar Kühl <b>Opened:</b> 2025-08-31 <b>Last modified:</b> 2025-09-01</p>
 <p><b>Priority: </b>Not Prioritized
 </p>
+<p><b>View other</b> <a href="lwg-index-open.html#task.promise">active issues</a> in [task.promise].</p>
+<p><b>View all other</b> <a href="lwg-index.html#task.promise">issues</a> in [task.promise].</p>
 <p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
 <p><b>Discussion:</b></p>
 <p>
@@ -76508,6 +76510,47 @@ senders.
 
 
 <p id="res-4333"><b>Proposed resolution:</b></p>
+<p>
+</p>
+
+
+
+
+
+<hr>
+<h3 id="4334"><a href="#4334">4334</a><sup><a href="https://cplusplus.github.io/LWG/issue4334">(i)</a></sup>. <code>task&lt;...&gt;::promise_type</code> supports arbitrary <code>allocator_arg</code> position</h3>
+<p><b>Section:</b> 33.13.6.5 <a href="https://wg21.link/task.promise">[task.promise]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
+ <b>Submitter:</b> Dietmar Kühl <b>Opened:</b> 2025-08-31 <b>Last modified:</b> 2025-09-01</p>
+<p><b>Priority: </b>Not Prioritized
+</p>
+<p><b>View other</b> <a href="lwg-index-open.html#task.promise">active issues</a> in [task.promise].</p>
+<p><b>View all other</b> <a href="lwg-index.html#task.promise">issues</a> in [task.promise].</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
+<p><b>Discussion:</b></p>
+<p>
+Normally the <code>allocator_arg</code> argument has to be the first
+argument when present. For <code>task&lt;...&gt;::promise_type</code>
+the <code>allocator_arg</code> can appear at an arbitrary position
+(except the last because it always needs to be followed by the
+allocator). This permission is inconsistent and the position of the
+<code>allocator_arg</code> argument and the allocator should be
+limited to come first.
+</p>
+<p>
+For containers the optional support for allocators is implemented
+once for every container.  For coroutines the optional support for
+allocators is implemented once for every coroutine definition. To
+support an optional allocator the coroutine definition needs to use
+an allocator and either gets duplicated not using an allocator or
+a forwarding function is added which adds the default allocator.
+With the flexible allocator position optional allocator support can be provided
+using a trailing argument list, i.e., adding <code>, auto&amp;&amp;...</code>.
+Instead of constraining <code>task</code> it may be more reasonable
+to add the flexibility to <code>generator</code>.
+</p>
+
+
+<p id="res-4334"><b>Proposed resolution:</b></p>
 <p>
 </p>
 
