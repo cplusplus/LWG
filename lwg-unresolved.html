@@ -54,7 +54,7 @@
 </style>
 </head>
 <body>
-<p>Revised 2025-09-01 at 20:25:57 UTC
+<p>Revised 2025-09-01 at 20:28:01 UTC
 </p><h2>Unresolved Issues</h2>
 <hr>
 <h3 id="423"><a href="#423">423</a><sup><a href="https://cplusplus.github.io/LWG/issue423">(i)</a></sup>. Effects of negative <code>streamsize</code> in iostreams</h3>
@@ -77120,6 +77120,94 @@ return transform_sender(
 </pre>
 <p><ins>except that <code>sch</code> is only evaluated once. </ins></p>
 </blockquote>
+</p>
+
+
+
+
+
+<hr>
+<h3 id="4346"><a href="#4346">4346</a><sup><a href="https://cplusplus.github.io/LWG/issue4346">(i)</a></sup>. <code>task::promise_type::return_void</code>/<code>value</code> lack a specification</h3>
+<p><b>Section:</b> 33.13.6.5 <a href="https://wg21.link/task.promise">[task.promise]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
+ <b>Submitter:</b> Dietmar Kühl <b>Opened:</b> 2025-09-01 <b>Last modified:</b> 2025-09-01</p>
+<p><b>Priority: </b>Not Prioritized
+</p>
+<p><b>View other</b> <a href="lwg-index-open.html#task.promise">active issues</a> in [task.promise].</p>
+<p><b>View all other</b> <a href="lwg-index.html#task.promise">issues</a> in [task.promise].</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
+<p><b>Discussion:</b></p>
+<p>
+The synopsis for <code>std::execution::task&lt;T,
+E&gt;::promise_type</code> declares <code>return_void()</code> or
+<code>return_value(V&amp;&amp;)</code>. However, there is no
+specification of what these functions actually do.
+<code>return_void()</code> doesn’t need to do anything at all.
+<code>return_value(V&amp;&amp; v)</code> needs to store <code>v</code>
+into the <code><i>result</i></code>.
+</p>
+
+
+<p id="res-4346"><b>Proposed resolution:</b></p>
+<p>
+Insert the following paragraphs in 33.13.6.5 <a href="https://wg21.link/task.promise">[task.promise]</a>
+after the specification of <code>unhandled_stopped</code>:
+</p>
+<p>
+<blockquote>
+<pre>coroutine_handle&lt;&gt; unhandled_stopped();</pre>
+<p>-13- <i>Effects</i>: Completes the asynchronous operation associated with <code><i>STATE</i>(*this)</code> by invoking <code>set_stopped(std::move(<i>RCVR</i>(*this)))</code>.</p>
+<p>-14- <i>Returns</i>: <code>noop_coroutine()</code>.</p>
+<pre><ins>void return_void();</ins></pre>
+<p><ins>-15- <i>Effects</i>: does nothing.</ins></p>
+<pre><ins>
+template&lt;class V&gt;
+  void return_value(V&amp;&amp; v);
+</ins></pre>
+<p><ins>-16- <i>Effects</i>: Equivalent to <code><i>result</i>.emplace(std::forward&lt;V&gt;(v))</code>.</ins></p>
+<pre>unspecified get_env() const noexcept;</pre>
+<p>-1<del>5</del><ins>7</ins>- <i>Returns</i>: An object <code>env</code> such that queries are forwarded as follows:</p>
+</blockquote>
+</p>
+
+
+
+
+
+<hr>
+<h3 id="4347"><a href="#4347">4347</a><sup><a href="https://cplusplus.github.io/LWG/issue4347">(i)</a></sup>. <code>task</code>'s stop source is always created</h3>
+<p><b>Section:</b> 33.13.6.5 <a href="https://wg21.link/task.promise">[task.promise]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
+ <b>Submitter:</b> Dietmar Kühl <b>Opened:</b> 2025-09-01 <b>Last modified:</b> 2025-09-01</p>
+<p><b>Priority: </b>Not Prioritized
+</p>
+<p><b>View other</b> <a href="lwg-index-open.html#task.promise">active issues</a> in [task.promise].</p>
+<p><b>View all other</b> <a href="lwg-index.html#task.promise">issues</a> in [task.promise].</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
+<p><b>Discussion:</b></p>
+<p>
+The type <code>task&lt;...&gt;::promise_type</code> has exposition-only
+members <code><i>source</i></code> and <code><i>token</i></code>.
+These can be interpreted as always existing which would be a
+performance issue for former and an unnecessary constraints for the
+latter (because stop tokens aren't required to be default constructible).
+</p>
+<p>
+The intent is that the stop token obtained from the
+<code>get_stop_token</code> query of the receiver's environment is
+used. Only if this type is different from the <code>task</code>'s
+<code>stop_token_type</code> a stop source of type
+<code>stop_source_type</code> needs to be created when the
+<code>get_stop_token</code> query is used on the promise type's
+environment. The stop token doesn't need to be stored at all: it
+can either be obtained from the receiver's environment or from the
+stop source. The fix is to show the stop source as an optionally
+present member of of the operation state and it should be of type
+<code>std::optional&lt;stop_source_type&gt;</code> to imply that
+it is only created when accessed.
+</p>
+
+
+<p id="res-4347"><b>Proposed resolution:</b></p>
+<p>
 </p>
 
 
