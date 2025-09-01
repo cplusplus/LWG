@@ -54,7 +54,7 @@
 </style>
 </head>
 <body>
-<p>Revised 2025-09-01 at 11:53:16 UTC
+<p>Revised 2025-09-01 at 11:54:35 UTC
 </p><h2>Unresolved Issues</h2>
 <hr>
 <h3 id="423"><a href="#423">423</a><sup><a href="https://cplusplus.github.io/LWG/issue423">(i)</a></sup>. Effects of negative <code>streamsize</code> in iostreams</h3>
@@ -76793,6 +76793,55 @@ coroutines.
 
 
 <p id="res-4338"><b>Proposed resolution:</b></p>
+<p>
+</p>
+
+
+
+
+
+<hr>
+<h3 id="4339"><a href="#4339">4339</a><sup><a href="https://cplusplus.github.io/LWG/issue4339">(i)</a></sup>. <code>task</code>'s coroutine frame may be released late</h3>
+<p><b>Section:</b> 33.13.6 <a href="https://wg21.link/exec.task">[exec.task]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
+ <b>Submitter:</b> Dietmar Kühl <b>Opened:</b> 2025-08-31 <b>Last modified:</b> 2025-09-01</p>
+<p><b>Priority: </b>Not Prioritized
+</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
+<p><b>Discussion:</b></p>
+<p>
+The specification of <code>task</code> doesn't spell out when the
+coroutine frame is destroyed (i.e., when <code>handle.destroy()</code>
+is called). As a result the lifetime of arguments passed to the
+coroutine and/or of local variables in the coroutine body may be
+longer than expected.
+</p>
+<p>
+The intention is that the coroutine frame is destroyed before any
+of the completion functions is called. One implication of this
+requirement is that the result and error objects can't be stored
+in the <code>promise_type</code> when the completion function is
+called although the exposition-only members <code><i>result</i></code>
+and <code><i>errors</i></code> imply exactly that. Instead the data
+needs to be stored in the operation state object or it needs to be
+moved to a different place before calling <code>destroy()</code>.
+</p>
+<p>
+The proposed resolution is to add a paragraph to the specification
+of <code>promise_type</code> in 33.13.6.5 <a href="https://wg21.link/task.promise">[task.promise]</a> that spells
+out that the coroutine frame is destroyed before any of the completion
+functions is called. To actually do that the exposition-only members
+<code><i>result</i></code> and <code><i>errors</i></code> can't
+remain as members of the <code>promise_type</code>. While writing
+the relevant change it turned out that <code><i>errors</i></code>
+is a <code>variant</code> which only ever stores an
+<code>exception_ptr</code> (the other potential errors are immediately
+reported via the awaiter return from <code>yield_value</code>).
+Thus, the <code>variant</code> can be replaced with an
+<code>exception_ptr</code>.
+</p>
+
+
+<p id="res-4339"><b>Proposed resolution:</b></p>
 <p>
 </p>
 

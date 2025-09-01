@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Issue 4339: task's coroutine frame may be released late</title>
+<meta property="og:title" content="Issue 4339: task's coroutine frame may be released late">
+<meta property="og:description" content="C++ library issue. Status: New">
+<meta property="og:url" content="https://cplusplus.github.io/LWG/issue4339.html">
+<meta property="og:type" content="website">
+<meta property="og:image" content="http://cplusplus.github.io/LWG/images/cpp_logo.png">
+<meta property="og:image:alt" content="C++ logo">
+<style>
+  p {text-align:justify}
+  li {text-align:justify}
+  pre code.backtick::before { content: "`" }
+  pre code.backtick::after { content: "`" }
+  blockquote.note
+  {
+    background-color:#E0E0E0;
+    padding-left: 15px;
+    padding-right: 15px;
+    padding-top: 1px;
+    padding-bottom: 1px;
+  }
+  ins {background-color:#A0FFA0}
+  del {background-color:#FFA0A0}
+  table.issues-index { border: 1px solid; border-collapse: collapse; }
+  table.issues-index th { text-align: center; padding: 4px; border: 1px solid; }
+  table.issues-index td { padding: 4px; border: 1px solid; }
+  table.issues-index td:nth-child(1) { text-align: right; }
+  table.issues-index td:nth-child(2) { text-align: left; }
+  table.issues-index td:nth-child(3) { text-align: left; }
+  table.issues-index td:nth-child(4) { text-align: left; }
+  table.issues-index td:nth-child(5) { text-align: center; }
+  table.issues-index td:nth-child(6) { text-align: center; }
+  table.issues-index td:nth-child(7) { text-align: left; }
+  table.issues-index td:nth-child(5) span.no-pr { color: red; }
+  @media (prefers-color-scheme: dark) {
+     html {
+        color: #ddd;
+        background-color: black;
+     }
+     ins {
+        background-color: #225522
+     }
+     del {
+        background-color: #662222
+     }
+     a {
+        color: #6af
+     }
+     a:visited {
+        color: #6af
+     }
+     blockquote.note
+     {
+        background-color: rgba(255, 255, 255, .10)
+     }
+  }
+</style>
+</head>
+<body>
+<hr>
+<p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#New">New</a> status.</em></p>
+<h3 id="4339"><a href="lwg-active.html#4339">4339</a>. <code>task</code>'s coroutine frame may be released late</h3>
+<p><b>Section:</b> 33.13.6 <a href="https://wg21.link/exec.task">[exec.task]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
+ <b>Submitter:</b> Dietmar Kühl <b>Opened:</b> 2025-08-31 <b>Last modified:</b> 2025-09-01</p>
+<p><b>Priority: </b>Not Prioritized
+</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
+<p><b>Discussion:</b></p>
+<p>
+The specification of <code>task</code> doesn't spell out when the
+coroutine frame is destroyed (i.e., when <code>handle.destroy()</code>
+is called). As a result the lifetime of arguments passed to the
+coroutine and/or of local variables in the coroutine body may be
+longer than expected.
+</p>
+<p>
+The intention is that the coroutine frame is destroyed before any
+of the completion functions is called. One implication of this
+requirement is that the result and error objects can't be stored
+in the <code>promise_type</code> when the completion function is
+called although the exposition-only members <code><i>result</i></code>
+and <code><i>errors</i></code> imply exactly that. Instead the data
+needs to be stored in the operation state object or it needs to be
+moved to a different place before calling <code>destroy()</code>.
+</p>
+<p>
+The proposed resolution is to add a paragraph to the specification
+of <code>promise_type</code> in 33.13.6.5 <a href="https://wg21.link/task.promise">[task.promise]</a> that spells
+out that the coroutine frame is destroyed before any of the completion
+functions is called. To actually do that the exposition-only members
+<code><i>result</i></code> and <code><i>errors</i></code> can't
+remain as members of the <code>promise_type</code>. While writing
+the relevant change it turned out that <code><i>errors</i></code>
+is a <code>variant</code> which only ever stores an
+<code>exception_ptr</code> (the other potential errors are immediately
+reported via the awaiter return from <code>yield_value</code>).
+Thus, the <code>variant</code> can be replaced with an
+<code>exception_ptr</code>.
+</p>
+
+
+<p id="res-4339"><b>Proposed resolution:</b></p>
+<p>
+</p>
+
+
+
+
+
+</body>
+</html>
