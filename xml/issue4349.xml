@@ -11,7 +11,7 @@
 <discussion>
 <p>
 The wording for <code>task&lt;...&gt;::promise_type::initial_suspend</code>
-in <paper num="[task.promise]"/> paragraph 6
+in <sref ref="[task.promise]"/> paragraph 6
 (second bullet) may imply that a task is eagerly started, i.e., that the
 awaiter return from <code>initial_suspend()</code> immediately starts
 the scheduling operation and cause the <code>task</code> to be resumed. At
