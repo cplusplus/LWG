@@ -28,7 +28,7 @@ moved to a different place before calling <code>destroy()</code>.
 </p>
 <p>
 The proposed resolution is to add a paragraph to the specification
-of <code>promise_type</code> in <a href="https://wg21.link/task.promise">[task.promise]</a> that spells
+of <code>promise_type</code> in <sref ref="[task.promise]"/> that spells
 out that the coroutine frame is destroyed before any of the completion
 functions is called. To actually do that the exposition-only members
 <code><i>result</i></code> and <code><i>errors</i></code> can't
