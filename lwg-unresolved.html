@@ -54,7 +54,7 @@
 </style>
 </head>
 <body>
-<p>Revised 2025-09-01 at 11:54:35 UTC
+<p>Revised 2025-09-01 at 17:03:34 UTC
 </p><h2>Unresolved Issues</h2>
 <hr>
 <h3 id="423"><a href="#423">423</a><sup><a href="https://cplusplus.github.io/LWG/issue423">(i)</a></sup>. Effects of negative <code>streamsize</code> in iostreams</h3>
@@ -76843,6 +76843,59 @@ Thus, the <code>variant</code> can be replaced with an
 
 <p id="res-4339"><b>Proposed resolution:</b></p>
 <p>
+</p>
+
+
+
+
+
+<hr>
+<h3 id="4340"><a href="#4340">4340</a><sup><a href="https://cplusplus.github.io/LWG/issue4340">(i)</a></sup>. <code>task::promise_type::unhandled_stopped()</code> should be <code>noexcept</code></h3>
+<p><b>Section:</b> 33.13.6.5 <a href="https://wg21.link/task.promise">[task.promise]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
+ <b>Submitter:</b> Dietmar Kühl <b>Opened:</b> 2025-08-31 <b>Last modified:</b> 2025-09-01</p>
+<p><b>Priority: </b>Not Prioritized
+</p>
+<p><b>View other</b> <a href="lwg-index-open.html#task.promise">active issues</a> in [task.promise].</p>
+<p><b>View all other</b> <a href="lwg-index.html#task.promise">issues</a> in [task.promise].</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
+<p><b>Discussion:</b></p>
+<p>
+The function <code>task::promise_type::unhandled_stopped()</code>
+is called from <code>set_stopped()</code> of a receiver and calls
+<code>set_stopped</code> itself. These functions are required to
+be <code>noexcept</code>. Thus, <code>unhandled_stopped()</code>
+can't throw an exception and should be marked <code>noexcept</code>.
+All other declarations of <code>unhandled_stopped()</code> are
+already marked <code>noexcept</code> but
+<code>task::promise_type::unhandled_stopped()</code> isn't.
+</p>
+
+
+<p id="res-4340"><b>Proposed resolution:</b></p>
+<p>
+In the synopsis in 33.13.6.5 <a href="https://wg21.link/task.promise">[task.promise]</a> add <code>noexcept</code>
+to the declaration of <code>task::promise_type::unhandled_stopped()</code>:
+<blockquote><pre>
+namespace std::execution {
+  template&lt;class T, class Environment&gt;
+  class task&lt;T, Environment&gt;::promise_type {
+     ...
+    coroutine_handle&lt;&gt; unhandled_stopped() <ins>noexcept</ins>;
+    ...
+  };
+}
+</pre></blockquote>
+</p>
+<p>
+In the specification in 33.13.6.5 <a href="https://wg21.link/task.promise">[task.promise]</a> paragraph 13 add <code>noexcept</code>:
+<blockquote>
+<pre>
+coroutine_handle&lt;&gt; unhandled_stopped() <ins>noexcept</ins>;
+</pre>
+<p>-13- <i>Effects</i>: Completes the asynchronous operation
+associated with <code><i>STATE</i>(*this)</code> by invoking
+<code>set_stopped(std::move(<i>RCVR</i>(*this)))</code>.</p>
+</blockquote> 
 </p>
 
 
