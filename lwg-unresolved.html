@@ -54,7 +54,7 @@
 </style>
 </head>
 <body>
-<p>Revised 2025-09-01 at 20:16:22 UTC
+<p>Revised 2025-09-01 at 20:24:33 UTC
 </p><h2>Unresolved Issues</h2>
 <hr>
 <h3 id="423"><a href="#423">423</a><sup><a href="https://cplusplus.github.io/LWG/issue423">(i)</a></sup>. Effects of negative <code>streamsize</code> in iostreams</h3>
@@ -77008,6 +77008,61 @@ Returns an object of type <code><i>state</i>&lt;Rcvr&gt;</code> containing an op
 object initialized with <code>connect(<i>SENDER</i>(*this), std::move(<i>r</i>))</code>.
 </p>
 </blockquote>
+</p>
+
+
+
+
+
+<hr>
+<h3 id="4343"><a href="#4343">4343</a><sup><a href="https://cplusplus.github.io/LWG/issue4343">(i)</a></sup>. Missing default template arguments for <code>task</code></h3>
+<p><b>Section:</b> 33.13.6.2 <a href="https://wg21.link/task.class">[task.class]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
+ <b>Submitter:</b> Dietmar Kühl <b>Opened:</b> 2025-09-01 <b>Last modified:</b> 2025-09-01</p>
+<p><b>Priority: </b>Not Prioritized
+</p>
+<p><b>View other</b> <a href="lwg-index-open.html#task.class">active issues</a> in [task.class].</p>
+<p><b>View all other</b> <a href="lwg-index.html#task.class">issues</a> in [task.class].</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
+<p><b>Discussion:</b></p>
+<p>
+The design discussion of <code>task</code> describes defaults for
+the two template parameters <code>T</code> and <code>Environment</code>
+of <code>task</code> but these defaults are not reflected in the
+synopsis of 33.13.6.2 <a href="https://wg21.link/task.class">[task.class]</a>.
+This is an oversight and should be fixed.  The default for
+<code>T</code> should be <code>void</code> and the default for
+<code>Environment</code> should be <code>env&lt;&gt;</code> (the
+design paper used <code>empty_env</code> but this <code>struct</code>
+was replaced by the class template <code>env</code> by <a href="https://wg21.link/P3325R5" title=" A Utility for Creating Execution Environments">P3325R5</a>).
+</p>
+<p>
+There could be a counter argument to defining a default for the
+<code>Environment</code> template parameter: this type is used to
+determine various customizations of <code>task</code>, e.g., the
+<code>allocator_type</code>, the <code>scheduler_type</code>, and
+the <code>stop_source_type</code>. Leaving the type a required
+argument means that a future standard could choose a possibly better
+default than the types determined when the <code>Environment</code>
+doesn't define them. On the other hand, a future standard could
+provide a suitable alias with modified types under a different
+name and/or a different namespace. Based on the LEWG discussion
+on 2025-08-26 the direction is to add the default arguments.
+</p>
+
+
+<p id="res-4343"><b>Proposed resolution:</b></p>
+<p>
+Add default template arguments for <code>task</code> for
+<code>T = void</code> and <code>Environment = env&lt;&gt;</code>
+in the synopsis of 33.13.6.2 <a href="https://wg21.link/task.class">[task.class]</a>:
+<blockquote><pre>
+namespace std::execution {
+  template&lt;class T <ins>= void</ins>, class Environment <ins>= env&lt;&gt;</ins>&gt;
+  class task {
+     ...
+  };
+}
+</pre></blockquote>
 </p>
 
 
