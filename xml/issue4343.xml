@@ -18,7 +18,7 @@ This is an oversight and should be fixed.  The default for
 <code>T</code> should be <code>void</code> and the default for
 <code>Environment</code> should be <code>env&lt;&gt;</code> (the
 design paper used <code>empty_env</code> but this <code>struct</code>
-was replaced by the class template <code>env</code> by <paper ref="p3325r5"/>).
+was replaced by the class template <code>env</code> by <paper num="p3325r5"/>).
 </p>
 <p>
 There could be a counter argument to defining a default for the
