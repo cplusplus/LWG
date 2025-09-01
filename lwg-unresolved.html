@@ -54,7 +54,7 @@
 </style>
 </head>
 <body>
-<p>Revised 2025-09-01 at 20:28:01 UTC
+<p>Revised 2025-09-01 at 20:28:23 UTC
 </p><h2>Unresolved Issues</h2>
 <hr>
 <h3 id="423"><a href="#423">423</a><sup><a href="https://cplusplus.github.io/LWG/issue423">(i)</a></sup>. Effects of negative <code>streamsize</code> in iostreams</h3>
@@ -77207,6 +77207,34 @@ it is only created when accessed.
 
 
 <p id="res-4347"><b>Proposed resolution:</b></p>
+<p>
+</p>
+
+
+
+
+
+<hr>
+<h3 id="4348"><a href="#4348">4348</a><sup><a href="https://cplusplus.github.io/LWG/issue4348">(i)</a></sup>. <code>task</code> doesn't support symmetric transfer</h3>
+<p><b>Section:</b> 33.13.6.2 <a href="https://wg21.link/task.class">[task.class]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
+ <b>Submitter:</b> Dietmar Kühl <b>Opened:</b> 2025-09-01 <b>Last modified:</b> 2025-09-01</p>
+<p><b>Priority: </b>Not Prioritized
+</p>
+<p><b>View other</b> <a href="lwg-index-open.html#task.class">active issues</a> in [task.class].</p>
+<p><b>View all other</b> <a href="lwg-index.html#task.class">issues</a> in [task.class].</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
+<p><b>Discussion:</b></p>
+<p>
+The specification of <code>task</code> doesn't require symmetric
+transfer which can help with stack overflow. Also, when another
+<code>task</code> is <code>co_await</code>ed the scheduler on which
+the <code>task</code> resumes is known and can be used to avoid
+unnecessary scheduling by comparing the scheduler currently installed
+by in two <code>task</code>s involved.
+</p>
+
+
+<p id="res-4348"><b>Proposed resolution:</b></p>
 <p>
 </p>
 
