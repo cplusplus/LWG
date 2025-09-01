@@ -37,7 +37,7 @@ namespace std::execution {
 </pre></blockquote>
 </p>
 <p>
-In the specification in <a href="https://wg21.link/task.promise#13">[task.promise]</a> paragraph 13 add <code>noexcept</code>:
+In the specification in <sref ref="[task.promise]"/> paragraph 13 add <code>noexcept</code>:
 <blockquote>
 <pre>
 coroutine_handle&lt;&gt; unhandled_stopped() <ins>noexcept</ins>;
