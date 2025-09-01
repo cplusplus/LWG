@@ -2,7 +2,7 @@
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
 <issue num="4341" status="New">
-<title>>Missing rvalue reference qualification for <code>task::connect()</code></title>
+<title>Missing rvalue reference qualification for <code>task::connect()</code></title>
 <section><sref ref="[task.class]"/></section>
 <submitter>Dietmar Kühl</submitter>
 <date>31 Aug 2025</date>
