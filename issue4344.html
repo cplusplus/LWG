@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Issue 4344: affine_on has no specification for the default</title>
+<meta property="og:title" content="Issue 4344: affine_on has no specification for the default">
+<meta property="og:description" content="C++ library issue. Status: New">
+<meta property="og:url" content="https://cplusplus.github.io/LWG/issue4344.html">
+<meta property="og:type" content="website">
+<meta property="og:image" content="http://cplusplus.github.io/LWG/images/cpp_logo.png">
+<meta property="og:image:alt" content="C++ logo">
+<style>
+  p {text-align:justify}
+  li {text-align:justify}
+  pre code.backtick::before { content: "`" }
+  pre code.backtick::after { content: "`" }
+  blockquote.note
+  {
+    background-color:#E0E0E0;
+    padding-left: 15px;
+    padding-right: 15px;
+    padding-top: 1px;
+    padding-bottom: 1px;
+  }
+  ins {background-color:#A0FFA0}
+  del {background-color:#FFA0A0}
+  table.issues-index { border: 1px solid; border-collapse: collapse; }
+  table.issues-index th { text-align: center; padding: 4px; border: 1px solid; }
+  table.issues-index td { padding: 4px; border: 1px solid; }
+  table.issues-index td:nth-child(1) { text-align: right; }
+  table.issues-index td:nth-child(2) { text-align: left; }
+  table.issues-index td:nth-child(3) { text-align: left; }
+  table.issues-index td:nth-child(4) { text-align: left; }
+  table.issues-index td:nth-child(5) { text-align: center; }
+  table.issues-index td:nth-child(6) { text-align: center; }
+  table.issues-index td:nth-child(7) { text-align: left; }
+  table.issues-index td:nth-child(5) span.no-pr { color: red; }
+  @media (prefers-color-scheme: dark) {
+     html {
+        color: #ddd;
+        background-color: black;
+     }
+     ins {
+        background-color: #225522
+     }
+     del {
+        background-color: #662222
+     }
+     a {
+        color: #6af
+     }
+     a:visited {
+        color: #6af
+     }
+     blockquote.note
+     {
+        background-color: rgba(255, 255, 255, .10)
+     }
+  }
+</style>
+</head>
+<body>
+<hr>
+<p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#New">New</a> status.</em></p>
+<h3 id="4344"><a href="lwg-active.html#4344">4344</a>. <code>affine_on</code> has no specification for the default</h3>
+<p><b>Section:</b> 33.13.3 <a href="https://wg21.link/exec.affine.on">[exec.affine.on]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
+ <b>Submitter:</b> Dietmar Kühl <b>Opened:</b> 2025-09-01 <b>Last modified:</b> 2025-09-01</p>
+<p><b>Priority: </b>Not Prioritized
+</p>
+<p><b>View other</b> <a href="lwg-index-open.html#exec.affine.on">active issues</a> in [exec.affine.on].</p>
+<p><b>View all other</b> <a href="lwg-index.html#exec.affine.on">issues</a> in [exec.affine.on].</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
+<p><b>Discussion:</b></p>
+<p>
+The wording of <code>affine_on</code> doesnt have a specification
+for the default implementation. For other algorithms the default
+implementation is specified.
+</p>
+<p>
+The intention for <code>affine_on</code> was to all
+optimisation/customisation in a way reducing the necessary scheduling:
+if the implementation can determine if a sender completed already
+on the correct execution agent it should be allowed to avoid
+scheduling. A specification should provide enough lattitude to
+allow that.
+</p>
+
+
+<p id="res-4344"><b>Proposed resolution:</b></p>
+<p>
+Add a new paragraph to the specification of <code>affine_on</code>
+in 33.13.3 <a href="https://wg21.link/exec.affine.on">[exec.affine.on]</a> providing
+a specification for the default implementation:
+</p>
+<p>
+<blockquote>
+<p><ins>
+-6- Let <code>sndr</code> and <code>env</code> be subexpressions
+such that <code>Sndr</code> is <code>decltype((sndr))</code>. If
+<code>sender-for&lt;Sndr, affine_on_t&gt;</code> is <code>false</code>, then the expression
+<code>affine_on.transform_sender(sndr, env)</code> is ill-formed; otherwise, it
+is equivalent to:
+</ins>
+</p>
+<pre>
+  <ins>
+auto [_, sch, child] = sndr;
+return transform_sender(
+  <i>query-with-default</i>(get_domain, sch, default_domain()),
+  continues_on(std::move(child), std::move(sch)));
+</ins>
+</pre>
+<p><ins>except that <code>sch</code> is only evaluated once. </ins></p>
+</blockquote>
+</p>
+
+
+
+
+
+</body>
+</html>
