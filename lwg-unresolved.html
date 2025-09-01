@@ -54,7 +54,7 @@
 </style>
 </head>
 <body>
-<p>Revised 2025-08-31 at 21:17:11 UTC
+<p>Revised 2025-09-01 at 11:42:29 UTC
 </p><h2>Unresolved Issues</h2>
 <hr>
 <h3 id="423"><a href="#423">423</a><sup><a href="https://cplusplus.github.io/LWG/issue423">(i)</a></sup>. Effects of negative <code>streamsize</code> in iostreams</h3>
@@ -76363,6 +76363,8 @@ the associated execution resource of the scheduler. &mdash; <i>end note</i>]</de
  <b>Submitter:</b> Dietmar Kühl <b>Opened:</b> 2025-08-31 <b>Last modified:</b> 2025-08-31</p>
 <p><b>Priority: </b>Not Prioritized
 </p>
+<p><b>View other</b> <a href="lwg-index-open.html#exec.affine.on">active issues</a> in [exec.affine.on].</p>
+<p><b>View all other</b> <a href="lwg-index.html#exec.affine.on">issues</a> in [exec.affine.on].</p>
 <p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
 <p><b>Discussion:</b></p>
 <p>
@@ -76374,6 +76376,43 @@ completes inline and, thus, on the correct execution context.
 
 
 <p id="res-4329"><b>Proposed resolution:</b></p>
+<p>
+</p>
+
+
+
+
+
+<hr>
+<h3 id="4330"><a href="#4330">4330</a><sup><a href="https://cplusplus.github.io/LWG/issue4330">(i)</a></sup>. <code>affine_on</code> semantics</h3>
+<p><b>Section:</b> 33.13.3 <a href="https://wg21.link/exec.affine.on">[exec.affine.on]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
+ <b>Submitter:</b> Dietmar Kühl <b>Opened:</b> 2025-08-31 <b>Last modified:</b> 2025-09-01</p>
+<p><b>Priority: </b>Not Prioritized
+</p>
+<p><b>View other</b> <a href="lwg-index-open.html#exec.affine.on">active issues</a> in [exec.affine.on].</p>
+<p><b>View all other</b> <a href="lwg-index.html#exec.affine.on">issues</a> in [exec.affine.on].</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
+<p><b>Discussion:</b></p>
+<p>
+The specification of <code>affine_on</code> uses "current execution
+resource" and it is unclear what that means exactly. Additionally,
+it is unclear what the difference between <code>affine_on</code>
+and <code>continues_on</code> is. The intended difference for
+<code>affine_on</code> is to avoid unnecessary scheduling which
+<code>continues_on</code> is already allowed to do in some cases,
+too.
+</p>
+<p>
+The intended semantics is that <code>affine_on</code> will either
+complete inline on whatever execution agent it was started on or
+it will complete asynchronously on the specified execution context.
+With this formulation <code>affine_on</code> may complete on one
+of two different execution context if it is started on an execution
+context that is different from the one specified by the scheduler.
+</p>
+
+
+<p id="res-4330"><b>Proposed resolution:</b></p>
 <p>
 </p>
 
