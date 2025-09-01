@@ -19,7 +19,7 @@ but currently it isn't.
 
 <resolution>
 <p>
-In the synopsis in <a href="https://wg21.link/task.class">[task.class]</a> add rvalue
+In the synopsis in <sref ref="[task.class]"/> add rvalue
 reference qualification to <code>task::connect()</code>:
 <blockquote><pre>
 namespace std::execution {
