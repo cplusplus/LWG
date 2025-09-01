@@ -2,7 +2,7 @@
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
 <issue num="4334" status="New">
-<title><code>taskYour Titlelt;...Your Titlegt;::promise_type</code> supports arbitrary <code>allocator_arg</code> position</title>
+<title><code>task&lt;...&gt;::promise_type</code> supports arbitrary <code>allocator_arg</code> position</title>
 <section><sref ref="[task.promise]"/></section>
 <submitter>Dietmar Kühl</submitter>
 <date>31 Aug 2025</date>
