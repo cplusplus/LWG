@@ -20,7 +20,7 @@ this function should be qualified with an rvalue reference.
 
 <resolution>
 <p>
-Add an rvalue qualifier to the declaration of <code>connect</code> in <a href="https://wg21.link/exec.task.scheduler#8">[exec.task.scheduler] paragraph 8</a>:
+Add an rvalue qualifier to the declaration of <code>connect</code> in <sref ref="[exec.task.scheduler]"/> paragraph 8:
 <blockquote>
 <pre>
 namespace std::execution {
@@ -36,7 +36,7 @@ namespace std::execution {
 </blockquote>
 </p>
 <p>
-In the specification in <a href="https://wg21.link/exec.task.scheduler#10">[exec.task.scheduler] paragraph 10</a> add an rvalue qualifier to <code>connect</code>:
+In the specification in <sref ref="[exec.task.scheduler]"/> paragraph 10 add an rvalue qualifier to <code>connect</code>:
 <blockquote>
 <pre>
 template&lt;receiver Rcvr&gt;
