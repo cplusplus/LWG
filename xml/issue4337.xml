@@ -21,7 +21,7 @@ no requirement for scheduler to be assignable.
 
 <resolution>
 <p>
-Change the wording in <a href="https://wg21.link/task.promise#11">[task.promise] paragraph 11</a>
+Change the wording in <sref ref="[task.promise]"/> paragraph 11
 to avoid the use of <code>std::exchange</code> and transfer the using
 construction:
 <blockquote>
