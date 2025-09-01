@@ -22,7 +22,8 @@ into the <code><i>result</i></code>.
 
 <resolution>
 <p>
-Insert the following paragraphs after the specification of <code>unhandled_stopped</code>:
+Insert the following paragraphs in <sref ref="[task.promise]"/>
+after the specification of <code>unhandled_stopped</code>:
 </p>
 <p>
 <blockquote>
