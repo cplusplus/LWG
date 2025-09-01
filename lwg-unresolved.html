@@ -54,7 +54,7 @@
 </style>
 </head>
 <body>
-<p>Revised 2025-09-01 at 11:42:29 UTC
+<p>Revised 2025-09-01 at 11:43:22 UTC
 </p><h2>Unresolved Issues</h2>
 <hr>
 <h3 id="423"><a href="#423">423</a><sup><a href="https://cplusplus.github.io/LWG/issue423">(i)</a></sup>. Effects of negative <code>streamsize</code> in iostreams</h3>
@@ -76413,6 +76413,35 @@ context that is different from the one specified by the scheduler.
 
 
 <p id="res-4330"><b>Proposed resolution:</b></p>
+<p>
+</p>
+
+
+
+
+
+<hr>
+<h3 id="4331"><a href="#4331">4331</a><sup><a href="https://cplusplus.github.io/LWG/issue4331">(i)</a></sup>. <code>affine_on</code> shape may be wrong</h3>
+<p><b>Section:</b> 33.13.3 <a href="https://wg21.link/exec.affine.on">[exec.affine.on]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
+ <b>Submitter:</b> Dietmar Kühl <b>Opened:</b> 2025-08-31 <b>Last modified:</b> 2025-09-01</p>
+<p><b>Priority: </b>Not Prioritized
+</p>
+<p><b>View other</b> <a href="lwg-index-open.html#exec.affine.on">active issues</a> in [exec.affine.on].</p>
+<p><b>View all other</b> <a href="lwg-index.html#exec.affine.on">issues</a> in [exec.affine.on].</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
+<p><b>Discussion:</b></p>
+<p>
+<code>affine_on</code> is specified to take a sender and a scheduler
+as arguments. The scheduler is meant to match the scheduler obtained
+from the <code>get_scheduler</code> query on the receiver's
+environment.  Thus, the scheduler argument is redundant and the
+semantics become weird if these two schedulers don't match. The
+<code>affine_on</code> algorithm should only take the sender as
+argument.
+</p>
+
+
+<p id="res-4331"><b>Proposed resolution:</b></p>
 <p>
 </p>
 
