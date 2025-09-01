@@ -13,13 +13,12 @@
 The design discussion of <code>task</code> describes defaults for
 the two template parameters <code>T</code> and <code>Environment</code>
 of <code>task</code> but these defaults are not reflected in the
-synopsis of <a href="https://wg21.link/task.class">[task.class]</a>.
+synopsis of <sref ref="[task.class]"/>.
 This is an oversight and should be fixed.  The default for
 <code>T</code> should be <code>void</code> and the default for
 <code>Environment</code> should be <code>env&lt;&gt;</code> (the
 design paper used <code>empty_env</code> but this <code>struct</code>
-was replaced by the class template <code>env</code> by <a
-href="https://wg21.link/p3325">P3325r5</a>).
+was replaced by the class template <code>env</code> by <paper ref="p3325r5"/>).
 </p>
 <p>
 There could be a counter argument to defining a default for the
@@ -40,8 +39,7 @@ on 2025-08-26 the direction is to add the default arguments.
 <p>
 Add default template arguments for <code>task</code> for
 <code>T = void</code> and <code>Environment = env&lt;&gt;</code>
-in the synopsis of <a
-href="https://wg21.link/task.class">[task.class]</a>:
+in the synopsis of <sref ref="[task.class]"/>:
 <blockquote><pre>
 namespace std::execution {
   template&lt;class T <ins>= void</ins>, class Environment <ins>= env&lt;&gt;</ins>&gt;
