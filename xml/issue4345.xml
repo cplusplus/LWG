@@ -24,7 +24,7 @@ on 2025-08-26 it is considered to be more a bug fix than a new feature.
 <p>
 Add a default template argument of <code>T</code> to the template
 parameter <code>V</code> of <code>task::promise_type::return_value</code>
-in the synopsis of <a href="https://wg21.link/task.promise">[task.promise]</a>:
+in the synopsis of <sref ref="[task.promise]"/>:
 <blockquote><pre>
 namespace std::execution {
   template&lt;class T, class Environment&gt;
