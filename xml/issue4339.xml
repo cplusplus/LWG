@@ -44,6 +44,78 @@ Thus, the <code>variant</code> can be replaced with an
 
 <resolution>
 <p>
+In <sref ref="[task.state]"/>, add
+exposition-only data members <code><i>result</i></code> and
+<code><i>error</i></code> to the exposition-only  class
+<code><i>state</i></code>:
+<blockquote>
+<pre>
+namespace std::execution {
+  template&lt;class T, class Environment&gt;
+  template&lt;receiver Rcvr&gt;
+  class task&lt;T, Environment&gt;::<i>state</i> {           // <i>exposition only</i>
+  ...
+  Environment               <i>environment</i>;   // <i>exposition only</i>
+  <ins>optional&lt;T&gt;               <i>result</i>;        // <i>exposition only; present only if</i> is_void_v&lt;T&gt; <i>is</i> false</ins>
+  <ins>exception_ptr             <i>error</i>;         // <i>exposition-only</i></ins>
+};
+}
+</pre>
+</blockquote>
+</p>
+<p>
+Remove the exposition-only data members
+<code><i>result</i></code> and <code><i>errors</i></code> from
+the class <code>promise_type</code> in
+<sref ref="[task.promise]"/>:
+<blockquote>
+<pre>
+namespace std::execution {
+  template&lt;class T, class Environment&gt;
+  class task&lt;T, Environment&gt;::promise_type {
+  ...
+  stop_token_type   <i>token</i>;  // <i>exposition only</i>
+  <del>optional&lt;T&gt;       <i>result</i>; // <i>exposition only; present only if</i> is_void_v&lt;T&gt; <i>is</i> false</del>
+  <del><i>error-variant</i>     <i>errors</i>; // <i>exposition only</i></del>
+};
+}
+</pre>
+</blockquote>
+</p>
+<p>
+The definition of <code><i>error-variant</i></code> isn't needed, i.e., remove <sref ref="[task.promise]"/> paragraph 2:
+<blockquote>
+<p><del>
+-2- <code><i>error-variant</i></code> is a <code>variant&lt;monostate, remove_cvref_t&lt;E&gt;...&gt;</code>, with duplicate types removed, where <code>E...</code> are template arguments of the specialization of <code>execution::completion_signatures</code> denoted by <code>error_types</code>.
+</del></p>
+</blockquote>
+</p>
+<p>
+In <sref ref="[task.promise]"/> change paragraph 7 to use the members added to <code><i>state</i></code>:
+<blockquote>
+<pre>auto final_suspend() noexcept</pre>
+<p>-7- <i>Returns</i>: An awaitable object of unspecified type (<sref ref="[expr.await]"/>) whose member functions arrange for the completion of the asynchronous operation associated with <code><i>STATE</i>(*this)</code><del> by invoking</del><ins>. Let <code>st</code> be a reference to <code><i>STATE</i>(*this)</code>. The asynchronous completion first destroys the coroutine frame using <code>st.<i>handle</i>.destroy()</code> and then invokes</ins>:</p>
+
+<ul>
+<li>-7.1- <code>set_error(std::move(<del><i>RCVR</i>(*this)</del><ins>st.<i>rcvr</i></ins>), std::move(<del>e</del><ins>st.<i>error</i></ins>))</code> if <del><code><i>errors</i>.index()</code> is greater than zero and <code>e</code> is the value held by <code><i>errors</i></code></del><ins><code>bool(st.<i>error</i>)</code> is <code>true</code></ins>, otherwise</li>
+<li>-7.2- <code>set_value(std::move(<del><i>RCVR</i>(*this)</del><ins>st.<i>rcvr</i></ins>))</code> if <code>is_void&lt;T&gt;</code> is <code>true</code>, and otherwise</li>
+<li>-7.3- <code>set_value(std::move(<del><i>RCVR</i>(*this)</del><ins>st.<i>rcvr</i></ins>), *<ins>st.</ins><i>result</i>)</code>.</li>
+</ul>
+</blockquote>
+</p>
+<p>
+Change the specification of <code>yield_value</code> to destroy the coroutine frame before invoking the <code>set_error</code> completion, i.e., change <sref ref="[task.promise]"/> paragraph 9:
+<blockquote>
+<p>-9- <i>Returns</i>: An awaitable object of unspecified type ([expr.await]) whose member functions arrange for the calling coroutine to be suspended and then completes the asynchronous operation associated with <code><i>STATE</i>(*this)</code><del> by</del><ins>. Let <code>st</code> be a reference to <code><i>STATE</i>(*this)</code>. Then the asynchronous operation completes by first destroying the coroutine frame using <code>st.<i>handle</i>.destroy()</code> and then</ins> invoking <code>set_error(std::move(<del><i>RCVR</i>(*this)</del><ins>st.<i>rcvr</i></ins>), Cerr(std::move(err.error)))</code>.
+</p>
+</blockquote>
+</p>
+<p>
+Change the specification of <code>unhandled_stopped</code> to destroy the coroutine frame before invoking the <code>set_stopped</code> completion, i.e., change <sref ref="[task.promise]"/> paragraph 13:
+<blockquote>
+<pre>coroutine_handle&lt;&gt; unhandled_stopped();</pre>
+<p>-13- <i>Effects</i>: Completes the asynchronous operation associated with <code><i>STATE</i>(*this)</code><del> by</del><ins>. Let <code>st</code> be a reference to <code><i>STATE</i>(*this)</code>. The asynchronous operation is completed by first destroying the coroutine frame using <code>st.<i>handle</i>.destroy()</code> and then</ins> invoking <code>set_stopped(std::move(<del><i>RCVR</i>(*this)</del><ins>st.<i>rcvr</i></ins>))</code>.</p>
+</blockquote>
 </p>
 </resolution>
 
