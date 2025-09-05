@@ -54,7 +54,7 @@
 </style>
 </head>
 <body>
-<p>Revised 2025-09-02 at 20:32:19 UTC
+<p>Revised 2025-09-05 at 17:37:27 UTC
 </p><h2>Unresolved Issues</h2>
 <hr>
 <h3 id="423"><a href="#423">423</a><sup><a href="https://cplusplus.github.io/LWG/issue423">(i)</a></sup>. Effects of negative <code>streamsize</code> in iostreams</h3>
@@ -50721,7 +50721,7 @@ namespace std {
 <hr>
 <h3 id="4000"><a href="#4000">4000</a><sup><a href="https://cplusplus.github.io/LWG/issue4000">(i)</a></sup>. <code>flat_map::insert_range</code>'s <i>Effects</i> is not quite right</h3>
 <p><b>Section:</b> 23.6.8.7 <a href="https://wg21.link/flat.map.modifiers">[flat.map.modifiers]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Hewill Kang <b>Opened:</b> 2023-10-23 <b>Last modified:</b> 2024-02-22</p>
+ <b>Submitter:</b> Hewill Kang <b>Opened:</b> 2023-10-23 <b>Last modified:</b> 2025-09-05</p>
 <p><b>Priority: </b>3
 </p>
 <p><b>View all other</b> <a href="lwg-index.html#flat.map.modifiers">issues</a> in [flat.map.modifiers].</p>
@@ -50748,9 +50748,7 @@ Set priority to 3 after reflector poll in October 2023.
 </p>
 
 <p>
-"This is <a href="https://wg21.link/P2767" title=" flat_map/flat_set omnibus">P2767</a> section 6 which LWG looked at in Varna,
-and was turned into https://github.com/cplusplus/draft/pull/6274 as an
-editorial change."
+"This is <a href="https://wg21.link/P2767" title=" flat_map/flat_set omnibus">P2767</a> section 6 which LWG looked at in Varna."
 </p>
 
 
@@ -77416,6 +77414,40 @@ Remove 33.13.6.5 <a href="https://wg21.link/task.promise">[task.promise]</a> par
 <p><del>-6.1- - the calling coroutine to be suspended,</del></p>
 <p><del>-6.2- - the coroutine to be resumed on an execution agent of the execution resource associated with <code><i>SCHED</i>(*this)</code>.</del></p>
 </blockquote>
+</p>
+
+
+
+
+
+<hr>
+<h3 id="4350"><a href="#4350">4350</a><sup><a href="https://cplusplus.github.io/LWG/issue4350">(i)</a></sup>. Should flat adaptors use <code class='backtick'>insert_range</code> when available?</h3>
+<p><b>Section:</b> 23.6.8 <a href="https://wg21.link/flat.map">[flat.map]</a>, 23.6.9 <a href="https://wg21.link/flat.multimap">[flat.multimap]</a>, 23.6.11 <a href="https://wg21.link/flat.set">[flat.set]</a>, 23.6.12 <a href="https://wg21.link/flat.multiset">[flat.multiset]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
+ <b>Submitter:</b> Jonathan Wakely <b>Opened:</b> 2025-09-05 <b>Last modified:</b> 2025-09-05</p>
+<p><b>Priority: </b>Not Prioritized
+</p>
+<p><b>View other</b> <a href="lwg-index-open.html#flat.map">active issues</a> in [flat.map].</p>
+<p><b>View all other</b> <a href="lwg-index.html#flat.map">issues</a> in [flat.map].</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
+<p><b>Discussion:</b></p>
+<p>
+As specified in 23.6.3.4 <a href="https://wg21.link/queue.mod">[queue.mod]</a>,
+<code class='backtick'>std::queue::push_range</code> is guaranteed to use <code class='backtick'>c.append_range</code> if that exists.
+For <code class='backtick'>flat_map</code> and its flat friends, we only ever use <code class='backtick'>c.insert</code> and never try
+to use <code class='backtick'>c.insert_range</code>, <code class='backtick'>c.append_range</code>, etc.
+LWG thinks the "as if by" wording allows implementations to use <code class='backtick'>insert_range</code>
+when the container type being adapted is <code class='backtick'>std::vector</code> but not for user-defined
+containers.
+Should the flat adaptors follow <code class='backtick'>std::queue</code> and guarantee that they will use
+the <code class='backtick'>xxx_range</code> member if they exist?
+That would mean that user containers need to ensure that any member functions
+with those names must behave as expected, but we already require that for
+<code class='backtick'>std::queue</code>.
+</p>
+
+
+<p id="res-4350"><b>Proposed resolution:</b></p>
+<p>
 </p>
 
 
