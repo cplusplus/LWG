@@ -54,7 +54,7 @@
 </style>
 </head>
 <body>
-<p>Revised 2025-09-05 at 17:37:27 UTC
+<p>Revised 2025-09-05 at 17:58:39 UTC
 </p><h2>Unresolved Issues</h2>
 <hr>
 <h3 id="423"><a href="#423">423</a><sup><a href="https://cplusplus.github.io/LWG/issue423">(i)</a></sup>. Effects of negative <code>streamsize</code> in iostreams</h3>
@@ -77449,6 +77449,67 @@ with those names must behave as expected, but we already require that for
 <p id="res-4350"><b>Proposed resolution:</b></p>
 <p>
 </p>
+
+
+
+
+
+<hr>
+<h3 id="4351"><a href="#4351">4351</a><sup><a href="https://cplusplus.github.io/LWG/issue4351">(i)</a></sup>. <code><i>integral-constant-like</i></code> needs more <code class='backtick'>remove_cvref_t</code></h3>
+<p><b>Section:</b> 23.7.2.1 <a href="https://wg21.link/span.syn">[span.syn]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
+ <b>Submitter:</b> Jonathan Wakely <b>Opened:</b> 2025-09-05 <b>Last modified:</b> 2025-09-05</p>
+<p><b>Priority: </b>Not Prioritized
+</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
+<p><b>Discussion:</b></p>
+<p>
+<a href="https://wg21.link/P2781R9" title=" std::constexpr_wrapper">P2781R9</a> tweaked the definition of
+<code><i>integral-constant-like</i></code> to work with <code class='backtick'>constant_wrapper</code>,
+like so:
+</p>
+<blockquote>
+<pre>
+template&lt;class T&gt;
+    concept <i>integral-constant-like</i> =                    <i>// exposition only</i>
+      is_integral_v&lt;<ins>remove_cvref_t&lt;</ins>decltype(T::value)<ins>&gt;</ins>&gt; &amp;&amp;
+      !is_same_v&lt;bool, remove_const_t&lt;decltype(T::value)&gt;&gt; &amp;&amp;
+      convertible_to&lt;T, decltype(T::value)&gt; &amp;&amp;
+      equality_comparable_with&lt;T, decltype(T::value)&gt; &amp;&amp;
+      bool_constant&lt;T() == T::value&gt;::value &amp;&amp;
+      bool_constant&lt;static_cast&lt;decltype(T::value)&gt;(T()) == T::value&gt;::value;
+</pre>
+</blockquote>
+<p>
+This was done so that <code>constant_wrapper&lt;int&gt;</code> models the concept,
+but it needs an additional tweak so that
+<code>constant_wrapper&lt;bool&amp;&gt;</code> does not model it.
+</p>
+
+
+<p id="res-4351"><b>Proposed resolution:</b></p>
+<p>
+This wording is relative to <a href="https://wg21.link/N5014">N5014</a>.
+</p>
+
+<ol>
+
+<li><p>Modify 23.7.2.1 <a href="https://wg21.link/span.syn">[span.syn]</a> as indicated:</p>
+
+<blockquote>
+<pre>
+template&lt;class T&gt;
+    concept <i>integral-constant-like</i> =                    <i>// exposition only</i>
+      is_integral_v&lt;remove_cvref_t&lt;decltype(T::value)&gt;&gt; &amp;&amp;
+      !is_same_v&lt;bool, remove_<ins>cvref</ins><del>const</del>_t&lt;decltype(T::value)&gt;&gt; &amp;&amp;
+      convertible_to&lt;T, decltype(T::value)&gt; &amp;&amp;
+      equality_comparable_with&lt;T, decltype(T::value)&gt; &amp;&amp;
+      bool_constant&lt;T() == T::value&gt;::value &amp;&amp;
+      bool_constant&lt;static_cast&lt;decltype(T::value)&gt;(T()) == T::value&gt;::value;
+</pre>
+</blockquote>
+</li>
+</ol>
+
 
 
 
