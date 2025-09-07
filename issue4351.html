@@ -87,9 +87,9 @@ template&lt;class T&gt;
 </pre>
 </blockquote>
 <p>
-This was done so that <code>constant_wrapper&lt;int&gt;</code> models the concept,
+This was done so that <code>cw&lt;5&gt;</code> models the concept,
 but it needs an additional tweak so that
-<code>decltype(cw&lt;true&gt;)</code> does not model it.
+<code>cw&lt;true&gt;</code> does not model it.
 </p>
 
 
