@@ -67,7 +67,7 @@
 </tr>
 <tr>
   <td align="left">Date:</td>
-  <td align="left">2025-09-05</td>
+  <td align="left">2025-09-07</td>
 </tr>
 <tr>
   <td align="left">Project:</td>
@@ -79,7 +79,7 @@
 </tr>
 </table>
 <h1>C++ Standard Library Active Issues List (Revision D125)</h1>
-<p>Revised 2025-09-05 at 18:39:08 UTC
+<p>Revised 2025-09-07 at 15:40:57 UTC
 </p>
   <p>Reference ISO/IEC IS 14882:2020(E)</p>
   <p>Also see:</p>
@@ -81934,7 +81934,7 @@ with those names must behave as expected, but we already require that for
 <hr>
 <h3 id="4351"><a href="#4351">4351</a><sup><a href="https://cplusplus.github.io/LWG/issue4351">(i)</a></sup>. <code><i>integral-constant-like</i></code> needs more <code class='backtick'>remove_cvref_t</code></h3>
 <p><b>Section:</b> 23.7.2.1 <a href="https://wg21.link/span.syn">[span.syn]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Jonathan Wakely <b>Opened:</b> 2025-09-05 <b>Last modified:</b> 2025-09-05</p>
+ <b>Submitter:</b> Jonathan Wakely <b>Opened:</b> 2025-09-05 <b>Last modified:</b> 2025-09-07</p>
 <p><b>Priority: </b>Not Prioritized
 </p>
 <p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
@@ -81959,7 +81959,7 @@ template&lt;class T&gt;
 <p>
 This was done so that <code>constant_wrapper&lt;int&gt;</code> models the concept,
 but it needs an additional tweak so that
-<code>constant_wrapper&lt;bool&amp;&gt;</code> does not model it.
+<code>decltype(cw&lt;true&gt;)</code> does not model it.
 </p>
 
 
