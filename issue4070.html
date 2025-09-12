@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <title>Issue 4070: Transcoding by std::formatter&lt;std::filesystem::path&gt;</title>
 <meta property="og:title" content="Issue 4070: Transcoding by std::formatter&lt;std::filesystem::path&gt;">
-<meta property="og:description" content="C++ library issue. Status: SG16">
+<meta property="og:description" content="C++ library issue. Status: Open">
 <meta property="og:url" content="https://cplusplus.github.io/LWG/issue4070.html">
 <meta property="og:type" content="website">
 <meta property="og:image" content="http://cplusplus.github.io/LWG/images/cpp_logo.png">
@@ -61,13 +61,13 @@
 </head>
 <body>
 <hr>
-<p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#SG16">SG16</a> status.</em></p>
+<p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#Open">Open</a> status.</em></p>
 <h3 id="4070"><a href="lwg-active.html#4070">4070</a>. Transcoding by <code>std::formatter&lt;std::filesystem::path&gt;</code></h3>
-<p><b>Section:</b> 31.12.6.9.2 <a href="https://wg21.link/fs.path.fmtr.funcs">[fs.path.fmtr.funcs]</a> <b>Status:</b> <a href="lwg-active.html#SG16">SG16</a>
- <b>Submitter:</b> Jonathan Wakely <b>Opened:</b> 2024-04-19 <b>Last modified:</b> 2025-06-16</p>
+<p><b>Section:</b> 31.12.6.9.2 <a href="https://wg21.link/fs.path.fmtr.funcs">[fs.path.fmtr.funcs]</a> <b>Status:</b> <a href="lwg-active.html#Open">Open</a>
+ <b>Submitter:</b> Jonathan Wakely <b>Opened:</b> 2024-04-19 <b>Last modified:</b> 2025-09-12</p>
 <p><b>Priority: </b>2
 </p>
-<p><b>View all issues with</b> <a href="lwg-status.html#SG16">SG16</a> status.</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#Open">Open</a> status.</p>
 <p><b>Discussion:</b></p>
 <p>
 31.12.6.9.2 <a href="https://wg21.link/fs.path.fmtr.funcs">[fs.path.fmtr.funcs]</a> says:
@@ -197,9 +197,9 @@ The minimal change is to replace "and not converting from <code class='backtick'
 is not UTF-8". The optional change is to insert "ordinary" before "literal encoding" as well. Once that is done, 
 I'll have SG16 confirm they are content with the new proposed resolution.
 </p>
+<p><strong>Previous resolution [SUPERSEDED]:</strong></p>
+<blockquote class="note">
 
-
-<p id="res-4070"><b>Proposed resolution:</b></p>
 <p>
 This wording is relative to <a href="https://wg21.link/N5008" title=" Working Draft, Programming Languages — C++">N5008</a>.
 </p>
@@ -242,6 +242,96 @@ transcoding of a formatted <code class='backtick'>path</code> when <code class='
 </li>
 
 </ol>
+</blockquote>
+
+<p><i>[2025-07-30; SG16 meeting]</i></p>
+
+<p>
+SG16 unanimously approved new wording produced during the discussion.
+The group concluded that the intended behavior would be best specified by
+introducing additional names to denote the sequence of transformations
+that produce the intended effect. Status &rarr; Open.
+</p>
+
+
+
+<p id="res-4070"><b>Proposed resolution:</b></p>
+<p>
+This wording is relative to <a href="https://wg21.link/N5014">N5014</a>.
+</p>
+<ol>
+<li><p>Modify 31.12.6.9.2 <a href="https://wg21.link/fs.path.fmtr.funcs">[fs.path.fmtr.funcs]</a> as indicated:</p>
+
+<blockquote>
+<pre><code>
+template&lt;class FormatContext&gt;
+  typename FormatContext::iterator
+    format(const filesystem::path&amp; p, FormatContext&amp; ctx) const;
+</code></pre>
+<blockquote>
+<p>
+-5-
+<em>Effects</em>:
+Let <code class='backtick'>s</code> be
+<code>p.generic_string<del>&lt;filesystem::path::value_type&gt;</del>()</code>
+if the <code class='backtick'>g</code> option is used, otherwise <code class='backtick'>p.native()</code>.
+<ins>Let <code class='backtick'>s2</code> be <code class='backtick'>s</code> adjusted according to the <em>path-format-spec</em>.
+Let <code class='backtick'>s3</code> be defined as follows:</ins>
+<ol style="list-style-type: none">
+<li>
+<ins>
+(5.1) &mdash;
+If <code class='backtick'>charT</code> is <code class='backtick'>char</code>, <code class='backtick'>path::value_type</code> is <code class='backtick'>wchar_t</code>,
+and the ordinary literal encoding is UTF-8,
+<code class='backtick'>s3</code> is the result of transcoding <code class='backtick'>s2</code>
+from the native encoding for wide character strings to UTF-8
+with maximal subparts of ill-formed subsequences substituted
+with <span style="font-variant:small-caps">U+FFFD REPLACEMENT CHARACTER</span>
+per the Unicode Standard, Chapter 3.9
+<span style="font-variant:small-caps">U+FFFD</span> Substitution in Conversion.
+</ins>
+</li>
+<li>
+<ins>
+(5.2) &mdash;
+If <code class='backtick'>charT</code> and <code class='backtick'>path::value_type</code> are the same, then <code class='backtick'>s3</code> is the same as <code class='backtick'>s2</code>.
+</ins>
+</li>
+<li>
+<ins>
+(5.3) &mdash;
+Otherwise, <code class='backtick'>s3</code> is the result of an implementation-defined transcoding of <code class='backtick'>s2</code>.
+</ins>
+</li>
+</ol>
+<ins>Writes <code>s3</code> into <code class='backtick'>ctx.out()</code>.</ins>
+<del>
+Writes <code class='backtick'>s</code> into <code class='backtick'>ctx.out()</code>,
+adjusted according to the <i>path-format-spec</i>.
+If <code class='backtick'>charT</code> is <code class='backtick'>char</code>, <code class='backtick'>path::value_type</code> is <code class='backtick'>wchar_t</code>, and the literal encoding 
+is UTF-8, then the escaped path
+is transcoded from the native encoding for wide character strings to UTF-8
+with maximal subparts of ill-formed subsequences substituted with
+<span style="font-variant:small-caps">u+fffd replacement character</span> per
+the Unicode Standard, Chapter 3.9 <span style="font-variant:small-caps">u+fffd</span>
+Substitution in Conversion.
+If <code class='backtick'>charT</code> and <code class='backtick'>path::value_type</code> are the same then no transcoding is performed.
+Otherwise, transcoding is implementation-defined.
+</del>
+</p>
+</blockquote>
+</blockquote>
+</li>
+
+<li>
+Modify the entry in the index of implementation-defined behavior as indicated:
+<blockquote>
+transcoding of a formatted <code class='backtick'>path</code> when <code class='backtick'>charT</code> and <code class='backtick'>path::value_type</code> differ
+<ins>and the ordinary literal encoding is not UTF-8</ins>
+</blockquote>
+</li>
+</ol>
+
 
 
 

@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <title>Issue 4090: Underspecified use of locale facets for locale-dependent std::format</title>
 <meta property="og:title" content="Issue 4090: Underspecified use of locale facets for locale-dependent std::format">
-<meta property="og:description" content="C++ library issue. Status: SG16">
+<meta property="og:description" content="C++ library issue. Status: Open">
 <meta property="og:url" content="https://cplusplus.github.io/LWG/issue4090.html">
 <meta property="og:type" content="website">
 <meta property="og:image" content="http://cplusplus.github.io/LWG/images/cpp_logo.png">
@@ -61,15 +61,15 @@
 </head>
 <body>
 <hr>
-<p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#SG16">SG16</a> status.</em></p>
+<p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#Open">Open</a> status.</em></p>
 <h3 id="4090"><a href="lwg-active.html#4090">4090</a>. Underspecified use of locale facets for locale-dependent <code>std::format</code></h3>
-<p><b>Section:</b> 28.5.2.2 <a href="https://wg21.link/format.string.std">[format.string.std]</a> <b>Status:</b> <a href="lwg-active.html#SG16">SG16</a>
- <b>Submitter:</b> Jens Maurer <b>Opened:</b> 2024-04-30 <b>Last modified:</b> 2025-06-12</p>
+<p><b>Section:</b> 28.5.2.2 <a href="https://wg21.link/format.string.std">[format.string.std]</a> <b>Status:</b> <a href="lwg-active.html#Open">Open</a>
+ <b>Submitter:</b> Jens Maurer <b>Opened:</b> 2024-04-30 <b>Last modified:</b> 2025-09-12</p>
 <p><b>Priority: </b>3
 </p>
 <p><b>View other</b> <a href="lwg-index-open.html#format.string.std">active issues</a> in [format.string.std].</p>
 <p><b>View all other</b> <a href="lwg-index.html#format.string.std">issues</a> in [format.string.std].</p>
-<p><b>View all issues with</b> <a href="lwg-status.html#SG16">SG16</a> status.</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#Open">Open</a> status.</p>
 <p><b>Discussion:</b></p>
 <p>
 There are <code>std::format</code> variants that take an explicit <code>std::locale</code> parameter.
@@ -114,9 +114,9 @@ clarify that this is the intended behaviour.
 <p><i>[2025-06-12; Jonathan provides wording]</i></p>
 
 
+<p><strong>Previous resolution [SUPERSEDED]:</strong></p>
+<blockquote class="note">
 
-
-<p id="res-4090"><b>Proposed resolution:</b></p>
 <p>
 This wording is relative to <a href="https://wg21.link/N5008" title=" Working Draft, Programming Languages — C++">N5008</a>.
 </p>
@@ -158,6 +158,71 @@ as if obtained with <code>numpunct<ins>&lt;charT&gt;</ins>::truename</code>
 or <code>numpunct<ins>&lt;charT&gt;</ins>::falsename</code>.
 </li>
 </ol>
+</blockquote>
+</li>
+</ol>
+
+</blockquote>
+
+<p><i>[2025-08-27; SG16 meeting]</i></p>
+
+<p>
+SG16 unanimously approved new wording from Victor.
+The new wording incorporates similar wording as added by <a href="https://wg21.link/P2419R2" title=" Clarify handling of encodings in localized formatting of chrono types">P2419R2</a>
+to address <a href="lwg-defects.html#3565" title="Handling of encodings in localized formatting of chrono types is underspecified (Status: Resolved)">3565</a><sup><a href="https://cplusplus.github.io/LWG/issue3565" title="Latest snapshot">(i)</a></sup>. Status &rarr; Open.
+</p>
+
+
+
+<p id="res-4090"><b>Proposed resolution:</b></p>
+
+<p>
+This wording is relative to <a href="https://wg21.link/N5014">N5014</a>.
+</p>
+
+<ol>
+<li><p>Modify 28.5.2.2 <a href="https://wg21.link/format.string.std">[format.string.std]</a> as indicated:</p>
+
+<blockquote>
+-17-
+When the <code class='backtick'>L</code> option is used, the form used for the conversion is called the
+<i>locale-specific</i> form.
+The <code class='backtick'>L</code> option is only valid for arithmetic types,
+and its effect depends upon the type.
+<ol style="list-style-type: none">
+<li>
+(17.1) &mdash;
+For integral types, the locale-specific form causes the context’s locale
+to be used to insert the appropriate digit group separator characters
+<ins>
+as if obtained with <code>numpunct<ins>&lt;charT&gt;</ins>::grouping</code>
+and <code>numpunct<ins>&lt;charT&gt;</ins>::thousands_sep</code>
+</ins>.
+</li>
+<li>
+(17.2) &mdash;
+For floating-point types, the locale-specific form causes the context’s locale to be used to insert the
+appropriate digit group and radix separator characters
+<ins>
+as if obtained with <code>numpunct<ins>&lt;charT&gt;</ins>::grouping</code>,
+<code>numpunct<ins>&lt;charT&gt;</ins>::thousands_sep</code>, and
+<code>numpunct<ins>&lt;charT&gt;</ins>::decimal_point</code>
+</ins>.
+</li>
+<li>
+(17.3) &mdash;
+For the textual representation of <code class='backtick'>bool</code>, the locale-specific form causes
+the context’s locale to be used to insert the appropriate string
+as if obtained with <code>numpunct<ins>&lt;charT&gt;</ins>::truename</code>
+or <code>numpunct<ins>&lt;charT&gt;</ins>::falsename</code>.
+</li>
+</ol>
+<ins>
+If the string literal encoding is a Unicode encoding form
+and the locale is among an implementation-defined set of locales,
+each replacement that depends on the locale is performed as if
+the replacement character sequence is converted to the string literal encoding.
+</ins>
 </blockquote>
 </li>
 </ol>

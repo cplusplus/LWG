@@ -54,7 +54,7 @@
 </style>
 </head>
 <body>
-<p>Revised 2025-09-08 at 14:09:28 UTC
+<p>Revised 2025-09-12 at 11:40:30 UTC
 </p><h2>Unresolved Issues</h2>
 <hr>
 <h3 id="423"><a href="#423">423</a><sup><a href="https://cplusplus.github.io/LWG/issue423">(i)</a></sup>. Effects of negative <code>streamsize</code> in iostreams</h3>
@@ -56412,11 +56412,11 @@ instead of "an object whose type models <code class='backtick'>Concept</code>" o
 
 <hr>
 <h3 id="4070"><a href="#4070">4070</a><sup><a href="https://cplusplus.github.io/LWG/issue4070">(i)</a></sup>. Transcoding by <code>std::formatter&lt;std::filesystem::path&gt;</code></h3>
-<p><b>Section:</b> 31.12.6.9.2 <a href="https://wg21.link/fs.path.fmtr.funcs">[fs.path.fmtr.funcs]</a> <b>Status:</b> <a href="lwg-active.html#SG16">SG16</a>
- <b>Submitter:</b> Jonathan Wakely <b>Opened:</b> 2024-04-19 <b>Last modified:</b> 2025-06-16</p>
+<p><b>Section:</b> 31.12.6.9.2 <a href="https://wg21.link/fs.path.fmtr.funcs">[fs.path.fmtr.funcs]</a> <b>Status:</b> <a href="lwg-active.html#Open">Open</a>
+ <b>Submitter:</b> Jonathan Wakely <b>Opened:</b> 2024-04-19 <b>Last modified:</b> 2025-09-12</p>
 <p><b>Priority: </b>2
 </p>
-<p><b>View all issues with</b> <a href="lwg-status.html#SG16">SG16</a> status.</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#Open">Open</a> status.</p>
 <p><b>Discussion:</b></p>
 <p>
 31.12.6.9.2 <a href="https://wg21.link/fs.path.fmtr.funcs">[fs.path.fmtr.funcs]</a> says:
@@ -56546,9 +56546,9 @@ The minimal change is to replace "and not converting from <code class='backtick'
 is not UTF-8". The optional change is to insert "ordinary" before "literal encoding" as well. Once that is done, 
 I'll have SG16 confirm they are content with the new proposed resolution.
 </p>
+<p><strong>Previous resolution [SUPERSEDED]:</strong></p>
+<blockquote class="note">
 
-
-<p id="res-4070"><b>Proposed resolution:</b></p>
 <p>
 This wording is relative to <a href="https://wg21.link/N5008" title=" Working Draft, Programming Languages — C++">N5008</a>.
 </p>
@@ -56591,6 +56591,96 @@ transcoding of a formatted <code class='backtick'>path</code> when <code class='
 </li>
 
 </ol>
+</blockquote>
+
+<p><i>[2025-07-30; SG16 meeting]</i></p>
+
+<p>
+SG16 unanimously approved new wording produced during the discussion.
+The group concluded that the intended behavior would be best specified by
+introducing additional names to denote the sequence of transformations
+that produce the intended effect. Status &rarr; Open.
+</p>
+
+
+
+<p id="res-4070"><b>Proposed resolution:</b></p>
+<p>
+This wording is relative to <a href="https://wg21.link/N5014">N5014</a>.
+</p>
+<ol>
+<li><p>Modify 31.12.6.9.2 <a href="https://wg21.link/fs.path.fmtr.funcs">[fs.path.fmtr.funcs]</a> as indicated:</p>
+
+<blockquote>
+<pre><code>
+template&lt;class FormatContext&gt;
+  typename FormatContext::iterator
+    format(const filesystem::path&amp; p, FormatContext&amp; ctx) const;
+</code></pre>
+<blockquote>
+<p>
+-5-
+<em>Effects</em>:
+Let <code class='backtick'>s</code> be
+<code>p.generic_string<del>&lt;filesystem::path::value_type&gt;</del>()</code>
+if the <code class='backtick'>g</code> option is used, otherwise <code class='backtick'>p.native()</code>.
+<ins>Let <code class='backtick'>s2</code> be <code class='backtick'>s</code> adjusted according to the <em>path-format-spec</em>.
+Let <code class='backtick'>s3</code> be defined as follows:</ins>
+<ol style="list-style-type: none">
+<li>
+<ins>
+(5.1) &mdash;
+If <code class='backtick'>charT</code> is <code class='backtick'>char</code>, <code class='backtick'>path::value_type</code> is <code class='backtick'>wchar_t</code>,
+and the ordinary literal encoding is UTF-8,
+<code class='backtick'>s3</code> is the result of transcoding <code class='backtick'>s2</code>
+from the native encoding for wide character strings to UTF-8
+with maximal subparts of ill-formed subsequences substituted
+with <span style="font-variant:small-caps">U+FFFD REPLACEMENT CHARACTER</span>
+per the Unicode Standard, Chapter 3.9
+<span style="font-variant:small-caps">U+FFFD</span> Substitution in Conversion.
+</ins>
+</li>
+<li>
+<ins>
+(5.2) &mdash;
+If <code class='backtick'>charT</code> and <code class='backtick'>path::value_type</code> are the same, then <code class='backtick'>s3</code> is the same as <code class='backtick'>s2</code>.
+</ins>
+</li>
+<li>
+<ins>
+(5.3) &mdash;
+Otherwise, <code class='backtick'>s3</code> is the result of an implementation-defined transcoding of <code class='backtick'>s2</code>.
+</ins>
+</li>
+</ol>
+<ins>Writes <code>s3</code> into <code class='backtick'>ctx.out()</code>.</ins>
+<del>
+Writes <code class='backtick'>s</code> into <code class='backtick'>ctx.out()</code>,
+adjusted according to the <i>path-format-spec</i>.
+If <code class='backtick'>charT</code> is <code class='backtick'>char</code>, <code class='backtick'>path::value_type</code> is <code class='backtick'>wchar_t</code>, and the literal encoding 
+is UTF-8, then the escaped path
+is transcoded from the native encoding for wide character strings to UTF-8
+with maximal subparts of ill-formed subsequences substituted with
+<span style="font-variant:small-caps">u+fffd replacement character</span> per
+the Unicode Standard, Chapter 3.9 <span style="font-variant:small-caps">u+fffd</span>
+Substitution in Conversion.
+If <code class='backtick'>charT</code> and <code class='backtick'>path::value_type</code> are the same then no transcoding is performed.
+Otherwise, transcoding is implementation-defined.
+</del>
+</p>
+</blockquote>
+</blockquote>
+</li>
+
+<li>
+Modify the entry in the index of implementation-defined behavior as indicated:
+<blockquote>
+transcoding of a formatted <code class='backtick'>path</code> when <code class='backtick'>charT</code> and <code class='backtick'>path::value_type</code> differ
+<ins>and the ordinary literal encoding is not UTF-8</ins>
+</blockquote>
+</li>
+</ol>
+
 
 
 
@@ -57257,13 +57347,13 @@ respectively.
 
 <hr>
 <h3 id="4090"><a href="#4090">4090</a><sup><a href="https://cplusplus.github.io/LWG/issue4090">(i)</a></sup>. Underspecified use of locale facets for locale-dependent <code>std::format</code></h3>
-<p><b>Section:</b> 28.5.2.2 <a href="https://wg21.link/format.string.std">[format.string.std]</a> <b>Status:</b> <a href="lwg-active.html#SG16">SG16</a>
- <b>Submitter:</b> Jens Maurer <b>Opened:</b> 2024-04-30 <b>Last modified:</b> 2025-06-12</p>
+<p><b>Section:</b> 28.5.2.2 <a href="https://wg21.link/format.string.std">[format.string.std]</a> <b>Status:</b> <a href="lwg-active.html#Open">Open</a>
+ <b>Submitter:</b> Jens Maurer <b>Opened:</b> 2024-04-30 <b>Last modified:</b> 2025-09-12</p>
 <p><b>Priority: </b>3
 </p>
 <p><b>View other</b> <a href="lwg-index-open.html#format.string.std">active issues</a> in [format.string.std].</p>
 <p><b>View all other</b> <a href="lwg-index.html#format.string.std">issues</a> in [format.string.std].</p>
-<p><b>View all issues with</b> <a href="lwg-status.html#SG16">SG16</a> status.</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#Open">Open</a> status.</p>
 <p><b>Discussion:</b></p>
 <p>
 There are <code>std::format</code> variants that take an explicit <code>std::locale</code> parameter.
@@ -57308,9 +57398,9 @@ clarify that this is the intended behaviour.
 <p><i>[2025-06-12; Jonathan provides wording]</i></p>
 
 
+<p><strong>Previous resolution [SUPERSEDED]:</strong></p>
+<blockquote class="note">
 
-
-<p id="res-4090"><b>Proposed resolution:</b></p>
 <p>
 This wording is relative to <a href="https://wg21.link/N5008" title=" Working Draft, Programming Languages — C++">N5008</a>.
 </p>
@@ -57352,6 +57442,71 @@ as if obtained with <code>numpunct<ins>&lt;charT&gt;</ins>::truename</code>
 or <code>numpunct<ins>&lt;charT&gt;</ins>::falsename</code>.
 </li>
 </ol>
+</blockquote>
+</li>
+</ol>
+
+</blockquote>
+
+<p><i>[2025-08-27; SG16 meeting]</i></p>
+
+<p>
+SG16 unanimously approved new wording from Victor.
+The new wording incorporates similar wording as added by <a href="https://wg21.link/P2419R2" title=" Clarify handling of encodings in localized formatting of chrono types">P2419R2</a>
+to address <a href="lwg-defects.html#3565" title="Handling of encodings in localized formatting of chrono types is underspecified (Status: Resolved)">3565</a><sup><a href="https://cplusplus.github.io/LWG/issue3565" title="Latest snapshot">(i)</a></sup>. Status &rarr; Open.
+</p>
+
+
+
+<p id="res-4090"><b>Proposed resolution:</b></p>
+
+<p>
+This wording is relative to <a href="https://wg21.link/N5014">N5014</a>.
+</p>
+
+<ol>
+<li><p>Modify 28.5.2.2 <a href="https://wg21.link/format.string.std">[format.string.std]</a> as indicated:</p>
+
+<blockquote>
+-17-
+When the <code class='backtick'>L</code> option is used, the form used for the conversion is called the
+<i>locale-specific</i> form.
+The <code class='backtick'>L</code> option is only valid for arithmetic types,
+and its effect depends upon the type.
+<ol style="list-style-type: none">
+<li>
+(17.1) &mdash;
+For integral types, the locale-specific form causes the context’s locale
+to be used to insert the appropriate digit group separator characters
+<ins>
+as if obtained with <code>numpunct<ins>&lt;charT&gt;</ins>::grouping</code>
+and <code>numpunct<ins>&lt;charT&gt;</ins>::thousands_sep</code>
+</ins>.
+</li>
+<li>
+(17.2) &mdash;
+For floating-point types, the locale-specific form causes the context’s locale to be used to insert the
+appropriate digit group and radix separator characters
+<ins>
+as if obtained with <code>numpunct<ins>&lt;charT&gt;</ins>::grouping</code>,
+<code>numpunct<ins>&lt;charT&gt;</ins>::thousands_sep</code>, and
+<code>numpunct<ins>&lt;charT&gt;</ins>::decimal_point</code>
+</ins>.
+</li>
+<li>
+(17.3) &mdash;
+For the textual representation of <code class='backtick'>bool</code>, the locale-specific form causes
+the context’s locale to be used to insert the appropriate string
+as if obtained with <code>numpunct<ins>&lt;charT&gt;</ins>::truename</code>
+or <code>numpunct<ins>&lt;charT&gt;</ins>::falsename</code>.
+</li>
+</ol>
+<ins>
+If the string literal encoding is a Unicode encoding form
+and the locale is among an implementation-defined set of locales,
+each replacement that depends on the locale is performed as if
+the replacement character sequence is converted to the string literal encoding.
+</ins>
 </blockquote>
 </li>
 </ol>
