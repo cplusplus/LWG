@@ -54,7 +54,7 @@
 </style>
 </head>
 <body>
-<p>Revised 2025-09-14 at 13:09:34 UTC
+<p>Revised 2025-09-14 at 13:37:28 UTC
 </p><h2>Unresolved Issues</h2>
 <hr>
 <h3 id="423"><a href="#423">423</a><sup><a href="https://cplusplus.github.io/LWG/issue423">(i)</a></sup>. Effects of negative <code>streamsize</code> in iostreams</h3>
@@ -78338,6 +78338,111 @@ namespace std::execution {
   [&hellip;]
 }
 </pre></blockquote>
+</blockquote>
+
+</li>
+
+</ol>
+
+
+
+
+
+<hr>
+<h3 id="4361"><a href="#4361">4361</a><sup><a href="https://cplusplus.github.io/LWG/issue4361">(i)</a></sup>. Unconditionally <code class='backtick'>constexpr current_exception()</code></h3>
+<p><b>Section:</b> 17.9.7 <a href="https://wg21.link/propagation">[propagation]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
+ <b>Submitter:</b> Lénárd Szolnoki <b>Opened:</b> 2025-08-27 <b>Last modified:</b> 2025-09-14</p>
+<p><b>Priority: </b>Not Prioritized
+</p>
+<p><b>View all other</b> <a href="lwg-index.html#propagation">issues</a> in [propagation].</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
+<p><b>Discussion:</b></p>
+<p>
+The declaration of <code class='backtick'>current_exception()</code>:
+</p>
+<blockquote><pre>
+constexpr exception_ptr current_exception() noexcept;
+</pre></blockquote>
+<p>
+The <code class='backtick'>constexpr</code> specifier is in the current draft <a href="https://wg21.link/N5014">N5014</a>, introduced by <a href="https://wg21.link/P3068" title=" Allowing exception throwing in constant-evaluation">P3068</a> 
+targeting C++26.
+<p/>
+It is not constrained when the expression <code class='backtick'>std::current_exception()</code> is constant. Consider:
+</p>
+<blockquote><pre>
+try {
+  throw 0;
+} catch (int) {
+  const bool b = (std::current_exception() != nullptr);
+}
+</pre></blockquote>
+<p>
+Since <code class='backtick'>b</code> is a variable of constant integral type, it is potentially-constant and its initialization 
+goes trough trial constant evaluation. <code class='backtick'>std::current_exception()</code> can't be implemented to return an 
+<code class='backtick'>exception_ptr</code> that refers to the runtime exception here during constant evaluation, so it returns 
+a null <code class='backtick'>exception_ptr</code> and <code class='backtick'>b</code> gets initialized to <code class='backtick'>false</code>. This is a breaking change compared to 
+C++23, where <code class='backtick'>b</code> is initialized to <code class='backtick'>true</code>.
+</p>
+
+
+<p id="res-4361"><b>Proposed resolution:</b></p>
+<p>
+This wording is relative to <a href="https://wg21.link/N5014">N5014</a>.
+</p>
+
+<blockquote class="note">
+<p>
+[<i>Drafting Note:</i> Two mutually exclusive options are prepared, depicted below by <b>Option A</b> and 
+<b>Option B</b>, respectively.] 
+</p>
+</blockquote>
+
+<p>
+<b>Option A:</b>
+</p>
+
+<ol>
+
+<li><p>Modify 17.9.7 <a href="https://wg21.link/propagation">[propagation]</a> as indicated:</p>
+
+<blockquote>
+<pre>
+constexpr exception_ptr current_exception() noexcept;
+</pre>
+<blockquote>
+<p>
+<ins><i>Constant When</i>: If there is a currently handled exception that was originally thrown within 
+the current constant evaluation.</ins>
+<p/>
+-9- <i>Returns</i>: [&hellip;]
+</p>
+</blockquote>
+</blockquote>
+
+</li>
+
+</ol>
+
+<p>
+<b>Option B:</b>
+</p>
+
+<ol>
+
+<li><p>Modify 17.9.7 <a href="https://wg21.link/propagation">[propagation]</a> as indicated:</p>
+
+<blockquote>
+<pre>
+constexpr exception_ptr current_exception() noexcept;
+</pre>
+<blockquote>
+<p>
+<ins><i>Constant When</i>: Current constant evaluation is not part of potentially-constant initialization 
+of a non-static variable.</ins>
+<p/>
+-9- <i>Returns</i>: [&hellip;]
+</p>
+</blockquote>
 </blockquote>
 
 </li>
