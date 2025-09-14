@@ -59,7 +59,7 @@
 <p>Reference ISO/IEC IS 14882:2024(E)</p>
 <p>This document is the Table of Contents for the <a href="lwg-active.html">Library Active Issues List</a>,
 <a href="lwg-defects.html">Library Defect Reports and Accepted Issues</a>, and <a href="lwg-closed.html">Library Closed Issues List</a>.</p>
-<p>Revised 2025-09-14 at 10:56:15 UTC
+<p>Revised 2025-09-14 at 11:10:21 UTC
 </p><table class="issues-index">
 <tr>
   <th><a href="lwg-toc.html">Issue</a></th>
@@ -6268,6 +6268,17 @@ of uses-allocator construction</td>
 <td><a href="lwg-active.html#New">New</a></td>
 <td>33.9.10 [exec.connect]</td>
 <td><code><i>connect-awaitable()</i></code> should mandate <code class='backtick'>rcvr</code> can receive all completion-signals rather than using constraints</td>
+<td>Yes</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td id="4356"><a href="lwg-active.html#4356" title="connect() should use get_allocator(get_env(rcvr)) to allocate the coroutine-state for a 
+connect-awaitable coroutine (Status: New)">4356</a><sup><a href="https://cplusplus.github.io/LWG/issue4356">(i)</a></sup></td>
+<td><a href="lwg-active.html#New">New</a></td>
+<td>33.9.10 [exec.connect]</td>
+<td><code class='backtick'>connect()</code> should use <code class='backtick'>get_allocator(get_env(rcvr))</code> to allocate the coroutine-state for a 
+<code><i>connect-awaitable</i></code> coroutine</td>
 <td>Yes</td>
 <td></td>
 <td></td>

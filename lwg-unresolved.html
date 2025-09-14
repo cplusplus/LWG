@@ -54,7 +54,7 @@
 </style>
 </head>
 <body>
-<p>Revised 2025-09-14 at 10:56:15 UTC
+<p>Revised 2025-09-14 at 11:10:21 UTC
 </p><h2>Unresolved Issues</h2>
 <hr>
 <h3 id="423"><a href="#423">423</a><sup><a href="https://cplusplus.github.io/LWG/issue423">(i)</a></sup>. Effects of negative <code>streamsize</code> in iostreams</h3>
@@ -77892,6 +77892,7 @@ if that expression is well-formed.
  <b>Submitter:</b> Lewis Baker <b>Opened:</b> 2025-08-27 <b>Last modified:</b> 2025-09-14</p>
 <p><b>Priority: </b>Not Prioritized
 </p>
+<p><b>View other</b> <a href="lwg-index-open.html#exec.connect">active issues</a> in [exec.connect].</p>
 <p><b>View all other</b> <a href="lwg-index.html#exec.connect">issues</a> in [exec.connect].</p>
 <p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
 <p><b>Discussion:</b></p>
@@ -77967,6 +77968,84 @@ namespace std::execution {
 }  
 </pre></blockquote>
 <p>
+</p>
+</blockquote>
+
+</li>
+
+</ol>
+
+
+
+
+
+<hr>
+<h3 id="4356"><a href="#4356">4356</a><sup><a href="https://cplusplus.github.io/LWG/issue4356">(i)</a></sup>. <code class='backtick'>connect()</code> should use <code class='backtick'>get_allocator(get_env(rcvr))</code> to allocate the coroutine-state for a 
+<code><i>connect-awaitable</i></code> coroutine</h3>
+<p><b>Section:</b> 33.9.10 <a href="https://wg21.link/exec.connect">[exec.connect]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
+ <b>Submitter:</b> Lewis Baker <b>Opened:</b> 2025-08-27 <b>Last modified:</b> 2025-09-14</p>
+<p><b>Priority: </b>Not Prioritized
+</p>
+<p><b>View other</b> <a href="lwg-index-open.html#exec.connect">active issues</a> in [exec.connect].</p>
+<p><b>View all other</b> <a href="lwg-index.html#exec.connect">issues</a> in [exec.connect].</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
+<p><b>Discussion:</b></p>
+<p>
+The wording for <code class='backtick'>connect()</code> (33.9.10 <a href="https://wg21.link/exec.connect">[exec.connect]</a>) handles passing awaitable types as the sender argument 
+by calling the <code><i>connect-awaitable</i></code>() coroutine and having it execute a <code class='backtick'>co_await</code> expression.
+<p/>
+The <code><i>connect-awaitable</i></code>() coroutine will typically need to dynamically allocate storage for 
+the coroutine state and, as specified, this currently just always uses the global default allocator.
+This is because the <code><i>connect-awaitable-promise</i></code> type does not define any member operator 
+<code class='backtick'>new/delete</code> overloads.
+<p/>
+It seems desirable for this facility to use the allocator obtained from the receiver, by calling 
+<code class='backtick'>get_allocator(get_env(rcvr))</code>, in order to allocate storage for the coroutine-state instead of always 
+using global operator <code class='backtick'>new</code>. This would give the user at least some level of control over how this 
+allocation is performed.
+</p>
+
+
+<p id="res-4356"><b>Proposed resolution:</b></p>
+<p>
+This wording is relative to <a href="https://wg21.link/N5014">N5014</a>.
+</p>
+
+<ol>
+
+<li><p>Modify 33.9.10 <a href="https://wg21.link/exec.connect">[exec.connect]</a> as indicated:</p>
+
+<blockquote class="note">
+<p>
+[<i>Drafting note: </i> This should cover the design intent, although we may want to spell this out 
+more explicitly in terms of the exact semantics in a similar way to 25.8.5 <a href="https://wg21.link/coro.generator.promise">[coro.generator.promise]</a> p17, 
+which lists overloads of operator <code class='backtick'>new()</code> and describes the rebound allocator type which allocates storage 
+in chunks of size <code class='backtick'>__STDCPP_DEFAULT_NEW_ALIGNMENT__</code>.]
+</p>
+</blockquote>
+
+<blockquote>
+<p>
+-5- Let <code class='backtick'>V</code> name the type <code><i>await-result-type</i>&lt;DS, <i>connect-awaitable-promise</i>&gt;</code>, 
+let <code class='backtick'>Sigs</code> name the type
+</p>
+<blockquote><pre>
+[&hellip;]
+</pre></blockquote>
+<p>
+and let <code><i>connect-awaitable</i></code> be an exposition-only coroutine defined as follows:
+</p>
+<blockquote><pre>
+namespace std::execution {
+  [&hellip;]
+}  
+</pre></blockquote>
+<p>
+<ins>Any dynamically allocated storage required for the coroutine state allocated by an invocation 
+of the form <code><i>connect-awaitable</i>(sndr, rcvr)</code> is allocated using the allocator obtained 
+from <code class='backtick'>get_allocator(get_env(rcvr))</code>.</ins>
+<p/>
+-6- [&hellip;]
 </p>
 </blockquote>
 
