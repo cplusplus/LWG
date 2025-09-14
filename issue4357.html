@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Issue 4357: connect-awaitable should use is_void_v to check for result-type of 
+co_await expression instead of same_as&lt;void&gt;</title>
+<meta property="og:title" content="Issue 4357: connect-awaitable should use is_void_v to check for result-type of 
+co_await expression instead of same_as&lt;void&gt;">
+<meta property="og:description" content="C++ library issue. Status: New">
+<meta property="og:url" content="https://cplusplus.github.io/LWG/issue4357.html">
+<meta property="og:type" content="website">
+<meta property="og:image" content="http://cplusplus.github.io/LWG/images/cpp_logo.png">
+<meta property="og:image:alt" content="C++ logo">
+<style>
+  p {text-align:justify}
+  li {text-align:justify}
+  pre code.backtick::before { content: "`" }
+  pre code.backtick::after { content: "`" }
+  blockquote.note
+  {
+    background-color:#E0E0E0;
+    padding-left: 15px;
+    padding-right: 15px;
+    padding-top: 1px;
+    padding-bottom: 1px;
+  }
+  ins {background-color:#A0FFA0}
+  del {background-color:#FFA0A0}
+  table.issues-index { border: 1px solid; border-collapse: collapse; }
+  table.issues-index th { text-align: center; padding: 4px; border: 1px solid; }
+  table.issues-index td { padding: 4px; border: 1px solid; }
+  table.issues-index td:nth-child(1) { text-align: right; }
+  table.issues-index td:nth-child(2) { text-align: left; }
+  table.issues-index td:nth-child(3) { text-align: left; }
+  table.issues-index td:nth-child(4) { text-align: left; }
+  table.issues-index td:nth-child(5) { text-align: center; }
+  table.issues-index td:nth-child(6) { text-align: center; }
+  table.issues-index td:nth-child(7) { text-align: left; }
+  table.issues-index td:nth-child(5) span.no-pr { color: red; }
+  @media (prefers-color-scheme: dark) {
+     html {
+        color: #ddd;
+        background-color: black;
+     }
+     ins {
+        background-color: #225522
+     }
+     del {
+        background-color: #662222
+     }
+     a {
+        color: #6af
+     }
+     a:visited {
+        color: #6af
+     }
+     blockquote.note
+     {
+        background-color: rgba(255, 255, 255, .10)
+     }
+  }
+</style>
+</head>
+<body>
+<hr>
+<p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#New">New</a> status.</em></p>
+<h3 id="4357"><a href="lwg-active.html#4357">4357</a>. <code><i>connect-awaitable</i></code> should use <code class='backtick'>is_void_v</code> to check for result-type of 
+<code class='backtick'>co_await</code> expression instead of <code>same_as&lt;void&gt;</code></h3>
+<p><b>Section:</b> 33.9.10 <a href="https://wg21.link/exec.connect">[exec.connect]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
+ <b>Submitter:</b> Lewis Baker <b>Opened:</b> 2025-08-27 <b>Last modified:</b> 2025-09-14</p>
+<p><b>Priority: </b>Not Prioritized
+</p>
+<p><b>View other</b> <a href="lwg-index-open.html#exec.connect">active issues</a> in [exec.connect].</p>
+<p><b>View all other</b> <a href="lwg-index.html#exec.connect">issues</a> in [exec.connect].</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
+<p><b>Discussion:</b></p>
+<p>
+The wording in 33.9.10 <a href="https://wg21.link/exec.connect">[exec.connect]</a> p5 defines the <code><i>connect-awaitable</i>()</code> function as follows:
+</p>
+<blockquote><pre>
+<i>operation-state-task</i> <i>connect-awaitable</i>(DS sndr, DR rcvr) requires receiver_of&lt;DR, Sigs&gt; {
+  exception_ptr ep;
+  try {
+    if constexpr (same_as&lt;V, void&gt;) {
+      co_await std::move(sndr);
+      co_await <i>suspend-complete</i>(set_value, std::move(rcvr));
+    } else {
+      co_await <i>suspend-complete</i>(set_value, std::move(rcvr), co_await std::move(sndr));
+    }
+  } catch(...) {
+    ep = current_exception();
+  }
+  co_await <i>suspend-complete</i>(set_error, std::move(rcvr), std::move(ep));
+}
+</pre></blockquote>
+<p>
+The use of <code>same_as&lt;V, void&gt;</code> in the if-constexpr condition does not cover the case where the 
+result of the <code class='backtick'>co_await</code> expression has type <i>cv</i> <code class='backtick'>void</code>. It should use <code>is_void_v&lt;V&gt;</code> 
+instead to allow it to match all <code class='backtick'>void</code> types, not just unqualified <code class='backtick'>void</code>.
+</p>
+
+
+
+<p id="res-4357"><b>Proposed resolution:</b></p>
+<p>
+This wording is relative to <a href="https://wg21.link/N5014">N5014</a>.
+</p>
+
+<ol>
+
+<li><p>Modify 33.9.10 <a href="https://wg21.link/exec.connect">[exec.connect]</a> as indicated:</p>
+
+<blockquote>
+<p>
+-5- Let <code class='backtick'>V</code> name the type <code><i>await-result-type</i>&lt;DS, <i>connect-awaitable-promise</i>&gt;</code>, 
+let <code class='backtick'>Sigs</code> name the type
+</p>
+<blockquote><pre>
+completion_signatures&lt;
+  <i>SET-VALUE-SIG</i>(V), // <i>see 33.9.3 <a href="https://wg21.link/exec.snd.concepts">[exec.snd.concepts]</a></i>
+  set_error_t(exception_ptr),
+  set_stopped_t()&gt;
+</pre></blockquote>
+<p>
+and let <code><i>connect-awaitable</i></code> be an exposition-only coroutine defined as follows:
+</p>
+<blockquote><pre>
+namespace std::execution {
+  [&hellip;]
+  <i>operation-state-task</i> <i>connect-awaitable</i>(DS sndr, DR rcvr) requires receiver_of&lt;DR, Sigs&gt; {
+    exception_ptr ep;
+    try {
+      if constexpr (<del>same_as&lt;V, void&gt;</del><ins>is_void_v&lt;V&gt;</ins>) {
+        co_await std::move(sndr);
+        co_await <i>suspend-complete</i>(set_value, std::move(rcvr));
+      } else {
+        co_await <i>suspend-complete</i>(set_value, std::move(rcvr), co_await std::move(sndr));
+      }
+    } catch(...) {
+      ep = current_exception();
+    }
+    co_await <i>suspend-complete</i>(set_error, std::move(rcvr), std::move(ep));
+  }
+}  
+</pre></blockquote>
+</blockquote>
+
+</li>
+
+</ol>
+
+
+
+
+
+</body>
+</html>
