@@ -54,7 +54,7 @@
 </style>
 </head>
 <body>
-<p>Revised 2025-09-14 at 11:22:11 UTC
+<p>Revised 2025-09-14 at 12:48:42 UTC
 </p><h2>Unresolved Issues</h2>
 <hr>
 <h3 id="423"><a href="#423">423</a><sup><a href="https://cplusplus.github.io/LWG/issue423">(i)</a></sup>. Effects of negative <code>streamsize</code> in iostreams</h3>
@@ -61930,6 +61930,8 @@ operations to throw exceptions. &mdash; <i>end note</i>]
  <b>Submitter:</b> Eric Niebler <b>Opened:</b> 2024-07-30 <b>Last modified:</b> 2024-08-21</p>
 <p><b>Priority: </b>1
 </p>
+<p><b>View other</b> <a href="lwg-index-open.html#exec.as.awaitable">active issues</a> in [exec.as.awaitable].</p>
+<p><b>View all other</b> <a href="lwg-index.html#exec.as.awaitable">issues</a> in [exec.as.awaitable].</p>
 <p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
 <p><b>Discussion:</b></p>
 <p>
@@ -78137,6 +78139,90 @@ namespace std::execution {
   }
 }  
 </pre></blockquote>
+</blockquote>
+
+</li>
+
+</ol>
+
+
+
+
+
+<hr>
+<h3 id="4358"><a href="#4358">4358</a><sup><a href="https://cplusplus.github.io/LWG/issue4358">(i)</a></sup>. &sect;[exec.as.awaitable] is using "Preconditions:" when it should probably be described in the constraint</h3>
+<p><b>Section:</b> 33.13.1 <a href="https://wg21.link/exec.as.awaitable">[exec.as.awaitable]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
+ <b>Submitter:</b> Lewis Baker <b>Opened:</b> 2025-08-27 <b>Last modified:</b> 2025-09-14</p>
+<p><b>Priority: </b>Not Prioritized
+</p>
+<p><b>View other</b> <a href="lwg-index-open.html#exec.as.awaitable">active issues</a> in [exec.as.awaitable].</p>
+<p><b>View all other</b> <a href="lwg-index.html#exec.as.awaitable">issues</a> in [exec.as.awaitable].</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
+<p><b>Discussion:</b></p>
+<p>
+In 33.13.1 <a href="https://wg21.link/exec.as.awaitable">[exec.as.awaitable]</a> bullet 7.2 it states:
+</p>
+<blockquote>
+<ol style="list-style-type: none">
+<li><p>(7.2) &mdash; Otherwise, <code>(void(p), expr)</code> if <code><i>is-awaitable</i>&lt;Expr, U&gt;</code> is <code class='backtick'>true</code>, 
+where <code class='backtick'>U</code> is an unspecified class type that is not <code class='backtick'>Promise</code> and that lacks a member named <code class='backtick'>await_transform</code>.
+<p/>
+<i>Preconditions</i>: <code><i>is-awaitable</i>&lt;Expr, Promise&gt;</code> is <code class='backtick'>true</code> and the expression 
+<code class='backtick'>co_await expr</code> in a coroutine with promise type <code class='backtick'>U</code> is expression-equivalent to the same expression 
+in a coroutine with promise type <code class='backtick'>Promise</code>.</p></li>
+</ol>
+</blockquote>
+<p>
+The "<i>Preconditions</i>:" sentence there refers to static properties of the program and so seems like a 
+better fit for a <i>Mandates</i>: element or for folding into the constraint.
+<p/>
+Also, in the part of the precondition above which says "&hellip; and the expression <code class='backtick'>co_await expr</code> in a 
+coroutine with promise type <code class='backtick'>U</code> is expression-equivalent to the same expression in a coroutine with promise 
+type <code class='backtick'>Promise</code>" it is unclear how this can be satisfied, as the types involved are different and therefore 
+the expression cannot be expression-equivalent.
+<p/>
+I think perhaps what is intended here is something along the lines of the first expression having 
+"effects equivalent to" the second expression, instead of "expression-equivalent to"?
+<p/>
+However, I think there is a more direct way to express the intent here, by instead just requiring that 
+<code>decltype(<i>GET-AWAITER</i>(expr))</code> satisfies <code><i>is-awaiter</i>&lt;Promise&gt;</code>.
+This checks whether <code class='backtick'>expr</code> would be a valid type to return from a <code class='backtick'>Promise::await_transform()</code> function.
+</p>
+
+
+
+<p id="res-4358"><b>Proposed resolution:</b></p>
+<p>
+This wording is relative to <a href="https://wg21.link/N5014">N5014</a>.
+</p>
+
+<ol>
+
+<li><p>Modify 33.13.1 <a href="https://wg21.link/exec.as.awaitable">[exec.as.awaitable]</a> as indicated:</p>
+
+<blockquote>
+<p>
+-7- <code class='backtick'>as_awaitable</code> is a customization point object. For subexpressions <code class='backtick'>expr</code> and <code class='backtick'>p</code> where <code class='backtick'>p</code> 
+is an lvalue, <code class='backtick'>Expr</code> names the type <code class='backtick'>decltype((expr))</code> and <code class='backtick'>Promise</code> names the type 
+<code>decay_t&lt;decltype((p))&gt;</code>, <code class='backtick'>as_awaitable(expr, p)</code> is expression-equivalent to, 
+except that the evaluations of <code class='backtick'>expr</code> and <code class='backtick'>p</code> are indeterminately sequenced:
+</p>
+<ol style="list-style-type: none">
+<li><p>(7.1) &mdash; <code class='backtick'>expr.as_awaitable(p)</code> if that expression is well-formed.
+<p/>
+<i>Mandates</i>: <code><i>is-awaitable</i>&lt;A, Promise&gt;</code> is <code class='backtick'>true</code>, where <code class='backtick'>A</code> is the type of 
+the expression above.</p></li>
+<li><p>(7.2) &mdash; Otherwise, <code>(void(p), expr)</code> if <ins><code>decltype(<i>GET-AWAITER</i>(expr))</code> 
+satisfies <code><i>is-awaiter</i>&lt;Promise&gt;</code>.</ins><del><code><i>is-awaitable</i>&lt;Expr, U&gt;</code> is <code class='backtick'>true</code>, 
+where <code class='backtick'>U</code> is an unspecified class type that is not <code class='backtick'>Promise</code> and that lacks a member named <code class='backtick'>await_transform</code>.</del>
+<p/>
+<del><i>Preconditions</i>: <code><i>is-awaitable</i>&lt;Expr, Promise&gt;</code> is <code class='backtick'>true</code> and the expression 
+<code class='backtick'>co_await expr</code> in a coroutine with promise type <code class='backtick'>U</code> is expression-equivalent to the same expression 
+in a coroutine with promise type <code class='backtick'>Promise</code>.</del></p></li>
+<li><p>(7.3) &mdash; [&hellip;]</p></li>
+<li><p>(7.4) &mdash; [&hellip;]</p></li>
+<li><p>(7.5) &mdash; [&hellip;]</p></li>
+</ol>
 </blockquote>
 
 </li>
