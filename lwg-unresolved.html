@@ -54,7 +54,7 @@
 </style>
 </head>
 <body>
-<p>Revised 2025-09-14 at 10:22:16 UTC
+<p>Revised 2025-09-14 at 10:34:39 UTC
 </p><h2>Unresolved Issues</h2>
 <hr>
 <h3 id="423"><a href="#423">423</a><sup><a href="https://cplusplus.github.io/LWG/issue423">(i)</a></sup>. Effects of negative <code>streamsize</code> in iostreams</h3>
@@ -77803,6 +77803,84 @@ The following sections all contain problematic uses of <code><i>MANDATE-NOTHROW<
 <p id="res-4353"><b>Proposed resolution:</b></p>
 <p>
 </p>
+
+
+
+
+
+<hr>
+<h3 id="4354"><a href="#4354">4354</a><sup><a href="https://cplusplus.github.io/LWG/issue4354">(i)</a></sup>. Reconsider <code class='backtick'>weakly_parallel</code> as the default <code class='backtick'>forward_progress_guarantee</code></h3>
+<p><b>Section:</b> 33.5.8 <a href="https://wg21.link/exec.get.fwd.progress">[exec.get.fwd.progress]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
+ <b>Submitter:</b> Lewis Baker <b>Opened:</b> 2025-08-25 <b>Last modified:</b> 2025-09-14</p>
+<p><b>Priority: </b>Not Prioritized
+</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
+<p><b>Discussion:</b></p>
+<p>
+The <code class='backtick'>get_forward_progress_guarantee</code> CPO is intended to allow querying a scheduler as for what sort of 
+forward-progress guarantee it provides. Algorithms may use this to determine whether it is safe to execute 
+certain operations on a given scheduler. If a scheduler does not customize this query, the query will 
+fall back to returning a forward-progress guarantee of weakly_parallel.
+<p/>
+I think we should reconsider what this default should be returning and suggest it should instead return 
+<code class='backtick'>parallel</code> by default, as this will be by far the most common kind of scheduler, i.e. a scheduler that 
+executes on <code class='backtick'>std::thread</code>-like execution agents and that maintains a queue of scheduled tasks.
+<p/>
+I expect it to be common that authors of schedulers may forget to customize the 
+<code class='backtick'>get_forward_progress_guarantee_t</code> query and just leave it at the default. This will likely leave their 
+scheduler reporting a weaker guarantee than it actually provides and thus not being usable within generic 
+algorithms that require at least parallel forward progress.
+<p/>
+For example, the <code class='backtick'>run_loop</code> execution context defined in 33.12.1 <a href="https://wg21.link/exec.run.loop">[exec.run.loop]</a> does not define 
+its scheduler to customize the <code class='backtick'>get_forward_progress_guarantee_t</code>. This means it will report the default 
+value of <code class='backtick'>weakly_parallel</code>.
+<p/>
+However, the scheduled operations will run on the thread that calls <code class='backtick'>run_loop::run()</code> and thus will 
+inherit its forward-progress guarantees. As this function might block and is therefore unsafe to invoke 
+it from a thread/agent with <code class='backtick'>weakly_parallel</code> forward progress guarantees (which should probably be 
+explicitly specified as having undefined-behaviour) we can safely assume that <code class='backtick'>run_loop</code>'s scheduler 
+can provide parallel forward-progress guarantee.
+<p/>
+It's not clear whether the current <code class='backtick'>run_loop</code> specification defaulting to its scheduler having 
+<code class='backtick'>weakly_parallel</code> forward progress guarantee is intentional or unintentional here. However, forgetting 
+to define the <code class='backtick'>get_forward_progress_guarantee</code> query on a scheduler is something I expect to be fairly common.
+<p/>
+Schedulers that provide <code class='backtick'>weakly_parallel</code> (or in future, <code class='backtick'>concurrent</code>) forward progress guarantees require 
+implementations to be much more aware of the fact that these are the guarantees they are providing and 
+thus could be more expected to customize the <code class='backtick'>get_forward_progress_guarantee</code> query to return the 
+respective values.
+</p>
+
+
+<p id="res-4354"><b>Proposed resolution:</b></p>
+<p>
+This wording is relative to <a href="https://wg21.link/N5014">N5014</a>.
+</p>
+
+<ol>
+
+<li><p>Modify 33.5.8 <a href="https://wg21.link/exec.get.fwd.progress">[exec.get.fwd.progress]</a> as indicated:</p>
+
+<blockquote>
+<p>
+-2- The name <code class='backtick'>get_forward_progress_guarantee</code> denotes a query object. For a subexpression <code class='backtick'>sch</code>, let <code class='backtick'>Sch</code>
+be <code class='backtick'>decltype((sch))</code>. If <code class='backtick'>Sch</code> does not satisfy <code class='backtick'>scheduler</code>, <code class='backtick'>get_forward_progress_guarantee</code> is ill-formed.
+Otherwise, <code class='backtick'>get_forward_progress_guarantee(sch)</code> is expression-equivalent to:
+</p>
+<ol style="list-style-type: none">
+<li><p>(2.1) &mdash; <code><i>MANDATE-NOTHROW</i>(<i>AS-CONST</i>(sch).query(get_forward_progress_guarantee))</code> 
+if that expression is well-formed.
+<p/>
+<i>Mandates</i>: The type of the expression above is <code class='backtick'>forward_progress_guarantee</code>.
+</p></li>
+<li><p>(2.2) &mdash; Otherwise, <code>forward_progress_guarantee::<del>weakly_</del>parallel</code>.</p></li>
+</ol>
+
+</blockquote>
+
+</li>
+
+</ol>
 
 
 
