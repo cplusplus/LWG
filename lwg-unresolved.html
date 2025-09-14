@@ -54,7 +54,7 @@
 </style>
 </head>
 <body>
-<p>Revised 2025-09-12 at 11:40:30 UTC
+<p>Revised 2025-09-14 at 10:16:52 UTC
 </p><h2>Unresolved Issues</h2>
 <hr>
 <h3 id="423"><a href="#423">423</a><sup><a href="https://cplusplus.github.io/LWG/issue423">(i)</a></sup>. Effects of negative <code>streamsize</code> in iostreams</h3>
@@ -77708,6 +77708,99 @@ the same parameters, so we need some weasel words here.
 
 
 <p id="res-4352"><b>Proposed resolution:</b></p>
+<p>
+</p>
+
+
+
+
+
+<hr>
+<h3 id="4353"><a href="#4353">4353</a><sup><a href="https://cplusplus.github.io/LWG/issue4353">(i)</a></sup>. Uses of <code><i>MANDATE-NOTHROW</i></code> in CPOs should not enclose CPO argument sub-expressions</h3>
+<p><b>Section:</b> 33 <a href="https://wg21.link/exec">[exec]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
+ <b>Submitter:</b> Lewis Baker <b>Opened:</b> 2025-08-25 <b>Last modified:</b> 2025-09-14</p>
+<p><b>Priority: </b>Not Prioritized
+</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
+<p><b>Discussion:</b></p>
+<p>
+There are a number of CPOs defined in 33 <a href="https://wg21.link/exec">[exec]</a> which have behaviour specified in terms of being 
+expression-equivalent to a <code><i>MANDATE-NOTHROW</i></code> expression.
+<P/>
+The intent of this is that we want to make sure that the call that the CPO dispatches to is marked <code class='backtick'>noexcept</code>.
+<p/>
+However, the way that these CPOs are currently specified in terms of sub-expressions means that we are currently 
+requiring that all of the expressions passed as arguments to the CPO are also <code class='backtick'>noexcept</code>. Outside of defining 
+these CPOs as preprocessor macros, this is unimplementable &mdash; and also undesirable behaviour.
+<p/>
+For example, 33.7.2 <a href="https://wg21.link/exec.set.value">[exec.set.value]</a> defines <code class='backtick'>set_value(rcvr, vs...)</code> to be equivalent to 
+<code><i>MANDATE-NOTHROW</i>(rcvr.set_value(vs...))</code> for sub-expressions <code class='backtick'>rcvr</code> and pack of sub-expressions 
+<code class='backtick'>vs</code>.
+<p/>
+In 33.1 <a href="https://wg21.link/exec.general">[exec.general]</a> p5 we define <code><i>MANDATE-NOTHROW</i>(expr)</code> as expression-equivalent to 
+<code class='backtick'>expr</code> but mandate that <code class='backtick'>noexcept(expr)</code> is <code class='backtick'>true</code>.
+<p/>
+So in the above definition of <code class='backtick'>set_value(rcvr, vs...)</code> we are actually requiring that the expression 
+<code class='backtick'>noexcept(rcvr.set_value(vs...))</code> is <code class='backtick'>true</code>.
+<p/>
+This is only true if all of the sub-expressions are <code class='backtick'>noexcept</code>, i.e. all of the following expressions are <code class='backtick'>true</code>.
+</p>
+<ul>
+<li><p><code>noexcept(rcvr)</code>,</p></li>
+<li><p><code>(noexcept(vs) &amp;&amp; ...)</code>,</p></li>
+<li><p>the member-function call to <code class='backtick'>rcvr.set_value(vs...)</code> including any implicit conversions of arguments.</p></li>
+</ul>
+<p>
+This means that if, for example, one of the sub-expressions in the pack <code class='backtick'>vs</code> was a call to some potentially-throwing 
+function then the overall <code class='backtick'>set_value</code> expression would be violating the mandates requirement.
+<p/>
+For example:
+</p>
+<blockquote><pre>
+struct my_receiver 
+{
+  void set_value(int x) noexcept;
+};
+
+int get_value() noexcept(false);
+
+my_receiver r;
+std::execution::set_value(r, get_value()); // <span style="color:#C80000;font-weight:bold">fails MANDATE-NOTHROW mandates</span>
+</pre></blockquote>
+<p>
+Instead, we need to redefine these CPOs as being expression-equivalent to something that does not require that the 
+argument expressions to the CPO themselves are <code class='backtick'>noexcept</code> &mdash; only what will be in the body of the CPO function.
+<p/>
+For example, we could change 33.7.2 <a href="https://wg21.link/exec.set.value">[exec.set.value]</a> to define <code class='backtick'>set_value(rcvr, vs...)</code> as expression-equivalent to:
+</p>
+<blockquote><pre>
+[](auto&amp;&amp; rcvr2, auto&amp;&amp;... vs2) noexcept -&gt; 
+  decltype(auto) requires requires { std::forward&lt;decltype(rcvr2)&gt;(rcvr2).set_value(std::forward&lt;decltype(vs2)&gt;(vs2)...); } 
+{
+  return <i>MANDATE-NOTHROW</i>(std::forward&lt;decltype(rcvr2)&gt;(rcvr2).set_value(std::forward&lt;decltype(vs2)&gt;(vs2)...));
+}(rcvr, vs...)
+</pre></blockquote>
+<p>
+The following sections all contain problematic uses of <code><i>MANDATE-NOTHROW</i></code>:
+</p>
+<ul>
+<li><p>33.5.2 <a href="https://wg21.link/exec.get.allocator">[exec.get.allocator]</a></p></li>
+<li><p>33.5.3 <a href="https://wg21.link/exec.get.stop.token">[exec.get.stop.token]</a></p></li>
+<li><p>33.5.4 <a href="https://wg21.link/exec.get.env">[exec.get.env]</a></p></li>
+<li><p>33.5.5 <a href="https://wg21.link/exec.get.domain">[exec.get.domain]</a></p></li>
+<li><p>33.5.6 <a href="https://wg21.link/exec.get.scheduler">[exec.get.scheduler]</a></p></li>
+<li><p>33.5.7 <a href="https://wg21.link/exec.get.delegation.scheduler">[exec.get.delegation.scheduler]</a></p></li>
+<li><p>33.5.8 <a href="https://wg21.link/exec.get.fwd.progress">[exec.get.fwd.progress]</a></p></li>
+<li><p>33.5.9 <a href="https://wg21.link/exec.get.compl.sched">[exec.get.compl.sched]</a></p></li>
+<li><p>33.5.10 <a href="https://wg21.link/exec.get.await.adapt">[exec.get.await.adapt]</a></p></li>
+<li><p>33.7.2 <a href="https://wg21.link/exec.set.value">[exec.set.value]</a></p></li>
+<li><p>33.7.3 <a href="https://wg21.link/exec.set.error">[exec.set.error]</a></p></li>
+<li><p>33.7.4 <a href="https://wg21.link/exec.set.stopped">[exec.set.stopped]</a></p></li>
+<li><p>33.8.2 <a href="https://wg21.link/exec.opstate.start">[exec.opstate.start]</a></p></li>
+</ul>
+
+
+<p id="res-4353"><b>Proposed resolution:</b></p>
 <p>
 </p>
 
