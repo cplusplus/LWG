@@ -54,7 +54,7 @@
 </style>
 </head>
 <body>
-<p>Revised 2025-09-14 at 12:56:40 UTC
+<p>Revised 2025-09-14 at 13:09:34 UTC
 </p><h2>Unresolved Issues</h2>
 <hr>
 <h3 id="423"><a href="#423">423</a><sup><a href="https://cplusplus.github.io/LWG/issue423">(i)</a></sup>. Effects of negative <code>streamsize</code> in iostreams</h3>
@@ -78269,6 +78269,75 @@ is an lvalue</del>, <code class='backtick'>Expr</code> names the type <code clas
 ill-formed, otherwise</ins> <code class='backtick'>as_awaitable(expr, p)</code> is expression-equivalent to, 
 except that the evaluations of <code class='backtick'>expr</code> and <code class='backtick'>p</code> are indeterminately sequenced:
 </p>
+</blockquote>
+
+</li>
+
+</ol>
+
+
+
+
+
+<hr>
+<h3 id="4360"><a href="#4360">4360</a><sup><a href="https://cplusplus.github.io/LWG/issue4360">(i)</a></sup>. <code><i>awaitable-sender</i></code> concept should qualify use of <code><i>awaitable-receiver</i></code> type</h3>
+<p><b>Section:</b> 33.13.1 <a href="https://wg21.link/exec.as.awaitable">[exec.as.awaitable]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
+ <b>Submitter:</b> Lewis Baker <b>Opened:</b> 2025-08-27 <b>Last modified:</b> 2025-09-14</p>
+<p><b>Priority: </b>Not Prioritized
+</p>
+<p><b>View other</b> <a href="lwg-index-open.html#exec.as.awaitable">active issues</a> in [exec.as.awaitable].</p>
+<p><b>View all other</b> <a href="lwg-index.html#exec.as.awaitable">issues</a> in [exec.as.awaitable].</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
+<p><b>Discussion:</b></p>
+<p>
+In 33.13.1 <a href="https://wg21.link/exec.as.awaitable">[exec.as.awaitable]</a> p1 there is an exposition-only helper concept 
+<code><i>awaitable-sender</i></code> defined as follows:
+</p>
+<blockquote><pre>
+namespace std::execution {
+  template&lt;class Sndr, class Promise&gt;
+    concept <i>awaitable-sender</i> =
+      <i>single-sender</i>&lt;Sndr, env_of_t&lt;Promise&gt;&gt; &amp;&amp;
+      sender_to&lt;Sndr, <i>awaitable-receiver</i>&gt; &amp;&amp; // <i>see below</i>
+      requires (Promise&amp; p) {
+        { p.unhandled_stopped() } -> convertible_to&lt;coroutine_handle&lt;&gt;&gt;;
+      };
+}
+</pre></blockquote>
+<p>
+The mention of the type <code><i>awaitable-receiver</i></code> here does not refer to any exposition-only type 
+defined at namespace-scope. It seems to, instead, be referring to the nested member-type 
+<code><i>sender-awaitable</i>&lt;Sndr, Promise&gt;::<i>awaitable-receiver</i></code> and so should be 
+qualified as such.
+</p>
+
+
+<p id="res-4360"><b>Proposed resolution:</b></p>
+<p>
+This wording is relative to <a href="https://wg21.link/N5014">N5014</a>.
+</p>
+
+<ol>
+
+<li><p>Modify 33.13.1 <a href="https://wg21.link/exec.as.awaitable">[exec.as.awaitable]</a> as indicated:</p>
+
+<blockquote>
+<p>
+-1- <code class='backtick'>as_awaitable</code> transforms an object into one that is awaitable within a particular coroutine. 
+Subclause 33.13 <a href="https://wg21.link/exec.coro.util">[exec.coro.util]</a> makes use of the following exposition-only entities:
+</p>
+<blockquote><pre>
+namespace std::execution {
+  template&lt;class Sndr, class Promise&gt;
+    concept <i>awaitable-sender</i> =
+      <i>single-sender</i>&lt;Sndr, env_of_t&lt;Promise&gt;&gt; &amp;&amp;
+      sender_to&lt;Sndr, <ins>typename <i>sender-awaitable</i>&lt;Sndr, Promise&gt;::</ins><i>awaitable-receiver</i>&gt; &amp;&amp; // <i>see below</i>
+      requires (Promise&amp; p) {
+        { p.unhandled_stopped() } -> convertible_to&lt;coroutine_handle&lt;&gt;&gt;;
+      };
+  [&hellip;]
+}
+</pre></blockquote>
 </blockquote>
 
 </li>
