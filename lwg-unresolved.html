@@ -54,7 +54,7 @@
 </style>
 </head>
 <body>
-<p>Revised 2025-09-14 at 13:37:28 UTC
+<p>Revised 2025-09-14 at 15:44:41 UTC
 </p><h2>Unresolved Issues</h2>
 <hr>
 <h3 id="423"><a href="#423">423</a><sup><a href="https://cplusplus.github.io/LWG/issue423">(i)</a></sup>. Effects of negative <code>streamsize</code> in iostreams</h3>
@@ -78349,39 +78349,65 @@ namespace std::execution {
 
 
 <hr>
-<h3 id="4361"><a href="#4361">4361</a><sup><a href="https://cplusplus.github.io/LWG/issue4361">(i)</a></sup>. Unconditionally <code class='backtick'>constexpr current_exception()</code></h3>
-<p><b>Section:</b> 17.9.7 <a href="https://wg21.link/propagation">[propagation]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Lénárd Szolnoki <b>Opened:</b> 2025-08-27 <b>Last modified:</b> 2025-09-14</p>
+<h3 id="4361"><a href="#4361">4361</a><sup><a href="https://cplusplus.github.io/LWG/issue4361">(i)</a></sup>. <code><i>awaitable-receiver</i>::set_value</code> should use <i>Mandates</i> instead of constraints</h3>
+<p><b>Section:</b> 33.13.1 <a href="https://wg21.link/exec.as.awaitable">[exec.as.awaitable]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
+ <b>Submitter:</b> Lewis Baker <b>Opened:</b> 2025-08-28 <b>Last modified:</b> 2025-09-14</p>
 <p><b>Priority: </b>Not Prioritized
 </p>
-<p><b>View all other</b> <a href="lwg-index.html#propagation">issues</a> in [propagation].</p>
+<p><b>View other</b> <a href="lwg-index-open.html#exec.as.awaitable">active issues</a> in [exec.as.awaitable].</p>
+<p><b>View all other</b> <a href="lwg-index.html#exec.as.awaitable">issues</a> in [exec.as.awaitable].</p>
 <p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
 <p><b>Discussion:</b></p>
 <p>
-The declaration of <code class='backtick'>current_exception()</code>:
+In 33.13.1 <a href="https://wg21.link/exec.as.awaitable">[exec.as.awaitable]</a> bullet 4.1 the <code><i>awaitable-receiver</i>::set_value</code> member function 
+is defined as having a constraint that the <code><i>result-type</i></code> is constructible from the values.
 </p>
-<blockquote><pre>
-constexpr exception_ptr current_exception() noexcept;
-</pre></blockquote>
+<blockquote>
 <p>
-The <code class='backtick'>constexpr</code> specifier is in the current draft <a href="https://wg21.link/N5014">N5014</a>, introduced by <a href="https://wg21.link/P3068" title=" Allowing exception throwing in constant-evaluation">P3068</a> 
-targeting C++26.
-<p/>
-It is not constrained when the expression <code class='backtick'>std::current_exception()</code> is constant. Consider:
+If <code>constructible_from&lt;<i>result-type</i>, decltype((vs))...&gt;</code> is satisfied, the expression 
+<code class='backtick'>set_value(rcvr, vs...)</code> is equivalent to:
 </p>
 <blockquote><pre>
 try {
-  throw 0;
-} catch (int) {
-  const bool b = (std::current_exception() != nullptr);
+  rcvr.<i>result-ptr</i>-&gt;template emplace&lt;1&gt;(vs...);
+} catch(...) {
+  rcvr.<i>result-ptr</i>-&gt;template emplace&lt;2&gt;(current_exception());
 }
+rcvr.<i>continuation</i>.resume();
 </pre></blockquote>
 <p>
-Since <code class='backtick'>b</code> is a variable of constant integral type, it is potentially-constant and its initialization 
-goes trough trial constant evaluation. <code class='backtick'>std::current_exception()</code> can't be implemented to return an 
-<code class='backtick'>exception_ptr</code> that refers to the runtime exception here during constant evaluation, so it returns 
-a null <code class='backtick'>exception_ptr</code> and <code class='backtick'>b</code> gets initialized to <code class='backtick'>false</code>. This is a breaking change compared to 
-C++23, where <code class='backtick'>b</code> is initialized to <code class='backtick'>true</code>.
+Otherwise, <code class='backtick'>set_value(rcvr, vs...)</code> is ill-formed.
+</p>
+</blockquote>
+<p>
+Should we be using mandates here instead of constraints (or alternatively just drop the constraint altogether)?
+There shouldn't be any need to change behaviour based on whether or not the receiver's completion methods 
+are well-formed or not.
+<p/>
+It is worth noting that there is inconsistent use of constraints on <code class='backtick'>set_value</code> methods in other receiver 
+implementations throughout 33 <a href="https://wg21.link/exec">[exec]</a>.
+<p/>
+For example:  The following <code class='backtick'>set_value</code> member function applies constraints:
+</p>
+<ul>
+<li><p>In 33.9.2 <a href="https://wg21.link/exec.snd.expos">[exec.snd.expos]</a> <code><i>basic-receiver</i>::set_value</code> constrains that check that it can accept those specific value arguments</p></li>
+</ul>
+<p>
+While the following <code class='backtick'>set_value</code> member functions do not apply constraints:
+</p>
+<ul>
+<li><p>In 33.9.12.10 <a href="https://wg21.link/exec.let">[exec.let]</a> <code><i>receiver2</i>::set_value</code></p></li>
+<li><p>In 33.9.12.18 <a href="https://wg21.link/exec.spawn.future">[exec.spawn.future]</a> <code><i>spawn-future-receiver</i>::set_value</code></p></li>
+<li><p>in 33.9.13.1 <a href="https://wg21.link/exec.sync.wait">[exec.sync.wait]</a> <code><i>sync-wait-receiver</i>::set_value</code></p></li>
+</ul>
+<p>
+We should probably try to be consistent on whether or not <code class='backtick'>set_value</code> implementations 
+should use constraints or mandates. Given that it is not allowed to form calls to the 
+receiver unless that overload is present in the <code class='backtick'>completion_signatures</code>, it may be worth 
+just making them all mandates. This would tend to make uses of the <code class='backtick'>receiver_of</code> concept 
+less useful as satisfying <code>receiver_of&lt;R, Sig&gt;</code> would not necessarily 
+guarantee that actually trying to call each of <code class='backtick'>R</code>'s corresponding completion functions 
+will result in a well-formed program. It is arguable that this is already the status-quo, however.
 </p>
 
 
@@ -78390,60 +78416,78 @@ C++23, where <code class='backtick'>b</code> is initialized to <code class='back
 This wording is relative to <a href="https://wg21.link/N5014">N5014</a>.
 </p>
 
-<blockquote class="note">
-<p>
-[<i>Drafting Note:</i> Two mutually exclusive options are prepared, depicted below by <b>Option A</b> and 
-<b>Option B</b>, respectively.] 
-</p>
-</blockquote>
-
-<p>
-<b>Option A:</b>
-</p>
-
 <ol>
 
-<li><p>Modify 17.9.7 <a href="https://wg21.link/propagation">[propagation]</a> as indicated:</p>
+<li><p>Modify 33.13.1 <a href="https://wg21.link/exec.as.awaitable">[exec.as.awaitable]</a> as indicated:</p>
 
 <blockquote>
-<pre>
-constexpr exception_ptr current_exception() noexcept;
-</pre>
-<blockquote>
 <p>
-<ins><i>Constant When</i>: If there is a currently handled exception that was originally thrown within 
-the current constant evaluation.</ins>
-<p/>
--9- <i>Returns</i>: [&hellip;]
+-4- Let <code class='backtick'>rcvr</code> be an rvalue expression of type <code><i>awaitable-receiver</i></code>, let 
+<code class='backtick'>crcvr</code> be a const lvalue that refers to <code class='backtick'>rcvr</code>, let <code class='backtick'>vs</code> be a pack of subexpressions, 
+and let <code class='backtick'>err</code> be an expression of type <code class='backtick'>Err</code>. Then:
 </p>
-</blockquote>
+<ol style="list-style-type: none">
+<li><p>(4.1) &mdash; <del>If <code>constructible_from&lt;<i>result-type</i>, decltype((vs))...&gt;</code> is satisfied, 
+t</del><ins>T</ins>he expression <code class='backtick'>set_value(rcvr, vs...)</code> is equivalent to:
+</p>
+<blockquote><pre>
+try {
+  rcvr.<i>result-ptr</i>-&gt;template emplace&lt;1&gt;(vs...);
+} catch(...) {
+  rcvr.<i>result-ptr</i>-&gt;template emplace&lt;2&gt;(current_exception());
+}
+rcvr.<i>continuation</i>.resume();
+</pre></blockquote>
+<p>
+<del>Otherwise, <code class='backtick'>set_value(rcvr, vs...)</code> is ill-formed</del><ins><i>Mandates:</i> 
+<code>constructible_from&lt;<i>result-type</i>, decltype((vs))...&gt;</code> is satisfied</ins>.</p></li>
+<li><p>(4.2) &mdash; [&hellip;]</p></li>
+<li><p>(4.3) &mdash; [&hellip;]</p></li>
+<li><p>(4.4) &mdash; [&hellip;]</p></li>
+</ol>
 </blockquote>
 
 </li>
 
-</ol>
 
-<p>
-<b>Option B:</b>
-</p>
+<li><p>Modify 33.9.2 <a href="https://wg21.link/exec.snd.expos">[exec.snd.expos]</a> after p25 as indicated:</p>
 
-<ol>
-
-<li><p>Modify 17.9.7 <a href="https://wg21.link/propagation">[propagation]</a> as indicated:</p>
-
-<blockquote>
-<pre>
-constexpr exception_ptr current_exception() noexcept;
-</pre>
-<blockquote>
-<p>
-<ins><i>Constant When</i>: Current constant evaluation is not part of potentially-constant initialization 
-of a non-static variable.</ins>
-<p/>
--9- <i>Returns</i>: [&hellip;]
-</p>
-</blockquote>
-</blockquote>
+<blockquote><pre>
+[&hellip;]
+template&lt;class Sndr, class Rcvr, class Index&gt;
+  requires <i>valid-specialization</i>&lt;<i>env-type</i>, Index, Sndr, Rcvr&gt;
+struct <i>basic-receiver</i> { // <i>exposition only</i>
+  using receiver_concept = receiver_t;
+  
+  using <i>tag-t</i> = tag_of_t&lt;Sndr&gt;; // <i>exposition only</i>
+  using <i>state-t</i> = <i>state-type</i>&lt;Sndr, Rcvr&gt;; // <i>exposition only</i>
+  static constexpr const auto&amp; <i>complete</i> = <i>impls-for</i>&lt;<i>tag-t</i>&gt;::<i>complete</i>; // exposition only
+  
+  template&lt;class... Args&gt;
+    <del>requires <i>callable</i>&lt;decltype(<i>complete</i>), Index, <i>state-t</i>&amp;, Rcvr&amp;, set_value_t, Args...&gt;</del>
+  void set_value(Args&amp;&amp;... args) &amp;&amp; noexcept {
+    <i>complete</i>(Index(), op-&gt;<i>state</i>, op-&gt;<i>rcvr</i>, set_value_t(), std::forward&lt;Args&gt;(args)...);
+  }
+  
+  template&lt;class Error&gt;
+    <del>requires <i>callable</i>&lt;decltype(<i>complete</i>), Index, <i>state-t</i>&amp;, Rcvr&amp;, set_error_t, Error&gt;</del>
+  void set_error(Error&amp;&amp; err) &amp;&amp; noexcept {
+    <i>complete</i>(Index(), op-&gt;<i>state</i>, op-&gt;<i>rcvr</i>, set_error_t(), std::forward&lt;Error&gt;(err));
+  }
+  
+  void set_stopped() &amp;&amp; noexcept
+    <del>requires <i>callable</i>&lt;decltype(<i>complete</i>), Index, <i>state-t</i>&amp;, Rcvr&amp;, set_stopped_t&gt;</del> {
+    <i>complete</i>(Index(), op-&gt;<i>state</i>, op-&gt;<i>rcvr</i>, set_stopped_t());
+  }
+  
+  auto get_env() const noexcept -&gt; <i>env-type</i>&lt;Index, Sndr, Rcvr&gt; {
+    return <i>impls-for</i>&lt;tag-t&gt;::<i>get-env</i>(Index(), op-&gt;<i>state</i>, op-&gt;<i>rcvr</i>);
+  }
+  
+  <i>basic-state</i>&lt;Sndr, Rcvr&gt;* <i>op</i>; // <i>exposition only</i>
+};
+[&hellip;]
+</pre></blockquote>
 
 </li>
 
