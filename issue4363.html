@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Issue 4363: transform_sender comparing types ignoring cv-qualifiers doesn't take into account differences in value category</title>
+<meta property="og:title" content="Issue 4363: transform_sender comparing types ignoring cv-qualifiers doesn't take into account differences in value category">
+<meta property="og:description" content="C++ library issue. Status: New">
+<meta property="og:url" content="https://cplusplus.github.io/LWG/issue4363.html">
+<meta property="og:type" content="website">
+<meta property="og:image" content="http://cplusplus.github.io/LWG/images/cpp_logo.png">
+<meta property="og:image:alt" content="C++ logo">
+<style>
+  p {text-align:justify}
+  li {text-align:justify}
+  pre code.backtick::before { content: "`" }
+  pre code.backtick::after { content: "`" }
+  blockquote.note
+  {
+    background-color:#E0E0E0;
+    padding-left: 15px;
+    padding-right: 15px;
+    padding-top: 1px;
+    padding-bottom: 1px;
+  }
+  ins {background-color:#A0FFA0}
+  del {background-color:#FFA0A0}
+  table.issues-index { border: 1px solid; border-collapse: collapse; }
+  table.issues-index th { text-align: center; padding: 4px; border: 1px solid; }
+  table.issues-index td { padding: 4px; border: 1px solid; }
+  table.issues-index td:nth-child(1) { text-align: right; }
+  table.issues-index td:nth-child(2) { text-align: left; }
+  table.issues-index td:nth-child(3) { text-align: left; }
+  table.issues-index td:nth-child(4) { text-align: left; }
+  table.issues-index td:nth-child(5) { text-align: center; }
+  table.issues-index td:nth-child(6) { text-align: center; }
+  table.issues-index td:nth-child(7) { text-align: left; }
+  table.issues-index td:nth-child(5) span.no-pr { color: red; }
+  @media (prefers-color-scheme: dark) {
+     html {
+        color: #ddd;
+        background-color: black;
+     }
+     ins {
+        background-color: #225522
+     }
+     del {
+        background-color: #662222
+     }
+     a {
+        color: #6af
+     }
+     a:visited {
+        color: #6af
+     }
+     blockquote.note
+     {
+        background-color: rgba(255, 255, 255, .10)
+     }
+  }
+</style>
+</head>
+<body>
+<hr>
+<p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#New">New</a> status.</em></p>
+<h3 id="4363"><a href="lwg-active.html#4363">4363</a>. <code class='backtick'>transform_sender</code> comparing types ignoring <i>cv</i>-qualifiers doesn't take into account differences in value category</h3>
+<p><b>Section:</b> 33.9.6 <a href="https://wg21.link/exec.snd.transform">[exec.snd.transform]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
+ <b>Submitter:</b> Lewis Baker <b>Opened:</b> 2025-08-28 <b>Last modified:</b> 2025-09-15</p>
+<p><b>Priority: </b>Not Prioritized
+</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
+<p><b>Discussion:</b></p>
+<p>
+In 33.9.6 <a href="https://wg21.link/exec.snd.transform">[exec.snd.transform]</a> p1, the specification for <code class='backtick'>transform_sender()</code> states:
+</p>
+<blockquote>
+<p>
+Let <code><i>transformed-sndr</i></code> be the expression
+</p>
+<blockquote><pre>
+dom.transform_sender(std::forward&lt;Sndr&gt;(sndr), env...)
+</pre></blockquote>
+<p>
+if that expression is well-formed; otherwise,
+</p>
+<blockquote><pre>
+default_domain().transform_sender(std::forward&lt;Sndr&gt;(sndr), env...)
+</pre></blockquote>
+<p>
+Let <code><i>final-sndr</i></code> be the expression <code><i>transformed-sndr</i></code> if 
+<code><i>transformed-sndr</i></code> and <code><i>sndr</i></code> have the same type ignoring 
+cv-qualifiers; otherwise, it is the expression <code>transform_sender(dom, <i>transformed-sndr</i>, env...)</code>.
+</p>
+</blockquote>
+<p>
+However, the use of the phrase "have the same type ignoring cv-qualifiers" asks to compare 
+the types without <code class='backtick'>const</code> or <code class='backtick'>volatile</code> qualifiers, but doesn't take into account differences 
+in value category of the types of these expressions.
+<p/>
+For example <code class='backtick'>sndr</code> might have type <code>T&amp;&amp;</code> and <code><i>transformed-sndr</i></code> 
+might return a new prvalue of type <code class='backtick'>T</code>.
+<p/>
+My interpretation of the current wording is that I should apply the test 
+<code>same_as&lt;remove_cv_t&lt;decltype(sndr)&gt;, remove_cv_t&lt;decltype(<i>transformed-sndr</i>)&gt;&gt;</code>.
+<p/>
+However, <code class='backtick'>remove_cv_t</code> does not remove reference-qualifiers from a type <code>Sndr&amp;&amp;</code> 
+(which in the above example, is the type of <code class='backtick'>sndr</code>), and thus would compare as different to 
+a <code><i>transform-sndr</i></code> type of <code class='backtick'>Sndr</code>.
+<p/>
+I believe the intention is that this should instead use 
+<code>same_as&lt;remove_cvref_t&lt;decltype(sndr)&gt;, remove_cvref_t&lt;decltype(<i>transformed-sndr</i>)&gt;&gt;</code>. 
+For example, the 
+<a href="https://github.com/NVIDIA/stdexec/blob/4669060ad3b70508740449f9c30f06867a9bd890/include/stdexec/__detail/__transform_sender.hpp#L88">
+implementation</a> in NVIDIA's stdexec repository uses <code>same_as&lt;decay_t&lt;T&gt;, decay_t&lt;U&gt;&gt;</code> 
+for this check.
+<p/>
+The wording should be modified to use a phrase that removes both reference and cv-qualifiers when comparing types.
+</p>
+
+
+<p id="res-4363"><b>Proposed resolution:</b></p>
+<p>
+This wording is relative to <a href="https://wg21.link/N5014">N5014</a>.
+</p>
+
+<ol>
+
+<li><p>Modify 33.9.6 <a href="https://wg21.link/exec.snd.transform">[exec.snd.transform]</a> as indicated:</p>
+
+<blockquote>
+<pre>
+namespace std::execution {
+  template&lt;class Domain, sender Sndr, <i>queryable</i>... Env&gt;
+    requires (sizeof...(Env) &lt;= 1)
+  constexpr sender decltype(auto) transform_sender(Domain dom, Sndr&amp;&amp; sndr, const Env&amp;... env)
+    noexcept(<i>see below</i>);
+}
+</pre>
+<blockquote>
+<p>
+-1- Let <code><i>transformed-sndr</i></code> be the expression
+</p>
+<blockquote><pre>
+dom.transform_sender(std::forward&lt;Sndr&gt;(sndr), env...)
+</pre></blockquote>
+<p>
+if that expression is well-formed; otherwise,
+</p>
+<blockquote><pre>
+default_domain().transform_sender(std::forward&lt;Sndr&gt;(sndr), env...)
+</pre></blockquote>
+<p>
+Let <code><i>final-sndr</i></code> be the expression <code><i>transformed-sndr</i></code> if 
+<code><i>transformed-sndr</i></code> and <code><i>sndr</i></code> have the same <ins>decayed</ins>
+type <del>ignoring cv-qualifiers</del>; otherwise, it is the expression 
+<code>transform_sender(dom, <i>transformed-sndr</i>, env...)</code>.
+</p>
+</blockquote>
+</blockquote>
+
+</li>
+
+</ol>
+
+
+
+
+
+</body>
+</html>
