@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Issue 4366: Heterogeneous comparison of expected may be ill-formed</title>
+<meta property="og:title" content="Issue 4366: Heterogeneous comparison of expected may be ill-formed">
+<meta property="og:description" content="C++ library issue. Status: New">
+<meta property="og:url" content="https://cplusplus.github.io/LWG/issue4366.html">
+<meta property="og:type" content="website">
+<meta property="og:image" content="http://cplusplus.github.io/LWG/images/cpp_logo.png">
+<meta property="og:image:alt" content="C++ logo">
+<style>
+  p {text-align:justify}
+  li {text-align:justify}
+  pre code.backtick::before { content: "`" }
+  pre code.backtick::after { content: "`" }
+  blockquote.note
+  {
+    background-color:#E0E0E0;
+    padding-left: 15px;
+    padding-right: 15px;
+    padding-top: 1px;
+    padding-bottom: 1px;
+  }
+  ins {background-color:#A0FFA0}
+  del {background-color:#FFA0A0}
+  table.issues-index { border: 1px solid; border-collapse: collapse; }
+  table.issues-index th { text-align: center; padding: 4px; border: 1px solid; }
+  table.issues-index td { padding: 4px; border: 1px solid; }
+  table.issues-index td:nth-child(1) { text-align: right; }
+  table.issues-index td:nth-child(2) { text-align: left; }
+  table.issues-index td:nth-child(3) { text-align: left; }
+  table.issues-index td:nth-child(4) { text-align: left; }
+  table.issues-index td:nth-child(5) { text-align: center; }
+  table.issues-index td:nth-child(6) { text-align: center; }
+  table.issues-index td:nth-child(7) { text-align: left; }
+  table.issues-index td:nth-child(5) span.no-pr { color: red; }
+  @media (prefers-color-scheme: dark) {
+     html {
+        color: #ddd;
+        background-color: black;
+     }
+     ins {
+        background-color: #225522
+     }
+     del {
+        background-color: #662222
+     }
+     a {
+        color: #6af
+     }
+     a:visited {
+        color: #6af
+     }
+     blockquote.note
+     {
+        background-color: rgba(255, 255, 255, .10)
+     }
+  }
+</style>
+</head>
+<body>
+<hr>
+<p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#New">New</a> status.</em></p>
+<h3 id="4366"><a href="lwg-active.html#4366">4366</a>. Heterogeneous comparison of <code class='backtick'>expected</code> may be ill-formed</h3>
+<p><b>Section:</b> 22.8.6.8 <a href="https://wg21.link/expected.object.eq">[expected.object.eq]</a>, 22.8.7.8 <a href="https://wg21.link/expected.void.eq">[expected.void.eq]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
+ <b>Submitter:</b> Hewill Kang <b>Opened:</b> 2025-09-06 <b>Last modified:</b> 2025-09-15</p>
+<p><b>Priority: </b>Not Prioritized
+</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
+<p><b>Discussion:</b></p>
+<p>
+These comparison functions all explicitly <code class='backtick'>static_cast</code> the result of the underlying comparison to
+<code class='backtick'>bool</code>. However, the <i>Constraints</i> only require the implicit conversion, not the explicit one 
+(i.e., "convertible to <code class='backtick'>bool</code>" rather than "models <code><i>boolean-testable</i></code>").
+<p/>
+This means that in some pathological cases it will lead to hard errors 
+(<a href="https://godbolt.org/z/b9ehzv3h4">demo</a>):
+</p>
+<blockquote><pre>
+#include &lt;expected&gt;
+
+struct E1 {};
+struct E2 {};
+
+struct Bool {
+  operator bool() const;
+  explicit operator bool() = delete;
+};
+Bool operator==(E1, E2);
+
+int main() {
+  std::unexpected e1{E1{}};
+  std::unexpected e2{E2{}};
+  return std::expected&lt;int, E1&gt;{e1} == e2; // <span style="color:#C80000;font-weight:bold">fire</span>
+}
+</pre></blockquote>
+<p>
+It is reasonable to specify return consistency with actual <i>Constraints</i>.
+</p>
+
+
+<p id="res-4366"><b>Proposed resolution:</b></p>
+<p>
+This wording is relative to <a href="https://wg21.link/N5014">N5014</a>.
+</p>
+
+<ol>
+
+<li><p>Modify 22.8.6.8 <a href="https://wg21.link/expected.object.eq">[expected.object.eq]</a> as indicated:</p>
+
+<blockquote>
+<pre>
+template&lt;class T2&gt; friend constexpr bool operator==(const expected&amp; x, const T2&amp; v);
+</pre>
+<blockquote>
+<p>
+-3- <i>Constraints</i>: <code class='backtick'>T2</code> is not a specialization of <code class='backtick'>expected</code>. The expression <code class='backtick'>*x == v</code> is well-formed
+and its result is convertible to <code class='backtick'>bool</code>.
+<p/>
+[<i>Note 1</i>: <code>T</code> need not be <i>Cpp17EqualityComparable</i>. &mdash; <i>end note</i>]
+<p/>
+-4- <i>Returns</i>: <ins>If</ins> <code class='backtick'>x.has_value()</code> <ins>is <code class='backtick'>true</code>,</ins>
+<code><del>&amp;&amp; static_cast&lt;bool&gt;(</del>*x == v<del>)</del></code><ins>; otherwise <code class='backtick'>false</code></ins>.
+</p>
+</blockquote>
+<pre>
+template&lt;class E2&gt; friend constexpr bool operator==(const expected&amp; x, const unexpected&lt;E2&gt;&amp; e);
+</pre>
+<blockquote>
+<p>
+-5- <i>Constraints</i>: The expression <code class='backtick'>x.error() == e.error()</code> is well-formed and its result is convertible 
+to <code class='backtick'>bool</code>.
+<p/>
+-6- <i>Returns</i>: <ins>If</ins> <code class='backtick'>!x.has_value()</code> <ins>is <code class='backtick'>true</code>,</ins>
+<code><del>&amp;&amp; static_cast&lt;bool&gt;(</del>x.error() == e.error()<del>)</del></code><ins>; otherwise <code class='backtick'>false</code></ins>.
+</p>
+</blockquote>
+</blockquote>
+
+</li>
+
+<li><p>Modify 22.8.7.8 <a href="https://wg21.link/expected.void.eq">[expected.void.eq]</a> as indicated:</p>
+
+<blockquote>
+<pre>
+template&lt;class T2, class E2&gt; requires is_void_v&lt;T2&gt;
+  friend constexpr bool operator==(const expected&amp; x, const expected&lt;T2, E2&gt;&amp; y);
+</pre>
+<blockquote>
+<p>
+-1- <i>Constraints</i>: The expression <code class='backtick'>x.error() == y.error()</code> is well-formed and its result 
+is convertible to <code class='backtick'>bool</code>.
+<p/>
+-2- <i>Returns</i>: If <code class='backtick'>x.has_value()</code> does not equal <code class='backtick'>y.has_value()</code>, <code class='backtick'>false</code>; 
+otherwise <ins>if</ins> <code class='backtick'>x.has_value()</code> <ins>is <code class='backtick'>true</code>, <code class='backtick'>true</code>; otherwise</ins>
+<code><del>|| static_cast&lt;bool&gt;(</del>x.error() == y.error()<del>)</del></code>.
+</p>
+</blockquote>
+<pre>
+template&lt;class E2&gt;
+  friend constexpr bool operator==(const expected&amp; x, const unexpected&lt;E2&gt;&amp; e);
+</pre>
+<blockquote>
+<p>
+-3- <i>Constraints</i>: The expression <code class='backtick'>x.error() == e.error()</code> is well-formed and its 
+result is convertible to <code class='backtick'>bool</code>.
+<p/>
+-4- <i>Returns</i>: <ins>If</ins> <code class='backtick'>!x.has_value()</code> <ins>is <code class='backtick'>true</code>,</ins>
+<code><del>&amp;&amp; static_cast&lt;bool&gt;(</del>x.error() == e.error()<del>)</del></code>
+<ins>; otherwise <code class='backtick'>false</code></ins>.
+</p>
+</blockquote>
+</blockquote>
+
+</li>
+
+</ol>
+
+
+
+
+</body>
+</html>
