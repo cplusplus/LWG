@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Issue 4362: Inconsistent usage of constexpr for inplace_stop_token and inplace_stop_source</title>
+<meta property="og:title" content="Issue 4362: Inconsistent usage of constexpr for inplace_stop_token and inplace_stop_source">
+<meta property="og:description" content="C++ library issue. Status: New">
+<meta property="og:url" content="https://cplusplus.github.io/LWG/issue4362.html">
+<meta property="og:type" content="website">
+<meta property="og:image" content="http://cplusplus.github.io/LWG/images/cpp_logo.png">
+<meta property="og:image:alt" content="C++ logo">
+<style>
+  p {text-align:justify}
+  li {text-align:justify}
+  pre code.backtick::before { content: "`" }
+  pre code.backtick::after { content: "`" }
+  blockquote.note
+  {
+    background-color:#E0E0E0;
+    padding-left: 15px;
+    padding-right: 15px;
+    padding-top: 1px;
+    padding-bottom: 1px;
+  }
+  ins {background-color:#A0FFA0}
+  del {background-color:#FFA0A0}
+  table.issues-index { border: 1px solid; border-collapse: collapse; }
+  table.issues-index th { text-align: center; padding: 4px; border: 1px solid; }
+  table.issues-index td { padding: 4px; border: 1px solid; }
+  table.issues-index td:nth-child(1) { text-align: right; }
+  table.issues-index td:nth-child(2) { text-align: left; }
+  table.issues-index td:nth-child(3) { text-align: left; }
+  table.issues-index td:nth-child(4) { text-align: left; }
+  table.issues-index td:nth-child(5) { text-align: center; }
+  table.issues-index td:nth-child(6) { text-align: center; }
+  table.issues-index td:nth-child(7) { text-align: left; }
+  table.issues-index td:nth-child(5) span.no-pr { color: red; }
+  @media (prefers-color-scheme: dark) {
+     html {
+        color: #ddd;
+        background-color: black;
+     }
+     ins {
+        background-color: #225522
+     }
+     del {
+        background-color: #662222
+     }
+     a {
+        color: #6af
+     }
+     a:visited {
+        color: #6af
+     }
+     blockquote.note
+     {
+        background-color: rgba(255, 255, 255, .10)
+     }
+  }
+</style>
+</head>
+<body>
+<hr>
+<p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#New">New</a> status.</em></p>
+<h3 id="4362"><a href="lwg-active.html#4362">4362</a>. Inconsistent usage of <code class='backtick'>constexpr</code> for <code class='backtick'>inplace_stop_token</code> and <code class='backtick'>inplace_stop_source</code></h3>
+<p><b>Section:</b> 32.3.8 <a href="https://wg21.link/stoptoken.inplace">[stoptoken.inplace]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
+ <b>Submitter:</b> Lewis Baker <b>Opened:</b> 2025-08-28 <b>Last modified:</b> 2025-09-15</p>
+<p><b>Priority: </b>Not Prioritized
+</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
+<p><b>Discussion:</b></p>
+<p>
+The <code class='backtick'>inplace_stop_source::get_token()</code> member function is declared <code class='backtick'>constexpr</code>, 
+but there are no <code class='backtick'>constexpr</code> member-functions declared on <code class='backtick'>inplace_stop_token</code>, 
+making the utility of being able to call this member function during constant 
+evaluation limited.
+<p/>
+Should the member functions of <code class='backtick'>inplace_stop_token</code> also be declared <code class='backtick'>constexpr</code>?
+i.e. <code class='backtick'>operator==</code>, <code class='backtick'>swap()</code>, <code class='backtick'>stop_possible()</code> and <code class='backtick'>stop_requested()</code>.
+<p/>
+The <code class='backtick'>operator==</code> and <code class='backtick'>stop_possible()</code> and <code class='backtick'>swap()</code> member functions should be 
+able to be made <code class='backtick'>constexpr</code> trivially as they are just required to compare/modify 
+pointers to the associated stop source.
+<p/>
+The <code class='backtick'>stop_requested()</code> member function is specified to be equivalent to calling 
+<code class='backtick'>stop_requested()</code> on the associated <code class='backtick'>inplace_stop_source</code> (if any), which is not 
+currently declared <code class='backtick'>constexpr</code> primarily because its implementation requires 
+synchronisation/atomic operations.
+<p/>
+Now that <code class='backtick'>std::atomic</code> operations are now <code class='backtick'>constexpr</code>, it may be possible/appropriate 
+for <code class='backtick'>stop_requested()</code> on both <code class='backtick'>inplace_stop_source</code> and <code class='backtick'>inplace_stop_token</code> to also 
+be declared <code class='backtick'>constexpr</code>.
+</p>
+
+
+<p id="res-4362"><b>Proposed resolution:</b></p>
+<p>
+This wording is relative to <a href="https://wg21.link/N5014">N5014</a>.
+</p>
+
+<blockquote class="note">
+<p>
+[<i>Drafting note:</i>: This is the minimum proposed wording change. Additionally, consider adding 
+<code class='backtick'>constexpr</code> to the declaration of <code class='backtick'>inplace_stop_token::stop_requested()</code> (in 
+32.3.8.1 <a href="https://wg21.link/stoptoken.inplace.general">[stoptoken.inplace.general]</a> and 32.3.8.2 <a href="https://wg21.link/stoptoken.inplace.mem">[stoptoken.inplace.mem]</a>) and to 
+<code class='backtick'>inplace_stop_source::stop_requested()</code> (in 32.3.9.1 <a href="https://wg21.link/stopsource.inplace.general">[stopsource.inplace.general]</a> and 
+32.3.9.3 <a href="https://wg21.link/stopsource.inplace.mem">[stopsource.inplace.mem]</a>)]
+</p>
+</blockquote>
+
+<ol>
+
+<li><p>Modify 32.3.8.1 <a href="https://wg21.link/stoptoken.inplace.general">[stoptoken.inplace.general]</a>, class <code class='backtick'>inplace_stop_token</code> synopsis, as indicated:</p>
+
+<blockquote><pre>
+namespace std {
+  class inplace_stop_token {
+  public:
+    template&lt;class CallbackFn&gt;
+      using callback_type = inplace_stop_callback&lt;CallbackFn&gt;;
+    
+    <ins>constexpr</ins> inplace_stop_token() = default;
+    <ins>constexpr</ins> bool operator==(const inplace_stop_token&amp;) const = default;
+    
+    // <i>32.3.8.2 <a href="https://wg21.link/stoptoken.inplace.mem">[stoptoken.inplace.mem]</a>, member functions</i>
+    bool stop_requested() const noexcept;
+    <ins>constexpr</ins> bool stop_possible() const noexcept;
+    <ins>constexpr</ins> void swap(inplace_stop_token&amp;) noexcept;
+    
+  private:
+    const inplace_stop_source* <i>stop-source</i> = nullptr; // <i>exposition only</i>
+  };
+}
+</pre></blockquote>
+
+</li>
+
+
+<li><p>Modify 32.3.8.2 <a href="https://wg21.link/stoptoken.inplace.mem">[stoptoken.inplace.mem]</a> as indicated:</p>
+
+<blockquote class="note">
+<p>
+[<i>Drafting note:</i>: As a drive-by fix this adds the missing return type <code class='backtick'>bool</code> to the
+<code class='backtick'>stop_possible()</code> prototype]
+</p>
+</blockquote>
+
+<blockquote>
+<pre>
+<ins>constexpr</ins> void swap(inplace_stop_token&amp; rhs) noexcept;
+</pre>
+<blockquote>
+<p>
+-1- <i>Effects</i>: Exchanges the values of <code><i>stop-source</i></code> and <code>rhs.<i>stop-source</i></code>.
+</p>
+</blockquote>
+[&hellip;]
+<pre>
+<ins>constexpr bool</ins> stop_possible() const noexcept;
+</pre>
+<blockquote>
+<p>
+-4- <i>Returns</i>: <code><i>stop-source</i> != nullptr</code>.
+</p>
+</blockquote>
+
+</blockquote>
+
+</li>
+
+</ol>
+
+
+
+
+
+</body>
+</html>
