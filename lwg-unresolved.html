@@ -54,7 +54,7 @@
 </style>
 </head>
 <body>
-<p>Revised 2025-09-15 at 10:38:38 UTC
+<p>Revised 2025-09-15 at 11:00:09 UTC
 </p><h2>Unresolved Issues</h2>
 <hr>
 <h3 id="423"><a href="#423">423</a><sup><a href="https://cplusplus.github.io/LWG/issue423">(i)</a></sup>. Effects of negative <code>streamsize</code> in iostreams</h3>
@@ -47714,6 +47714,7 @@ constexpr complex&amp; operator+=(const T&amp;) requires (!floating_point&lt;T&g
  <b>Submitter:</b> Jonathan Wakely <b>Opened:</b> 2023-05-25 <b>Last modified:</b> 2023-06-01</p>
 <p><b>Priority: </b>3
 </p>
+<p><b>View other</b> <a href="lwg-index-open.html#std.manip">active issues</a> in [std.manip].</p>
 <p><b>View all other</b> <a href="lwg-index.html#std.manip">issues</a> in [std.manip].</p>
 <p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
 <p><b>Discussion:</b></p>
@@ -78709,6 +78710,48 @@ type <del>ignoring cv-qualifiers</del>; otherwise, it is the expression
 </li>
 
 </ol>
+
+
+
+
+
+<hr>
+<h3 id="4364"><a href="#4364">4364</a><sup><a href="https://cplusplus.github.io/LWG/issue4364">(i)</a></sup>. SFINAE-friendliness on <code>operator&lt;&lt;</code> and <code>operator&gt;&gt;</code> for unspecified I/O manipulators</h3>
+<p><b>Section:</b> 31.7.7 <a href="https://wg21.link/std.manip">[std.manip]</a>, 31.7.8 <a href="https://wg21.link/ext.manip">[ext.manip]</a>, 31.7.9 <a href="https://wg21.link/quoted.manip">[quoted.manip]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
+ <b>Submitter:</b> Jiang An <b>Opened:</b> 2025-09-05 <b>Last modified:</b> 2025-09-15</p>
+<p><b>Priority: </b>Not Prioritized
+</p>
+<p><b>View other</b> <a href="lwg-index-open.html#std.manip">active issues</a> in [std.manip].</p>
+<p><b>View all other</b> <a href="lwg-index.html#std.manip">issues</a> in [std.manip].</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
+<p><b>Discussion:</b></p>
+<p>
+Currently, it is unspecified whether any of <code>operator&lt;&lt;</code> or <code>operator&gt;&gt;</code> 
+for the "<i>unspecified</i>" return type of an I/O manipulating function is SFINAE-friendly.
+<p/>
+There's implementation divergence. E.g. the following program is consistently rejected by 
+implementations although the standard doesn't strictly require it to be ill-formed. Among 
+the implementations, libstdc++ and libc++ make the failure SFINAE-friendly, while MSVC STL 
+doesn't (<a href="https://godbolt.org/z/rWYszoYa8">demo</a>):
+</p>
+<blockquote><pre>
+#include &lt;iostream&gt;
+#include &lt;iomanip&gt;
+
+int main() 
+{
+  std::cout &lt;&lt; std::setfill(L'*');
+}
+</pre></blockquote>
+<p>
+It seems better to eliminate such implementation divergence. Perhaps it's also better to 
+require them to be SFINAE-friendly to reduce potential conflicts with user-provided operators.
+<p/>
+If it's intended to allow implementation divergence, perhaps we should clarify the intent.
+</p>
+
+
+<p id="res-4364"><b>Proposed resolution:</b></p>
 
 
 
