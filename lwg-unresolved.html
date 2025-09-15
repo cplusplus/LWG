@@ -54,7 +54,7 @@
 </style>
 </head>
 <body>
-<p>Revised 2025-09-15 at 13:55:37 UTC
+<p>Revised 2025-09-15 at 14:56:37 UTC
 </p><h2>Unresolved Issues</h2>
 <hr>
 <h3 id="423"><a href="#423">423</a><sup><a href="https://cplusplus.github.io/LWG/issue423">(i)</a></sup>. Effects of negative <code>streamsize</code> in iostreams</h3>
@@ -79088,6 +79088,98 @@ if (has_value()) {
   return std::forward&lt;F&gt;(f)();
 }
 </pre></blockquote></blockquote>
+</blockquote>
+
+</li>
+
+</ol>
+
+
+
+
+<hr>
+<h3 id="4368"><a href="#4368">4368</a><sup><a href="https://cplusplus.github.io/LWG/issue4368">(i)</a></sup>. Potential dangling reference returned from <code class='backtick'>transform_sender</code></h3>
+<p><b>Section:</b> 33.9.5 <a href="https://wg21.link/exec.domain.default">[exec.domain.default]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
+ <b>Submitter:</b> Eric Niebler <b>Opened:</b> 2025-08-31 <b>Last modified:</b> 2025-09-15</p>
+<p><b>Priority: </b>Not Prioritized
+</p>
+<p><b>View all other</b> <a href="lwg-index.html#exec.domain.default">issues</a> in [exec.domain.default].</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
+<p><b>Discussion:</b></p>
+<p>
+The following has been reported by Trevor Gray to me:
+</p>
+<blockquote style="border-left: 3px solid #ccc;padding-left: 15px;">
+<p>
+There is a potential stack-use-after-scope in <code class='backtick'>execution::transform_sender</code> 
+with <code class='backtick'>execution::default_domain::transform_sender</code>.
+<p/>
+I'll give an example of the problem using <code class='backtick'>starts_on</code> with the <code class='backtick'>default_domain</code>.
+<p/>
+<code class='backtick'>starts_on</code> defines a <code class='backtick'>transform_sender</code> so <code class='backtick'>execution::transform_sender</code> will expand to:
+</p>
+<blockquote><pre>
+return transform_sender(
+    dom,
+    dom.transform_sender(std::forward&lt;Sndr&gt;(sndr), env...),
+    env...);
+</pre></blockquote>
+<p>
+where <code class='backtick'>dom</code> is the <code class='backtick'>default_domain</code> and <code class='backtick'>sndr</code> is <code class='backtick'>starts_on</code>.
+<p/>
+Execution flow:
+</p>
+<ul>
+<li><p><code>dom.transform_sender(std::forward&lt;Sndr&gt;(sndr), env...)</code> uses <code class='backtick'>default_domain</code> 
+to invoke <code class='backtick'>start_on</code>'s <code class='backtick'>transform_sender</code>. The return type is <code class='backtick'>T</code> (where <code class='backtick'>T</code> is a <code class='backtick'>let_value</code> sender)</p></li>
+<li><p><code>transform_sender(dom, declval&lt;T&gt;(), env...)</code> is then run which uses <code class='backtick'>default_domain</code> 
+to just return <code>std::forward&lt;T&gt;(t)</code>.</p></li>
+</ul>
+<p>
+This means the value returned from the entire expression is <code>T&amp;&amp;</code> which a reference 
+to a temporary variable in the frame of <code class='backtick'>transform_sender</code> which is no longer valid after the return.
+</p>
+</blockquote>
+<p>
+In the reference implementation, this scenario does not create a dangling reference because 
+its implementation of <code class='backtick'>default_domain::transform_sender</code> does not conform to the spec. By default, 
+it returns an rvalue sender as a prvalue instead of an xvalue as the spec requires.
+<p/>
+The fix is for the spec to follow suit and return prvalues when an xvalue would otherwise be returned.
+</p>
+
+
+<p id="res-4368"><b>Proposed resolution:</b></p>
+<p>
+This wording is relative to <a href="https://wg21.link/N5014">N5014</a>.
+</p>
+
+<ol>
+
+<li><p>Modify 33.9.5 <a href="https://wg21.link/exec.domain.default">[exec.domain.default]</a> as indicated:</p>
+
+<blockquote>
+<pre>
+template&lt;sender Sndr, <i>queryable</i>... Env&gt;
+  requires (sizeof...(Env) &lt;= 1)
+constexpr sender decltype(auto) transform_sender(Sndr&amp;&amp; sndr, const Env&amp;... env)
+  noexcept(<i>see below</i>);
+</pre>
+<blockquote>
+<p>
+-2- Let <code class='backtick'>e</code> be the expression
+</p>
+<blockquote><pre>
+tag_of_t&lt;Sndr&gt;().transform_sender(std::forward&lt;Sndr&gt;(sndr), env...)
+</pre></blockquote>
+<p>
+if that expression is well-formed; otherwise, <code><ins>static_cast&lt;Sndr&gt;(</ins>std::forward&lt;Sndr&gt;(sndr)<ins>)</ins></code>.
+<p/>
+-3- <i>Returns</i>: <code class='backtick'>e</code>.
+<p/>
+-4- <i>Remarks</i>: The exception specification is equivalent to <code class='backtick'>noexcept(e)</code>.
+</p>
+</blockquote>
 </blockquote>
 
 </li>
