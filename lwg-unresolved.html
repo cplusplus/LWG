@@ -54,7 +54,7 @@
 </style>
 </head>
 <body>
-<p>Revised 2025-09-15 at 15:27:51 UTC
+<p>Revised 2025-09-15 at 16:11:54 UTC
 </p><h2>Unresolved Issues</h2>
 <hr>
 <h3 id="423"><a href="#423">423</a><sup><a href="https://cplusplus.github.io/LWG/issue423">(i)</a></sup>. Effects of negative <code>streamsize</code> in iostreams</h3>
@@ -79276,6 +79276,255 @@ cs.<i>for-each</i>(<i>overload-set</i>{fn, [](auto){}});
 where <code><i>unspecified-exception</i></code> is a type derived from <code class='backtick'>exception</code>.
 </p>
 </blockquote>
+</blockquote>
+
+</li>
+
+</ol>
+
+
+
+
+<hr>
+<h3 id="4370"><a href="#4370">4370</a><sup><a href="https://cplusplus.github.io/LWG/issue4370">(i)</a></sup>. Comparison of <code>optional&lt;T&gt;</code> to <code>T</code> may be ill-formed</h3>
+<p><b>Section:</b> 22.5.9 <a href="https://wg21.link/optional.comp.with.t">[optional.comp.with.t]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
+ <b>Submitter:</b> Hewill Kang <b>Opened:</b> 2025-09-06 <b>Last modified:</b> 2025-09-15</p>
+<p><b>Priority: </b>Not Prioritized
+</p>
+<p><b>View all other</b> <a href="lwg-index.html#optional.comp.with.t">issues</a> in [optional.comp.with.t].</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
+<p><b>Discussion:</b></p>
+<p>
+When comparing an <code class='backtick'>optional</code> with its value type, the current wording specifies that the result is the
+ternary expression of <code class='backtick'>x.has_value() ? *x == v : false</code>, where <code class='backtick'>*x == v</code> returns a result that can be 
+implicitly converted to <code class='backtick'>bool</code>.
+<p/>
+However, when the result can also be constructed using <code class='backtick'>bool</code> (which is common), the ternary operation
+will be ill-formed due to ambiguity (<a href="https://godbolt.org/z/r55Wh51Y8">demo</a>):
+</p>
+<blockquote><pre>
+#include &lt;optional&gt;
+
+struct Bool {
+  Bool(bool);
+  operator bool() const;
+};
+
+struct S {
+  Bool operator==(S) const;
+};
+
+int main() {
+  return std::optional&lt;S&gt;{} == S{}; // <span style="color:#C80000;font-weight:bold">fire</span>
+}
+</pre></blockquote>
+
+
+<p id="res-4370"><b>Proposed resolution:</b></p>
+<p>
+This wording is relative to <a href="https://wg21.link/N5014">N5014</a>.
+</p>
+
+<ol>
+
+<li><p>Modify 22.5.9 <a href="https://wg21.link/optional.comp.with.t">[optional.comp.with.t]</a> as indicated:</p>
+
+<blockquote>
+<pre>
+template&lt;class T, class U&gt; constexpr bool operator==(const optional&lt;T&gt;&amp; x, const U&amp; v);
+</pre>
+<blockquote>
+<p>
+-1- <i>Constraints</i>: <code class='backtick'>U</code> is not a specialization of <code class='backtick'>optional</code>. The expression <code class='backtick'>*x == v</code> is well-formed
+   and its result is convertible to <code class='backtick'>bool</code>.
+<p/>
+[<i>Note 1</i>: <code class='backtick'>T</code> need not be <i>Cpp17EqualityComparable</i>. &mdash; end note]
+<p/>
+-2- <i>Effects</i>: Equivalent to: <del><code class='backtick'>return x.has_value() ? *x == v : false;</code></del>
+</p>
+<blockquote><pre>
+<ins>if (x.has_value())
+  return *x == v;
+return false;</ins>
+</pre></blockquote>
+</blockquote>
+<pre>
+template&lt;class T, class U&gt; constexpr bool operator==(const T&amp; v, const optional&lt;U&gt;&amp; x);
+</pre>
+<blockquote>
+<p>
+-3- <i>Constraints</i>: <code class='backtick'>T</code> is not a specialization of <code class='backtick'>optional</code>. The expression <code class='backtick'>v == *x</code> is well-formed
+and its result is convertible to <code class='backtick'>bool</code>.
+<p/>
+-4- <i>Effects</i>: Equivalent to: <del><code class='backtick'>return x.has_value() ? v == *x : false;</code></del>
+</p>
+<blockquote><pre>
+<ins>if (x.has_value())
+  return v == *x;
+return false;</ins>
+</pre></blockquote>
+</blockquote>
+<pre>
+template&lt;class T, class U&gt; constexpr bool operator!=(const optional&lt;T&gt;&amp; x, const U&amp; v);
+</pre>
+<blockquote>
+<p>
+-5- <i>Constraints</i>: <code class='backtick'>U</code> is not a specialization of <code class='backtick'>optional</code>. The expression <code class='backtick'>*x != v</code> is well-formed
+and its result is convertible to <code class='backtick'>bool</code>.
+<p/>
+-6- <i>Effects</i>: Equivalent to: <del><code class='backtick'>return x.has_value() ? *x != v : true;</code></del>
+</p>
+<blockquote><pre>
+<ins>if (x.has_value())
+  return *x != v;
+return true;</ins>
+</pre></blockquote>
+</blockquote>
+<pre>
+template&lt;class T, class U&gt; constexpr bool operator!=(const T&amp; v, const optional&lt;U&gt;&amp; x);
+</pre>
+<blockquote>
+<p>
+-7- <i>Constraints</i>: <code class='backtick'>T</code> is not a specialization of <code class='backtick'>optional</code>. The expression <code class='backtick'>v != *x</code> is well-formed
+and its result is convertible to <code class='backtick'>bool</code>.
+<p/>
+-8- <i>Effects</i>: Equivalent to: <del><code class='backtick'>return x.has_value() ? v != *x : true;</code></del>
+</p>
+<blockquote><pre>
+<ins>if (x.has_value())
+  return v != *x;
+return true;</ins>
+</pre></blockquote>
+</blockquote>
+<pre>
+template&lt;class T, class U&gt; constexpr bool operator&lt;(const optional&lt;T&gt;&amp; x, const U&amp; v);
+</pre>
+<blockquote>
+<p>
+-9- <i>Constraints</i>: <code class='backtick'>U</code> is not a specialization of <code class='backtick'>optional</code>. The expression <code>*x &lt; v</code> is well-formed
+and its result is convertible to <code class='backtick'>bool</code>.
+<p/>
+-10- <i>Effects</i>: Equivalent to: <del><code>return x.has_value() ? *x &lt; v : true;</code></del>
+</p>
+<blockquote><pre>
+<ins>if (x.has_value())
+  return *x &lt; v;
+return true;</ins>
+</pre></blockquote>
+</blockquote>
+<pre>
+template&lt;class T, class U&gt; constexpr bool operator&lt;(const T&amp; v, const optional&lt;U&gt;&amp; x);
+</pre>
+<blockquote>
+<p>
+-11- <i>Constraints</i>: <code class='backtick'>T</code> is not a specialization of <code class='backtick'>optional</code>. The expression <code>v &lt; *x</code> 
+is well-formed and its result is convertible to <code class='backtick'>bool</code>.
+<p/>
+-12- <i>Effects</i>: Equivalent to: <del><code>return x.has_value() ? v &lt; *x : false;</code></del>
+</p>
+<blockquote><pre>
+<ins>if (x.has_value())
+  return v &lt; *x;
+return false;</ins>
+</pre></blockquote>
+</blockquote>
+<pre>
+template&lt;class T, class U&gt; constexpr bool operator&gt;(const optional&lt;T&gt;&amp; x, const U&amp; v);
+</pre>
+<blockquote>
+<p>
+-13- <i>Constraints</i>: <code class='backtick'>U</code> is not a specialization of <code class='backtick'>optional</code>. The expression <code>*x &gt; v</code> is 
+well-formed and its result is convertible to <code class='backtick'>bool</code>.
+<p/>
+-14- <i>Effects</i>: Equivalent to: <del><code>return x.has_value() ? *x &gt; v : false;</code></del>
+</p>
+<blockquote><pre>
+<ins>if (x.has_value())
+  return *x &gt; v;
+return false;</ins>
+</pre></blockquote>
+</blockquote>
+<pre>
+template&lt;class T, class U&gt; constexpr bool operator&gt;(const T&amp; v, const optional&lt;U&gt;&amp; x);
+</pre>
+<blockquote>
+<p>
+-15- <i>Constraints</i>: <code class='backtick'>T</code> is not a specialization of <code class='backtick'>optional</code>. The expression <code>v &gt; *x</code> 
+is well-formed and its result is convertible to <code class='backtick'>bool</code>.
+<p/>
+-16- <i>Effects</i>: Equivalent to: <del><code>return x.has_value() ? v &gt; *x : true;</code></del>
+</p>
+<blockquote><pre>
+<ins>if (x.has_value())
+  return v &gt; *x;
+return true;</ins>
+</pre></blockquote>
+</blockquote>
+<pre>
+template&lt;class T, class U&gt; constexpr bool operator&lt;=(const optional&lt;T&gt;&amp; x, const U&amp; v);
+</pre>
+<blockquote>
+<p>
+-17- <i>Constraints</i>: <code class='backtick'>U</code> is not a specialization of <code class='backtick'>optional</code>. The expression <code>*x &lt;= v</code> 
+is well-formed and its result is convertible to <code class='backtick'>bool</code>.
+<p/>
+-18- <i>Effects</i>: Equivalent to: <del><code>return x.has_value() ? *x &lt;= v : true;</code></del>
+</p>
+<blockquote><pre>
+<ins>if (x.has_value())
+  return *x &lt;= v;
+return true;</ins>
+</pre></blockquote>
+</blockquote>
+<pre>
+template&lt;class T, class U&gt; constexpr bool operator&lt;=(const T&amp; v, const optional&lt;U&gt;&amp; x);
+</pre>
+<blockquote>
+<p>
+-19- <i>Constraints</i>: <code class='backtick'>T</code> is not a specialization of <code class='backtick'>optional</code>. The expression <code>v &lt;= *x</code> 
+is well-formed and its result is convertible to <code class='backtick'>bool</code>.
+<p/>
+-20- <i>Effects</i>: Equivalent to: <del><code>return x.has_value() ? v &lt;= *x : false;</code></del>
+</p>
+<blockquote><pre>
+<ins>if (x.has_value())
+  return v &lt;= *x;
+return false;</ins>
+</pre></blockquote>
+</blockquote>
+<pre>
+template&lt;class T, class U&gt; constexpr bool operator&gt;=(const optional&lt;T&gt;&amp; x, const U&amp; v);
+</pre>
+<blockquote>
+<p>
+-21- <i>Constraints</i>: <code class='backtick'>U</code> is not a specialization of <code class='backtick'>optional</code>. The expression <code>*x &gt;= v</code> 
+is well-formed and its result is convertible to <code class='backtick'>bool</code>.
+<p/>
+-22- <i>Effects</i>: Equivalent to: <del><code>return x.has_value() ? *x &gt;= v : false;</code></del>
+</p>
+<blockquote><pre>
+<ins>if (x.has_value())
+  return *x &gt;= v;
+return false;</ins>
+</pre></blockquote>
+</blockquote>
+<pre>
+template&lt;class T, class U&gt; constexpr bool operator&gt;=(const T&amp; v, const optional&lt;U&gt;&amp; x);
+</pre>
+<blockquote>
+<p>
+-23- <i>Constraints</i>: <code class='backtick'>T</code> is not a specialization of <code class='backtick'>optional</code>. The expression <code>v &gt;= *x</code> 
+is well-formed and its result is convertible to <code class='backtick'>bool</code>.
+<p/>
+-24- <i>Effects</i>: Equivalent to: <del><code>return x.has_value() ? v &gt;= *x : true;</code></del>
+</p>
+<blockquote><pre>
+<ins>if (x.has_value())
+  return v &gt;= *x;
+return true;</ins>
+</pre></blockquote>
+</blockquote>
+
 </blockquote>
 
 </li>
