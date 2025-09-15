@@ -54,7 +54,7 @@
 </style>
 </head>
 <body>
-<p>Revised 2025-09-15 at 13:04:48 UTC
+<p>Revised 2025-09-15 at 13:55:37 UTC
 </p><h2>Unresolved Issues</h2>
 <hr>
 <h3 id="423"><a href="#423">423</a><sup><a href="https://cplusplus.github.io/LWG/issue423">(i)</a></sup>. Effects of negative <code>streamsize</code> in iostreams</h3>
@@ -73092,6 +73092,8 @@ member function of function type <code class='backtick'>F</code> or <code class=
  <b>Submitter:</b> Giuseppe D'Angelo <b>Opened:</b> 2025-07-15 <b>Last modified:</b> 2025-08-16</p>
 <p><b>Priority: </b>Not Prioritized
 </p>
+<p><b>View other</b> <a href="lwg-index-open.html#optional.ref.monadic">active issues</a> in [optional.ref.monadic].</p>
+<p><b>View all other</b> <a href="lwg-index.html#optional.ref.monadic">issues</a> in [optional.ref.monadic].</p>
 <p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
 <p><b>Discussion:</b></p>
 <p>
@@ -79029,6 +79031,63 @@ result is convertible to <code class='backtick'>bool</code>.
 <ins>; otherwise <code class='backtick'>false</code></ins>.
 </p>
 </blockquote>
+</blockquote>
+
+</li>
+
+</ol>
+
+
+
+
+<hr>
+<h3 id="4367"><a href="#4367">4367</a><sup><a href="https://cplusplus.github.io/LWG/issue4367">(i)</a></sup>. Improve <code>optional&lt;T&amp;&gt;::or_else</code></h3>
+<p><b>Section:</b> 22.5.4.7 <a href="https://wg21.link/optional.ref.monadic">[optional.ref.monadic]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
+ <b>Submitter:</b> Hewill Kang <b>Opened:</b> 2025-09-07 <b>Last modified:</b> 2025-09-15</p>
+<p><b>Priority: </b>Not Prioritized
+</p>
+<p><b>View other</b> <a href="lwg-index-open.html#optional.ref.monadic">active issues</a> in [optional.ref.monadic].</p>
+<p><b>View all other</b> <a href="lwg-index.html#optional.ref.monadic">issues</a> in [optional.ref.monadic].</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
+<p><b>Discussion:</b></p>
+<p>
+<code>optional&lt;T&amp;&gt;::or_else</code> currently returns <code>*<i>val</i></code> when it has a value,
+which calls the <code>optional(U&amp;&amp;)</code> constructor which in turn calls 
+<code><i>convert-ref-init-val</i></code> which in turn calls <code class='backtick'>addressof</code>.
+<p/>
+There's no reason to do that. It's much more efficient to call <code>optional&lt;T&amp;&gt;</code>'s 
+default copy constructor to just copy a pointer.
+</p>
+
+
+<p id="res-4367"><b>Proposed resolution:</b></p>
+<p>
+This wording is relative to <a href="https://wg21.link/N5014">N5014</a>.
+</p>
+
+<ol>
+
+<li><p>Modify 22.5.4.7 <a href="https://wg21.link/optional.ref.monadic">[optional.ref.monadic]</a> as indicated:</p>
+
+<blockquote>
+<pre>
+template&lt;class F&gt; constexpr optional or_else(F&amp;&amp; f) const;
+</pre>
+<blockquote>
+<p>
+-7- <i>Constraints</i>: <code class='backtick'>F</code> models <code class='backtick'>invocable</code>.
+<p/>
+-8- <i>Mandates</i>: <code>is_same_v&lt;remove_cvref_t&lt;invoke_result_t&lt;F&gt;&gt;, optional&gt;</code> is <code class='backtick'>true</code>.
+<p/>
+-9- <i>Effects</i>: Equivalent to:
+</p>
+<blockquote><pre>
+if (has_value()) {
+  return *<ins>this</ins><del><i>val</i></del>;
+} else {
+  return std::forward&lt;F&gt;(f)();
+}
+</pre></blockquote></blockquote>
 </blockquote>
 
 </li>

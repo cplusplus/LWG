@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Issue 4367: Improve optional&lt;T&amp;&gt;::or_else</title>
+<meta property="og:title" content="Issue 4367: Improve optional&lt;T&amp;&gt;::or_else">
+<meta property="og:description" content="C++ library issue. Status: New">
+<meta property="og:url" content="https://cplusplus.github.io/LWG/issue4367.html">
+<meta property="og:type" content="website">
+<meta property="og:image" content="http://cplusplus.github.io/LWG/images/cpp_logo.png">
+<meta property="og:image:alt" content="C++ logo">
+<style>
+  p {text-align:justify}
+  li {text-align:justify}
+  pre code.backtick::before { content: "`" }
+  pre code.backtick::after { content: "`" }
+  blockquote.note
+  {
+    background-color:#E0E0E0;
+    padding-left: 15px;
+    padding-right: 15px;
+    padding-top: 1px;
+    padding-bottom: 1px;
+  }
+  ins {background-color:#A0FFA0}
+  del {background-color:#FFA0A0}
+  table.issues-index { border: 1px solid; border-collapse: collapse; }
+  table.issues-index th { text-align: center; padding: 4px; border: 1px solid; }
+  table.issues-index td { padding: 4px; border: 1px solid; }
+  table.issues-index td:nth-child(1) { text-align: right; }
+  table.issues-index td:nth-child(2) { text-align: left; }
+  table.issues-index td:nth-child(3) { text-align: left; }
+  table.issues-index td:nth-child(4) { text-align: left; }
+  table.issues-index td:nth-child(5) { text-align: center; }
+  table.issues-index td:nth-child(6) { text-align: center; }
+  table.issues-index td:nth-child(7) { text-align: left; }
+  table.issues-index td:nth-child(5) span.no-pr { color: red; }
+  @media (prefers-color-scheme: dark) {
+     html {
+        color: #ddd;
+        background-color: black;
+     }
+     ins {
+        background-color: #225522
+     }
+     del {
+        background-color: #662222
+     }
+     a {
+        color: #6af
+     }
+     a:visited {
+        color: #6af
+     }
+     blockquote.note
+     {
+        background-color: rgba(255, 255, 255, .10)
+     }
+  }
+</style>
+</head>
+<body>
+<hr>
+<p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#New">New</a> status.</em></p>
+<h3 id="4367"><a href="lwg-active.html#4367">4367</a>. Improve <code>optional&lt;T&amp;&gt;::or_else</code></h3>
+<p><b>Section:</b> 22.5.4.7 <a href="https://wg21.link/optional.ref.monadic">[optional.ref.monadic]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
+ <b>Submitter:</b> Hewill Kang <b>Opened:</b> 2025-09-07 <b>Last modified:</b> 2025-09-15</p>
+<p><b>Priority: </b>Not Prioritized
+</p>
+<p><b>View other</b> <a href="lwg-index-open.html#optional.ref.monadic">active issues</a> in [optional.ref.monadic].</p>
+<p><b>View all other</b> <a href="lwg-index.html#optional.ref.monadic">issues</a> in [optional.ref.monadic].</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
+<p><b>Discussion:</b></p>
+<p>
+<code>optional&lt;T&amp;&gt;::or_else</code> currently returns <code>*<i>val</i></code> when it has a value,
+which calls the <code>optional(U&amp;&amp;)</code> constructor which in turn calls 
+<code><i>convert-ref-init-val</i></code> which in turn calls <code class='backtick'>addressof</code>.
+<p/>
+There's no reason to do that. It's much more efficient to call <code>optional&lt;T&amp;&gt;</code>'s 
+default copy constructor to just copy a pointer.
+</p>
+
+
+<p id="res-4367"><b>Proposed resolution:</b></p>
+<p>
+This wording is relative to <a href="https://wg21.link/N5014">N5014</a>.
+</p>
+
+<ol>
+
+<li><p>Modify 22.5.4.7 <a href="https://wg21.link/optional.ref.monadic">[optional.ref.monadic]</a> as indicated:</p>
+
+<blockquote>
+<pre>
+template&lt;class F&gt; constexpr optional or_else(F&amp;&amp; f) const;
+</pre>
+<blockquote>
+<p>
+-7- <i>Constraints</i>: <code class='backtick'>F</code> models <code class='backtick'>invocable</code>.
+<p/>
+-8- <i>Mandates</i>: <code>is_same_v&lt;remove_cvref_t&lt;invoke_result_t&lt;F&gt;&gt;, optional&gt;</code> is <code class='backtick'>true</code>.
+<p/>
+-9- <i>Effects</i>: Equivalent to:
+</p>
+<blockquote><pre>
+if (has_value()) {
+  return *<ins>this</ins><del><i>val</i></del>;
+} else {
+  return std::forward&lt;F&gt;(f)();
+}
+</pre></blockquote></blockquote>
+</blockquote>
+
+</li>
+
+</ol>
+
+
+
+
+</body>
+</html>
