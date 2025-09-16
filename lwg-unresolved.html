@@ -54,7 +54,7 @@
 </style>
 </head>
 <body>
-<p>Revised 2025-09-15 at 16:11:54 UTC
+<p>Revised 2025-09-16 at 15:27:15 UTC
 </p><h2>Unresolved Issues</h2>
 <hr>
 <h3 id="423"><a href="#423">423</a><sup><a href="https://cplusplus.github.io/LWG/issue423">(i)</a></sup>. Effects of negative <code>streamsize</code> in iostreams</h3>
@@ -79525,6 +79525,102 @@ return true;</ins>
 </pre></blockquote>
 </blockquote>
 
+</blockquote>
+
+</li>
+
+</ol>
+
+
+
+
+<hr>
+<h3 id="4371"><a href="#4371">4371</a><sup><a href="https://cplusplus.github.io/LWG/issue4371">(i)</a></sup>. Container adaptor's <code class='backtick'>empty</code>/<code class='backtick'>size</code> should be <code class='backtick'>noexcept</code></h3>
+<p><b>Section:</b> 23.6.3.1 <a href="https://wg21.link/queue.defn">[queue.defn]</a>, 23.6.4.1 <a href="https://wg21.link/priqueue.overview">[priqueue.overview]</a>, 23.6.6.2 <a href="https://wg21.link/stack.defn">[stack.defn]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
+ <b>Submitter:</b> Hewill Kang <b>Opened:</b> 2025-09-09 <b>Last modified:</b> 2025-09-16</p>
+<p><b>Priority: </b>Not Prioritized
+</p>
+<p><b>View all other</b> <a href="lwg-index.html#queue.defn">issues</a> in [queue.defn].</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
+<p><b>Discussion:</b></p>
+<p>
+C++23 container adaptors <code>flat_<i>meow</i></code> all have <code class='backtick'>noexcept</code> <code class='backtick'>size</code>/<code class='backtick'>empty</code> members.
+<p/>
+However, the <code class='backtick'>size</code>/<code class='backtick'>empty</code> members of other container adaptors are not mark <code class='backtick'>noexcept</code>, 
+even though they behave the same as <code>flat_<i>meow</i></code> that returning the <code class='backtick'>size</code>/<code class='backtick'>empty</code> 
+of the underlying container.
+<p/>
+It makes sense to make them <code class='backtick'>noexcept</code> as well for consistency. Although the standard doesn't
+explicitly say those two members of the container must not throw, the fact that all standard 
+containers and common third-party containers mark them as unconditionally <code class='backtick'>noexcept</code> implies 
+that it's perfectly reasonable to assume that they never will.
+</p>
+
+
+<p id="res-4371"><b>Proposed resolution:</b></p>
+<p>
+This wording is relative to <a href="https://wg21.link/N5014">N5014</a>.
+</p>
+
+<ol>
+
+<li><p>Modify 23.6.3.1 <a href="https://wg21.link/queue.defn">[queue.defn]</a> as indicated:</p>
+
+<blockquote>
+<pre>
+namespace std {
+  template&lt;class T, class Container = deque&lt;T&gt;&gt;
+  class queue {
+  public:
+    [&hellip;]
+    constexpr bool              empty() const <ins>noexcept</ins> { return c.empty(); }
+    constexpr size_type         size()  const <ins>noexcept</ins> { return c.size(); }
+    [&hellip;]
+  };
+  [&hellip;]
+}
+</pre>
+</blockquote>
+
+</li>
+
+<li><p>Modify 23.6.4.1 <a href="https://wg21.link/priqueue.overview">[priqueue.overview]</a> as indicated:</p>
+
+<blockquote>
+<pre>
+namespace std {
+  template&lt;class T, class Container = vector&lt;T&gt;,
+           class Compare = less&lt;typename Container::value_type&gt;&gt;
+  class priority_queue {
+  public:
+    [&hellip;]
+    constexpr bool            empty() const <ins>noexcept</ins> { return c.empty(); }
+    constexpr size_type       size()  const <ins>noexcept</ins> { return c.size(); }
+    [&hellip;]
+  };
+  [&hellip;]
+}
+</pre>
+</blockquote>
+
+</li>
+
+<li><p>Modify 23.6.6.2 <a href="https://wg21.link/stack.defn">[stack.defn]</a> as indicated:</p>
+
+<blockquote>
+<pre>
+namespace std {
+  template&lt;class T, class Container = deque&lt;T&gt;&gt;
+  class stack {
+  public:
+    [&hellip;]
+    constexpr bool              empty() const <ins>noexcept</ins> { return c.empty(); }
+    constexpr size_type         size()  const <ins>noexcept</ins> { return c.size(); }
+    [&hellip;]
+  };
+  [&hellip;]
+}
+</pre>
 </blockquote>
 
 </li>
