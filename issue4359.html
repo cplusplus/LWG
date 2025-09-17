@@ -64,7 +64,7 @@
 <p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#New">New</a> status.</em></p>
 <h3 id="4359"><a href="lwg-active.html#4359">4359</a>. <code class='backtick'>as_awaitable(expr, p)</code> does not define semantics of call if <code class='backtick'>p</code> is not an lvalue</h3>
 <p><b>Section:</b> 33.13.1 <a href="https://wg21.link/exec.as.awaitable">[exec.as.awaitable]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Lewis Baker <b>Opened:</b> 2025-08-27 <b>Last modified:</b> 2025-09-14</p>
+ <b>Submitter:</b> Lewis Baker <b>Opened:</b> 2025-08-27 <b>Last modified:</b> 2025-09-17</p>
 <p><b>Priority: </b>Not Prioritized
 </p>
 <p><b>View other</b> <a href="lwg-index-open.html#exec.as.awaitable">active issues</a> in [exec.as.awaitable].</p>
@@ -91,8 +91,8 @@ This wording is relative to <a href="https://wg21.link/N5014">N5014</a>.
 
 <blockquote>
 <p>
--7- <code class='backtick'>as_awaitable</code> is a customization point object. For subexpressions <code class='backtick'>expr</code> and <code class='backtick'>p</code> <del>where <code class='backtick'>p</code> 
-is an lvalue</del>, <code class='backtick'>Expr</code> names the type <code class='backtick'>decltype((expr))</code> and <code class='backtick'>Promise</code> names the type 
+-7- <code class='backtick'>as_awaitable</code> is a customization point object. For subexpressions <code class='backtick'>expr</code> and <code class='backtick'>p</code> where <del><code class='backtick'>p</code> 
+is an lvalue,</del> <code class='backtick'>Expr</code> names the type <code class='backtick'>decltype((expr))</code> and <code class='backtick'>Promise</code> names the type 
 <code>decay_t&lt;decltype((p))&gt;</code>, <ins>if <code class='backtick'>p</code> is not an lvalue, <code class='backtick'>as_awaitable(expr, p)</code> is 
 ill-formed, otherwise</ins> <code class='backtick'>as_awaitable(expr, p)</code> is expression-equivalent to, 
 except that the evaluations of <code class='backtick'>expr</code> and <code class='backtick'>p</code> are indeterminately sequenced:
