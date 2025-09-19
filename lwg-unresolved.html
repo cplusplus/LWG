@@ -54,7 +54,7 @@
 </style>
 </head>
 <body>
-<p>Revised 2025-09-19 at 17:27:36 UTC
+<p>Revised 2025-09-19 at 17:48:21 UTC
 </p><h2>Unresolved Issues</h2>
 <hr>
 <h3 id="423"><a href="#423">423</a><sup><a href="https://cplusplus.github.io/LWG/issue423">(i)</a></sup>. Effects of negative <code>streamsize</code> in iostreams</h3>
@@ -50725,6 +50725,7 @@ namespace std {
  <b>Submitter:</b> Hewill Kang <b>Opened:</b> 2023-10-23 <b>Last modified:</b> 2025-09-05</p>
 <p><b>Priority: </b>3
 </p>
+<p><b>View other</b> <a href="lwg-index-open.html#flat.map.modifiers">active issues</a> in [flat.map.modifiers].</p>
 <p><b>View all other</b> <a href="lwg-index.html#flat.map.modifiers">issues</a> in [flat.map.modifiers].</p>
 <p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
 <p><b>Discussion:</b></p>
@@ -79769,6 +79770,36 @@ namespace std {
 </li>
 
 </ol>
+
+
+
+
+<hr>
+<h3 id="4374"><a href="#4374">4374</a><sup><a href="https://cplusplus.github.io/LWG/issue4374">(i)</a></sup>. <code>flat_<i>meow</i></code> range insertion behavior is unclear if in-place merge cannot allocate additional memory</h3>
+<p><b>Section:</b> 23.6.8.7 <a href="https://wg21.link/flat.map.modifiers">[flat.map.modifiers]</a>, 23.6.11.5 <a href="https://wg21.link/flat.set.modifiers">[flat.set.modifiers]</a>, 23.6.12.5 <a href="https://wg21.link/flat.multiset.modifiers">[flat.multiset.modifiers]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
+ <b>Submitter:</b> Tim Song <b>Opened:</b> 2025-09-09 <b>Last modified:</b> 2025-09-19</p>
+<p><b>Priority: </b>Not Prioritized
+</p>
+<p><b>View other</b> <a href="lwg-index-open.html#flat.map.modifiers">active issues</a> in [flat.map.modifiers].</p>
+<p><b>View all other</b> <a href="lwg-index.html#flat.map.modifiers">issues</a> in [flat.map.modifiers].</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
+<p><b>Discussion:</b></p>
+<p>
+The range insertion operations of <code class='backtick'>flat_map</code>/<code class='backtick'>multimap</code>/<code class='backtick'>set</code>/<code class='backtick'>multiset</code> have this <i>Remarks</i>: element: 
+</p>
+<blockquote><p>
+Since this operation performs an in-place merge, it may allocate memory.
+</p></blockquote>
+<p>
+It is not clear what happens if that allocation fails. If the <code class='backtick'>inplace_merge</code> algorithm is used, 
+it will fall back to a less efficient <code>&#x1d4aa;(N log N)</code> algorithm, but this is not reflected 
+in the <i>Complexity</i>: element. Alternatively, if the allocation failure is reported by an exception, 
+that should be called out in the spec.
+</p>
+
+
+<p id="res-4374"><b>Proposed resolution:</b></p>
+
 
 
 

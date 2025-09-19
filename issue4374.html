@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Issue 4374: flat_meow range insertion behavior is unclear if in-place merge cannot allocate additional memory</title>
+<meta property="og:title" content="Issue 4374: flat_meow range insertion behavior is unclear if in-place merge cannot allocate additional memory">
+<meta property="og:description" content="C++ library issue. Status: New">
+<meta property="og:url" content="https://cplusplus.github.io/LWG/issue4374.html">
+<meta property="og:type" content="website">
+<meta property="og:image" content="http://cplusplus.github.io/LWG/images/cpp_logo.png">
+<meta property="og:image:alt" content="C++ logo">
+<style>
+  p {text-align:justify}
+  li {text-align:justify}
+  pre code.backtick::before { content: "`" }
+  pre code.backtick::after { content: "`" }
+  blockquote.note
+  {
+    background-color:#E0E0E0;
+    padding-left: 15px;
+    padding-right: 15px;
+    padding-top: 1px;
+    padding-bottom: 1px;
+  }
+  ins {background-color:#A0FFA0}
+  del {background-color:#FFA0A0}
+  table.issues-index { border: 1px solid; border-collapse: collapse; }
+  table.issues-index th { text-align: center; padding: 4px; border: 1px solid; }
+  table.issues-index td { padding: 4px; border: 1px solid; }
+  table.issues-index td:nth-child(1) { text-align: right; }
+  table.issues-index td:nth-child(2) { text-align: left; }
+  table.issues-index td:nth-child(3) { text-align: left; }
+  table.issues-index td:nth-child(4) { text-align: left; }
+  table.issues-index td:nth-child(5) { text-align: center; }
+  table.issues-index td:nth-child(6) { text-align: center; }
+  table.issues-index td:nth-child(7) { text-align: left; }
+  table.issues-index td:nth-child(5) span.no-pr { color: red; }
+  @media (prefers-color-scheme: dark) {
+     html {
+        color: #ddd;
+        background-color: black;
+     }
+     ins {
+        background-color: #225522
+     }
+     del {
+        background-color: #662222
+     }
+     a {
+        color: #6af
+     }
+     a:visited {
+        color: #6af
+     }
+     blockquote.note
+     {
+        background-color: rgba(255, 255, 255, .10)
+     }
+  }
+</style>
+</head>
+<body>
+<hr>
+<p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#New">New</a> status.</em></p>
+<h3 id="4374"><a href="lwg-active.html#4374">4374</a>. <code>flat_<i>meow</i></code> range insertion behavior is unclear if in-place merge cannot allocate additional memory</h3>
+<p><b>Section:</b> 23.6.8.7 <a href="https://wg21.link/flat.map.modifiers">[flat.map.modifiers]</a>, 23.6.11.5 <a href="https://wg21.link/flat.set.modifiers">[flat.set.modifiers]</a>, 23.6.12.5 <a href="https://wg21.link/flat.multiset.modifiers">[flat.multiset.modifiers]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
+ <b>Submitter:</b> Tim Song <b>Opened:</b> 2025-09-09 <b>Last modified:</b> 2025-09-19</p>
+<p><b>Priority: </b>Not Prioritized
+</p>
+<p><b>View other</b> <a href="lwg-index-open.html#flat.map.modifiers">active issues</a> in [flat.map.modifiers].</p>
+<p><b>View all other</b> <a href="lwg-index.html#flat.map.modifiers">issues</a> in [flat.map.modifiers].</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
+<p><b>Discussion:</b></p>
+<p>
+The range insertion operations of <code class='backtick'>flat_map</code>/<code class='backtick'>multimap</code>/<code class='backtick'>set</code>/<code class='backtick'>multiset</code> have this <i>Remarks</i>: element: 
+</p>
+<blockquote><p>
+Since this operation performs an in-place merge, it may allocate memory.
+</p></blockquote>
+<p>
+It is not clear what happens if that allocation fails. If the <code class='backtick'>inplace_merge</code> algorithm is used, 
+it will fall back to a less efficient <code>&#x1d4aa;(N log N)</code> algorithm, but this is not reflected 
+in the <i>Complexity</i>: element. Alternatively, if the allocation failure is reported by an exception, 
+that should be called out in the spec.
+</p>
+
+
+<p id="res-4374"><b>Proposed resolution:</b></p>
+
+
+
+
+
+</body>
+</html>
