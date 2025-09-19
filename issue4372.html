@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Issue 4372: Weaken Mandates: for dynamic padding values in padded layouts</title>
+<meta property="og:title" content="Issue 4372: Weaken Mandates: for dynamic padding values in padded layouts">
+<meta property="og:description" content="C++ library issue. Status: New">
+<meta property="og:url" content="https://cplusplus.github.io/LWG/issue4372.html">
+<meta property="og:type" content="website">
+<meta property="og:image" content="http://cplusplus.github.io/LWG/images/cpp_logo.png">
+<meta property="og:image:alt" content="C++ logo">
+<style>
+  p {text-align:justify}
+  li {text-align:justify}
+  pre code.backtick::before { content: "`" }
+  pre code.backtick::after { content: "`" }
+  blockquote.note
+  {
+    background-color:#E0E0E0;
+    padding-left: 15px;
+    padding-right: 15px;
+    padding-top: 1px;
+    padding-bottom: 1px;
+  }
+  ins {background-color:#A0FFA0}
+  del {background-color:#FFA0A0}
+  table.issues-index { border: 1px solid; border-collapse: collapse; }
+  table.issues-index th { text-align: center; padding: 4px; border: 1px solid; }
+  table.issues-index td { padding: 4px; border: 1px solid; }
+  table.issues-index td:nth-child(1) { text-align: right; }
+  table.issues-index td:nth-child(2) { text-align: left; }
+  table.issues-index td:nth-child(3) { text-align: left; }
+  table.issues-index td:nth-child(4) { text-align: left; }
+  table.issues-index td:nth-child(5) { text-align: center; }
+  table.issues-index td:nth-child(6) { text-align: center; }
+  table.issues-index td:nth-child(7) { text-align: left; }
+  table.issues-index td:nth-child(5) span.no-pr { color: red; }
+  @media (prefers-color-scheme: dark) {
+     html {
+        color: #ddd;
+        background-color: black;
+     }
+     ins {
+        background-color: #225522
+     }
+     del {
+        background-color: #662222
+     }
+     a {
+        color: #6af
+     }
+     a:visited {
+        color: #6af
+     }
+     blockquote.note
+     {
+        background-color: rgba(255, 255, 255, .10)
+     }
+  }
+</style>
+</head>
+<body>
+<hr>
+<p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#New">New</a> status.</em></p>
+<h3 id="4372"><a href="lwg-active.html#4372">4372</a>. Weaken <i>Mandates:</i> for dynamic padding values in padded layouts</h3>
+<p><b>Section:</b> 23.7.3.4.8.1 <a href="https://wg21.link/mdspan.layout.leftpad.overview">[mdspan.layout.leftpad.overview]</a>, 23.7.3.4.9.1 <a href="https://wg21.link/mdspan.layout.rightpad.overview">[mdspan.layout.rightpad.overview]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
+ <b>Submitter:</b> Luc Grosheintz <b>Opened:</b> 2025-09-09 <b>Last modified:</b> 2025-09-19</p>
+<p><b>Priority: </b>Not Prioritized
+</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
+<p><b>Discussion:</b></p>
+<p>
+Two new layouts were added to <code>&lt;mdspan&gt;</code> in C++23. Both have a template
+parameter <code class='backtick'>size_t PaddingValue</code>. This value is allowed to be <code class='backtick'>std::dynamic_extent</code> 
+to signal that the padding value isn't known at compile time.
+<p/>
+A class <i>Mandates:</i> element (in 23.7.3.4.8.1 <a href="https://wg21.link/mdspan.layout.leftpad.overview">[mdspan.layout.leftpad.overview]</a> (5.2)
+and 23.7.3.4.9.1 <a href="https://wg21.link/mdspan.layout.rightpad.overview">[mdspan.layout.rightpad.overview]</a> (5.2), respectively) requires 
+(unconditionally) that
+</p>
+<ul>
+<li><p><code class='backtick'>PaddingValue</code> is representable as a value of <code class='backtick'>index_type</code>.</p></li>
+</ul>
+<p>
+Since <code class='backtick'>std::dynamic_extent</code> is defined as <code class='backtick'>size_t(-1)</code> (in 23.7.2.1 <a href="https://wg21.link/span.syn">[span.syn]</a>)
+this immediately prohibits all dynamically padded layout mappings for
+any <code class='backtick'>index_type</code> for which:
+</p>
+<blockquote><pre>
+numeric_limit&lt;index_type&gt;::max() &lt; numeric_limit&lt;size_t&gt;::max()
+</pre></blockquote>
+<p>
+One example is <code class='backtick'>int</code> on a 64-bit system.
+<p/>
+The proposed resolution states that the modified representability
+<i>Mandates:</i> element holds for <code>rank &lt;= 1</code>, even though in that case the 
+<code class='backtick'>PaddingValue</code> has no other effect. Hence, the <i>Mandates:</i> element could 
+be weakened further.
+</p>
+
+
+<p id="res-4372"><b>Proposed resolution:</b></p>
+<p>
+This wording is relative to <a href="https://wg21.link/N5014">N5014</a>.
+</p>
+
+<ol>
+
+<li><p>Modify 23.7.3.4.8.1 <a href="https://wg21.link/mdspan.layout.leftpad.overview">[mdspan.layout.leftpad.overview]</a> as indicated:</p>
+
+<blockquote>
+<p>
+-5- <i>Mandates</i>:
+</p>
+<ol style="list-style-type: none">
+<li><p>(5.1) &mdash; [&hellip;]</p></li>
+<li><p>(5.2) &mdash; <ins>if <code class='backtick'>padding_value</code> is not equal to <code class='backtick'>dynamic_extent</code>, then</ins> 
+<code class='backtick'>padding_value</code> is representable as a value of type <code class='backtick'>index_type</code>.</p></li>
+<li><p>(5.3) &mdash; [&hellip;]</p></li>
+<li><p>(5.4) &mdash; [&hellip;]</p></li>
+</ol>
+</blockquote>
+
+</li>
+
+<li><p>Modify 23.7.3.4.9.1 <a href="https://wg21.link/mdspan.layout.rightpad.overview">[mdspan.layout.rightpad.overview]</a> as indicated:</p>
+
+<blockquote>
+<p>
+-5- <i>Mandates</i>:
+</p>
+<ol style="list-style-type: none">
+<li><p>(5.1) &mdash; [&hellip;]</p></li>
+<li><p>(5.2) &mdash; <ins>if <code class='backtick'>padding_value</code> is not equal to <code class='backtick'>dynamic_extent</code>, then</ins> 
+<code class='backtick'>padding_value</code> is representable as a value of type <code class='backtick'>index_type</code>.</p></li>
+<li><p>(5.3) &mdash; [&hellip;]</p></li>
+<li><p>(5.4) &mdash; [&hellip;]</p></li>
+</ol>
+</blockquote>
+
+</li>
+
+</ol>
+
+
+
+
+</body>
+</html>
