@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Issue 4376: ABI tag in return type of [simd.mask.unary] is overconstrained</title>
+<meta property="og:title" content="Issue 4376: ABI tag in return type of [simd.mask.unary] is overconstrained">
+<meta property="og:description" content="C++ library issue. Status: New">
+<meta property="og:url" content="https://cplusplus.github.io/LWG/issue4376.html">
+<meta property="og:type" content="website">
+<meta property="og:image" content="http://cplusplus.github.io/LWG/images/cpp_logo.png">
+<meta property="og:image:alt" content="C++ logo">
+<style>
+  p {text-align:justify}
+  li {text-align:justify}
+  pre code.backtick::before { content: "`" }
+  pre code.backtick::after { content: "`" }
+  blockquote.note
+  {
+    background-color:#E0E0E0;
+    padding-left: 15px;
+    padding-right: 15px;
+    padding-top: 1px;
+    padding-bottom: 1px;
+  }
+  ins {background-color:#A0FFA0}
+  del {background-color:#FFA0A0}
+  table.issues-index { border: 1px solid; border-collapse: collapse; }
+  table.issues-index th { text-align: center; padding: 4px; border: 1px solid; }
+  table.issues-index td { padding: 4px; border: 1px solid; }
+  table.issues-index td:nth-child(1) { text-align: right; }
+  table.issues-index td:nth-child(2) { text-align: left; }
+  table.issues-index td:nth-child(3) { text-align: left; }
+  table.issues-index td:nth-child(4) { text-align: left; }
+  table.issues-index td:nth-child(5) { text-align: center; }
+  table.issues-index td:nth-child(6) { text-align: center; }
+  table.issues-index td:nth-child(7) { text-align: left; }
+  table.issues-index td:nth-child(5) span.no-pr { color: red; }
+  @media (prefers-color-scheme: dark) {
+     html {
+        color: #ddd;
+        background-color: black;
+     }
+     ins {
+        background-color: #225522
+     }
+     del {
+        background-color: #662222
+     }
+     a {
+        color: #6af
+     }
+     a:visited {
+        color: #6af
+     }
+     blockquote.note
+     {
+        background-color: rgba(255, 255, 255, .10)
+     }
+  }
+</style>
+</head>
+<body>
+<hr>
+<p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#New">New</a> status.</em></p>
+<h3 id="4376"><a href="lwg-active.html#4376">4376</a>. ABI tag in return type of [simd.mask.unary] is overconstrained</h3>
+<p><b>Section:</b> 29.10.9.4 <a href="https://wg21.link/simd.mask.unary">[simd.mask.unary]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
+ <b>Submitter:</b> Matthias Kretz <b>Opened:</b> 2025-09-15 <b>Last modified:</b> 2025-09-20</p>
+<p><b>Priority: </b>Not Prioritized
+</p>
+<p><b>View other</b> <a href="lwg-index-open.html#simd.mask.unary">active issues</a> in [simd.mask.unary].</p>
+<p><b>View all other</b> <a href="lwg-index.html#simd.mask.unary">issues</a> in [simd.mask.unary].</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
+<p><b>Discussion:</b></p>
+<p>
+29.10.9.4 <a href="https://wg21.link/simd.mask.unary">[simd.mask.unary]</a> spells out the return type with the ABI tag of 
+the <code class='backtick'>basic_mask</code> specialization. That's problematic / overconstrained.
+</p>
+<ol>
+<li><p>Consider Intel SandyBridge/IvyBridge-like targets:
+</p>
+<blockquote><pre>
+vec&lt;float&gt;::size() -&gt; 8
+vec&lt;int&gt;::size() -&gt; 4
+mask&lt;float&gt;::size() -&gt; 8
+</pre></blockquote>
+<p>
+The ABI tag in this case encodes for <code>vec&lt;float&gt;</code> that one object holds 8
+elements and is passed via <em>one</em> register. <code>vec&lt;int&gt;</code> uses a 
+different ABI tag that says 4 elements passed via <em>one</em> register. 
+<code>vec&lt;int, 8&gt;</code>'s ABI tag says 8 elements passed via <em>two</em> registers.
+<p/>
+Now what should <code>+mask&lt;float&gt;()</code> return? The working draft says it must 
+return a <code>basic_vec&lt;int, mask&lt;float&gt;::abi_type&gt;</code>. And 
+<code>mask&lt;float&gt;::abi_type</code> is constrained to be the same as 
+<code>vec&lt;float&gt;::abi_type</code>. The working draft thus makes it
+impossible to implement ABI tags that encode number of elements + number of
+registers (+ bit-masks vs. vector-masks, but that's irrelevant for this
+issue). Instead, an ABI tag would have to encode the native SIMD width of all
+vectorizable types. And that's unnecessarily making compatible types
+incompatible. Also we make it harder to add to the set of vectorizable types
+in the future.</p></li>
+<li><p>The issue is even worse for an implementation that implements
+<code>vec&lt;complex&lt;T&gt;&gt;</code> using different ABI tags. Encoding 
+whether the value-type is complex into the ABI is useful because it impacts 
+how the mask is stored (<code>mask&lt;complex&lt;float&gt;, 8&gt;</code> is 
+internally stored as a 16-element bit-mask (for interleaved <code class='backtick'>complex</code>), while 
+<code>mask&lt;double, 8&gt;</code> is stored as an 8-element bit-mask). The ABI 
+tag can also be used to implement interleaved vs. contiguous storage, which 
+is useful for different architectures. If we require 
+<code>+mask&lt;complex&lt;float&gt;&gt;()</code> to be of a different type than 
+any <code>vec&lt;long long&gt;</code> would ever be, that's just brittle and 
+unnecessary template bloat.</p></li>
+</ol>
+
+
+<p id="res-4376"><b>Proposed resolution:</b></p>
+<p>
+This wording is relative to <a href="https://wg21.link/N5014">N5014</a>.
+</p>
+
+<ol>
+
+<li><p>Modify 29.10.2 <a href="https://wg21.link/simd.expos">[simd.expos]</a> as indicated:</p>
+
+<blockquote>
+<pre>
+using <i>simd-size-type</i> = <i>see below</i>;                      // <i>exposition only</i>
+template&lt;size_t Bytes&gt; using <i>integer-from</i> = <i>see below</i>; // <i>exposition only</i>
+
+template&lt;class T, class Abi&gt;
+  constexpr <i>simd-size-type</i> <i>simd-size-v</i> = <i>see below</i>;               // <i>exposition only</i>
+template&lt;class T&gt; constexpr size_t <i>mask-element-size</i> = <i>see below</i>; // <i>exposition only</i>
+
+<ins>template &lt;size_t Bytes, class Abi&gt;
+  using <i>simd-vec-from-mask-t</i> = <i>see below</i>;                         // <i>exposition only</i></ins>
+[&hellip;]
+</pre>
+</blockquote>
+
+</li>
+
+<li><p>Modify 29.10.2.1 <a href="https://wg21.link/simd.expos.defn">[simd.expos.defn]</a> as indicated:</p>
+
+<blockquote>
+<pre>
+template&lt;class T&gt; constexpr size_t <i>mask-element-size</i> = <i>see below</i>; // <i>exposition only</i>
+</pre>
+<blockquote>
+<p>
+-4- <code><i>mask-element-size</i>&lt;basic_mask&lt;Bytes, Abi&gt;&gt;</code> has the value <code class='backtick'>Bytes</code>.
+</p>
+</blockquote>
+<pre>
+<ins>template &lt;size_t Bytes, class Abi&gt;
+  using <i>simd-vec-from-mask-t</i> = <i>see below</i>;</ins>
+</pre>
+<blockquote>
+<p>
+<ins>-?- <code><i>simd-vec-from-mask-t</i>&lt;Bytes, Abi&gt;</code> is an alias for an enabled 
+specialization of <code class='backtick'>basic_vec</code> if and only if <code>basic_mask&lt;Bytes, Abi&gt;</code> is a 
+data-parallel type and <code><i>integer-from</i>&lt;Bytes&gt;</code> is valid and a vectorizable type.</ins>
+<p/>
+<ins>-?- <code><i>simd-vec-from-mask-t</i>&lt;Bytes, Abi&gt;::size() == basic_mask&lt;Bytes, Abi&gt;::size()</code>
+is <code class='backtick'>true</code>.</ins>
+<p/>
+<ins>-?- <code>typename <i>simd-vec-from-mask-t</i>&lt;Bytes, Abi&gt;::value_type</code> is 
+<code><i>integer-from</i>&lt;Bytes&gt;</code></ins>
+</p>
+</blockquote>
+</blockquote>
+
+</li>
+
+<li><p>Modify 29.10.9.1 <a href="https://wg21.link/simd.mask.overview">[simd.mask.overview]</a>, class template <code class='backtick'>basic_mask overview</code> synopsis, as indicated:</p>
+
+<blockquote>
+<pre>
+namespace std::simd {
+  template&lt;size_t Bytes, class Abi&gt; class basic_mask {
+  public:
+    [&hellip;]
+    // <i>29.10.9.4 <a href="https://wg21.link/simd.mask.unary">[simd.mask.unary]</a>, basic_mask unary operators</i>
+    constexpr basic_mask operator!() const noexcept;
+    constexpr <del>basic_vec&lt;<i>integer-from</i>&lt;Bytes&gt;, Abi&gt;</del><ins><i>simd-vec-from-mask-t</i>&lt;Bytes, Abi&gt;</ins> operator+() const noexcept;
+    constexpr <del>basic_vec&lt;<i>integer-from</i>&lt;Bytes&gt;, Abi&gt;</del><ins><i>simd-vec-from-mask-t</i>&lt;Bytes, Abi&gt;</ins> operator-() const noexcept;
+    constexpr <del>basic_vec&lt;<i>integer-from</i>&lt;Bytes&gt;, Abi&gt;</del><ins><i>simd-vec-from-mask-t</i>&lt;Bytes, Abi&gt;</ins> operator~() const noexcept;    
+    [&hellip;]
+}
+</pre>
+</blockquote>
+
+</li>
+
+<li><p>Modify 29.10.9.4 <a href="https://wg21.link/simd.mask.unary">[simd.mask.unary]</a> as indicated:</p>
+
+<blockquote>
+<pre>
+constexpr basic_mask operator!() const noexcept;
+constexpr <del>basic_vec&lt;<i>integer-from</i>&lt;Bytes&gt;, Abi&gt;</del><ins><i>simd-vec-from-mask-t</i>&lt;Bytes, Abi&gt;</ins> operator+() const noexcept;
+constexpr <del>basic_vec&lt;<i>integer-from</i>&lt;Bytes&gt;, Abi&gt;</del><ins><i>simd-vec-from-mask-t</i>&lt;Bytes, Abi&gt;</ins> operator-() const noexcept;
+constexpr <del>basic_vec&lt;<i>integer-from</i>&lt;Bytes&gt;, Abi&gt;</del><ins><i>simd-vec-from-mask-t</i>&lt;Bytes, Abi&gt;</ins> operator~() const noexcept;    
+</pre>
+<blockquote>
+<p>
+-1- Let <code><i>op</i></code> be the operator.
+<p/>
+-2- <i>Returns</i>: [&hellip;]
+</p>
+</blockquote>
+</blockquote>
+
+</li>
+
+</ol>
+
+
+
+
+</body>
+</html>

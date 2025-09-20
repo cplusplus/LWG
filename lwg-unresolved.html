@@ -54,7 +54,7 @@
 </style>
 </head>
 <body>
-<p>Revised 2025-09-19 at 18:07:29 UTC
+<p>Revised 2025-09-20 at 16:12:52 UTC
 </p><h2>Unresolved Issues</h2>
 <hr>
 <h3 id="423"><a href="#423">423</a><sup><a href="https://cplusplus.github.io/LWG/issue423">(i)</a></sup>. Effects of negative <code>streamsize</code> in iostreams</h3>
@@ -68008,6 +68008,8 @@ Set priority to 3 after reflector poll.
  <b>Submitter:</b> Matthias Kretz <b>Opened:</b> 2025-03-27 <b>Last modified:</b> 2025-06-12</p>
 <p><b>Priority: </b>1
 </p>
+<p><b>View other</b> <a href="lwg-index-open.html#simd.mask.unary">active issues</a> in [simd.mask.unary].</p>
+<p><b>View all other</b> <a href="lwg-index.html#simd.mask.unary">issues</a> in [simd.mask.unary].</p>
 <p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
 <p><b>Discussion:</b></p>
 <p>
@@ -79859,6 +79861,161 @@ template&lt;<i>simd-vec-type</i> V&gt; constexpr V bit_ceil(const V&amp; v) <del
 -4- <i>Preconditions</i>: [&hellip;]
 <p/>
 [&hellip;]
+</p>
+</blockquote>
+</blockquote>
+
+</li>
+
+</ol>
+
+
+
+
+<hr>
+<h3 id="4376"><a href="#4376">4376</a><sup><a href="https://cplusplus.github.io/LWG/issue4376">(i)</a></sup>. ABI tag in return type of [simd.mask.unary] is overconstrained</h3>
+<p><b>Section:</b> 29.10.9.4 <a href="https://wg21.link/simd.mask.unary">[simd.mask.unary]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
+ <b>Submitter:</b> Matthias Kretz <b>Opened:</b> 2025-09-15 <b>Last modified:</b> 2025-09-20</p>
+<p><b>Priority: </b>Not Prioritized
+</p>
+<p><b>View other</b> <a href="lwg-index-open.html#simd.mask.unary">active issues</a> in [simd.mask.unary].</p>
+<p><b>View all other</b> <a href="lwg-index.html#simd.mask.unary">issues</a> in [simd.mask.unary].</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
+<p><b>Discussion:</b></p>
+<p>
+29.10.9.4 <a href="https://wg21.link/simd.mask.unary">[simd.mask.unary]</a> spells out the return type with the ABI tag of 
+the <code class='backtick'>basic_mask</code> specialization. That's problematic / overconstrained.
+</p>
+<ol>
+<li><p>Consider Intel SandyBridge/IvyBridge-like targets:
+</p>
+<blockquote><pre>
+vec&lt;float&gt;::size() -&gt; 8
+vec&lt;int&gt;::size() -&gt; 4
+mask&lt;float&gt;::size() -&gt; 8
+</pre></blockquote>
+<p>
+The ABI tag in this case encodes for <code>vec&lt;float&gt;</code> that one object holds 8
+elements and is passed via <em>one</em> register. <code>vec&lt;int&gt;</code> uses a 
+different ABI tag that says 4 elements passed via <em>one</em> register. 
+<code>vec&lt;int, 8&gt;</code>'s ABI tag says 8 elements passed via <em>two</em> registers.
+<p/>
+Now what should <code>+mask&lt;float&gt;()</code> return? The working draft says it must 
+return a <code>basic_vec&lt;int, mask&lt;float&gt;::abi_type&gt;</code>. And 
+<code>mask&lt;float&gt;::abi_type</code> is constrained to be the same as 
+<code>vec&lt;float&gt;::abi_type</code>. The working draft thus makes it
+impossible to implement ABI tags that encode number of elements + number of
+registers (+ bit-masks vs. vector-masks, but that's irrelevant for this
+issue). Instead, an ABI tag would have to encode the native SIMD width of all
+vectorizable types. And that's unnecessarily making compatible types
+incompatible. Also we make it harder to add to the set of vectorizable types
+in the future.</p></li>
+<li><p>The issue is even worse for an implementation that implements
+<code>vec&lt;complex&lt;T&gt;&gt;</code> using different ABI tags. Encoding 
+whether the value-type is complex into the ABI is useful because it impacts 
+how the mask is stored (<code>mask&lt;complex&lt;float&gt;, 8&gt;</code> is 
+internally stored as a 16-element bit-mask (for interleaved <code class='backtick'>complex</code>), while 
+<code>mask&lt;double, 8&gt;</code> is stored as an 8-element bit-mask). The ABI 
+tag can also be used to implement interleaved vs. contiguous storage, which 
+is useful for different architectures. If we require 
+<code>+mask&lt;complex&lt;float&gt;&gt;()</code> to be of a different type than 
+any <code>vec&lt;long long&gt;</code> would ever be, that's just brittle and 
+unnecessary template bloat.</p></li>
+</ol>
+
+
+<p id="res-4376"><b>Proposed resolution:</b></p>
+<p>
+This wording is relative to <a href="https://wg21.link/N5014">N5014</a>.
+</p>
+
+<ol>
+
+<li><p>Modify 29.10.2 <a href="https://wg21.link/simd.expos">[simd.expos]</a> as indicated:</p>
+
+<blockquote>
+<pre>
+using <i>simd-size-type</i> = <i>see below</i>;                      // <i>exposition only</i>
+template&lt;size_t Bytes&gt; using <i>integer-from</i> = <i>see below</i>; // <i>exposition only</i>
+
+template&lt;class T, class Abi&gt;
+  constexpr <i>simd-size-type</i> <i>simd-size-v</i> = <i>see below</i>;               // <i>exposition only</i>
+template&lt;class T&gt; constexpr size_t <i>mask-element-size</i> = <i>see below</i>; // <i>exposition only</i>
+
+<ins>template &lt;size_t Bytes, class Abi&gt;
+  using <i>simd-vec-from-mask-t</i> = <i>see below</i>;                         // <i>exposition only</i></ins>
+[&hellip;]
+</pre>
+</blockquote>
+
+</li>
+
+<li><p>Modify 29.10.2.1 <a href="https://wg21.link/simd.expos.defn">[simd.expos.defn]</a> as indicated:</p>
+
+<blockquote>
+<pre>
+template&lt;class T&gt; constexpr size_t <i>mask-element-size</i> = <i>see below</i>; // <i>exposition only</i>
+</pre>
+<blockquote>
+<p>
+-4- <code><i>mask-element-size</i>&lt;basic_mask&lt;Bytes, Abi&gt;&gt;</code> has the value <code class='backtick'>Bytes</code>.
+</p>
+</blockquote>
+<pre>
+<ins>template &lt;size_t Bytes, class Abi&gt;
+  using <i>simd-vec-from-mask-t</i> = <i>see below</i>;</ins>
+</pre>
+<blockquote>
+<p>
+<ins>-?- <code><i>simd-vec-from-mask-t</i>&lt;Bytes, Abi&gt;</code> is an alias for an enabled 
+specialization of <code class='backtick'>basic_vec</code> if and only if <code>basic_mask&lt;Bytes, Abi&gt;</code> is a 
+data-parallel type and <code><i>integer-from</i>&lt;Bytes&gt;</code> is valid and a vectorizable type.</ins>
+<p/>
+<ins>-?- <code><i>simd-vec-from-mask-t</i>&lt;Bytes, Abi&gt;::size() == basic_mask&lt;Bytes, Abi&gt;::size()</code>
+is <code class='backtick'>true</code>.</ins>
+<p/>
+<ins>-?- <code>typename <i>simd-vec-from-mask-t</i>&lt;Bytes, Abi&gt;::value_type</code> is 
+<code><i>integer-from</i>&lt;Bytes&gt;</code></ins>
+</p>
+</blockquote>
+</blockquote>
+
+</li>
+
+<li><p>Modify 29.10.9.1 <a href="https://wg21.link/simd.mask.overview">[simd.mask.overview]</a>, class template <code class='backtick'>basic_mask overview</code> synopsis, as indicated:</p>
+
+<blockquote>
+<pre>
+namespace std::simd {
+  template&lt;size_t Bytes, class Abi&gt; class basic_mask {
+  public:
+    [&hellip;]
+    // <i>29.10.9.4 <a href="https://wg21.link/simd.mask.unary">[simd.mask.unary]</a>, basic_mask unary operators</i>
+    constexpr basic_mask operator!() const noexcept;
+    constexpr <del>basic_vec&lt;<i>integer-from</i>&lt;Bytes&gt;, Abi&gt;</del><ins><i>simd-vec-from-mask-t</i>&lt;Bytes, Abi&gt;</ins> operator+() const noexcept;
+    constexpr <del>basic_vec&lt;<i>integer-from</i>&lt;Bytes&gt;, Abi&gt;</del><ins><i>simd-vec-from-mask-t</i>&lt;Bytes, Abi&gt;</ins> operator-() const noexcept;
+    constexpr <del>basic_vec&lt;<i>integer-from</i>&lt;Bytes&gt;, Abi&gt;</del><ins><i>simd-vec-from-mask-t</i>&lt;Bytes, Abi&gt;</ins> operator~() const noexcept;    
+    [&hellip;]
+}
+</pre>
+</blockquote>
+
+</li>
+
+<li><p>Modify 29.10.9.4 <a href="https://wg21.link/simd.mask.unary">[simd.mask.unary]</a> as indicated:</p>
+
+<blockquote>
+<pre>
+constexpr basic_mask operator!() const noexcept;
+constexpr <del>basic_vec&lt;<i>integer-from</i>&lt;Bytes&gt;, Abi&gt;</del><ins><i>simd-vec-from-mask-t</i>&lt;Bytes, Abi&gt;</ins> operator+() const noexcept;
+constexpr <del>basic_vec&lt;<i>integer-from</i>&lt;Bytes&gt;, Abi&gt;</del><ins><i>simd-vec-from-mask-t</i>&lt;Bytes, Abi&gt;</ins> operator-() const noexcept;
+constexpr <del>basic_vec&lt;<i>integer-from</i>&lt;Bytes&gt;, Abi&gt;</del><ins><i>simd-vec-from-mask-t</i>&lt;Bytes, Abi&gt;</ins> operator~() const noexcept;    
+</pre>
+<blockquote>
+<p>
+-1- Let <code><i>op</i></code> be the operator.
+<p/>
+-2- <i>Returns</i>: [&hellip;]
 </p>
 </blockquote>
 </blockquote>
