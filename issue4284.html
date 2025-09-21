@@ -64,7 +64,7 @@
 <p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#New">New</a> status.</em></p>
 <h3 id="4284"><a href="lwg-active.html#4284">4284</a>. Integer-class types should be formattable</h3>
 <p><b>Section:</b> 28.5.6.4 <a href="https://wg21.link/format.formatter.spec">[format.formatter.spec]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Jiang An <b>Opened:</b> 2025-06-27 <b>Last modified:</b> 2025-06-28</p>
+ <b>Submitter:</b> Jiang An <b>Opened:</b> 2025-06-27 <b>Last modified:</b> 2025-09-21</p>
 <p><b>Priority: </b>Not Prioritized
 </p>
 <p><b>View other</b> <a href="lwg-index-open.html#format.formatter.spec">active issues</a> in [format.formatter.spec].</p>
@@ -93,8 +93,9 @@ Perhaps we should require enabled <code class='backtick'>std::formatter</code> s
 such uncertainty and inconsistency.
 </p>
 
+<p><strong>Previous resolution [SUPERSEDED]:</strong></p>
+<blockquote class="note">
 
-<p id="res-4284"><b>Proposed resolution:</b></p>
 <p>
 This wording is relative to <a href="https://wg21.link/N5008" title=" Working Draft, Programming Languages — C++">N5008</a>.
 </p>
@@ -123,6 +124,68 @@ This wording is relative to <a href="https://wg21.link/N5008" title=" Working Dr
 </blockquote>
 </li>
 
+</ol>
+</blockquote>
+
+<p><i>[2025-09-18; Jiang An improves wording]</i></p>
+
+
+
+<p id="res-4284"><b>Proposed resolution:</b></p>
+<p>
+This wording is relative to <a href="https://wg21.link/N5014">N5014</a>.
+</p>
+
+<ol>
+<li><p>Modify 28.5.6.4 <a href="https://wg21.link/format.formatter.spec">[format.formatter.spec]</a> as indicated:</p>
+
+<blockquote>
+<p>
+-2- [&hellip;] Each header that declares the template
+<code class='backtick'>formatter</code> provides the following enabled specializations:
+</p>
+<ol style="list-style-type: none">
+<li><p>(2.1) &mdash; [&hellip;]</p></li>
+<li><p>(2.2) &mdash; [&hellip;]</p></li>
+<li><p>(2.3) &mdash; [&hellip;]</p></li>
+<li><p><ins>(2.?) &mdash; For each <code class='backtick'>charT</code>, for each cv-unqualified integer-class type 
+(24.3.4.4 <a href="https://wg21.link/iterator.concept.winc">[iterator.concept.winc]</a>) <code class='backtick'>IntegerClass</code>, a specialization</ins>
+</p>
+<blockquote><pre>
+<ins>template&lt;&gt; struct formatter&lt;IntegerClass, charT&gt;;</ins>
+</pre></blockquote>
+</li>
+<li><p>(2.4) &mdash; [&hellip;]</p></li>
+</ol>
+</blockquote>
+</li>
+
+<li><p>Modify 28.5.2.2 <a href="https://wg21.link/format.string.std">[format.string.std]</a> as indicated:</p>
+
+<blockquote>
+<p>
+-20- The meaning of some non-string presentation types is defined in terms of a call to 
+<code class='backtick'>to_chars</code>. In such cases, let <code class='backtick'>[first, last)</code> be a range large enough to hold the 
+<code class='backtick'>to_chars</code> output and <code class='backtick'>value</code> be the formatting argument value. <ins>If the formatting 
+argument is of an integer-class type (24.3.4.4 <a href="https://wg21.link/iterator.concept.winc">[iterator.concept.winc]</a>), the 
+formatting argument value is as-if converted to a hypothetical extended integer type 
+of the same signedness and width as the integer-class type first.</ins> Formatting is done as if 
+by calling <code class='backtick'>to_chars</code> as specified and copying the output through the output
+iterator of the format context.
+</p>
+
+</blockquote>
+</li>
+
+<li><p>Modify  [tab:format.type.int] (Table 107) as indicated:</p>
+
+<blockquote>
+<p>
+<b>Table 107 &mdash; Meaning of type options for integer <ins>and integer-class</ins> types [tab:format.type.int]</b>
+</p>
+
+</blockquote>
+</li>
 </ol>
 
 
