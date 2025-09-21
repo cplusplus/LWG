@@ -130,8 +130,14 @@ constexpr       reference operator[](size_type pos);
 <p/>
 -2- <i>Returns</i>: <code class='backtick'>*(begin() + pos)</code> if <code>pos &lt;<ins>=</ins> size()</code>. <del>Otherwise, returns a reference 
 to an object of type <code class='backtick'>charT</code> with value <code class='backtick'>charT()</code>, where modifying the object to any value other 
-than <code class='backtick'>charT()</code> leads to undefined behavior</del><ins>The program shall not modify the value 
-stored at <code class='backtick'>size()</code> to any value other than <code class='backtick'>charT()</code>; otherwise, the behavior is undefined</ins>.
+than <code class='backtick'>charT()</code> leads to undefined behavior.</del>
+<p/>
+-3- <i>Throws</i>: Nothing.
+<p/>
+-4- <i>Complexity</i>: Constant time.
+<p/>
+<ins>-?- <i>Remarks</i> The program shall not modify the value stored at <code class='backtick'>size()</code> to any value other than <code class='backtick'>charT()</code>; 
+otherwise, the behavior is undefined</ins>
 </p>
 </blockquote>
 </blockquote>
