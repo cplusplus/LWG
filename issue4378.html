@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Issue 4378: Inconsistency between std::basic_string's data() and operator[] specification</title>
+<meta property="og:title" content="Issue 4378: Inconsistency between std::basic_string's data() and operator[] specification">
+<meta property="og:description" content="C++ library issue. Status: New">
+<meta property="og:url" content="https://cplusplus.github.io/LWG/issue4378.html">
+<meta property="og:type" content="website">
+<meta property="og:image" content="http://cplusplus.github.io/LWG/images/cpp_logo.png">
+<meta property="og:image:alt" content="C++ logo">
+<style>
+  p {text-align:justify}
+  li {text-align:justify}
+  pre code.backtick::before { content: "`" }
+  pre code.backtick::after { content: "`" }
+  blockquote.note
+  {
+    background-color:#E0E0E0;
+    padding-left: 15px;
+    padding-right: 15px;
+    padding-top: 1px;
+    padding-bottom: 1px;
+  }
+  ins {background-color:#A0FFA0}
+  del {background-color:#FFA0A0}
+  table.issues-index { border: 1px solid; border-collapse: collapse; }
+  table.issues-index th { text-align: center; padding: 4px; border: 1px solid; }
+  table.issues-index td { padding: 4px; border: 1px solid; }
+  table.issues-index td:nth-child(1) { text-align: right; }
+  table.issues-index td:nth-child(2) { text-align: left; }
+  table.issues-index td:nth-child(3) { text-align: left; }
+  table.issues-index td:nth-child(4) { text-align: left; }
+  table.issues-index td:nth-child(5) { text-align: center; }
+  table.issues-index td:nth-child(6) { text-align: center; }
+  table.issues-index td:nth-child(7) { text-align: left; }
+  table.issues-index td:nth-child(5) span.no-pr { color: red; }
+  @media (prefers-color-scheme: dark) {
+     html {
+        color: #ddd;
+        background-color: black;
+     }
+     ins {
+        background-color: #225522
+     }
+     del {
+        background-color: #662222
+     }
+     a {
+        color: #6af
+     }
+     a:visited {
+        color: #6af
+     }
+     blockquote.note
+     {
+        background-color: rgba(255, 255, 255, .10)
+     }
+  }
+</style>
+</head>
+<body>
+<hr>
+<p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#New">New</a> status.</em></p>
+<h3 id="4378"><a href="lwg-active.html#4378">4378</a>. Inconsistency between <code class='backtick'>std::basic_string</code>'s <code class='backtick'>data()</code> and <code class='backtick'>operator[]</code> specification</h3>
+<p><b>Section:</b> 27.4.3.6 <a href="https://wg21.link/string.access">[string.access]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
+ <b>Submitter:</b> Peter Bindels <b>Opened:</b> 2025-09-16 <b>Last modified:</b> 2025-09-21</p>
+<p><b>Priority: </b>Not Prioritized
+</p>
+<p><b>View all other</b> <a href="lwg-index.html#string.access">issues</a> in [string.access].</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
+<p><b>Discussion:</b></p>
+<p>
+From the working draft <a href="https://wg21.link/N5014">N5014</a>, the specification for <code class='backtick'>operator[]</code> in 27.4.3.6 <a href="https://wg21.link/string.access">[string.access]</a> 
+p2 says:
+</p>
+<blockquote style="border-left: 3px solid #ccc;padding-left: 15px;">
+<p>
+<i>Returns</i>: <code>*(begin() + pos)</code> if <code>pos &lt; size()</code>. Otherwise, returns a reference 
+to an object of type <code class='backtick'>charT</code> with value <code class='backtick'>charT()</code>, where modifying the object to any value other than 
+<code class='backtick'>charT()</code> leads to undefined behavior.
+</p>
+</blockquote>
+<p>
+The specification for data() in 27.4.3.8.1 <a href="https://wg21.link/string.accessors">[string.accessors]</a> p1 (and p4) says, however:
+</p>
+<blockquote style="border-left: 3px solid #ccc;padding-left: 15px;">
+<p>
+<i>Returns</i>: A pointer <code class='backtick'>p</code> such that <code class='backtick'>p + i == addressof(operator[](i))</code> for each <code class='backtick'>i</code> in <code class='backtick'>[0, size()]</code>.
+</p>
+</blockquote>
+<p>
+The former implies that <code class='backtick'>str[str.size()]</code> is allowed to be the address of any null terminator, 
+while the latter restricts it to only being the null terminator belonging to the string.
+<p/>
+Suggested fix: Change wording around <code class='backtick'>operator[]</code> to
+</p>
+<blockquote style="border-left: 3px solid #ccc;padding-left: 15px;">
+<p>
+<i>Returns</i>: <code class='backtick'>*(begin() + pos)</code> if <code>pos &lt;= size()</code>. The program shall not modify the value 
+stored at <code class='backtick'>size()</code> to any value other than <code class='backtick'>charT()</code>; otherwise, the behavior is undefined.
+</p>
+</blockquote>
+<p>
+This moves it inline with the <code class='backtick'>data()</code> specification. Given the hardened precondition that 
+<code>pos &lt;= size()</code> this does not change behavior for any in-contract access, and we do 
+not define what the feature does when called with broken preconditions. I have been looking at 
+the latter but that will be an EWG paper instead.
+</p>
+
+
+<p id="res-4378"><b>Proposed resolution:</b></p>
+<p>
+This wording is relative to <a href="https://wg21.link/N5014">N5014</a>.
+</p>
+
+<ol>
+
+
+<li><p>Modify 27.4.3.6 <a href="https://wg21.link/string.access">[string.access]</a> as indicated:</p>
+
+<blockquote>
+<pre>
+constexpr const_reference operator[](size_type pos) const;
+constexpr       reference operator[](size_type pos);
+</pre>
+<blockquote>
+<p>
+-1- <i>Hardened preconditions</i>: <code>pos &lt;= size()</code> is <code class='backtick'>true</code>.
+<p/>
+-2- <i>Returns</i>: <code class='backtick'>*(begin() + pos)</code> if <code>pos &lt;<ins>=</ins> size()</code>. <del>Otherwise, returns a reference 
+to an object of type <code class='backtick'>charT</code> with value <code class='backtick'>charT()</code>, where modifying the object to any value other 
+than <code class='backtick'>charT()</code> leads to undefined behavior</del><ins>The program shall not modify the value 
+stored at <code class='backtick'>size()</code> to any value other than <code class='backtick'>charT()</code>; otherwise, the behavior is undefined</ins>.
+</p>
+</blockquote>
+</blockquote>
+
+</li>
+
+</ol>
+
+
+
+
+
+</body>
+</html>
