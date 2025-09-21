@@ -54,7 +54,7 @@
 </style>
 </head>
 <body>
-<p>Revised 2025-09-21 at 06:09:27 UTC
+<p>Revised 2025-09-21 at 06:26:46 UTC
 </p><h2>Unresolved Issues</h2>
 <hr>
 <h3 id="423"><a href="#423">423</a><sup><a href="https://cplusplus.github.io/LWG/issue423">(i)</a></sup>. Effects of negative <code>streamsize</code> in iostreams</h3>
@@ -80194,6 +80194,74 @@ than <code class='backtick'>charT()</code> leads to undefined behavior.</del>
 <p/>
 <ins>-?- <i>Remarks</i> The program shall not modify the value stored at <code class='backtick'>size()</code> to any value other than <code class='backtick'>charT()</code>; 
 otherwise, the behavior is undefined</ins>
+</p>
+</blockquote>
+</blockquote>
+
+</li>
+
+</ol>
+
+
+
+
+
+<hr>
+<h3 id="4379"><a href="#4379">4379</a><sup><a href="https://cplusplus.github.io/LWG/issue4379">(i)</a></sup>. <code class='backtick'>hive::reserve()</code> needs <i>Throws:</i> element adjusted to match block min/max considerations</h3>
+<p><b>Section:</b> 23.3.9.3 <a href="https://wg21.link/hive.capacity">[hive.capacity]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
+ <b>Submitter:</b> Matt Bentley <b>Opened:</b> 2025-09-17 <b>Last modified:</b> 2025-09-21</p>
+<p><b>Priority: </b>Not Prioritized
+</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
+<p><b>Discussion:</b></p>
+<p>
+This issue comes from Bloomberg as part of their C++26 comments via Incits. To summarize their case, in a 
+call to <code class='backtick'>reserve(n)</code>, 
+</p>
+<blockquote>
+<pre>
+if (n &gt; capacity() &amp;&amp; capacity() + <i>current-limits</i>.min &gt; max_size()),
+</pre>
+</blockquote>
+<p>
+<code class='backtick'>reserve</code> should throw, e.g when <code class='backtick'>max_size=100</code>, <code class='backtick'>capacity=80</code>, <code><i>current-limits</i>.min</code> and 
+<code><i>current-limits</i>.max</code> are <code class='backtick'>40</code> and <code class='backtick'>n=90</code>. 
+<p/>
+In addition, in the above scenario if we increase <code class='backtick'>max_size()</code> to 140 and <code class='backtick'>n</code> to 130, 
+we can see that although we could add one block with a capacity of <code><i>current-limits</i>.min</code>,
+adding another would be impossible; we still cannot make <code>capacity &gt;= n</code> without also 
+being <code>&gt;= max_size</code>.
+<p/>
+This is currently not stated in the <i>Throws:</i> element. I've implemented the requested additional 
+throws and they are easily achievable.
+</p>
+
+
+<p id="res-4379"><b>Proposed resolution:</b></p>
+<p>
+This wording is relative to <a href="https://wg21.link/N5014">N5014</a>.
+</p>
+
+<ol>
+
+
+<li><p>Modify 23.3.9.3 <a href="https://wg21.link/hive.capacity">[hive.capacity]</a> as indicated:</p>
+
+<blockquote>
+<pre>
+void reserve(size_type n);
+</pre>
+<blockquote>
+<p>
+-3- <i>Effects</i>: If <code>n &lt;= capacity()</code> is <code class='backtick'>true</code>, there are no effects. Otherwise increases 
+<code class='backtick'>capacity()</code> by allocating reserved blocks.
+<p/>
+-4- <i>Postconditions</i>: <code>capacity() &gt;= n</code> is <code class='backtick'>true</code>.
+<p/>
+-5- <i>Throws</i>: <code class='backtick'>length_error</code> if <del><code class='backtick'>n</code></del><ins><code class='backtick'>capacity()</code> cannot be made <code>&gt;= n</code> without 
+being</ins> <code>&gt; max_size()</code>, as well as any exceptions thrown by the allocator.
+<p/>
+[&hellip;]
 </p>
 </blockquote>
 </blockquote>
