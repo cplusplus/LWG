@@ -54,7 +54,7 @@
 </style>
 </head>
 <body>
-<p>Revised 2025-09-21 at 09:45:59 UTC
+<p>Revised 2025-09-23 at 03:12:26 UTC
 </p><h2>Unresolved Issues</h2>
 <hr>
 <h3 id="423"><a href="#423">423</a><sup><a href="https://cplusplus.github.io/LWG/issue423">(i)</a></sup>. Effects of negative <code>streamsize</code> in iostreams</h3>
@@ -80283,7 +80283,7 @@ otherwise, the behavior is undefined</ins>
 <hr>
 <h3 id="4379"><a href="#4379">4379</a><sup><a href="https://cplusplus.github.io/LWG/issue4379">(i)</a></sup>. <code class='backtick'>hive::reserve()</code> needs <i>Throws:</i> element adjusted to match block min/max considerations</h3>
 <p><b>Section:</b> 23.3.9.3 <a href="https://wg21.link/hive.capacity">[hive.capacity]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Matt Bentley <b>Opened:</b> 2025-09-17 <b>Last modified:</b> 2025-09-21</p>
+ <b>Submitter:</b> Matt Bentley <b>Opened:</b> 2025-09-17 <b>Last modified:</b> 2025-09-23</p>
 <p><b>Priority: </b>Not Prioritized
 </p>
 <p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
@@ -80304,7 +80304,7 @@ if (n &gt; capacity() &amp;&amp; capacity() + <i>current-limits</i>.min &gt; max
 In addition, in the above scenario if we increase <code class='backtick'>max_size()</code> to 140 and <code class='backtick'>n</code> to 130, 
 we can see that although we could add one block with a capacity of <code><i>current-limits</i>.min</code>,
 adding another would be impossible; we still cannot make <code>capacity &gt;= n</code> without also 
-being <code>&gt;= max_size</code>.
+being <code>&gt; max_size</code>.
 <p/>
 This is currently not stated in the <i>Throws:</i> element. I've implemented the requested additional 
 throws and they are easily achievable.
