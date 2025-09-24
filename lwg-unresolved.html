@@ -54,7 +54,7 @@
 </style>
 </head>
 <body>
-<p>Revised 2025-09-23 at 03:12:26 UTC
+<p>Revised 2025-09-24 at 14:38:12 UTC
 </p><h2>Unresolved Issues</h2>
 <hr>
 <h3 id="423"><a href="#423">423</a><sup><a href="https://cplusplus.github.io/LWG/issue423">(i)</a></sup>. Effects of negative <code>streamsize</code> in iostreams</h3>
@@ -75307,7 +75307,7 @@ and lvalue arguments as lvalue references.</del><ins>:</ins>
 <hr>
 <h3 id="4320"><a href="#4320">4320</a><sup><a href="https://cplusplus.github.io/LWG/issue4320">(i)</a></sup>. <code class='backtick'>hive</code> operations involving insertion/erasure should have <code>&#x1d4aa;(log n)</code> time complexity</h3>
 <p><b>Section:</b> 23.3.9 <a href="https://wg21.link/hive">[hive]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Matt Bentley <b>Opened:</b> 2025-08-19 <b>Last modified:</b> 2025-09-21</p>
+ <b>Submitter:</b> Matt Bentley <b>Opened:</b> 2025-08-19 <b>Last modified:</b> 2025-09-24</p>
 <p><b>Priority: </b>Not Prioritized
 </p>
 <p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
@@ -75388,9 +75388,8 @@ affect the outcome wording of that issue for <code class='backtick'>unique</code
 </p>
 </blockquote>
 
-<p><strong>Previous resolution [SUPERSEDED]:</strong></p>
-<blockquote class="note">
 
+<p id="res-4320"><b>Proposed resolution:</b></p>
 <p>
 This wording is relative to <a href="https://wg21.link/N5014">N5014</a>.
 </p>
@@ -75640,46 +75639,6 @@ at worst <code>&#x1d4aa;(log n)</code> in the capacity of each block containing 
 -12- <i>Remarks</i>: [&hellip;]
 </p>
 </blockquote>
-</blockquote>
-
-</li>
-
-</ol>
-</blockquote>
-
-<p><i>[2025-09-17; Matt comments and provides improved wording]</i></p>
-
-<p>
-Having looked at this in more detail, I believe only a blanket wording change to the 
-hive.overview is necessary, specifically 23.3.9.1 <a href="https://wg21.link/hive.overview">[hive.overview]</a> p3, such that 
-the time complexity is limited to "techniques to identify the memory locations of 
-erased elements"
-</p>
-
-
-<p id="res-4320"><b>Proposed resolution:</b></p>
-<p>
-This wording is relative to <a href="https://wg21.link/N5014">N5014</a>.
-</p>
-
-<ol>
-
-<li><p>Modify 23.3.9.1 <a href="https://wg21.link/hive.overview">[hive.overview]</a> as indicated:</p>
-
-<blockquote>
-<p>
--1- A <code class='backtick'>hive</code> is a type of sequence container that provides constant-time insertion and erasure 
-operations. Storage is automatically managed in multiple memory blocks, referred 
-to as element blocks. Insertion position is determined by the container, and may re-use the memory 
-locations of erased elements.
-<p/>
--2- [&hellip;]
-<p/>
--3- Erasures use unspecified techniques <del>of constant time complexity</del> to identify the memory 
-locations of erased elements, which are subsequently skipped during iteration <ins>in constant time</ins>, 
-as opposed to relocating subsequent elements during erasure. <ins>These techniques may be at worst 
-logarithmic in the capacity of the element block erased from.</ins>
-</p>
 </blockquote>
 
 </li>
