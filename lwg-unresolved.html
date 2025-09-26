@@ -54,7 +54,7 @@
 </style>
 </head>
 <body>
-<p>Revised 2025-09-26 at 16:05:36 UTC
+<p>Revised 2025-09-26 at 16:33:16 UTC
 </p><h2>Unresolved Issues</h2>
 <hr>
 <h3 id="423"><a href="#423">423</a><sup><a href="https://cplusplus.github.io/LWG/issue423">(i)</a></sup>. Effects of negative <code>streamsize</code> in iostreams</h3>
@@ -80367,6 +80367,118 @@ reserved blocks allocated <ins>and deallocated</ins>.
 <p/>
 -7- <i>Remarks</i>: All references, pointers, and iterators referring to elements in <code class='backtick'>*this</code>, as well as the 
 past-the-end iterator, remain valid.
+</p>
+</blockquote>
+</blockquote>
+
+</li>
+
+</ol>
+
+
+
+
+
+<hr>
+<h3 id="4381"><a href="#4381">4381</a><sup><a href="https://cplusplus.github.io/LWG/issue4381">(i)</a></sup>. <code class='backtick'>std::ranges::to specification</code> using CTAD not supported by core language
+</h3>
+<p><b>Section:</b> 25.5.7.2 <a href="https://wg21.link/range.utility.conv.to">[range.utility.conv.to]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
+ <b>Submitter:</b> Jens Maurer <b>Opened:</b> 2025-09-23 <b>Last modified:</b> 2025-09-26</p>
+<p><b>Priority: </b>Not Prioritized
+</p>
+<p><b>View other</b> <a href="lwg-index-open.html#range.utility.conv.to">active issues</a> in [range.utility.conv.to].</p>
+<p><b>View all other</b> <a href="lwg-index.html#range.utility.conv.to">issues</a> in [range.utility.conv.to].</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
+<p><b>Discussion:</b></p>
+<p>
+25.5.7.2 <a href="https://wg21.link/range.utility.conv.to">[range.utility.conv.to]</a> p4 defines a <code><i>DEDUCE_EXPR</i></code> 
+that attempts CTAD (class template argument deduction) on a template template 
+parameter <code class='backtick'>C</code>.
+<p/>
+This is not supported by the core language; 
+<a href="https://cplusplus.github.io/CWG/issues/3003.html">CWG 3003</a> will 
+clarify the core wording accordingly.
+<p/>
+Suggested resolution: Remove 25.5.7.2 <a href="https://wg21.link/range.utility.conv.to">[range.utility.conv.to]</a> p3, p4, p5 
+and the respective entry in the synopsis as unimplementable.
+</p>
+
+
+<p id="res-4381"><b>Proposed resolution:</b></p>
+<p>
+This wording is relative to <a href="https://wg21.link/N5014">N5014</a>.
+</p>
+
+<ol>
+
+<li><p>Modify 25.2 <a href="https://wg21.link/ranges.syn">[ranges.syn]</a>, header <code>&lt;ranges&gt;</code> synopsis, as indicated:</p>
+
+<blockquote>
+<pre>
+[&hellip;]
+namespace std::ranges {
+  [&hellip;]
+  // <i>25.5.7 <a href="https://wg21.link/range.utility.conv">[range.utility.conv]</a>, range conversions</i>
+  template&lt;class C, input_range R, class... Args&gt; requires (!view&lt;C&gt;)
+    constexpr C to(R&amp;&amp; r, Args&amp;&amp;... args);
+  <del>template&lt;template&lt;class...&gt; class C, input_range R, class... Args&gt;
+    constexpr auto to(R&amp;&amp; r, Args&amp;&amp;... args);</del>
+  template&lt;class C, class... Args&gt; requires (!view&lt;C&gt;)
+    constexpr auto to(Args&amp;&amp;... args);
+  template&lt;template&lt;class...&gt; class C, class... Args&gt;
+    constexpr auto to(Args&amp;&amp;... args);  
+  [&hellip;]
+}
+</pre>
+</blockquote>
+
+</li>
+
+<li><p>Modify 25.5.7.2 <a href="https://wg21.link/range.utility.conv.to">[range.utility.conv.to]</a> as indicated:</p>
+
+<blockquote>
+<pre>
+<del>template&lt;template&lt;class...&gt; class C, input_range R, class... Args&gt;
+  constexpr auto to(R&amp;&amp; r, Args&amp;&amp;... args);</del>
+</pre>
+<blockquote>
+<p>
+<del>-3- Let <code><i>input-iterator</i></code> be an exposition-only type:</del>
+</p>
+<blockquote><pre><del>
+struct <i>input-iterator</i> { <i>// exposition only</i>
+  using iterator_category = input_iterator_tag;
+  using value_type = range_value_t&lt;R&gt;;
+  using difference_type = ptrdiff_t;
+  using pointer = add_pointer_t&lt;range_reference_t&lt;R&gt;&gt;;
+  using reference = range_reference_t&lt;R&gt;;
+  reference operator*() const;
+  pointer operator->() const;
+  <i>input-iterator</i>&amp; operator++();
+  <i>input-iterator</i> operator++(int);
+  bool operator==(const <i>input-iterator</i>&amp;) const;
+};
+</del></pre></blockquote>
+<p>
+<del>[<i>Note 1</i>: <code><i>input-iterator</i></code> meets the syntactic requirements of 
+<i>Cpp17InputIterator</i>. &mdash; <i>end note</i>]</del>
+<p/>
+<del>-4- Let <code><i>DEDUCE_EXPR</i></code> be defined as follows:</del>
+</p>
+<ol style="list-style-type: none">
+<li><p><del>(4.1) &mdash; <code>C(declval&lt;R&gt;(), declval&lt;Args&gt;()...)</code> if that is a valid expression,</del></p></li>
+<li><p><del>(4.2) &mdash; otherwise, <code>C(from_range, declval&lt;R&gt;(), declval&lt;Args&gt;()...)</code> if 
+that is a valid expression,</del></p></li>
+<li><p><del>(4.3) &mdash;  otherwise,</del></p>
+<blockquote><pre><del>
+C(declval&lt;<i>input-iterator</i>&gt;(), declval&lt;<i>input-iterator</i>&gt;(), declval&lt;Args&gt;()...)
+</del></pre></blockquote>
+<p><del>if that is a valid expression,</del></p>
+</li>
+<li><p><del>(4.4) &mdash; otherwise, the program is ill-formed.</del></p></li>
+</ol>
+<p>
+<del>-5- <i>Returns</i>: <code>to&lt;decltype(<i>DEDUCE_EXPR</i>)>(std::forward&lt;R&gt;(r), std::forward&lt;Args&gt;(args)...)</code>.</del>
 </p>
 </blockquote>
 </blockquote>

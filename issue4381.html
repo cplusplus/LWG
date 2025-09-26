@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Issue 4381: std::ranges::to specification using CTAD not supported by core language
+</title>
+<meta property="og:title" content="Issue 4381: std::ranges::to specification using CTAD not supported by core language
+">
+<meta property="og:description" content="C++ library issue. Status: New">
+<meta property="og:url" content="https://cplusplus.github.io/LWG/issue4381.html">
+<meta property="og:type" content="website">
+<meta property="og:image" content="http://cplusplus.github.io/LWG/images/cpp_logo.png">
+<meta property="og:image:alt" content="C++ logo">
+<style>
+  p {text-align:justify}
+  li {text-align:justify}
+  pre code.backtick::before { content: "`" }
+  pre code.backtick::after { content: "`" }
+  blockquote.note
+  {
+    background-color:#E0E0E0;
+    padding-left: 15px;
+    padding-right: 15px;
+    padding-top: 1px;
+    padding-bottom: 1px;
+  }
+  ins {background-color:#A0FFA0}
+  del {background-color:#FFA0A0}
+  table.issues-index { border: 1px solid; border-collapse: collapse; }
+  table.issues-index th { text-align: center; padding: 4px; border: 1px solid; }
+  table.issues-index td { padding: 4px; border: 1px solid; }
+  table.issues-index td:nth-child(1) { text-align: right; }
+  table.issues-index td:nth-child(2) { text-align: left; }
+  table.issues-index td:nth-child(3) { text-align: left; }
+  table.issues-index td:nth-child(4) { text-align: left; }
+  table.issues-index td:nth-child(5) { text-align: center; }
+  table.issues-index td:nth-child(6) { text-align: center; }
+  table.issues-index td:nth-child(7) { text-align: left; }
+  table.issues-index td:nth-child(5) span.no-pr { color: red; }
+  @media (prefers-color-scheme: dark) {
+     html {
+        color: #ddd;
+        background-color: black;
+     }
+     ins {
+        background-color: #225522
+     }
+     del {
+        background-color: #662222
+     }
+     a {
+        color: #6af
+     }
+     a:visited {
+        color: #6af
+     }
+     blockquote.note
+     {
+        background-color: rgba(255, 255, 255, .10)
+     }
+  }
+</style>
+</head>
+<body>
+<hr>
+<p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#New">New</a> status.</em></p>
+<h3 id="4381"><a href="lwg-active.html#4381">4381</a>. <code class='backtick'>std::ranges::to specification</code> using CTAD not supported by core language
+</h3>
+<p><b>Section:</b> 25.5.7.2 <a href="https://wg21.link/range.utility.conv.to">[range.utility.conv.to]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
+ <b>Submitter:</b> Jens Maurer <b>Opened:</b> 2025-09-23 <b>Last modified:</b> 2025-09-26</p>
+<p><b>Priority: </b>Not Prioritized
+</p>
+<p><b>View other</b> <a href="lwg-index-open.html#range.utility.conv.to">active issues</a> in [range.utility.conv.to].</p>
+<p><b>View all other</b> <a href="lwg-index.html#range.utility.conv.to">issues</a> in [range.utility.conv.to].</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
+<p><b>Discussion:</b></p>
+<p>
+25.5.7.2 <a href="https://wg21.link/range.utility.conv.to">[range.utility.conv.to]</a> p4 defines a <code><i>DEDUCE_EXPR</i></code> 
+that attempts CTAD (class template argument deduction) on a template template 
+parameter <code class='backtick'>C</code>.
+<p/>
+This is not supported by the core language; 
+<a href="https://cplusplus.github.io/CWG/issues/3003.html">CWG 3003</a> will 
+clarify the core wording accordingly.
+<p/>
+Suggested resolution: Remove 25.5.7.2 <a href="https://wg21.link/range.utility.conv.to">[range.utility.conv.to]</a> p3, p4, p5 
+and the respective entry in the synopsis as unimplementable.
+</p>
+
+
+<p id="res-4381"><b>Proposed resolution:</b></p>
+<p>
+This wording is relative to <a href="https://wg21.link/N5014">N5014</a>.
+</p>
+
+<ol>
+
+<li><p>Modify 25.2 <a href="https://wg21.link/ranges.syn">[ranges.syn]</a>, header <code>&lt;ranges&gt;</code> synopsis, as indicated:</p>
+
+<blockquote>
+<pre>
+[&hellip;]
+namespace std::ranges {
+  [&hellip;]
+  // <i>25.5.7 <a href="https://wg21.link/range.utility.conv">[range.utility.conv]</a>, range conversions</i>
+  template&lt;class C, input_range R, class... Args&gt; requires (!view&lt;C&gt;)
+    constexpr C to(R&amp;&amp; r, Args&amp;&amp;... args);
+  <del>template&lt;template&lt;class...&gt; class C, input_range R, class... Args&gt;
+    constexpr auto to(R&amp;&amp; r, Args&amp;&amp;... args);</del>
+  template&lt;class C, class... Args&gt; requires (!view&lt;C&gt;)
+    constexpr auto to(Args&amp;&amp;... args);
+  template&lt;template&lt;class...&gt; class C, class... Args&gt;
+    constexpr auto to(Args&amp;&amp;... args);  
+  [&hellip;]
+}
+</pre>
+</blockquote>
+
+</li>
+
+<li><p>Modify 25.5.7.2 <a href="https://wg21.link/range.utility.conv.to">[range.utility.conv.to]</a> as indicated:</p>
+
+<blockquote>
+<pre>
+<del>template&lt;template&lt;class...&gt; class C, input_range R, class... Args&gt;
+  constexpr auto to(R&amp;&amp; r, Args&amp;&amp;... args);</del>
+</pre>
+<blockquote>
+<p>
+<del>-3- Let <code><i>input-iterator</i></code> be an exposition-only type:</del>
+</p>
+<blockquote><pre><del>
+struct <i>input-iterator</i> { <i>// exposition only</i>
+  using iterator_category = input_iterator_tag;
+  using value_type = range_value_t&lt;R&gt;;
+  using difference_type = ptrdiff_t;
+  using pointer = add_pointer_t&lt;range_reference_t&lt;R&gt;&gt;;
+  using reference = range_reference_t&lt;R&gt;;
+  reference operator*() const;
+  pointer operator->() const;
+  <i>input-iterator</i>&amp; operator++();
+  <i>input-iterator</i> operator++(int);
+  bool operator==(const <i>input-iterator</i>&amp;) const;
+};
+</del></pre></blockquote>
+<p>
+<del>[<i>Note 1</i>: <code><i>input-iterator</i></code> meets the syntactic requirements of 
+<i>Cpp17InputIterator</i>. &mdash; <i>end note</i>]</del>
+<p/>
+<del>-4- Let <code><i>DEDUCE_EXPR</i></code> be defined as follows:</del>
+</p>
+<ol style="list-style-type: none">
+<li><p><del>(4.1) &mdash; <code>C(declval&lt;R&gt;(), declval&lt;Args&gt;()...)</code> if that is a valid expression,</del></p></li>
+<li><p><del>(4.2) &mdash; otherwise, <code>C(from_range, declval&lt;R&gt;(), declval&lt;Args&gt;()...)</code> if 
+that is a valid expression,</del></p></li>
+<li><p><del>(4.3) &mdash;  otherwise,</del></p>
+<blockquote><pre><del>
+C(declval&lt;<i>input-iterator</i>&gt;(), declval&lt;<i>input-iterator</i>&gt;(), declval&lt;Args&gt;()...)
+</del></pre></blockquote>
+<p><del>if that is a valid expression,</del></p>
+</li>
+<li><p><del>(4.4) &mdash; otherwise, the program is ill-formed.</del></p></li>
+</ol>
+<p>
+<del>-5- <i>Returns</i>: <code>to&lt;decltype(<i>DEDUCE_EXPR</i>)>(std::forward&lt;R&gt;(r), std::forward&lt;Args&gt;(args)...)</code>.</del>
+</p>
+</blockquote>
+</blockquote>
+
+</li>
+
+</ol>
+
+
+
+
+
+</body>
+</html>
