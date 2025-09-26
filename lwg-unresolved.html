@@ -54,7 +54,7 @@
 </style>
 </head>
 <body>
-<p>Revised 2025-09-24 at 14:38:12 UTC
+<p>Revised 2025-09-26 at 16:04:22 UTC
 </p><h2>Unresolved Issues</h2>
 <hr>
 <h3 id="423"><a href="#423">423</a><sup><a href="https://cplusplus.github.io/LWG/issue423">(i)</a></sup>. Effects of negative <code>streamsize</code> in iostreams</h3>
@@ -80245,6 +80245,8 @@ otherwise, the behavior is undefined</ins>
  <b>Submitter:</b> Matt Bentley <b>Opened:</b> 2025-09-17 <b>Last modified:</b> 2025-09-23</p>
 <p><b>Priority: </b>Not Prioritized
 </p>
+<p><b>View other</b> <a href="lwg-index-open.html#hive.capacity">active issues</a> in [hive.capacity].</p>
+<p><b>View all other</b> <a href="lwg-index.html#hive.capacity">issues</a> in [hive.capacity].</p>
 <p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
 <p><b>Discussion:</b></p>
 <p>
@@ -80293,6 +80295,75 @@ void reserve(size_type n);
 <p/>
 -5- <i>Throws</i>: <code class='backtick'>length_error</code> if <del><code class='backtick'>n</code></del><ins><code class='backtick'>capacity()</code> cannot be made <code>&gt;= n</code> without 
 being</ins> <code>&gt; max_size()</code>, as well as any exceptions thrown by the allocator.
+<p/>
+[&hellip;]
+</p>
+</blockquote>
+</blockquote>
+
+</li>
+
+</ol>
+
+
+
+
+
+<hr>
+<h3 id="4380"><a href="#4380">4380</a><sup><a href="https://cplusplus.github.io/LWG/issue4380">(i)</a></sup>. <code class='backtick'>hive::reserve()</code> complexity does not reflect potential deallocation of blocks
+</h3>
+<p><b>Section:</b> 23.3.9.3 <a href="https://wg21.link/hive.capacity">[hive.capacity]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
+ <b>Submitter:</b> Matt Bentley <b>Opened:</b> 2025-09-23 <b>Last modified:</b> 2025-09-26</p>
+<p><b>Priority: </b>Not Prioritized
+</p>
+<p><b>View other</b> <a href="lwg-index-open.html#hive.capacity">active issues</a> in [hive.capacity].</p>
+<p><b>View all other</b> <a href="lwg-index.html#hive.capacity">issues</a> in [hive.capacity].</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
+<p><b>Discussion:</b></p>
+<p>
+As noted by Arthur in issue <a href="lwg-active.html#4379" title="hive::reserve() needs Throws: element adjusted to match block min/max considerations (Status: New)">4379</a><sup><a href="https://cplusplus.github.io/LWG/issue4379" title="Latest snapshot">(i)</a></sup>, <code class='backtick'>reserve(n)</code> could choose to deallocate some 
+reserved (empty) blocks if in doing so it could then allocate blocks which brought <code class='backtick'>capacity()</code> 
+closer to <code class='backtick'>n</code>.
+<p/>
+For example if <code class='backtick'>capacity()</code> is <code class='backtick'>460</code>, <code class='backtick'>n</code> is <code class='backtick'>480</code>, the <code><i>current-limits</i>.min</code> is 
+<code class='backtick'>40</code> and there is a reserved block of capacity <code class='backtick'>70</code>, the latter could be deallocated and a 
+new reserved block allocated of capacity <code class='backtick'>90</code>, bringing total capacity to <code class='backtick'>480</code>. As opposed 
+to allocating a new reserved block at the min capacity of <code class='backtick'>40</code>, bringing the total capacity 
+to <code class='backtick'>500</code>.
+<p/>
+The implicit assumption in this issue is that we want <code class='backtick'>reserve()</code> to be able to deallocate. 
+No-one has objected to this before, but if you want to, please speak up.
+<p/>
+Anyway, the <i>Complexity</i> of <code class='backtick'>reserve()</code> does not presently reflect this ability.
+</p>
+
+
+<p id="res-4380"><b>Proposed resolution:</b></p>
+<p>
+This wording is relative to <a href="https://wg21.link/N5014">N5014</a>.
+</p>
+
+<ol>
+
+
+<li><p>Modify 23.3.9.3 <a href="https://wg21.link/hive.capacity">[hive.capacity]</a> as indicated:</p>
+
+<blockquote>
+<pre>
+void reserve(size_type n);
+</pre>
+<blockquote>
+<p>
+-3- <i>Effects</i>: If <code>n &lt;= capacity()</code> is <code class='backtick'>true</code>, there are no effects. Otherwise increases 
+<code class='backtick'>capacity()</code> by allocating reserved blocks.
+<p/>
+-4- <i>Postconditions</i>: <code>capacity() &gt;= n</code> is <code class='backtick'>true</code>.
+<p/>
+-5- <i>Throws</i>: <code class='backtick'>length_error</code> if <code class='backtick'>n</code> <code>&gt; max_size()</code>, as well as any exceptions 
+thrown by the allocator.
+<p/>
+-6- <i>Complexity</i>: It does not change the size of the sequence and takes at most linear time in the number of
+reserved blocks allocated <ins>and deallocated</ins>.
 <p/>
 [&hellip;]
 </p>
