@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Issue 4382: The simd::basic_mask(bool) overload needs to be more constrained
+</title>
+<meta property="og:title" content="Issue 4382: The simd::basic_mask(bool) overload needs to be more constrained
+">
+<meta property="og:description" content="C++ library issue. Status: New">
+<meta property="og:url" content="https://cplusplus.github.io/LWG/issue4382.html">
+<meta property="og:type" content="website">
+<meta property="og:image" content="http://cplusplus.github.io/LWG/images/cpp_logo.png">
+<meta property="og:image:alt" content="C++ logo">
+<style>
+  p {text-align:justify}
+  li {text-align:justify}
+  pre code.backtick::before { content: "`" }
+  pre code.backtick::after { content: "`" }
+  blockquote.note
+  {
+    background-color:#E0E0E0;
+    padding-left: 15px;
+    padding-right: 15px;
+    padding-top: 1px;
+    padding-bottom: 1px;
+  }
+  ins {background-color:#A0FFA0}
+  del {background-color:#FFA0A0}
+  table.issues-index { border: 1px solid; border-collapse: collapse; }
+  table.issues-index th { text-align: center; padding: 4px; border: 1px solid; }
+  table.issues-index td { padding: 4px; border: 1px solid; }
+  table.issues-index td:nth-child(1) { text-align: right; }
+  table.issues-index td:nth-child(2) { text-align: left; }
+  table.issues-index td:nth-child(3) { text-align: left; }
+  table.issues-index td:nth-child(4) { text-align: left; }
+  table.issues-index td:nth-child(5) { text-align: center; }
+  table.issues-index td:nth-child(6) { text-align: center; }
+  table.issues-index td:nth-child(7) { text-align: left; }
+  table.issues-index td:nth-child(5) span.no-pr { color: red; }
+  @media (prefers-color-scheme: dark) {
+     html {
+        color: #ddd;
+        background-color: black;
+     }
+     ins {
+        background-color: #225522
+     }
+     del {
+        background-color: #662222
+     }
+     a {
+        color: #6af
+     }
+     a:visited {
+        color: #6af
+     }
+     blockquote.note
+     {
+        background-color: rgba(255, 255, 255, .10)
+     }
+  }
+</style>
+</head>
+<body>
+<hr>
+<p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#New">New</a> status.</em></p>
+<h3 id="4382"><a href="lwg-active.html#4382">4382</a>. The <code>simd::basic_mask(bool)</code> overload needs to be more constrained
+</h3>
+<p><b>Section:</b> 29.10.9.2 <a href="https://wg21.link/simd.mask.ctor">[simd.mask.ctor]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
+ <b>Submitter:</b> Matthias Kretz <b>Opened:</b> 2025-09-24 <b>Last modified:</b> 2025-09-26</p>
+<p><b>Priority: </b>Not Prioritized
+</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
+<p><b>Discussion:</b></p>
+<p>
+29.10.9.2 <a href="https://wg21.link/simd.mask.ctor">[simd.mask.ctor]</a> defines the overloads <code class='backtick'>basic_mask(bool)</code> and
+<code class='backtick'>basic_mask(unsigned_integral auto)</code>. This leads to the following pitfall:
+</p>
+<blockquote><pre>
+auto g0() {
+  unsigned short k = 0xf;
+  return simd::mask&lt;float, 8&gt;(k); // mov eax, 15
+}
+
+auto g1() {
+  unsigned short k = 0xf;
+  return simd::mask&lt;float, 8&gt;(k >> 1); // mov eax, -1 ⚠️
+}
+
+auto g2() {
+  unsigned int k = 0xf;
+  return simd::mask&lt;float, 8&gt;(k >> 1); // mov eax, 7
+}
+</pre></blockquote>
+<p>
+In <code class='backtick'>g1</code>, <code class='backtick'>k</code> is promoted to <code class='backtick'>int</code>, shifted and then passed to 
+the mask constructor. Instead of failing, <code class='backtick'>int(0x7)</code> is 
+converted to <code class='backtick'>bool</code> and the mask thus initialized to all <code class='backtick'>true</code>.
+<p/>
+Also consider:
+</p>
+<ol>
+<li><p><code>simd::mask&lt;float&gt;(true_type());</code></p></li>
+<li><p><code>unsigned_integral&lt;bool&gt;</code> is <code class='backtick'>true</code> => 
+<code>same_as&lt;bool&gt; auto</code> instead of 'bool' makes 
+the overload set ambiguous</p></li>
+<li><p><code class='backtick'>float</code> is convertible to <code class='backtick'>bool</code>, thus 
+<code>simd::mask&lt;float&gt;(1.f)</code> continues to compile</p></li>
+</ol>
+
+
+<p id="res-4382"><b>Proposed resolution:</b></p>
+<p>
+This wording is relative to <a href="https://wg21.link/N5014">N5014</a>.
+</p>
+
+<ol>
+
+<li><p>Modify 29.10.9.1 <a href="https://wg21.link/simd.mask.overview">[simd.mask.overview]</a>, <code>class template basic_mask</code> synopsis, as indicated:</p>
+
+<blockquote>
+<pre>
+namespace std::simd {
+  template&lt;size_t Bytes, class Abi&gt; class basic_mask {
+  public:
+    [&hellip;]
+    
+    constexpr basic_mask() noexcept = default;
+    
+    // <i>29.10.9.2 <a href="https://wg21.link/simd.mask.ctor">[simd.mask.ctor]</a>, basic_mask constructors</i>
+    constexpr explicit basic_mask(value_type) noexcept;
+    template&lt;size_t UBytes, class UAbi&gt;
+      constexpr explicit basic_mask(const basic_mask&lt;UBytes, UAbi&gt;&amp;) noexcept;
+    template&lt;class G&gt;
+      constexpr explicit basic_mask(G&amp;&amp; gen) noexcept;
+    constexpr basic_mask(const bitset&lt;size()&gt;&amp; b) noexcept;
+    constexpr explicit basic_mask(unsigned_integral auto val) noexcept;
+    <ins>basic_mask(signed_integral auto) = delete;</ins>
+    
+    [&hellip;]
+  };
+}
+</pre>
+</blockquote>
+
+</li>
+
+</ol>
+
+
+
+
+
+</body>
+</html>
