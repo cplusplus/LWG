@@ -54,7 +54,7 @@
 </style>
 </head>
 <body>
-<p>Revised 2025-09-27 at 05:44:06 UTC
+<p>Revised 2025-09-27 at 09:00:36 UTC
 </p><h2>Unresolved Issues</h2>
 <hr>
 <h3 id="423"><a href="#423">423</a><sup><a href="https://cplusplus.github.io/LWG/issue423">(i)</a></sup>. Effects of negative <code>streamsize</code> in iostreams</h3>
@@ -80754,6 +80754,56 @@ iterator erase(const_iterator position);
 iterator erase(iterator position) <ins>requires (!same_as&lt;iterator, const_iterator&gt;)</ins>;
 iterator erase(const_iterator position);
 </pre>
+</blockquote>
+
+</li>
+
+</ol>
+
+
+
+
+
+<hr>
+<h3 id="4385"><a href="#4385">4385</a><sup><a href="https://cplusplus.github.io/LWG/issue4385">(i)</a></sup>. Including <code>&lt;simd&gt;</code> doesn't provide <code class='backtick'>std::begin/end</code>
+</h3>
+<p><b>Section:</b> 24.7 <a href="https://wg21.link/iterator.range">[iterator.range]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
+ <b>Submitter:</b> Hewill Kang <b>Opened:</b> 2025-09-26 <b>Last modified:</b> 2025-09-27</p>
+<p><b>Priority: </b>Not Prioritized
+</p>
+<p><b>View other</b> <a href="lwg-index-open.html#iterator.range">active issues</a> in [iterator.range].</p>
+<p><b>View all other</b> <a href="lwg-index.html#iterator.range">issues</a> in [iterator.range].</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
+<p><b>Discussion:</b></p>
+<p>
+<code class='backtick'>std::simd::basic_vec</code> and <code class='backtick'>std::simd::basic_mask</code> are ranges since <a href="https://wg21.link/P3480R6" title=" std::simd is a range">P3480R6</a>, 
+it is reasonable to enable range access utilities when introducing <code>&lt;simd&gt;</code>.
+</p>
+
+
+<p id="res-4385"><b>Proposed resolution:</b></p>
+<p>
+This wording is relative to <a href="https://wg21.link/N5014">N5014</a>.
+</p>
+
+<ol>
+
+<li><p>Modify 24.7 <a href="https://wg21.link/iterator.range">[iterator.range]</a> as indicated:</p>
+
+<blockquote>
+<p>
+-1- In addition to being available via inclusion of the <code>&lt;iterator&gt;</code> header, the function
+templates in 24.7 <a href="https://wg21.link/iterator.range">[iterator.range]</a> are available when any of the following headers are included: 
+<code>&lt;array&gt;</code>,
+<code>&lt;deque&gt;</code>, <code>&lt;flat_map&gt;</code>, <code>&lt;flat_set&gt;</code>,
+<code>&lt;forward_list&gt;</code>,
+<code>&lt;hive&gt;</code>,
+<code>&lt;inplace_vector&gt;</code>, <code>&lt;list&gt;</code>, <code>&lt;map&gt;</code>,
+<code>&lt;regex&gt;</code>, <code>&lt;set&gt;</code>, <ins><code>&lt;simd&gt;</code></ins>, 
+<code>&lt;span&gt;</code>, <code>&lt;string&gt;</code>, <code>&lt;string_view&gt;</code>,
+<code>&lt;unordered_map&gt;</code>, <code>&lt;unordered_set&gt;</code>, and <code>&lt;vector&gt;</code>.
+
+</p>
 </blockquote>
 
 </li>
