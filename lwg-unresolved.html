@@ -54,7 +54,7 @@
 </style>
 </head>
 <body>
-<p>Revised 2025-09-27 at 05:33:13 UTC
+<p>Revised 2025-09-27 at 05:44:06 UTC
 </p><h2>Unresolved Issues</h2>
 <hr>
 <h3 id="423"><a href="#423">423</a><sup><a href="https://cplusplus.github.io/LWG/issue423">(i)</a></sup>. Effects of negative <code>streamsize</code> in iostreams</h3>
@@ -80704,6 +80704,55 @@ struct <i>cw-operators</i> {                                                    
       requires requires(T::value_type x) { <ins>constant_wrapper&lt;</ins>x &gt;&gt;= R::value<ins>&gt;()</ins>; }
         { return constant_wrapper&lt;[] { auto v = T::value; return v &gt;&gt;= R::value; }()&gt;{}; }
 };
+</pre>
+</blockquote>
+
+</li>
+
+</ol>
+
+
+
+
+
+<hr>
+<h3 id="4384"><a href="#4384">4384</a><sup><a href="https://cplusplus.github.io/LWG/issue4384">(i)</a></sup>. <code class='backtick'>flat_set::erase(iterator)</code> is underconstrained
+</h3>
+<p><b>Section:</b> 23.6.11.2 <a href="https://wg21.link/flat.set.defn">[flat.set.defn]</a>, 23.6.12.2 <a href="https://wg21.link/flat.multiset.defn">[flat.multiset.defn]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
+ <b>Submitter:</b> Hewill Kang <b>Opened:</b> 2025-09-25 <b>Last modified:</b> 2025-09-27</p>
+<p><b>Priority: </b>Not Prioritized
+</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
+<p><b>Discussion:</b></p>
+<p>
+This is a follow-up of LWG <a href="lwg-defects.html#3704" title="LWG 2059 added overloads that might be ill-formed for sets (Status: C++23)">3704</a><sup><a href="https://cplusplus.github.io/LWG/issue3704" title="Latest snapshot">(i)</a></sup> since we now have <code class='backtick'>flat_set</code> and <code class='backtick'>flat_multiset</code>.
+</p>
+
+
+<p id="res-4384"><b>Proposed resolution:</b></p>
+<p>
+This wording is relative to <a href="https://wg21.link/N5014">N5014</a>.
+</p>
+
+<ol>
+
+<li><p>Modify 23.6.11.2 <a href="https://wg21.link/flat.set.defn">[flat.set.defn]</a> as indicated:</p>
+
+<blockquote>
+<pre>
+iterator erase(iterator position) <ins>requires (!same_as&lt;iterator, const_iterator&gt;)</ins>;
+iterator erase(const_iterator position);
+</pre>
+</blockquote>
+
+</li>
+
+<li><p>Modify 23.6.12.2 <a href="https://wg21.link/flat.multiset.defn">[flat.multiset.defn]</a> as indicated:</p>
+
+<blockquote>
+<pre>
+iterator erase(iterator position) <ins>requires (!same_as&lt;iterator, const_iterator&gt;)</ins>;
+iterator erase(const_iterator position);
 </pre>
 </blockquote>
 
