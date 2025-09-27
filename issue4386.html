@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Issue 4386: std::simd::select(bool c, const T&amp; a, const U&amp; b) is underconstrained
+</title>
+<meta property="og:title" content="Issue 4386: std::simd::select(bool c, const T&amp; a, const U&amp; b) is underconstrained
+">
+<meta property="og:description" content="C++ library issue. Status: New">
+<meta property="og:url" content="https://cplusplus.github.io/LWG/issue4386.html">
+<meta property="og:type" content="website">
+<meta property="og:image" content="http://cplusplus.github.io/LWG/images/cpp_logo.png">
+<meta property="og:image:alt" content="C++ logo">
+<style>
+  p {text-align:justify}
+  li {text-align:justify}
+  pre code.backtick::before { content: "`" }
+  pre code.backtick::after { content: "`" }
+  blockquote.note
+  {
+    background-color:#E0E0E0;
+    padding-left: 15px;
+    padding-right: 15px;
+    padding-top: 1px;
+    padding-bottom: 1px;
+  }
+  ins {background-color:#A0FFA0}
+  del {background-color:#FFA0A0}
+  table.issues-index { border: 1px solid; border-collapse: collapse; }
+  table.issues-index th { text-align: center; padding: 4px; border: 1px solid; }
+  table.issues-index td { padding: 4px; border: 1px solid; }
+  table.issues-index td:nth-child(1) { text-align: right; }
+  table.issues-index td:nth-child(2) { text-align: left; }
+  table.issues-index td:nth-child(3) { text-align: left; }
+  table.issues-index td:nth-child(4) { text-align: left; }
+  table.issues-index td:nth-child(5) { text-align: center; }
+  table.issues-index td:nth-child(6) { text-align: center; }
+  table.issues-index td:nth-child(7) { text-align: left; }
+  table.issues-index td:nth-child(5) span.no-pr { color: red; }
+  @media (prefers-color-scheme: dark) {
+     html {
+        color: #ddd;
+        background-color: black;
+     }
+     ins {
+        background-color: #225522
+     }
+     del {
+        background-color: #662222
+     }
+     a {
+        color: #6af
+     }
+     a:visited {
+        color: #6af
+     }
+     blockquote.note
+     {
+        background-color: rgba(255, 255, 255, .10)
+     }
+  }
+</style>
+</head>
+<body>
+<hr>
+<p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#New">New</a> status.</em></p>
+<h3 id="4386"><a href="lwg-active.html#4386">4386</a>. <code>std::simd::select(bool c, const T&amp; a, const U&amp; b)</code> is underconstrained
+</h3>
+<p><b>Section:</b> 29.10.8.13 <a href="https://wg21.link/simd.alg">[simd.alg]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
+ <b>Submitter:</b> Hewill Kang <b>Opened:</b> 2025-09-27 <b>Last modified:</b> 2025-09-27</p>
+<p><b>Priority: </b>Not Prioritized
+</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
+<p><b>Discussion:</b></p>
+<p>
+This function currently only requires that <code class='backtick'>c ? a : b</code> be a well-formed expression, which simply
+returns <code class='backtick'>c ? a : b</code>.
+<p/>
+Given that it seems intended to work with <code class='backtick'>basic_vec</code>, <code class='backtick'>basic_mask</code>, or vectorizable type,
+requiring <code class='backtick'>T</code> and <code class='backtick'>U</code> to be copyable seems reasonable since they are trivially copyable. 
+It shouldn't take non-copyable objects and produce hard errors in the function body.
+</p>
+
+
+<p id="res-4386"><b>Proposed resolution:</b></p>
+<p>
+This wording is relative to <a href="https://wg21.link/N5014">N5014</a>.
+</p>
+
+<ol>
+
+<li><p>Modify 29.10.3 <a href="https://wg21.link/simd.syn">[simd.syn]</a> as indicated:</p>
+
+<blockquote>
+<pre>
+namespace std::simd {
+  [&hellip;]
+  // <i>29.10.8.13 <a href="https://wg21.link/simd.alg">[simd.alg]</a>, algorithms</i>
+  [&hellip;]
+  template&lt;<ins>copyable</ins><del>class</del> T, <ins>copyable</ins><del>class</del> U&gt;
+    constexpr auto select(bool c, const T&amp; a, const U&amp; b)
+    -&gt; remove_cvref_t&lt;decltype(c ? a : b)&gt;;
+  [&hellip;]
+};
+</pre>
+</blockquote>
+
+</li>
+
+<li><p>Modify 29.10.8.13 <a href="https://wg21.link/simd.alg">[simd.alg]</a> as indicated:</p>
+
+<blockquote>
+<pre>
+template&lt;<ins>copyable</ins><del>class</del> T, <ins>copyable</ins><del>class</del> U&gt;
+  constexpr auto select(bool c, const T&amp; a, const U&amp; b)
+    -&gt; remove_cvref_t&lt;decltype(c ? a : b)&gt;;
+</pre>
+<blockquote>
+<p>
+-9- <i>Effects</i>: Equivalent to: <code>return c ? a : b;</code>
+</p>
+</blockquote>
+</blockquote>
+
+</li>
+
+</ol>
+
+
+
+
+
+</body>
+</html>
