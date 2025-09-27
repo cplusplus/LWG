@@ -54,7 +54,7 @@
 </style>
 </head>
 <body>
-<p>Revised 2025-09-27 at 09:48:57 UTC
+<p>Revised 2025-09-27 at 10:17:47 UTC
 </p><h2>Unresolved Issues</h2>
 <hr>
 <h3 id="423"><a href="#423">423</a><sup><a href="https://cplusplus.github.io/LWG/issue423">(i)</a></sup>. Effects of negative <code>streamsize</code> in iostreams</h3>
@@ -75307,7 +75307,7 @@ and lvalue arguments as lvalue references.</del><ins>:</ins>
 <hr>
 <h3 id="4320"><a href="#4320">4320</a><sup><a href="https://cplusplus.github.io/LWG/issue4320">(i)</a></sup>. <code class='backtick'>hive</code> operations involving insertion/erasure should have <code>&#x1d4aa;(log n)</code> time complexity</h3>
 <p><b>Section:</b> 23.3.9 <a href="https://wg21.link/hive">[hive]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Matt Bentley <b>Opened:</b> 2025-08-19 <b>Last modified:</b> 2025-09-24</p>
+ <b>Submitter:</b> Matt Bentley <b>Opened:</b> 2025-08-19 <b>Last modified:</b> 2025-09-27</p>
 <p><b>Priority: </b>Not Prioritized
 </p>
 <p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
@@ -75320,11 +75320,10 @@ However the approach to implementation necessary to support 8/16-bit
 types without artificially widening the type storage, as described under
 <a href="https://www.open-std.org/jtc1/sc22/wg21/docs/papers/2024/p0447r28.html#non_reference_implementations_info">
 "Additional info for supporting small types" in P0447</a> basically specifies 
-time complexity which is <code class='backtick'>Log(n)</code> in the capacity of the element block selected 
-to insert into (when erased element memory locations are available for reuse) but 
-imposes a small maximum block capacity cap. This time complexity only occurs 
+time complexity which is <code class='backtick'>Log(n)</code> (on most platforms, log64 or log32) in the 
+capacity of the element block selected to insert into. This time complexity only occurs 
 during the operation to find an erased element memory location within a block 
-which is known to have one.
+which is known to have one, and does not involve the elements themselves.
 <p/>
 This is both the simplest and fastest solution to supporting small types
 in hive without artificial widening that I have come across.
@@ -75338,58 +75337,23 @@ and other memory-scarse platforms as it reduces the 16-bit-per-element cost of t
 reference implementation down to a 1-bit-per-element cost. For 64-bit and larger types, 
 there are other ways to obtain this reduction without
 losing <code>&#x1d4aa;(1)</code> lookup but it is unclear whether those methods would 
-in fact be faster.
+in fact be faster. For approaches involving bitset-stacking, the logarithmic 
+complexity also occurs during erasure, specifically adding a couple of extra 
+instructions for every 64x (i.e. bit-depth) increase in block capacity. But again 
+this does not involve the elements and is logarithmic in the capacity of the block 
+erased from.
 <p/>
-There is ambiguity as to whether this should result in a change to <code>hive::insert/emplace</code> 
+Regardless, the increased complexity during insertion is necessary for small-type support.
+<p/>
+There was ambiguity as to whether this should result in a change to <code>hive</code> 
 time complexity when discussed on the reflector, as it is unrelated to element numbers (unless 
 all elements fit within one block), but it is related to block capacities, which are defined 
 as part of the <code class='backtick'>hive</code> technical specification.
 </p>
-<p>
-<b>Changes necessary:</b>
-<p/>
-Making this change would affect any functions which may reuse existing
-erased-element memory locations. This includes:
-<p/>
-23.3.9.4 <a href="https://wg21.link/hive.modifiers">[hive.modifiers]</a>:<br/>
-(<code class='backtick'>emplace</code>) p4<br/>
-(range <code class='backtick'>insert</code>) p9<br/>
-(fill <code class='backtick'>insert</code>) p13
-<p/>
-23.3.9.3 <a href="https://wg21.link/hive.capacity">[hive.capacity]</a>:<br/>
-(<code class='backtick'>shrink_to_fit</code>) p10<br/>
-(<code class='backtick'>reshape</code>) p24
-<p/>
-(both of the above functions may potentially relocate existing elements
-from one block to erased element locations in another)
-<p/>
-23.3.9.2 <a href="https://wg21.link/hive.cons">[hive.cons]</a>:<br/>
-(<code>operator= &amp;</code>) p27<br/>
-(<code>operator= &amp;&amp;</code>) p31
-<p/>
-(move assignment will switch to moving individual elements where
-allocators are not equal - and in the case of non-trivial/allocating
-types, move-assigning to existing elements in the source may be beneficial)
-<p/>
-In addition, if we were to support bitset-stacking approaches these also
-effect functions which erase individual elements. This includes:
-<p/>
-23.3.9.4 <a href="https://wg21.link/hive.modifiers">[hive.modifiers]</a>:<br/>
-(<code class='backtick'>erase</code>) p16
-<p/>
-23.3.9.5 <a href="https://wg21.link/hive.operations">[hive.operations]</a>:<br/>
-(<code class='backtick'>unique</code>) p11
-</p>
 
+<p><strong>Previous resolution [SUPERSEDED]:</strong></p>
 <blockquote class="note">
-<p>
-This issue has some overlap to LWG <a href="lwg-active.html#4323" title="hive::unique time complexity should incorporate potential block removal complexity (Status: New)">4323</a><sup><a href="https://cplusplus.github.io/LWG/issue4323" title="Latest snapshot">(i)</a></sup>, and it would 
-affect the outcome wording of that issue for <code class='backtick'>unique</code>.
-</p>
-</blockquote>
 
-
-<p id="res-4320"><b>Proposed resolution:</b></p>
 <p>
 This wording is relative to <a href="https://wg21.link/N5014">N5014</a>.
 </p>
@@ -75639,6 +75603,60 @@ at worst <code>&#x1d4aa;(log n)</code> in the capacity of each block containing 
 -12- <i>Remarks</i>: [&hellip;]
 </p>
 </blockquote>
+</blockquote>
+
+</li>
+
+</ol>
+</blockquote>
+
+<p><i>[2025-09-26; Matt comments and provides improved wording]</i></p>
+
+<p>
+Past LWG/LEWG telecon discussion around this topic concluded that because elements are not involved, 
+and the logarithmic action is within the capacity of a block (a fixed number), not the size of the 
+sequence, and the actual performance cost is negligible, that the complexity of these actions are 
+in fact constant. But there is some disagreement on this.
+<p/>
+One possibility is to add additional complexity data to each of the effected functions. This would 
+impact on <code class='backtick'>emplace</code>, range <code class='backtick'>insert</code>, fill <code class='backtick'>insert</code>, <code class='backtick'>shrink_to_fit</code>, <code class='backtick'>reshape</code>, move- and copy 
+assignment operator, <code class='backtick'>erase</code> and <code class='backtick'>unique</code>. However I feel this is overkill and may confuse 
+implementors as the log(n) complexity is not permitted to involve elements.
+<p/>
+Having looked into it and sought feedback I think a blanket note on 23.3.9.1 <a href="https://wg21.link/hive.overview">[hive.overview]</a> p3 
+would be sufficient, such that the time complexity is limited to "techniques to identify the memory 
+locations of erased elements". Otherwise we need to stay with the previous resolution that this 
+is in fact constant time behaviour.
+</p>
+
+
+<p id="res-4320"><b>Proposed resolution:</b></p>
+<p>
+This wording is relative to <a href="https://wg21.link/N5014">N5014</a>.
+</p>
+
+<ol>
+
+<li><p>Modify 23.3.9.1 <a href="https://wg21.link/hive.overview">[hive.overview]</a> as indicated:</p>
+
+<blockquote>
+<p>
+-1- A <code class='backtick'>hive</code> is a type of sequence container that provides constant-time insertion and erasure 
+operations. Storage is automatically managed in multiple memory blocks, referred 
+to as element blocks. Insertion position is determined by the container, and  
+may re-use the memory locations of erased elements.
+<p/>
+-2- [&hellip;]
+<p/>
+-3- Erasures use unspecified techniques <del>of constant time complexity</del> to identify the memory 
+locations of erased elements, which are subsequently skipped during iteration <ins>in constant time</ins>, 
+as opposed to relocating subsequent elements during erasure. <ins>The same or different techniques 
+may be utilized to find and re-use these locations during subsequent insertions.</ins> 
+<p/>
+<ins>[<i>Note</i>: The techniques are permitted to be at worst logarithmic in the capacity of the 
+element blocks being inserted into or erased from while maintaining constant-time iteration, to allow 
+latitude for implementation-specific optimizations. &mdash; <i>end note</i>]</ins>
+</p>
 </blockquote>
 
 </li>
