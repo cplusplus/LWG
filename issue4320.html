@@ -64,7 +64,7 @@
 <p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#New">New</a> status.</em></p>
 <h3 id="4320"><a href="lwg-active.html#4320">4320</a>. <code class='backtick'>hive</code> operations involving insertion/erasure should have <code>&#x1d4aa;(log n)</code> time complexity</h3>
 <p><b>Section:</b> 23.3.9 <a href="https://wg21.link/hive">[hive]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Matt Bentley <b>Opened:</b> 2025-08-19 <b>Last modified:</b> 2025-09-27</p>
+ <b>Submitter:</b> Matt Bentley <b>Opened:</b> 2025-08-19 <b>Last modified:</b> 2025-09-28</p>
 <p><b>Priority: </b>Not Prioritized
 </p>
 <p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
@@ -411,7 +411,7 @@ as opposed to relocating subsequent elements during erasure. <ins>The same or di
 may be utilized to find and re-use these locations during subsequent insertions.</ins> 
 <p/>
 <ins>[<i>Note</i>: The techniques are permitted to be at worst logarithmic in the capacity of the 
-element blocks being inserted into or erased from while maintaining constant-time iteration, to allow 
+element blocks being inserted into or erased from, while maintaining constant-time iteration, to allow 
 latitude for implementation-specific optimizations. &mdash; <i>end note</i>]</ins>
 </p>
 </blockquote>
