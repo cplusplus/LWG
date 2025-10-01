@@ -2,10 +2,10 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<title>Issue 3945: &sect;[cstdarg.syn] 'Compatible types' are undefined</title>
-<meta property="og:title" content="Issue 3945: &sect;[cstdarg.syn] 'Compatible types' are undefined">
+<title>Issue 4388: Align new definition of va_start with C23</title>
+<meta property="og:title" content="Issue 4388: Align new definition of va_start with C23">
 <meta property="og:description" content="C++ library issue. Status: New">
-<meta property="og:url" content="https://cplusplus.github.io/LWG/issue3945.html">
+<meta property="og:url" content="https://cplusplus.github.io/LWG/issue4388.html">
 <meta property="og:type" content="website">
 <meta property="og:image" content="http://cplusplus.github.io/LWG/images/cpp_logo.png">
 <meta property="og:image:alt" content="C++ logo">
@@ -62,38 +62,63 @@
 <body>
 <hr>
 <p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#New">New</a> status.</em></p>
-<h3 id="3945"><a href="lwg-active.html#3945">3945</a>. &sect;[cstdarg.syn] 'Compatible types' are undefined</h3>
+<h3 id="4388"><a href="lwg-active.html#4388">4388</a>. Align new definition of <code class='backtick'>va_start</code> with C23</h3>
 <p><b>Section:</b> 17.14.2 <a href="https://wg21.link/cstdarg.syn">[cstdarg.syn]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Lukas Barth <b>Opened:</b> 2023-06-08 <b>Last modified:</b> 2023-06-12</p>
-<p><b>Priority: </b>3
+ <b>Submitter:</b> Jakub Jelinek <b>Opened:</b> 2025-10-01 <b>Last modified:</b> 2025-10-01</p>
+<p><b>Priority: </b>Not Prioritized
 </p>
 <p><b>View other</b> <a href="lwg-index-open.html#cstdarg.syn">active issues</a> in [cstdarg.syn].</p>
 <p><b>View all other</b> <a href="lwg-index.html#cstdarg.syn">issues</a> in [cstdarg.syn].</p>
 <p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
 <p><b>Discussion:</b></p>
 <p>
-Subclause 17.14.2 <a href="https://wg21.link/cstdarg.syn">[cstdarg.syn]</a> p1 bullet (1.2) states (among other things): 
-</p>
-<blockquote style="border-left: 3px solid #ccc;padding-left: 15px;"><p>
-[&hellip;]  If the parameter <code>parmN</code> is of a reference type, or of a type that is not
-compatible with the type that results when passing an argument for which there is no parameter, 
+<a href="https://wg21.link/P3348R4" title=" C++26 should refer to C23 not C17">P3348R4</a> changed the <code class='backtick'>va_start</code> macro to match C23,
+but the following wording from C is not present in C++:
+<blockquote>
+If any additional arguments expand to include unbalanced parentheses,
+or a preprocessing token that does not convert to a token,
 the behavior is undefined.
-</p></blockquote>
+</blockquote>
+</p>
 <p>
-Unlike the C standard, the C++ standard has no notion of 'compatible
-types', thus the meaning of this sentence unclear.
+The importance of that wording was not realized during review of P3348R4.
+The wording is intended to ensure that any discarded arguments to
+<code class='backtick'>va_start</code> are actually lexable by the compiler,
+rather than containing unbalanced parentheses or brackets.
+It also makes the following undefined:
+</p>
+<pre><code>#define BAD ); format_disk(
+va_start(ap, BAD);
+</code></pre>
+
+
+<p id="res-4388"><b>Proposed resolution:</b></p>
+<p>
+This wording is relative to <a href="https://wg21.link/N5014">N5014</a>.
 </p>
 
+<ul>
+<li><p>Modify 17.14.2 <a href="https://wg21.link/cstdarg.syn">[cstdarg.syn]</a> as indicated:</p>
 
-<p><i>[2023-06-12; Reflector poll]</i></p>
-
+<blockquote>
 <p>
-Set priority to 3 after reflector poll.
+(1.2) &mdash;
+<ins>
+If more than one argument is present for <code class='backtick'>va_start</code>
+and any of the second or subsequent arguments expands
+to include unbalanced parentheses,
+or a preprocessing token that does not convert to a token,
+the program is ill-formed, no diagnostic required.
+</ins>
+The preprocessing tokens comprising the second and subsequent arguments to
+<code class='backtick'>va_start</code> (if any) are discarded.
+[Note 1: va_start accepts a second argument for compatibility with prior revisions of C++.
+— end note]
 </p>
+</blockquote>
+</li>
+</ul>
 
-
-
-<p id="res-3945"><b>Proposed resolution:</b></p>
 
 
 
