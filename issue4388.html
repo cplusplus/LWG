@@ -64,7 +64,7 @@
 <p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#New">New</a> status.</em></p>
 <h3 id="4388"><a href="lwg-active.html#4388">4388</a>. Align new definition of <code class='backtick'>va_start</code> with C23</h3>
 <p><b>Section:</b> 17.14.2 <a href="https://wg21.link/cstdarg.syn">[cstdarg.syn]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Jakub Jelinek <b>Opened:</b> 2025-10-01 <b>Last modified:</b> 2025-10-01</p>
+ <b>Submitter:</b> Jakub Jelinek <b>Opened:</b> 2025-10-01 <b>Last modified:</b> 2025-10-03</p>
 <p><b>Priority: </b>Not Prioritized
 </p>
 <p><b>View other</b> <a href="lwg-index-open.html#cstdarg.syn">active issues</a> in [cstdarg.syn].</p>
@@ -97,7 +97,7 @@ va_start(ap, BAD);
 This wording is relative to <a href="https://wg21.link/N5014">N5014</a>.
 </p>
 
-<ul>
+<ol>
 <li><p>Modify 17.14.2 <a href="https://wg21.link/cstdarg.syn">[cstdarg.syn]</a> as indicated:</p>
 
 <blockquote>
@@ -112,12 +112,12 @@ the program is ill-formed, no diagnostic required.
 </ins>
 The preprocessing tokens comprising the second and subsequent arguments to
 <code class='backtick'>va_start</code> (if any) are discarded.
-[Note 1: va_start accepts a second argument for compatibility with prior revisions of C++.
-— end note]
+[<i>Note 1</i>: <code class='backtick'>va_start</code> accepts a second argument for compatibility with prior revisions of C++.
+&mdash; <i>end note</i>]
 </p>
 </blockquote>
 </li>
-</ul>
+</ol>
 
 
 
