@@ -54,7 +54,7 @@
 </style>
 </head>
 <body>
-<p>Revised 2025-10-03 at 13:45:09 UTC
+<p>Revised 2025-10-03 at 14:10:00 UTC
 </p><h2>Unresolved Issues</h2>
 <hr>
 <h3 id="423"><a href="#423">423</a><sup><a href="https://cplusplus.github.io/LWG/issue423">(i)</a></sup>. Effects of negative <code>streamsize</code> in iostreams</h3>
@@ -81187,6 +81187,8 @@ in the equivalent form (8.6.5 <a href="https://wg21.link/stmt.ranged">[stmt.rang
  <b>Submitter:</b> Hewill Kang <b>Opened:</b> 2025-09-29 <b>Last modified:</b> 2025-10-03</p>
 <p><b>Priority: </b>Not Prioritized
 </p>
+<p><b>View other</b> <a href="lwg-index-open.html#simd.ctor">active issues</a> in [simd.ctor].</p>
+<p><b>View all other</b> <a href="lwg-index.html#simd.ctor">issues</a> in [simd.ctor].</p>
 <p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
 <p><b>Discussion:</b></p>
 <p>
@@ -81233,6 +81235,124 @@ template&lt;class U <ins>= T</ins>&gt; constexpr explicit(<i>see below</i>) basi
 <p>
 -1- [&hellip;]
 </p>
+</blockquote>
+</blockquote>
+</li>
+</ol>
+
+
+
+
+
+
+<hr>
+<h3 id="4391"><a href="#4391">4391</a><sup><a href="https://cplusplus.github.io/LWG/issue4391">(i)</a></sup>. Ambiguities of <code class='backtick'>simd::basic_vec</code> constructor</h3>
+<p><b>Section:</b> 29.10.7.2 <a href="https://wg21.link/simd.ctor">[simd.ctor]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
+ <b>Submitter:</b> Hewill Kang <b>Opened:</b> 2025-09-29 <b>Last modified:</b> 2025-10-03</p>
+<p><b>Priority: </b>Not Prioritized
+</p>
+<p><b>View other</b> <a href="lwg-index-open.html#simd.ctor">active issues</a> in [simd.ctor].</p>
+<p><b>View all other</b> <a href="lwg-index.html#simd.ctor">issues</a> in [simd.ctor].</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
+<p><b>Discussion:</b></p>
+<p>
+The broadcasting, generator-based, and range constructors of <code class='backtick'>simd::basic_vec</code> all take a single
+argument, and their constraints are not mutually exclusive.
+<p/>
+This means that when a type satisfies both characteristics, such as a range that can be converted to a
+<code class='backtick'>value_type</code>, this will lead to ambiguity:
+</p>
+<blockquote>
+<pre>
+#include &lt;simd&gt;
+
+struct S {
+  operator double() const;       // basic_vec(U&amp;&amp; value)
+  
+  double operator()(int) const;  // basic_vec(G&amp;&amp; gen)
+
+  double* begin() const;         // basic_vec(R&amp;&amp; r, flags&lt;Flags...&gt; = {});
+  double* end() const;
+  constexpr static int size() { return 2; }
+};
+
+int main() {
+  std::simd::vec&lt;double&gt; simd(S{}); // <span style="color:#C80000;font-weight:bold">error: call of overloaded 'basic_simd(S)' is ambiguous</span>
+}
+</pre>
+</blockquote>
+<p>
+Do we need more constraints, similar to the one in <code>string_view(R&amp;&amp; r)</code> that requires
+<code class='backtick'>R</code> not to be convertible to <code class='backtick'>const char*</code>, to make the above work, i.e., only invoke the
+broadcasting constructor?
+</p>
+
+
+<p id="res-4391"><b>Proposed resolution:</b></p>
+<p>
+This wording is relative to <a href="https://wg21.link/N5014">N5014</a>.
+</p>
+
+<ol>
+
+
+<li><p>Modify 29.10.7.2 <a href="https://wg21.link/simd.ctor">[simd.ctor]</a> as indicated:</p>
+
+<blockquote>
+<pre>
+template&lt;class G&gt; constexpr explicit basic_vec(G&amp;&amp; gen);
+</pre>
+<blockquote>
+<p>
+-8- Let <code>From<sub><i>i</i></sub></code> denote the type
+   <code>decltype(gen(integral_constant&lt;<i>simd-size-type</i>, <i>i</i>&gt;()))</code>.
+<p/>
+-9- <i>Constraints</i>:
+</p>
+<ol style="list-style-type: none">
+   <li><p>
+   <ins>(9.?) &mdash; <code>constructible_from&lt;value_type, G&gt;</code> is <code>false</code>.</ins>
+   </p></li>
+   <li><p>
+    <ins>(9.?) &mdash;</ins>
+    <code>From<sub><i>i</i></sub></code> satisfies <code>convertible_to&lt;value_type&gt;</code> for all 
+    <code><i>i</i></code> in the range of [<code>0, size()</code>). In addition, for all <i>i</i> in the range of
+    [<code>0, size()</code>), if <code>From<sub><i>i</i></sub></code> is an arithmetic type, conversion from 
+    <code>From<sub><i>i</i></sub></code> to <code>value_type</code> is value-preserving.</p>
+   </li>
+</ol>
+</blockquote>
+[&hellip;]
+<pre>
+template&lt;class R, class... Flags&gt;
+  constexpr basic_vec(R&amp;&amp; r, flags&lt;Flags...&gt; = {});
+template&lt;class R, class... Flags&gt;
+  constexpr basic_vec(R&amp;&amp; r, const mask_type&amp; mask, flags&lt;Flags...&gt; = {});
+</pre>
+<blockquote>
+<p>
+-12- Let mask be <code class='backtick'>mask_type(true)</code> for the overload with no <code class='backtick'>mask</code> parameter.
+<p/>
+-13- <i>Constraints</i>:
+</p>
+<ol style="list-style-type: none">
+   <li><p>
+   (13.1) &mdash; <code class='backtick'>R</code> models <code class='backtick'>ranges::contiguous_range</code> and <code class='backtick'>ranges::sized_range</code>,
+   </p></li>
+   <li><p>
+   (13.2) &mdash; <code class='backtick'>ranges::size(r)</code> is a constant expression, <del>and</del>
+   </p></li>
+   <li><p>
+   (13.3) &mdash; <code class='backtick'>ranges::size(r)</code> is equal to <code class='backtick'>size()</code><del>.</del><ins>,</ins>
+   </p></li>
+   <li><p>
+   <ins>(13.?) &mdash; <code>constructible_from&lt;value_type, R&gt;</code> is <code class='backtick'>false</code>, and</ins>
+   </p></li>
+   <li><p>
+   <ins>(13.?) &mdash; <code>r(integral_constant&lt;<i>simd-size-type</i>, 0&gt;())</code> is not a valid
+            expression.</ins>
+   </p></li>
+</ol>
 </blockquote>
 </blockquote>
 </li>

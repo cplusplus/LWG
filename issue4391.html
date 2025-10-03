@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Issue 4391: Ambiguities of simd::basic_vec constructor</title>
+<meta property="og:title" content="Issue 4391: Ambiguities of simd::basic_vec constructor">
+<meta property="og:description" content="C++ library issue. Status: New">
+<meta property="og:url" content="https://cplusplus.github.io/LWG/issue4391.html">
+<meta property="og:type" content="website">
+<meta property="og:image" content="http://cplusplus.github.io/LWG/images/cpp_logo.png">
+<meta property="og:image:alt" content="C++ logo">
+<style>
+  p {text-align:justify}
+  li {text-align:justify}
+  pre code.backtick::before { content: "`" }
+  pre code.backtick::after { content: "`" }
+  blockquote.note
+  {
+    background-color:#E0E0E0;
+    padding-left: 15px;
+    padding-right: 15px;
+    padding-top: 1px;
+    padding-bottom: 1px;
+  }
+  ins {background-color:#A0FFA0}
+  del {background-color:#FFA0A0}
+  table.issues-index { border: 1px solid; border-collapse: collapse; }
+  table.issues-index th { text-align: center; padding: 4px; border: 1px solid; }
+  table.issues-index td { padding: 4px; border: 1px solid; }
+  table.issues-index td:nth-child(1) { text-align: right; }
+  table.issues-index td:nth-child(2) { text-align: left; }
+  table.issues-index td:nth-child(3) { text-align: left; }
+  table.issues-index td:nth-child(4) { text-align: left; }
+  table.issues-index td:nth-child(5) { text-align: center; }
+  table.issues-index td:nth-child(6) { text-align: center; }
+  table.issues-index td:nth-child(7) { text-align: left; }
+  table.issues-index td:nth-child(5) span.no-pr { color: red; }
+  @media (prefers-color-scheme: dark) {
+     html {
+        color: #ddd;
+        background-color: black;
+     }
+     ins {
+        background-color: #225522
+     }
+     del {
+        background-color: #662222
+     }
+     a {
+        color: #6af
+     }
+     a:visited {
+        color: #6af
+     }
+     blockquote.note
+     {
+        background-color: rgba(255, 255, 255, .10)
+     }
+  }
+</style>
+</head>
+<body>
+<hr>
+<p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#New">New</a> status.</em></p>
+<h3 id="4391"><a href="lwg-active.html#4391">4391</a>. Ambiguities of <code class='backtick'>simd::basic_vec</code> constructor</h3>
+<p><b>Section:</b> 29.10.7.2 <a href="https://wg21.link/simd.ctor">[simd.ctor]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
+ <b>Submitter:</b> Hewill Kang <b>Opened:</b> 2025-09-29 <b>Last modified:</b> 2025-10-03</p>
+<p><b>Priority: </b>Not Prioritized
+</p>
+<p><b>View other</b> <a href="lwg-index-open.html#simd.ctor">active issues</a> in [simd.ctor].</p>
+<p><b>View all other</b> <a href="lwg-index.html#simd.ctor">issues</a> in [simd.ctor].</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
+<p><b>Discussion:</b></p>
+<p>
+The broadcasting, generator-based, and range constructors of <code class='backtick'>simd::basic_vec</code> all take a single
+argument, and their constraints are not mutually exclusive.
+<p/>
+This means that when a type satisfies both characteristics, such as a range that can be converted to a
+<code class='backtick'>value_type</code>, this will lead to ambiguity:
+</p>
+<blockquote>
+<pre>
+#include &lt;simd&gt;
+
+struct S {
+  operator double() const;       // basic_vec(U&amp;&amp; value)
+  
+  double operator()(int) const;  // basic_vec(G&amp;&amp; gen)
+
+  double* begin() const;         // basic_vec(R&amp;&amp; r, flags&lt;Flags...&gt; = {});
+  double* end() const;
+  constexpr static int size() { return 2; }
+};
+
+int main() {
+  std::simd::vec&lt;double&gt; simd(S{}); // <span style="color:#C80000;font-weight:bold">error: call of overloaded 'basic_simd(S)' is ambiguous</span>
+}
+</pre>
+</blockquote>
+<p>
+Do we need more constraints, similar to the one in <code>string_view(R&amp;&amp; r)</code> that requires
+<code class='backtick'>R</code> not to be convertible to <code class='backtick'>const char*</code>, to make the above work, i.e., only invoke the
+broadcasting constructor?
+</p>
+
+
+<p id="res-4391"><b>Proposed resolution:</b></p>
+<p>
+This wording is relative to <a href="https://wg21.link/N5014">N5014</a>.
+</p>
+
+<ol>
+
+
+<li><p>Modify 29.10.7.2 <a href="https://wg21.link/simd.ctor">[simd.ctor]</a> as indicated:</p>
+
+<blockquote>
+<pre>
+template&lt;class G&gt; constexpr explicit basic_vec(G&amp;&amp; gen);
+</pre>
+<blockquote>
+<p>
+-8- Let <code>From<sub><i>i</i></sub></code> denote the type
+   <code>decltype(gen(integral_constant&lt;<i>simd-size-type</i>, <i>i</i>&gt;()))</code>.
+<p/>
+-9- <i>Constraints</i>:
+</p>
+<ol style="list-style-type: none">
+   <li><p>
+   <ins>(9.?) &mdash; <code>constructible_from&lt;value_type, G&gt;</code> is <code>false</code>.</ins>
+   </p></li>
+   <li><p>
+    <ins>(9.?) &mdash;</ins>
+    <code>From<sub><i>i</i></sub></code> satisfies <code>convertible_to&lt;value_type&gt;</code> for all 
+    <code><i>i</i></code> in the range of [<code>0, size()</code>). In addition, for all <i>i</i> in the range of
+    [<code>0, size()</code>), if <code>From<sub><i>i</i></sub></code> is an arithmetic type, conversion from 
+    <code>From<sub><i>i</i></sub></code> to <code>value_type</code> is value-preserving.</p>
+   </li>
+</ol>
+</blockquote>
+[&hellip;]
+<pre>
+template&lt;class R, class... Flags&gt;
+  constexpr basic_vec(R&amp;&amp; r, flags&lt;Flags...&gt; = {});
+template&lt;class R, class... Flags&gt;
+  constexpr basic_vec(R&amp;&amp; r, const mask_type&amp; mask, flags&lt;Flags...&gt; = {});
+</pre>
+<blockquote>
+<p>
+-12- Let mask be <code class='backtick'>mask_type(true)</code> for the overload with no <code class='backtick'>mask</code> parameter.
+<p/>
+-13- <i>Constraints</i>:
+</p>
+<ol style="list-style-type: none">
+   <li><p>
+   (13.1) &mdash; <code class='backtick'>R</code> models <code class='backtick'>ranges::contiguous_range</code> and <code class='backtick'>ranges::sized_range</code>,
+   </p></li>
+   <li><p>
+   (13.2) &mdash; <code class='backtick'>ranges::size(r)</code> is a constant expression, <del>and</del>
+   </p></li>
+   <li><p>
+   (13.3) &mdash; <code class='backtick'>ranges::size(r)</code> is equal to <code class='backtick'>size()</code><del>.</del><ins>,</ins>
+   </p></li>
+   <li><p>
+   <ins>(13.?) &mdash; <code>constructible_from&lt;value_type, R&gt;</code> is <code class='backtick'>false</code>, and</ins>
+   </p></li>
+   <li><p>
+   <ins>(13.?) &mdash; <code>r(integral_constant&lt;<i>simd-size-type</i>, 0&gt;())</code> is not a valid
+            expression.</ins>
+   </p></li>
+</ol>
+</blockquote>
+</blockquote>
+</li>
+</ol>
+
+
+
+
+
+
+</body>
+</html>
