@@ -54,7 +54,7 @@
 </style>
 </head>
 <body>
-<p>Revised 2025-10-03 at 15:29:22 UTC
+<p>Revised 2025-10-03 at 15:47:09 UTC
 </p><h2>Unresolved Issues</h2>
 <hr>
 <h3 id="423"><a href="#423">423</a><sup><a href="https://cplusplus.github.io/LWG/issue423">(i)</a></sup>. Effects of negative <code>streamsize</code> in iostreams</h3>
@@ -81505,6 +81505,98 @@ template&lt;<i>simd-vec-type</i> V, ranges::contiguous_range R, <i>simd-integral
 </p>
 </blockquote>
 </blockquote>
+</li>
+</ol>
+
+
+
+
+
+
+<hr>
+<h3 id="4394"><a href="#4394">4394</a><sup><a href="https://cplusplus.github.io/LWG/issue4394">(i)</a></sup>. <code class='backtick'>simd::unchecked_load(I first, S last)</code> construct <code class='backtick'>span</code> maybe ill-formed</h3>
+<p><b>Section:</b> 29.10.8.7 <a href="https://wg21.link/simd.loadstore">[simd.loadstore]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
+ <b>Submitter:</b> Hewill Kang <b>Opened:</b> 2025-09-30 <b>Last modified:</b> 2025-10-03</p>
+<p><b>Priority: </b>Not Prioritized
+</p>
+<p><b>View other</b> <a href="lwg-index-open.html#simd.loadstore">active issues</a> in [simd.loadstore].</p>
+<p><b>View all other</b> <a href="lwg-index.html#simd.loadstore">issues</a> in [simd.loadstore].</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
+<p><b>Discussion:</b></p>
+<p>
+Currently, <code class='backtick'>simd::unchecked_load</code>/<code class='backtick'>partial_load</code>/<code class='backtick'>unchecked_store</code>/<code class='backtick'>partial_store</code>
+constructs a <code class='backtick'>span</code> via <code class='backtick'>span(first, last)</code> when taking an iterator-sentinel pair
+<code class='backtick'>first</code> and <code class='backtick'>last</code>.
+<p/>
+However, the construction may not be well-behaved or well-formed when the sentinel type 
+can be implicitly converted to an integer type. Consider:
+</p>
+<blockquote><pre>
+struct I {
+  using value_type = int;
+  using difference_type = int;
+  using iterator_category = std::contiguous_iterator_tag;
+  // contiguous iterator operators
+  // ...
+ 
+  operator int() const;
+};
+
+int main() {
+   std::simd::unchecked_load(I{}, I{});
+}
+</pre></blockquote>
+<p>
+Above, <code class='backtick'>unchecked_load</code> invokes <code class='backtick'>unchecked_load(I first, S last)</code> and we attempt to
+construct <code class='backtick'>span</code> through <code class='backtick'>span(first, last)</code>.
+However, this is invalid because the constructor requires that the sentinel type should not be convertible to
+<code class='backtick'>size_t</code>, so we fall back into <code class='backtick'>span(first, n)</code> via implicitly converting <code class='backtick'>I</code> to <code class='backtick'>size_t</code>. Such
+behavior is subtle and likely unintended.
+<p/>
+Now consider:
+</p>
+<blockquote><pre>
+struct I {
+  using value_type = int;
+  using difference_type = int;
+  using iterator_category = std::contiguous_iterator_tag;
+  // contiguous iterator operators
+  // ...
+
+  operator int() &amp;&amp;;
+};
+
+int main() {
+   std::simd::unchecked_load(I{}, I{});
+}
+</pre></blockquote>
+<p>
+We still attempt to construct the <code class='backtick'>span</code> by calling <code class='backtick'>span(first, last)</code>, which is invalid,
+but because the lvalue sentinel cannot be converted to <code class='backtick'>size_t</code>, the call of <code class='backtick'>span(first, n)</code>
+is also invalid. This makes the construction of the <code class='backtick'>span</code> ill-formed and leads to a hard error in
+the function body.
+</p>
+
+
+<p id="res-4394"><b>Proposed resolution:</b></p>
+<p>
+This wording is relative to <a href="https://wg21.link/N5014">N5014</a>.
+</p>
+
+<ol>
+
+
+<li><p>In subclause 29.10.8.7 <a href="https://wg21.link/simd.loadstore">[simd.loadstore]</a> replace all occurrences of 
+</p>
+<blockquote><pre>
+R(first, last)
+</pre></blockquote>
+<p>
+by
+</p>
+<blockquote><pre>
+R(first, <ins>static_cast&lt;size_t&gt;(</ins>last<ins> - first)</ins>)
+</pre></blockquote>
 </li>
 </ol>
 
