@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Issue 4389: ranges::for_each possibly behaves differently from range-based for</title>
+<meta property="og:title" content="Issue 4389: ranges::for_each possibly behaves differently from range-based for">
+<meta property="og:description" content="C++ library issue. Status: New">
+<meta property="og:url" content="https://cplusplus.github.io/LWG/issue4389.html">
+<meta property="og:type" content="website">
+<meta property="og:image" content="http://cplusplus.github.io/LWG/images/cpp_logo.png">
+<meta property="og:image:alt" content="C++ logo">
+<style>
+  p {text-align:justify}
+  li {text-align:justify}
+  pre code.backtick::before { content: "`" }
+  pre code.backtick::after { content: "`" }
+  blockquote.note
+  {
+    background-color:#E0E0E0;
+    padding-left: 15px;
+    padding-right: 15px;
+    padding-top: 1px;
+    padding-bottom: 1px;
+  }
+  ins {background-color:#A0FFA0}
+  del {background-color:#FFA0A0}
+  table.issues-index { border: 1px solid; border-collapse: collapse; }
+  table.issues-index th { text-align: center; padding: 4px; border: 1px solid; }
+  table.issues-index td { padding: 4px; border: 1px solid; }
+  table.issues-index td:nth-child(1) { text-align: right; }
+  table.issues-index td:nth-child(2) { text-align: left; }
+  table.issues-index td:nth-child(3) { text-align: left; }
+  table.issues-index td:nth-child(4) { text-align: left; }
+  table.issues-index td:nth-child(5) { text-align: center; }
+  table.issues-index td:nth-child(6) { text-align: center; }
+  table.issues-index td:nth-child(7) { text-align: left; }
+  table.issues-index td:nth-child(5) span.no-pr { color: red; }
+  @media (prefers-color-scheme: dark) {
+     html {
+        color: #ddd;
+        background-color: black;
+     }
+     ins {
+        background-color: #225522
+     }
+     del {
+        background-color: #662222
+     }
+     a {
+        color: #6af
+     }
+     a:visited {
+        color: #6af
+     }
+     blockquote.note
+     {
+        background-color: rgba(255, 255, 255, .10)
+     }
+  }
+</style>
+</head>
+<body>
+<hr>
+<p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#New">New</a> status.</em></p>
+<h3 id="4389"><a href="lwg-active.html#4389">4389</a>. <code class='backtick'>ranges::for_each</code> possibly behaves differently from range-based <code class='backtick'>for</code></h3>
+<p><b>Section:</b> 25.4.2 <a href="https://wg21.link/range.range">[range.range]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
+ <b>Submitter:</b> Jiang An <b>Opened:</b> 2025-09-28 <b>Last modified:</b> 2025-10-03</p>
+<p><b>Priority: </b>Not Prioritized
+</p>
+<p><b>View all other</b> <a href="lwg-index.html#range.range">issues</a> in [range.range].</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
+<p><b>Discussion:</b></p>
+<p>
+It was found in the blog post 
+<a href="https://quuxplusone.github.io/blog/2024/12/09/foreach-versus-for/">
+"When <code class='backtick'>ranges::for_each</code> behaves differently from <code class='backtick'>for</code>"</a>  that <code class='backtick'>ranges::for_each</code> 
+can behave differently from range-based <code class='backtick'>for</code>, because
+</p>
+<ol>
+<li><p><code class='backtick'>ranges::begin</code> and <code class='backtick'>ranges::end</code> possibly use different rules, i.e. one calls a member 
+and the other calls an ADL-found non-member function, and</p></li>
+<li><p>these CPOs continue to perform ADL when a member <code class='backtick'>begin/end</code> is found but the 
+function call is not valid, while the range-for stops and renders the program ill-formed.</p></li>
+</ol>
+<p>
+Perhaps the intent of Ranges was that the <code class='backtick'>ranges::range</code> concept should be stricter than 
+plain range-for and all range types can be iterated via range-for with the same semantics 
+as <code class='backtick'>ranges::for_each</code>. However, it seems very difficult (if not impossible) for a library 
+implementation to tell whether a class has member <code class='backtick'>begin/end</code> but the corresponding member 
+call is ill-formed with C++20 core language rules, and such determination is critical for 
+eliminating the semantic differences between <code class='backtick'>ranges::for_each</code> and range-for.
+</p>
+
+
+<p id="res-4389"><b>Proposed resolution:</b></p>
+<p>
+This wording is relative to <a href="https://wg21.link/N5014">N5014</a>.
+</p>
+
+<blockquote class="note">
+<p>
+Two mutually exclusive resolutions are proposed here. One enforces semantic-identity checks, 
+while the other doesn't and makes weird types satisfy but not model the range concept. I 
+prefer the stricter one because the semantic-identity checks are fully static, but this probably 
+requires compilers to add new intrinsics when reflection is absent.
+</p>
+</blockquote>
+
+<p>
+<b>Option A</b>: (stricter)
+</p>
+
+<ol>
+<li><p>Modify 25.3.2 <a href="https://wg21.link/range.access.begin">[range.access.begin]</a> as indicated:</p>
+
+<blockquote>
+<p>
+-2- Given a subexpression <code class='backtick'>E</code> with type <code class='backtick'>T</code>, let <code class='backtick'>t</code> be an lvalue that denotes the reified object for <code class='backtick'>E</code>. Then:
+</p>
+<ol style="list-style-type: none">
+<li><p>(2.1) &mdash; [&hellip;]</p></li>
+<li><p>(2.2) &mdash; [&hellip;]</p></li>
+<li><p>(2.3) &mdash; [&hellip;]</p></li>
+<li><p>(2.4) &mdash; [&hellip;]</p></li>
+<li><p><ins>(2.?) &mdash; Otherwise, if <code>remove_cvref_t&lt;T&gt;</code> is a class type and search for 
+<code class='backtick'>begin</code> in the scope of that class finds at least one declaration, <code class='backtick'>ranges::begin(E)</code> is ill-formed.</ins></p></li>
+<li><p>(2.5) &mdash; [&hellip;]</p></li>
+<li><p>(2.6) &mdash; Otherwise, <code class='backtick'>ranges::begin(E)</code> is ill-formed.</p></li>
+</ol>
+</blockquote>
+</li>
+
+<li><p>Modify 25.3.3 <a href="https://wg21.link/range.access.end">[range.access.end]</a> as indicated:</p>
+
+<blockquote>
+<p>
+-2- Given a subexpression <code class='backtick'>E</code> with type <code class='backtick'>T</code>, let <code class='backtick'>t</code> be an lvalue that denotes the reified object for <code class='backtick'>E</code>. Then:
+</p>
+<ol style="list-style-type: none">
+<li><p>(2.1) &mdash; [&hellip;]</p></li>
+<li><p>(2.2) &mdash; [&hellip;]</p></li>
+<li><p>(2.3) &mdash; [&hellip;]</p></li>
+<li><p>(2.4) &mdash; [&hellip;]</p></li>
+<li><p>(2.5) &mdash; [&hellip;]</p></li>
+<li><p><ins>(2.?) &mdash; Otherwise, if <code>remove_cvref_t&lt;T&gt;</code> is a class type and search for 
+<code class='backtick'>end</code> in the scope of that class finds at least one declaration, <code class='backtick'>ranges::end(E)</code> is ill-formed.</ins></p></li>
+<li><p>(2.6) &mdash; [&hellip;]</p></li>
+<li><p>(2.7) &mdash; Otherwise, <code class='backtick'>ranges::end(E)</code> is ill-formed.</p></li>
+</ol>
+</blockquote>
+</li>
+
+<li><p>Modify 25.4.2 <a href="https://wg21.link/range.range">[range.range]</a> as indicated:</p>
+
+<blockquote>
+<p>
+-1- [&hellip;]
+</p>
+<pre>
+template&lt;class T&gt;
+  concept range =
+    requires(T&amp; t) {
+      ranges::begin(t);    // <i>sometimes equality-preserving (see below)</i>
+      ranges::end(t);
+    } <ins>&amp;&amp; <i>has-consistent-begin-end</i>&lt;T&gt;</ins>; <ins>// <i>see below</i></ins>
+</pre>
+<p>
+-2- [&hellip;]
+<p/>
+-3- [&hellip;]
+<p/>
+<ins>-?- <code><i>has-consistent-begin-end</i>&lt;T&gt;</code> is a constant expression of type <code class='backtick'>bool</code>, 
+and it is <code class='backtick'>true</code> if and only if for the <code class='backtick'>t</code> introduced in the requires-expression above, either</ins>
+</p>
+<ol style="list-style-type: none">
+<li><p><ins>(?.1) &mdash; both <code class='backtick'>ranges::begin(t)</code> and <code class='backtick'>ranges::end(t)</code> are specified to select 
+<code class='backtick'>auto(t.begin())</code> and <code class='backtick'>auto(t.end())</code> respectively, or</ins></p></li>
+<li><p><ins>(?.2) &mdash; both <code class='backtick'>ranges::begin(t)</code> and <code class='backtick'>ranges::end(t)</code> are specified not 
+to select <code class='backtick'>auto(t.begin())</code> and <code class='backtick'>auto(t.end())</code> respectively.</ins></p></li>
+</ol>
+</blockquote>
+</li>
+</ol>
+
+<p>
+<b>Option B</b>: (looser)
+</p>
+
+<ol>
+<li><p>Modify 25.4.2 <a href="https://wg21.link/range.range">[range.range]</a> as indicated:</p>
+
+<blockquote>
+<p>
+-1- [&hellip;]
+</p>
+<pre>
+template&lt;class T&gt;
+  concept range =
+    requires(T&amp; t) {
+      ranges::begin(t);    // <i>sometimes equality-preserving (see below)</i>
+      ranges::end(t);
+    }
+</pre>
+<p>
+-2- Given an expression <code class='backtick'>t</code> such that <code class='backtick'>decltype((t))</code> is <code>T&amp;</code>, <code class='backtick'>T</code> models <code class='backtick'>range</code> only if
+</p>
+<ol style="list-style-type: none">
+<li><p>(2.1) &mdash; [&hellip;]</p></li>
+<li><p>(2.2) &mdash; [&hellip;]</p></li>
+<li><p>(2.3) &mdash; [&hellip;]</p></li>
+<li><p><ins>(2.?) &mdash; The range-based <code class='backtick'>for</code> statement <code>for (auto&amp;&amp; x: t);</code> is well-formed, 
+and variable definitions <code>auto <i>begin</i> = <i>begin-expr</i>;</code> and <code>auto <i>end</i> = <i>end-expr</i>;</code> 
+in the equivalent form (8.6.5 <a href="https://wg21.link/stmt.ranged">[stmt.ranged]</a>) of that statement are semantically equivalent to 
+<code>auto <i>begin</i> = ranges::begin(t);</code> and <code>auto <i>end</i> = ranges::end(t);</code> respectively.</ins></p></li>
+</ol>
+
+</blockquote>
+</li>
+</ol>
+
+
+
+
+
+
+</body>
+</html>
