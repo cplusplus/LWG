@@ -54,7 +54,7 @@
 </style>
 </head>
 <body>
-<p>Revised 2025-10-03 at 13:26:01 UTC
+<p>Revised 2025-10-03 at 13:45:09 UTC
 </p><h2>Unresolved Issues</h2>
 <hr>
 <h3 id="423"><a href="#423">423</a><sup><a href="https://cplusplus.github.io/LWG/issue423">(i)</a></sup>. Effects of negative <code>streamsize</code> in iostreams</h3>
@@ -81172,6 +81172,68 @@ in the equivalent form (8.6.5 <a href="https://wg21.link/stmt.ranged">[stmt.rang
 <code>auto <i>begin</i> = ranges::begin(t);</code> and <code>auto <i>end</i> = ranges::end(t);</code> respectively.</ins></p></li>
 </ol>
 
+</blockquote>
+</li>
+</ol>
+
+
+
+
+
+
+<hr>
+<h3 id="4390"><a href="#4390">4390</a><sup><a href="https://cplusplus.github.io/LWG/issue4390">(i)</a></sup>. <code>simd::basic_vec(U&amp;&amp;)</code> default template parameter</h3>
+<p><b>Section:</b> 29.10.7.2 <a href="https://wg21.link/simd.ctor">[simd.ctor]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
+ <b>Submitter:</b> Hewill Kang <b>Opened:</b> 2025-09-29 <b>Last modified:</b> 2025-10-03</p>
+<p><b>Priority: </b>Not Prioritized
+</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
+<p><b>Discussion:</b></p>
+<p>
+<code>simd::basic_vec</code> supports <code>complex</code> after <a href="https://wg21.link/P2663R7" title=" Proposal to support interleaved complex values in std::simd">P2663R7</a>, defaulting
+the template parameter of its broadcast constructor seems to be reasonable, as this allows the 
+intuitive spelling:
+</p>
+<pre>
+simd::vec&lt;complex&lt;double&gt;&gt; sc1   ({-1.0, 0.5}); // <span style="color:#C80000;font-weight:bold">current ill-formed</span>
+simd::vec&lt;complex&lt;double&gt;&gt; sc2 = {{-1.0, 0.5}}; // <span style="color:#C80000;font-weight:bold">current ill-formed</span></pre>
+
+
+<p id="res-4390"><b>Proposed resolution:</b></p>
+<p>
+This wording is relative to <a href="https://wg21.link/N5014">N5014</a>.
+</p>
+
+<ol>
+
+<li><p>Modify 29.10.7.1 <a href="https://wg21.link/simd.overview">[simd.overview]</a> as indicated:</p>
+
+<blockquote>
+<pre>
+namespace std::simd {
+  template&lt;class T, class Abi&gt; class basic_vec {
+  public:
+    [&hellip;]
+    template&lt;class U <ins>= T</ins>&gt;
+      constexpr explicit(<i>see below</i>) basic_vec(U&amp;&amp; value) noexcept;
+    [&hellip;]
+  };
+}
+</pre>
+</blockquote>
+</li>
+
+<li><p>Modify 29.10.7.2 <a href="https://wg21.link/simd.ctor">[simd.ctor]</a> as indicated:</p>
+
+<blockquote>
+<pre>
+template&lt;class U <ins>= T</ins>&gt; constexpr explicit(<i>see below</i>) basic_vec(U&amp;&amp; value) noexcept;
+</pre>
+<blockquote>
+<p>
+-1- [&hellip;]
+</p>
+</blockquote>
 </blockquote>
 </li>
 </ol>
