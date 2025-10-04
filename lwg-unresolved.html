@@ -54,7 +54,7 @@
 </style>
 </head>
 <body>
-<p>Revised 2025-10-04 at 14:29:00 UTC
+<p>Revised 2025-10-04 at 15:05:57 UTC
 </p><h2>Unresolved Issues</h2>
 <hr>
 <h3 id="423"><a href="#423">423</a><sup><a href="https://cplusplus.github.io/LWG/issue423">(i)</a></sup>. Effects of negative <code>streamsize</code> in iostreams</h3>
@@ -82305,6 +82305,31 @@ namespace std::simd {
 </blockquote>
 </li>
 
+<li><p>Modify 29.10.7.1 <a href="https://wg21.link/simd.overview">[simd.overview]</a> as indicated:</p>
+
+<blockquote>
+<pre>
+namespace std::simd {
+  template&lt;size_t T, class Abi&gt; class basic_vec {
+  public:
+    using value_type = T;
+    using mask_type = basic_mask&lt;sizeof(T), Abi&gt;;
+    using abi_type = Abi;
+    using iterator = <i>simd-iterator</i>&lt;basic_vec&gt;;
+    using const_iterator = <i>simd-iterator</i>&lt;const basic_vec&gt;;
+
+    constexpr iterator begin() noexcept { return <ins>iterator(</ins><del>{</del>*this, 0<del>}</del><ins>)</ins>; }
+    constexpr const_iterator begin() const noexcept { return <ins>const_iterator(</ins><del>{</del>*this, 0<del>}</del><ins>)</ins>; }
+    constexpr const_iterator cbegin() const noexcept { return <ins>const_iterator(</ins><del>{</del>*this, 0<del>}</del><ins>)</ins>; }
+    constexpr default_sentinel_t end() const noexcept { return {}; }
+    constexpr default_sentinel_t cend() const noexcept { return {}; }
+    
+    [&hellip;]
+  };
+}
+</pre>
+</blockquote>
+</li>
 <li><p>Modify 29.10.9.1 <a href="https://wg21.link/simd.mask.overview">[simd.mask.overview]</a> as indicated:</p>
 
 <blockquote>
@@ -82316,6 +82341,7 @@ namespace std::simd {
     using abi_type = Abi;
     using iterator = <i>simd-iterator</i>&lt;basic_mask&gt;;
     using const_iterator = <i>simd-iterator</i>&lt;const basic_mask&gt;;
+
     constexpr iterator begin() noexcept { return <ins>iterator(</ins><del>{</del>*this, 0<del>}</del><ins>)</ins>; }
     constexpr const_iterator begin() const noexcept { return <ins>const_iterator(</ins><del>{</del>*this, 0<del>}</del><ins>)</ins>; }
     constexpr const_iterator cbegin() const noexcept { return <ins>const_iterator(</ins><del>{</del>*this, 0<del>}</del><ins>)</ins>; }
