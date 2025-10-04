@@ -54,7 +54,7 @@
 </style>
 </head>
 <body>
-<p>Revised 2025-10-04 at 10:33:31 UTC
+<p>Revised 2025-10-04 at 10:46:28 UTC
 </p><h2>Unresolved Issues</h2>
 <hr>
 <h3 id="423"><a href="#423">423</a><sup><a href="https://cplusplus.github.io/LWG/issue423">(i)</a></sup>. Effects of negative <code>streamsize</code> in iostreams</h3>
@@ -81722,6 +81722,53 @@ template&lt;<i>container-compatible-range</i>&lt;T&gt; R&gt;
 -9- <i>Effects</i>: Constructs an <code class='backtick'>inplace_vector</code> with the elements of the range <code class='backtick'>rg</code>.
 <p/>
 -10- <i>Complexity</i>: Linear in <code class='backtick'>ranges::distance(rg)</code>.
+</p>
+</blockquote>
+</blockquote>
+</li>
+</ol>
+
+
+
+
+
+
+<hr>
+<h3 id="4397"><a href="#4397">4397</a><sup><a href="https://cplusplus.github.io/LWG/issue4397">(i)</a></sup>. Improve <code>span(R&amp;&amp; r)</code></h3>
+<p><b>Section:</b> 23.7.2.2.2 <a href="https://wg21.link/span.cons">[span.cons]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
+ <b>Submitter:</b> Hewill Kang <b>Opened:</b> 2025-10-02 <b>Last modified:</b> 2025-10-04</p>
+<p><b>Priority: </b>Not Prioritized
+</p>
+<p><b>View all other</b> <a href="lwg-index.html#span.cons">issues</a> in [span.cons].</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
+<p><b>Discussion:</b></p>
+<p>
+It is preferable to reject <code>span&lt;int, 42&gt;(views::empty&lt;int&gt;)</code>
+at compile-time after <a href="https://wg21.link/P2280R4" title=" Using unknown references in constant expressions">P2280R4</a>, since applying <code class='backtick'>ranges::size</code> on those 
+ranges is a constant expression now.
+</p>
+
+
+<p id="res-4397"><b>Proposed resolution:</b></p>
+<p>
+This wording is relative to <a href="https://wg21.link/N5014">N5014</a>.
+</p>
+
+<ol>
+
+<li><p>Modify 23.7.2.2.2 <a href="https://wg21.link/span.cons">[span.cons]</a> as indicated:</p>
+
+<blockquote>
+<pre>
+template&lt;class R&gt; constexpr explicit(extent != dynamic_extent) span(R&amp;&amp; r);
+</pre>
+<blockquote>
+<p>
+<ins>-?- <i>Mandates</i>: If <code class='backtick'>extent</code> is not equal to <code class='backtick'>dynamic_extent</code> and <code class='backtick'>ranges::size(r)</code> is a
+constant expression, then <code class='backtick'>ranges::size(r) == extent</code> is <code class='backtick'>true</code>.</ins>
+<p/>
+-16- <i>Constraints</i>: Let <code class='backtick'>U</code> be <code>remove_reference_t&lt;ranges::range_reference_t&lt;R&gt;&gt;</code>. 
+[&hellip;]
 </p>
 </blockquote>
 </blockquote>
