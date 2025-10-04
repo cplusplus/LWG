@@ -54,7 +54,7 @@
 </style>
 </head>
 <body>
-<p>Revised 2025-10-04 at 09:55:59 UTC
+<p>Revised 2025-10-04 at 10:14:16 UTC
 </p><h2>Unresolved Issues</h2>
 <hr>
 <h3 id="423"><a href="#423">423</a><sup><a href="https://cplusplus.github.io/LWG/issue423">(i)</a></sup>. Effects of negative <code>streamsize</code> in iostreams</h3>
@@ -81615,6 +81615,43 @@ R(first, <ins>static_cast&lt;size_t&gt;(</ins>last<ins> - first)</ins>)
 </li>
 </ol>
 
+
+
+
+
+
+<hr>
+<h3 id="4395"><a href="#4395">4395</a><sup><a href="https://cplusplus.github.io/LWG/issue4395">(i)</a></sup>. <code class='backtick'>write_env</code> implementation-detail lambda should have explicit return type</h3>
+<p><b>Section:</b> 33.9.12.3 <a href="https://wg21.link/exec.write.env">[exec.write.env]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
+ <b>Submitter:</b> Robert A.H. Leahy <b>Opened:</b> 2025-09-29 <b>Last modified:</b> 2025-10-04</p>
+<p><b>Priority: </b>Not Prioritized
+</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
+<p><b>Discussion:</b></p>
+<p>
+In 33.9.12.3 <a href="https://wg21.link/exec.write.env">[exec.write.env]</a> the impls for <code class='backtick'>std::execution::write_env</code> has <code><i>get-env</i></code> 
+specified as:
+</p>
+<blockquote><pre>
+static constexpr auto <i>get-env</i> =
+  [](auto, const auto&amp; state, const auto&amp; rcvr) noexcept {
+    return <i>see-below</i>;
+  };
+</pre></blockquote>
+<p>
+This uses automatic return type deduction which means that the body of the lambda is actually instantiated 
+in a SFINAE-unfriendly way when attempting to compute various properties of the lambda (invocability, 
+return type, et cetera). This is undesirable and surprising as has been discovered in actual use/deployment 
+(see: <a href="https://github.com/NVIDIA/stdexec/pull/1654">https://github.com/NVIDIA/stdexec/pull/1654</a>).
+<p/>
+The fix is to explicitly provide a return type for the lambda which computes the type of the body.
+<p/>
+Note: This issue may indicate that the use of automatic return type deduction in the specification of
+sender algorithms more generally ought to be reconsidered/-examined.
+</p>
+
+
+<p id="res-4395"><b>Proposed resolution:</b></p>
 
 
 
