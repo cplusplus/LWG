@@ -88,7 +88,10 @@ However, formatting an adaptor requires formatting of the underlying range, and 
 the nonlocking_optimizations for all ranges.
 <p/>
 This problem does not occur for the <code class='backtick'>flat_set</code>, <code class='backtick'>flat_map</code> adaptors, which are also ranges, and 
-do not have a specialized formatter, and use range one.
+do not have a specialized formatter.
+<p/>
+The proposed wording has recently been implemented in 
+<a href="https://gcc.gnu.org/pipermail/libstdc++/2025-October/063758.html">gcc's libstdc++</a>.
 </p>
 
 
