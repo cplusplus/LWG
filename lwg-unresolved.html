@@ -54,7 +54,7 @@
 </style>
 </head>
 <body>
-<p>Revised 2025-10-04 at 12:18:48 UTC
+<p>Revised 2025-10-04 at 12:20:18 UTC
 </p><h2>Unresolved Issues</h2>
 <hr>
 <h3 id="423"><a href="#423">423</a><sup><a href="https://cplusplus.github.io/LWG/issue423">(i)</a></sup>. Effects of negative <code>streamsize</code> in iostreams</h3>
@@ -81895,6 +81895,9 @@ template&lt;class... Ts&gt;
 As consequence <code>pair&lt;const std::string, int&gt;</code> or 
 <code>pair&lt;const std::string&amp;, int&amp;&gt;</code> (<code class='backtick'>map</code> and <code class='backtick'>flat_map</code> reference types) 
 will not use unbuffered prints.
+<p/>
+The proposed wording has recently been implemented in 
+<a href="https://gcc.gnu.org/pipermail/libstdc++/2025-October/063758.html">gcc's libstdc++</a>.
 </p>
 
 
