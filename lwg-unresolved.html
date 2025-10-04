@@ -54,7 +54,7 @@
 </style>
 </head>
 <body>
-<p>Revised 2025-10-04 at 12:20:18 UTC
+<p>Revised 2025-10-04 at 13:16:32 UTC
 </p><h2>Unresolved Issues</h2>
 <hr>
 <h3 id="423"><a href="#423">423</a><sup><a href="https://cplusplus.github.io/LWG/issue423">(i)</a></sup>. Effects of negative <code>streamsize</code> in iostreams</h3>
@@ -81924,6 +81924,135 @@ namespace std {
     constexpr bool enable_nonlocking_formatter_optimization&lt;<i>pair-or-tuple</i>&lt;Ts...&gt;&gt; = 
       (enable_nonlocking_formatter_optimization&lt;<ins>remove_cvref_t&lt;</ins>Ts<ins>&gt;</ins>&gt; &amp;&amp; ...);
 }
+</pre>
+</blockquote>
+</blockquote>
+</li>
+</ol>
+
+
+
+
+
+
+<hr>
+<h3 id="4400"><a href="#4400">4400</a><sup><a href="https://cplusplus.github.io/LWG/issue4400">(i)</a></sup>. <code class='backtick'>enable_nonlocking_formatter_optimization</code> for durations with custom rep</h3>
+<p><b>Section:</b> 30.12 <a href="https://wg21.link/time.format">[time.format]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
+ <b>Submitter:</b> Tomasz Kamiński <b>Opened:</b> 2025-10-02 <b>Last modified:</b> 2025-10-04</p>
+<p><b>Priority: </b>Not Prioritized
+</p>
+<p><b>View other</b> <a href="lwg-index-open.html#time.format">active issues</a> in [time.format].</p>
+<p><b>View all other</b> <a href="lwg-index.html#time.format">issues</a> in [time.format].</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
+<p><b>Discussion:</b></p>
+<p>
+Currently the <code class='backtick'>enable_nonlocking_formatter_optimization</code> is enabled for 
+<code>duration&lt;Rep, Ratio&gt;</code> if it is enabled for <code class='backtick'>Rep</code>.
+</p>
+<blockquote><pre>
+template&lt;class Rep, class Period&gt; 
+  constexpr bool enable_nonlocking_formatter_optimization&lt;chrono::duration&lt;Rep, Period&gt;&gt;
+    =  enable_nonlocking_formatter_optimization&lt;Rep&gt;;
+</pre></blockquote>
+<p>
+However, this does not take into the consideration that for custom <code class='backtick'>Rep</code> types, the arithmetic 
+operations on <code class='backtick'>Rep</code> may also lock the stream leading to deadlock (for example log on overflow).
+Since they are required to handle the specifiers such as <code class='backtick'>%S</code> we should specialize 
+<code class='backtick'>enable_nonlocking_formatter_optimization</code> only for built-in types:
+</p>
+<blockquote><pre>
+template&lt;class Rep, class Period&gt; 
+  constexpr bool enable_nonlocking_formatter_optimization&lt;chrono::duration&lt;Rep, Period&gt;&gt;
+    =  is_arithmetic_v&lt;Rep&gt;;
+</pre></blockquote>
+<p>
+Furtheremore, for all types that are currently templated on <code class='backtick'>Duration</code> (<code class='backtick'>hh_mm_ss</code>, <code class='backtick'>sys_time</code>, 
+<code class='backtick'>local_time</code>, etc.), we <code class='backtick'>enable_nonlocking_formatter_optimization</code> by default. This again does 
+not take into consideration the arithmetic operations performed as duration. We should specialize 
+<code class='backtick'>enable_nonlocking_formatter_optimization</code> for all of them to be enabled if 
+<code class='backtick'>enable_nonlocking_formatter_optimization</code> is enabled for <code class='backtick'>duration</code>:
+</p>
+<blockquote><pre>
+template&lt;class Duration&gt; 
+  constexpr bool enable_nonlocking_formatter_optimization&lt;chrono::hh_mm_ss&lt;Duration&gt;&gt;
+    =  enable_nonlocking_formatter_optimization&lt;Duration&gt;;
+</pre></blockquote>
+<p>
+Note, that forwarding to <code class='backtick'>enable_nonlocking_formatter_optimization</code> on <code class='backtick'>Duration</code> instead of 
+checking <code class='backtick'>Duration::rep</code> allows users to specialize <code class='backtick'>enable_nonlocking_formatter_optimization</code> for 
+Durations with there custom representation types.
+<p/>
+The proposed wording has recently been implemented in 
+<a href="https://gcc.gnu.org/pipermail/libstdc++/2025-October/063758.html">gcc's libstdc++</a>.
+</p>
+
+
+<p id="res-4400"><b>Proposed resolution:</b></p>
+<p>
+This wording is relative to <a href="https://wg21.link/N5014">N5014</a>.
+</p>
+
+<ol>
+
+<li><p>Modify 30.12 <a href="https://wg21.link/time.format">[time.format]</a> as indicated:</p>
+
+<blockquote>
+<p>
+-8- For <code class='backtick'>chrono::duration</code><ins>, <code class='backtick'>chrono::hh_mm_ss</code>, <code class='backtick'>chrono::sys_time</code>, <code class='backtick'>chrono::utc_time</code>, 
+<code class='backtick'>chrono::tai_time</code>, <code class='backtick'>chrono::gps_time</code>, <code class='backtick'>chrono::file_time</code>, <code class='backtick'>chrono::local_time</code>, 
+<code>chrono::<i>local-time-format-t</i></code>, and <code class='backtick'>chrono::zoned_time</code></ins> the library only 
+provides the following specialization<ins>s</ins> of <code class='backtick'>enable_nonlocking_formatter_optimization</code>:
+</p>
+<blockquote>
+<pre>
+template&lt;class Rep, class Period&gt;
+  constexpr bool enable_nonlocking_formatter_optimization&lt;
+    chrono::duration&lt;Rep, Period&gt;&gt; =
+      <del>enable_nonlocking_formatter_optimization</del><ins>is_arithmetic_v</ins>&lt;Rep&gt;;
+      
+<ins>template&lt;class Duration&gt; 
+  constexpr bool enable_nonlocking_formatter_optimization&lt;chrono::hh_mm_ss&lt;Duration&gt;&gt; 
+     = enable_nonlocking_formatter_optimization&lt;Duration&gt;;
+
+template&lt;class Duration&gt; 
+  constexpr bool enable_nonlocking_formatter_optimization&lt;chrono::sys_time&lt;Duration&gt;&gt; 
+     = enable_nonlocking_formatter_optimization&lt;Duration&gt;;
+
+template&lt;class Duration&gt; 
+  constexpr bool enable_nonlocking_formatter_optimization&lt;chrono::utc_time&lt;Duration&gt;&gt; 
+     = enable_nonlocking_formatter_optimization&lt;Duration&gt;;
+
+template&lt;class Duration&gt; 
+  constexpr bool enable_nonlocking_formatter_optimization&lt;chrono::tai_time&lt;Duration&gt;&gt; 
+     = enable_nonlocking_formatter_optimization&lt;Duration&gt;;
+
+template&lt;class Duration&gt; 
+  constexpr bool enable_nonlocking_formatter_optimization&lt;chrono::gps_time&lt;Duration&gt;&gt; 
+     = enable_nonlocking_formatter_optimization&lt;Duration&gt;;
+
+template&lt;class Duration&gt; 
+  constexpr bool enable_nonlocking_formatter_optimization&lt;chrono::file_time&lt;Duration&gt;&gt; 
+     = enable_nonlocking_formatter_optimization&lt;Duration&gt;;
+
+template&lt;class Duration&gt; 
+  constexpr bool enable_nonlocking_formatter_optimization&lt;chrono::local_time&lt;Duration&gt;&gt; 
+     = enable_nonlocking_formatter_optimization&lt;Duration&gt;;
+
+template&lt;class Duration&gt; 
+  constexpr bool enable_nonlocking_formatter_optimization&lt;chrono::<i>local-time-format-t</i>&lt;Duration&gt;&gt; 
+     = enable_nonlocking_formatter_optimization&lt;Duration&gt;;</ins>
+</pre>
+</blockquote>
+<p>
+<del>-9- For <code class='backtick'>chrono::zoned_time</code> the library only provides the following specialization of 
+<code class='backtick'>enable_nonlocking_formatter_optimization</code>:</del>
+</p>
+<blockquote>
+<pre>
+template&lt;class Duration&gt;
+  constexpr bool enable_nonlocking_formatter_optimization&lt;
+    chrono::zoned_time&lt;Duration, const std::chrono::time_zone*&gt;&gt; 
+      = <del>true</del><ins>enable_nonlocking_formatter_optimization&lt;Duration&gt;</ins>;
 </pre>
 </blockquote>
 </blockquote>
