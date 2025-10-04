@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Issue 4399: enable_nonlocking_formatter_optimization for pair and tuple needs remove_cvref_t</title>
+<meta property="og:title" content="Issue 4399: enable_nonlocking_formatter_optimization for pair and tuple needs remove_cvref_t">
+<meta property="og:description" content="C++ library issue. Status: New">
+<meta property="og:url" content="https://cplusplus.github.io/LWG/issue4399.html">
+<meta property="og:type" content="website">
+<meta property="og:image" content="http://cplusplus.github.io/LWG/images/cpp_logo.png">
+<meta property="og:image:alt" content="C++ logo">
+<style>
+  p {text-align:justify}
+  li {text-align:justify}
+  pre code.backtick::before { content: "`" }
+  pre code.backtick::after { content: "`" }
+  blockquote.note
+  {
+    background-color:#E0E0E0;
+    padding-left: 15px;
+    padding-right: 15px;
+    padding-top: 1px;
+    padding-bottom: 1px;
+  }
+  ins {background-color:#A0FFA0}
+  del {background-color:#FFA0A0}
+  table.issues-index { border: 1px solid; border-collapse: collapse; }
+  table.issues-index th { text-align: center; padding: 4px; border: 1px solid; }
+  table.issues-index td { padding: 4px; border: 1px solid; }
+  table.issues-index td:nth-child(1) { text-align: right; }
+  table.issues-index td:nth-child(2) { text-align: left; }
+  table.issues-index td:nth-child(3) { text-align: left; }
+  table.issues-index td:nth-child(4) { text-align: left; }
+  table.issues-index td:nth-child(5) { text-align: center; }
+  table.issues-index td:nth-child(6) { text-align: center; }
+  table.issues-index td:nth-child(7) { text-align: left; }
+  table.issues-index td:nth-child(5) span.no-pr { color: red; }
+  @media (prefers-color-scheme: dark) {
+     html {
+        color: #ddd;
+        background-color: black;
+     }
+     ins {
+        background-color: #225522
+     }
+     del {
+        background-color: #662222
+     }
+     a {
+        color: #6af
+     }
+     a:visited {
+        color: #6af
+     }
+     blockquote.note
+     {
+        background-color: rgba(255, 255, 255, .10)
+     }
+  }
+</style>
+</head>
+<body>
+<hr>
+<p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#New">New</a> status.</em></p>
+<h3 id="4399"><a href="lwg-active.html#4399">4399</a>. <code class='backtick'>enable_nonlocking_formatter_optimization</code> for <code class='backtick'>pair</code> and <code class='backtick'>tuple</code> needs <code class='backtick'>remove_cvref_t</code></h3>
+<p><b>Section:</b> 28.5.9 <a href="https://wg21.link/format.tuple">[format.tuple]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
+ <b>Submitter:</b> Tomasz Kamiński <b>Opened:</b> 2025-10-02 <b>Last modified:</b> 2025-10-04</p>
+<p><b>Priority: </b>Not Prioritized
+</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
+<p><b>Discussion:</b></p>
+<p>
+The <code class='backtick'>enable_nonlocking_formatter_optimization</code> variable template is specialized only for <i>cv</i>-unqualified 
+types. However, the specialization for <code class='backtick'>pair</code> and <code class='backtick'>tuple</code> does not remove the references and 
+<i>cv</i>-qualifiers from the elements:
+</p>
+<blockquote><pre>
+template&lt;class... Ts&gt; 
+  constexpr bool enable_nonlocking_formatter_optimization&lt;<i>pair-or-tuple</i>&lt;Ts...&gt;&gt; = 
+    (enable_nonlocking_formatter_optimization&lt;Ts&gt; &amp;&amp; ...);
+</pre></blockquote>
+<p>
+As consequence <code>pair&lt;const std::string, int&gt;</code> or 
+<code>pair&lt;const std::string&amp;, int&amp;&gt;</code> (<code class='backtick'>map</code> and <code class='backtick'>flat_map</code> reference types) 
+will not use unbuffered prints.
+</p>
+
+
+<p id="res-4399"><b>Proposed resolution:</b></p>
+<p>
+This wording is relative to <a href="https://wg21.link/N5014">N5014</a>.
+</p>
+
+<ol>
+
+<li><p>Modify 28.5.9 <a href="https://wg21.link/format.tuple">[format.tuple]</a> as indicated:</p>
+
+<blockquote>
+<p>
+-1- For each of <code class='backtick'>pair</code> and <code class='backtick'>tuple</code>, the library provides the following formatter specialization 
+where <code><i>pair-or-tuple</i></code> is the name of the template:
+</p>
+<blockquote>
+<pre>
+namespace std {
+  [&hellip;]
+  
+  template&lt;class... Ts&gt; 
+    constexpr bool enable_nonlocking_formatter_optimization&lt;<i>pair-or-tuple</i>&lt;Ts...&gt;&gt; = 
+      (enable_nonlocking_formatter_optimization&lt;<ins>remove_cvref_t&lt;</ins>Ts<ins>&gt;</ins>&gt; &amp;&amp; ...);
+}
+</pre>
+</blockquote>
+</blockquote>
+</li>
+</ol>
+
+
+
+
+
+
+</body>
+</html>
