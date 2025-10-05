@@ -54,7 +54,7 @@
 </style>
 </head>
 <body>
-<p>Revised 2025-10-04 at 15:05:57 UTC
+<p>Revised 2025-10-05 at 15:20:52 UTC
 </p><h2>Unresolved Issues</h2>
 <hr>
 <h3 id="423"><a href="#423">423</a><sup><a href="https://cplusplus.github.io/LWG/issue423">(i)</a></sup>. Effects of negative <code>streamsize</code> in iostreams</h3>
@@ -82415,6 +82415,116 @@ template&lt;class R, class... Ts&gt;
 vec&lt;ranges::range_value_t&lt;R&gt;, <ins>static_cast&lt;<i>simd-size-type</i>&gt;(</ins>ranges::size(r)<ins>)</ins>&gt;
 </code>
 </p>
+</blockquote>
+</blockquote>
+</li>
+
+</ol>
+
+
+
+
+
+
+<hr>
+<h3 id="4404"><a href="#4404">4404</a><sup><a href="https://cplusplus.github.io/LWG/issue4404">(i)</a></sup>. Should <code>span(R&amp;&amp;)</code> CTAD apply P2280?</h3>
+<p><b>Section:</b> 23.7.2.2.3 <a href="https://wg21.link/span.deduct">[span.deduct]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
+ <b>Submitter:</b> Hewill Kang <b>Opened:</b> 2025-10-04 <b>Last modified:</b> 2025-10-05</p>
+<p><b>Priority: </b>Not Prioritized
+</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
+<p><b>Discussion:</b></p>
+<p>
+Thanks to <a href="https://wg21.link/P2280R4" title=" Using unknown references in constant expressions">P2280R4</a>, <code class='backtick'>simd::basic_vec</code>'s CTAD can specify template parameters 
+directly through <code class='backtick'>ranges::size</code>:
+</p>
+<blockquote><pre>
+basic_vec(R&amp;&amp; r, ...) -&gt; vec&lt;ranges::range_value_t&lt;R&gt;, ranges::size(r)&gt;
+</pre></blockquote>
+<p>
+However, <code>span</code> with similar CTAD forms do not have this automatic static size optimization applied:
+</p>
+<blockquote><pre>
+span(R&amp;&amp;) -&gt; span&lt;remove_reference_t&lt;ranges::range_reference_t&lt;R&gt;&gt;&gt;;
+</pre></blockquote>
+<p>
+Do we need to do it for <code>span</code>?
+<p/>
+Note that the <code class='backtick'>span</code> constructor actually requires <code class='backtick'>R</code> to be a <code class='backtick'>contiguous_range</code> and a
+<code class='backtick'>sized_range</code>. If it is further required that <code class='backtick'>ranges::size</code> be a constant expression, only raw array,
+<code class='backtick'>array</code>, <code class='backtick'>span</code>, <code class='backtick'>ranges::empty_view</code>, and <code class='backtick'>ranges::single_view</code> satisfy this requirement. 
+Given that <code class='backtick'>span</code> already has CTAD for raw arrays and <code class='backtick'>array</code>s, this improvement is not 
+significant, but it still seems worthwhile as a compile-time optimization for certain
+user-defined types or in some specialized cases (<a href="https://godbolt.org/z/EW6xnnfe1">demo</a>):
+</p>
+<blockquote><pre>
+#include &lt;array&gt;
+#include &lt;ranges&gt;
+
+constexpr std::size_t N = 42;
+
+auto to_span(auto&amp; r) { 
+  static_assert(std::ranges::size(r) == N); // ok after P2280
+  return std::span(r);
+}
+
+std::array&lt;int, N&gt; a;
+auto s1 = to_span(a);
+static_assert(std::same_as&lt;decltype(s1), std::span&lt;int, N&gt;&gt;);
+
+auto r = std::array&lt;int, N&gt;{} | std::views::as_const; // as_const_view&lt;owning_view&lt;array&lt;int, N&gt;&gt;&gt;
+auto s2 = to_span(r);
+static_assert(std::same_as&lt;decltype(s2), std::span&lt;const int, N&gt;&gt;); // <span style="color:red;font-weight:bolder">fire, ok after this PR</span>
+</pre></blockquote>
+
+
+<p id="res-4404"><b>Proposed resolution:</b></p>
+<p>
+This wording is relative to <a href="https://wg21.link/N5014">N5014</a>.
+</p>
+
+<ol>
+
+<li><p>Modify 23.7.2.2.1 <a href="https://wg21.link/span.overview">[span.overview]</a> as indicated:</p>
+
+<blockquote>
+<pre>
+namespace std {
+  template&lt;class ElementType, size_t Extent = dynamic_extent&gt;
+  class span {
+    [&hellip;]
+  };
+  [&hellip;]
+  template&lt;class R&gt;
+    span(R&amp;&amp; <ins>r</ins>) -&gt; <ins><i>see below</i></ins><del>span&lt;remove_reference_t&lt;ranges::range_reference_t&lt;R&gt;&gt;&gt;</del>;
+}
+</pre>
+</blockquote>
+</li>
+
+<li><p>Modify 23.7.2.2.3 <a href="https://wg21.link/span.deduct">[span.deduct]</a> as indicated:</p>
+
+<blockquote>
+<pre>
+template&lt;class R&gt;
+  span(R&amp;&amp; <ins>r</ins>) -&gt; <ins><i>see below</i></ins><del>span&lt;remove_reference_t&lt;ranges::range_reference_t&lt;R&gt;&gt;&gt;</del>;
+</pre>
+<blockquote>
+<p>
+-2- <i>Constraints</i>: <code class='backtick'>R</code> satisfies <code class='backtick'>ranges::contiguous_range</code>.
+<p/>
+<ins>-?- <i>Remarks</i>: Let <code class='backtick'>T</code> denote the type <code>remove_reference_t&lt;ranges::range_reference_t&lt;R&gt;&gt;</code>.
+The deduced type is equivalent to</ins>
+</p>
+<ol style="list-style-type: none">
+  <li><p>
+  <ins>(?.1) &mdash; <code>span&lt;T, static_cast&lt;size_t&gt;(ranges::size(r))&gt;</code>
+if <code class='backtick'>R</code> satisfies <code class='backtick'>ranges::sized_range</code> and <code class='backtick'>ranges::size(r)</code> is a constant expression.</ins>
+  </p></li>
+  <li><p>
+  <ins>(?.2) &mdash; <code>span&lt;T&gt;</code> otherwise.</ins>
+  </p></li>
+</ol>
 </blockquote>
 </blockquote>
 </li>

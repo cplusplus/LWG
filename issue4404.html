@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Issue 4404: Should span(R&amp;&amp;) CTAD apply P2280?</title>
+<meta property="og:title" content="Issue 4404: Should span(R&amp;&amp;) CTAD apply P2280?">
+<meta property="og:description" content="C++ library issue. Status: New">
+<meta property="og:url" content="https://cplusplus.github.io/LWG/issue4404.html">
+<meta property="og:type" content="website">
+<meta property="og:image" content="http://cplusplus.github.io/LWG/images/cpp_logo.png">
+<meta property="og:image:alt" content="C++ logo">
+<style>
+  p {text-align:justify}
+  li {text-align:justify}
+  pre code.backtick::before { content: "`" }
+  pre code.backtick::after { content: "`" }
+  blockquote.note
+  {
+    background-color:#E0E0E0;
+    padding-left: 15px;
+    padding-right: 15px;
+    padding-top: 1px;
+    padding-bottom: 1px;
+  }
+  ins {background-color:#A0FFA0}
+  del {background-color:#FFA0A0}
+  table.issues-index { border: 1px solid; border-collapse: collapse; }
+  table.issues-index th { text-align: center; padding: 4px; border: 1px solid; }
+  table.issues-index td { padding: 4px; border: 1px solid; }
+  table.issues-index td:nth-child(1) { text-align: right; }
+  table.issues-index td:nth-child(2) { text-align: left; }
+  table.issues-index td:nth-child(3) { text-align: left; }
+  table.issues-index td:nth-child(4) { text-align: left; }
+  table.issues-index td:nth-child(5) { text-align: center; }
+  table.issues-index td:nth-child(6) { text-align: center; }
+  table.issues-index td:nth-child(7) { text-align: left; }
+  table.issues-index td:nth-child(5) span.no-pr { color: red; }
+  @media (prefers-color-scheme: dark) {
+     html {
+        color: #ddd;
+        background-color: black;
+     }
+     ins {
+        background-color: #225522
+     }
+     del {
+        background-color: #662222
+     }
+     a {
+        color: #6af
+     }
+     a:visited {
+        color: #6af
+     }
+     blockquote.note
+     {
+        background-color: rgba(255, 255, 255, .10)
+     }
+  }
+</style>
+</head>
+<body>
+<hr>
+<p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#New">New</a> status.</em></p>
+<h3 id="4404"><a href="lwg-active.html#4404">4404</a>. Should <code>span(R&amp;&amp;)</code> CTAD apply P2280?</h3>
+<p><b>Section:</b> 23.7.2.2.3 <a href="https://wg21.link/span.deduct">[span.deduct]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
+ <b>Submitter:</b> Hewill Kang <b>Opened:</b> 2025-10-04 <b>Last modified:</b> 2025-10-05</p>
+<p><b>Priority: </b>Not Prioritized
+</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
+<p><b>Discussion:</b></p>
+<p>
+Thanks to <a href="https://wg21.link/P2280R4" title=" Using unknown references in constant expressions">P2280R4</a>, <code class='backtick'>simd::basic_vec</code>'s CTAD can specify template parameters 
+directly through <code class='backtick'>ranges::size</code>:
+</p>
+<blockquote><pre>
+basic_vec(R&amp;&amp; r, ...) -&gt; vec&lt;ranges::range_value_t&lt;R&gt;, ranges::size(r)&gt;
+</pre></blockquote>
+<p>
+However, <code>span</code> with similar CTAD forms do not have this automatic static size optimization applied:
+</p>
+<blockquote><pre>
+span(R&amp;&amp;) -&gt; span&lt;remove_reference_t&lt;ranges::range_reference_t&lt;R&gt;&gt;&gt;;
+</pre></blockquote>
+<p>
+Do we need to do it for <code>span</code>?
+<p/>
+Note that the <code class='backtick'>span</code> constructor actually requires <code class='backtick'>R</code> to be a <code class='backtick'>contiguous_range</code> and a
+<code class='backtick'>sized_range</code>. If it is further required that <code class='backtick'>ranges::size</code> be a constant expression, only raw array,
+<code class='backtick'>array</code>, <code class='backtick'>span</code>, <code class='backtick'>ranges::empty_view</code>, and <code class='backtick'>ranges::single_view</code> satisfy this requirement. 
+Given that <code class='backtick'>span</code> already has CTAD for raw arrays and <code class='backtick'>array</code>s, this improvement is not 
+significant, but it still seems worthwhile as a compile-time optimization for certain
+user-defined types or in some specialized cases (<a href="https://godbolt.org/z/EW6xnnfe1">demo</a>):
+</p>
+<blockquote><pre>
+#include &lt;array&gt;
+#include &lt;ranges&gt;
+
+constexpr std::size_t N = 42;
+
+auto to_span(auto&amp; r) { 
+  static_assert(std::ranges::size(r) == N); // ok after P2280
+  return std::span(r);
+}
+
+std::array&lt;int, N&gt; a;
+auto s1 = to_span(a);
+static_assert(std::same_as&lt;decltype(s1), std::span&lt;int, N&gt;&gt;);
+
+auto r = std::array&lt;int, N&gt;{} | std::views::as_const; // as_const_view&lt;owning_view&lt;array&lt;int, N&gt;&gt;&gt;
+auto s2 = to_span(r);
+static_assert(std::same_as&lt;decltype(s2), std::span&lt;const int, N&gt;&gt;); // <span style="color:red;font-weight:bolder">fire, ok after this PR</span>
+</pre></blockquote>
+
+
+<p id="res-4404"><b>Proposed resolution:</b></p>
+<p>
+This wording is relative to <a href="https://wg21.link/N5014">N5014</a>.
+</p>
+
+<ol>
+
+<li><p>Modify 23.7.2.2.1 <a href="https://wg21.link/span.overview">[span.overview]</a> as indicated:</p>
+
+<blockquote>
+<pre>
+namespace std {
+  template&lt;class ElementType, size_t Extent = dynamic_extent&gt;
+  class span {
+    [&hellip;]
+  };
+  [&hellip;]
+  template&lt;class R&gt;
+    span(R&amp;&amp; <ins>r</ins>) -&gt; <ins><i>see below</i></ins><del>span&lt;remove_reference_t&lt;ranges::range_reference_t&lt;R&gt;&gt;&gt;</del>;
+}
+</pre>
+</blockquote>
+</li>
+
+<li><p>Modify 23.7.2.2.3 <a href="https://wg21.link/span.deduct">[span.deduct]</a> as indicated:</p>
+
+<blockquote>
+<pre>
+template&lt;class R&gt;
+  span(R&amp;&amp; <ins>r</ins>) -&gt; <ins><i>see below</i></ins><del>span&lt;remove_reference_t&lt;ranges::range_reference_t&lt;R&gt;&gt;&gt;</del>;
+</pre>
+<blockquote>
+<p>
+-2- <i>Constraints</i>: <code class='backtick'>R</code> satisfies <code class='backtick'>ranges::contiguous_range</code>.
+<p/>
+<ins>-?- <i>Remarks</i>: Let <code class='backtick'>T</code> denote the type <code>remove_reference_t&lt;ranges::range_reference_t&lt;R&gt;&gt;</code>.
+The deduced type is equivalent to</ins>
+</p>
+<ol style="list-style-type: none">
+  <li><p>
+  <ins>(?.1) &mdash; <code>span&lt;T, static_cast&lt;size_t&gt;(ranges::size(r))&gt;</code>
+if <code class='backtick'>R</code> satisfies <code class='backtick'>ranges::sized_range</code> and <code class='backtick'>ranges::size(r)</code> is a constant expression.</ins>
+  </p></li>
+  <li><p>
+  <ins>(?.2) &mdash; <code>span&lt;T&gt;</code> otherwise.</ins>
+  </p></li>
+</ol>
+</blockquote>
+</blockquote>
+</li>
+
+</ol>
+
+
+
+
+
+
+</body>
+</html>
