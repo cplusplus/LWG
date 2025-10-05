@@ -90,7 +90,7 @@ Note that the <code class='backtick'>span</code> constructor actually requires <
 <code class='backtick'>array</code>, <code class='backtick'>span</code>, <code class='backtick'>ranges::empty_view</code>, and <code class='backtick'>ranges::single_view</code> satisfy this requirement. 
 Given that <code class='backtick'>span</code> already has CTAD for raw arrays and <code class='backtick'>array</code>s, this improvement is not 
 significant, but it still seems worthwhile as a compile-time optimization for certain
-user-defined types or in some specialized cases (<a href="https://godbolt.org/z/EW6xnnfe1">demo</a>):
+user-defined types or in some specialized cases (<a href="https://godbolt.org/z/vjPxKzdTf">demo</a>):
 </p>
 <blockquote><pre>
 #include &lt;array&gt;
