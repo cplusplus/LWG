@@ -64,8 +64,8 @@
 <p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#New">New</a> status.</em></p>
 <h3 id="4322"><a href="lwg-active.html#4322">4322</a>. Problematic <i>Constraints</i> on incomplete types in indirect and polymorphic</h3>
 <p><b>Section:</b> 20.4 <a href="https://wg21.link/mem.composite.types">[mem.composite.types]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Jonathan B. Coe <b>Opened:</b> 2025-08-20 <b>Last modified:</b> 2025-08-28</p>
-<p><b>Priority: </b>Not Prioritized
+ <b>Submitter:</b> Jonathan B. Coe <b>Opened:</b> 2025-08-20 <b>Last modified:</b> 2025-10-07</p>
+<p><b>Priority: </b>2
 </p>
 <p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
 <p><b>Discussion:</b></p>
@@ -99,6 +99,26 @@ to be evaluated.
 <i>Constraints</i> on <code class='backtick'>T</code> should be converted to <i>Mandates</i> on <code class='backtick'>T</code> so that constraint evaluation 
 does not require <code class='backtick'>T</code> to be a complete type.
 </p>
+
+<p><i>[2025-10-07; Reflector poll]</i></p>
+
+<p>
+Set priority to 2 after reflector poll.
+</p>
+<p>
+"Do we have a concrete use case of an A-like type? Is making the traits give
+wrong answers preferable to hard errors? I don't think the <code class='backtick'>polymorphic</code> part
+makes sense. Since the constraints still require <code class='backtick'>U</code>/<code class='backtick'>UU</code> to be complete,
+either <code class='backtick'>T</code> is a base class and it must be complete, or it is not and it doesn't
+matter."
+</p>
+<p>
+"The problematic members are non-template functions, so they are instantiated
+early and the requires clauses are checked too soon. Think this can be solved
+without giving up SFINAE-friendliness, by making the affected members
+themselves templates."
+</p>
+
 
 
 <p id="res-4322"><b>Proposed resolution:</b></p>
