@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <title>Issue 3625: Should &lt;stacktrace&gt; provide range access function templates?</title>
 <meta property="og:title" content="Issue 3625: Should &lt;stacktrace&gt; provide range access function templates?">
-<meta property="og:description" content="C++ library issue. Status: New">
+<meta property="og:description" content="C++ library issue. Status: Open">
 <meta property="og:url" content="https://cplusplus.github.io/LWG/issue3625.html">
 <meta property="og:type" content="website">
 <meta property="og:image" content="http://cplusplus.github.io/LWG/images/cpp_logo.png">
@@ -61,14 +61,14 @@
 </head>
 <body>
 <hr>
-<p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#New">New</a> status.</em></p>
+<p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#Open">Open</a> status.</em></p>
 <h3 id="3625"><a href="lwg-active.html#3625">3625</a>. Should <code>&lt;stacktrace&gt;</code> provide range access function templates?</h3>
-<p><b>Section:</b> 19.6.2 <a href="https://wg21.link/stacktrace.syn">[stacktrace.syn]</a>, 24.7 <a href="https://wg21.link/iterator.range">[iterator.range]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Jiang An <b>Opened:</b> 2021-10-23 <b>Last modified:</b> 2022-01-29</p>
+<p><b>Section:</b> 19.6.2 <a href="https://wg21.link/stacktrace.syn">[stacktrace.syn]</a>, 24.7 <a href="https://wg21.link/iterator.range">[iterator.range]</a> <b>Status:</b> <a href="lwg-active.html#Open">Open</a>
+ <b>Submitter:</b> Jiang An <b>Opened:</b> 2021-10-23 <b>Last modified:</b> 2025-10-07</p>
 <p><b>Priority: </b>3
 </p>
 <p><b>View all other</b> <a href="lwg-index.html#stacktrace.syn">issues</a> in [stacktrace.syn].</p>
-<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#Open">Open</a> status.</p>
 <p><b>Discussion:</b></p>
 <p>
 Range access function templates (24.7 <a href="https://wg21.link/iterator.range">[iterator.range]</a>) are available in every standard header 
@@ -90,11 +90,19 @@ This issue is related to LWG <a href="lwg-active.html#3624" title="Inconsistency
 Set priority to 3 after reflector poll.
 </p>
 
+<p><i>[2025-10-07; Status &rarr; Open]</i></p>
+
+<p>
+This will be resolved by <a href="https://wg21.link/P3016R6" title=" Resolve inconsistencies in begin/end for valarray and braced initializer lists">P3016R6</a>.
+The <code>&lt;initializer_list&gt;</code> part is covered by <a href="lwg-active.html#3624" title="Inconsistency of &lt;typeinfo&gt;, &lt;initializer_list&gt;, and 
+&lt;compare&gt; in the standard library (Status: New)">3624</a><sup><a href="https://cplusplus.github.io/LWG/issue3624" title="Latest snapshot">(i)</a></sup>.
+</p>
+
 
 
 <p id="res-3625"><b>Proposed resolution:</b></p>
 <p>
-This wording is relative to <a href="https://wg21.link/n4901">N4901</a>.
+This wording is relative to <a href="https://wg21.link/N4901" title=" Working Draft, Standard for Programming Language C++">N4901</a>.
 </p>
 
 <blockquote class="note">

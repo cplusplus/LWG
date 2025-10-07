@@ -54,7 +54,7 @@
 </style>
 </head>
 <body>
-<p>Revised 2025-10-05 at 16:43:56 UTC
+<p>Revised 2025-10-07 at 09:40:44 UTC
 </p><h2>Unresolved Issues</h2>
 <hr>
 <h3 id="423"><a href="#423">423</a><sup><a href="https://cplusplus.github.io/LWG/issue423">(i)</a></sup>. Effects of negative <code>streamsize</code> in iostreams</h3>
@@ -35071,7 +35071,7 @@ that <code>&lt;stackstrace&gt;</code> has not been implemented now) to reduce un
 <p><i>[2021-10-24; Daniel comments]</i></p>
 
 <p>
-This issue is related to and depending on LWG <a href="lwg-active.html#3625" title="Should &lt;stacktrace&gt; provide range access function templates? (Status: New)">3625</a><sup><a href="https://cplusplus.github.io/LWG/issue3625" title="Latest snapshot">(i)</a></sup>.
+This issue is related to and depending on LWG <a href="lwg-active.html#3625" title="Should &lt;stacktrace&gt; provide range access function templates? (Status: Open)">3625</a><sup><a href="https://cplusplus.github.io/LWG/issue3625" title="Latest snapshot">(i)</a></sup>.
 </p>
 
 <p><i>[2022-01-29; Reflector poll]</i></p>
@@ -35090,7 +35090,7 @@ This wording is relative to <a href="https://wg21.link/n4901">N4901</a>.
 <blockquote class="note">
 <p>
 [<i>Drafting note:</i> The proposed wording below contains one conditional change, it is therefore depending upon
-LWG <a href="lwg-active.html#3625" title="Should &lt;stacktrace&gt; provide range access function templates? (Status: New)">3625</a><sup><a href="https://cplusplus.github.io/LWG/issue3625" title="Latest snapshot">(i)</a></sup>.]
+LWG <a href="lwg-active.html#3625" title="Should &lt;stacktrace&gt; provide range access function templates? (Status: Open)">3625</a><sup><a href="https://cplusplus.github.io/LWG/issue3625" title="Latest snapshot">(i)</a></sup>.]
 </p>
 </blockquote>
 
@@ -35109,12 +35109,12 @@ we should also add <code>#include &lt;initializer_list&gt;</code> to 19.6.2 <a h
 
 <hr>
 <h3 id="3625"><a href="#3625">3625</a><sup><a href="https://cplusplus.github.io/LWG/issue3625">(i)</a></sup>. Should <code>&lt;stacktrace&gt;</code> provide range access function templates?</h3>
-<p><b>Section:</b> 19.6.2 <a href="https://wg21.link/stacktrace.syn">[stacktrace.syn]</a>, 24.7 <a href="https://wg21.link/iterator.range">[iterator.range]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Jiang An <b>Opened:</b> 2021-10-23 <b>Last modified:</b> 2022-01-29</p>
+<p><b>Section:</b> 19.6.2 <a href="https://wg21.link/stacktrace.syn">[stacktrace.syn]</a>, 24.7 <a href="https://wg21.link/iterator.range">[iterator.range]</a> <b>Status:</b> <a href="lwg-active.html#Open">Open</a>
+ <b>Submitter:</b> Jiang An <b>Opened:</b> 2021-10-23 <b>Last modified:</b> 2025-10-07</p>
 <p><b>Priority: </b>3
 </p>
 <p><b>View all other</b> <a href="lwg-index.html#stacktrace.syn">issues</a> in [stacktrace.syn].</p>
-<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#Open">Open</a> status.</p>
 <p><b>Discussion:</b></p>
 <p>
 Range access function templates (24.7 <a href="https://wg21.link/iterator.range">[iterator.range]</a>) are available in every standard header 
@@ -35136,11 +35136,19 @@ This issue is related to LWG <a href="lwg-active.html#3624" title="Inconsistency
 Set priority to 3 after reflector poll.
 </p>
 
+<p><i>[2025-10-07; Status &rarr; Open]</i></p>
+
+<p>
+This will be resolved by <a href="https://wg21.link/P3016R6" title=" Resolve inconsistencies in begin/end for valarray and braced initializer lists">P3016R6</a>.
+The <code>&lt;initializer_list&gt;</code> part is covered by <a href="lwg-active.html#3624" title="Inconsistency of &lt;typeinfo&gt;, &lt;initializer_list&gt;, and 
+&lt;compare&gt; in the standard library (Status: New)">3624</a><sup><a href="https://cplusplus.github.io/LWG/issue3624" title="Latest snapshot">(i)</a></sup>.
+</p>
+
 
 
 <p id="res-3625"><b>Proposed resolution:</b></p>
 <p>
-This wording is relative to <a href="https://wg21.link/n4901">N4901</a>.
+This wording is relative to <a href="https://wg21.link/N4901" title=" Working Draft, Standard for Programming Language C++">N4901</a>.
 </p>
 
 <blockquote class="note">
@@ -80920,13 +80928,13 @@ template&lt;<ins>copyable</ins><del>class</del> T, <ins>copyable</ins><del>class
 <hr>
 <h3 id="4387"><a href="#4387">4387</a><sup><a href="https://cplusplus.github.io/LWG/issue4387">(i)</a></sup>. Including <code>&lt;stacktrace&gt;</code> doesn't provide <code class='backtick'>std::begin/end</code>
 </h3>
-<p><b>Section:</b> 24.7 <a href="https://wg21.link/iterator.range">[iterator.range]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Hewill Kang <b>Opened:</b> 2025-09-27 <b>Last modified:</b> 2025-09-27</p>
+<p><b>Section:</b> 24.7 <a href="https://wg21.link/iterator.range">[iterator.range]</a> <b>Status:</b> <a href="lwg-active.html#Open">Open</a>
+ <b>Submitter:</b> Hewill Kang <b>Opened:</b> 2025-09-27 <b>Last modified:</b> 2025-10-07</p>
 <p><b>Priority: </b>Not Prioritized
 </p>
 <p><b>View other</b> <a href="lwg-index-open.html#iterator.range">active issues</a> in [iterator.range].</p>
 <p><b>View all other</b> <a href="lwg-index.html#iterator.range">issues</a> in [iterator.range].</p>
-<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#Open">Open</a> status.</p>
 <p><b>Discussion:</b></p>
 <p>
 <code class='backtick'>basic_stacktrace</code> is explicitly specified as a reversible container, an allocator-aware container, 
@@ -80936,6 +80944,14 @@ and a const-qualified sequence container, with members <code class='backtick'>be
 Thus, it's worth making the corresponding free functions available when introducing
 <code>&lt;stacktrace&gt;</code>, just like other containers.
 </p>
+
+<p><i>[2025-10-07; Reflector poll]</i></p>
+
+<p>
+Approved as Tentatively Ready, but this is a duplicate of <a href="lwg-active.html#3625" title="Should &lt;stacktrace&gt; provide range access function templates? (Status: Open)">3625</a><sup><a href="https://cplusplus.github.io/LWG/issue3625" title="Latest snapshot">(i)</a></sup>
+which will be resolved by <a href="https://wg21.link/P3016R6" title=" Resolve inconsistencies in begin/end for valarray and braced initializer lists">P3016R6</a>. So move Status &rarr; Open.
+</p>
+
 
 
 <p id="res-4387"><b>Proposed resolution:</b></p>
