@@ -54,7 +54,7 @@
 </style>
 </head>
 <body>
-<p>Revised 2025-10-10 at 13:47:50 UTC
+<p>Revised 2025-10-10 at 14:09:29 UTC
 </p><h2>Unresolved Issues</h2>
 <hr>
 <h3 id="423"><a href="#423">423</a><sup><a href="https://cplusplus.github.io/LWG/issue423">(i)</a></sup>. Effects of negative <code>streamsize</code> in iostreams</h3>
@@ -81123,7 +81123,7 @@ The preprocessing tokens comprising the second and subsequent arguments to
 <hr>
 <h3 id="4389"><a href="#4389">4389</a><sup><a href="https://cplusplus.github.io/LWG/issue4389">(i)</a></sup>. <code class='backtick'>ranges::for_each</code> possibly behaves differently from range-based <code class='backtick'>for</code></h3>
 <p><b>Section:</b> 25.4.2 <a href="https://wg21.link/range.range">[range.range]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Jiang An <b>Opened:</b> 2025-09-28 <b>Last modified:</b> 2025-10-03</p>
+ <b>Submitter:</b> Jiang An <b>Opened:</b> 2025-09-28 <b>Last modified:</b> 2025-10-10</p>
 <p><b>Priority: </b>Not Prioritized
 </p>
 <p><b>View all other</b> <a href="lwg-index.html#range.range">issues</a> in [range.range].</p>
@@ -81177,13 +81177,21 @@ requires compilers to add new intrinsics when reflection is absent.
 -2- Given a subexpression <code class='backtick'>E</code> with type <code class='backtick'>T</code>, let <code class='backtick'>t</code> be an lvalue that denotes the reified object for <code class='backtick'>E</code>. Then:
 </p>
 <ol style="list-style-type: none">
-<li><p>(2.1) &mdash; [&hellip;]</p></li>
-<li><p>(2.2) &mdash; [&hellip;]</p></li>
-<li><p>(2.3) &mdash; [&hellip;]</p></li>
-<li><p>(2.4) &mdash; [&hellip;]</p></li>
+<li><p>(2.1) &mdash; If <code class='backtick'>E</code> is an rvalue and <code>enable_borrowed_range&lt;remove_cv_t&lt;T&gt;&gt;</code> is 
+<code class='backtick'>false</code>, <code class='backtick'>ranges::begin(E)</code> is ill-formed.</p></li>
+<li><p>(2.2) &mdash; Otherwise, if <code class='backtick'>T</code> is an array type (9.3.4.5 <a href="https://wg21.link/dcl.array">[dcl.array]</a>) and 
+<code>remove_all_extents_t&lt;T&gt;</code> is an incomplete type, <code class='backtick'>ranges::begin(E)</code> is 
+ill-formed with no diagnostic required.</p></li>
+<li><p>(2.3) &mdash; Otherwise, if <code class='backtick'>T</code> is an array type, <code class='backtick'>ranges::begin(E)</code> is 
+expression-equivalent to <code class='backtick'>t + 0</code>.</p></li>
+<li><p>(2.4) &mdash; Otherwise, if <code class='backtick'>auto(t.begin())</code> is a valid expression whose type models 
+<code class='backtick'>input_or_output_iterator</code>, <code class='backtick'>ranges::begin(E)</code> is expression-equivalent to <code class='backtick'>auto(t.begin())</code>.</p></li>
 <li><p><ins>(2.?) &mdash; Otherwise, if <code>remove_cvref_t&lt;T&gt;</code> is a class type and search for 
 <code class='backtick'>begin</code> in the scope of that class finds at least one declaration, <code class='backtick'>ranges::begin(E)</code> is ill-formed.</ins></p></li>
-<li><p>(2.5) &mdash; [&hellip;]</p></li>
+<li><p>(2.5) &mdash; Otherwise, if <code class='backtick'>T</code> is a class or enumeration type and <code class='backtick'>auto(begin(t))</code> 
+is a valid expression whose type models <code class='backtick'>input_or_output_iterator</code> where the meaning of <code class='backtick'>begin</code> 
+is established as-if by performing argument-dependent lookup only (6.5.4 <a href="https://wg21.link/basic.lookup.argdep">[basic.lookup.argdep]</a>), 
+then <code class='backtick'>ranges::begin(E)</code> is expression-equivalent to that expression.</p></li>
 <li><p>(2.6) &mdash; Otherwise, <code class='backtick'>ranges::begin(E)</code> is ill-formed.</p></li>
 </ol>
 </blockquote>
@@ -81196,14 +81204,24 @@ requires compilers to add new intrinsics when reflection is absent.
 -2- Given a subexpression <code class='backtick'>E</code> with type <code class='backtick'>T</code>, let <code class='backtick'>t</code> be an lvalue that denotes the reified object for <code class='backtick'>E</code>. Then:
 </p>
 <ol style="list-style-type: none">
-<li><p>(2.1) &mdash; [&hellip;]</p></li>
-<li><p>(2.2) &mdash; [&hellip;]</p></li>
-<li><p>(2.3) &mdash; [&hellip;]</p></li>
-<li><p>(2.4) &mdash; [&hellip;]</p></li>
-<li><p>(2.5) &mdash; [&hellip;]</p></li>
+<li><p>(2.1) &mdash; If <code class='backtick'>E</code> is an rvalue and <code>enable_borrowed_range&lt;remove_cv_t&lt;T&gt;&gt;</code> 
+is <code class='backtick'>false</code>, <code class='backtick'>ranges::end(E)</code> is ill-formed.</p></li>
+<li><p>(2.2) &mdash; Otherwise, if <code class='backtick'>T</code> is an array type (9.3.4.5 <a href="https://wg21.link/dcl.array">[dcl.array]</a>) and 
+<code>remove_all_extents_t&lt;T&gt;</code> is an incomplete type, <code class='backtick'>ranges::end(E)</code> is ill-formed 
+with no diagnostic required.</p></li>
+<li><p>(2.3) &mdash; Otherwise, if <code class='backtick'>T</code> is an array of unknown bound, <code class='backtick'>ranges::end(E)</code> is ill-formed.</p></li>
+<li><p>(2.4) &mdash; Otherwise, if <code class='backtick'>T</code> is an array, <code class='backtick'>ranges::end(E)</code> is expression-equivalent to 
+<code>t + extent_v&lt;T&gt;</code>.</p></li>
+<li><p>(2.5) &mdash; Otherwise, if <code class='backtick'>auto(t.end())</code> is a valid expression whose type models 
+<code>sentinel_for&lt;iterator_t&lt;T&gt;&gt;</code> then <code class='backtick'>ranges::end(E)</code> is expression-equivalent to 
+<code class='backtick'>auto(t.end())</code>.</p></li>
 <li><p><ins>(2.?) &mdash; Otherwise, if <code>remove_cvref_t&lt;T&gt;</code> is a class type and search for 
 <code class='backtick'>end</code> in the scope of that class finds at least one declaration, <code class='backtick'>ranges::end(E)</code> is ill-formed.</ins></p></li>
-<li><p>(2.6) &mdash; [&hellip;]</p></li>
+<li><p>(2.6) &mdash; Otherwise, if <code class='backtick'>T</code> is a class or enumeration type and <code class='backtick'>auto(end(t))</code> 
+is a valid expression whose type models <code>sentinel_for&lt;iterator_t&lt;T&gt;&gt;</code> 
+where the meaning of end is established as-if by performing argument-dependent
+lookup only (6.5.4 <a href="https://wg21.link/basic.lookup.argdep">[basic.lookup.argdep]</a>), then <code class='backtick'>ranges::end(E)</code> is expression-equivalent 
+to that expression.</p></li>
 <li><p>(2.7) &mdash; Otherwise, <code class='backtick'>ranges::end(E)</code> is ill-formed.</p></li>
 </ol>
 </blockquote>
