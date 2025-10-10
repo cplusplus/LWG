@@ -54,7 +54,7 @@
 </style>
 </head>
 <body>
-<p>Revised 2025-10-07 at 15:52:21 UTC
+<p>Revised 2025-10-10 at 11:28:33 UTC
 </p><h2>Unresolved Issues</h2>
 <hr>
 <h3 id="423"><a href="#423">423</a><sup><a href="https://cplusplus.github.io/LWG/issue423">(i)</a></sup>. Effects of negative <code>streamsize</code> in iostreams</h3>
@@ -82561,6 +82561,162 @@ if <code class='backtick'>R</code> satisfies <code class='backtick'>ranges::size
   <ins>(?.2) &mdash; <code>span&lt;T&gt;</code> otherwise.</ins>
   </p></li>
 </ol>
+</blockquote>
+</blockquote>
+</li>
+
+</ol>
+
+
+
+
+
+
+<hr>
+<h3 id="4405"><a href="#4405">4405</a><sup><a href="https://cplusplus.github.io/LWG/issue4405">(i)</a></sup>. <code class='backtick'>mdspan</code> constructor should disallow derived to base conversions</h3>
+<p><b>Section:</b> 23.7.3.6.2 <a href="https://wg21.link/mdspan.mdspan.cons">[mdspan.mdspan.cons]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
+ <b>Submitter:</b> Hewill Kang <b>Opened:</b> 2025-10-05 <b>Last modified:</b> 2025-10-10</p>
+<p><b>Priority: </b>Not Prioritized
+</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
+<p><b>Discussion:</b></p>
+<p>
+Unlike <code class='backtick'>ranges::subrange</code> or <code class='backtick'>span</code>, <code class='backtick'>mdspan</code> syntactically allows a multidimensional
+viewing base class via a derived class pointer (<a href="https://godbolt.org/z/c56h9fjs8">demo</a>):
+</p>
+<blockquote><pre>
+#include &lt;span&gt;
+#include &lt;ranges&gt;
+#include &lt;mdspan&gt;
+
+struct Base {};
+struct Derived : Base {};
+std::array&lt;Derived, 12&gt; arr;
+std::ranges::subrange&lt;Base*&gt; s(arr); // error, slicing
+std::span&lt;Base&gt; sp(arr.data(), arr.size()); // error, slicing
+std::mdspan&lt;Base, std::dims&lt;1&gt;&gt; msp(arr.data(), arr.size()); // <span  style="color:#C80000;font-weight:bold">ok</span>
+</pre></blockquote>
+<p>
+Given that we intend to reject object slicing for both <code class='backtick'>default_accessor</code> and
+<code class='backtick'>aligned_accessor</code>, there seems no reason not to reject this invalid pointer 
+arithmetic for <code class='backtick'>mdspan</code>.
+</p>
+
+
+<p id="res-4405"><b>Proposed resolution:</b></p>
+<p>
+This wording is relative to <a href="https://wg21.link/N5014">N5014</a>.
+</p>
+
+<blockquote class="note">
+<p>
+[<i>Drafting note:</i> The exposition-only concept <code><i>convertible-to-non-slicing</i></code> comes from 
+25.5.4.1 <a href="https://wg21.link/range.subrange.general">[range.subrange.general]</a>.]
+</p>
+</blockquote>
+
+<ol>
+
+<li><p>Modify 23.7.3.6.1 <a href="https://wg21.link/mdspan.mdspan.overview">[mdspan.mdspan.overview]</a> as indicated:</p>
+
+<blockquote>
+<pre>
+namespace std {
+  template&lt;class ElementType, class Extents, class LayoutPolicy = layout_right,
+           class AccessorPolicy = default_accessor&lt;ElementType&gt;&gt;
+  class mdspan {
+  public:
+    using extents_type = Extents;
+    using layout_type = LayoutPolicy;
+    using accessor_type = AccessorPolicy;
+    using mapping_type = typename layout_type::template mapping&lt;extents_type&gt;;
+    using element_type = ElementType;
+    using value_type = remove_cv_t&lt;element_type&gt;;
+    using index_type = typename extents_type::index_type;
+    using size_type = typename extents_type::size_type;
+    using rank_type = typename extents_type::rank_type;
+    using data_handle_type = typename accessor_type::data_handle_type;
+    using reference = typename accessor_type::reference;
+    [&hellip;]
+    template&lt;class... OtherIndexTypes&gt;
+      constexpr explicit mdspan(<ins><i>convertible-to-non-slicing</i>&lt;</ins>data_handle_type<ins>&gt; auto</ins> ptr, OtherIndexTypes... exts);
+    template&lt;class OtherIndexType, size_t N&gt;
+      constexpr explicit(N != rank_dynamic())
+        mdspan(<ins><i>convertible-to-non-slicing</i>&lt;</ins>data_handle_type<ins>&gt; auto</ins> p, span&lt;OtherIndexType, N&gt; exts);
+    template&lt;class OtherIndexType, size_t N&gt;
+      constexpr explicit(N != rank_dynamic())
+        mdspan(<ins><i>convertible-to-non-slicing</i>&lt;</ins>data_handle_type<ins>&gt; auto</ins> p, const array&lt;OtherIndexType, N&gt;&amp; exts);
+    constexpr mdspan(<ins><i>convertible-to-non-slicing</i>&lt;</ins>data_handle_type<ins>&gt; auto</ins> p, const extents_type&amp; ext);
+    constexpr mdspan(<ins><i>convertible-to-non-slicing</i>&lt;</ins>data_handle_type<ins>&gt; auto</ins> p, const mapping_type&amp; m);
+    constexpr mdspan(<ins><i>convertible-to-non-slicing</i>&lt;</ins>data_handle_type<ins>&gt; auto</ins> p, const mapping_type&amp; m, const accessor_type&amp; a);
+    [&hellip;]
+  };
+  [&hellip;]
+}
+</pre>
+</blockquote>
+</li>
+
+<li><p>Modify 23.7.3.6.2 <a href="https://wg21.link/mdspan.mdspan.cons">[mdspan.mdspan.cons]</a> as indicated:</p>
+
+<blockquote>
+<pre>
+template&lt;class... OtherIndexTypes&gt;
+  constexpr explicit mdspan(<ins><i>convertible-to-non-slicing</i>&lt;</ins>data_handle_type<ins>&gt; auto</ins> p, OtherIndexTypes... exts);
+</pre>
+<blockquote>
+<p>
+-4- Let <code class='backtick'>N</code> be <code class='backtick'>sizeof...(OtherIndexTypes)</code>.
+<p/>
+-5- <i>Constraints</i>: [&hellip;]
+<p/>
+[&hellip;]
+</p>
+</blockquote>
+<pre>
+template&lt;class OtherIndexType, size_t N&gt;
+  constexpr explicit(N != rank_dynamic())
+    mdspan(<ins><i>convertible-to-non-slicing</i>&lt;</ins>data_handle_type<ins>&gt; auto</ins> p, span&lt;OtherIndexType, N&gt; exts);
+template&lt;class OtherIndexType, size_t N&gt;
+  constexpr explicit(N != rank_dynamic())
+    mdspan(<ins><i>convertible-to-non-slicing</i>&lt;</ins>data_handle_type<ins>&gt; auto</ins> p, const array&lt;OtherIndexType, N&gt;&amp; exts);
+</pre>
+<blockquote>
+<p>
+-8- <i>Constraints</i>: [&hellip;]
+<p/>
+[&hellip;]
+</p>
+</blockquote>
+<pre>
+constexpr mdspan(<ins><i>convertible-to-non-slicing</i>&lt;</ins>data_handle_type<ins>&gt; auto</ins> p, const extents_type&amp; ext);
+</pre>
+<blockquote>
+<p>
+-11- <i>Constraints</i>: [&hellip;]
+<p/>
+[&hellip;]
+</p>
+</blockquote>
+<pre>
+constexpr mdspan(<ins><i>convertible-to-non-slicing</i>&lt;</ins>data_handle_type<ins>&gt; auto</ins> p, const mapping_type&amp; m);
+</pre>
+<blockquote>
+<p>
+-14- <i>Constraints</i>: [&hellip;]
+<p/>
+[&hellip;]
+</p>
+</blockquote>
+<pre>
+constexpr mdspan(<ins><i>convertible-to-non-slicing</i>&lt;</ins>data_handle_type<ins>&gt; auto</ins> p, const mapping_type&amp; m, const accessor_type&amp; a);
+</pre>
+<blockquote>
+<p>
+-17- <i>Preconditions</i>: [&hellip;]
+<p/>
+[&hellip;]
+</p>
 </blockquote>
 </blockquote>
 </li>
