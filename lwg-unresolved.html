@@ -54,7 +54,7 @@
 </style>
 </head>
 <body>
-<p>Revised 2025-10-10 at 16:41:45 UTC
+<p>Revised 2025-10-10 at 16:43:17 UTC
 </p><h2>Unresolved Issues</h2>
 <hr>
 <h3 id="423"><a href="#423">423</a><sup><a href="https://cplusplus.github.io/LWG/issue423">(i)</a></sup>. Effects of negative <code>streamsize</code> in iostreams</h3>
@@ -72913,6 +72913,184 @@ U u(invoke(std::forward&lt;F&gt;(f), *val ));
 </pre></blockquote>
 <p>
 is well-formed for some invented variable <code class='backtick'>u</code>.
+</p>
+</blockquote>
+</blockquote>
+</li>
+
+</ol>
+
+
+
+
+
+<hr>
+<h3 id="4302"><a href="#4302">4302</a><sup><a href="https://cplusplus.github.io/LWG/issue4302">(i)</a></sup>. Problematic <code class='backtick'>vector_sum_of_squares</code> wording</h3>
+<p><b>Section:</b> 29.9.13.8 <a href="https://wg21.link/linalg.algs.blas1.ssq">[linalg.algs.blas1.ssq]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
+ <b>Submitter:</b> Mark Hoemmen <b>Opened:</b> 2025-07-23 <b>Last modified:</b> 2025-10-10</p>
+<p><b>Priority: </b>Not Prioritized
+</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
+<p><b>Discussion:</b></p>
+<p>
+The current wording for <code class='backtick'>vector_sum_of_squares</code>
+29.9.13.8 <a href="https://wg21.link/linalg.algs.blas1.ssq">[linalg.algs.blas1.ssq]</a> has three problems with its specification of the
+value of <code class='backtick'>result.scaling_factor</code>.
+</p>
+<ol>
+<li><p>The function permits <code class='backtick'>InVec::value_type</code> and <code class='backtick'>Scalar</code> to be any
+linear algebra value types. However, computing
+<code class='backtick'>result.scaling_factor</code> that satisfies both (3.1) and (3.2) requires
+more operations, such as division. Even if those operations are
+defined, they might not make <code class='backtick'>result.scaling_factor</code> satisfy the
+required properties. For example, integers have division, but integer
+division won't help here.</p></li>
+<li><p>LAPACK's xLASSQ (the algorithm to which Note 1 in
+29.9.13.8 <a href="https://wg21.link/linalg.algs.blas1.ssq">[linalg.algs.blas1.ssq]</a> refers) changed its algorithm recently 
+(see <a href="https://github.com/Reference-LAPACK/lapack/pull/494">Reference-LAPACK/lapack/pull/#494</a>) 
+so that the scaling factor is no longer necessarily the maximum of the input
+scaling factor and the absolute value of all the input elements. It's
+a better algorithm and we would like to be able to use it.</p></li>
+<li><p>
+Both members of <code>sum_of_squares_result&lt;Scalar&gt;</code> have the same type,
+<code class='backtick'>Scalar</code>. If the input <code class='backtick'>mdspan</code>'s <code class='backtick'>value_type</code> represents a quantity
+with units, this would not be correct. For example, if <code class='backtick'>value_type</code>
+has units of distance (say <code>[m]</code>), the sum of squares should have units
+of area (<code>[m<sup>2</sup>]</code>), while the scaling factor should have units of
+distance (<code>[m]</code>).
+</p></li>
+</ol>
+<p>
+Problem (1) means that the current wording is broken. I suggest two
+different ways to fix this.
+</p>
+<ol>
+<li><p>Remove <code class='backtick'>vector_sum_of_squares</code> entirely (both overloads from
+29.9.2 <a href="https://wg21.link/linalg.syn">[linalg.syn]</a>, and the entire 
+29.9.13.8 <a href="https://wg21.link/linalg.algs.blas1.ssq">[linalg.algs.blas1.ssq]</a>). That way, we
+won't be baking an old, less good algorithm into the Standard. Remove
+Note 3 from 29.9.13.9 <a href="https://wg21.link/linalg.algs.blas1.nrm2">[linalg.algs.blas1.nrm2]</a>, which is the only 
+other reference to <code class='backtick'>vector_sum_of_squares</code> in the Standard.</p></li>
+<li><p>Fix 29.9.13.8 <a href="https://wg21.link/linalg.algs.blas1.ssq">[linalg.algs.blas1.ssq]</a> by adding to the 
+<i>Mandates</i> element (para 2) that <code class='backtick'>InVec::value_type</code> and <code class='backtick'>Scalar</code> 
+are both floating-point types (so that we could fix this later if 
+we want), and remove 29.9.13.8 <a href="https://wg21.link/linalg.algs.blas1.ssq">[linalg.algs.blas1.ssq]</a> 3.1. 
+Optionally add <i>Recommended Practice</i>, though Note 1 already 
+suggests the intent.</p></li>
+</ol>
+<p>
+I prefer just removing <code class='backtick'>vector_sum_of_squares</code>. Implementers who care
+about QoI of <code class='backtick'>vector_two_norm</code> should already know what to do. If
+somebody cares sufficiently, they can propose it back for C++29 and
+think about how to make it work for generic number types.
+</p>
+
+
+<p id="res-4302"><b>Proposed resolution:</b></p>
+<p>
+This wording is relative to <a href="https://wg21.link/N5014">N5014</a>.
+</p>
+
+<blockquote class="note">
+<p>
+[<i>Drafting note:</i> The wording below implements option 1 of the issue discussion]
+</p>
+</blockquote>
+
+<ol>
+
+<li><p>Modify 29.9.2 <a href="https://wg21.link/linalg.syn">[linalg.syn]</a>, header <code>&lt;linalg&gt;</code> synopsis, as indicated:</p>
+
+<blockquote>
+<pre>
+namespace std::linalg {
+  [&hellip;]
+  <del>// <i>29.9.13.8 <a href="https://wg21.link/linalg.algs.blas1.ssq">[linalg.algs.blas1.ssq]</a>, scaled sum of squares of a vector's elements</i>
+  template&lt;class Scalar&gt;
+    struct sum_of_squares_result {
+      Scalar scaling_factor;
+    };
+  template&lt;<i>in-vector</i> InVec, class Scalar&gt;
+    sum_of_squares_result&lt;Scalar&gt;
+      vector_sum_of_squares(InVec v, sum_of_squares_result&lt;Scalar&gt; init);
+  template&lt;class ExecutionPolicy, <i>in-vector</i> InVec, class Scalar&gt;
+    sum_of_squares_result&lt;Scalar&gt;
+      vector_sum_of_squares(ExecutionPolicy&amp;&amp; exec,
+                            InVec v, sum_of_squares_result&lt;Scalar&gt; init);</del> 
+  [&hellip;]
+}
+</pre>
+</blockquote>
+</li>
+
+<li><p>Delete the entire 29.9.13.8 <a href="https://wg21.link/linalg.algs.blas1.ssq">[linalg.algs.blas1.ssq]</a> as indicated:</p>
+
+<blockquote>
+<p>
+<del><b>29.9.13.8 Scaled sum of squares of a vector's elements [linalg.algs.blas1.ssq]</b></del>
+</p>
+<pre>
+<del>template&lt;<i>in-vector</i> InVec, class Scalar&gt;
+  sum_of_squares_result&lt;Scalar&gt; vector_sum_of_squares(InVec v, sum_of_squares_result&lt;Scalar&gt; init);
+template&lt;class ExecutionPolicy, <i>in-vector</i> InVec, class Scalar&gt;
+  sum_of_squares_result&lt;Scalar&gt; vector_sum_of_squares(ExecutionPolicy&amp;&amp; exec,
+                                                            InVec v, sum_of_squares_result&lt;Scalar&gt; init);</del>
+</pre>
+<blockquote>
+<p>
+<del>-1- [<i>Note 1</i>: These functions correspond to the LAPACK function xLASSQ[20]. &mdash; <i>end note</i>]</del>
+<p/>
+<del>-2- <i>Mandates</i>: <code>decltype(<i>abs-if-needed</i>(declval&lt;typename InVec::value_type&gt;()))</code> is convertible
+to <code class='backtick'>Scalar</code>.</del>
+<p/>
+<del>-3- <i>Effects</i>: Returns a value <code class='backtick'>result</code> such that</del>
+</p>
+<ol style="list-style-type: none">
+<li><p><del>(3.1) &mdash; <code class='backtick'>result.scaling_factor</code> is the maximum of <code class='backtick'>init.scaling_factor</code> and 
+<code><i>abs-if-needed</i>(x[i])</code> for all <code class='backtick'>i</code> in the domain of <code class='backtick'>v</code>; and</del></p></li>
+<li><p><del>(3.2) &mdash; let <code class='backtick'>s2init</code> be</del></p>
+<blockquote><pre>
+<del>init.scaling_factor * init.scaling_factor * init.scaled_sum_of_squares</del>
+</pre></blockquote>
+<p>
+<del>then <code class='backtick'>result.scaling_factor * result.scaling_factor * result.scaled_sum_of_squares</code>
+equals the sum of <code class='backtick'>s2init</code> and the squares of <code><i>abs-if-needed</i>(x[i])</code> for all <code class='backtick'>i</code> 
+in the domain of <code class='backtick'>v</code>.</del></p></li>
+</ol>
+<p>
+<del>-4- <i>Remarks</i>: If <code class='backtick'>InVec::value_type</code>, and <code class='backtick'>Scalar</code> are all floating-point types or specializations of 
+<code class='backtick'>complex</code>, and if <code class='backtick'>Scalar</code> has higher precision than <code class='backtick'>InVec::value_type</code>, then intermediate terms in the sum 
+use <code class='backtick'>Scalar</code>'s precision or greater.</del>
+</p>
+</blockquote>
+</blockquote>
+</li>
+
+<li><p>Modify 29.9.13.9 <a href="https://wg21.link/linalg.algs.blas1.nrm2">[linalg.algs.blas1.nrm2]</a> as indicated:</p>
+
+<blockquote>
+<pre>
+template&lt;<i>in-vector</i> InVec, class Scalar&gt;
+  Scalar vector_two_norm(InVec v, Scalar init);
+template&lt;class ExecutionPolicy, <i>in-vector</i> InVec, class Scalar&gt;
+  Scalar vector_two_norm(ExecutionPolicy&amp;&amp; exec, InVec v, Scalar init);
+</pre>
+<blockquote>
+<p>
+-1- [<i>Note 1</i>: [&hellip;] ]
+<p/>
+-2- <i>Mandates</i>: [&hellip;]
+<p/>
+-3- <i>Returns</i>: [&hellip;]
+<p/>
+[<i>Note 2</i>: [&hellip;] ]
+<p/>
+-4- <i>Remarks</i>: [&hellip;]
+<p/>
+<del>[<i>Note 3</i>: An implementation of this function for floating-point types <code class='backtick'>T</code> 
+can use the <code class='backtick'>scaled_sum_of_squares</code> result from 
+<code class='backtick'>vector_sum_of_squares(x, {.scaling_factor=1.0, .scaled_sum_of_squares=init})</code>. 
+&mdash; <i>end note</i>]</del>
 </p>
 </blockquote>
 </blockquote>
