@@ -54,7 +54,7 @@
 </style>
 </head>
 <body>
-<p>Revised 2025-10-10 at 15:08:00 UTC
+<p>Revised 2025-10-10 at 15:26:54 UTC
 </p><h2>Unresolved Issues</h2>
 <hr>
 <h3 id="423"><a href="#423">423</a><sup><a href="https://cplusplus.github.io/LWG/issue423">(i)</a></sup>. Effects of negative <code>streamsize</code> in iostreams</h3>
@@ -82947,6 +82947,69 @@ template&lt;class U = remove_cv_t&lt;T&gt;&gt; constexpr T value_or(U&amp;&amp; 
   return std::move(**this);
 return std::forward&lt;U&gt;(v);</ins>
 </pre></blockquote>
+</blockquote>
+</blockquote>
+</li>
+</ol>
+
+
+
+
+
+
+<hr>
+<h3 id="4407"><a href="#4407">4407</a><sup><a href="https://cplusplus.github.io/LWG/issue4407">(i)</a></sup>. <code><i>constexpr-wrapper-like</i></code> needs <code class='backtick'>remove_cvref_t</code> in <code class='backtick'>simd::basic_vec</code>
+constructor</h3>
+<p><b>Section:</b> 29.10.7.2 <a href="https://wg21.link/simd.ctor">[simd.ctor]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
+ <b>Submitter:</b> Hewill Kang <b>Opened:</b> 2025-10-05 <b>Last modified:</b> 2025-10-10</p>
+<p><b>Priority: </b>Not Prioritized
+</p>
+<p><b>View other</b> <a href="lwg-index-open.html#simd.ctor">active issues</a> in [simd.ctor].</p>
+<p><b>View all other</b> <a href="lwg-index.html#simd.ctor">issues</a> in [simd.ctor].</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
+<p><b>Discussion:</b></p>
+<p>
+<code class='backtick'>decltype(From::value)</code> would be <code>const int&amp;</code> if <code class='backtick'>From</code> is a type of <code>std::cw&lt;42&gt;</code>, 
+so the reference also needs to be removed for checking the arithmetic type.
+</p>
+
+
+<p id="res-4407"><b>Proposed resolution:</b></p>
+<p>
+This wording is relative to <a href="https://wg21.link/N5014">N5014</a>.
+</p>
+
+<ol>
+
+<li><p>Modify 29.10.7.2 <a href="https://wg21.link/simd.ctor">[simd.ctor]</a> as indicated:</p>
+
+<blockquote>
+<pre>
+template&lt;class U&gt; constexpr explicit(<i>see below</i>) basic_vec(U&amp;&amp; value) noexcept;
+</pre>
+<blockquote>
+<p>
+-1- Let <code class='backtick'>From</code> denote the type <code>remove_cvref_t&lt;U&gt;</code>.
+<p/>
+[&hellip;]
+<p/>
+-4- <i>Remarks</i>:  The expression inside <code class='backtick'>explicit</code> evaluates to <code class='backtick'>false</code> if and only if <code class='backtick'>U</code> 
+satisfies <code>convertible_to&lt;value_type&gt;</code>, and either
+</p>
+<ol style="list-style-type: none">
+<li><p>
+(4.1) &mdash; <code class='backtick'>From</code> is not an arithmetic type and does not satisfy <code><i>constexpr-wrapper-like</i></code>,
+</p></li>
+<li><p>
+(4.2) &mdash; <code class='backtick'>From</code> is an arithmetic type and the conversion from <code class='backtick'>From</code> to <code class='backtick'>value_type</code> is 
+value-preserving (29.10.1 <a href="https://wg21.link/simd.general">[simd.general]</a>), or
+</p></li>
+<li><p> 
+(4.3) &mdash; <code class='backtick'>From</code> satisfies <code><i>constexpr-wrapper-like</i></code>, 
+<code><ins>remove_cvref_t</ins><del>remove_const_t</del>&lt;decltype(From::value)&gt;</code> 
+is an arithmetic type, and <code class='backtick'>From::value</code> is representable by <code class='backtick'>value_type</code>.
+</p></li>
+</ol>
 </blockquote>
 </blockquote>
 </li>
