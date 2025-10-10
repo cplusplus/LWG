@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Issue 4406: optional::value_or return statement is inconsistent with Mandates</title>
+<meta property="og:title" content="Issue 4406: optional::value_or return statement is inconsistent with Mandates">
+<meta property="og:description" content="C++ library issue. Status: New">
+<meta property="og:url" content="https://cplusplus.github.io/LWG/issue4406.html">
+<meta property="og:type" content="website">
+<meta property="og:image" content="http://cplusplus.github.io/LWG/images/cpp_logo.png">
+<meta property="og:image:alt" content="C++ logo">
+<style>
+  p {text-align:justify}
+  li {text-align:justify}
+  pre code.backtick::before { content: "`" }
+  pre code.backtick::after { content: "`" }
+  blockquote.note
+  {
+    background-color:#E0E0E0;
+    padding-left: 15px;
+    padding-right: 15px;
+    padding-top: 1px;
+    padding-bottom: 1px;
+  }
+  ins {background-color:#A0FFA0}
+  del {background-color:#FFA0A0}
+  table.issues-index { border: 1px solid; border-collapse: collapse; }
+  table.issues-index th { text-align: center; padding: 4px; border: 1px solid; }
+  table.issues-index td { padding: 4px; border: 1px solid; }
+  table.issues-index td:nth-child(1) { text-align: right; }
+  table.issues-index td:nth-child(2) { text-align: left; }
+  table.issues-index td:nth-child(3) { text-align: left; }
+  table.issues-index td:nth-child(4) { text-align: left; }
+  table.issues-index td:nth-child(5) { text-align: center; }
+  table.issues-index td:nth-child(6) { text-align: center; }
+  table.issues-index td:nth-child(7) { text-align: left; }
+  table.issues-index td:nth-child(5) span.no-pr { color: red; }
+  @media (prefers-color-scheme: dark) {
+     html {
+        color: #ddd;
+        background-color: black;
+     }
+     ins {
+        background-color: #225522
+     }
+     del {
+        background-color: #662222
+     }
+     a {
+        color: #6af
+     }
+     a:visited {
+        color: #6af
+     }
+     blockquote.note
+     {
+        background-color: rgba(255, 255, 255, .10)
+     }
+  }
+</style>
+</head>
+<body>
+<hr>
+<p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#New">New</a> status.</em></p>
+<h3 id="4406"><a href="lwg-active.html#4406">4406</a>. <code class='backtick'>optional::value_or</code> return statement is inconsistent with <i>Mandates</i></h3>
+<p><b>Section:</b> 22.5.3.7 <a href="https://wg21.link/optional.observe">[optional.observe]</a>, 22.5.4.6 <a href="https://wg21.link/optional.ref.observe">[optional.ref.observe]</a>, 22.8.6.6 <a href="https://wg21.link/expected.object.obs">[expected.object.obs]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
+ <b>Submitter:</b> Hewill Kang <b>Opened:</b> 2025-09-06 <b>Last modified:</b> 2025-10-10</p>
+<p><b>Priority: </b>Not Prioritized
+</p>
+<p><b>View other</b> <a href="lwg-index-open.html#optional.observe">active issues</a> in [optional.observe].</p>
+<p><b>View all other</b> <a href="lwg-index.html#optional.observe">issues</a> in [optional.observe].</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
+<p><b>Discussion:</b></p>
+<p>
+<code>optional&lt;T&gt;::value_or(U&amp;&amp;)</code> requires <code>is_convertible_v&lt;U&amp;&amp;, T&gt;</code> 
+to ensure that <code class='backtick'>T</code> can be convert from <code class='backtick'>U</code> when <code class='backtick'>optional</code> has no value.
+<p/>
+However, the return statement explicitly constructs <code class='backtick'>T</code> by <code class='backtick'>static_cast</code>, which is not checked by 
+<code class='backtick'>is_convertible_v</code> since it only checks for implicit conversions.
+<p/>
+This results in rare cases where <i>Mandates</i> may not be violated, but <code class='backtick'>value_or</code> is ill-formed 
+(<a href="https://godbolt.org/z/z5jjhY7c4">demo</a>):
+</p>
+<blockquote><pre>
+struct S {
+  operator int() const;
+  explicit operator int() = delete;
+};
+
+int main() {
+   std::optional&lt;int&gt;{}.value_or(S{}); // <span style="color:#C80000;font-weight:bold">fire</span>
+}
+</pre></blockquote>
+<p>
+It is reasonable to create objects that stick to <i>Mandates</i>. The same goes for <code class='backtick'>expected::value_or</code>.
+<p/>
+<b>Daniel:</b>
+<p/>
+This issue has considerable overlap with LWG <a href="lwg-active.html#4281" title="Inconsistency between value_or() and error_or() in std::expected (Status: New)">4281</a><sup><a href="https://cplusplus.github.io/LWG/issue4281" title="Latest snapshot">(i)</a></sup>.
+</p>
+
+
+<p id="res-4406"><b>Proposed resolution:</b></p>
+<p>
+This wording is relative to <a href="https://wg21.link/N5014">N5014</a>.
+</p>
+
+<ol>
+
+<li><p>Modify 22.5.3.7 <a href="https://wg21.link/optional.observe">[optional.observe]</a> as indicated:</p>
+
+<blockquote>
+<pre>
+template&lt;class U = remove_cv_t&lt;T&gt;&gt; constexpr T value_or(U&amp;&amp; v) const &amp;;
+</pre>
+<blockquote>
+<p>
+-15- <i>Mandates</i>: <code>is_copy_constructible_v&lt;T&gt; &amp;&amp; is_convertible_v&lt;U&amp;&amp;, T&gt;</code> 
+is <code class='backtick'>true</code>.
+<p/>
+-16- <i>Effects</i>: Equivalent to:
+</p>
+<blockquote><pre>
+<del>return has_value() ? **this : static_cast&lt;T&gt;(std::forward&lt;U&gt;(v));</del>
+<ins>if (has_value())
+  return **this;
+return std::forward&lt;U&gt;(v);</ins>
+</pre></blockquote>
+</blockquote>
+<pre>
+template&lt;class U = remove_cv_t&lt;T&gt;&gt; constexpr T value_or(U&amp;&amp; v) &amp;&amp;;
+</pre>
+<blockquote>
+<p>
+-17- <i>Mandates</i>: <code>is_move_constructible_v&lt;T&gt; &amp;&amp; is_convertible_v&lt;U&amp;&amp;, T&gt;</code> 
+is <code class='backtick'>true</code>.
+<p/>
+-18- <i>Effects</i>: Equivalent to:
+</p>
+<blockquote><pre>
+<del>return has_value() ? std::move(**this) : static_cast&lt;T&gt;(std::forward&lt;U&gt;(v));</del>
+<ins>if (has_value())
+  return std::move(**this);
+return std::forward&lt;U&gt;(v);</ins>
+</pre></blockquote>
+</blockquote>
+</blockquote>
+</li>
+
+<li><p>Modify 22.5.4.6 <a href="https://wg21.link/optional.ref.observe">[optional.ref.observe]</a> as indicated:</p>
+
+<blockquote>
+<pre>
+template&lt;class U = remove_cv_t&lt;T&gt;&gt; constexpr remove_cv_t&lt;T&gt; value_or(U&amp;&amp; u) const;
+</pre>
+<blockquote>
+<p>
+-8- Let <code>X</code> be <code>remove_cv_t&lt;T&gt;</code>.
+<p/>
+-9- <i>Mandates</i>: <code>is_constructible_v&lt;X, T&amp;&gt; &amp;&amp; is_convertible_v&lt;U, X&gt;</code> 
+is <code class='backtick'>true</code>.
+<p/>
+-10- <i>Effects</i>: Equivalent to:
+</p>
+<blockquote><pre>
+<del>return has_value() ? *<i>val</i> : static_cast&lt;X&gt;(std::forward&lt;U&gt;(u));</del>
+<ins>if (has_value())
+  return *<i>val</i>;
+return std::forward&lt;U&gt;(u);
+</ins>
+</pre></blockquote>
+</blockquote>
+</blockquote>
+</li>
+
+<li><p>Modify 22.8.6.6 <a href="https://wg21.link/expected.object.obs">[expected.object.obs]</a> as indicated:</p>
+
+<blockquote>
+<pre>
+template&lt;class U = remove_cv_t&lt;T&gt;&gt; constexpr T value_or(U&amp;&amp; v) const &amp;;
+</pre>
+<blockquote>
+<p>
+-18- <i>Mandates</i>: <code>is_copy_constructible_v&lt;T&gt;</code> is <code class='backtick'>true</code> and 
+<code>is_convertible_v&lt;U, T&gt;</code> is <code class='backtick'>true</code>.
+<p/>
+<del>-19- <i>Returns</i>: <code>has_value() ? **this : static_cast&lt;T&gt;(std::forward&lt;U&gt;(v))</code>.</del>
+<p/>
+<ins>-?- <i>Effects</i>: Equivalent to:</ins>
+</p>
+<blockquote><pre>
+<ins>if (has_value())
+  return **this;
+return std::forward&lt;U&gt;(v);</ins>
+</pre></blockquote>
+</blockquote>
+<pre>
+template&lt;class U = remove_cv_t&lt;T&gt;&gt; constexpr T value_or(U&amp;&amp; v) &amp;&amp;;
+</pre>
+<blockquote>
+<p>
+-20- <i>Mandates</i>: <code>is_move_constructible_v&lt;T&gt;</code> is <code class='backtick'>true</code> and 
+<code>is_convertible_v&lt;U, T&gt;</code> is <code class='backtick'>true</code>.
+<p/>
+<del>-21- <i>Returns</i>: <code>has_value() ? std::move(**this) : static_cast&lt;T&gt;(std::forward&lt;U&gt;(v))</code>.</del>
+<p/>
+<ins>-?- <i>Effects</i>: Equivalent to:</ins>
+</p>
+<blockquote><pre>
+<ins>if (has_value())
+  return std::move(**this);
+return std::forward&lt;U&gt;(v);</ins>
+</pre></blockquote>
+</blockquote>
+</blockquote>
+</li>
+</ol>
+
+
+
+
+
+
+</body>
+</html>
