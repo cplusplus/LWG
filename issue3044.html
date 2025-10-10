@@ -64,7 +64,7 @@
 <p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#New">New</a> status.</em></p>
 <h3 id="3044"><a href="lwg-active.html#3044">3044</a>. Strange specification of <code>max_size()</code> for an allocator</h3>
 <p><b>Section:</b> 16.4.4.6 <a href="https://wg21.link/allocator.requirements">[allocator.requirements]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Jon Cohen <b>Opened:</b> 2017-12-06 <b>Last modified:</b> 2024-01-29</p>
+ <b>Submitter:</b> Jon Cohen <b>Opened:</b> 2017-12-06 <b>Last modified:</b> 2025-10-10</p>
 <p><b>Priority: </b>3
 </p>
 <p><b>View other</b> <a href="lwg-index-open.html#allocator.requirements">active issues</a> in [allocator.requirements].</p>
@@ -234,9 +234,9 @@ an exception to be thrown. &mdash; <i>end note</i>]<br/>
 
 <p><i>[2022-04-25; Daniel rebases wording on <a href="https://wg21.link/N4910" title=" Working Draft, Standard for Programming Language C++">N4910</a>]</i></p>
 
+<p><strong>Previous resolution [SUPERSEDED]:</strong></p>
+<blockquote class="note">
 
-
-<p id="res-3044"><b>Proposed resolution:</b></p>
 <p>
 This wording is relative to <a href="https://wg21.link/N4910" title=" Working Draft, Standard for Programming Language C++">N4910</a>.
 </p>
@@ -277,6 +277,55 @@ a<ins>3</ins>.max_size()
 </li>
 
 </ol>
+</blockquote>
+
+<p><i>[2025-10-10; Jonathan provides improved wording]</i></p>
+
+
+
+
+<p id="res-3044"><b>Proposed resolution:</b></p>
+<p>
+This wording is relative to <a href="https://wg21.link/N5014">N5014</a>.
+</p>
+
+<ol>
+<li><p>Change 16.4.4.6.1 <a href="https://wg21.link/allocator.requirements.general">[allocator.requirements.general]</a> as indicated:</p>
+
+
+<blockquote>
+<p>
+-2- In subclause 16.4.4.6 <a href="https://wg21.link/allocator.requirements">[allocator.requirements]</a>,
+</p>
+<ol style="list-style-type:none">
+<li><p>(2.1) &mdash; [&hellip;]</p></li>
+<li><p>[&hellip;]</p></li>
+<li><p>(2.6) &mdash; <code>a</code>, <code>a1</code>, <code>a2</code> denote lvalues of type <code>X</code>,</p></li>
+<li><p><ins>(?.?) &mdash; <code>a3</code> denotes an lvalue of type (possibly const) <code>X</code>,</ins></p></li>
+<li><p>[&hellip;]</p></li>
+</ol>
+<p>[&hellip;]</p>
+<pre>
+a<ins>3</ins>.max_size()
+</pre>
+<blockquote>
+<p>
+-50- <i>Result:</i> <code>X::size_type</code>
+<p/>
+-51- <i>Returns:</i> The largest value that can meaningfully be passed to <code>X::allocate()</code>.
+<p/>
+<ins>[<i>Note:</i> Larger values can cause an exception to be thrown. &mdash; <i>end note</i>]</ins>
+<p/>
+<ins>-?- <i>Throws:</i> Nothing.</ins>
+<p/>
+-52- <i>Remarks:</i> Default: <code>numeric_limits&lt;size_type&gt;::max() / sizeof(value_type)</code>
+</p>
+</blockquote>
+</blockquote>
+</li>
+
+</ol>
+
 
 
 
