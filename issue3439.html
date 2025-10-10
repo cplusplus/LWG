@@ -64,7 +64,7 @@
 <p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#New">New</a> status.</em></p>
 <h3 id="3439"><a href="lwg-active.html#3439">3439</a>. "<code>Distance</code>" template parameter is underspecified</h3>
 <p><b>Section:</b> 24.4.3 <a href="https://wg21.link/iterator.operations">[iterator.operations]</a>, 26.7.12 <a href="https://wg21.link/alg.random.sample">[alg.random.sample]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Jens Maurer <b>Opened:</b> 2020-05-01 <b>Last modified:</b> 2020-05-09</p>
+ <b>Submitter:</b> Jens Maurer <b>Opened:</b> 2020-05-01 <b>Last modified:</b> 2025-10-10</p>
 <p><b>Priority: </b>3
 </p>
 <p><b>View other</b> <a href="lwg-index-open.html#iterator.operations">active issues</a> in [iterator.operations].</p>
@@ -81,6 +81,16 @@ When addressing this omission, the local restriction in 26.7.12 <a href="https:/
 could possibly be removed.
 <p/>
 See the related issue <a href="lwg-defects.html#3213" title="for_each_n and copy_n missing requirements for Size (Status: Resolved)">3213</a><sup><a href="https://cplusplus.github.io/LWG/issue3213" title="Latest snapshot">(i)</a></sup> for the <code>Size</code> template parameter.
+</p>
+
+<p><i>[2025-10-10; Jonathan comments]</i></p>
+
+<p>
+The SGI STL has the requirement that
+"<code class='backtick'>Distance</code> is an integral type that is convertible to <code class='backtick'>InputIterator</code>'s
+distance type." But the SGI STL also required that <code class='backtick'>Size</code> arguments to
+<code class='backtick'>fill_n</code> etc. have integral types, and the standard only requires them to
+be convertible to integral types. Presumably that relaxation was intentional.
 </p>
 
 <p><i>[2020-05-09; Reflector prioritization]</i></p>
