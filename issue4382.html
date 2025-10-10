@@ -67,7 +67,7 @@
 <h3 id="4382"><a href="lwg-active.html#4382">4382</a>. The <code>simd::basic_mask(bool)</code> overload needs to be more constrained
 </h3>
 <p><b>Section:</b> 29.10.9.2 <a href="https://wg21.link/simd.mask.ctor">[simd.mask.ctor]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Matthias Kretz <b>Opened:</b> 2025-09-24 <b>Last modified:</b> 2025-09-26</p>
+ <b>Submitter:</b> Matthias Kretz <b>Opened:</b> 2025-09-24 <b>Last modified:</b> 2025-10-10</p>
 <p><b>Priority: </b>Not Prioritized
 </p>
 <p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
@@ -108,8 +108,9 @@ the overload set ambiguous</p></li>
 <code>simd::mask&lt;float&gt;(1.f)</code> continues to compile</p></li>
 </ol>
 
+<p><strong>Previous resolution [SUPERSEDED]:</strong></p>
+<blockquote class="note">
 
-<p id="res-4382"><b>Proposed resolution:</b></p>
 <p>
 This wording is relative to <a href="https://wg21.link/N5014">N5014</a>.
 </p>
@@ -141,6 +142,86 @@ namespace std::simd {
   };
 }
 </pre>
+</blockquote>
+
+</li>
+
+</ol>
+</blockquote>
+
+<p><i>[2025-10-06; Matthias Kretz improves wording after reflector discussion]</i></p>
+
+
+
+<p id="res-4382"><b>Proposed resolution:</b></p>
+<p>
+This wording is relative to <a href="https://wg21.link/N5014">N5014</a>.
+</p>
+
+<ol>
+
+<li><p>Modify 29.10.9.1 <a href="https://wg21.link/simd.mask.overview">[simd.mask.overview]</a>, <code>class template basic_mask</code> synopsis, as indicated:</p>
+
+<blockquote>
+<pre>
+namespace std::simd {
+  template&lt;size_t Bytes, class Abi&gt; class basic_mask {
+  public:
+    [&hellip;]
+    
+    constexpr basic_mask() noexcept = default;
+    
+    // <i>29.10.9.2 <a href="https://wg21.link/simd.mask.ctor">[simd.mask.ctor]</a>, basic_mask constructors</i>
+    constexpr explicit basic_mask(<ins>same_as&lt;</ins>value_type<ins>&gt; auto</ins>) noexcept;
+    template&lt;size_t UBytes, class UAbi&gt;
+      constexpr explicit basic_mask(const basic_mask&lt;UBytes, UAbi&gt;&amp;) noexcept;
+    template&lt;class G&gt;
+      constexpr explicit basic_mask(G&amp;&amp; gen) noexcept;
+    <ins>template&lt;same_as&lt;bitset&lt;size()&gt;&gt; T&gt;</ins>
+      constexpr basic_mask(const <ins>T</ins><del>bitset&lt;size()&gt;</del>&amp; b) noexcept;
+    <ins>template&lt;unsigned_integral T&gt; requires (!same_as&lt;T, value_type&gt;)</ins>
+      constexpr explicit basic_mask(<ins>T</ins><del>unsigned_integral auto</del> val) noexcept;
+    
+    [&hellip;]
+  };
+}
+</pre>
+</blockquote>
+
+</li>
+
+<li><p>Modify 29.10.9.2 <a href="https://wg21.link/simd.mask.ctor">[simd.mask.ctor]</a> as indicated:</p>
+
+<blockquote>
+<pre>
+constexpr explicit basic_mask(<ins>same_as&lt;</ins>value_type<ins>&gt; auto</ins> x) noexcept;
+</pre>
+<blockquote>
+<p>
+-1- <i>Effects</i>: Initializes each element with <code class='backtick'>x</code>.
+</p>
+</blockquote>
+[&hellip;]
+<pre>
+<ins>template&lt;same_as&lt;bitset&lt;size()&gt;&gt; T&gt;</ins>
+  constexpr basic_mask(const <ins>T</ins><del>bitset&lt;size()&gt;</del>&amp; b) noexcept;
+</pre>
+<blockquote>
+<p>
+-7- <i>Effects</i>: Initializes the <code><i>i</i></code><sup>th</sup> element with <code>b[<i>i</i>]</code> 
+for all <code><i>i</i></code> in the range <code class='backtick'>[0, size())</code>.
+</p>
+</blockquote>
+<pre>
+<ins>template&lt;unsigned_integral T&gt; requires (!same_as&lt;T, value_type&gt;)</ins>
+  constexpr explicit basic_mask(<ins>T</ins><del>unsigned_integral auto</del> val) noexcept;
+</pre>
+<blockquote>
+<p>
+-8- <i>Effects</i>: Initializes the first <code><i>M</i></code> elements to the corresponding bit values 
+in <code class='backtick'>val</code>, [&hellip;]
+</p>
+</blockquote>
 </blockquote>
 
 </li>
