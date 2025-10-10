@@ -64,7 +64,7 @@
 <p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#New">New</a> status.</em></p>
 <h3 id="4137"><a href="lwg-active.html#4137">4137</a>. Fix <i>Mandates</i>, <i>Preconditions</i>, and <i>Complexity</i> elements of [linalg] algorithms</h3>
 <p><b>Section:</b> 29.9.14 <a href="https://wg21.link/linalg.algs.blas2">[linalg.algs.blas2]</a>, 29.9.15 <a href="https://wg21.link/linalg.algs.blas3">[linalg.algs.blas3]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Mark Hoemmen <b>Opened:</b> 2024-08-08 <b>Last modified:</b> 2024-08-11</p>
+ <b>Submitter:</b> Mark Hoemmen <b>Opened:</b> 2024-08-08 <b>Last modified:</b> 2025-10-10</p>
 <p><b>Priority: </b>Not Prioritized
 </p>
 <p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
@@ -74,9 +74,9 @@ As <a href="https://github.com/ORNL/cpp-proposals-pub/issues/464">pointed out by
 (CSCS Swiss National Supercomputing Centre), some of the <i>Mandates</i>, <i>Preconditions</i>, and 
 <i>Complexity</i> elements of some BLAS 2 and BLAS 3 algorithms in [linalg] are incorrect.
 </p>
+<p><strong>Previous resolution [SUPERSEDED]:</strong></p>
+<blockquote class="note">
 
-
-<p id="res-4137"><b>Proposed resolution:</b></p>
 <p>
 This wording is relative to <a href="https://wg21.link/N4988" title=" Working Draft, Programming Languages — C++">N4988</a>.
 </p>
@@ -316,6 +316,342 @@ decltype(B), decltype(C)&gt;()</del></code>
 is <code>true</code>; and</p></li>
 <li><p>(3.3) &mdash; <code><ins><i>possibly-multipliable</i>&lt;decltype(B),
 decltype(transposed(A)), decltype(C)&gt;(0, 1)</ins> <del><i>compatible-static-extents</i>&lt;decltype(A), 
+decltype(A)&gt;(0, 1)</del></code> is <code>true</code>.</p></li>
+</ol>
+<p>
+-4- <i>Preconditions</i>:
+</p>
+<ol style="list-style-type: none">
+<li><p>(4.1) &mdash; <code><ins><i>multipliable</i>(A, transposed(B), C)</ins>
+<del><i>addable</i>(A, B, C)</del></code> is <code>true</code>, and</p></li>
+<li><p>(4.2) &mdash; <ins><code><i>multipliable</i>(B, transposed(A), C)</code> is <code>true</code></ins>
+<del><code>A.extent(0)</code> equals <code>A.extent(1)</code></del>.</p></li>
+</ol>
+<p>
+-5- <i>Complexity</i>: &#x1d4aa;(<code>A.extent(0)</code> × <code>A.extent(1)</code> × <code><ins>B</ins><del>C</del>.extent(0)</code>).
+</p>
+</blockquote>
+
+</li>
+
+<li><p>Modify 29.9.15.6 <a href="https://wg21.link/linalg.algs.blas3.trsm">[linalg.algs.blas3.trsm]</a> as indicated:</p>
+
+<blockquote class="note">
+<p>
+[<i>Drafting note</i>: Nothing is wrong here, but it's nice to make the complexity clauses depend 
+only on input if possible]
+</p>
+</blockquote>
+
+<blockquote>
+<pre>
+template&lt;<i>in-matrix</i> InMat1, class Triangle, class DiagonalStorage,
+         <i>in-matrix</i> InMat2, <i>out-matrix</i> OutMat, class BinaryDivideOp>
+  void triangular_matrix_matrix_left_solve(InMat1 A, Triangle t, DiagonalStorage d,
+                                           InMat2 B, OutMat X, BinaryDivideOp divide);
+template&lt;class ExecutionPolicy,
+         <i>in-matrix</i> InMat1, class Triangle, class DiagonalStorage,
+         <i>in-matrix</i> InMat2, <i>out-matrix</i> OutMat, class BinaryDivideOp>
+  void triangular_matrix_matrix_left_solve(ExecutionPolicy&amp;&amp; exec,
+                                           InMat1 A, Triangle t, DiagonalStorage d,
+                                           InMat2 B, OutMat X, BinaryDivideOp divide);
+</pre>
+<blockquote>
+<p>
+[&hellip;]
+<p/>
+-6- <i>Complexity</i>: &#x1d4aa;(<code>A.extent(0)</code> × <code><ins>B</ins><del>X</del>.extent(1)</code> × <code><ins>B</ins><del>X</del>.extent(1)</code>).
+</p>
+</blockquote>
+
+</blockquote>
+
+</li>
+
+
+<li><p>Modify 29.9.15.7 <a href="https://wg21.link/linalg.algs.blas3.inplacetrsm">[linalg.algs.blas3.inplacetrsm]</a> as indicated:</p>
+
+<blockquote class="note">
+<p>
+[<i>Drafting note</i>: Nothing is wrong here, but it's nice to make the complexity clauses depend 
+only on input if possible]
+</p>
+</blockquote>
+
+<blockquote>
+<pre>
+template&lt;<i>in-matrix</i> InMat, class Triangle, class DiagonalStorage,
+         <i>inout-matrix</i> InOutMat, class BinaryDivideOp>
+  void triangular_matrix_matrix_right_solve(InMat A, Triangle t, DiagonalStorage d,
+                                           InOutMat B, BinaryDivideOp divide);
+template&lt;class ExecutionPolicy,
+         <i>in-matrix</i> InMat, class Triangle, class DiagonalStorage,
+         <i>inout-matrix</i> InOutMat, class BinaryDivideOp>
+  void triangular_matrix_matrix_right_solve(ExecutionPolicy&amp;&amp; exec,
+                                           InMat A, Triangle t, DiagonalStorage d,
+                                           InOutMat B, BinaryDivideOp divide);
+</pre>
+<blockquote>
+<p>
+[&hellip;]
+<p/>
+-13- <i>Complexity</i>: &#x1d4aa;(<code><ins>B</ins><del>A</del>.extent(0)</code> × 
+<code>A.extent(<ins>0</ins><del>1</del>)</code> × <code><ins>A</ins><del>B</del>.extent(1)</code>).
+</p>
+</blockquote>
+
+</blockquote>
+
+</li>
+</ol>
+</blockquote>
+
+<p><i>[LWG telecon 2025-10-10; Fix proposed resolution after review]</i></p>
+
+<p>Add missing <code class='backtick'>()</code> in one place and change <code class='backtick'>(0, 1)</code> to <code class='backtick'>()</code> in another.</p>
+
+
+
+<p id="res-4137"><b>Proposed resolution:</b></p>
+<p>
+This wording is relative to <a href="https://wg21.link/N5014">N5014</a>.
+</p>
+
+<ol>
+
+<li><p>Modify 29.9.14.1 <a href="https://wg21.link/linalg.algs.blas2.gemv">[linalg.algs.blas2.gemv]</a> as indicated:</p>
+
+<blockquote class="note">
+<p>
+[<i>Drafting note</i>: This change is needed because the matrix <code>A</code> does not need to be square. 
+<code>x.extents(0)</code> must equal <code>A.extents(1)</code>, while <code>y.extents(0)</code> must equal 
+<code>A.extents(0)</code>.]
+</p>
+</blockquote>
+
+<blockquote>
+<p>
+-3- <i>Mandates</i>:
+</p>
+<ol style="list-style-type: none">
+<li><p>(3.1) &mdash; <code><i>possibly-multipliable</i>&lt;decltype(A), decltype(x), decltype(y)&gt;()</code> 
+is <code>true</code>, and</p></li>
+<li><p>(3.2) &mdash; <code><i>possibly-addable</i>&lt;decltype(<ins>y</ins><del>x</del>), decltype(y), 
+decltype(z)&gt;()</code> is <code>true</code> for those overloads that take a <code>z</code> parameter.</p></li>
+</ol>
+<p>
+-4- <i>Preconditions</i>:
+</p>
+<ol style="list-style-type: none">
+<li><p>(4.1) &mdash; <code><i>multipliable</i>(A, x, y)</code> is <code>true</code>, and</p></li>
+<li><p>(4.2) &mdash; <code><i>addable</i>(<ins>y</ins><del>x</del>, y, z)</code> is <code>true</code> 
+for those overloads that take a <code>z</code> parameter.</p></li>
+</ol>
+<p>
+-5- <i>Complexity</i>: &#x1d4aa;(<code><ins>A</ins><del>x</del>.extent(0)</code> × 
+<code><ins>x</ins><del>A</del>.extent(<ins>0</ins><del>1</del>)</code>).
+</p>
+</blockquote>
+
+</li>
+
+<li><p>Modify 29.9.14.2 <a href="https://wg21.link/linalg.algs.blas2.symv">[linalg.algs.blas2.symv]</a> as indicated:</p>
+
+<blockquote>
+<p>
+-3- <i>Mandates</i>:
+</p>
+<ol style="list-style-type: none">
+<li><p>(3.1) &mdash; [&hellip;]</p></li>
+<li><p>(3.2) &mdash; [&hellip;]</p></li>
+<li><p>(3.3) &mdash; <code><i>possibly-multipliable</i>&lt;decltype(A), decltype(x), decltype(y)&gt;()</code> 
+is <code>true</code>, and</p></li>
+<li><p>(3.4) &mdash; <code><i>possibly-addable</i>&lt;decltype(<ins>y</ins><del>x</del>), decltype(y), 
+decltype(z)&gt;()</code> is <code>true</code> for those overloads that take a <code>z</code> parameter.</p></li>
+</ol>
+<p>
+-4- <i>Preconditions</i>:
+</p>
+<ol style="list-style-type: none">
+<li><p>(4.1) &mdash; <code>A.extent(0)</code> equals <code>A.extent(1)</code>,</p></li>
+<li><p>(4.2) &mdash; <code><i>multipliable</i>(A, x, y)</code> is <code>true</code>, and</p></li>
+<li><p>(4.3) &mdash; <code><i>addable</i>(<ins>y</ins><del>x</del>, y, z)</code> is <code>true</code> 
+for those overloads that take a <code>z</code> parameter.</p></li>
+</ol>
+<p>
+-5- <i>Complexity</i>: &#x1d4aa;(<code><ins>A</ins><del>x</del>.extent(0)</code> × 
+<code><ins>x</ins><del>A</del>.extent(<ins>0</ins><del>1</del>)</code>).
+</p>
+</blockquote>
+
+</li>
+
+<li><p>Modify 29.9.14.3 <a href="https://wg21.link/linalg.algs.blas2.hemv">[linalg.algs.blas2.hemv]</a> as indicated:</p>
+
+<blockquote>
+<p>
+-3- <i>Mandates</i>:
+</p>
+<ol style="list-style-type: none">
+<li><p>(3.1) &mdash; [&hellip;]</p></li>
+<li><p>(3.2) &mdash; [&hellip;]</p></li>
+<li><p>(3.3) &mdash; <code><i>possibly-multipliable</i>&lt;decltype(A), decltype(x), decltype(y)&gt;()</code> 
+is <code>true</code>, and</p></li>
+<li><p>(3.4) &mdash; <code><i>possibly-addable</i>&lt;decltype(<ins>y</ins><del>x</del>), decltype(y), 
+decltype(z)&gt;()</code> is <code>true</code> for those overloads that take a <code>z</code> parameter.</p></li>
+</ol>
+<p>
+-4- <i>Preconditions</i>:
+</p>
+<ol style="list-style-type: none">
+<li><p>(4.1) &mdash; <code>A.extent(0)</code> equals <code>A.extent(1)</code>,</p></li>
+<li><p>(4.2) &mdash; <code><i>multipliable</i>(A, x, y)</code> is <code>true</code>, and</p></li>
+<li><p>(4.3) &mdash; <code><i>addable</i>(<ins>y</ins><del>x</del>, y, z)</code> is <code>true</code> 
+for those overloads that take a <code>z</code> parameter.</p></li>
+</ol>
+<p>
+-5- <i>Complexity</i>: &#x1d4aa;(<code><ins>A</ins><del>x</del>.extent(0)</code> × 
+<code><ins>x</ins><del>A</del>.extent(<ins>0</ins><del>1</del>)</code>).
+</p>
+</blockquote>
+
+</li>
+
+<li><p>Modify 29.9.14.4 <a href="https://wg21.link/linalg.algs.blas2.trmv">[linalg.algs.blas2.trmv]</a> as indicated:</p>
+
+<blockquote class="note">
+<p>
+[<i>Drafting note</i>: The extents compatibility conditions are expressed differently than in the 
+above matrix-vector multiply sections, perhaps more for consistency with the TRSV section below. 
+They look correct here. The original <i>Complexity</i> elements adjusted below are technically correct, 
+since <math><mi>A</mi></math> is square, but changing this would improve consistency with 
+29.9.14.1 <a href="https://wg21.link/linalg.algs.blas2.gemv">[linalg.algs.blas2.gemv]</a>]
+</p>
+</blockquote>
+
+<blockquote>
+<pre>
+template&lt;<i>in-matrix</i> InMat, class Triangle, class DiagonalStorage, <i>in-vector</i> InVec,
+         <i>out-vector</i> OutVec&gt;
+  void triangular_matrix_vector_product(InMat A, Triangle t, DiagonalStorage d, InVec x, OutVec y);
+template&lt;class ExecutionPolicy,
+         <i>in-matrix</i> InMat, class Triangle, class DiagonalStorage, <i>in-vector</i> InVec,
+         <i>out-vector</i> OutVec&gt;
+  void triangular_matrix_vector_product(ExecutionPolicy&amp;&amp; exec,
+                                        InMat A, Triangle t, DiagonalStorage d, InVec x, OutVec y);
+</pre>
+<blockquote>
+<p>
+-5- [&hellip;]
+<p/>
+-6- <i>Effects</i>: Computes <math><mi>y</mi> <mo>=</mo> <mi>A</mi><mi>x</mi></math>.
+<p/>
+-5- <i>Complexity</i>: &#x1d4aa;(<code><ins>A</ins><del>x</del>.extent(0)</code> × 
+<code><ins>x</ins><del>A</del>.extent(<ins>0</ins><del>1</del>)</code>).
+</p>
+</blockquote>
+<pre>
+template&lt;<i>in-matrix</i> InMat, class Triangle, class DiagonalStorage, <i>inout-vector</i> InOutVec&gt;
+  void triangular_matrix_vector_product(InMat A, Triangle t, DiagonalStorage d, InOutVec y);
+template&lt;class ExecutionPolicy,
+         <i>in-matrix</i> InMat, class Triangle, class DiagonalStorage, <i>inout-vector</i> InOutVec&gt;
+  void triangular_matrix_vector_product(ExecutionPolicy&amp;&amp; exec,
+                                        InMat A, Triangle t, DiagonalStorage d, InOutVec y);
+</pre>
+<blockquote>
+<p>
+-8- [&hellip;]
+<p/>
+-9- <i>Effects</i>: [&hellip;]
+<p/>
+-10- <i>Complexity</i>: &#x1d4aa;(<code><ins>A</ins><del>y</del>.extent(0)</code> × 
+<code><ins>y</ins><del>A</del>.extent(<ins>0</ins><del>1</del>)</code>).
+</p>
+</blockquote>
+<pre>
+template&lt;<i>in-matrix</i> InMat, class Triangle, class DiagonalStorage, 
+         <i>in-vector</i> InVec1, <i>in-vector</i> InVec2, <i>out-vector</i> OutVec&gt;
+  void triangular_matrix_vector_product(InMat A, Triangle t, DiagonalStorage d,
+                                        InVec1 x, InVec2 y, OutVec z);
+template&lt;class ExecutionPolicy,
+         <i>in-matrix</i> InMat, class Triangle, class DiagonalStorage, 
+         <i>in-vector</i> InVec1, <i>in-vector</i> InVec2, <i>out-vector</i> OutVec&gt;
+  void triangular_matrix_vector_product(ExecutionPolicy&amp;&amp; exec,
+                                        InMat A, Triangle t, DiagonalStorage d,
+                                        InVec1 x, InVec2 y, OutVec z);
+</pre>
+<blockquote>
+<p>
+-11- [&hellip;]
+<p/>
+-12- <i>Effects</i>: Computes <math><mi>z</mi> <mo>=</mo> <mi>y</mi> <mo>+</mo> <mi>A</mi><mi>x</mi></math>.
+<p/>
+-13- <i>Complexity</i>: &#x1d4aa;(<code><ins>A</ins><del>x</del>.extent(0)</code> × 
+<code><ins>x</ins><del>A</del>.extent(<ins>0</ins><del>1</del>)</code>).
+</p>
+</blockquote>
+</blockquote>
+
+</li>
+
+<li><p>Modify 29.9.15.4 <a href="https://wg21.link/linalg.algs.blas3.rankk">[linalg.algs.blas3.rankk]</a> as indicated:</p>
+
+<blockquote class="note">
+<p>
+[<i>Drafting note</i>: <a href="https://wg21.link/P3371R0" title=" Fix C++26 by making the symmetric and Hermitian rank-k and rank-2k updates consistent with the BLAS">P3371R0</a>, to be submitted in the August 15 mailing for 
+LEWG review, contains the same wording changes to 29.9.15.4 <a href="https://wg21.link/linalg.algs.blas3.rankk">[linalg.algs.blas3.rankk]</a> 
+and 29.9.15.5 <a href="https://wg21.link/linalg.algs.blas3.rank2k">[linalg.algs.blas3.rank2k]</a> as proposed here, with additional changes 
+corresponding to that proposal. Please apply this LWG issue's changes first, before P3371 merges]
+</p>
+</blockquote>
+
+<blockquote>
+<p>
+-3- <i>Mandates</i>:
+</p>
+<ol style="list-style-type: none">
+<li><p>(3.1) &mdash; If <code>InOutMat</code> has <code>layout_blas_packed</code> layout, then the 
+layout's <code>Triangle</code> template argument has the same type as the function's 
+<code>Triangle</code> template argument; <ins>and</ins></p></li>
+<li><p>(3.2) &mdash; <code><ins><i>possibly-multipliable</i>&lt;decltype(A),
+decltype(transposed(A)), decltype(C)&gt;()</ins> <del><i>compatible-static-extents</i>&lt;decltype(A), 
+decltype(A)&gt;(0, 1)</del></code> is <code>true</code><ins>.</ins><del>;</del></p></li>
+<li><p><del>(3.3) &mdash; <code><i>compatible-static-extents</i>&lt;decltype(C), decltype(C)&gt;(0, 1)</code> 
+is <code>true</code>; and</del></p></li>
+<li><p><del>(3.4) &mdash; <code><i>compatible-static-extents</i>&lt;decltype(A), decltype(C)&gt;(0, 0)</code> 
+is <code>true</code>.</del></p></li>
+</ol>
+<p>
+-4- <i>Preconditions</i>: <ins><code><i>multipliable</i>(A, transposed(A), C)</code> is <code>true</code>.</ins>
+</p>
+<ol style="list-style-type: none">
+<li><p><del>(4.1) &mdash; <code>A.extent(0)</code> equals <code>A.extent(1)</code>,</del></p></li>
+<li><p><del>(4.2) &mdash; <code>C.extent(0)</code> equals <code>C.extent(1)</code>, and</del></p></li>
+<li><p><del>(4.3) &mdash; <code>A.extent(0)</code> equals <code>C.extent(0)</code>.</del></p></li>
+</ol>
+<p>
+-5- <i>Complexity</i>: &#x1d4aa;(<code>A.extent(0)</code> × <code>A.extent(1)</code> × <code><ins>A</ins><del>C</del>.extent(0)</code>).
+</p>
+</blockquote>
+
+</li>
+
+<li><p>Modify 29.9.15.5 <a href="https://wg21.link/linalg.algs.blas3.rank2k">[linalg.algs.blas3.rank2k]</a> as indicated:</p>
+
+<blockquote>
+<p>
+-3- <i>Mandates</i>:
+</p>
+<ol style="list-style-type: none">
+<li><p>(3.1) &mdash; If <code>InOutMat</code> has <code>layout_blas_packed</code> layout, then the 
+layout's <code>Triangle</code> template argument has the same type as the function's 
+<code>Triangle</code> template argument;</p></li>
+<li><p>(3.2) &mdash; <code><ins><i>possibly-multipliable</i>&lt;decltype(A),
+decltype(transposed(B)), decltype(C)&gt;()</ins> <del><i>possibly-addable</i>&lt;decltype(A), 
+decltype(B), decltype(C)&gt;()</del></code> 
+is <code>true</code>; and</p></li>
+<li><p>(3.3) &mdash; <code><ins><i>possibly-multipliable</i>&lt;decltype(B),
+decltype(transposed(A)), decltype(C)&gt;()</ins> <del><i>compatible-static-extents</i>&lt;decltype(A), 
 decltype(A)&gt;(0, 1)</del></code> is <code>true</code>.</p></li>
 </ol>
 <p>
