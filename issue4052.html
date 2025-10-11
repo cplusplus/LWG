@@ -64,7 +64,7 @@
 <p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#New">New</a> status.</em></p>
 <h3 id="4052"><a href="lwg-active.html#4052">4052</a>. Bogus requirements for <code>piecewise_linear_distribution</code></h3>
 <p><b>Section:</b> 29.5.9.6.2 <a href="https://wg21.link/rand.dist.samp.pconst">[rand.dist.samp.pconst]</a>, 29.5.9.6.3 <a href="https://wg21.link/rand.dist.samp.plinear">[rand.dist.samp.plinear]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Jonathan Wakely <b>Opened:</b> 2024-02-05 <b>Last modified:</b> 2024-03-12</p>
+ <b>Submitter:</b> Jonathan Wakely <b>Opened:</b> 2024-02-05 <b>Last modified:</b> 2025-10-11</p>
 <p><b>Priority: </b>4
 </p>
 <p><b>View all other</b> <a href="lwg-index.html#rand.dist.samp.pconst">issues</a> in [rand.dist.samp.pconst].</p>
@@ -170,11 +170,147 @@ The copy &amp; paste error was
 <a href="https://github.com/cplusplus/draft/pull/6794">fixed editorially</a>.
 </p>
 
+<p><i>[2025-10-06; Hewill comments and provides wording]</i></p>
+
+<p>
+We should fix the constructor, otherwise the following should be rejected according to the standard:
+</p>
+<blockquote><pre>
+#include &lt;random&gt;
+
+struct Op {
+  float operator()(float);
+  void operator()(auto) = delete;
+};
+
+static_assert(!std::is_invocable_r_v&lt;double, Op&amp;, double&gt;);
+
+int main() {
+  std::initializer_list&lt;float&gt; l;
+  std::piecewise_linear_distribution&lt;float&gt; dist(l, Op{});
+}
+</pre></blockquote>
+<p>
+This is, because it violates <i>Mandates</i>. However, all three compilers accept it because 
+<code>Op&amp;</code> can take <code class='backtick'>float</code> and return <code class='backtick'>float</code>.
+</p>
 
 
 <p id="res-4052"><b>Proposed resolution:</b></p>
 <p>
+This wording is relative to <a href="https://wg21.link/N5014">N5014</a>.
 </p>
+
+<ol>
+
+<li><p>Modify 29.5.9.6.2 <a href="https://wg21.link/rand.dist.samp.pconst">[rand.dist.samp.pconst]</a> as indicated:</p>
+
+<blockquote>
+<pre>
+template&lt;class InputIteratorB, class InputIteratorW&gt;
+  piecewise_constant_distribution(InputIteratorB firstB, InputIteratorB lastB,
+                                  InputIteratorW firstW);
+</pre>
+<blockquote>
+<p>
+-4- <i>Mandates</i>: Both of
+</p>
+<ol style="list-style-type: none">
+<li><p>
+(4.1) &mdash; <code>is_convertible_v&lt;iterator_traits&lt;InputIteratorB>::value_type, <ins>result_type</ins><del>double</del>&gt;</code>
+</p></li>
+<li><p>
+(4.2) &mdash; <code>is_convertible_v&lt;iterator_traits&lt;InputIteratorW>::value_type, <ins>result_type</ins><del>double</del>&gt;</code>
+</p></li>
+</ol>
+<p>
+are <code class='backtick'>true</code>.
+<p/>
+[&hellip;]
+</p>
+</blockquote>
+<pre>
+template&lt;class UnaryOperation&gt;
+  piecewise_constant_distribution(initializer_list&lt;RealType&gt; bl, UnaryOperation fw);
+</pre>
+<blockquote>
+<p>
+-7- <i>Mandates</i>: <code>is_invocable_r_v&lt;<ins>result_type</ins><del>double</del>, UnaryOperation&amp;, 
+<ins>result_type</ins><del>double</del>&gt;</code> is <code class='backtick'>true</code>.
+<p/>
+[&hellip;]
+</p>
+</blockquote>
+<pre>
+template&lt;class UnaryOperation&gt;
+  piecewise_constant_distribution(size_t nw, RealType xmin, RealType xmax, UnaryOperation fw);
+</pre>
+<blockquote>
+<p>
+-10- <i>Mandates</i>: <code>is_invocable_r_v&lt;<ins>result_type</ins><del>double</del>, UnaryOperation&amp;, 
+<ins>result_type</ins><del>double</del>&gt;</code> is <code class='backtick'>true</code>.
+<p/>
+[&hellip;]
+</p>
+</blockquote>
+</blockquote>
+</li>
+
+
+<li><p>Modify 29.5.9.6.3 <a href="https://wg21.link/rand.dist.samp.plinear">[rand.dist.samp.plinear]</a> as indicated:</p>
+
+<blockquote>
+<pre>
+template&lt;class InputIteratorB, class InputIteratorW&gt;
+  piecewise_linear_distribution(InputIteratorB firstB, InputIteratorB lastB,
+                                InputIteratorW firstW);
+</pre>
+<blockquote>
+<p>
+-4- <i>Mandates</i>: Both of
+</p>
+<ol style="list-style-type: none">
+<li><p>
+(4.1) &mdash; <code>is_convertible_v&lt;iterator_traits&lt;InputIteratorB>::value_type, <ins>result_type</ins><del>double</del>&gt;</code>
+</p></li>
+<li><p>
+(4.2) &mdash; <code>is_convertible_v&lt;iterator_traits&lt;InputIteratorW>::value_type, <ins>result_type</ins><del>double</del>&gt;</code>
+</p></li>
+</ol>
+<p>
+are <code class='backtick'>true</code>.
+<p/>
+[&hellip;]
+</p>
+</blockquote>
+<pre>
+template&lt;class UnaryOperation&gt;
+  piecewise_linear_distribution(initializer_list&lt;RealType&gt; bl, UnaryOperation fw);
+</pre>
+<blockquote>
+<p>
+-7- <i>Mandates</i>: <code>is_invocable_r_v&lt;<ins>result_type</ins><del>double</del>, UnaryOperation&amp;, 
+<ins>result_type</ins><del>double</del>&gt;</code> is <code class='backtick'>true</code>.
+<p/>
+[&hellip;]
+</p>
+</blockquote>
+<pre>
+template&lt;class UnaryOperation&gt;
+  piecewise_linear_distribution(size_t nw, RealType xmin, RealType xmax, UnaryOperation fw);
+</pre>
+<blockquote>
+<p>
+-10- <i>Mandates</i>: <code>is_invocable_r_v&lt;<ins>result_type</ins><del>double</del>, UnaryOperation&amp;, 
+<ins>result_type</ins><del>double</del>&gt;</code> is <code class='backtick'>true</code>.
+<p/>
+[&hellip;]
+</p>
+</blockquote>
+</blockquote>
+</li>
+</ol>
+
 
 
 
