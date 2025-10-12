@@ -54,7 +54,7 @@
 </style>
 </head>
 <body>
-<p>Revised 2025-10-12 at 09:03:10 UTC
+<p>Revised 2025-10-12 at 17:07:01 UTC
 </p><h2>Unresolved Issues</h2>
 <hr>
 <h3 id="423"><a href="#423">423</a><sup><a href="https://cplusplus.github.io/LWG/issue423">(i)</a></sup>. Effects of negative <code>streamsize</code> in iostreams</h3>
@@ -58638,6 +58638,7 @@ rather than discarded.
  <b>Submitter:</b> Derek Zhang <b>Opened:</b> 2024-05-14 <b>Last modified:</b> 2024-08-02</p>
 <p><b>Priority: </b>2
 </p>
+<p><b>View other</b> <a href="lwg-index-open.html#string.view.cons">active issues</a> in [string.view.cons].</p>
 <p><b>View all other</b> <a href="lwg-index.html#string.view.cons">issues</a> in [string.view.cons].</p>
 <p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
 <p><b>Discussion:</b></p>
@@ -82985,6 +82986,111 @@ template&lt;class V = <i>see below</i>, contiguous_iterator I, sized_sentinel_fo
 <p/>
 -2- <i>Mandates</i>: If <code>ranges::size(r) <ins>&gt;= V::size()</ins></code> is a constant expression 
 then <del><code class='backtick'>ranges::size(r)</code> ≥ <code class='backtick'>V::size()</code></del><ins>it evaluates to <code class='backtick'>true</code></ins>.
+</p>
+</blockquote>
+</blockquote>
+</li>
+
+</ol>
+
+
+
+
+
+
+<hr>
+<h3 id="4410"><a href="#4410">4410</a><sup><a href="https://cplusplus.github.io/LWG/issue4410">(i)</a></sup>. <code class='backtick'>basic_string_view(It begin, End end)</code> is underconstrained</h3>
+<p><b>Section:</b> 27.3.3.2 <a href="https://wg21.link/string.view.cons">[string.view.cons]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
+ <b>Submitter:</b> Hewill Kang <b>Opened:</b> 2025-10-12 <b>Last modified:</b> 2025-10-12</p>
+<p><b>Priority: </b>Not Prioritized
+</p>
+<p><b>View other</b> <a href="lwg-index-open.html#string.view.cons">active issues</a> in [string.view.cons].</p>
+<p><b>View all other</b> <a href="lwg-index.html#string.view.cons">issues</a> in [string.view.cons].</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
+<p><b>Discussion:</b></p>
+<p>
+The following lead to a hard error in the <code>string_view</code> constructor 
+(<a href="https://godbolt.org/z/dz3M3fevc">demo</a>):
+</p>
+<blockquote><pre>
+volatile char* p;
+std::string_view sv(p, p); // <span style="color:red;font-weight:bolder">error: invalid conversion from 'volatile char*' to 'const char*'</span>
+</pre></blockquote>
+<p>
+Because the constructor currently only requires that the value type of the contiguous iterator be 
+<code class='backtick'>char</code>, which does not reject <code class='backtick'>volatile char*</code>, which fires when further initializing <code class='backtick'>const char*</code>.
+</p>
+
+
+<p id="res-4410"><b>Proposed resolution:</b></p>
+<p>
+This wording is relative to <a href="https://wg21.link/N5014">N5014</a>.
+</p>
+
+<ol>
+
+<li><p>Modify 27.3.3.2 <a href="https://wg21.link/string.view.cons">[string.view.cons]</a> as indicated:</p>
+
+<blockquote>
+<pre>
+template&lt;class It, class End&gt;
+  constexpr basic_string_view(It begin, End end);
+</pre>
+<blockquote>
+<p>
+-7- <i>Constraints</i>:
+</p>
+<ol style="list-style-type: none">
+<li><p>
+(7.1) &mdash; <code class='backtick'>It</code> satisfies <code class='backtick'>contiguous_iterator</code>.
+</p></li>
+<li><p>
+(7.2) &mdash; <code class='backtick'>End</code> satisfies <code>sized_sentinel_for&lt;It&gt;</code>.
+</p></li>
+<li><p>
+(7.3) &mdash; <code>is_same_v&lt;iter_value_t&lt;It&gt;, charT&gt;</code> is <code class='backtick'>true</code>.
+</p></li>
+<ins>(7.?) &mdash; <code>is_convertible_v&lt;add_pointer_t&lt;iter_reference_t&lt;It&gt;&gt;, const_pointer&gt;</code>
+is <code class='backtick'>true</code>.</ins>
+<li><p>
+(7.4) &mdash; <code>is_convertible_v&lt;End, size_type&gt;</code> is <code class='backtick'>false</code>.
+</p></li>
+</ol>
+[&hellip;]
+</blockquote>
+<pre>
+template&lt;class R&gt;
+  constexpr explicit basic_string_view(R&amp;&amp; r);
+</pre>
+<blockquote>
+<p>
+-11- Let <code class='backtick'>d</code> be an lvalue of type <code>remove_cvref_t&lt;R&gt;</code>.
+<p/>
+-12- <i>Constraints</i>:
+</p>
+<ol style="list-style-type: none">
+<li><p>
+(12.1) &mdash; <code>remove_cvref_t&lt;R&gt;</code> is not the same type as <code class='backtick'>basic_string_view</code>,
+</p></li>
+<li><p>
+(12.2) &mdash; <code class='backtick'>R</code> models <code class='backtick'>ranges::contiguous_range</code> and <code class='backtick'>ranges::sized_range</code>,
+</p></li>
+<li><p>
+(12.3) &mdash; <code>is_same_v&lt;ranges::range_value_t&lt;R&gt;, charT&gt;</code> is <code class='backtick'>true</code>,
+</p></li>
+<li><p>
+<ins>(12.?) &mdash; <code>is_convertible_v&lt;add_pointer_t&lt;ranges::range_reference_t&lt;R&gt;&gt;, 
+const_pointer&gt;</code> is <code class='backtick'>true</code>,</ins>
+</p></li>
+<li><p>
+(12.4) &mdash; <code>is_convertible_v&lt;R, const charT*&gt;</code> is <code class='backtick'>false</code>, and
+</p></li>
+<li><p>
+(12.5) &mdash; <code>d.operator ::std::basic_string_view&lt;charT, traits&gt;()</code> is not a
+valid expression.
+</p></li>
+</ol>
+<p>
 </p>
 </blockquote>
 </blockquote>
