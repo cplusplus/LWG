@@ -54,7 +54,7 @@
 </style>
 </head>
 <body>
-<p>Revised 2025-10-11 at 11:17:49 UTC
+<p>Revised 2025-10-12 at 09:03:10 UTC
 </p><h2>Unresolved Issues</h2>
 <hr>
 <h3 id="423"><a href="#423">423</a><sup><a href="https://cplusplus.github.io/LWG/issue423">(i)</a></sup>. Effects of negative <code>streamsize</code> in iostreams</h3>
@@ -82822,6 +82822,174 @@ constexpr value_type operator[](<i>simd-size-type</i> i) const;
 </blockquote>
 </blockquote>
 </li>
+</ol>
+
+
+
+
+
+
+<hr>
+<h3 id="4409"><a href="#4409">4409</a><sup><a href="https://cplusplus.github.io/LWG/issue4409">(i)</a></sup>. Constant expression <code class='backtick'>ranges::size(r)</code> <i>Constraints</i> and <i>Mandates</i> in [simd]</h3>
+<p><b>Section:</b> 29.10 <a href="https://wg21.link/simd">[simd]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
+ <b>Submitter:</b> Lénárd Szolnoki <b>Opened:</b> 2025-10-10 <b>Last modified:</b> 2025-10-12</p>
+<p><b>Priority: </b>Not Prioritized
+</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
+<p><b>Discussion:</b></p>
+<p>
+Various <i>Constraints</i> and <i>Mandates</i> in 29.10 <a href="https://wg21.link/simd">[simd]</a> are conditioned on <code class='backtick'>ranges::size(r)</code>, 
+assuming that subsequent operations on the result are also constant expression. This is not a given, 
+since <code class='backtick'>ranges::size(r)</code> is allowed to return an integer-class type, and it is not mandated that operations 
+on integer-class types are usable in constant expressions.
+<p/>
+In particular:
+</p>
+<ol>
+<li><p>
+29.10.7.2 <a href="https://wg21.link/simd.ctor">[simd.ctor]</a> p13:
+</p>
+<blockquote>
+<p>
+<i>Constraints</i>: 
+</p>
+<ul>
+<li><p><code class='backtick'>R</code> models <code class='backtick'>ranges::contiguous_range</code> and <code class='backtick'>ranges::sized_range</code>,</p></li>
+<li><p><code class='backtick'>ranges::size(r)</code> is a constant expression, and</p></li>
+<li><p><code class='backtick'>ranges::size(r)</code> is equal to <code class='backtick'>size()</code>.</p></li>
+</ul>
+</blockquote>
+<p>
+Here <code class='backtick'>ranges::size(r) == size()</code> might not be a constant expression, even when <code class='backtick'>ranges::size(r)</code> 
+is. Operations that are not accounted for:
+</p>
+<ul>
+<li><p>Possible conversion from <code class='backtick'>range::size(r)</code> to <code><i>simd-size-type</i></code>.</p></li>
+<li><p>Possible operator overloading on ==.</p></li>
+</ul>
+</li>
+
+<li><p>
+29.10.7.2 <a href="https://wg21.link/simd.ctor">[simd.ctor]</a> p17+18:
+</p>
+<blockquote>
+<p>
+<i>Constraints</i>: 
+</p>
+<ul>
+<li><p><code class='backtick'>R</code> models <code class='backtick'>ranges::contiguous_range</code> and <code class='backtick'>ranges::sized_range</code>, and</p></li>
+<li><p><code class='backtick'>ranges::size(r)</code> is a constant expression</p></li>
+</ul>
+<p>
+<i>Remarks:</i> The deduced type is equivalent to <code>vec&lt;ranges::range_value_t&lt;R&gt;, ranges::size(r)&gt;</code>.
+</p>
+</blockquote>
+<p>
+Here the second constraint is simply redundant, if failure to form the type is in the immediate context. 
+If we want to type it out in the constraints then we should account for conversion to <code><i>simd-size-type</i></code> 
+and narrowing.
+</p>
+</li>
+
+<li><p>
+29.10.8.7 <a href="https://wg21.link/simd.loadstore">[simd.loadstore]</a> p2:
+</p>
+<blockquote>
+<p>
+<i>Mandates</i>: If <code class='backtick'>ranges::size(r)</code> is a constant expression then <code class='backtick'>ranges::size(r)</code> ≥ <code class='backtick'>V::size()</code>. 
+</p>
+</blockquote>
+<p>
+Here <code>ranges::size(r) &gt;= V::size()</code> might not be a constant expression, even when 
+<code class='backtick'>ranges::size(r)</code> is. It is unclear why a mathematical operator symbol is used here (and further 
+down in the preconditions).
+</p>
+</li>
+</ol>
+
+
+
+<p id="res-4409"><b>Proposed resolution:</b></p>
+<p>
+This wording is relative to <a href="https://wg21.link/N5014">N5014</a>.
+</p>
+
+<ol>
+
+<li><p>Modify 29.10.7.2 <a href="https://wg21.link/simd.ctor">[simd.ctor]</a> as indicated:</p>
+
+<blockquote>
+<pre>
+template&lt;class R, class... Flags&gt;
+  constexpr basic_vec(R&amp;&amp; r, flags&lt;Flags...&gt; = {});
+template&lt;class R, class... Flags&gt;
+  constexpr basic_vec(R&amp;&amp; r, const mask_type&amp; mask, flags&lt;Flags...&gt; = {});
+</pre>
+<blockquote>
+<p>
+-12- Let <code class='backtick'>mask</code> be <code class='backtick'>mask_type(true)</code> for the overload with no <code class='backtick'>mask</code> parameter.
+<p/>
+-13- <i>Constraints</i>:
+</p>
+<ol style="list-style-type: none">
+<li><p>
+(13.1) &mdash; <code class='backtick'>R</code> models <code class='backtick'>ranges::contiguous_range</code> and <code class='backtick'>ranges::sized_range</code>, <ins>and</ins>
+</p></li>
+<li><p>
+(13.2) &mdash; <code>ranges::size(r) <ins>== size()</ins></code> is a constant expression, and <ins>evaluates to <code class='backtick'>true</code>.</ins>
+</p></li>
+<li><p>
+<del>(13.3) &mdash; <code class='backtick'>ranges::size(r)</code> is equal to <code class='backtick'>size()</code>.</del>
+</p></li>
+</ol>
+[&hellip;]
+</blockquote>
+<pre>
+template&lt;class R, class... Ts&gt;
+  basic_vec(R&amp;&amp; r, Ts...) -&gt; <i>see below</i>;
+</pre>
+<blockquote>
+<p>
+-17- <i>Constraints</i>:
+</p>
+<ol style="list-style-type: none">
+<li><p>
+<del>(17.1) &mdash;</del> <code class='backtick'>R</code> models <code class='backtick'>ranges::contiguous_range</code> and <code class='backtick'>ranges::sized_range</code><del>, and</del><ins>.</ins>
+</p></li>
+<li><p>
+<del>(17.2) &mdash; <code class='backtick'>ranges::size(r)</code> is a constant expression.</del>
+</p></li>
+</ol>
+<p>
+-18- <i>Remarks</i>: The deduced type is equivalent to <code>vec&lt;ranges::range_value_t&lt;R&gt;, ranges::size(r)&gt;</code>.
+</p>
+</blockquote>
+</blockquote>
+</li>
+
+<li><p>Modify 29.10.8.7 <a href="https://wg21.link/simd.loadstore">[simd.loadstore]</a> as indicated:</p>
+
+<blockquote>
+<pre>
+template&lt;class V = <i>see below</i>, ranges::contiguous_range R, class... Flags&gt;
+  requires ranges::sized_range&lt;R&gt;
+  constexpr V unchecked_load(R&amp;&amp; r, flags&lt;Flags...&gt; f = {});
+[&hellip;]
+template&lt;class V = <i>see below</i>, contiguous_iterator I, sized_sentinel_for&lt;I&gt; S, class... Flags&gt;
+  constexpr V unchecked_load(I first, S last, const typename V::mask_type&amp; mask,
+                             flags&lt;Flags...&gt; f = {});
+</pre>
+<blockquote>
+<p>
+-1- Let [&hellip;]
+<p/>
+-2- <i>Mandates</i>: If <code>ranges::size(r) <ins>&gt;= V::size()</ins></code> is a constant expression 
+then <del><code class='backtick'>ranges::size(r)</code> ≥ <code class='backtick'>V::size()</code></del><ins>it evaluates to <code class='backtick'>true</code></ins>.
+</p>
+</blockquote>
+</blockquote>
+</li>
+
 </ol>
 
 
