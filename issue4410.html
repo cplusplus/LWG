@@ -113,8 +113,10 @@ template&lt;class It, class End&gt;
 <li><p>
 (7.3) &mdash; <code>is_same_v&lt;iter_value_t&lt;It&gt;, charT&gt;</code> is <code class='backtick'>true</code>.
 </p></li>
+<li><p>
 <ins>(7.?) &mdash; <code>is_convertible_v&lt;add_pointer_t&lt;iter_reference_t&lt;It&gt;&gt;, const_pointer&gt;</code>
 is <code class='backtick'>true</code>.</ins>
+</p></li>
 <li><p>
 (7.4) &mdash; <code>is_convertible_v&lt;End, size_type&gt;</code> is <code class='backtick'>false</code>.
 </p></li>

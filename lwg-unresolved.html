@@ -54,7 +54,7 @@
 </style>
 </head>
 <body>
-<p>Revised 2025-10-12 at 17:07:01 UTC
+<p>Revised 2025-10-12 at 17:10:53 UTC
 </p><h2>Unresolved Issues</h2>
 <hr>
 <h3 id="423"><a href="#423">423</a><sup><a href="https://cplusplus.github.io/LWG/issue423">(i)</a></sup>. Effects of negative <code>streamsize</code> in iostreams</h3>
@@ -83050,8 +83050,10 @@ template&lt;class It, class End&gt;
 <li><p>
 (7.3) &mdash; <code>is_same_v&lt;iter_value_t&lt;It&gt;, charT&gt;</code> is <code class='backtick'>true</code>.
 </p></li>
+<li><p>
 <ins>(7.?) &mdash; <code>is_convertible_v&lt;add_pointer_t&lt;iter_reference_t&lt;It&gt;&gt;, const_pointer&gt;</code>
 is <code class='backtick'>true</code>.</ins>
+</p></li>
 <li><p>
 (7.4) &mdash; <code>is_convertible_v&lt;End, size_type&gt;</code> is <code class='backtick'>false</code>.
 </p></li>
