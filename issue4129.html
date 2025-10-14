@@ -64,8 +64,8 @@
 <p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#New">New</a> status.</em></p>
 <h3 id="4129"><a href="lwg-active.html#4129">4129</a>. Possibly incorrect wording for data race avoidance</h3>
 <p><b>Section:</b> 16.4.6.10 <a href="https://wg21.link/res.on.data.races">[res.on.data.races]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Jiang An <b>Opened:</b> 2024-07-30 <b>Last modified:</b> 2024-08-03</p>
-<p><b>Priority: </b>Not Prioritized
+ <b>Submitter:</b> Jiang An <b>Opened:</b> 2024-07-30 <b>Last modified:</b> 2025-10-14</p>
+<p><b>Priority: </b>3
 </p>
 <p><b>View other</b> <a href="lwg-index-open.html#res.on.data.races">active issues</a> in [res.on.data.races].</p>
 <p><b>View all other</b> <a href="lwg-index.html#res.on.data.races">issues</a> in [res.on.data.races].</p>
@@ -82,6 +82,17 @@ accesses some object via a parameter.
 It might need to be considered whether we should use the more general term "range" instead of "container", 
 which will cover <code>std::span</code>, etc.
 </p>
+
+<p><i>[2025-10-14; Reflector poll]</i></p>
+
+<p>
+Set priority to 3 after reflector poll.
+</p>
+<p>
+"'non-const parameters' needs to be fixed, this isn't about
+top-level const, e.g. <code>std::string&amp;</code> is not a const type."
+</p>
+
 
 
 <p id="res-4129"><b>Proposed resolution:</b></p>

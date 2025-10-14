@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <title>Issue 4286: Some more feature-test macros for fully freestanding features are not marked freestanding</title>
 <meta property="og:title" content="Issue 4286: Some more feature-test macros for fully freestanding features are not marked freestanding">
-<meta property="og:description" content="C++ library issue. Status: New">
+<meta property="og:description" content="C++ library issue. Status: Tentatively Ready">
 <meta property="og:url" content="https://cplusplus.github.io/LWG/issue4286.html">
 <meta property="og:type" content="website">
 <meta property="og:image" content="http://cplusplus.github.io/LWG/images/cpp_logo.png">
@@ -61,15 +61,15 @@
 </head>
 <body>
 <hr>
-<p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#New">New</a> status.</em></p>
+<p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#Ready">Tentatively Ready</a> status.</em></p>
 <h3 id="4286"><a href="lwg-active.html#4286">4286</a>. Some more feature-test macros for fully freestanding features are not marked freestanding</h3>
-<p><b>Section:</b> 17.3.2 <a href="https://wg21.link/version.syn">[version.syn]</a>, 20.2.2 <a href="https://wg21.link/memory.syn">[memory.syn]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Yihe Li <b>Opened:</b> 2025-06-17 <b>Last modified:</b> 2025-07-05</p>
+<p><b>Section:</b> 17.3.2 <a href="https://wg21.link/version.syn">[version.syn]</a>, 20.2.2 <a href="https://wg21.link/memory.syn">[memory.syn]</a> <b>Status:</b> <a href="lwg-active.html#Ready">Tentatively Ready</a>
+ <b>Submitter:</b> Yihe Li <b>Opened:</b> 2025-06-17 <b>Last modified:</b> 2025-10-14</p>
 <p><b>Priority: </b>Not Prioritized
 </p>
 <p><b>View other</b> <a href="lwg-index-open.html#version.syn">active issues</a> in [version.syn].</p>
 <p><b>View all other</b> <a href="lwg-index.html#version.syn">issues</a> in [version.syn].</p>
-<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#Tentatively Ready">Tentatively Ready</a> status.</p>
 <p><b>Discussion:</b></p>
 <p>
 <a href="https://wg21.link/P1642R11" title=" Freestanding Library: Easy [utilities], [ranges], and [iterators]">P1642R11</a> (accepted in C++23) plus LWG <a href="lwg-defects.html#4189" title="cache_latest_view should be freestanding (Status: WP)">4189</a><sup><a href="https://cplusplus.github.io/LWG/issue4189" title="Latest snapshot">(i)</a></sup> (accepted in Hagenberg) added nearly the entire 
@@ -87,6 +87,13 @@ A note about <code class='backtick'>is_sufficiently_aligned</code>: <a href="htt
 freestanding, but somehow the wording didn't say so. The following wording includes the function and its FTM anyway 
 since hopefully this is just an omission when wording the paper.
 </p>
+
+<p><i>[2025-10-14; Reflector poll]</i></p>
+
+<p>
+Set status to Tentatively Ready after nine votes in favour during reflector poll.
+</p>
+
 
 
 <p id="res-4286"><b>Proposed resolution:</b></p>

@@ -67,8 +67,8 @@
 This document is the Index by Status and Date for the <a href="lwg-active.html">Library Active Issues List</a>,
 <a href="lwg-defects.html">Library Defect Reports and Accepted Issues</a>, and <a href="lwg-closed.html">Library Closed Issues List</a>.
 </p>
-<p>Revised 2025-10-14 at 09:36:58 UTC
-</p><h2 id="New">New (613 issues)</h2>
+<p>Revised 2025-10-14 at 17:47:05 UTC
+</p><h2 id="New">New (610 issues)</h2>
 <table class="issues-index">
 <tr>
   <th><a href="lwg-toc.html">Issue</a></th>
@@ -78,6 +78,60 @@ This document is the Index by Status and Date for the <a href="lwg-active.html">
   <th>Proposed Resolution</th>
   <th><a href="unresolved-prioritized.html">Priority</a></th>
   <th>Duplicates</th>
+</tr>
+<tr>
+<td id="4296"><a href="lwg-active.html#4296" title="Clarify that Cpp17Hash does not imply stateless (Status: New)">4296</a><sup><a href="https://cplusplus.github.io/LWG/issue4296">(i)</a></sup></td>
+<td><a href="lwg-active.html#New">New</a></td>
+<td>16.4.4.5 [hash.requirements]</td>
+<td>Clarify that Cpp17Hash does not imply stateless</td>
+<td><span class="no-pr">No</span></td>
+<td>3</td>
+<td></td>
+</tr>
+<tr>
+<td id="4258"><a href="lwg-active.html#4258" title="Size type mismatch in constraints involving Cpp17Allocator (Status: New)">4258</a><sup><a href="https://cplusplus.github.io/LWG/issue4258">(i)</a></sup></td>
+<td><a href="lwg-active.html#New">New</a></td>
+<td>16.4.4.6.1 [allocator.requirements.general]</td>
+<td>Size type mismatch in constraints involving <i>Cpp17Allocator</i></td>
+<td><span class="no-pr">No</span></td>
+<td>4</td>
+<td></td>
+</tr>
+<tr>
+<td id="4068"><a href="lwg-active.html#4068" title="Terminology for objects whose types model a concept (Status: New)">4068</a><sup><a href="https://cplusplus.github.io/LWG/issue4068">(i)</a></sup></td>
+<td><a href="lwg-active.html#New">New</a></td>
+<td>16.4.5.11 [res.on.requirements]</td>
+<td>Terminology for objects whose types model a concept</td>
+<td><span class="no-pr">No</span></td>
+<td>3</td>
+<td></td>
+</tr>
+<tr>
+<td id="4129"><a href="lwg-active.html#4129" title="Possibly incorrect wording for data race avoidance (Status: New)">4129</a><sup><a href="https://cplusplus.github.io/LWG/issue4129">(i)</a></sup></td>
+<td><a href="lwg-active.html#New">New</a></td>
+<td>16.4.6.10 [res.on.data.races]</td>
+<td>Possibly incorrect wording for data race avoidance</td>
+<td>Yes</td>
+<td>3</td>
+<td></td>
+</tr>
+<tr>
+<td id="4411"><a href="lwg-active.html#4411" title="Even more feature-test macros for fully freestanding features are not marked freestanding (Status: New)">4411</a><sup><a href="https://cplusplus.github.io/LWG/issue4411">(i)</a></sup></td>
+<td><a href="lwg-active.html#New">New</a></td>
+<td>17.3.2 [version.syn]</td>
+<td>Even more feature-test macros for fully freestanding features are not marked freestanding</td>
+<td><span class="no-pr">No</span></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td id="4388"><a href="lwg-active.html#4388" title="Align new definition of va_start with C23 (Status: New)">4388</a><sup><a href="https://cplusplus.github.io/LWG/issue4388">(i)</a></sup></td>
+<td><a href="lwg-active.html#New">New</a></td>
+<td>17.14.2 [cstdarg.syn]</td>
+<td>Align new definition of <code class='backtick'>va_start</code> with C23</td>
+<td>Yes</td>
+<td>1</td>
+<td></td>
 </tr>
 <tr>
 <td id="4410"><a href="lwg-active.html#4410" title="basic_string_view(It begin, End end) is underconstrained (Status: New)">4410</a><sup><a href="https://cplusplus.github.io/LWG/issue4410">(i)</a></sup></td>
@@ -296,15 +350,6 @@ constructor</td>
 <td>33.9.12.3 [exec.write.env]</td>
 <td><code class='backtick'>write_env</code> implementation-detail lambda should have explicit return type</td>
 <td><span class="no-pr">No</span></td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td id="4388"><a href="lwg-active.html#4388" title="Align new definition of va_start with C23 (Status: New)">4388</a><sup><a href="https://cplusplus.github.io/LWG/issue4388">(i)</a></sup></td>
-<td><a href="lwg-active.html#New">New</a></td>
-<td>17.14.2 [cstdarg.syn]</td>
-<td>Align new definition of <code class='backtick'>va_start</code> with C23</td>
-<td>Yes</td>
 <td></td>
 <td></td>
 </tr>
@@ -1063,15 +1108,6 @@ co_await expression instead of same_as&lt;void&gt; (Status: New)">4357</a><sup><
 <td></td>
 </tr>
 <tr>
-<td id="4317"><a href="lwg-active.html#4317" title="The meaning of &quot;resource&quot; in the Cpp17Destructible requirements is undefined (Status: New)">4317</a><sup><a href="https://cplusplus.github.io/LWG/issue4317">(i)</a></sup></td>
-<td><a href="lwg-active.html#New">New</a></td>
-<td>16.4.4.2 [utility.arg.requirements]</td>
-<td>The meaning of "resource" in the <i>Cpp17Destructible</i> requirements is undefined</td>
-<td>Yes</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
 <td id="4316"><a href="lwg-active.html#4316" title="{can_}substitute specification is ill-formed (Status: New)">4316</a><sup><a href="https://cplusplus.github.io/LWG/issue4316">(i)</a></sup></td>
 <td><a href="lwg-active.html#New">New</a></td>
 <td>21.4.13 [meta.reflection.substitute]</td>
@@ -1193,15 +1229,6 @@ in <code>&lt;ranges&gt;</code></td>
 <td></td>
 </tr>
 <tr>
-<td id="4296"><a href="lwg-active.html#4296" title="Clarify that Cpp17Hash does not imply stateless (Status: New)">4296</a><sup><a href="https://cplusplus.github.io/LWG/issue4296">(i)</a></sup></td>
-<td><a href="lwg-active.html#New">New</a></td>
-<td>16.4.4.5 [hash.requirements]</td>
-<td>Clarify that Cpp17Hash does not imply stateless</td>
-<td><span class="no-pr">No</span></td>
-<td></td>
-<td></td>
-</tr>
-<tr>
 <td id="4290"><a href="lwg-active.html#4290" title="Missing Mandates clauses on is_sufficiently_aligned (Status: New)">4290</a><sup><a href="https://cplusplus.github.io/LWG/issue4290">(i)</a></sup></td>
 <td><a href="lwg-active.html#New">New</a></td>
 <td>20.2.5 [ptr.align]</td>
@@ -1215,15 +1242,6 @@ in <code>&lt;ranges&gt;</code></td>
 <td><a href="lwg-active.html#New">New</a></td>
 <td>20.2.6 [obj.lifetime]</td>
 <td><code class='backtick'>std::trivially_relocate</code> needs stronger preconditions on "nested" objects with dynamic lifetime</td>
-<td>Yes</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td id="4286"><a href="lwg-active.html#4286" title="Some more feature-test macros for fully freestanding features are not marked freestanding (Status: New)">4286</a><sup><a href="https://cplusplus.github.io/LWG/issue4286">(i)</a></sup></td>
-<td><a href="lwg-active.html#New">New</a></td>
-<td>17.3.2 [version.syn]</td>
-<td>Some more feature-test macros for fully freestanding features are not marked freestanding</td>
 <td>Yes</td>
 <td></td>
 <td></td>
@@ -1523,15 +1541,6 @@ complexity for algorithms that are in fact &#x1d4aa;(n)</td>
 <td></td>
 </tr>
 <tr>
-<td id="4258"><a href="lwg-active.html#4258" title="Size type mismatch in constraints involving Cpp17Allocator (Status: New)">4258</a><sup><a href="https://cplusplus.github.io/LWG/issue4258">(i)</a></sup></td>
-<td><a href="lwg-active.html#New">New</a></td>
-<td>16.4.4.6.1 [allocator.requirements.general]</td>
-<td>Size type mismatch in constraints involving <i>Cpp17Allocator</i></td>
-<td><span class="no-pr">No</span></td>
-<td></td>
-<td></td>
-</tr>
-<tr>
 <td id="4255"><a href="lwg-active.html#4255" title="move_only_function constructor should recognize empty copyable_functions (Status: New)">4255</a><sup><a href="https://cplusplus.github.io/LWG/issue4255">(i)</a></sup></td>
 <td><a href="lwg-active.html#New">New</a></td>
 <td>22.10.17.4.3 [func.wrap.move.ctor]</td>
@@ -1581,15 +1590,6 @@ complexity for algorithms that are in fact &#x1d4aa;(n)</td>
 <td><a href="lwg-active.html#New">New</a></td>
 <td>25.7.32.3 [range.stride.iterator]</td>
 <td><code>stride_view::<i>iterator</i></code> should provide <code>operator-&gt;</code></td>
-<td>Yes</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td id="4250"><a href="lwg-active.html#4250" title="swap overloads for indirect and polymorphic only found by ADL (Status: New)">4250</a><sup><a href="https://cplusplus.github.io/LWG/issue4250">(i)</a></sup></td>
-<td><a href="lwg-active.html#New">New</a></td>
-<td>20.4.1.7 [indirect.swap]</td>
-<td><code class='backtick'>swap</code> overloads for <code class='backtick'>indirect</code> and <code class='backtick'>polymorphic</code> only found by ADL</td>
 <td>Yes</td>
 <td></td>
 <td></td>
@@ -2128,15 +2128,6 @@ passed to allocator <code>construct</code> and <code>destroy</code></td>
 <td></td>
 </tr>
 <tr>
-<td id="4149"><a href="lwg-active.html#4149" title="User defined macros without standard headers (294 redux) (Status: New)">4149</a><sup><a href="https://cplusplus.github.io/LWG/issue4149">(i)</a></sup></td>
-<td><a href="lwg-active.html#New">New</a></td>
-<td>16.4.5.3.3 [macro.names]</td>
-<td>User defined macros without standard headers (294 redux)</td>
-<td>Yes</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
 <td id="4146"><a href="lwg-active.html#4146" title="&sect;[format.formatter.spec]/3 unconditionally enables nonlocking for container adaptors (Status: New)">4146</a><sup><a href="https://cplusplus.github.io/LWG/issue4146">(i)</a></sup></td>
 <td><a href="lwg-active.html#New">New</a></td>
 <td>28.5.6.4 [format.formatter.spec]</td>
@@ -2235,15 +2226,6 @@ forward_iterator (Status: New)">4120</a><sup><a href="https://cplusplus.github.i
 <td>The Standard Library should not use predicates of the form <code>pred(*i) != false</code></td>
 <td>Yes</td>
 <td>3</td>
-<td></td>
-</tr>
-<tr>
-<td id="4129"><a href="lwg-active.html#4129" title="Possibly incorrect wording for data race avoidance (Status: New)">4129</a><sup><a href="https://cplusplus.github.io/LWG/issue4129">(i)</a></sup></td>
-<td><a href="lwg-active.html#New">New</a></td>
-<td>16.4.6.10 [res.on.data.races]</td>
-<td>Possibly incorrect wording for data race avoidance</td>
-<td>Yes</td>
-<td></td>
 <td></td>
 </tr>
 <tr>
@@ -2599,15 +2581,6 @@ forward_iterator (Status: New)">4120</a><sup><a href="https://cplusplus.github.i
 <td>Requirements for fancy pointers might be insufficient for self-referential implementation of containers</td>
 <td>Yes</td>
 <td>3</td>
-<td></td>
-</tr>
-<tr>
-<td id="4068"><a href="lwg-active.html#4068" title="Terminology for objects whose types model a concept (Status: New)">4068</a><sup><a href="https://cplusplus.github.io/LWG/issue4068">(i)</a></sup></td>
-<td><a href="lwg-active.html#New">New</a></td>
-<td>16.4.5.11 [res.on.requirements]</td>
-<td>Terminology for objects whose types model a concept</td>
-<td><span class="no-pr">No</span></td>
-<td></td>
 <td></td>
 </tr>
 <tr>
@@ -6447,7 +6420,7 @@ the evaluation of type traits</td>
 <td></td>
 </tr>
 </table>
-<h2 id="LEWG">LEWG (24 issues)</h2>
+<h2 id="LEWG">LEWG (25 issues)</h2>
 <table class="issues-index">
 <tr>
   <th><a href="lwg-toc.html">Issue</a></th>
@@ -6457,6 +6430,15 @@ the evaluation of type traits</td>
   <th>Proposed Resolution</th>
   <th><a href="unresolved-prioritized.html">Priority</a></th>
   <th>Duplicates</th>
+</tr>
+<tr>
+<td id="4250"><a href="lwg-active.html#4250" title="swap overloads for indirect and polymorphic only found by ADL (Status: LEWG)">4250</a><sup><a href="https://cplusplus.github.io/LWG/issue4250">(i)</a></sup></td>
+<td><a href="lwg-active.html#LEWG">LEWG</a></td>
+<td>20.4.1.7 [indirect.swap]</td>
+<td><code class='backtick'>swap</code> overloads for <code class='backtick'>indirect</code> and <code class='backtick'>polymorphic</code> only found by ADL</td>
+<td>Yes</td>
+<td>2</td>
+<td></td>
 </tr>
 <tr>
 <td id="4289"><a href="lwg-active.html#4289" title="Seed sequence is overspecified (Status: LEWG)">4289</a><sup><a href="https://cplusplus.github.io/LWG/issue4289">(i)</a></sup></td>

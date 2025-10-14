@@ -60,8 +60,8 @@
 <p>This document is the Table of Contents for the <a href="lwg-active.html">Library Active Issues List</a>,
 <a href="lwg-defects.html">Library Defect Reports and Accepted Issues</a>, and <a href="lwg-closed.html">Library Closed Issues List</a>,
 sorted by priority.</p>
-<p>Revised 2025-10-14 at 09:36:58 UTC
-</p><h2 id="Priority_1">Priority 1 (8 issues)</h2>
+<p>Revised 2025-10-14 at 17:47:05 UTC
+</p><h2 id="Priority_1">Priority 1 (9 issues)</h2>
 <table class="issues-index">
 <tr>
   <th><a href="lwg-toc.html">Issue</a></th>
@@ -71,6 +71,15 @@ sorted by priority.</p>
   <th>Proposed Resolution</th>
   <th><a href="unresolved-prioritized.html">Priority</a></th>
   <th>Duplicates</th>
+</tr>
+<tr>
+<td id="4388"><a href="lwg-active.html#4388" title="Align new definition of va_start with C23 (Status: New)">4388</a><sup><a href="https://cplusplus.github.io/LWG/issue4388">(i)</a></sup></td>
+<td><a href="lwg-active.html#New">New</a></td>
+<td>17.14.2 [cstdarg.syn]</td>
+<td>Align new definition of <code class='backtick'>va_start</code> with C23</td>
+<td>Yes</td>
+<td>1</td>
+<td></td>
 </tr>
 <tr>
 <td id="4015"><a href="lwg-active.html#4015" title="LWG 3973 broke const overloads of std::optional monadic operations (Status: Open)">4015</a><sup><a href="https://cplusplus.github.io/LWG/issue4015">(i)</a></sup></td>
@@ -145,7 +154,7 @@ sorted by priority.</p>
 <td></td>
 </tr>
 </table>
-<h2 id="Priority_2">Priority 2 (56 issues)</h2>
+<h2 id="Priority_2">Priority 2 (57 issues)</h2>
 <table class="issues-index">
 <tr>
   <th><a href="lwg-toc.html">Issue</a></th>
@@ -197,6 +206,15 @@ sorted by priority.</p>
 <td><a href="lwg-active.html#New">New</a></td>
 <td>20.4 [mem.composite.types]</td>
 <td>Problematic <i>Constraints</i> on incomplete types in indirect and polymorphic</td>
+<td>Yes</td>
+<td>2</td>
+<td></td>
+</tr>
+<tr>
+<td id="4250"><a href="lwg-active.html#4250" title="swap overloads for indirect and polymorphic only found by ADL (Status: LEWG)">4250</a><sup><a href="https://cplusplus.github.io/LWG/issue4250">(i)</a></sup></td>
+<td><a href="lwg-active.html#LEWG">LEWG</a></td>
+<td>20.4.1.7 [indirect.swap]</td>
+<td><code class='backtick'>swap</code> overloads for <code class='backtick'>indirect</code> and <code class='backtick'>polymorphic</code> only found by ADL</td>
 <td>Yes</td>
 <td>2</td>
 <td></td>
@@ -663,7 +681,7 @@ specified to make <code><i>N</i></code> copies of <code>T</code> into the destin
 <td></td>
 </tr>
 </table>
-<h2 id="Priority_3">Priority 3 (397 issues)</h2>
+<h2 id="Priority_3">Priority 3 (400 issues)</h2>
 <table class="issues-index">
 <tr>
   <th><a href="lwg-toc.html">Issue</a></th>
@@ -848,6 +866,15 @@ is unclear</td>
 <td></td>
 </tr>
 <tr>
+<td id="4296"><a href="lwg-active.html#4296" title="Clarify that Cpp17Hash does not imply stateless (Status: New)">4296</a><sup><a href="https://cplusplus.github.io/LWG/issue4296">(i)</a></sup></td>
+<td><a href="lwg-active.html#New">New</a></td>
+<td>16.4.4.5 [hash.requirements]</td>
+<td>Clarify that Cpp17Hash does not imply stateless</td>
+<td><span class="no-pr">No</span></td>
+<td>3</td>
+<td></td>
+</tr>
+<tr>
 <td id="2461"><a href="lwg-active.html#2461" title="Interaction between allocators and container exception safety guarantees (Status: New)">2461</a><sup><a href="https://cplusplus.github.io/LWG/issue2461">(i)</a></sup></td>
 <td><a href="lwg-active.html#New">New</a></td>
 <td>16.4.4.6 [allocator.requirements]</td>
@@ -965,6 +992,15 @@ is unclear</td>
 <td></td>
 </tr>
 <tr>
+<td id="4068"><a href="lwg-active.html#4068" title="Terminology for objects whose types model a concept (Status: New)">4068</a><sup><a href="https://cplusplus.github.io/LWG/issue4068">(i)</a></sup></td>
+<td><a href="lwg-active.html#New">New</a></td>
+<td>16.4.5.11 [res.on.requirements]</td>
+<td>Terminology for objects whose types model a concept</td>
+<td><span class="no-pr">No</span></td>
+<td>3</td>
+<td></td>
+</tr>
+<tr>
 <td id="4100"><a href="lwg-active.html#4100" title="Default arguments and signatures of standard library non-member functions (Status: New)">4100</a><sup><a href="https://cplusplus.github.io/LWG/issue4100">(i)</a></sup></td>
 <td><a href="lwg-active.html#New">New</a></td>
 <td>16.4.6.4 [global.functions]</td>
@@ -996,6 +1032,15 @@ is unclear</td>
 <td><a href="lwg-active.html#Open">Open</a></td>
 <td>16.4.6.9 [reentrancy]</td>
 <td>Member function reentrancy should be implementation-defined</td>
+<td>Yes</td>
+<td>3</td>
+<td></td>
+</tr>
+<tr>
+<td id="4129"><a href="lwg-active.html#4129" title="Possibly incorrect wording for data race avoidance (Status: New)">4129</a><sup><a href="https://cplusplus.github.io/LWG/issue4129">(i)</a></sup></td>
+<td><a href="lwg-active.html#New">New</a></td>
+<td>16.4.6.10 [res.on.data.races]</td>
+<td>Possibly incorrect wording for data race avoidance</td>
 <td>Yes</td>
 <td>3</td>
 <td></td>
@@ -4294,7 +4339,7 @@ don't support <code>DynamicBuffer</code> lvalues</td>
 <td></td>
 </tr>
 </table>
-<h2 id="Priority_4">Priority 4 (80 issues)</h2>
+<h2 id="Priority_4">Priority 4 (81 issues)</h2>
 <table class="issues-index">
 <tr>
   <th><a href="lwg-toc.html">Issue</a></th>
@@ -4320,6 +4365,15 @@ don't support <code>DynamicBuffer</code> lvalues</td>
 <td>16.4.4.6 [allocator.requirements]</td>
 <td>Rebound allocators and <code>is_always_equal</code></td>
 <td>Yes</td>
+<td>4</td>
+<td></td>
+</tr>
+<tr>
+<td id="4258"><a href="lwg-active.html#4258" title="Size type mismatch in constraints involving Cpp17Allocator (Status: New)">4258</a><sup><a href="https://cplusplus.github.io/LWG/issue4258">(i)</a></sup></td>
+<td><a href="lwg-active.html#New">New</a></td>
+<td>16.4.4.6.1 [allocator.requirements.general]</td>
+<td>Size type mismatch in constraints involving <i>Cpp17Allocator</i></td>
+<td><span class="no-pr">No</span></td>
 <td>4</td>
 <td></td>
 </tr>
@@ -5028,7 +5082,7 @@ should require the arguments to have the same length</td>
 <td></td>
 </tr>
 </table>
-<h2 id="Priority_99">Not Prioritized (194 issues)</h2>
+<h2 id="Priority_99">Not Prioritized (186 issues)</h2>
 <table class="issues-index">
 <tr>
   <th><a href="lwg-toc.html">Issue</a></th>
@@ -5040,65 +5094,11 @@ should require the arguments to have the same length</td>
   <th>Duplicates</th>
 </tr>
 <tr>
-<td id="4317"><a href="lwg-active.html#4317" title="The meaning of &quot;resource&quot; in the Cpp17Destructible requirements is undefined (Status: New)">4317</a><sup><a href="https://cplusplus.github.io/LWG/issue4317">(i)</a></sup></td>
-<td><a href="lwg-active.html#New">New</a></td>
-<td>16.4.4.2 [utility.arg.requirements]</td>
-<td>The meaning of "resource" in the <i>Cpp17Destructible</i> requirements is undefined</td>
-<td>Yes</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td id="4296"><a href="lwg-active.html#4296" title="Clarify that Cpp17Hash does not imply stateless (Status: New)">4296</a><sup><a href="https://cplusplus.github.io/LWG/issue4296">(i)</a></sup></td>
-<td><a href="lwg-active.html#New">New</a></td>
-<td>16.4.4.5 [hash.requirements]</td>
-<td>Clarify that Cpp17Hash does not imply stateless</td>
-<td><span class="no-pr">No</span></td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td id="4258"><a href="lwg-active.html#4258" title="Size type mismatch in constraints involving Cpp17Allocator (Status: New)">4258</a><sup><a href="https://cplusplus.github.io/LWG/issue4258">(i)</a></sup></td>
-<td><a href="lwg-active.html#New">New</a></td>
-<td>16.4.4.6.1 [allocator.requirements.general]</td>
-<td>Size type mismatch in constraints involving <i>Cpp17Allocator</i></td>
-<td><span class="no-pr">No</span></td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td id="4149"><a href="lwg-active.html#4149" title="User defined macros without standard headers (294 redux) (Status: New)">4149</a><sup><a href="https://cplusplus.github.io/LWG/issue4149">(i)</a></sup></td>
-<td><a href="lwg-active.html#New">New</a></td>
-<td>16.4.5.3.3 [macro.names]</td>
-<td>User defined macros without standard headers (294 redux)</td>
-<td>Yes</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td id="4068"><a href="lwg-active.html#4068" title="Terminology for objects whose types model a concept (Status: New)">4068</a><sup><a href="https://cplusplus.github.io/LWG/issue4068">(i)</a></sup></td>
-<td><a href="lwg-active.html#New">New</a></td>
-<td>16.4.5.11 [res.on.requirements]</td>
-<td>Terminology for objects whose types model a concept</td>
-<td><span class="no-pr">No</span></td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td id="4129"><a href="lwg-active.html#4129" title="Possibly incorrect wording for data race avoidance (Status: New)">4129</a><sup><a href="https://cplusplus.github.io/LWG/issue4129">(i)</a></sup></td>
-<td><a href="lwg-active.html#New">New</a></td>
-<td>16.4.6.10 [res.on.data.races]</td>
-<td>Possibly incorrect wording for data race avoidance</td>
-<td>Yes</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td id="4286"><a href="lwg-active.html#4286" title="Some more feature-test macros for fully freestanding features are not marked freestanding (Status: New)">4286</a><sup><a href="https://cplusplus.github.io/LWG/issue4286">(i)</a></sup></td>
+<td id="4411"><a href="lwg-active.html#4411" title="Even more feature-test macros for fully freestanding features are not marked freestanding (Status: New)">4411</a><sup><a href="https://cplusplus.github.io/LWG/issue4411">(i)</a></sup></td>
 <td><a href="lwg-active.html#New">New</a></td>
 <td>17.3.2 [version.syn]</td>
-<td>Some more feature-test macros for fully freestanding features are not marked freestanding</td>
-<td>Yes</td>
+<td>Even more feature-test macros for fully freestanding features are not marked freestanding</td>
+<td><span class="no-pr">No</span></td>
 <td></td>
 <td></td>
 </tr>
@@ -5125,15 +5125,6 @@ should require the arguments to have the same length</td>
 <td><a href="lwg-active.html#New">New</a></td>
 <td>17.12.7 [compare.type]</td>
 <td>Missing user requirements on <code class='backtick'>type_order</code> template</td>
-<td>Yes</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td id="4388"><a href="lwg-active.html#4388" title="Align new definition of va_start with C23 (Status: New)">4388</a><sup><a href="https://cplusplus.github.io/LWG/issue4388">(i)</a></sup></td>
-<td><a href="lwg-active.html#New">New</a></td>
-<td>17.14.2 [cstdarg.syn]</td>
-<td>Align new definition of <code class='backtick'>va_start</code> with C23</td>
 <td>Yes</td>
 <td></td>
 <td></td>
@@ -5217,15 +5208,6 @@ of uses-allocator construction</td>
 <td><a href="lwg-active.html#New">New</a></td>
 <td>20.3.2.2.2 [util.smartptr.shared.const]</td>
 <td><code class='backtick'>shared_ptr(nullptr_t, Deleter)</code> is overconstrained, breaking some sensible deleters</td>
-<td>Yes</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td id="4250"><a href="lwg-active.html#4250" title="swap overloads for indirect and polymorphic only found by ADL (Status: New)">4250</a><sup><a href="https://cplusplus.github.io/LWG/issue4250">(i)</a></sup></td>
-<td><a href="lwg-active.html#New">New</a></td>
-<td>20.4.1.7 [indirect.swap]</td>
-<td><code class='backtick'>swap</code> overloads for <code class='backtick'>indirect</code> and <code class='backtick'>polymorphic</code> only found by ADL</td>
 <td>Yes</td>
 <td></td>
 <td></td>

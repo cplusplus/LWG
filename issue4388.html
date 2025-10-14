@@ -64,8 +64,8 @@
 <p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#New">New</a> status.</em></p>
 <h3 id="4388"><a href="lwg-active.html#4388">4388</a>. Align new definition of <code class='backtick'>va_start</code> with C23</h3>
 <p><b>Section:</b> 17.14.2 <a href="https://wg21.link/cstdarg.syn">[cstdarg.syn]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Jakub Jelinek <b>Opened:</b> 2025-10-01 <b>Last modified:</b> 2025-10-03</p>
-<p><b>Priority: </b>Not Prioritized
+ <b>Submitter:</b> Jakub Jelinek <b>Opened:</b> 2025-10-01 <b>Last modified:</b> 2025-10-14</p>
+<p><b>Priority: </b>1
 </p>
 <p><b>View other</b> <a href="lwg-index-open.html#cstdarg.syn">active issues</a> in [cstdarg.syn].</p>
 <p><b>View all other</b> <a href="lwg-index.html#cstdarg.syn">issues</a> in [cstdarg.syn].</p>
@@ -90,6 +90,13 @@ It also makes the following undefined:
 <pre><code>#define BAD ); format_disk(
 va_start(ap, BAD);
 </code></pre>
+
+<p><i>[2025-10-14; Reflector poll]</i></p>
+
+<p>
+Set priority to 1 after reflector poll.
+</p>
+
 
 
 <p id="res-4388"><b>Proposed resolution:</b></p>

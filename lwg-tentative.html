@@ -54,7 +54,7 @@
 </style>
 </head>
 <body>
-<p>Revised 2025-10-14 at 09:36:58 UTC
+<p>Revised 2025-10-14 at 17:47:05 UTC
 </p><h2>Tentative Issues</h2>
 <hr>
 <h3 id="3908"><a href="#3908">3908</a><sup><a href="https://cplusplus.github.io/LWG/issue3908">(i)</a></sup>. <code>enumerate_view::<i>iterator</i></code> constructor is explicit</h3>
@@ -1954,6 +1954,102 @@ for all <code><i>i</i></code> in the range of <code>[0, V::size())</code><ins>, 
 
 
 <hr>
+<h3 id="4286"><a href="#4286">4286</a><sup><a href="https://cplusplus.github.io/LWG/issue4286">(i)</a></sup>. Some more feature-test macros for fully freestanding features are not marked freestanding</h3>
+<p><b>Section:</b> 17.3.2 <a href="https://wg21.link/version.syn">[version.syn]</a>, 20.2.2 <a href="https://wg21.link/memory.syn">[memory.syn]</a> <b>Status:</b> <a href="lwg-active.html#Ready">Tentatively Ready</a>
+ <b>Submitter:</b> Yihe Li <b>Opened:</b> 2025-06-17 <b>Last modified:</b> 2025-10-14</p>
+<p><b>Priority: </b>Not Prioritized
+</p>
+<p><b>View other</b> <a href="lwg-index-open.html#version.syn">active issues</a> in [version.syn].</p>
+<p><b>View all other</b> <a href="lwg-index.html#version.syn">issues</a> in [version.syn].</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#Tentatively Ready">Tentatively Ready</a> status.</p>
+<p><b>Discussion:</b></p>
+<p>
+<a href="https://wg21.link/P1642R11" title=" Freestanding Library: Easy [utilities], [ranges], and [iterators]">P1642R11</a> (accepted in C++23) plus LWG <a href="lwg-defects.html#4189" title="cache_latest_view should be freestanding (Status: WP)">4189</a><sup><a href="https://cplusplus.github.io/LWG/issue4189" title="Latest snapshot">(i)</a></sup> (accepted in Hagenberg) added nearly the entire 
+<code>&lt;ranges&gt;</code> header to freestanding. 
+However, the only feature-test macro being added to freestanding is <code class='backtick'>__cpp_lib_ranges_cache_latest</code>, which seems weird, 
+since <code class='backtick'>views::enumerate</code> is also added to freestanding following the blanket comment strategy, but its feature-test 
+macro remains not in freestanding. In retrospective, since all range algorithms are in freestanding via 
+<a href="https://wg21.link/P2976" title=" Freestanding Library: algorithm, numeric, and random">P2976</a>, all <code class='backtick'>__cpp_lib_ranges_*</code> FTMs (except <code class='backtick'>__cpp_lib_ranges_generate_random</code> since 
+<code class='backtick'>ranges::generate_random</code> is not in freestanding) should probably be marked as freestanding.
+<p/>
+Furthermore, LWG <a href="lwg-defects.html#4126" title="Some feature-test macros for fully freestanding features are not yet marked freestanding (Status: WP)">4126</a><sup><a href="https://cplusplus.github.io/LWG/issue4126" title="Latest snapshot">(i)</a></sup> left out some other FTMs for fully freestanding features. They are also added 
+in the following wording.
+<p/>
+A note about <code class='backtick'>is_sufficiently_aligned</code>: <a href="https://wg21.link/P2897R7" title=" aligned_accessor: An mdspan accessor expressing pointer overalignment">P2897R7</a> does indicate in 5.7.6.1 that the function should be 
+freestanding, but somehow the wording didn't say so. The following wording includes the function and its FTM anyway 
+since hopefully this is just an omission when wording the paper.
+</p>
+
+<p><i>[2025-10-14; Reflector poll]</i></p>
+
+<p>
+Set status to Tentatively Ready after nine votes in favour during reflector poll.
+</p>
+
+
+
+<p id="res-4286"><b>Proposed resolution:</b></p>
+<p>
+This wording is relative to <a href="https://wg21.link/N5008" title=" Working Draft, Programming Languages — C++">N5008</a>.
+</p>
+
+<ol>
+<li><p>Modify 17.3.2 <a href="https://wg21.link/version.syn">[version.syn]</a>, header <code>&lt;version&gt;</code> synopsis, as indicated:</p>
+
+<blockquote>
+<pre>
+[&hellip;]
+#define __cpp_lib_aligned_accessor             202411L <i>// <ins>freestanding,</ins> also in &lt;mdspan&gt;</i>
+[&hellip;]                                     
+#define __cpp_lib_array_constexpr              201811L <i>// <ins>freestanding,</ins> also in &lt;iterator&gt;, &lt;array&gt;</i>
+[&hellip;]                                     
+#define __cpp_lib_clamp                        201603L <i>// <ins>freestanding,</ins> also in &lt;algorithm&gt;</i>
+[&hellip;]                                     
+#define __cpp_lib_constexpr_numeric            201911L <i>// <ins>freestanding,</ins> also in &lt;numeric&gt;</i>
+[&hellip;]                                     
+#define __cpp_lib_function_ref                 202306L <i>// <ins>freestanding,</ins> also in &lt;functional&gt;</i>
+#define __cpp_lib_gcd_lcm                      201606L <i>// <ins>freestanding,</ins> also in &lt;numeric&gt;</i>
+[&hellip;]
+#define __cpp_lib_integer_comparison_functions 202002L <i>// <ins>freestanding,</ins> also in &lt;utility&gt;</i>
+[&hellip;]
+#define __cpp_lib_is_sufficiently_aligned      202411L <i>// <ins>freestanding,</ins> also in &lt;memory&gt;</i>
+[&hellip;]
+#define __cpp_lib_ranges_contains              202207L <i>// <ins>freestanding,</ins> also in &lt;algorithm&gt;</i>
+#define __cpp_lib_ranges_enumerate             202302L <i>// <ins>freestanding,</ins> also in &lt;ranges&gt;</i>
+#define __cpp_lib_ranges_find_last             202207L <i>// <ins>freestanding,</ins> also in &lt;algorithm&gt;</i>
+#define __cpp_lib_ranges_fold                  202207L <i>// <ins>freestanding,</ins> also in &lt;algorithm&gt;</i>
+[&hellip;]
+#define __cpp_lib_ranges_iota                  202202L <i>// <ins>freestanding,</ins> also in &lt;numeric&gt;</i>
+[&hellip;]
+#define __cpp_lib_ranges_starts_ends_with      202106L <i>// <ins>freestanding,</ins> also in &lt;algorithm&gt;</i>
+[&hellip;]
+#define __cpp_lib_robust_nonmodifying_seq_ops  201304L <i>// <ins>freestanding,</ins> also in &lt;algorithm&gt;</i>
+#define __cpp_lib_sample                       201603L <i>// <ins>freestanding,</ins> also in &lt;algorithm&gt;</i>
+#define __cpp_lib_saturation_arithmetic        202311L <i>// <ins>freestanding,</ins> also in &lt;numeric&gt;</i>
+[&hellip;]
+</pre>
+</blockquote>
+</li>
+
+<li><p>Modify 20.2.2 <a href="https://wg21.link/memory.syn">[memory.syn]</a>, header <code>&lt;memory&gt;</code> synopsis, as indicated:</p>
+
+<blockquote>
+<pre>
+[&hellip;]
+template&lt;size_t Alignment, class T&gt;
+  bool is_sufficiently_aligned(T* ptr);      <ins><i>// freestanding</i></ins>
+[&hellip;]
+</pre>
+</blockquote>
+</li>
+
+</ol>
+
+
+
+
+
+<hr>
 <h3 id="4291"><a href="#4291">4291</a><sup><a href="https://cplusplus.github.io/LWG/issue4291">(i)</a></sup>.  <code>explicit map(const Allocator&amp;)</code> should be <code>constexpr</code> </h3>
 <p><b>Section:</b> 23.4.3.1 <a href="https://wg21.link/map.overview">[map.overview]</a> <b>Status:</b> <a href="lwg-active.html#Ready">Tentatively Ready</a>
  <b>Submitter:</b> Jonathan Wakely <b>Opened:</b> 2025-07-10 <b>Last modified:</b> 2025-08-26</p>
@@ -2735,6 +2831,73 @@ template&lt;class Lock, class Rep, class Period, class Predicate&gt;
 </p>
 </blockquote>
 </blockquote>
+</li>
+
+</ol>
+
+
+
+
+
+<hr>
+<h3 id="4317"><a href="#4317">4317</a><sup><a href="https://cplusplus.github.io/LWG/issue4317">(i)</a></sup>. The meaning of "resource" in the <i>Cpp17Destructible</i> requirements is undefined</h3>
+<p><b>Section:</b> 16.4.4.2 <a href="https://wg21.link/utility.arg.requirements">[utility.arg.requirements]</a> <b>Status:</b> <a href="lwg-active.html#Ready">Tentatively Ready</a>
+ <b>Submitter:</b> Jiang An <b>Opened:</b> 2025-08-15 <b>Last modified:</b> 2025-10-14</p>
+<p><b>Priority: </b>Not Prioritized
+</p>
+<p><b>View other</b> <a href="lwg-index-open.html#utility.arg.requirements">active issues</a> in [utility.arg.requirements].</p>
+<p><b>View all other</b> <a href="lwg-index.html#utility.arg.requirements">issues</a> in [utility.arg.requirements].</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#Tentatively Ready">Tentatively Ready</a> status.</p>
+<p><b>Discussion:</b></p>
+<p>
+The meaning of "resource" in the <i>Cpp17Destructible</i> requirements cannot be inferred 
+from the standard wording and it seems unlikely that the standard will determine its meaning 
+in the future. What are considered as resources generally depends on users' intent, so the 
+standard shouldn't determine the well-definedness of a program execution due to it. Moreover, 
+the wording doesn't seem to consider shared ownership, which can be represented by <code class='backtick'>shared_ptr</code>.
+</p>
+
+<p><i>[2025-10-14; Reflector poll]</i></p>
+
+<p>
+Set status to Tentatively Ready after six votes in favour during reflector poll.
+</p>
+
+
+
+<p id="res-4317"><b>Proposed resolution:</b></p>
+<p>
+This wording is relative to <a href="https://wg21.link/N5014">N5014</a>.
+</p>
+
+<ol>
+
+<li><p>Modify 16.4.4.2 <a href="https://wg21.link/utility.arg.requirements">[utility.arg.requirements]</a>, Table 35 [tab:cpp17.destructible] as indicated:</p>
+
+<blockquote>
+<table border="1">
+<caption>Table 35 &mdash; <code>Cpp17Destructible</code> requirements [tab:cpp17.destructible]</caption>
+<tr>
+<th>Expression</th>
+<th>Post-condition</th>
+</tr>
+<tr>
+<td>
+<code>u.~T()</code>
+</td>
+<td>
+<del>All resources owned by <code class='backtick'>u</code> are reclaimed, n</del><ins>N</ins>o exception is propagated.
+</td>
+</tr>
+<tr>
+<td colspan="2">
+[<i>Note 3:</i> Array types and non-object types are not <i>Cpp17Destructible</i>. &mdash; <i>end note</i>]
+</td>
+</tr>
+</table>
+
+</blockquote>
+
 </li>
 
 </ol>

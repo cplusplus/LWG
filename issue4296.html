@@ -64,8 +64,8 @@
 <p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#New">New</a> status.</em></p>
 <h3 id="4296"><a href="lwg-active.html#4296">4296</a>. Clarify that Cpp17Hash does not imply stateless</h3>
 <p><b>Section:</b> 16.4.4.5 <a href="https://wg21.link/hash.requirements">[hash.requirements]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Jonathan Wakely <b>Opened:</b> 2025-07-18 <b>Last modified:</b> 2025-07-18</p>
-<p><b>Priority: </b>Not Prioritized
+ <b>Submitter:</b> Jonathan Wakely <b>Opened:</b> 2025-07-18 <b>Last modified:</b> 2025-10-14</p>
+<p><b>Priority: </b>3
 </p>
 <p><b>View all other</b> <a href="lwg-index.html#hash.requirements">issues</a> in [hash.requirements].</p>
 <p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
@@ -105,6 +105,19 @@ a value of type <code class='backtick'>const H</code> implies that calling <code
 Maybe we want to clarify it in terms of equality-preserving
 18.2 <a href="https://wg21.link/concepts.equality">[concepts.equality]</a>.
 </p>
+
+<p><i>[2025-10-14; Reflector poll]</i></p>
+
+<p>
+Set priority to 3 after reflector poll.
+</p>
+<p>
+Could say "Note: Thus<ins>, for a particular value <code class='backtick'>h</code>,</ins>
+all evaluations of the expression <code class='backtick'>h(k)</code> with the same value
+for <code class='backtick'>k</code> yield the same result for a given execution of the
+program."
+</p>
+
 
 
 <p id="res-4296"><b>Proposed resolution:</b></p>

@@ -54,7 +54,7 @@
 </style>
 </head>
 <body>
-<p>Revised 2025-10-14 at 09:36:58 UTC
+<p>Revised 2025-10-14 at 17:47:05 UTC
 </p><h2>Unresolved Issues</h2>
 <hr>
 <h3 id="423"><a href="#423">423</a><sup><a href="https://cplusplus.github.io/LWG/issue423">(i)</a></sup>. Effects of negative <code>streamsize</code> in iostreams</h3>
@@ -54305,7 +54305,6 @@ is_convertible_v&lt;Y(*)[], T*&gt;</code> is <code>true</code>.
  <b>Submitter:</b> Alisdair Meredith <b>Opened:</b> 2023-12-27 <b>Last modified:</b> 2024-08-02</p>
 <p><b>Priority: </b>3
 </p>
-<p><b>View other</b> <a href="lwg-index-open.html#macro.names">active issues</a> in [macro.names].</p>
 <p><b>View all other</b> <a href="lwg-index.html#macro.names">issues</a> in [macro.names].</p>
 <p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
 <p><b>Discussion:</b></p>
@@ -56595,8 +56594,8 @@ template&lt;class Duration2, class TimeZonePtr2&gt;
 <hr>
 <h3 id="4068"><a href="#4068">4068</a><sup><a href="https://cplusplus.github.io/LWG/issue4068">(i)</a></sup>. Terminology for objects whose types model a concept</h3>
 <p><b>Section:</b> 16.4.5.11 <a href="https://wg21.link/res.on.requirements">[res.on.requirements]</a>, 16.3.2.3 <a href="https://wg21.link/structure.requirements">[structure.requirements]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Jonathan Wakely <b>Opened:</b> 2024-04-19 <b>Last modified:</b> 2024-04-19</p>
-<p><b>Priority: </b>Not Prioritized
+ <b>Submitter:</b> Jonathan Wakely <b>Opened:</b> 2024-04-19 <b>Last modified:</b> 2025-10-14</p>
+<p><b>Priority: </b>3
 </p>
 <p><b>View other</b> <a href="lwg-index-open.html#res.on.requirements">active issues</a> in [res.on.requirements].</p>
 <p><b>View all other</b> <a href="lwg-index.html#res.on.requirements">issues</a> in [res.on.requirements].</p>
@@ -56607,6 +56606,22 @@ During <a href="https://wg21.link/P2300" title=" `std::execution`">P2300</a> rev
 be helpful to be able to talk about "an object that models <code class='backtick'>Concept</code>"
 instead of "an object whose type models <code class='backtick'>Concept</code>" or other more verbose forms.
 </p>
+
+<p><i>[2025-10-14; Reflector poll]</i></p>
+
+<p>
+Set priority to 3 after reflector poll.
+</p>
+<p>
+"OK with finding a way to shorten this, but not as suggested above.
+Overloading the term "models Concept" for both objects and types would be
+confusing."
+</p>
+<p>
+"Just say 'a <em><code class='backtick'>stoppable-source</code></em> object',
+or 'a <code class='backtick'>stoppable_token</code> object'"
+</p>
+
 
 
 <p id="res-4068"><b>Proposed resolution:</b></p>
@@ -61628,8 +61643,8 @@ X u(std::move(b));
 <hr>
 <h3 id="4129"><a href="#4129">4129</a><sup><a href="https://cplusplus.github.io/LWG/issue4129">(i)</a></sup>. Possibly incorrect wording for data race avoidance</h3>
 <p><b>Section:</b> 16.4.6.10 <a href="https://wg21.link/res.on.data.races">[res.on.data.races]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Jiang An <b>Opened:</b> 2024-07-30 <b>Last modified:</b> 2024-08-03</p>
-<p><b>Priority: </b>Not Prioritized
+ <b>Submitter:</b> Jiang An <b>Opened:</b> 2024-07-30 <b>Last modified:</b> 2025-10-14</p>
+<p><b>Priority: </b>3
 </p>
 <p><b>View other</b> <a href="lwg-index-open.html#res.on.data.races">active issues</a> in [res.on.data.races].</p>
 <p><b>View all other</b> <a href="lwg-index.html#res.on.data.races">issues</a> in [res.on.data.races].</p>
@@ -61646,6 +61661,17 @@ accesses some object via a parameter.
 It might need to be considered whether we should use the more general term "range" instead of "container", 
 which will cover <code>std::span</code>, etc.
 </p>
+
+<p><i>[2025-10-14; Reflector poll]</i></p>
+
+<p>
+Set priority to 3 after reflector poll.
+</p>
+<p>
+"'non-const parameters' needs to be fixed, this isn't about
+top-level const, e.g. <code>std::string&amp;</code> is not a const type."
+</p>
+
 
 
 <p id="res-4129"><b>Proposed resolution:</b></p>
@@ -62602,87 +62628,6 @@ namespace std {
 
 </ol>
 
-
-
-
-
-
-<hr>
-<h3 id="4149"><a href="#4149">4149</a><sup><a href="https://cplusplus.github.io/LWG/issue4149">(i)</a></sup>. User defined macros without standard headers (294 redux)</h3>
-<p><b>Section:</b> 16.4.5.3.3 <a href="https://wg21.link/macro.names">[macro.names]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Jonathan Wakely <b>Opened:</b> 2024-09-05 <b>Last modified:</b> 2024-09-05</p>
-<p><b>Priority: </b>Not Prioritized
-</p>
-<p><b>View other</b> <a href="lwg-index-open.html#macro.names">active issues</a> in [macro.names].</p>
-<p><b>View all other</b> <a href="lwg-index.html#macro.names">issues</a> in [macro.names].</p>
-<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
-<p><b>Discussion:</b></p>
-<p>
-Issue <a href="lwg-defects.html#294" title="User defined macros and standard headers (Status: CD1)">294</a><sup><a href="https://cplusplus.github.io/LWG/issue294" title="Latest snapshot">(i)</a></sup> changed 16.4.5.3.3 <a href="https://wg21.link/macro.names">[macro.names]</a> from:
-<blockquote>
-A translation unit that includes a header shall not contain any macros that
-define names declared or defined in that header. Nor shall such a translation
-unit define macros for names lexically identical to keywords.
-</blockquote>
-to:
-<blockquote>
-A translation unit that includes a standard library header shall not
-<code class='backtick'>#define</code> or <code class='backtick'>#undef</code> names declared in any standard library header.
-<p>
-A translation unit shall not <code class='backtick'>#define</code> or <code class='backtick'>#undef</code> names lexically identical
-to keywords.
-</p>
-</blockquote>
-</p>
-<p>
-Note that the second sentence of the original says "such a translation unit"
-when prohibiting things like <code class='backtick'>#define while</code>. This means the prohibition only
-applies to "a translation unit that includes a header".
-The replacement has the prohibition in a separate paragraph and does not
-clearly say that it only applies when a header is included.
-</p>
-<p>
-The issue discussion seems clear that the concern is about C++ headers
-including other unspecified headers, which is allowed in C++ (though not in C).
-There is no justification for broadening the second sentence to apply
-unconditionally. Such a rule would belong in 15 <a href="https://wg21.link/cpp">[cpp]</a> anyway,
-not in library wording. That overreach doesn't appear to have been intended,
-and we should clarify what the library is prohibiting.
-</p>
-<p>
-It was pointed out on the reflector that it's not enough to only prohibit
-defining such macros <i>after</i> including headers, because in some cases
-that could still break the library header. For example, the library macro
-<code class='backtick'>assert</code> typically uses <code class='backtick'>void</code> and so <code class='backtick'>#define void ...</code> would break <code class='backtick'>assert</code>
-even if it happens after including <code>&lt;cassert&gt;</code>.
-</p>
-
-
-<p id="res-4149"><b>Proposed resolution:</b></p>
-<p>
-This wording is relative to <a href="https://wg21.link/N4986" title=" Working Draft, Programming Languages — C++">N4986</a>.
-</p>
-
-<ol>
-<li><p>Modify 16.4.5.3.3 <a href="https://wg21.link/macro.names">[macro.names]</a> as indicated:</p>
-
-<blockquote>
-<p>
--1- A translation unit that includes a standard library header shall not
-<code class='backtick'>#define</code> or <code class='backtick'>#undef</code> names declared in any standard library header.
-</p>
-<p>
--2- A translation unit
-<ins>that includes a standard library header</ins>
-shall not <code class='backtick'>#define</code> or <code class='backtick'>#undef</code> names lexically identical to keywords,
-to the identifiers listed in Table 4,
-or to the <i>attribute-tokens</i> described in 9.13 <a href="https://wg21.link/dcl.attr">[dcl.attr]</a>,
-except that the names <code class='backtick'>likely</code> and <code class='backtick'>unlikely</code> may be defined as
-function-like macros (15.7 <a href="https://wg21.link/cpp.replace">[cpp.replace]</a>).
-</p>
-</blockquote>
-</li>
-</ol>
 
 
 
@@ -68592,11 +68537,11 @@ else</ins>
 
 <hr>
 <h3 id="4250"><a href="#4250">4250</a><sup><a href="https://cplusplus.github.io/LWG/issue4250">(i)</a></sup>. <code class='backtick'>swap</code> overloads for <code class='backtick'>indirect</code> and <code class='backtick'>polymorphic</code> only found by ADL</h3>
-<p><b>Section:</b> 20.4.1.7 <a href="https://wg21.link/indirect.swap">[indirect.swap]</a>, 20.4.2.7 <a href="https://wg21.link/polymorphic.swap">[polymorphic.swap]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Jonathan Wakely <b>Opened:</b> 2025-05-01 <b>Last modified:</b> 2025-05-01</p>
-<p><b>Priority: </b>Not Prioritized
+<p><b>Section:</b> 20.4.1.7 <a href="https://wg21.link/indirect.swap">[indirect.swap]</a>, 20.4.2.7 <a href="https://wg21.link/polymorphic.swap">[polymorphic.swap]</a> <b>Status:</b> <a href="lwg-active.html#LEWG">LEWG</a>
+ <b>Submitter:</b> Jonathan Wakely <b>Opened:</b> 2025-05-01 <b>Last modified:</b> 2025-10-14</p>
+<p><b>Priority: </b>2
 </p>
-<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#LEWG">LEWG</a> status.</p>
 <p><b>Discussion:</b></p>
 <p>
 The non-member <code class='backtick'>swap</code> overloads for <code class='backtick'>std::indirect</code> and <code class='backtick'>std::polymorphic</code>
@@ -68604,6 +68549,25 @@ are defined as hidden friends, so are only available via ADL.
 This means that calling <code class='backtick'>std::swap(i1, i2)</code> will always use the generic
 <code class='backtick'>std::swap</code> instead of the custom overload for <code class='backtick'>std::indirect</code>.
 </p>
+
+<p><i>[2025-10-14; Reflector poll]</i></p>
+
+<p>
+Set priority to 2 after reflector poll. Status New &rarr; LEWG.
+</p>
+<p>
+This is a broader issue than just <code class='backtick'>std::indirect</code> and <code class='backtick'>std::polymorphic</code>,
+it also affects <code class='backtick'>std::jthread</code>, <code class='backtick'>std::mdspan</code>, <code class='backtick'>move_only_function</code>, <code class='backtick'>copyable_function</code>, <em><code class='backtick'>node-handle</code></em>, <code class='backtick'>inplace_vector</code>,
+<code class='backtick'>flat_map</code> and co., and maybe more.
+</p>
+<p>
+Are we comfortable that defining <code class='backtick'>swap</code> as a hidden friend means that
+the generic <code class='backtick'>std::swap</code> might be suboptimal,
+and for allocator-aware types might even do something with different effects?
+e.g. if <code class='backtick'>propagate_on_container_swap</code> is true but
+<code class='backtick'>propagate_on_container_move_assignment</code> is false.
+</p>
+
 
 
 <p id="res-4250"><b>Proposed resolution:</b></p>
@@ -69089,8 +69053,8 @@ template&lt;auto f, class T&gt; constexpr function_ref(nontype_t&lt;f&gt;, T <i>
 <hr>
 <h3 id="4258"><a href="#4258">4258</a><sup><a href="https://cplusplus.github.io/LWG/issue4258">(i)</a></sup>. Size type mismatch in constraints involving <i>Cpp17Allocator</i></h3>
 <p><b>Section:</b> 16.4.4.6.1 <a href="https://wg21.link/allocator.requirements.general">[allocator.requirements.general]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Jiang An <b>Opened:</b> 2025-05-05 <b>Last modified:</b> 2025-05-18</p>
-<p><b>Priority: </b>Not Prioritized
+ <b>Submitter:</b> Jiang An <b>Opened:</b> 2025-05-05 <b>Last modified:</b> 2025-10-14</p>
+<p><b>Priority: </b>4
 </p>
 <p><b>View other</b> <a href="lwg-index-open.html#allocator.requirements.general">active issues</a> in [allocator.requirements.general].</p>
 <p><b>View all other</b> <a href="lwg-index.html#allocator.requirements.general">issues</a> in [allocator.requirements.general].</p>
@@ -69109,6 +69073,24 @@ which is possibly not <code class='backtick'>size_t</code>, is required to be us
 Do we want to change these constraints, or change the <i>Cpp17Allocator</i> requirements to 
 require accepting <code class='backtick'>size_t</code> values?
 </p>
+
+<p><i>[2025-10-14; Reflector poll]</i></p>
+
+<p>
+Set priority to 4 after reflector poll.
+</p>
+<p>
+"The wording technically allows you to write
+<code>allocate(same_as&lt;size_type&gt; auto)</code>
+and reject any other type."
+</p>
+<p>
+"I imagine lots of code relies on <code class='backtick'>std::size_t</code> being accepted.
+That's surely a general design issue that's much broader than just the
+<em>Cpp17Allocator</em> requirement,
+and making the requirement stricter seems evolutionary."
+</p>
+
 
 
 <p id="res-4258"><b>Proposed resolution:</b></p>
@@ -71899,95 +71881,6 @@ Maybe an implementation should be allowed to use that format <b>instead</b> of t
 
 
 <hr>
-<h3 id="4286"><a href="#4286">4286</a><sup><a href="https://cplusplus.github.io/LWG/issue4286">(i)</a></sup>. Some more feature-test macros for fully freestanding features are not marked freestanding</h3>
-<p><b>Section:</b> 17.3.2 <a href="https://wg21.link/version.syn">[version.syn]</a>, 20.2.2 <a href="https://wg21.link/memory.syn">[memory.syn]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Yihe Li <b>Opened:</b> 2025-06-17 <b>Last modified:</b> 2025-07-05</p>
-<p><b>Priority: </b>Not Prioritized
-</p>
-<p><b>View other</b> <a href="lwg-index-open.html#version.syn">active issues</a> in [version.syn].</p>
-<p><b>View all other</b> <a href="lwg-index.html#version.syn">issues</a> in [version.syn].</p>
-<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
-<p><b>Discussion:</b></p>
-<p>
-<a href="https://wg21.link/P1642R11" title=" Freestanding Library: Easy [utilities], [ranges], and [iterators]">P1642R11</a> (accepted in C++23) plus LWG <a href="lwg-defects.html#4189" title="cache_latest_view should be freestanding (Status: WP)">4189</a><sup><a href="https://cplusplus.github.io/LWG/issue4189" title="Latest snapshot">(i)</a></sup> (accepted in Hagenberg) added nearly the entire 
-<code>&lt;ranges&gt;</code> header to freestanding. 
-However, the only feature-test macro being added to freestanding is <code class='backtick'>__cpp_lib_ranges_cache_latest</code>, which seems weird, 
-since <code class='backtick'>views::enumerate</code> is also added to freestanding following the blanket comment strategy, but its feature-test 
-macro remains not in freestanding. In retrospective, since all range algorithms are in freestanding via 
-<a href="https://wg21.link/P2976" title=" Freestanding Library: algorithm, numeric, and random">P2976</a>, all <code class='backtick'>__cpp_lib_ranges_*</code> FTMs (except <code class='backtick'>__cpp_lib_ranges_generate_random</code> since 
-<code class='backtick'>ranges::generate_random</code> is not in freestanding) should probably be marked as freestanding.
-<p/>
-Furthermore, LWG <a href="lwg-defects.html#4126" title="Some feature-test macros for fully freestanding features are not yet marked freestanding (Status: WP)">4126</a><sup><a href="https://cplusplus.github.io/LWG/issue4126" title="Latest snapshot">(i)</a></sup> left out some other FTMs for fully freestanding features. They are also added 
-in the following wording.
-<p/>
-A note about <code class='backtick'>is_sufficiently_aligned</code>: <a href="https://wg21.link/P2897R7" title=" aligned_accessor: An mdspan accessor expressing pointer overalignment">P2897R7</a> does indicate in 5.7.6.1 that the function should be 
-freestanding, but somehow the wording didn't say so. The following wording includes the function and its FTM anyway 
-since hopefully this is just an omission when wording the paper.
-</p>
-
-
-<p id="res-4286"><b>Proposed resolution:</b></p>
-<p>
-This wording is relative to <a href="https://wg21.link/N5008" title=" Working Draft, Programming Languages — C++">N5008</a>.
-</p>
-
-<ol>
-<li><p>Modify 17.3.2 <a href="https://wg21.link/version.syn">[version.syn]</a>, header <code>&lt;version&gt;</code> synopsis, as indicated:</p>
-
-<blockquote>
-<pre>
-[&hellip;]
-#define __cpp_lib_aligned_accessor             202411L <i>// <ins>freestanding,</ins> also in &lt;mdspan&gt;</i>
-[&hellip;]                                     
-#define __cpp_lib_array_constexpr              201811L <i>// <ins>freestanding,</ins> also in &lt;iterator&gt;, &lt;array&gt;</i>
-[&hellip;]                                     
-#define __cpp_lib_clamp                        201603L <i>// <ins>freestanding,</ins> also in &lt;algorithm&gt;</i>
-[&hellip;]                                     
-#define __cpp_lib_constexpr_numeric            201911L <i>// <ins>freestanding,</ins> also in &lt;numeric&gt;</i>
-[&hellip;]                                     
-#define __cpp_lib_function_ref                 202306L <i>// <ins>freestanding,</ins> also in &lt;functional&gt;</i>
-#define __cpp_lib_gcd_lcm                      201606L <i>// <ins>freestanding,</ins> also in &lt;numeric&gt;</i>
-[&hellip;]
-#define __cpp_lib_integer_comparison_functions 202002L <i>// <ins>freestanding,</ins> also in &lt;utility&gt;</i>
-[&hellip;]
-#define __cpp_lib_is_sufficiently_aligned      202411L <i>// <ins>freestanding,</ins> also in &lt;memory&gt;</i>
-[&hellip;]
-#define __cpp_lib_ranges_contains              202207L <i>// <ins>freestanding,</ins> also in &lt;algorithm&gt;</i>
-#define __cpp_lib_ranges_enumerate             202302L <i>// <ins>freestanding,</ins> also in &lt;ranges&gt;</i>
-#define __cpp_lib_ranges_find_last             202207L <i>// <ins>freestanding,</ins> also in &lt;algorithm&gt;</i>
-#define __cpp_lib_ranges_fold                  202207L <i>// <ins>freestanding,</ins> also in &lt;algorithm&gt;</i>
-[&hellip;]
-#define __cpp_lib_ranges_iota                  202202L <i>// <ins>freestanding,</ins> also in &lt;numeric&gt;</i>
-[&hellip;]
-#define __cpp_lib_ranges_starts_ends_with      202106L <i>// <ins>freestanding,</ins> also in &lt;algorithm&gt;</i>
-[&hellip;]
-#define __cpp_lib_robust_nonmodifying_seq_ops  201304L <i>// <ins>freestanding,</ins> also in &lt;algorithm&gt;</i>
-#define __cpp_lib_sample                       201603L <i>// <ins>freestanding,</ins> also in &lt;algorithm&gt;</i>
-#define __cpp_lib_saturation_arithmetic        202311L <i>// <ins>freestanding,</ins> also in &lt;numeric&gt;</i>
-[&hellip;]
-</pre>
-</blockquote>
-</li>
-
-<li><p>Modify 20.2.2 <a href="https://wg21.link/memory.syn">[memory.syn]</a>, header <code>&lt;memory&gt;</code> synopsis, as indicated:</p>
-
-<blockquote>
-<pre>
-[&hellip;]
-template&lt;size_t Alignment, class T&gt;
-  bool is_sufficiently_aligned(T* ptr);      <ins><i>// freestanding</i></ins>
-[&hellip;]
-</pre>
-</blockquote>
-</li>
-
-</ol>
-
-
-
-
-
-<hr>
 <h3 id="4287"><a href="#4287">4287</a><sup><a href="https://cplusplus.github.io/LWG/issue4287">(i)</a></sup>. &sect;[locale.codecvt.virtuals] <code class='backtick'>do_in</code> and <code class='backtick'>do_out</code> could do with better specification</h3>
 <p><b>Section:</b> 28.3.4.2.5.3 <a href="https://wg21.link/locale.codecvt.virtuals">[locale.codecvt.virtuals]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
  <b>Submitter:</b> S. B. Tam <b>Opened:</b> 2025-06-18 <b>Last modified:</b> 2025-07-05</p>
@@ -72737,8 +72630,8 @@ template &lt;class W1, class W2&gt;
 <hr>
 <h3 id="4296"><a href="#4296">4296</a><sup><a href="https://cplusplus.github.io/LWG/issue4296">(i)</a></sup>. Clarify that Cpp17Hash does not imply stateless</h3>
 <p><b>Section:</b> 16.4.4.5 <a href="https://wg21.link/hash.requirements">[hash.requirements]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Jonathan Wakely <b>Opened:</b> 2025-07-18 <b>Last modified:</b> 2025-07-18</p>
-<p><b>Priority: </b>Not Prioritized
+ <b>Submitter:</b> Jonathan Wakely <b>Opened:</b> 2025-07-18 <b>Last modified:</b> 2025-10-14</p>
+<p><b>Priority: </b>3
 </p>
 <p><b>View all other</b> <a href="lwg-index.html#hash.requirements">issues</a> in [hash.requirements].</p>
 <p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
@@ -72778,6 +72671,19 @@ a value of type <code class='backtick'>const H</code> implies that calling <code
 Maybe we want to clarify it in terms of equality-preserving
 18.2 <a href="https://wg21.link/concepts.equality">[concepts.equality]</a>.
 </p>
+
+<p><i>[2025-10-14; Reflector poll]</i></p>
+
+<p>
+Set priority to 3 after reflector poll.
+</p>
+<p>
+Could say "Note: Thus<ins>, for a particular value <code class='backtick'>h</code>,</ins>
+all evaluations of the expression <code class='backtick'>h(k)</code> with the same value
+for <code class='backtick'>k</code> yield the same result for a given execution of the
+program."
+</p>
+
 
 
 <p id="res-4296"><b>Proposed resolution:</b></p>
@@ -74880,66 +74786,6 @@ While the intent seems clear, this should be rephrased to be more technically co
 
 
 <p id="res-4316"><b>Proposed resolution:</b></p>
-
-
-
-
-
-<hr>
-<h3 id="4317"><a href="#4317">4317</a><sup><a href="https://cplusplus.github.io/LWG/issue4317">(i)</a></sup>. The meaning of "resource" in the <i>Cpp17Destructible</i> requirements is undefined</h3>
-<p><b>Section:</b> 16.4.4.2 <a href="https://wg21.link/utility.arg.requirements">[utility.arg.requirements]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Jiang An <b>Opened:</b> 2025-08-15 <b>Last modified:</b> 2025-08-17</p>
-<p><b>Priority: </b>Not Prioritized
-</p>
-<p><b>View other</b> <a href="lwg-index-open.html#utility.arg.requirements">active issues</a> in [utility.arg.requirements].</p>
-<p><b>View all other</b> <a href="lwg-index.html#utility.arg.requirements">issues</a> in [utility.arg.requirements].</p>
-<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
-<p><b>Discussion:</b></p>
-<p>
-The meaning of "resource" in the <i>Cpp17Destructible</i> requirements cannot be inferred 
-from the standard wording and it seems unlikely that the standard will determine its meaning 
-in the future. What are considered as resources generally depends on users' intent, so the 
-standard shouldn't determine the well-definedness of a program execution due to it. Moreover, 
-the wording doesn't seem to consider shared ownership, which can be represented by <code class='backtick'>shared_ptr</code>.
-</p>
-
-
-<p id="res-4317"><b>Proposed resolution:</b></p>
-<p>
-This wording is relative to <a href="https://wg21.link/N5014">N5014</a>.
-</p>
-
-<ol>
-
-<li><p>Modify 16.4.4.2 <a href="https://wg21.link/utility.arg.requirements">[utility.arg.requirements]</a>, Table 35 [tab:cpp17.destructible] as indicated:</p>
-
-<blockquote>
-<table border="1">
-<caption>Table 35 &mdash; <code>Cpp17Destructible</code> requirements [tab:cpp17.destructible]</caption>
-<tr>
-<th>Expression</th>
-<th>Post-condition</th>
-</tr>
-<tr>
-<td>
-<code>u.~T()</code>
-</td>
-<td>
-<del>All resources owned by <code class='backtick'>u</code> are reclaimed, n</del><ins>N</ins>o exception is propagated.
-</td>
-</tr>
-<tr>
-<td colspan="2">
-[<i>Note 3:</i> Array types and non-object types are not <i>Cpp17Destructible</i>. &mdash; <i>end note</i>]
-</td>
-</tr>
-</table>
-
-</blockquote>
-
-</li>
-
-</ol>
 
 
 
@@ -80815,8 +80661,8 @@ templates in 24.7 <a href="https://wg21.link/iterator.range">[iterator.range]</a
 <hr>
 <h3 id="4388"><a href="#4388">4388</a><sup><a href="https://cplusplus.github.io/LWG/issue4388">(i)</a></sup>. Align new definition of <code class='backtick'>va_start</code> with C23</h3>
 <p><b>Section:</b> 17.14.2 <a href="https://wg21.link/cstdarg.syn">[cstdarg.syn]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Jakub Jelinek <b>Opened:</b> 2025-10-01 <b>Last modified:</b> 2025-10-03</p>
-<p><b>Priority: </b>Not Prioritized
+ <b>Submitter:</b> Jakub Jelinek <b>Opened:</b> 2025-10-01 <b>Last modified:</b> 2025-10-14</p>
+<p><b>Priority: </b>1
 </p>
 <p><b>View other</b> <a href="lwg-index-open.html#cstdarg.syn">active issues</a> in [cstdarg.syn].</p>
 <p><b>View all other</b> <a href="lwg-index.html#cstdarg.syn">issues</a> in [cstdarg.syn].</p>
@@ -80841,6 +80687,13 @@ It also makes the following undefined:
 <pre><code>#define BAD ); format_disk(
 va_start(ap, BAD);
 </code></pre>
+
+<p><i>[2025-10-14; Reflector poll]</i></p>
+
+<p>
+Set priority to 1 after reflector poll.
+</p>
+
 
 
 <p id="res-4388"><b>Proposed resolution:</b></p>
@@ -83100,6 +82953,43 @@ valid expression.
 
 </ol>
 
+
+
+
+
+
+<hr>
+<h3 id="4411"><a href="#4411">4411</a><sup><a href="https://cplusplus.github.io/LWG/issue4411">(i)</a></sup>. Even more feature-test macros for fully freestanding features are not marked freestanding</h3>
+<p><b>Section:</b> 17.3.2 <a href="https://wg21.link/version.syn">[version.syn]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
+ <b>Submitter:</b> Jonathan Wakely <b>Opened:</b> 2025-10-14 <b>Last modified:</b> 2025-10-14</p>
+<p><b>Priority: </b>Not Prioritized
+</p>
+<p><b>View other</b> <a href="lwg-index-open.html#version.syn">active issues</a> in [version.syn].</p>
+<p><b>View all other</b> <a href="lwg-index.html#version.syn">issues</a> in [version.syn].</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
+<p><b>Discussion:</b></p>
+<p>
+During the review of LWG <a href="lwg-active.html#4286" title="Some more feature-test macros for fully freestanding features are not marked freestanding (Status: Tentatively Ready)">4286</a><sup><a href="https://cplusplus.github.io/LWG/issue4286" title="Latest snapshot">(i)</a></sup> it was noticed that the
+proposed resolution did not include a change to <code class='backtick'>__cpp_lib_ranges_indices</code>,
+which was added in Sofia by <a href="https://wg21.link/P3060R3" title=" Add std::views::indices(n)">P3060R3</a>
+(which was after the issue was opened).
+
+It also doesn't change `__cpp_lib_constexpr_utility, and probably should do.
+
+It doesn't change <code class='backtick'>__cpp_lib_tuple_like</code>,
+but that's less clear whether it should do.
+The relevant changes in
+<code>&lt;tuple&gt;</code> and <code>&lt;pair&gt;</code>
+are obviously available in a freestanding implementation,
+but the changes in
+<code>&lt;map&gt;</code> and <code>&lt;unordered_map&gt;</code>
+are not.
+</p>
+
+
+<p id="res-4411"><b>Proposed resolution:</b></p>
+<p>
+</p>
 
 
 

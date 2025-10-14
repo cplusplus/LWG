@@ -64,8 +64,8 @@
 <p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#New">New</a> status.</em></p>
 <h3 id="4068"><a href="lwg-active.html#4068">4068</a>. Terminology for objects whose types model a concept</h3>
 <p><b>Section:</b> 16.4.5.11 <a href="https://wg21.link/res.on.requirements">[res.on.requirements]</a>, 16.3.2.3 <a href="https://wg21.link/structure.requirements">[structure.requirements]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Jonathan Wakely <b>Opened:</b> 2024-04-19 <b>Last modified:</b> 2024-04-19</p>
-<p><b>Priority: </b>Not Prioritized
+ <b>Submitter:</b> Jonathan Wakely <b>Opened:</b> 2024-04-19 <b>Last modified:</b> 2025-10-14</p>
+<p><b>Priority: </b>3
 </p>
 <p><b>View other</b> <a href="lwg-index-open.html#res.on.requirements">active issues</a> in [res.on.requirements].</p>
 <p><b>View all other</b> <a href="lwg-index.html#res.on.requirements">issues</a> in [res.on.requirements].</p>
@@ -76,6 +76,22 @@ During <a href="https://wg21.link/P2300" title=" `std::execution`">P2300</a> rev
 be helpful to be able to talk about "an object that models <code class='backtick'>Concept</code>"
 instead of "an object whose type models <code class='backtick'>Concept</code>" or other more verbose forms.
 </p>
+
+<p><i>[2025-10-14; Reflector poll]</i></p>
+
+<p>
+Set priority to 3 after reflector poll.
+</p>
+<p>
+"OK with finding a way to shorten this, but not as suggested above.
+Overloading the term "models Concept" for both objects and types would be
+confusing."
+</p>
+<p>
+"Just say 'a <em><code class='backtick'>stoppable-source</code></em> object',
+or 'a <code class='backtick'>stoppable_token</code> object'"
+</p>
+
 
 
 <p id="res-4068"><b>Proposed resolution:</b></p>
