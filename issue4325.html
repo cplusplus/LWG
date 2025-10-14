@@ -64,8 +64,8 @@
 <p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#New">New</a> status.</em></p>
 <h3 id="4325"><a href="lwg-active.html#4325">4325</a>. <code class='backtick'>std::indirect</code>'s <code class='backtick'>operator==</code> still does not support incomplete types</h3>
 <p><b>Section:</b> 20.4.1.8 <a href="https://wg21.link/indirect.relops">[indirect.relops]</a>, 20.4.1.9 <a href="https://wg21.link/indirect.comp.with.t">[indirect.comp.with.t]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Hewill Kang <b>Opened:</b> 2025-08-24 <b>Last modified:</b> 2025-08-24</p>
-<p><b>Priority: </b>Not Prioritized
+ <b>Submitter:</b> Hewill Kang <b>Opened:</b> 2025-08-24 <b>Last modified:</b> 2025-10-14</p>
+<p><b>Priority: </b>2
 </p>
 <p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
 <p><b>Discussion:</b></p>
@@ -95,6 +95,26 @@ This makes <code class='backtick'>operator==</code> not SFINAE-friendly for inco
 Also, checking <code class='backtick'>noexcept(*lhs == *rhs)</code> seems insufficient because the result of <code class='backtick'>*lhs == *rhs</code> 
 might still throw during conversion to <code class='backtick'>bool</code>.
 </p>
+<p>
+We could add a note similar to 22.10.6.1 <a href="https://wg21.link/refwrap.general">[refwrap.general]</a>.
+</p>
+
+<p><i>[2025-10-14; Reflector poll]</i></p>
+
+<p>
+Set priority to 2 after reflector poll.
+</p>
+<p>
+Even if we don't want to support incomplete types, we still need to fix
+the noexcept-specifier to consider whether the conversion to <code class='backtick'>bool</code> throws,
+e.g. <code>noexcept(noexcept(<ins>bool(</ins>*lhs == *rhs<ins>)</ins>))</code>.
+</p>
+<p>
+"The proposed resolution may result in the noexcept operator giving different
+results when evaluated in different translation units where the type <code class='backtick'>T</code> of
+<code class='backtick'>indirect</code> was incomplete or not. Ill-formed seems safer than inconsistent."
+</p>
+
 
 
 <p id="res-4325"><b>Proposed resolution:</b></p>

@@ -64,8 +64,8 @@
 <p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#New">New</a> status.</em></p>
 <h3 id="4400"><a href="lwg-active.html#4400">4400</a>. <code class='backtick'>enable_nonlocking_formatter_optimization</code> for durations with custom rep</h3>
 <p><b>Section:</b> 30.12 <a href="https://wg21.link/time.format">[time.format]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Tomasz Kamiński <b>Opened:</b> 2025-10-02 <b>Last modified:</b> 2025-10-04</p>
-<p><b>Priority: </b>Not Prioritized
+ <b>Submitter:</b> Tomasz Kamiński <b>Opened:</b> 2025-10-02 <b>Last modified:</b> 2025-10-14</p>
+<p><b>Priority: </b>3
 </p>
 <p><b>View other</b> <a href="lwg-index-open.html#time.format">active issues</a> in [time.format].</p>
 <p><b>View all other</b> <a href="lwg-index.html#time.format">issues</a> in [time.format].</p>
@@ -92,7 +92,7 @@ template&lt;class Rep, class Period&gt;
     =  is_arithmetic_v&lt;Rep&gt;;
 </pre></blockquote>
 <p>
-Furtheremore, for all types that are currently templated on <code class='backtick'>Duration</code> (<code class='backtick'>hh_mm_ss</code>, <code class='backtick'>sys_time</code>, 
+Furthermore, for all types that are currently templated on <code class='backtick'>Duration</code> (<code class='backtick'>hh_mm_ss</code>, <code class='backtick'>sys_time</code>,
 <code class='backtick'>local_time</code>, etc.), we <code class='backtick'>enable_nonlocking_formatter_optimization</code> by default. This again does 
 not take into consideration the arithmetic operations performed as duration. We should specialize 
 <code class='backtick'>enable_nonlocking_formatter_optimization</code> for all of them to be enabled if 
@@ -111,6 +111,13 @@ Durations with there custom representation types.
 The proposed wording has recently been implemented in 
 <a href="https://gcc.gnu.org/pipermail/libstdc++/2025-October/063758.html">gcc's libstdc++</a>.
 </p>
+
+<p><i>[2025-10-14; Reflector poll]</i></p>
+
+<p>
+Set priority to 3 after reflector poll.
+</p>
+
 
 
 <p id="res-4400"><b>Proposed resolution:</b></p>

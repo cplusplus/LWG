@@ -64,8 +64,8 @@
 <p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#New">New</a> status.</em></p>
 <h3 id="4319"><a href="lwg-active.html#4319">4319</a>. Supporting copy-elision in function wrappers</h3>
 <p><b>Section:</b> 22.10.4 <a href="https://wg21.link/func.require">[func.require]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Tomasz Kamiński <b>Opened:</b> 2025-08-19 <b>Last modified:</b> 2025-08-23</p>
-<p><b>Priority: </b>Not Prioritized
+ <b>Submitter:</b> Tomasz Kamiński <b>Opened:</b> 2025-08-19 <b>Last modified:</b> 2025-10-14</p>
+<p><b>Priority: </b>3
 </p>
 <p><b>View other</b> <a href="lwg-index-open.html#func.require">active issues</a> in [func.require].</p>
 <p><b>View all other</b> <a href="lwg-index.html#func.require">issues</a> in [func.require].</p>
@@ -120,6 +120,23 @@ The suggested changes by this issue have been
 <a href="https://gcc.gnu.org/pipermail/libstdc++/2025-August/062992.html">implemented in libstdc++</a>
 for <code class='backtick'>bind_front/bind_back</code>.
 </p>
+
+<p><i>[2025-10-14; Reflector poll]</i></p>
+
+<p>
+Set priority to 3 after reflector poll.
+</p>
+<p>
+The submitter prefers to withdraw the issue because the proposed resolution
+changes the result of overload resolution in unspecified ways. It would
+no longer be specified whether <code class='backtick'>bind_front(F{})({})</code> works or not,
+as it would depend whether <code class='backtick'>bind_front(F{})</code> returned a call wrapper or the
+<code class='backtick'>F</code> object without wrapping. It would also make the effects of
+<code class='backtick'>bind_front(S{})(0, 0)</code> unspecified if the call could resolve to either
+<code class='backtick'>S::operator()(long, long)</code> or <code class='backtick'>S::operator()(int, void*)</code>, depending on
+whether <code class='backtick'>bind_front(S{})</code> returns a call wrapper or the <code class='backtick'>S</code> object.
+</p>
+
 
 
 <p id="res-4319"><b>Proposed resolution:</b></p>

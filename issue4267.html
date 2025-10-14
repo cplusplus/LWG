@@ -64,8 +64,8 @@
 <p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#New">New</a> status.</em></p>
 <h3 id="4267"><a href="lwg-active.html#4267">4267</a>. Uses-allocator construction is meaningless for tuple of references</h3>
 <p><b>Section:</b> 22.4.4.2 <a href="https://wg21.link/tuple.cnstr">[tuple.cnstr]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Jiang An <b>Opened:</b> 2025-05-24 <b>Last modified:</b> 2025-05-24</p>
-<p><b>Priority: </b>Not Prioritized
+ <b>Submitter:</b> Jiang An <b>Opened:</b> 2025-05-24 <b>Last modified:</b> 2025-10-14</p>
+<p><b>Priority: </b>3
 </p>
 <p><b>View other</b> <a href="lwg-index-open.html#tuple.cnstr">active issues</a> in [tuple.cnstr].</p>
 <p><b>View all other</b> <a href="lwg-index.html#tuple.cnstr">issues</a> in [tuple.cnstr].</p>
@@ -81,6 +81,17 @@ deleted according to 22.4.4.2 <a href="https://wg21.link/tuple.cnstr">[tuple.cns
 sometimes non-deleted when the tuple contains a reference, while there are hard errors in an instantiation 
 instead.
 </p>
+
+<p><i>[2025-10-14; Reflector poll]</i></p>
+
+<p>
+Set priority to 3 after reflector poll.
+</p>
+<p>
+"There is a defect, but the right fix is to just define uses-allocator
+construction of references as equivalent to normal construction."
+</p>
+
 
 
 <p id="res-4267"><b>Proposed resolution:</b></p>

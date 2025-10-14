@@ -64,8 +64,8 @@
 <p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#New">New</a> status.</em></p>
 <h3 id="4146"><a href="lwg-active.html#4146">4146</a>. &sect;[format.formatter.spec]/3 unconditionally enables nonlocking for container adaptors</h3>
 <p><b>Section:</b> 28.5.6.4 <a href="https://wg21.link/format.formatter.spec">[format.formatter.spec]</a>, 23.6.13 <a href="https://wg21.link/container.adaptors.format">[container.adaptors.format]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Casey Carter <b>Opened:</b> 2024-08-31 <b>Last modified:</b> 2024-09-01</p>
-<p><b>Priority: </b>Not Prioritized
+ <b>Submitter:</b> Casey Carter <b>Opened:</b> 2024-08-31 <b>Last modified:</b> 2025-10-14</p>
+<p><b>Priority: </b>2
 </p>
 <p><b>View other</b> <a href="lwg-index-open.html#format.formatter.spec">active issues</a> in [format.formatter.spec].</p>
 <p><b>View all other</b> <a href="lwg-index.html#format.formatter.spec">issues</a> in [format.formatter.spec].</p>
@@ -100,6 +100,17 @@ with that design to ignore the "container" part of "container adaptors" and only
 elements that are going to be formatted. (I have prototyped this resolution on MSVCSTL, albeit slightly 
 modified since neither MSVC nor Clang like this partial specialization form.)
 </p>
+
+<p><i>[2025-10-14; Reflector poll]</i></p>
+
+<p>
+Set priority to 2 after reflector poll.
+</p>
+<p>
+This is a duplicate of LWG <a href="lwg-active.html#4398" title="enable_nonlocking_formatter_optimization should be disabled for container adaptors (Status: New)">4398</a><sup><a href="https://cplusplus.github.io/LWG/issue4398" title="Latest snapshot">(i)</a></sup>,
+with a different proposed resolution.
+</p>
+
 
 
 <p id="res-4146"><b>Proposed resolution:</b></p>

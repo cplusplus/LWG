@@ -54,7 +54,7 @@
 </style>
 </head>
 <body>
-<p>Revised 2025-10-14 at 17:47:05 UTC
+<p>Revised 2025-10-14 at 21:31:17 UTC
 </p><h2>Unresolved Issues</h2>
 <hr>
 <h3 id="423"><a href="#423">423</a><sup><a href="https://cplusplus.github.io/LWG/issue423">(i)</a></sup>. Effects of negative <code>streamsize</code> in iostreams</h3>
@@ -62299,8 +62299,8 @@ will use the value [&hellip;]
 <hr>
 <h3 id="4138"><a href="#4138">4138</a><sup><a href="https://cplusplus.github.io/LWG/issue4138">(i)</a></sup>. <code>is_within_lifetime</code> should mandate <code>is_object</code></h3>
 <p><b>Section:</b> 21.3.12 <a href="https://wg21.link/meta.const.eval">[meta.const.eval]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Corentin <b>Opened:</b> 2024-08-09 <b>Last modified:</b> 2024-08-11</p>
-<p><b>Priority: </b>Not Prioritized
+ <b>Submitter:</b> Corentin <b>Opened:</b> 2024-08-09 <b>Last modified:</b> 2025-10-14</p>
+<p><b>Priority: </b>3
 </p>
 <p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
 <p><b>Discussion:</b></p>
@@ -62315,6 +62315,22 @@ of a non-object does not make sense, and the lack of constraint makes the
 implementation and use of that function and underlying built-in more 
 convoluted than necessary.
 </p>
+
+<p><i>[2025-10-14; Reflector poll]</i></p>
+
+<p>
+Set priority to 3 after reflector poll.
+</p>
+<p>
+"What about <code class='backtick'>void*</code>, should that be allowed? The compiler should know which
+union member the <code class='backtick'>void*</code> came from, as this is only using during constant
+evaluation."
+</p>
+<p>
+"NAD, a function could have its lifetime constrained by a dynamic loader,
+so it seems wrong to assume that taling of function lifetimes makes no sense."
+</p>
+
 
 
 <p id="res-4138"><b>Proposed resolution:</b></p>
@@ -62559,8 +62575,8 @@ Set priority to 3 after reflector poll.
 <hr>
 <h3 id="4146"><a href="#4146">4146</a><sup><a href="https://cplusplus.github.io/LWG/issue4146">(i)</a></sup>. &sect;[format.formatter.spec]/3 unconditionally enables nonlocking for container adaptors</h3>
 <p><b>Section:</b> 28.5.6.4 <a href="https://wg21.link/format.formatter.spec">[format.formatter.spec]</a>, 23.6.13 <a href="https://wg21.link/container.adaptors.format">[container.adaptors.format]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Casey Carter <b>Opened:</b> 2024-08-31 <b>Last modified:</b> 2024-09-01</p>
-<p><b>Priority: </b>Not Prioritized
+ <b>Submitter:</b> Casey Carter <b>Opened:</b> 2024-08-31 <b>Last modified:</b> 2025-10-14</p>
+<p><b>Priority: </b>2
 </p>
 <p><b>View other</b> <a href="lwg-index-open.html#format.formatter.spec">active issues</a> in [format.formatter.spec].</p>
 <p><b>View all other</b> <a href="lwg-index.html#format.formatter.spec">issues</a> in [format.formatter.spec].</p>
@@ -62595,6 +62611,17 @@ with that design to ignore the "container" part of "container adaptors" and only
 elements that are going to be formatted. (I have prototyped this resolution on MSVCSTL, albeit slightly 
 modified since neither MSVC nor Clang like this partial specialization form.)
 </p>
+
+<p><i>[2025-10-14; Reflector poll]</i></p>
+
+<p>
+Set priority to 2 after reflector poll.
+</p>
+<p>
+This is a duplicate of LWG <a href="lwg-active.html#4398" title="enable_nonlocking_formatter_optimization should be disabled for container adaptors (Status: New)">4398</a><sup><a href="https://cplusplus.github.io/LWG/issue4398" title="Latest snapshot">(i)</a></sup>,
+with a different proposed resolution.
+</p>
+
 
 
 <p id="res-4146"><b>Proposed resolution:</b></p>
@@ -69758,8 +69785,8 @@ template&lt;class T&gt;
 <hr>
 <h3 id="4267"><a href="#4267">4267</a><sup><a href="https://cplusplus.github.io/LWG/issue4267">(i)</a></sup>. Uses-allocator construction is meaningless for tuple of references</h3>
 <p><b>Section:</b> 22.4.4.2 <a href="https://wg21.link/tuple.cnstr">[tuple.cnstr]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Jiang An <b>Opened:</b> 2025-05-24 <b>Last modified:</b> 2025-05-24</p>
-<p><b>Priority: </b>Not Prioritized
+ <b>Submitter:</b> Jiang An <b>Opened:</b> 2025-05-24 <b>Last modified:</b> 2025-10-14</p>
+<p><b>Priority: </b>3
 </p>
 <p><b>View other</b> <a href="lwg-index-open.html#tuple.cnstr">active issues</a> in [tuple.cnstr].</p>
 <p><b>View all other</b> <a href="lwg-index.html#tuple.cnstr">issues</a> in [tuple.cnstr].</p>
@@ -69775,6 +69802,17 @@ deleted according to 22.4.4.2 <a href="https://wg21.link/tuple.cnstr">[tuple.cns
 sometimes non-deleted when the tuple contains a reference, while there are hard errors in an instantiation 
 instead.
 </p>
+
+<p><i>[2025-10-14; Reflector poll]</i></p>
+
+<p>
+Set priority to 3 after reflector poll.
+</p>
+<p>
+"There is a defect, but the right fix is to just define uses-allocator
+construction of references as equivalent to normal construction."
+</p>
+
 
 
 <p id="res-4267"><b>Proposed resolution:</b></p>
@@ -71325,8 +71363,8 @@ then we wouldn't need to use <code class='backtick'>sndr</code> twice in express
 <hr>
 <h3 id="4279"><a href="#4279">4279</a><sup><a href="https://cplusplus.github.io/LWG/issue4279">(i)</a></sup>. &sect;[fs.op.absolute] Non-normative encouragement should be <i>Recommended practice</i></h3>
 <p><b>Section:</b> 31.12.13.2 <a href="https://wg21.link/fs.op.absolute">[fs.op.absolute]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Jonathan Wakely <b>Opened:</b> 2025-06-16 <b>Last modified:</b> 2025-06-21</p>
-<p><b>Priority: </b>Not Prioritized
+ <b>Submitter:</b> Jonathan Wakely <b>Opened:</b> 2025-06-16 <b>Last modified:</b> 2025-10-14</p>
+<p><b>Priority: </b>4
 </p>
 <p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
 <p><b>Discussion:</b></p>
@@ -71344,6 +71382,16 @@ The part about <code class='backtick'>!exists(p)</code> not being an error could
 Referring to "secondary storage" might need to be phrased differently to be normative (maybe with a note 
 clarifying that the normative wording is referring to "secondary storage").
 </p>
+
+<p><i>[2025-10-14; Reflector poll]</i></p>
+
+<p>
+Set priority to 4 after reflector poll.
+</p>
+<p>
+Could the <code class='backtick'>!exists(p)</code> part be implementation-defined?
+</p>
+
 
 
 <p id="res-4279"><b>Proposed resolution:</b></p>
@@ -73321,99 +73369,6 @@ return has_value() ? *<i>val</i> : static_cast&lt;X&gt;(std::forward&lt;U&gt;(u)
 
 
 <hr>
-<h3 id="4305"><a href="#4305">4305</a><sup><a href="https://cplusplus.github.io/LWG/issue4305">(i)</a></sup>. Missing user requirements on <code class='backtick'>type_order</code> template</h3>
-<p><b>Section:</b> 17.12.7 <a href="https://wg21.link/compare.type">[compare.type]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Daniel Krügler <b>Opened:</b> 2025-07-27 <b>Last modified:</b> 2025-08-16</p>
-<p><b>Priority: </b>Not Prioritized
-</p>
-<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
-<p><b>Discussion:</b></p>
-<p>
-The recently approved paper <a href="https://wg21.link/P2830R10" title=" Standardized Constexpr Type Ordering">P2830R10</a> proposes to add the new <code class='backtick'>type_order</code>
-type traits to 17.12 <a href="https://wg21.link/cmp">[cmp]</a> (and thus outside of 21.3 <a href="https://wg21.link/type.traits">[type.traits]</a>), 
-which has the subtle and most likely unintended effect, that it doesn't fall under the 
-general requirement expressed in 21.3.2 <a href="https://wg21.link/meta.rqmts">[meta.rqmts]</a> p4,
-</p>
-<blockquote><p>
-Unless otherwise specified, the behavior of a program that adds specializations for 
-any of the templates specified in 21.3.2 <a href="https://wg21.link/meta.rqmts">[meta.rqmts]</a> is undefined.
-</p></blockquote>
-<p>
-and so in principle the explicit allowance specified in 16.4.5.2.1 <a href="https://wg21.link/namespace.std">[namespace.std]</a> p2,
-</p>
-<blockquote><p>
-Unless explicitly prohibited, a program may add a template specialization for any standard 
-library class template to namespace <code class='backtick'>std</code> [&hellip;]
-</p></blockquote>
-<p>
-holds. So we need to add extra wording to the <code class='backtick'>type_order</code> specification in 
-17.12.7 <a href="https://wg21.link/compare.type">[compare.type]</a> to prohibit such program specializations.
-<p/>
-This was reported shortly before the Sofia meeting 
-<a href="https://lists.isocpp.org/lib/2025/06/31725.php">during reflector discussion</a>  
-but seems to be forgotten before the final paper appeared on plenary. 
-<p/>
-During the reflector discussion two possible ways to solve this issue were pointed out:
-</p>
-<ol>
-<li><p>The most simple one would mimic the wording in 21.3.2 <a href="https://wg21.link/meta.rqmts">[meta.rqmts]</a> p4
-quoted above.</p></li>
-<li><p>Instead of introducing just another undefined opportunity to run into undefined
-behaviour it has been pointed out that we could follow the approach taken by <code class='backtick'>std::initializer_list</code>
-and make the program ill-formed in this case, as specified in 17.11.2 <a href="https://wg21.link/initializer.list.syn">[initializer.list.syn]</a> p2:
-</p>
-<blockquote><p>
-If an explicit specialization or partial specialization of <code class='backtick'>initializer_list</code> is declared, 
-the program is ill-formed.
-</p></blockquote>
-</li>
-</ol>
-Jonathan Wakely responded to the reflector discussion:
-<blockquote><p>
-I think ill-formed would be better. It shouldn't be difficult for implementations to have special cases that are disallowed. 
-</p></blockquote>
-<p>
-Given the already existing experience with <code class='backtick'>std::initializer_list</code> the proposed wording below
-therefore follows the ill-formed program approach.
-</p>
-
-
-<p id="res-4305"><b>Proposed resolution:</b></p>
-<p>
-This wording is relative to <a href="https://wg21.link/N5014">N5014</a>.
-</p>
-
-<ol>
-
-<li><p>Modify 17.12.7 <a href="https://wg21.link/compare.type">[compare.type]</a> as indicated:</p>
-
-<blockquote>
-<pre>
-template&lt;class T, class U&gt;
-  struct type_order;
-</pre>
-<blockquote>
-<p>
--2- The name <code class='backtick'>type_order</code> denotes a <i>Cpp17BinaryTypeTrait</i> (21.3.2 <a href="https://wg21.link/meta.rqmts">[meta.rqmts]</a>) with a base 
-characteristic of <code>integral_constant&lt;strong_ordering, <i>TYPE-ORDER</i>(T, U)&gt;</code>.
-<p/>
-<ins>-?- If an explicit specialization or partial specialization of <code class='backtick'>type_order</code> is declared, the program is ill-formed.</ins>
-<p/>
--3- <i>Recommended practice</i>: The order should be lexicographical on parameter-type-lists and template
-argument lists.
-</p>
-</blockquote>
-</blockquote>
-</li>
-
-</ol>
-
-
-
-
-
-
-<hr>
 <h3 id="4306"><a href="#4306">4306</a><sup><a href="https://cplusplus.github.io/LWG/issue4306">(i)</a></sup>. Interaction between LWG 2259 and <i>Constraints</i> of member functions</h3>
 <p><b>Section:</b> 16.4.6.5 <a href="https://wg21.link/member.functions">[member.functions]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
  <b>Submitter:</b> Jiang An <b>Opened:</b> 2025-07-24 <b>Last modified:</b> 2025-08-29</p>
@@ -74256,68 +74211,10 @@ template&lt;class T, class... Args&gt;
 
 
 <hr>
-<h3 id="4312"><a href="#4312">4312</a><sup><a href="https://cplusplus.github.io/LWG/issue4312">(i)</a></sup>. Const and value category mismatch for <code class='backtick'>allocator_arg_t</code>/<code class='backtick'>allocator_arg</code> in the description 
-of uses-allocator construction</h3>
-<p><b>Section:</b> 20.2.8.2 <a href="https://wg21.link/allocator.uses.construction">[allocator.uses.construction]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Jiang An <b>Opened:</b> 2025-08-06 <b>Last modified:</b> 2025-08-16</p>
-<p><b>Priority: </b>Not Prioritized
-</p>
-<p><b>View other</b> <a href="lwg-index-open.html#allocator.uses.construction">active issues</a> in [allocator.uses.construction].</p>
-<p><b>View all other</b> <a href="lwg-index.html#allocator.uses.construction">issues</a> in [allocator.uses.construction].</p>
-<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
-<p><b>Discussion:</b></p>
-<p>
-Currently, 20.2.8.2 <a href="https://wg21.link/allocator.uses.construction">[allocator.uses.construction]</a> bullet 2.2 states:
-</p>
-<blockquote><p>
-Otherwise, if <code class='backtick'>T</code> has a constructor invocable as <code class='backtick'>T(allocator_arg, alloc, args...)</code> (leading-allocator convention), 
-[&hellip;]
-</p></blockquote>
-<p>
-However, when forming construction arguments in the utility functions, we're actually using <i>cv</i>-unqualified 
-rvalue of <code class='backtick'>allocator_arg_t</code>, which can be inferred from using plain <code class='backtick'>allocator_arg_t</code> but not 
-<code>const allocator_arg_t&amp;</code> in 20.2.8.2 <a href="https://wg21.link/allocator.uses.construction">[allocator.uses.construction]</a> bullet 5.2.
-<p/>
-It seems that such mismatch was present even since C++11 (per <a href="https://wg21.link/N3337" title=" Working Draft, Standard for Programming Language C++">N3337</a> [allocator.uses.construction]/1.2). 
-If the use of plain <code class='backtick'>allocator_arg_t</code> is considered correct, I think we should fix the description.
-</p>
-
-
-<p id="res-4312"><b>Proposed resolution:</b></p>
-<p>
-This wording is relative to <a href="https://wg21.link/N5014">N5014</a>.
-</p>
-
-<ol>
-
-<li><p>Modify 20.2.8.2 <a href="https://wg21.link/allocator.uses.construction">[allocator.uses.construction]</a> as indicated:</p>
-
-<blockquote>
-<p>
--2- The following utility functions support three conventions for passing <code class='backtick'>alloc</code> to a constructor:
-</p>
-<ol style="list-style-type: none">
-<li><p>(2.1) &mdash; [&hellip;]</p></li>
-<li><p>(2.2) &mdash; Otherwise, if <code class='backtick'>T</code> has a constructor invocable as 
-<code>T(<del>allocator_arg</del><ins>allocator_arg_t{}</ins>, alloc, args...)</code> 
-(leading-allocator convention), then uses-allocator construction chooses this constructor form.</p></li>
-<li><p>(2.3) &mdash; [&hellip;]</p></li>
-</ol>
-</blockquote>
-
-</li>
-
-</ol>
-
-
-
-
-
-<hr>
 <h3 id="4313"><a href="#4313">4313</a><sup><a href="https://cplusplus.github.io/LWG/issue4313">(i)</a></sup>. Uses-allocator construction of <code class='backtick'>pair</code> in <code class='backtick'>tuple</code>'s <code class='backtick'>allocator_arg_t</code> constructors</h3>
 <p><b>Section:</b> 22.4.4.2 <a href="https://wg21.link/tuple.cnstr">[tuple.cnstr]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Jiang An <b>Opened:</b> 2025-08-07 <b>Last modified:</b> 2025-08-17</p>
-<p><b>Priority: </b>Not Prioritized
+ <b>Submitter:</b> Jiang An <b>Opened:</b> 2025-08-07 <b>Last modified:</b> 2025-10-14</p>
+<p><b>Priority: </b>3
 </p>
 <p><b>View other</b> <a href="lwg-index-open.html#tuple.cnstr">active issues</a> in [tuple.cnstr].</p>
 <p><b>View all other</b> <a href="lwg-index.html#tuple.cnstr">issues</a> in [tuple.cnstr].</p>
@@ -74417,6 +74314,13 @@ of behavior, is more likely to fix bugs than to create them. It is exactly this 
 restatement of uses-allocator construction for <code class='backtick'>pair</code> that I hoped to fix with P0591, even 
 though I missed <code class='backtick'>tuple</code> in my exposition.
 </p>
+
+<p><i>[2025-10-14; Reflector poll]</i></p>
+
+<p>
+Set priority to 3 after reflector poll.
+</p>
+
 
 
 <p id="res-4313"><b>Proposed resolution:</b></p>
@@ -74794,8 +74698,8 @@ While the intent seems clear, this should be rephrased to be more technically co
 <hr>
 <h3 id="4319"><a href="#4319">4319</a><sup><a href="https://cplusplus.github.io/LWG/issue4319">(i)</a></sup>. Supporting copy-elision in function wrappers</h3>
 <p><b>Section:</b> 22.10.4 <a href="https://wg21.link/func.require">[func.require]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Tomasz Kamiński <b>Opened:</b> 2025-08-19 <b>Last modified:</b> 2025-08-23</p>
-<p><b>Priority: </b>Not Prioritized
+ <b>Submitter:</b> Tomasz Kamiński <b>Opened:</b> 2025-08-19 <b>Last modified:</b> 2025-10-14</p>
+<p><b>Priority: </b>3
 </p>
 <p><b>View other</b> <a href="lwg-index-open.html#func.require">active issues</a> in [func.require].</p>
 <p><b>View all other</b> <a href="lwg-index.html#func.require">issues</a> in [func.require].</p>
@@ -74850,6 +74754,23 @@ The suggested changes by this issue have been
 <a href="https://gcc.gnu.org/pipermail/libstdc++/2025-August/062992.html">implemented in libstdc++</a>
 for <code class='backtick'>bind_front/bind_back</code>.
 </p>
+
+<p><i>[2025-10-14; Reflector poll]</i></p>
+
+<p>
+Set priority to 3 after reflector poll.
+</p>
+<p>
+The submitter prefers to withdraw the issue because the proposed resolution
+changes the result of overload resolution in unspecified ways. It would
+no longer be specified whether <code class='backtick'>bind_front(F{})({})</code> works or not,
+as it would depend whether <code class='backtick'>bind_front(F{})</code> returned a call wrapper or the
+<code class='backtick'>F</code> object without wrapping. It would also make the effects of
+<code class='backtick'>bind_front(S{})(0, 0)</code> unspecified if the call could resolve to either
+<code class='backtick'>S::operator()(long, long)</code> or <code class='backtick'>S::operator()(int, void*)</code>, depending on
+whether <code class='backtick'>bind_front(S{})</code> returns a call wrapper or the <code class='backtick'>S</code> object.
+</p>
+
 
 
 <p id="res-4319"><b>Proposed resolution:</b></p>
@@ -75864,8 +75785,8 @@ decltype(*declval&lt;pointer&gt;())&gt;</code> is <code class='backtick'>false</
 <hr>
 <h3 id="4325"><a href="#4325">4325</a><sup><a href="https://cplusplus.github.io/LWG/issue4325">(i)</a></sup>. <code class='backtick'>std::indirect</code>'s <code class='backtick'>operator==</code> still does not support incomplete types</h3>
 <p><b>Section:</b> 20.4.1.8 <a href="https://wg21.link/indirect.relops">[indirect.relops]</a>, 20.4.1.9 <a href="https://wg21.link/indirect.comp.with.t">[indirect.comp.with.t]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Hewill Kang <b>Opened:</b> 2025-08-24 <b>Last modified:</b> 2025-08-24</p>
-<p><b>Priority: </b>Not Prioritized
+ <b>Submitter:</b> Hewill Kang <b>Opened:</b> 2025-08-24 <b>Last modified:</b> 2025-10-14</p>
+<p><b>Priority: </b>2
 </p>
 <p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
 <p><b>Discussion:</b></p>
@@ -75895,6 +75816,26 @@ This makes <code class='backtick'>operator==</code> not SFINAE-friendly for inco
 Also, checking <code class='backtick'>noexcept(*lhs == *rhs)</code> seems insufficient because the result of <code class='backtick'>*lhs == *rhs</code> 
 might still throw during conversion to <code class='backtick'>bool</code>.
 </p>
+<p>
+We could add a note similar to 22.10.6.1 <a href="https://wg21.link/refwrap.general">[refwrap.general]</a>.
+</p>
+
+<p><i>[2025-10-14; Reflector poll]</i></p>
+
+<p>
+Set priority to 2 after reflector poll.
+</p>
+<p>
+Even if we don't want to support incomplete types, we still need to fix
+the noexcept-specifier to consider whether the conversion to <code class='backtick'>bool</code> throws,
+e.g. <code>noexcept(noexcept(<ins>bool(</ins>*lhs == *rhs<ins>)</ins>))</code>.
+</p>
+<p>
+"The proposed resolution may result in the noexcept operator giving different
+results when evaluated in different translation units where the type <code class='backtick'>T</code> of
+<code class='backtick'>indirect</code> was incomplete or not. Ill-formed seems safer than inconsistent."
+</p>
+
 
 
 <p id="res-4325"><b>Proposed resolution:</b></p>
@@ -81495,8 +81436,8 @@ constant expression, then <code class='backtick'>ranges::size(r) == extent</code
 <hr>
 <h3 id="4398"><a href="#4398">4398</a><sup><a href="https://cplusplus.github.io/LWG/issue4398">(i)</a></sup>. <code class='backtick'>enable_nonlocking_formatter_optimization</code> should be disabled for container adaptors</h3>
 <p><b>Section:</b> 23.6.2 <a href="https://wg21.link/queue.syn">[queue.syn]</a>, 23.6.5 <a href="https://wg21.link/stack.syn">[stack.syn]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Tomasz Kamiński <b>Opened:</b> 2025-10-02 <b>Last modified:</b> 2025-10-10</p>
-<p><b>Priority: </b>Not Prioritized
+ <b>Submitter:</b> Tomasz Kamiński <b>Opened:</b> 2025-10-02 <b>Last modified:</b> 2025-10-14</p>
+<p><b>Priority: </b>2
 </p>
 <p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
 <p><b>Discussion:</b></p>
@@ -81526,6 +81467,17 @@ optimization for that formatter.
 The proposed wording has recently been implemented in 
 <a href="https://gcc.gnu.org/pipermail/libstdc++/2025-October/063758.html">gcc's libstdc++</a>.
 </p>
+
+<p><i>[2025-10-14; Reflector poll]</i></p>
+
+<p>
+Set priority to 2 after reflector poll.
+</p>
+<p>
+This is a duplicate of LWG <a href="lwg-active.html#4146" title="&sect;[format.formatter.spec]/3 unconditionally enables nonlocking for container adaptors (Status: New)">4146</a><sup><a href="https://cplusplus.github.io/LWG/issue4146" title="Latest snapshot">(i)</a></sup>,
+with a different proposed resolution.
+</p>
+
 
 
 <p id="res-4398"><b>Proposed resolution:</b></p>
@@ -81652,8 +81604,8 @@ namespace std {
 <hr>
 <h3 id="4400"><a href="#4400">4400</a><sup><a href="https://cplusplus.github.io/LWG/issue4400">(i)</a></sup>. <code class='backtick'>enable_nonlocking_formatter_optimization</code> for durations with custom rep</h3>
 <p><b>Section:</b> 30.12 <a href="https://wg21.link/time.format">[time.format]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Tomasz Kamiński <b>Opened:</b> 2025-10-02 <b>Last modified:</b> 2025-10-04</p>
-<p><b>Priority: </b>Not Prioritized
+ <b>Submitter:</b> Tomasz Kamiński <b>Opened:</b> 2025-10-02 <b>Last modified:</b> 2025-10-14</p>
+<p><b>Priority: </b>3
 </p>
 <p><b>View other</b> <a href="lwg-index-open.html#time.format">active issues</a> in [time.format].</p>
 <p><b>View all other</b> <a href="lwg-index.html#time.format">issues</a> in [time.format].</p>
@@ -81680,7 +81632,7 @@ template&lt;class Rep, class Period&gt;
     =  is_arithmetic_v&lt;Rep&gt;;
 </pre></blockquote>
 <p>
-Furtheremore, for all types that are currently templated on <code class='backtick'>Duration</code> (<code class='backtick'>hh_mm_ss</code>, <code class='backtick'>sys_time</code>, 
+Furthermore, for all types that are currently templated on <code class='backtick'>Duration</code> (<code class='backtick'>hh_mm_ss</code>, <code class='backtick'>sys_time</code>,
 <code class='backtick'>local_time</code>, etc.), we <code class='backtick'>enable_nonlocking_formatter_optimization</code> by default. This again does 
 not take into consideration the arithmetic operations performed as duration. We should specialize 
 <code class='backtick'>enable_nonlocking_formatter_optimization</code> for all of them to be enabled if 
@@ -81699,6 +81651,13 @@ Durations with there custom representation types.
 The proposed wording has recently been implemented in 
 <a href="https://gcc.gnu.org/pipermail/libstdc++/2025-October/063758.html">gcc's libstdc++</a>.
 </p>
+
+<p><i>[2025-10-14; Reflector poll]</i></p>
+
+<p>
+Set priority to 3 after reflector poll.
+</p>
+
 
 
 <p id="res-4400"><b>Proposed resolution:</b></p>

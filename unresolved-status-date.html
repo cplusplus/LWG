@@ -67,8 +67,8 @@
 This document is the Index by Status and Date for the <a href="lwg-active.html">Library Active Issues List</a>,
 <a href="lwg-defects.html">Library Defect Reports and Accepted Issues</a>, and <a href="lwg-closed.html">Library Closed Issues List</a>.
 </p>
-<p>Revised 2025-10-14 at 17:47:05 UTC
-</p><h2 id="New">New (610 issues)</h2>
+<p>Revised 2025-10-14 at 21:31:17 UTC
+</p><h2 id="New">New (608 issues)</h2>
 <table class="issues-index">
 <tr>
   <th><a href="lwg-toc.html">Issue</a></th>
@@ -134,6 +134,87 @@ This document is the Index by Status and Date for the <a href="lwg-active.html">
 <td></td>
 </tr>
 <tr>
+<td id="4325"><a href="lwg-active.html#4325" title="std::indirect's operator== still does not support incomplete types (Status: New)">4325</a><sup><a href="https://cplusplus.github.io/LWG/issue4325">(i)</a></sup></td>
+<td><a href="lwg-active.html#New">New</a></td>
+<td>20.4.1.8 [indirect.relops]</td>
+<td><code class='backtick'>std::indirect</code>'s <code class='backtick'>operator==</code> still does not support incomplete types</td>
+<td>Yes</td>
+<td>2</td>
+<td></td>
+</tr>
+<tr>
+<td id="4138"><a href="lwg-active.html#4138" title="is_within_lifetime should mandate is_object (Status: New)">4138</a><sup><a href="https://cplusplus.github.io/LWG/issue4138">(i)</a></sup></td>
+<td><a href="lwg-active.html#New">New</a></td>
+<td>21.3.12 [meta.const.eval]</td>
+<td><code>is_within_lifetime</code> should mandate <code>is_object</code></td>
+<td>Yes</td>
+<td>3</td>
+<td></td>
+</tr>
+<tr>
+<td id="4267"><a href="lwg-active.html#4267" title="Uses-allocator construction is meaningless for tuple of references (Status: New)">4267</a><sup><a href="https://cplusplus.github.io/LWG/issue4267">(i)</a></sup></td>
+<td><a href="lwg-active.html#New">New</a></td>
+<td>22.4.4.2 [tuple.cnstr]</td>
+<td>Uses-allocator construction is meaningless for tuple of references</td>
+<td>Yes</td>
+<td>3</td>
+<td></td>
+</tr>
+<tr>
+<td id="4313"><a href="lwg-active.html#4313" title="Uses-allocator construction of pair in tuple's allocator_arg_t constructors (Status: New)">4313</a><sup><a href="https://cplusplus.github.io/LWG/issue4313">(i)</a></sup></td>
+<td><a href="lwg-active.html#New">New</a></td>
+<td>22.4.4.2 [tuple.cnstr]</td>
+<td>Uses-allocator construction of <code class='backtick'>pair</code> in <code class='backtick'>tuple</code>'s <code class='backtick'>allocator_arg_t</code> constructors</td>
+<td>Yes</td>
+<td>3</td>
+<td></td>
+</tr>
+<tr>
+<td id="4319"><a href="lwg-active.html#4319" title="Supporting copy-elision in function wrappers (Status: New)">4319</a><sup><a href="https://cplusplus.github.io/LWG/issue4319">(i)</a></sup></td>
+<td><a href="lwg-active.html#New">New</a></td>
+<td>22.10.4 [func.require]</td>
+<td>Supporting copy-elision in function wrappers</td>
+<td>Yes</td>
+<td>3</td>
+<td></td>
+</tr>
+<tr>
+<td id="4398"><a href="lwg-active.html#4398" title="enable_nonlocking_formatter_optimization should be disabled for container adaptors (Status: New)">4398</a><sup><a href="https://cplusplus.github.io/LWG/issue4398">(i)</a></sup></td>
+<td><a href="lwg-active.html#New">New</a></td>
+<td>23.6.2 [queue.syn]</td>
+<td><code class='backtick'>enable_nonlocking_formatter_optimization</code> should be disabled for container adaptors</td>
+<td>Yes</td>
+<td>2</td>
+<td></td>
+</tr>
+<tr>
+<td id="4146"><a href="lwg-active.html#4146" title="&sect;[format.formatter.spec]/3 unconditionally enables nonlocking for container adaptors (Status: New)">4146</a><sup><a href="https://cplusplus.github.io/LWG/issue4146">(i)</a></sup></td>
+<td><a href="lwg-active.html#New">New</a></td>
+<td>28.5.6.4 [format.formatter.spec]</td>
+<td>&sect;[format.formatter.spec]/3 unconditionally enables nonlocking for container adaptors</td>
+<td>Yes</td>
+<td>2</td>
+<td></td>
+</tr>
+<tr>
+<td id="4400"><a href="lwg-active.html#4400" title="enable_nonlocking_formatter_optimization for durations with custom rep (Status: New)">4400</a><sup><a href="https://cplusplus.github.io/LWG/issue4400">(i)</a></sup></td>
+<td><a href="lwg-active.html#New">New</a></td>
+<td>30.12 [time.format]</td>
+<td><code class='backtick'>enable_nonlocking_formatter_optimization</code> for durations with custom rep</td>
+<td>Yes</td>
+<td>3</td>
+<td></td>
+</tr>
+<tr>
+<td id="4279"><a href="lwg-active.html#4279" title="&sect;[fs.op.absolute] Non-normative encouragement should be Recommended practice (Status: New)">4279</a><sup><a href="https://cplusplus.github.io/LWG/issue4279">(i)</a></sup></td>
+<td><a href="lwg-active.html#New">New</a></td>
+<td>31.12.13.2 [fs.op.absolute]</td>
+<td>&sect;[fs.op.absolute] Non-normative encouragement should be <i>Recommended practice</i></td>
+<td><span class="no-pr">No</span></td>
+<td>4</td>
+<td></td>
+</tr>
+<tr>
 <td id="4410"><a href="lwg-active.html#4410" title="basic_string_view(It begin, End end) is underconstrained (Status: New)">4410</a><sup><a href="https://cplusplus.github.io/LWG/issue4410">(i)</a></sup></td>
 <td><a href="lwg-active.html#New">New</a></td>
 <td>27.3.3.2 [string.view.cons]</td>
@@ -183,15 +264,6 @@ This document is the Index by Status and Date for the <a href="lwg-active.html">
 <td><a href="lwg-active.html#New">New</a></td>
 <td>22.5.3.7 [optional.observe]</td>
 <td><code class='backtick'>optional::value_or</code> return statement is inconsistent with <i>Mandates</i></td>
-<td>Yes</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td id="4398"><a href="lwg-active.html#4398" title="enable_nonlocking_formatter_optimization should be disabled for container adaptors (Status: New)">4398</a><sup><a href="https://cplusplus.github.io/LWG/issue4398">(i)</a></sup></td>
-<td><a href="lwg-active.html#New">New</a></td>
-<td>23.6.2 [queue.syn]</td>
-<td><code class='backtick'>enable_nonlocking_formatter_optimization</code> should be disabled for container adaptors</td>
 <td>Yes</td>
 <td></td>
 <td></td>
@@ -331,15 +403,6 @@ constructor</td>
 <td><a href="lwg-active.html#New">New</a></td>
 <td>29.10.9.1 [simd.mask.overview]</td>
 <td>List-initialization of iterators in [simd.mask.overview]</td>
-<td>Yes</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td id="4400"><a href="lwg-active.html#4400" title="enable_nonlocking_formatter_optimization for durations with custom rep (Status: New)">4400</a><sup><a href="https://cplusplus.github.io/LWG/issue4400">(i)</a></sup></td>
-<td><a href="lwg-active.html#New">New</a></td>
-<td>30.12 [time.format]</td>
-<td><code class='backtick'>enable_nonlocking_formatter_optimization</code> for durations with custom rep</td>
 <td>Yes</td>
 <td></td>
 <td></td>
@@ -1081,24 +1144,6 @@ co_await expression instead of same_as&lt;void&gt; (Status: New)">4357</a><sup><
 <td></td>
 </tr>
 <tr>
-<td id="4325"><a href="lwg-active.html#4325" title="std::indirect's operator== still does not support incomplete types (Status: New)">4325</a><sup><a href="https://cplusplus.github.io/LWG/issue4325">(i)</a></sup></td>
-<td><a href="lwg-active.html#New">New</a></td>
-<td>20.4.1.8 [indirect.relops]</td>
-<td><code class='backtick'>std::indirect</code>'s <code class='backtick'>operator==</code> still does not support incomplete types</td>
-<td>Yes</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td id="4319"><a href="lwg-active.html#4319" title="Supporting copy-elision in function wrappers (Status: New)">4319</a><sup><a href="https://cplusplus.github.io/LWG/issue4319">(i)</a></sup></td>
-<td><a href="lwg-active.html#New">New</a></td>
-<td>22.10.4 [func.require]</td>
-<td>Supporting copy-elision in function wrappers</td>
-<td>Yes</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
 <td id="4212"><a href="lwg-active.html#4212" title="Make the round states in [rand.eng.philox] explicit (Status: New)">4212</a><sup><a href="https://cplusplus.github.io/LWG/issue4212">(i)</a></sup></td>
 <td><a href="lwg-active.html#New">New</a></td>
 <td>29.5.4.5 [rand.eng.philox]</td>
@@ -1113,35 +1158,6 @@ co_await expression instead of same_as&lt;void&gt; (Status: New)">4357</a><sup><
 <td>21.4.13 [meta.reflection.substitute]</td>
 <td><code>{can_}substitute</code> specification is ill-formed</td>
 <td><span class="no-pr">No</span></td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td id="4313"><a href="lwg-active.html#4313" title="Uses-allocator construction of pair in tuple's allocator_arg_t constructors (Status: New)">4313</a><sup><a href="https://cplusplus.github.io/LWG/issue4313">(i)</a></sup></td>
-<td><a href="lwg-active.html#New">New</a></td>
-<td>22.4.4.2 [tuple.cnstr]</td>
-<td>Uses-allocator construction of <code class='backtick'>pair</code> in <code class='backtick'>tuple</code>'s <code class='backtick'>allocator_arg_t</code> constructors</td>
-<td>Yes</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td id="4305"><a href="lwg-active.html#4305" title="Missing user requirements on type_order template (Status: New)">4305</a><sup><a href="https://cplusplus.github.io/LWG/issue4305">(i)</a></sup></td>
-<td><a href="lwg-active.html#New">New</a></td>
-<td>17.12.7 [compare.type]</td>
-<td>Missing user requirements on <code class='backtick'>type_order</code> template</td>
-<td>Yes</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td id="4312"><a href="lwg-active.html#4312" title="Const and value category mismatch for allocator_arg_t/allocator_arg in the description 
-of uses-allocator construction (Status: New)">4312</a><sup><a href="https://cplusplus.github.io/LWG/issue4312">(i)</a></sup></td>
-<td><a href="lwg-active.html#New">New</a></td>
-<td>20.2.8.2 [allocator.uses.construction]</td>
-<td>Const and value category mismatch for <code class='backtick'>allocator_arg_t</code>/<code class='backtick'>allocator_arg</code> in the description 
-of uses-allocator construction</td>
-<td>Yes</td>
 <td></td>
 <td></td>
 </tr>
@@ -1290,15 +1306,6 @@ initializer_list (Status: New)">3537</a><sup><a href="https://cplusplus.github.i
 <td>20.2.6 [obj.lifetime]</td>
 <td>Imprecise <i>Throws</i>: clause in <code class='backtick'>std::relocate</code></td>
 <td>Yes</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td id="4279"><a href="lwg-active.html#4279" title="&sect;[fs.op.absolute] Non-normative encouragement should be Recommended practice (Status: New)">4279</a><sup><a href="https://cplusplus.github.io/LWG/issue4279">(i)</a></sup></td>
-<td><a href="lwg-active.html#New">New</a></td>
-<td>31.12.13.2 [fs.op.absolute]</td>
-<td>&sect;[fs.op.absolute] Non-normative encouragement should be <i>Recommended practice</i></td>
-<td><span class="no-pr">No</span></td>
 <td></td>
 <td></td>
 </tr>
@@ -1518,15 +1525,6 @@ complexity for algorithms that are in fact &#x1d4aa;(n)</td>
 <td><a href="lwg-active.html#New">New</a></td>
 <td>26.7.9 [alg.unique]</td>
 <td><code class='backtick'>unique_copy</code> passes arguments to its predicate backwards</td>
-<td>Yes</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td id="4267"><a href="lwg-active.html#4267" title="Uses-allocator construction is meaningless for tuple of references (Status: New)">4267</a><sup><a href="https://cplusplus.github.io/LWG/issue4267">(i)</a></sup></td>
-<td><a href="lwg-active.html#New">New</a></td>
-<td>22.4.4.2 [tuple.cnstr]</td>
-<td>Uses-allocator construction is meaningless for tuple of references</td>
 <td>Yes</td>
 <td></td>
 <td></td>
@@ -2128,15 +2126,6 @@ passed to allocator <code>construct</code> and <code>destroy</code></td>
 <td></td>
 </tr>
 <tr>
-<td id="4146"><a href="lwg-active.html#4146" title="&sect;[format.formatter.spec]/3 unconditionally enables nonlocking for container adaptors (Status: New)">4146</a><sup><a href="https://cplusplus.github.io/LWG/issue4146">(i)</a></sup></td>
-<td><a href="lwg-active.html#New">New</a></td>
-<td>28.5.6.4 [format.formatter.spec]</td>
-<td>&sect;[format.formatter.spec]/3 unconditionally enables nonlocking for container adaptors</td>
-<td>Yes</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
 <td id="4120"><a href="lwg-active.html#4120" title="move_iterator should provide iterator_category only when it models
 forward_iterator (Status: New)">4120</a><sup><a href="https://cplusplus.github.io/LWG/issue4120">(i)</a></sup></td>
 <td><a href="lwg-active.html#New">New</a></td>
@@ -2190,15 +2179,6 @@ forward_iterator (Status: New)">4120</a><sup><a href="https://cplusplus.github.i
 <td><code><i>awaitable-receiver</i></code>'s members are potentially throwing</td>
 <td><span class="no-pr">No</span></td>
 <td>1</td>
-<td></td>
-</tr>
-<tr>
-<td id="4138"><a href="lwg-active.html#4138" title="is_within_lifetime should mandate is_object (Status: New)">4138</a><sup><a href="https://cplusplus.github.io/LWG/issue4138">(i)</a></sup></td>
-<td><a href="lwg-active.html#New">New</a></td>
-<td>21.3.12 [meta.const.eval]</td>
-<td><code>is_within_lifetime</code> should mandate <code>is_object</code></td>
-<td>Yes</td>
-<td></td>
 <td></td>
 </tr>
 <tr>

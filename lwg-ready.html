@@ -62,7 +62,7 @@
 </tr>
 <tr>
 <td align="left">Date:</td>
-<td align="left">Revised 2025-10-14 at 17:47:05 UTC
+<td align="left">Revised 2025-10-14 at 21:31:17 UTC
 </td>
 </tr>
 <tr>
@@ -2255,6 +2255,181 @@ template&lt;class Lock, class Rep, class Period, class Predicate&gt;
 </p>
 </blockquote>
 </blockquote>
+</li>
+
+</ol>
+
+
+
+
+
+<hr>
+<h3 id="4305"><a href="#4305">4305</a><sup><a href="https://cplusplus.github.io/LWG/issue4305">(i)</a></sup>. Missing user requirements on <code class='backtick'>type_order</code> template</h3>
+<p><b>Section:</b> 17.12.7 <a href="https://wg21.link/compare.type">[compare.type]</a> <b>Status:</b> <a href="lwg-active.html#Ready">Tentatively Ready</a>
+ <b>Submitter:</b> Daniel Krügler <b>Opened:</b> 2025-07-27 <b>Last modified:</b> 2025-10-14</p>
+<p><b>Priority: </b>Not Prioritized
+</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#Tentatively Ready">Tentatively Ready</a> status.</p>
+<p><b>Discussion:</b></p>
+<p>
+The recently approved paper <a href="https://wg21.link/P2830R10" title=" Standardized Constexpr Type Ordering">P2830R10</a> proposes to add the new <code class='backtick'>type_order</code>
+type traits to 17.12 <a href="https://wg21.link/cmp">[cmp]</a> (and thus outside of 21.3 <a href="https://wg21.link/type.traits">[type.traits]</a>), 
+which has the subtle and most likely unintended effect, that it doesn't fall under the 
+general requirement expressed in 21.3.2 <a href="https://wg21.link/meta.rqmts">[meta.rqmts]</a> p4,
+</p>
+<blockquote><p>
+Unless otherwise specified, the behavior of a program that adds specializations for 
+any of the templates specified in 21.3.2 <a href="https://wg21.link/meta.rqmts">[meta.rqmts]</a> is undefined.
+</p></blockquote>
+<p>
+and so in principle the explicit allowance specified in 16.4.5.2.1 <a href="https://wg21.link/namespace.std">[namespace.std]</a> p2,
+</p>
+<blockquote><p>
+Unless explicitly prohibited, a program may add a template specialization for any standard 
+library class template to namespace <code class='backtick'>std</code> [&hellip;]
+</p></blockquote>
+<p>
+holds. So we need to add extra wording to the <code class='backtick'>type_order</code> specification in 
+17.12.7 <a href="https://wg21.link/compare.type">[compare.type]</a> to prohibit such program specializations.
+<p/>
+This was reported shortly before the Sofia meeting 
+<a href="https://lists.isocpp.org/lib/2025/06/31725.php">during reflector discussion</a>  
+but seems to be forgotten before the final paper appeared on plenary. 
+<p/>
+During the reflector discussion two possible ways to solve this issue were pointed out:
+</p>
+<ol>
+<li><p>The most simple one would mimic the wording in 21.3.2 <a href="https://wg21.link/meta.rqmts">[meta.rqmts]</a> p4
+quoted above.</p></li>
+<li><p>Instead of introducing just another undefined opportunity to run into undefined
+behaviour it has been pointed out that we could follow the approach taken by <code class='backtick'>std::initializer_list</code>
+and make the program ill-formed in this case, as specified in 17.11.2 <a href="https://wg21.link/initializer.list.syn">[initializer.list.syn]</a> p2:
+</p>
+<blockquote><p>
+If an explicit specialization or partial specialization of <code class='backtick'>initializer_list</code> is declared, 
+the program is ill-formed.
+</p></blockquote>
+</li>
+</ol>
+Jonathan Wakely responded to the reflector discussion:
+<blockquote><p>
+I think ill-formed would be better. It shouldn't be difficult for implementations to have special cases that are disallowed. 
+</p></blockquote>
+<p>
+Given the already existing experience with <code class='backtick'>std::initializer_list</code> the proposed wording below
+therefore follows the ill-formed program approach.
+</p>
+
+<p><i>[2025-10-14; Reflector poll]</i></p>
+
+<p>
+Set status to Tentatively Ready after seven votes in favour during reflector poll.
+</p>
+
+
+
+<p id="res-4305"><b>Proposed resolution:</b></p>
+<p>
+This wording is relative to <a href="https://wg21.link/N5014">N5014</a>.
+</p>
+
+<ol>
+
+<li><p>Modify 17.12.7 <a href="https://wg21.link/compare.type">[compare.type]</a> as indicated:</p>
+
+<blockquote>
+<pre>
+template&lt;class T, class U&gt;
+  struct type_order;
+</pre>
+<blockquote>
+<p>
+-2- The name <code class='backtick'>type_order</code> denotes a <i>Cpp17BinaryTypeTrait</i> (21.3.2 <a href="https://wg21.link/meta.rqmts">[meta.rqmts]</a>) with a base 
+characteristic of <code>integral_constant&lt;strong_ordering, <i>TYPE-ORDER</i>(T, U)&gt;</code>.
+<p/>
+<ins>-?- If an explicit specialization or partial specialization of <code class='backtick'>type_order</code> is declared, the program is ill-formed.</ins>
+<p/>
+-3- <i>Recommended practice</i>: The order should be lexicographical on parameter-type-lists and template
+argument lists.
+</p>
+</blockquote>
+</blockquote>
+</li>
+
+</ol>
+
+
+
+
+
+
+<hr>
+<h3 id="4312"><a href="#4312">4312</a><sup><a href="https://cplusplus.github.io/LWG/issue4312">(i)</a></sup>. Const and value category mismatch for <code class='backtick'>allocator_arg_t</code>/<code class='backtick'>allocator_arg</code> in the description 
+of uses-allocator construction</h3>
+<p><b>Section:</b> 20.2.8.2 <a href="https://wg21.link/allocator.uses.construction">[allocator.uses.construction]</a> <b>Status:</b> <a href="lwg-active.html#Ready">Tentatively Ready</a>
+ <b>Submitter:</b> Jiang An <b>Opened:</b> 2025-08-06 <b>Last modified:</b> 2025-10-14</p>
+<p><b>Priority: </b>Not Prioritized
+</p>
+<p><b>View other</b> <a href="lwg-index-open.html#allocator.uses.construction">active issues</a> in [allocator.uses.construction].</p>
+<p><b>View all other</b> <a href="lwg-index.html#allocator.uses.construction">issues</a> in [allocator.uses.construction].</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#Tentatively Ready">Tentatively Ready</a> status.</p>
+<p><b>Discussion:</b></p>
+<p>
+Currently, 20.2.8.2 <a href="https://wg21.link/allocator.uses.construction">[allocator.uses.construction]</a> bullet 2.2 states:
+</p>
+<blockquote><p>
+Otherwise, if <code class='backtick'>T</code> has a constructor invocable as <code class='backtick'>T(allocator_arg, alloc, args...)</code> (leading-allocator convention), 
+[&hellip;]
+</p></blockquote>
+<p>
+However, when forming construction arguments in the utility functions, we're actually using <i>cv</i>-unqualified 
+rvalue of <code class='backtick'>allocator_arg_t</code>, which can be inferred from using plain <code class='backtick'>allocator_arg_t</code> but not 
+<code>const allocator_arg_t&amp;</code> in 20.2.8.2 <a href="https://wg21.link/allocator.uses.construction">[allocator.uses.construction]</a> bullet 5.2.
+<p/>
+It seems that such mismatch was present even since C++11 (per <a href="https://wg21.link/N3337" title=" Working Draft, Standard for Programming Language C++">N3337</a> [allocator.uses.construction]/1.2). 
+If the use of plain <code class='backtick'>allocator_arg_t</code> is considered correct, I think we should fix the description.
+</p>
+
+<p><i>[2025-10-14; Reflector poll]</i></p>
+
+<p>
+Set status to Tentatively Ready after five votes in favour during reflector poll.
+</p>
+<p>
+Unless the <code class='backtick'>std::allocator_arg</code> tag object is not supposed to be used,
+wouldn't it make more sense to preserve the
+"if <code class='backtick'>T</code> has a constructor invocable as <code class='backtick'>T(allocator_arg, alloc, args...)</code>"
+wording and change every <code class='backtick'>allocator_arg_t</code> into
+<code>const allocator_arg_t&amp;</code>, so that we check for construction
+from the const tag object, and then actually use a const value in the
+constructor arguments.
+Strongly don't care though.
+</p>
+
+
+
+<p id="res-4312"><b>Proposed resolution:</b></p>
+<p>
+This wording is relative to <a href="https://wg21.link/N5014">N5014</a>.
+</p>
+
+<ol>
+
+<li><p>Modify 20.2.8.2 <a href="https://wg21.link/allocator.uses.construction">[allocator.uses.construction]</a> as indicated:</p>
+
+<blockquote>
+<p>
+-2- The following utility functions support three conventions for passing <code class='backtick'>alloc</code> to a constructor:
+</p>
+<ol style="list-style-type: none">
+<li><p>(2.1) &mdash; [&hellip;]</p></li>
+<li><p>(2.2) &mdash; Otherwise, if <code class='backtick'>T</code> has a constructor invocable as 
+<code>T(<del>allocator_arg</del><ins>allocator_arg_t{}</ins>, alloc, args...)</code> 
+(leading-allocator convention), then uses-allocator construction chooses this constructor form.</p></li>
+<li><p>(2.3) &mdash; [&hellip;]</p></li>
+</ol>
+</blockquote>
+
 </li>
 
 </ol>

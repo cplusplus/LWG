@@ -66,7 +66,7 @@
 <p>This document is the Index by Section for the <a href="lwg-active.html">Library Active Issues List</a>.</p>
 <h2>Index by Section (non-Ready active issues only)</h2>
 <p><a href="lwg-index.html">(view all issues)</a></p>
-<p>Revised 2025-10-14 at 17:47:05 UTC
+<p>Revised 2025-10-14 at 21:31:17 UTC
 </p><h2 id="Section_3">Section 3 (2 issues)</h2>
 <p><a href="lwg-index.html#Section_3">(view all issues)</a></p>
 <table class="issues-index">
@@ -849,8 +849,8 @@ and user requirements</td>
 <td></td>
 </tr>
 <tr>
-<td id="4305"><a href="lwg-active.html#4305" title="Missing user requirements on type_order template (Status: New)">4305</a><sup><a href="https://cplusplus.github.io/LWG/issue4305">(i)</a></sup></td>
-<td><a href="lwg-active.html#New">New</a></td>
+<td id="4305"><a href="lwg-active.html#4305" title="Missing user requirements on type_order template (Status: Tentatively Ready)">4305</a><sup><a href="https://cplusplus.github.io/LWG/issue4305">(i)</a></sup></td>
+<td><a href="lwg-active.html#Ready">Tentatively Ready</a></td>
 <td>17.12.7 [compare.type]<a id="compare.type"></a></td>
 <td>Missing user requirements on <code class='backtick'>type_order</code> template</td>
 <td>Yes</td>
@@ -1141,8 +1141,8 @@ and user requirements</td>
 </tr>
 <tr>
 <td id="4312"><a href="lwg-active.html#4312" title="Const and value category mismatch for allocator_arg_t/allocator_arg in the description 
-of uses-allocator construction (Status: New)">4312</a><sup><a href="https://cplusplus.github.io/LWG/issue4312">(i)</a></sup></td>
-<td><a href="lwg-active.html#New">New</a></td>
+of uses-allocator construction (Status: Tentatively Ready)">4312</a><sup><a href="https://cplusplus.github.io/LWG/issue4312">(i)</a></sup></td>
+<td><a href="lwg-active.html#Ready">Tentatively Ready</a></td>
 <td>20.2.8.2 [allocator.uses.construction]<a id="allocator.uses.construction"></a></td>
 <td>Const and value category mismatch for <code class='backtick'>allocator_arg_t</code>/<code class='backtick'>allocator_arg</code> in the description 
 of uses-allocator construction</td>
@@ -1313,7 +1313,7 @@ passed to allocator <code>construct</code> and <code>destroy</code></td>
 <td>20.4.1.8 [indirect.relops]<a id="indirect.relops"></a></td>
 <td><code class='backtick'>std::indirect</code>'s <code class='backtick'>operator==</code> still does not support incomplete types</td>
 <td>Yes</td>
-<td></td>
+<td>2</td>
 <td></td>
 </tr>
 <tr>
@@ -1566,7 +1566,7 @@ the evaluation of type traits</td>
 <td>21.3.12 [meta.const.eval]<a id="meta.const.eval"></a></td>
 <td><code>is_within_lifetime</code> should mandate <code>is_object</code></td>
 <td>Yes</td>
-<td></td>
+<td>3</td>
 <td></td>
 </tr>
 <tr>
@@ -1673,21 +1673,21 @@ the evaluation of type traits</td>
 <td></td>
 </tr>
 <tr>
-<td id="4313"><a href="lwg-active.html#4313" title="Uses-allocator construction of pair in tuple's allocator_arg_t constructors (Status: New)">4313</a><sup><a href="https://cplusplus.github.io/LWG/issue4313">(i)</a></sup></td>
+<td id="4267"><a href="lwg-active.html#4267" title="Uses-allocator construction is meaningless for tuple of references (Status: New)">4267</a><sup><a href="https://cplusplus.github.io/LWG/issue4267">(i)</a></sup></td>
 <td><a href="lwg-active.html#New">New</a></td>
 <td>22.4.4.2 [tuple.cnstr]<a id="tuple.cnstr"></a></td>
-<td>Uses-allocator construction of <code class='backtick'>pair</code> in <code class='backtick'>tuple</code>'s <code class='backtick'>allocator_arg_t</code> constructors</td>
+<td>Uses-allocator construction is meaningless for tuple of references</td>
 <td>Yes</td>
-<td></td>
+<td>3</td>
 <td></td>
 </tr>
 <tr>
-<td id="4267"><a href="lwg-active.html#4267" title="Uses-allocator construction is meaningless for tuple of references (Status: New)">4267</a><sup><a href="https://cplusplus.github.io/LWG/issue4267">(i)</a></sup></td>
+<td id="4313"><a href="lwg-active.html#4313" title="Uses-allocator construction of pair in tuple's allocator_arg_t constructors (Status: New)">4313</a><sup><a href="https://cplusplus.github.io/LWG/issue4313">(i)</a></sup></td>
 <td><a href="lwg-active.html#New">New</a></td>
 <td>22.4.4.2 [tuple.cnstr]</td>
-<td>Uses-allocator construction is meaningless for tuple of references</td>
+<td>Uses-allocator construction of <code class='backtick'>pair</code> in <code class='backtick'>tuple</code>'s <code class='backtick'>allocator_arg_t</code> constructors</td>
 <td>Yes</td>
-<td></td>
+<td>3</td>
 <td></td>
 </tr>
 <tr>
@@ -2065,7 +2065,7 @@ the evaluation of type traits</td>
 <td>22.10.4 [func.require]<a id="func.require"></a></td>
 <td>Supporting copy-elision in function wrappers</td>
 <td>Yes</td>
-<td></td>
+<td>3</td>
 <td></td>
 </tr>
 <tr>
@@ -2752,7 +2752,7 @@ should conditionally require <i>Cpp17CopyInsertable</i> in their preconditions</
 <td>23.6.2 [queue.syn]<a id="queue.syn"></a></td>
 <td><code class='backtick'>enable_nonlocking_formatter_optimization</code> should be disabled for container adaptors</td>
 <td>Yes</td>
-<td></td>
+<td>2</td>
 <td></td>
 </tr>
 <tr>
@@ -5035,19 +5035,19 @@ not copy) their predicate object</td>
 <td></td>
 </tr>
 <tr>
-<td id="4284"><a href="lwg-active.html#4284" title="Integer-class types should be formattable (Status: New)">4284</a><sup><a href="https://cplusplus.github.io/LWG/issue4284">(i)</a></sup></td>
+<td id="4146"><a href="lwg-active.html#4146" title="&sect;[format.formatter.spec]/3 unconditionally enables nonlocking for container adaptors (Status: New)">4146</a><sup><a href="https://cplusplus.github.io/LWG/issue4146">(i)</a></sup></td>
 <td><a href="lwg-active.html#New">New</a></td>
 <td>28.5.6.4 [format.formatter.spec]<a id="format.formatter.spec"></a></td>
-<td>Integer-class types should be formattable</td>
+<td>&sect;[format.formatter.spec]/3 unconditionally enables nonlocking for container adaptors</td>
 <td>Yes</td>
-<td></td>
+<td>2</td>
 <td></td>
 </tr>
 <tr>
-<td id="4146"><a href="lwg-active.html#4146" title="&sect;[format.formatter.spec]/3 unconditionally enables nonlocking for container adaptors (Status: New)">4146</a><sup><a href="https://cplusplus.github.io/LWG/issue4146">(i)</a></sup></td>
+<td id="4284"><a href="lwg-active.html#4284" title="Integer-class types should be formattable (Status: New)">4284</a><sup><a href="https://cplusplus.github.io/LWG/issue4284">(i)</a></sup></td>
 <td><a href="lwg-active.html#New">New</a></td>
 <td>28.5.6.4 [format.formatter.spec]</td>
-<td>&sect;[format.formatter.spec]/3 unconditionally enables nonlocking for container adaptors</td>
+<td>Integer-class types should be formattable</td>
 <td>Yes</td>
 <td></td>
 <td></td>
@@ -5789,7 +5789,7 @@ constructor</td>
 <td>30.12 [time.format]<a id="time.format"></a></td>
 <td><code class='backtick'>enable_nonlocking_formatter_optimization</code> for durations with custom rep</td>
 <td>Yes</td>
-<td></td>
+<td>3</td>
 <td></td>
 </tr>
 <tr>
@@ -6175,7 +6175,7 @@ vprint_unicode/vprint_nonunicode (Status: New)">4039</a><sup><a href="https://cp
 <td>31.12.13.2 [fs.op.absolute]<a id="fs.op.absolute"></a></td>
 <td>&sect;[fs.op.absolute] Non-normative encouragement should be <i>Recommended practice</i></td>
 <td><span class="no-pr">No</span></td>
-<td></td>
+<td>4</td>
 <td></td>
 </tr>
 <tr>
