@@ -64,7 +64,7 @@
 <p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#Open">Open</a> status.</em></p>
 <h3 id="2962"><a href="lwg-active.html#2962">2962</a>. Iterators of Containers of move-only types do not model <code>InputIterator</code></h3>
 <p><b>Section:</b> 24.3.5.3 <a href="https://wg21.link/input.iterators">[input.iterators]</a> <b>Status:</b> <a href="lwg-active.html#Open">Open</a>
- <b>Submitter:</b> Ga&scaron;per A&zcaron;man <b>Opened:</b> 2017-05-10 <b>Last modified:</b> 2022-04-25</p>
+ <b>Submitter:</b> Ga&scaron;per A&zcaron;man <b>Opened:</b> 2017-05-10 <b>Last modified:</b> 2025-10-15</p>
 <p><b>Priority: </b>2
 </p>
 <p><b>View other</b> <a href="lwg-index-open.html#input.iterators">active issues</a> in [input.iterators].</p>
@@ -227,6 +227,22 @@ that return prvalues that a prvalue is not bindable to a volatile reference.
 <p><i>[2018-11 San Diego Thursday night issue processing]</i></p>
 
 <p>Look at Ranges; EricWF to investigate. Status to Open</p>
+
+<p><i>[2025-10-15; additional suggestion from Eric Niebler during 2018-04 discussion]</i></p>
+
+<p>
+Regarding the issue of whether <code class='backtick'>int volatile*</code> is an iterator or not,
+I think the best way to solve the problem is with the <code class='backtick'>common_reference_t</code>
+type trait.
+The return type for <code class='backtick'>*a</code> could be
+"<code class='backtick'>reference</code>, where
+<code>common_reference_t&lt;reference&amp;&amp;, T&amp;&gt;</code>
+is well-formed"
+and for <code class='backtick'>*r++</code> could be:
+"A type <code class='backtick'>U</code>, where
+<code>common_reference_t&lt;U&amp;&amp;, T&amp;&gt;</code>
+is well-formed".
+</p>
 
 <p>
 <strong>Previous resolution [SUPERSEDED]:</strong>
