@@ -64,7 +64,7 @@
 <p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#NAD">NAD</a> status.</em></p>
 <h3 id="657"><a href="lwg-closed.html#657">657</a>. unclear requirement about header inclusion</h3>
 <p><b>Section:</b> 16.4.3.2 <a href="https://wg21.link/using.headers">[using.headers]</a> <b>Status:</b> <a href="lwg-active.html#NAD">NAD</a>
- <b>Submitter:</b> Gennaro Prota <b>Opened:</b> 2007-03-14 <b>Last modified:</b> 2016-01-28</p>
+ <b>Submitter:</b> Gennaro Prota <b>Opened:</b> 2007-03-14 <b>Last modified:</b> 2025-10-15</p>
 <p><b>Priority: </b>Not Prioritized
 </p>
 <p><b>View all other</b> <a href="lwg-index.html#using.headers">issues</a> in [using.headers].</p>
@@ -146,6 +146,16 @@ proposal (<a href="http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2004/n1691
 </pre></blockquote>
 </li>
 </ol>
+
+<p><i>[2025-10-15; Jonathan adds additional rationale]</i></p>
+
+<p>
+For the second point, LWG <a href="lwg-defects.html#2428" title="&quot;External declaration&quot; used without being defined (Status: C++17)">2428</a><sup><a href="https://cplusplus.github.io/LWG/issue2428" title="Latest snapshot">(i)</a></sup> removed "external"
+and LWG <a href="lwg-defects.html#2225" title="Unrealistic header inclusion checks required (Status: C++14)">2225</a><sup><a href="https://cplusplus.github.io/LWG/issue2225" title="Latest snapshot">(i)</a></sup> added "no diagnostic is required".
+For the third point, 16.4.2.3 <a href="https://wg21.link/headers">[headers]</a> clearly defines "header"
+to mean only standard library headers; other <code class='backtick'>#include</code>d files are
+"source files" (5.1 <a href="https://wg21.link/lex.separate">[lex.separate]</a>).
+</p>
 
 
 <p id="res-657"><b>Proposed resolution:</b></p>
