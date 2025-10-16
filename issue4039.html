@@ -67,8 +67,8 @@ vprint_unicode/vprint_nonunicode">
 <h3 id="4039"><a href="lwg-active.html#4039">4039</a>. &sect;[ostream.formatted.print]: Inappropriate usage of <code>badbit</code> in definition of 
 <code>vprint_unicode</code>/<code>vprint_nonunicode</code></h3>
 <p><b>Section:</b> 31.7.6.3.5 <a href="https://wg21.link/ostream.formatted.print">[ostream.formatted.print]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Jan Kokemüller <b>Opened:</b> 2024-01-13 <b>Last modified:</b> 2024-01-20</p>
-<p><b>Priority: </b>Not Prioritized
+ <b>Submitter:</b> Jan Kokemüller <b>Opened:</b> 2024-01-13 <b>Last modified:</b> 2025-10-16</p>
+<p><b>Priority: </b>4
 </p>
 <p><b>View all other</b> <a href="lwg-index.html#ostream.formatted.print">issues</a> in [ostream.formatted.print].</p>
 <p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
@@ -101,8 +101,21 @@ Therefore mentioning <code>ios_base::badbit</code> in (3.2) doesn't really make 
 refer to <code>ios_base::failbit</code> instead.
 </p>
 
+<p><i>[2025-10-16; Reflector poll]</i></p>
 
-<p id="res-4039"><b>Proposed resolution:</b></p>
+<p>
+Set priority to 4 after reflector poll.
+</p>
+<p>
+"NAD. The reason it talks about badbit is that exceptions set badbit in
+IOStreams but not failbit. If we don’t want to hook into the stream’s
+error handling mentioning badbit is correct."
+</p>
+
+
+<p><strong>Previous resolution [SUPERSEDED]:</strong></p>
+<blockquote class="note">
+
 <p>
 This wording is relative to <a href="https://wg21.link/N4971" title=" Working Draft, Programming Languages — C++">N4971</a>.
 </p>
@@ -133,6 +146,48 @@ in the error state of <code>os</code>.</p></li>
 </blockquote>
 </li>
 </ol>
+</blockquote>
+
+<p><i>[2025-10-16; Daniel provides new wording]</i></p>
+
+
+
+
+<p id="res-4039"><b>Proposed resolution:</b></p>
+
+<p>
+This wording is relative to <a href="https://wg21.link/N5014">N5014</a>.
+</p>
+
+<ol>
+<li><p>Modify 31.7.6.3.5 <a href="https://wg21.link/ostream.formatted.print">[ostream.formatted.print]</a> as indicated:</p>
+
+<blockquote>
+<pre>
+void vprint_unicode(ostream&amp; os, string_view fmt, format_args args);
+void vprint_nonunicode(ostream&amp; os, string_view fmt, format_args args);
+</pre>
+<blockquote>
+<p>
+-3- <i>Effects</i>: Behaves as a formatted output function (31.7.6.3.1 <a href="https://wg21.link/ostream.formatted.reqmts">[ostream.formatted.reqmts]</a>) 
+of <code>os</code>, except that:
+</p>
+<ol style="list-style-type: none">
+<li><p>(3.1) &mdash; failure to generate output is reported as specified below, and</p></li>
+<li><p>(3.2) &mdash; any exception thrown by the call to <code>vformat</code> is propagated without regard 
+to the value of <code>os.exceptions()</code> and without turning on
+<ins><code>ios_base::failbit</code> or</ins>
+<code>ios_base::badbit</code> 
+in the error state of <code>os</code>.</p></li>
+</ol>
+<p>
+[&hellip;]
+</p>
+</blockquote>
+</blockquote>
+</li>
+</ol>
+
 
 
 

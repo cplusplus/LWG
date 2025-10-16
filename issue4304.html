@@ -64,8 +64,8 @@
 <p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#New">New</a> status.</em></p>
 <h3 id="4304"><a href="lwg-active.html#4304">4304</a>. <code>std::optional&lt;<i>NonReturnable</i>&amp;&gt;</code> is ill-formed due to <code class='backtick'>value_or</code></h3>
 <p><b>Section:</b> 22.5.4.6 <a href="https://wg21.link/optional.ref.observe">[optional.ref.observe]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Jiang An <b>Opened:</b> 2025-07-25 <b>Last modified:</b> 2025-08-16</p>
-<p><b>Priority: </b>Not Prioritized
+ <b>Submitter:</b> Jiang An <b>Opened:</b> 2025-07-25 <b>Last modified:</b> 2025-10-16</p>
+<p><b>Priority: </b>1
 </p>
 <p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
 <p><b>Discussion:</b></p>
@@ -78,8 +78,20 @@ However, we don't exclude such <code>T&amp;</code> from valid contained types. G
 problematic here, perhaps we can avoid providing it if <code class='backtick'>T</code> is not returnable.
 </p>
 
+<p><i>[2025-10-16; Reflector poll]</i></p>
 
-<p id="res-4304"><b>Proposed resolution:</b></p>
+<p>
+Set priority to 1 after reflector poll.
+</p>
+<p>
+Why not just add <i>Constraints</i>: and use <code>decay_t&lt;T&gt;</code>
+for the return type, instead of "not always present" which is currently
+only used for member types, not member functions.
+</p>
+
+<p><strong>Previous resolution [SUPERSEDED]:</strong></p>
+<blockquote class="note">
+
 <p>
 This wording is relative to <a href="https://wg21.link/N5014">N5014</a>.
 </p>
@@ -128,6 +140,61 @@ return has_value() ? *<i>val</i> : static_cast&lt;X&gt;(std::forward&lt;U&gt;(u)
 </blockquote>
 </li>
 </ol>
+</blockquote>
+
+<p><i>[2025-10-16; Jonathan provides new wording]</i></p>
+
+
+
+
+<p id="res-4304"><b>Proposed resolution:</b></p>
+
+<p>
+This wording is relative to <a href="https://wg21.link/N5014">N5014</a>.
+</p>
+
+<ol>
+
+<li><p>Modify 22.5.4.6 <a href="https://wg21.link/optional.ref.observe">[optional.ref.observe]</a> as indicated:</p>
+
+<blockquote>
+<pre>
+template&lt;class U = remove_cv_t&lt;T&gt;&gt; constexpr remove_cv_t&lt;T&gt; value_or(U&amp;&amp; u) const;
+</pre>
+<blockquote>
+<p>
+<ins>
+-?- <i>Constraints</i>:
+<code class='backtick'>T</code> is a non-array object type.
+</ins>
+</p>
+<p>
+-8- Let <code class='backtick'>X</code> be <code>remove_cv_t&lt;T&gt;</code>.
+<p/>
+-9- <i>Mandates</i>: <code>is_constructible_v&lt;X, T&amp;&gt; &amp;&amp; is_convertible_v&lt;U, X&gt;</code> is <code class='backtick'>true</code>.
+<p/>
+-10- <i>Effects</i>: Equivalent to:
+</p>
+<blockquote><pre>
+return has_value() ? *<i>val</i> : static_cast&lt;X&gt;(std::forward&lt;U&gt;(u));
+</pre></blockquote>
+<p>
+<ins>
+-?- <i>Remarks</i>:
+The return type is unspecified if <code class='backtick'>T</code> is an array type or a non-object type.
+[<i>Note ?</i>: For example,
+<code>decay_t&lt;T&gt;</code> or
+<code>conditional_t&lt;is_object_v&lt;T&gt; &amp;&amp; !is_array_v&lt;T&gt;,
+remove_cvref_t&lt;T&gt;, void&gt;</code>
+could be used to avoid the declaration being ill-formed.
+<i>&mdash; end note</i>]
+</ins>
+</p>
+</blockquote>
+</blockquote>
+</li>
+</ol>
+
 
 
 

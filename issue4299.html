@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <title>Issue 4299: Missing Mandates: part in optional&lt;T&amp;&gt;::transform</title>
 <meta property="og:title" content="Issue 4299: Missing Mandates: part in optional&lt;T&amp;&gt;::transform">
-<meta property="og:description" content="C++ library issue. Status: New">
+<meta property="og:description" content="C++ library issue. Status: Tentatively Ready">
 <meta property="og:url" content="https://cplusplus.github.io/LWG/issue4299.html">
 <meta property="og:type" content="website">
 <meta property="og:image" content="http://cplusplus.github.io/LWG/images/cpp_logo.png">
@@ -61,15 +61,15 @@
 </head>
 <body>
 <hr>
-<p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#New">New</a> status.</em></p>
+<p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#Ready">Tentatively Ready</a> status.</em></p>
 <h3 id="4299"><a href="lwg-active.html#4299">4299</a>. Missing <i>Mandates:</i> part in <code>optional&lt;T&amp;&gt;::transform</code></h3>
-<p><b>Section:</b> 22.5.4.7 <a href="https://wg21.link/optional.ref.monadic">[optional.ref.monadic]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Giuseppe D'Angelo <b>Opened:</b> 2025-07-15 <b>Last modified:</b> 2025-08-16</p>
+<p><b>Section:</b> 22.5.4.7 <a href="https://wg21.link/optional.ref.monadic">[optional.ref.monadic]</a> <b>Status:</b> <a href="lwg-active.html#Ready">Tentatively Ready</a>
+ <b>Submitter:</b> Giuseppe D'Angelo <b>Opened:</b> 2025-07-15 <b>Last modified:</b> 2025-10-16</p>
 <p><b>Priority: </b>Not Prioritized
 </p>
 <p><b>View other</b> <a href="lwg-index-open.html#optional.ref.monadic">active issues</a> in [optional.ref.monadic].</p>
 <p><b>View all other</b> <a href="lwg-index.html#optional.ref.monadic">issues</a> in [optional.ref.monadic].</p>
-<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#Tentatively Ready">Tentatively Ready</a> status.</p>
 <p><b>Discussion:</b></p>
 <p>
 In 22.5.4.7 <a href="https://wg21.link/optional.ref.monadic">[optional.ref.monadic]</a> the specification of <code>optional&lt;T&amp;&gt;::transform</code>
@@ -83,6 +83,20 @@ use this definition. The fact that the same wording has not been applied to
 <code>optional&lt;T&amp;&gt;::transform</code> as well looks like an oversight. I would
 suggest to apply it.
 </p>
+
+<p><i>[2025-10-16; Reflector poll]</i></p>
+
+<p>
+Set status to Tentatively Ready after six votes in favour during reflector poll.
+</p>
+<p>
+As
+<code>optional&lt;remove_cv_t&lt;invoke_result_t&lt;F, T&amp;&gt;&gt;&gt;</code>
+is part of the signature (return type), we never enter the body to trigger the
+<i>Mandates</i>, so it's already implicitly ill-formed if the result of <code class='backtick'>f</code>
+is not a valid contained type. It's worth clarifying that though."
+</p>
+
 
 
 <p id="res-4299"><b>Proposed resolution:</b></p>

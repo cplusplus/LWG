@@ -64,8 +64,8 @@
 <p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#New">New</a> status.</em></p>
 <h3 id="4367"><a href="lwg-active.html#4367">4367</a>. Improve <code>optional&lt;T&amp;&gt;::or_else</code></h3>
 <p><b>Section:</b> 22.5.4.7 <a href="https://wg21.link/optional.ref.monadic">[optional.ref.monadic]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Hewill Kang <b>Opened:</b> 2025-09-07 <b>Last modified:</b> 2025-09-15</p>
-<p><b>Priority: </b>Not Prioritized
+ <b>Submitter:</b> Hewill Kang <b>Opened:</b> 2025-09-07 <b>Last modified:</b> 2025-10-16</p>
+<p><b>Priority: </b>4
 </p>
 <p><b>View other</b> <a href="lwg-index-open.html#optional.ref.monadic">active issues</a> in [optional.ref.monadic].</p>
 <p><b>View all other</b> <a href="lwg-index.html#optional.ref.monadic">issues</a> in [optional.ref.monadic].</p>
@@ -79,6 +79,17 @@ which calls the <code>optional(U&amp;&amp;)</code> constructor which in turn cal
 There's no reason to do that. It's much more efficient to call <code>optional&lt;T&amp;&gt;</code>'s 
 default copy constructor to just copy a pointer.
 </p>
+
+<p><i>[2025-10-16; Reflector poll]</i></p>
+
+<p>
+Set priority to 4 after reflector poll.
+</p>
+<p>
+"NAD, no observable difference."
+"Still simpler to not have to reason about whether it matters, let's do it."
+</p>
+
 
 
 <p id="res-4367"><b>Proposed resolution:</b></p>

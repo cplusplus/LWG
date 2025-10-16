@@ -64,8 +64,8 @@
 <p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#New">New</a> status.</em></p>
 <h3 id="3976"><a href="lwg-active.html#3976">3976</a>. What does it mean for a type to be "allocator aware"?</h3>
 <p><b>Section:</b> 23.2.2.5 <a href="https://wg21.link/container.alloc.reqmts">[container.alloc.reqmts]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Alisdair Meredith <b>Opened:</b> 2023-08-14 <b>Last modified:</b> 2023-09-17</p>
-<p><b>Priority: </b>Not Prioritized
+ <b>Submitter:</b> Alisdair Meredith <b>Opened:</b> 2023-08-14 <b>Last modified:</b> 2025-10-16</p>
+<p><b>Priority: </b>4
 </p>
 <p><b>View all other</b> <a href="lwg-index.html#container.alloc.reqmts">issues</a> in [container.alloc.reqmts].</p>
 <p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
@@ -89,6 +89,20 @@ containers that are not otherwise allocator aware are are treated as-if they wer
 allocator-aware using <code>std::allocator&lt;typename X::value_type&gt;</code> (where <code>value_type</code>
 is already guaranteed to exist by the <i>container</i> requirements, 23.2.2.2 <a href="https://wg21.link/container.reqmts">[container.reqmts]</a> p1).
 </p>
+
+<p><i>[2025-10-16; Reflector poll]</i></p>
+
+<p>
+Set priority to 4 after reflector poll.
+</p>
+<p>
+"NAD. 'If X is not allocator-aware' is equivalent to 'if X is not an allocate-aware container type'. Note that 23.2.2.5 <a href="https://wg21.link/container.alloc.reqmts">[container.alloc.reqmts]</a>/2
+is not defining the requirements on an allocator-aware container;
+it's defining the related <i>Cpp17Meow</i> requirements.
+The allocator-aware container requirements are defined in paragraphs 3
+and later, so this isn't a recursive definition."
+</p>
+
 
 
 <p id="res-3976"><b>Proposed resolution:</b></p>

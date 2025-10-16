@@ -67,8 +67,8 @@
 This document is the Index by Status and Date for the <a href="lwg-active.html">Library Active Issues List</a>,
 <a href="lwg-defects.html">Library Defect Reports and Accepted Issues</a>, and <a href="lwg-closed.html">Library Closed Issues List</a>.
 </p>
-<p>Revised 2025-10-16 at 14:53:16 UTC
-</p><h2 id="New">New (606 issues)</h2>
+<p>Revised 2025-10-16 at 16:28:53 UTC
+</p><h2 id="New">New (604 issues)</h2>
 <table class="issues-index">
 <tr>
   <th><a href="lwg-toc.html">Issue</a></th>
@@ -116,6 +116,33 @@ This document is the Index by Status and Date for the <a href="lwg-active.html">
 <td></td>
 </tr>
 <tr>
+<td id="4304"><a href="lwg-active.html#4304" title="std::optional&lt;NonReturnable&amp;&gt; is ill-formed due to value_or (Status: New)">4304</a><sup><a href="https://cplusplus.github.io/LWG/issue4304">(i)</a></sup></td>
+<td><a href="lwg-active.html#New">New</a></td>
+<td>22.5.4.6 [optional.ref.observe]</td>
+<td><code>std::optional&lt;<i>NonReturnable</i>&amp;&gt;</code> is ill-formed due to <code class='backtick'>value_or</code></td>
+<td>Yes</td>
+<td>1</td>
+<td></td>
+</tr>
+<tr>
+<td id="4367"><a href="lwg-active.html#4367" title="Improve optional&lt;T&amp;&gt;::or_else (Status: New)">4367</a><sup><a href="https://cplusplus.github.io/LWG/issue4367">(i)</a></sup></td>
+<td><a href="lwg-active.html#New">New</a></td>
+<td>22.5.4.7 [optional.ref.monadic]</td>
+<td>Improve <code>optional&lt;T&amp;&gt;::or_else</code></td>
+<td>Yes</td>
+<td>4</td>
+<td></td>
+</tr>
+<tr>
+<td id="3976"><a href="lwg-active.html#3976" title="What does it mean for a type to be &quot;allocator aware&quot;? (Status: New)">3976</a><sup><a href="https://cplusplus.github.io/LWG/issue3976">(i)</a></sup></td>
+<td><a href="lwg-active.html#New">New</a></td>
+<td>23.2.2.5 [container.alloc.reqmts]</td>
+<td>What does it mean for a type to be "allocator aware"?</td>
+<td><span class="no-pr">No</span></td>
+<td>4</td>
+<td></td>
+</tr>
+<tr>
 <td id="4225"><a href="lwg-active.html#4225" title="What should happen when an exception is thrown on resizing std::deque, std::forward_list, or std::list? (Status: New)">4225</a><sup><a href="https://cplusplus.github.io/LWG/issue4225">(i)</a></sup></td>
 <td><a href="lwg-active.html#New">New</a></td>
 <td>23.3.5.3 [deque.capacity]</td>
@@ -131,6 +158,17 @@ This document is the Index by Status and Date for the <a href="lwg-active.html">
 <td><code class='backtick'>std::dynamic_extent</code> should also be defined in <code>&lt;mdspan&gt;</code></td>
 <td>Yes</td>
 <td>3</td>
+<td></td>
+</tr>
+<tr>
+<td id="4039"><a href="lwg-active.html#4039" title="&sect;[ostream.formatted.print]: Inappropriate usage of badbit in definition of 
+vprint_unicode/vprint_nonunicode (Status: New)">4039</a><sup><a href="https://cplusplus.github.io/LWG/issue4039">(i)</a></sup></td>
+<td><a href="lwg-active.html#New">New</a></td>
+<td>31.7.6.3.5 [ostream.formatted.print]</td>
+<td>&sect;[ostream.formatted.print]: Inappropriate usage of <code>badbit</code> in definition of 
+<code>vprint_unicode</code>/<code>vprint_nonunicode</code></td>
+<td>Yes</td>
+<td>4</td>
 <td></td>
 </tr>
 <tr>
@@ -663,24 +701,6 @@ constructor</td>
 <td></td>
 </tr>
 <tr>
-<td id="4367"><a href="lwg-active.html#4367" title="Improve optional&lt;T&amp;&gt;::or_else (Status: New)">4367</a><sup><a href="https://cplusplus.github.io/LWG/issue4367">(i)</a></sup></td>
-<td><a href="lwg-active.html#New">New</a></td>
-<td>22.5.4.7 [optional.ref.monadic]</td>
-<td>Improve <code>optional&lt;T&amp;&gt;::or_else</code></td>
-<td>Yes</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td id="4366"><a href="lwg-active.html#4366" title="Heterogeneous comparison of expected may be ill-formed (Status: New)">4366</a><sup><a href="https://cplusplus.github.io/LWG/issue4366">(i)</a></sup></td>
-<td><a href="lwg-active.html#New">New</a></td>
-<td>22.8.6.8 [expected.object.eq]</td>
-<td>Heterogeneous comparison of <code class='backtick'>expected</code> may be ill-formed</td>
-<td>Yes</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
 <td id="4365"><a href="lwg-active.html#4365" title="boyer_moore_searcher and boyer_moore_horspool_searcher should be constexpr-friendly (Status: New)">4365</a><sup><a href="https://cplusplus.github.io/LWG/issue4365">(i)</a></sup></td>
 <td><a href="lwg-active.html#New">New</a></td>
 <td>22.10.18.3 [func.search.bm]</td>
@@ -1185,24 +1205,6 @@ co_await expression instead of same_as&lt;void&gt; (Status: New)">4357</a><sup><
 <td>21.4.13 [meta.reflection.substitute]</td>
 <td><code>{can_}substitute</code> specification is ill-formed</td>
 <td><span class="no-pr">No</span></td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td id="4304"><a href="lwg-active.html#4304" title="std::optional&lt;NonReturnable&amp;&gt; is ill-formed due to value_or (Status: New)">4304</a><sup><a href="https://cplusplus.github.io/LWG/issue4304">(i)</a></sup></td>
-<td><a href="lwg-active.html#New">New</a></td>
-<td>22.5.4.6 [optional.ref.observe]</td>
-<td><code>std::optional&lt;<i>NonReturnable</i>&amp;&gt;</code> is ill-formed due to <code class='backtick'>value_or</code></td>
-<td>Yes</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td id="4299"><a href="lwg-active.html#4299" title="Missing Mandates: part in optional&lt;T&amp;&gt;::transform (Status: New)">4299</a><sup><a href="https://cplusplus.github.io/LWG/issue4299">(i)</a></sup></td>
-<td><a href="lwg-active.html#New">New</a></td>
-<td>22.5.4.7 [optional.ref.monadic]</td>
-<td>Missing <i>Mandates:</i> part in <code>optional&lt;T&amp;&gt;::transform</code></td>
-<td>Yes</td>
 <td></td>
 <td></td>
 </tr>
@@ -2818,17 +2820,6 @@ is a non-move-constructible range</td>
 <td></td>
 </tr>
 <tr>
-<td id="4039"><a href="lwg-active.html#4039" title="&sect;[ostream.formatted.print]: Inappropriate usage of badbit in definition of 
-vprint_unicode/vprint_nonunicode (Status: New)">4039</a><sup><a href="https://cplusplus.github.io/LWG/issue4039">(i)</a></sup></td>
-<td><a href="lwg-active.html#New">New</a></td>
-<td>31.7.6.3.5 [ostream.formatted.print]</td>
-<td>&sect;[ostream.formatted.print]: Inappropriate usage of <code>badbit</code> in definition of 
-<code>vprint_unicode</code>/<code>vprint_nonunicode</code></td>
-<td>Yes</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
 <td id="3400"><a href="lwg-active.html#3400" title="Does is_nothrow_convertible consider destruction of the destination type? (Status: New)">3400</a><sup><a href="https://cplusplus.github.io/LWG/issue3400">(i)</a></sup></td>
 <td><a href="lwg-active.html#New">New</a></td>
 <td>21.3.8 [meta.rel]</td>
@@ -3070,15 +3061,6 @@ should require the arguments to have the same length</td>
 <td>31.8.2.4 [stringbuf.members]</td>
 <td><code>basic_stringbuf::str()&amp;&amp;</code> should enforce &#x1d4aa;(1)</td>
 <td>Yes</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td id="3976"><a href="lwg-active.html#3976" title="What does it mean for a type to be &quot;allocator aware&quot;? (Status: New)">3976</a><sup><a href="https://cplusplus.github.io/LWG/issue3976">(i)</a></sup></td>
-<td><a href="lwg-active.html#New">New</a></td>
-<td>23.2.2.5 [container.alloc.reqmts]</td>
-<td>What does it mean for a type to be "allocator aware"?</td>
-<td><span class="no-pr">No</span></td>
 <td></td>
 <td></td>
 </tr>

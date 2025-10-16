@@ -54,7 +54,7 @@
 </style>
 </head>
 <body>
-<p>Revised 2025-10-16 at 14:53:16 UTC
+<p>Revised 2025-10-16 at 16:28:53 UTC
 </p><h2>Tentative Issues</h2>
 <hr>
 <h3 id="3627"><a href="#3627">3627</a><sup><a href="https://cplusplus.github.io/LWG/issue3627">(i)</a></sup>. Inconsistent specifications for <code>std::make_optional</code> overloads</h3>
@@ -2510,6 +2510,80 @@ template&lt;class charT&gt;
 
 
 <hr>
+<h3 id="4299"><a href="#4299">4299</a><sup><a href="https://cplusplus.github.io/LWG/issue4299">(i)</a></sup>. Missing <i>Mandates:</i> part in <code>optional&lt;T&amp;&gt;::transform</code></h3>
+<p><b>Section:</b> 22.5.4.7 <a href="https://wg21.link/optional.ref.monadic">[optional.ref.monadic]</a> <b>Status:</b> <a href="lwg-active.html#Ready">Tentatively Ready</a>
+ <b>Submitter:</b> Giuseppe D'Angelo <b>Opened:</b> 2025-07-15 <b>Last modified:</b> 2025-10-16</p>
+<p><b>Priority: </b>Not Prioritized
+</p>
+<p><b>View other</b> <a href="lwg-index-open.html#optional.ref.monadic">active issues</a> in [optional.ref.monadic].</p>
+<p><b>View all other</b> <a href="lwg-index.html#optional.ref.monadic">issues</a> in [optional.ref.monadic].</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#Tentatively Ready">Tentatively Ready</a> status.</p>
+<p><b>Discussion:</b></p>
+<p>
+In 22.5.4.7 <a href="https://wg21.link/optional.ref.monadic">[optional.ref.monadic]</a> the specification of <code>optional&lt;T&amp;&gt;::transform</code>
+is missing an additional part of the <i>Mandates:</i> element compared to the primary template's
+<code class='backtick'>transform</code> (in 22.5.3.8 <a href="https://wg21.link/optional.monadic">[optional.monadic]</a> p8); that is, is missing to enforce that
+the <code class='backtick'>U</code> type is a valid contained type for <code class='backtick'>optional</code>.
+<p/>
+The definition of "valid contained type" comes from <a href="https://wg21.link/P2988R12" title=" std::optional<T&amp;>">P2988R12</a>. The paper
+amended the <i>Mandates:</i> element of the primary template's <code class='backtick'>transform</code> to
+use this definition. The fact that the same wording has not been applied to 
+<code>optional&lt;T&amp;&gt;::transform</code> as well looks like an oversight. I would
+suggest to apply it.
+</p>
+
+<p><i>[2025-10-16; Reflector poll]</i></p>
+
+<p>
+Set status to Tentatively Ready after six votes in favour during reflector poll.
+</p>
+<p>
+As
+<code>optional&lt;remove_cv_t&lt;invoke_result_t&lt;F, T&amp;&gt;&gt;&gt;</code>
+is part of the signature (return type), we never enter the body to trigger the
+<i>Mandates</i>, so it's already implicitly ill-formed if the result of <code class='backtick'>f</code>
+is not a valid contained type. It's worth clarifying that though."
+</p>
+
+
+
+<p id="res-4299"><b>Proposed resolution:</b></p>
+<p>
+This wording is relative to <a href="https://wg21.link/N5014">N5014</a>.
+</p>
+
+<ol>
+
+<li><p>Modify 22.5.4.7 <a href="https://wg21.link/optional.ref.monadic">[optional.ref.monadic]</a> as indicated:</p>
+
+<blockquote>
+<pre>
+template&lt;class F&gt;
+  constexpr optional&lt;remove_cv_t&lt;invoke_result_t&lt;F, T&amp;&gt;&gt;&gt; transform(F&amp;&amp; f) const;
+</pre>
+<blockquote>
+<p>
+-4- Let <code class='backtick'>U</code> be <code>remove_cv_t&lt;invoke_result_t&lt;F, T&amp;&gt;&gt;</code>.
+<p/>
+-5- <i>Mandates</i>: <ins><code class='backtick'>U</code> is a valid contained type for <code class='backtick'>optional</code>.</ins> The declaration
+</p>
+<blockquote><pre>
+U u(invoke(std::forward&lt;F&gt;(f), *val ));
+</pre></blockquote>
+<p>
+is well-formed for some invented variable <code class='backtick'>u</code>.
+</p>
+</blockquote>
+</blockquote>
+</li>
+
+</ol>
+
+
+
+
+
+<hr>
 <h3 id="4300"><a href="#4300">4300</a><sup><a href="https://cplusplus.github.io/LWG/issue4300">(i)</a></sup>. Missing <i>Returns:</i> element in <code>optional&lt;T&amp;&gt;::emplace</code></h3>
 <p><b>Section:</b> 22.5.4.3 <a href="https://wg21.link/optional.ref.assign">[optional.ref.assign]</a> <b>Status:</b> <a href="lwg-active.html#Ready">Tentatively Ready</a>
  <b>Submitter:</b> Giuseppe D'Angelo <b>Opened:</b> 2025-07-15 <b>Last modified:</b> 2025-08-28</p>
@@ -3211,6 +3285,137 @@ return original_size - c.size();
 
 
 <hr>
+<h3 id="4366"><a href="#4366">4366</a><sup><a href="https://cplusplus.github.io/LWG/issue4366">(i)</a></sup>. Heterogeneous comparison of <code class='backtick'>expected</code> may be ill-formed</h3>
+<p><b>Section:</b> 22.8.6.8 <a href="https://wg21.link/expected.object.eq">[expected.object.eq]</a>, 22.8.7.8 <a href="https://wg21.link/expected.void.eq">[expected.void.eq]</a> <b>Status:</b> <a href="lwg-active.html#Ready">Tentatively Ready</a>
+ <b>Submitter:</b> Hewill Kang <b>Opened:</b> 2025-09-06 <b>Last modified:</b> 2025-10-16</p>
+<p><b>Priority: </b>Not Prioritized
+</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#Tentatively Ready">Tentatively Ready</a> status.</p>
+<p><b>Discussion:</b></p>
+<p>
+These comparison functions all explicitly <code class='backtick'>static_cast</code> the result of the underlying comparison to
+<code class='backtick'>bool</code>. However, the <i>Constraints</i> only require the implicit conversion, not the explicit one 
+(i.e., "convertible to <code class='backtick'>bool</code>" rather than "models <code><i>boolean-testable</i></code>").
+<p/>
+This means that in some pathological cases it will lead to hard errors 
+(<a href="https://godbolt.org/z/b9ehzv3h4">demo</a>):
+</p>
+<blockquote><pre>
+#include &lt;expected&gt;
+
+struct E1 {};
+struct E2 {};
+
+struct Bool {
+  operator bool() const;
+  explicit operator bool() = delete;
+};
+Bool operator==(E1, E2);
+
+int main() {
+  std::unexpected e1{E1{}};
+  std::unexpected e2{E2{}};
+  return std::expected&lt;int, E1&gt;{e1} == e2; // <span style="color:#C80000;font-weight:bold">fire</span>
+}
+</pre></blockquote>
+<p>
+It is reasonable to specify return consistency with actual <i>Constraints</i>.
+</p>
+
+<p><i>[2025-10-16; Reflector poll]</i></p>
+
+<p>
+Set status to Tentatively Ready after five votes in favour during reflector poll.
+</p>
+<p>
+Related to LWG <a href="lwg-active.html#4366" title="Heterogeneous comparison of expected may be ill-formed (Status: Tentatively Ready)">4366</a><sup><a href="https://cplusplus.github.io/LWG/issue4366" title="Latest snapshot">(i)</a></sup>, but the wording styles are inconsistent.
+<code class='backtick'>optional</code> uses "<i>Effects</i>: Equivalent to ..." and <code class='backtick'>expected</code> just uses
+<i>Returns</i>:.
+</p>
+
+
+
+<p id="res-4366"><b>Proposed resolution:</b></p>
+<p>
+This wording is relative to <a href="https://wg21.link/N5014">N5014</a>.
+</p>
+
+<ol>
+
+<li><p>Modify 22.8.6.8 <a href="https://wg21.link/expected.object.eq">[expected.object.eq]</a> as indicated:</p>
+
+<blockquote>
+<pre>
+template&lt;class T2&gt; friend constexpr bool operator==(const expected&amp; x, const T2&amp; v);
+</pre>
+<blockquote>
+<p>
+-3- <i>Constraints</i>: <code class='backtick'>T2</code> is not a specialization of <code class='backtick'>expected</code>. The expression <code class='backtick'>*x == v</code> is well-formed
+and its result is convertible to <code class='backtick'>bool</code>.
+<p/>
+[<i>Note 1</i>: <code>T</code> need not be <i>Cpp17EqualityComparable</i>. &mdash; <i>end note</i>]
+<p/>
+-4- <i>Returns</i>: <ins>If</ins> <code class='backtick'>x.has_value()</code> <ins>is <code class='backtick'>true</code>,</ins>
+<code><del>&amp;&amp; static_cast&lt;bool&gt;(</del>*x == v<del>)</del></code><ins>; otherwise <code class='backtick'>false</code></ins>.
+</p>
+</blockquote>
+<pre>
+template&lt;class E2&gt; friend constexpr bool operator==(const expected&amp; x, const unexpected&lt;E2&gt;&amp; e);
+</pre>
+<blockquote>
+<p>
+-5- <i>Constraints</i>: The expression <code class='backtick'>x.error() == e.error()</code> is well-formed and its result is convertible 
+to <code class='backtick'>bool</code>.
+<p/>
+-6- <i>Returns</i>: <ins>If</ins> <code class='backtick'>!x.has_value()</code> <ins>is <code class='backtick'>true</code>,</ins>
+<code><del>&amp;&amp; static_cast&lt;bool&gt;(</del>x.error() == e.error()<del>)</del></code><ins>; otherwise <code class='backtick'>false</code></ins>.
+</p>
+</blockquote>
+</blockquote>
+
+</li>
+
+<li><p>Modify 22.8.7.8 <a href="https://wg21.link/expected.void.eq">[expected.void.eq]</a> as indicated:</p>
+
+<blockquote>
+<pre>
+template&lt;class T2, class E2&gt; requires is_void_v&lt;T2&gt;
+  friend constexpr bool operator==(const expected&amp; x, const expected&lt;T2, E2&gt;&amp; y);
+</pre>
+<blockquote>
+<p>
+-1- <i>Constraints</i>: The expression <code class='backtick'>x.error() == y.error()</code> is well-formed and its result 
+is convertible to <code class='backtick'>bool</code>.
+<p/>
+-2- <i>Returns</i>: If <code class='backtick'>x.has_value()</code> does not equal <code class='backtick'>y.has_value()</code>, <code class='backtick'>false</code>; 
+otherwise <ins>if</ins> <code class='backtick'>x.has_value()</code> <ins>is <code class='backtick'>true</code>, <code class='backtick'>true</code>; otherwise</ins>
+<code><del>|| static_cast&lt;bool&gt;(</del>x.error() == y.error()<del>)</del></code>.
+</p>
+</blockquote>
+<pre>
+template&lt;class E2&gt;
+  friend constexpr bool operator==(const expected&amp; x, const unexpected&lt;E2&gt;&amp; e);
+</pre>
+<blockquote>
+<p>
+-3- <i>Constraints</i>: The expression <code class='backtick'>x.error() == e.error()</code> is well-formed and its 
+result is convertible to <code class='backtick'>bool</code>.
+<p/>
+-4- <i>Returns</i>: <ins>If</ins> <code class='backtick'>!x.has_value()</code> <ins>is <code class='backtick'>true</code>,</ins>
+<code><del>&amp;&amp; static_cast&lt;bool&gt;(</del>x.error() == e.error()<del>)</del></code>
+<ins>; otherwise <code class='backtick'>false</code></ins>.
+</p>
+</blockquote>
+</blockquote>
+
+</li>
+
+</ol>
+
+
+
+
+<hr>
 <h3 id="4370"><a href="#4370">4370</a><sup><a href="https://cplusplus.github.io/LWG/issue4370">(i)</a></sup>. Comparison of <code>optional&lt;T&gt;</code> to <code>T</code> may be ill-formed</h3>
 <p><b>Section:</b> 22.5.9 <a href="https://wg21.link/optional.comp.with.t">[optional.comp.with.t]</a> <b>Status:</b> <a href="lwg-active.html#Ready">Tentatively Ready</a>
  <b>Submitter:</b> Hewill Kang <b>Opened:</b> 2025-09-06 <b>Last modified:</b> 2025-10-16</p>
@@ -3248,6 +3453,16 @@ int main() {
 
 <p>
 Set status to Tentatively Ready after seven votes in favour during reflector poll.
+</p>
+<p>
+"Alternatively could keep the conditional operator but cast one side to <code class='backtick'>bool</code>,
+but that would do an explicit conversion, which might not be what we want."
+</p>
+<p>
+"Should just require <i>boolean-testable</i>."
+</p>
+<p>
+Related to LWG <a href="lwg-active.html#4366" title="Heterogeneous comparison of expected may be ill-formed (Status: Tentatively Ready)">4366</a><sup><a href="https://cplusplus.github.io/LWG/issue4366" title="Latest snapshot">(i)</a></sup>.
 </p>
 
 

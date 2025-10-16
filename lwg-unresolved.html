@@ -54,7 +54,7 @@
 </style>
 </head>
 <body>
-<p>Revised 2025-10-16 at 14:53:16 UTC
+<p>Revised 2025-10-16 at 16:28:53 UTC
 </p><h2>Unresolved Issues</h2>
 <hr>
 <h3 id="423"><a href="#423">423</a><sup><a href="https://cplusplus.github.io/LWG/issue423">(i)</a></sup>. Effects of negative <code>streamsize</code> in iostreams</h3>
@@ -49434,8 +49434,8 @@ Set priority to 2 after reflector poll.
 <hr>
 <h3 id="3976"><a href="#3976">3976</a><sup><a href="https://cplusplus.github.io/LWG/issue3976">(i)</a></sup>. What does it mean for a type to be "allocator aware"?</h3>
 <p><b>Section:</b> 23.2.2.5 <a href="https://wg21.link/container.alloc.reqmts">[container.alloc.reqmts]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Alisdair Meredith <b>Opened:</b> 2023-08-14 <b>Last modified:</b> 2023-09-17</p>
-<p><b>Priority: </b>Not Prioritized
+ <b>Submitter:</b> Alisdair Meredith <b>Opened:</b> 2023-08-14 <b>Last modified:</b> 2025-10-16</p>
+<p><b>Priority: </b>4
 </p>
 <p><b>View all other</b> <a href="lwg-index.html#container.alloc.reqmts">issues</a> in [container.alloc.reqmts].</p>
 <p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
@@ -49459,6 +49459,20 @@ containers that are not otherwise allocator aware are are treated as-if they wer
 allocator-aware using <code>std::allocator&lt;typename X::value_type&gt;</code> (where <code>value_type</code>
 is already guaranteed to exist by the <i>container</i> requirements, 23.2.2.2 <a href="https://wg21.link/container.reqmts">[container.reqmts]</a> p1).
 </p>
+
+<p><i>[2025-10-16; Reflector poll]</i></p>
+
+<p>
+Set priority to 4 after reflector poll.
+</p>
+<p>
+"NAD. 'If X is not allocator-aware' is equivalent to 'if X is not an allocate-aware container type'. Note that 23.2.2.5 <a href="https://wg21.link/container.alloc.reqmts">[container.alloc.reqmts]</a>/2
+is not defining the requirements on an allocator-aware container;
+it's defining the related <i>Cpp17Meow</i> requirements.
+The allocator-aware container requirements are defined in paragraphs 3
+and later, so this isn't a recursive definition."
+</p>
+
 
 
 <p id="res-3976"><b>Proposed resolution:</b></p>
@@ -54622,8 +54636,8 @@ of the overloads in namespace <code>std</code>.</del>
 <h3 id="4039"><a href="#4039">4039</a><sup><a href="https://cplusplus.github.io/LWG/issue4039">(i)</a></sup>. &sect;[ostream.formatted.print]: Inappropriate usage of <code>badbit</code> in definition of 
 <code>vprint_unicode</code>/<code>vprint_nonunicode</code></h3>
 <p><b>Section:</b> 31.7.6.3.5 <a href="https://wg21.link/ostream.formatted.print">[ostream.formatted.print]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Jan Kokemüller <b>Opened:</b> 2024-01-13 <b>Last modified:</b> 2024-01-20</p>
-<p><b>Priority: </b>Not Prioritized
+ <b>Submitter:</b> Jan Kokemüller <b>Opened:</b> 2024-01-13 <b>Last modified:</b> 2025-10-16</p>
+<p><b>Priority: </b>4
 </p>
 <p><b>View all other</b> <a href="lwg-index.html#ostream.formatted.print">issues</a> in [ostream.formatted.print].</p>
 <p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
@@ -54656,8 +54670,21 @@ Therefore mentioning <code>ios_base::badbit</code> in (3.2) doesn't really make 
 refer to <code>ios_base::failbit</code> instead.
 </p>
 
+<p><i>[2025-10-16; Reflector poll]</i></p>
 
-<p id="res-4039"><b>Proposed resolution:</b></p>
+<p>
+Set priority to 4 after reflector poll.
+</p>
+<p>
+"NAD. The reason it talks about badbit is that exceptions set badbit in
+IOStreams but not failbit. If we don’t want to hook into the stream’s
+error handling mentioning badbit is correct."
+</p>
+
+
+<p><strong>Previous resolution [SUPERSEDED]:</strong></p>
+<blockquote class="note">
+
 <p>
 This wording is relative to <a href="https://wg21.link/N4971" title=" Working Draft, Programming Languages — C++">N4971</a>.
 </p>
@@ -54688,6 +54715,48 @@ in the error state of <code>os</code>.</p></li>
 </blockquote>
 </li>
 </ol>
+</blockquote>
+
+<p><i>[2025-10-16; Daniel provides new wording]</i></p>
+
+
+
+
+<p id="res-4039"><b>Proposed resolution:</b></p>
+
+<p>
+This wording is relative to <a href="https://wg21.link/N5014">N5014</a>.
+</p>
+
+<ol>
+<li><p>Modify 31.7.6.3.5 <a href="https://wg21.link/ostream.formatted.print">[ostream.formatted.print]</a> as indicated:</p>
+
+<blockquote>
+<pre>
+void vprint_unicode(ostream&amp; os, string_view fmt, format_args args);
+void vprint_nonunicode(ostream&amp; os, string_view fmt, format_args args);
+</pre>
+<blockquote>
+<p>
+-3- <i>Effects</i>: Behaves as a formatted output function (31.7.6.3.1 <a href="https://wg21.link/ostream.formatted.reqmts">[ostream.formatted.reqmts]</a>) 
+of <code>os</code>, except that:
+</p>
+<ol style="list-style-type: none">
+<li><p>(3.1) &mdash; failure to generate output is reported as specified below, and</p></li>
+<li><p>(3.2) &mdash; any exception thrown by the call to <code>vformat</code> is propagated without regard 
+to the value of <code>os.exceptions()</code> and without turning on
+<ins><code>ios_base::failbit</code> or</ins>
+<code>ios_base::badbit</code> 
+in the error state of <code>os</code>.</p></li>
+</ol>
+<p>
+[&hellip;]
+</p>
+</blockquote>
+</blockquote>
+</li>
+</ol>
+
 
 
 
@@ -73115,66 +73184,6 @@ member function of function type <code class='backtick'>F</code> or <code class=
 
 
 <hr>
-<h3 id="4299"><a href="#4299">4299</a><sup><a href="https://cplusplus.github.io/LWG/issue4299">(i)</a></sup>. Missing <i>Mandates:</i> part in <code>optional&lt;T&amp;&gt;::transform</code></h3>
-<p><b>Section:</b> 22.5.4.7 <a href="https://wg21.link/optional.ref.monadic">[optional.ref.monadic]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Giuseppe D'Angelo <b>Opened:</b> 2025-07-15 <b>Last modified:</b> 2025-08-16</p>
-<p><b>Priority: </b>Not Prioritized
-</p>
-<p><b>View other</b> <a href="lwg-index-open.html#optional.ref.monadic">active issues</a> in [optional.ref.monadic].</p>
-<p><b>View all other</b> <a href="lwg-index.html#optional.ref.monadic">issues</a> in [optional.ref.monadic].</p>
-<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
-<p><b>Discussion:</b></p>
-<p>
-In 22.5.4.7 <a href="https://wg21.link/optional.ref.monadic">[optional.ref.monadic]</a> the specification of <code>optional&lt;T&amp;&gt;::transform</code>
-is missing an additional part of the <i>Mandates:</i> element compared to the primary template's
-<code class='backtick'>transform</code> (in 22.5.3.8 <a href="https://wg21.link/optional.monadic">[optional.monadic]</a> p8); that is, is missing to enforce that
-the <code class='backtick'>U</code> type is a valid contained type for <code class='backtick'>optional</code>.
-<p/>
-The definition of "valid contained type" comes from <a href="https://wg21.link/P2988R12" title=" std::optional<T&amp;>">P2988R12</a>. The paper
-amended the <i>Mandates:</i> element of the primary template's <code class='backtick'>transform</code> to
-use this definition. The fact that the same wording has not been applied to 
-<code>optional&lt;T&amp;&gt;::transform</code> as well looks like an oversight. I would
-suggest to apply it.
-</p>
-
-
-<p id="res-4299"><b>Proposed resolution:</b></p>
-<p>
-This wording is relative to <a href="https://wg21.link/N5014">N5014</a>.
-</p>
-
-<ol>
-
-<li><p>Modify 22.5.4.7 <a href="https://wg21.link/optional.ref.monadic">[optional.ref.monadic]</a> as indicated:</p>
-
-<blockquote>
-<pre>
-template&lt;class F&gt;
-  constexpr optional&lt;remove_cv_t&lt;invoke_result_t&lt;F, T&amp;&gt;&gt;&gt; transform(F&amp;&amp; f) const;
-</pre>
-<blockquote>
-<p>
--4- Let <code class='backtick'>U</code> be <code>remove_cv_t&lt;invoke_result_t&lt;F, T&amp;&gt;&gt;</code>.
-<p/>
--5- <i>Mandates</i>: <ins><code class='backtick'>U</code> is a valid contained type for <code class='backtick'>optional</code>.</ins> The declaration
-</p>
-<blockquote><pre>
-U u(invoke(std::forward&lt;F&gt;(f), *val ));
-</pre></blockquote>
-<p>
-is well-formed for some invented variable <code class='backtick'>u</code>.
-</p>
-</blockquote>
-</blockquote>
-</li>
-
-</ol>
-
-
-
-
-
-<hr>
 <h3 id="4302"><a href="#4302">4302</a><sup><a href="https://cplusplus.github.io/LWG/issue4302">(i)</a></sup>. Problematic <code class='backtick'>vector_sum_of_squares</code> wording</h3>
 <p><b>Section:</b> 29.9.13.8 <a href="https://wg21.link/linalg.algs.blas1.ssq">[linalg.algs.blas1.ssq]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
  <b>Submitter:</b> Mark Hoemmen <b>Opened:</b> 2025-07-23 <b>Last modified:</b> 2025-10-10</p>
@@ -73448,8 +73457,8 @@ else
 <hr>
 <h3 id="4304"><a href="#4304">4304</a><sup><a href="https://cplusplus.github.io/LWG/issue4304">(i)</a></sup>. <code>std::optional&lt;<i>NonReturnable</i>&amp;&gt;</code> is ill-formed due to <code class='backtick'>value_or</code></h3>
 <p><b>Section:</b> 22.5.4.6 <a href="https://wg21.link/optional.ref.observe">[optional.ref.observe]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Jiang An <b>Opened:</b> 2025-07-25 <b>Last modified:</b> 2025-08-16</p>
-<p><b>Priority: </b>Not Prioritized
+ <b>Submitter:</b> Jiang An <b>Opened:</b> 2025-07-25 <b>Last modified:</b> 2025-10-16</p>
+<p><b>Priority: </b>1
 </p>
 <p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
 <p><b>Discussion:</b></p>
@@ -73462,8 +73471,20 @@ However, we don't exclude such <code>T&amp;</code> from valid contained types. G
 problematic here, perhaps we can avoid providing it if <code class='backtick'>T</code> is not returnable.
 </p>
 
+<p><i>[2025-10-16; Reflector poll]</i></p>
 
-<p id="res-4304"><b>Proposed resolution:</b></p>
+<p>
+Set priority to 1 after reflector poll.
+</p>
+<p>
+Why not just add <i>Constraints</i>: and use <code>decay_t&lt;T&gt;</code>
+for the return type, instead of "not always present" which is currently
+only used for member types, not member functions.
+</p>
+
+<p><strong>Previous resolution [SUPERSEDED]:</strong></p>
+<blockquote class="note">
+
 <p>
 This wording is relative to <a href="https://wg21.link/N5014">N5014</a>.
 </p>
@@ -73512,6 +73533,61 @@ return has_value() ? *<i>val</i> : static_cast&lt;X&gt;(std::forward&lt;U&gt;(u)
 </blockquote>
 </li>
 </ol>
+</blockquote>
+
+<p><i>[2025-10-16; Jonathan provides new wording]</i></p>
+
+
+
+
+<p id="res-4304"><b>Proposed resolution:</b></p>
+
+<p>
+This wording is relative to <a href="https://wg21.link/N5014">N5014</a>.
+</p>
+
+<ol>
+
+<li><p>Modify 22.5.4.6 <a href="https://wg21.link/optional.ref.observe">[optional.ref.observe]</a> as indicated:</p>
+
+<blockquote>
+<pre>
+template&lt;class U = remove_cv_t&lt;T&gt;&gt; constexpr remove_cv_t&lt;T&gt; value_or(U&amp;&amp; u) const;
+</pre>
+<blockquote>
+<p>
+<ins>
+-?- <i>Constraints</i>:
+<code class='backtick'>T</code> is a non-array object type.
+</ins>
+</p>
+<p>
+-8- Let <code class='backtick'>X</code> be <code>remove_cv_t&lt;T&gt;</code>.
+<p/>
+-9- <i>Mandates</i>: <code>is_constructible_v&lt;X, T&amp;&gt; &amp;&amp; is_convertible_v&lt;U, X&gt;</code> is <code class='backtick'>true</code>.
+<p/>
+-10- <i>Effects</i>: Equivalent to:
+</p>
+<blockquote><pre>
+return has_value() ? *<i>val</i> : static_cast&lt;X&gt;(std::forward&lt;U&gt;(u));
+</pre></blockquote>
+<p>
+<ins>
+-?- <i>Remarks</i>:
+The return type is unspecified if <code class='backtick'>T</code> is an array type or a non-object type.
+[<i>Note ?</i>: For example,
+<code>decay_t&lt;T&gt;</code> or
+<code>conditional_t&lt;is_object_v&lt;T&gt; &amp;&amp; !is_array_v&lt;T&gt;,
+remove_cvref_t&lt;T&gt;, void&gt;</code>
+could be used to avoid the declaration being ill-formed.
+<i>&mdash; end note</i>]
+</ins>
+</p>
+</blockquote>
+</blockquote>
+</li>
+</ol>
+
 
 
 
@@ -78683,129 +78759,10 @@ have the same value type.
 
 
 <hr>
-<h3 id="4366"><a href="#4366">4366</a><sup><a href="https://cplusplus.github.io/LWG/issue4366">(i)</a></sup>. Heterogeneous comparison of <code class='backtick'>expected</code> may be ill-formed</h3>
-<p><b>Section:</b> 22.8.6.8 <a href="https://wg21.link/expected.object.eq">[expected.object.eq]</a>, 22.8.7.8 <a href="https://wg21.link/expected.void.eq">[expected.void.eq]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Hewill Kang <b>Opened:</b> 2025-09-06 <b>Last modified:</b> 2025-09-15</p>
-<p><b>Priority: </b>Not Prioritized
-</p>
-<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
-<p><b>Discussion:</b></p>
-<p>
-These comparison functions all explicitly <code class='backtick'>static_cast</code> the result of the underlying comparison to
-<code class='backtick'>bool</code>. However, the <i>Constraints</i> only require the implicit conversion, not the explicit one 
-(i.e., "convertible to <code class='backtick'>bool</code>" rather than "models <code><i>boolean-testable</i></code>").
-<p/>
-This means that in some pathological cases it will lead to hard errors 
-(<a href="https://godbolt.org/z/b9ehzv3h4">demo</a>):
-</p>
-<blockquote><pre>
-#include &lt;expected&gt;
-
-struct E1 {};
-struct E2 {};
-
-struct Bool {
-  operator bool() const;
-  explicit operator bool() = delete;
-};
-Bool operator==(E1, E2);
-
-int main() {
-  std::unexpected e1{E1{}};
-  std::unexpected e2{E2{}};
-  return std::expected&lt;int, E1&gt;{e1} == e2; // <span style="color:#C80000;font-weight:bold">fire</span>
-}
-</pre></blockquote>
-<p>
-It is reasonable to specify return consistency with actual <i>Constraints</i>.
-</p>
-
-
-<p id="res-4366"><b>Proposed resolution:</b></p>
-<p>
-This wording is relative to <a href="https://wg21.link/N5014">N5014</a>.
-</p>
-
-<ol>
-
-<li><p>Modify 22.8.6.8 <a href="https://wg21.link/expected.object.eq">[expected.object.eq]</a> as indicated:</p>
-
-<blockquote>
-<pre>
-template&lt;class T2&gt; friend constexpr bool operator==(const expected&amp; x, const T2&amp; v);
-</pre>
-<blockquote>
-<p>
--3- <i>Constraints</i>: <code class='backtick'>T2</code> is not a specialization of <code class='backtick'>expected</code>. The expression <code class='backtick'>*x == v</code> is well-formed
-and its result is convertible to <code class='backtick'>bool</code>.
-<p/>
-[<i>Note 1</i>: <code>T</code> need not be <i>Cpp17EqualityComparable</i>. &mdash; <i>end note</i>]
-<p/>
--4- <i>Returns</i>: <ins>If</ins> <code class='backtick'>x.has_value()</code> <ins>is <code class='backtick'>true</code>,</ins>
-<code><del>&amp;&amp; static_cast&lt;bool&gt;(</del>*x == v<del>)</del></code><ins>; otherwise <code class='backtick'>false</code></ins>.
-</p>
-</blockquote>
-<pre>
-template&lt;class E2&gt; friend constexpr bool operator==(const expected&amp; x, const unexpected&lt;E2&gt;&amp; e);
-</pre>
-<blockquote>
-<p>
--5- <i>Constraints</i>: The expression <code class='backtick'>x.error() == e.error()</code> is well-formed and its result is convertible 
-to <code class='backtick'>bool</code>.
-<p/>
--6- <i>Returns</i>: <ins>If</ins> <code class='backtick'>!x.has_value()</code> <ins>is <code class='backtick'>true</code>,</ins>
-<code><del>&amp;&amp; static_cast&lt;bool&gt;(</del>x.error() == e.error()<del>)</del></code><ins>; otherwise <code class='backtick'>false</code></ins>.
-</p>
-</blockquote>
-</blockquote>
-
-</li>
-
-<li><p>Modify 22.8.7.8 <a href="https://wg21.link/expected.void.eq">[expected.void.eq]</a> as indicated:</p>
-
-<blockquote>
-<pre>
-template&lt;class T2, class E2&gt; requires is_void_v&lt;T2&gt;
-  friend constexpr bool operator==(const expected&amp; x, const expected&lt;T2, E2&gt;&amp; y);
-</pre>
-<blockquote>
-<p>
--1- <i>Constraints</i>: The expression <code class='backtick'>x.error() == y.error()</code> is well-formed and its result 
-is convertible to <code class='backtick'>bool</code>.
-<p/>
--2- <i>Returns</i>: If <code class='backtick'>x.has_value()</code> does not equal <code class='backtick'>y.has_value()</code>, <code class='backtick'>false</code>; 
-otherwise <ins>if</ins> <code class='backtick'>x.has_value()</code> <ins>is <code class='backtick'>true</code>, <code class='backtick'>true</code>; otherwise</ins>
-<code><del>|| static_cast&lt;bool&gt;(</del>x.error() == y.error()<del>)</del></code>.
-</p>
-</blockquote>
-<pre>
-template&lt;class E2&gt;
-  friend constexpr bool operator==(const expected&amp; x, const unexpected&lt;E2&gt;&amp; e);
-</pre>
-<blockquote>
-<p>
--3- <i>Constraints</i>: The expression <code class='backtick'>x.error() == e.error()</code> is well-formed and its 
-result is convertible to <code class='backtick'>bool</code>.
-<p/>
--4- <i>Returns</i>: <ins>If</ins> <code class='backtick'>!x.has_value()</code> <ins>is <code class='backtick'>true</code>,</ins>
-<code><del>&amp;&amp; static_cast&lt;bool&gt;(</del>x.error() == e.error()<del>)</del></code>
-<ins>; otherwise <code class='backtick'>false</code></ins>.
-</p>
-</blockquote>
-</blockquote>
-
-</li>
-
-</ol>
-
-
-
-
-<hr>
 <h3 id="4367"><a href="#4367">4367</a><sup><a href="https://cplusplus.github.io/LWG/issue4367">(i)</a></sup>. Improve <code>optional&lt;T&amp;&gt;::or_else</code></h3>
 <p><b>Section:</b> 22.5.4.7 <a href="https://wg21.link/optional.ref.monadic">[optional.ref.monadic]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Hewill Kang <b>Opened:</b> 2025-09-07 <b>Last modified:</b> 2025-09-15</p>
-<p><b>Priority: </b>Not Prioritized
+ <b>Submitter:</b> Hewill Kang <b>Opened:</b> 2025-09-07 <b>Last modified:</b> 2025-10-16</p>
+<p><b>Priority: </b>4
 </p>
 <p><b>View other</b> <a href="lwg-index-open.html#optional.ref.monadic">active issues</a> in [optional.ref.monadic].</p>
 <p><b>View all other</b> <a href="lwg-index.html#optional.ref.monadic">issues</a> in [optional.ref.monadic].</p>
@@ -78819,6 +78776,17 @@ which calls the <code>optional(U&amp;&amp;)</code> constructor which in turn cal
 There's no reason to do that. It's much more efficient to call <code>optional&lt;T&amp;&gt;</code>'s 
 default copy constructor to just copy a pointer.
 </p>
+
+<p><i>[2025-10-16; Reflector poll]</i></p>
+
+<p>
+Set priority to 4 after reflector poll.
+</p>
+<p>
+"NAD, no observable difference."
+"Still simpler to not have to reason about whether it matters, let's do it."
+</p>
+
 
 
 <p id="res-4367"><b>Proposed resolution:</b></p>

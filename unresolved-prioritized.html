@@ -60,8 +60,8 @@
 <p>This document is the Table of Contents for the <a href="lwg-active.html">Library Active Issues List</a>,
 <a href="lwg-defects.html">Library Defect Reports and Accepted Issues</a>, and <a href="lwg-closed.html">Library Closed Issues List</a>,
 sorted by priority.</p>
-<p>Revised 2025-10-16 at 14:53:16 UTC
-</p><h2 id="Priority_1">Priority 1 (9 issues)</h2>
+<p>Revised 2025-10-16 at 16:28:53 UTC
+</p><h2 id="Priority_1">Priority 1 (10 issues)</h2>
 <table class="issues-index">
 <tr>
   <th><a href="lwg-toc.html">Issue</a></th>
@@ -95,6 +95,15 @@ sorted by priority.</p>
 <td><a href="lwg-active.html#New">New</a></td>
 <td>22.5.4.5 [optional.ref.iterators]</td>
 <td><code>std::optional&lt;T&amp;&gt;::iterator</code> can't be a contiguous iterator for some <code class='backtick'>T</code></td>
+<td>Yes</td>
+<td>1</td>
+<td></td>
+</tr>
+<tr>
+<td id="4304"><a href="lwg-active.html#4304" title="std::optional&lt;NonReturnable&amp;&gt; is ill-formed due to value_or (Status: New)">4304</a><sup><a href="https://cplusplus.github.io/LWG/issue4304">(i)</a></sup></td>
+<td><a href="lwg-active.html#New">New</a></td>
+<td>22.5.4.6 [optional.ref.observe]</td>
+<td><code>std::optional&lt;<i>NonReturnable</i>&amp;&gt;</code> is ill-formed due to <code class='backtick'>value_or</code></td>
 <td>Yes</td>
 <td>1</td>
 <td></td>
@@ -4447,7 +4456,7 @@ don't support <code>DynamicBuffer</code> lvalues</td>
 <td></td>
 </tr>
 </table>
-<h2 id="Priority_4">Priority 4 (82 issues)</h2>
+<h2 id="Priority_4">Priority 4 (85 issues)</h2>
 <table class="issues-index">
 <tr>
   <th><a href="lwg-toc.html">Issue</a></th>
@@ -4585,6 +4594,15 @@ don't support <code>DynamicBuffer</code> lvalues</td>
 <td></td>
 </tr>
 <tr>
+<td id="4367"><a href="lwg-active.html#4367" title="Improve optional&lt;T&amp;&gt;::or_else (Status: New)">4367</a><sup><a href="https://cplusplus.github.io/LWG/issue4367">(i)</a></sup></td>
+<td><a href="lwg-active.html#New">New</a></td>
+<td>22.5.4.7 [optional.ref.monadic]</td>
+<td>Improve <code>optional&lt;T&amp;&gt;::or_else</code></td>
+<td>Yes</td>
+<td>4</td>
+<td></td>
+</tr>
+<tr>
 <td id="3805"><a href="lwg-active.html#3805" title="Expression evaluating to a call wrapper is a prvalue, not an object (Status: New)">3805</a><sup><a href="https://cplusplus.github.io/LWG/issue3805">(i)</a></sup></td>
 <td><a href="lwg-active.html#New">New</a></td>
 <td>22.10 [function.objects]</td>
@@ -4634,6 +4652,15 @@ don't support <code>DynamicBuffer</code> lvalues</td>
 <td><a href="lwg-active.html#New">New</a></td>
 <td>23.2.2 [container.requirements.general]</td>
 <td>Container iterators and argument-dependent lookup</td>
+<td><span class="no-pr">No</span></td>
+<td>4</td>
+<td></td>
+</tr>
+<tr>
+<td id="3976"><a href="lwg-active.html#3976" title="What does it mean for a type to be &quot;allocator aware&quot;? (Status: New)">3976</a><sup><a href="https://cplusplus.github.io/LWG/issue3976">(i)</a></sup></td>
+<td><a href="lwg-active.html#New">New</a></td>
+<td>23.2.2.5 [container.alloc.reqmts]</td>
+<td>What does it mean for a type to be "allocator aware"?</td>
 <td><span class="no-pr">No</span></td>
 <td>4</td>
 <td></td>
@@ -5073,6 +5100,17 @@ should require the arguments to have the same length</td>
 <td></td>
 </tr>
 <tr>
+<td id="4039"><a href="lwg-active.html#4039" title="&sect;[ostream.formatted.print]: Inappropriate usage of badbit in definition of 
+vprint_unicode/vprint_nonunicode (Status: New)">4039</a><sup><a href="https://cplusplus.github.io/LWG/issue4039">(i)</a></sup></td>
+<td><a href="lwg-active.html#New">New</a></td>
+<td>31.7.6.3.5 [ostream.formatted.print]</td>
+<td>&sect;[ostream.formatted.print]: Inappropriate usage of <code>badbit</code> in definition of 
+<code>vprint_unicode</code>/<code>vprint_nonunicode</code></td>
+<td>Yes</td>
+<td>4</td>
+<td></td>
+</tr>
+<tr>
 <td id="2286"><a href="lwg-active.html#2286" title="stringbuf::underflow() underspecified (Status: Open)">2286</a><sup><a href="https://cplusplus.github.io/LWG/issue2286">(i)</a></sup></td>
 <td><a href="lwg-active.html#Open">Open</a></td>
 <td>31.8.2.5 [stringbuf.virtuals]</td>
@@ -5199,7 +5237,7 @@ should require the arguments to have the same length</td>
 <td></td>
 </tr>
 </table>
-<h2 id="Priority_99">Not Prioritized (169 issues)</h2>
+<h2 id="Priority_99">Not Prioritized (163 issues)</h2>
 <table class="issues-index">
 <tr>
   <th><a href="lwg-toc.html">Issue</a></th>
@@ -5375,46 +5413,10 @@ should require the arguments to have the same length</td>
 <td><a href="lwg-closed.html#348" title="Minor issue with std::pair operator&lt; (Status: Dup)">348</a></td>
 </tr>
 <tr>
-<td id="4304"><a href="lwg-active.html#4304" title="std::optional&lt;NonReturnable&amp;&gt; is ill-formed due to value_or (Status: New)">4304</a><sup><a href="https://cplusplus.github.io/LWG/issue4304">(i)</a></sup></td>
-<td><a href="lwg-active.html#New">New</a></td>
-<td>22.5.4.6 [optional.ref.observe]</td>
-<td><code>std::optional&lt;<i>NonReturnable</i>&amp;&gt;</code> is ill-formed due to <code class='backtick'>value_or</code></td>
-<td>Yes</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td id="4299"><a href="lwg-active.html#4299" title="Missing Mandates: part in optional&lt;T&amp;&gt;::transform (Status: New)">4299</a><sup><a href="https://cplusplus.github.io/LWG/issue4299">(i)</a></sup></td>
-<td><a href="lwg-active.html#New">New</a></td>
-<td>22.5.4.7 [optional.ref.monadic]</td>
-<td>Missing <i>Mandates:</i> part in <code>optional&lt;T&amp;&gt;::transform</code></td>
-<td>Yes</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td id="4367"><a href="lwg-active.html#4367" title="Improve optional&lt;T&amp;&gt;::or_else (Status: New)">4367</a><sup><a href="https://cplusplus.github.io/LWG/issue4367">(i)</a></sup></td>
-<td><a href="lwg-active.html#New">New</a></td>
-<td>22.5.4.7 [optional.ref.monadic]</td>
-<td>Improve <code>optional&lt;T&amp;&gt;::or_else</code></td>
-<td>Yes</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
 <td id="2991"><a href="lwg-active.html#2991" title="variant copy constructor missing noexcept(see below) (Status: Open)">2991</a><sup><a href="https://cplusplus.github.io/LWG/issue2991">(i)</a></sup></td>
 <td><a href="lwg-active.html#Open">Open</a></td>
 <td>22.6.3.2 [variant.ctor]</td>
 <td><code>variant</code> copy constructor missing <code>noexcept(<i>see below</i>)</code></td>
-<td>Yes</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td id="4366"><a href="lwg-active.html#4366" title="Heterogeneous comparison of expected may be ill-formed (Status: New)">4366</a><sup><a href="https://cplusplus.github.io/LWG/issue4366">(i)</a></sup></td>
-<td><a href="lwg-active.html#New">New</a></td>
-<td>22.8.6.8 [expected.object.eq]</td>
-<td>Heterogeneous comparison of <code class='backtick'>expected</code> may be ill-formed</td>
 <td>Yes</td>
 <td></td>
 <td></td>
@@ -5489,15 +5491,6 @@ types &mdash; this is inconsistent with other types in the library (Status: LEWG
 <td>23 [containers]</td>
 <td>The relational operators of <code>optional</code> and <code>variant</code> completely reflect the semantics of the element 
 types &mdash; this is inconsistent with other types in the library</td>
-<td><span class="no-pr">No</span></td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td id="3976"><a href="lwg-active.html#3976" title="What does it mean for a type to be &quot;allocator aware&quot;? (Status: New)">3976</a><sup><a href="https://cplusplus.github.io/LWG/issue3976">(i)</a></sup></td>
-<td><a href="lwg-active.html#New">New</a></td>
-<td>23.2.2.5 [container.alloc.reqmts]</td>
-<td>What does it mean for a type to be "allocator aware"?</td>
 <td><span class="no-pr">No</span></td>
 <td></td>
 <td></td>
@@ -6233,17 +6226,6 @@ constructor</td>
 <td><a href="lwg-active.html#New">New</a></td>
 <td>30.12 [time.format]</td>
 <td>Ambiguity in the formatting of negative years with format specifier <code>%C</code></td>
-<td>Yes</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td id="4039"><a href="lwg-active.html#4039" title="&sect;[ostream.formatted.print]: Inappropriate usage of badbit in definition of 
-vprint_unicode/vprint_nonunicode (Status: New)">4039</a><sup><a href="https://cplusplus.github.io/LWG/issue4039">(i)</a></sup></td>
-<td><a href="lwg-active.html#New">New</a></td>
-<td>31.7.6.3.5 [ostream.formatted.print]</td>
-<td>&sect;[ostream.formatted.print]: Inappropriate usage of <code>badbit</code> in definition of 
-<code>vprint_unicode</code>/<code>vprint_nonunicode</code></td>
 <td>Yes</td>
 <td></td>
 <td></td>
