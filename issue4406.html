@@ -64,8 +64,8 @@
 <p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#New">New</a> status.</em></p>
 <h3 id="4406"><a href="lwg-active.html#4406">4406</a>. <code class='backtick'>optional::value_or</code> return statement is inconsistent with <i>Mandates</i></h3>
 <p><b>Section:</b> 22.5.3.7 <a href="https://wg21.link/optional.observe">[optional.observe]</a>, 22.5.4.6 <a href="https://wg21.link/optional.ref.observe">[optional.ref.observe]</a>, 22.8.6.6 <a href="https://wg21.link/expected.object.obs">[expected.object.obs]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Hewill Kang <b>Opened:</b> 2025-09-06 <b>Last modified:</b> 2025-10-10</p>
-<p><b>Priority: </b>Not Prioritized
+ <b>Submitter:</b> Hewill Kang <b>Opened:</b> 2025-09-06 <b>Last modified:</b> 2025-10-16</p>
+<p><b>Priority: </b>3
 </p>
 <p><b>View other</b> <a href="lwg-index-open.html#optional.observe">active issues</a> in [optional.observe].</p>
 <p><b>View all other</b> <a href="lwg-index.html#optional.observe">issues</a> in [optional.observe].</p>
@@ -98,6 +98,17 @@ It is reasonable to create objects that stick to <i>Mandates</i>. The same goes 
 <p/>
 This issue has considerable overlap with LWG <a href="lwg-active.html#4281" title="Inconsistency between value_or() and error_or() in std::expected (Status: New)">4281</a><sup><a href="https://cplusplus.github.io/LWG/issue4281" title="Latest snapshot">(i)</a></sup>.
 </p>
+
+<p><i>[2025-10-16; Reflector poll]</i></p>
+
+<p>
+Set priority to 3 after reflector poll.
+</p>
+<p>
+This would need to use <code class='backtick'>val</code> instead of <code class='backtick'>**this</code> if LWG <a href="lwg-active.html#4015" title="LWG 3973 broke const overloads of std::optional monadic operations (Status: Open)">4015</a><sup><a href="https://cplusplus.github.io/LWG/issue4015" title="Latest snapshot">(i)</a></sup>
+is accepted.
+</p>
+
 
 
 <p id="res-4406"><b>Proposed resolution:</b></p>

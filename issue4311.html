@@ -64,8 +64,8 @@
 <p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#New">New</a> status.</em></p>
 <h3 id="4311"><a href="lwg-active.html#4311">4311</a>. Can <code class='backtick'>std::pmr::polymorphic_allocator::construct</code> just call <code class='backtick'>std::uninitialized_construct_using_allocator</code>?</h3>
 <p><b>Section:</b> 20.5.3.3 <a href="https://wg21.link/mem.poly.allocator.mem">[mem.poly.allocator.mem]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Jiang An <b>Opened:</b> 2025-08-06 <b>Last modified:</b> 2025-08-16</p>
-<p><b>Priority: </b>Not Prioritized
+ <b>Submitter:</b> Jiang An <b>Opened:</b> 2025-08-06 <b>Last modified:</b> 2025-10-16</p>
+<p><b>Priority: </b>3
 </p>
 <p><b>View all other</b> <a href="lwg-index.html#mem.poly.allocator.mem">issues</a> in [mem.poly.allocator.mem].</p>
 <p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
@@ -84,6 +84,23 @@ As a result, it seems non-conforming to just use <code class='backtick'>uninitia
 perhaps we can just respecify <code class='backtick'>polymorphic_allocator::construct</code> to use 
 <code class='backtick'>uninitialized_construct_using_allocator</code>.
 </p>
+
+<p><i>[2025-10-15; Reflector poll]</i></p>
+
+<p>
+Set priority to 3 after reflector poll.
+</p>
+<p>
+"What is the extent of the breakage?
+<code class='backtick'>pmr::polymorphic_allocator::new_object</code> uses <code class='backtick'>construct</code>,
+so does this break users of that function?"
+</p>
+<p>
+We could modify <code class='backtick'>new_object</code> to allocate and construct
+<code>remove_cv_t&lt;T&gt;</code> instead of <code class='backtick'>T</code>,
+so that it could still use <code class='backtick'>construct</code>.
+</p>
+
 
 
 <p id="res-4311"><b>Proposed resolution:</b></p>

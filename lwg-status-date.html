@@ -67,7 +67,7 @@
 This document is the Index by Status and Date for the <a href="lwg-active.html">Library Active Issues List</a>,
 <a href="lwg-defects.html">Library Defect Reports and Accepted Issues</a>, and <a href="lwg-closed.html">Library Closed Issues List</a>.
 </p>
-<p>Revised 2025-10-15 at 11:31:05 UTC
+<p>Revised 2025-10-16 at 14:53:16 UTC
 </p><h2 id="Ready">Ready (3 issues)</h2>
 <table class="issues-index">
 <tr>
@@ -107,7 +107,7 @@ This document is the Index by Status and Date for the <a href="lwg-active.html">
 <td></td>
 </tr>
 </table>
-<h2 id="Tentatively_Ready">Tentatively Ready (17 issues)</h2>
+<h2 id="Tentatively_Ready">Tentatively Ready (19 issues)</h2>
 <table class="issues-index">
 <tr>
   <th><a href="lwg-toc.html">Issue</a></th>
@@ -117,6 +117,24 @@ This document is the Index by Status and Date for the <a href="lwg-active.html">
   <th>Proposed Resolution</th>
   <th><a href="unresolved-prioritized.html">Priority</a></th>
   <th>Duplicates</th>
+</tr>
+<tr>
+<td id="4370"><a href="lwg-active.html#4370" title="Comparison of optional&lt;T&gt; to T may be ill-formed (Status: Tentatively Ready)">4370</a><sup><a href="https://cplusplus.github.io/LWG/issue4370">(i)</a></sup></td>
+<td><a href="lwg-active.html#Ready">Tentatively Ready</a></td>
+<td>22.5.9 [optional.comp.with.t]</td>
+<td>Comparison of <code>optional&lt;T&gt;</code> to <code>T</code> may be ill-formed</td>
+<td>Yes</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td id="3627"><a href="lwg-active.html#3627" title="Inconsistent specifications for std::make_optional overloads (Status: Tentatively Ready)">3627</a><sup><a href="https://cplusplus.github.io/LWG/issue3627">(i)</a></sup></td>
+<td><a href="lwg-active.html#Ready">Tentatively Ready</a></td>
+<td>22.5.10 [optional.specalg]</td>
+<td>Inconsistent specifications for <code>std::make_optional</code> overloads</td>
+<td>Yes</td>
+<td>3</td>
+<td></td>
 </tr>
 <tr>
 <td id="4317"><a href="lwg-active.html#4317" title="The meaning of &quot;resource&quot; in the Cpp17Destructible requirements is undefined (Status: Tentatively Ready)">4317</a><sup><a href="https://cplusplus.github.io/LWG/issue4317">(i)</a></sup></td>
@@ -412,7 +430,7 @@ of uses-allocator construction</td>
 <td></td>
 </tr>
 </table>
-<h2 id="New">New (608 issues)</h2>
+<h2 id="New">New (606 issues)</h2>
 <table class="issues-index">
 <tr>
   <th><a href="lwg-toc.html">Issue</a></th>
@@ -424,12 +442,57 @@ of uses-allocator construction</td>
   <th>Duplicates</th>
 </tr>
 <tr>
+<td id="4311"><a href="lwg-active.html#4311" title="Can std::pmr::polymorphic_allocator::construct just call std::uninitialized_construct_using_allocator? (Status: New)">4311</a><sup><a href="https://cplusplus.github.io/LWG/issue4311">(i)</a></sup></td>
+<td><a href="lwg-active.html#New">New</a></td>
+<td>20.5.3.3 [mem.poly.allocator.mem]</td>
+<td>Can <code class='backtick'>std::pmr::polymorphic_allocator::construct</code> just call <code class='backtick'>std::uninitialized_construct_using_allocator</code>?</td>
+<td>Yes</td>
+<td>3</td>
+<td></td>
+</tr>
+<tr>
+<td id="4267"><a href="lwg-active.html#4267" title="Uses-allocator construction is meaningless for tuple of references (Status: New)">4267</a><sup><a href="https://cplusplus.github.io/LWG/issue4267">(i)</a></sup></td>
+<td><a href="lwg-active.html#New">New</a></td>
+<td>22.4.4.2 [tuple.cnstr]</td>
+<td>Uses-allocator construction is meaningless for tuple of references</td>
+<td>Yes</td>
+<td>3</td>
+<td></td>
+</tr>
+<tr>
 <td id="4281"><a href="lwg-active.html#4281" title="Inconsistency between value_or() and error_or() in std::expected (Status: New)">4281</a><sup><a href="https://cplusplus.github.io/LWG/issue4281">(i)</a></sup></td>
 <td><a href="lwg-active.html#New">New</a></td>
 <td>22.5.3.7 [optional.observe]</td>
 <td>Inconsistency between <code class='backtick'>value_or()</code> and <code class='backtick'>error_or()</code> in <code class='backtick'>std::expected</code></td>
 <td><span class="no-pr">No</span></td>
+<td>3</td>
 <td></td>
+</tr>
+<tr>
+<td id="4406"><a href="lwg-active.html#4406" title="optional::value_or return statement is inconsistent with Mandates (Status: New)">4406</a><sup><a href="https://cplusplus.github.io/LWG/issue4406">(i)</a></sup></td>
+<td><a href="lwg-active.html#New">New</a></td>
+<td>22.5.3.7 [optional.observe]</td>
+<td><code class='backtick'>optional::value_or</code> return statement is inconsistent with <i>Mandates</i></td>
+<td>Yes</td>
+<td>3</td>
+<td></td>
+</tr>
+<tr>
+<td id="4225"><a href="lwg-active.html#4225" title="What should happen when an exception is thrown on resizing std::deque, std::forward_list, or std::list? (Status: New)">4225</a><sup><a href="https://cplusplus.github.io/LWG/issue4225">(i)</a></sup></td>
+<td><a href="lwg-active.html#New">New</a></td>
+<td>23.3.5.3 [deque.capacity]</td>
+<td>What should happen when an exception is thrown on resizing <code class='backtick'>std::deque</code>, <code class='backtick'>std::forward_list</code>, or <code class='backtick'>std::list</code>?</td>
+<td>Yes</td>
+<td>3</td>
+<td></td>
+</tr>
+<tr>
+<td id="4275"><a href="lwg-active.html#4275" title="std::dynamic_extent should also be defined in &lt;mdspan&gt; (Status: New)">4275</a><sup><a href="https://cplusplus.github.io/LWG/issue4275">(i)</a></sup></td>
+<td><a href="lwg-active.html#New">New</a></td>
+<td>23.7.3.2 [mdspan.syn]</td>
+<td><code class='backtick'>std::dynamic_extent</code> should also be defined in <code>&lt;mdspan&gt;</code></td>
+<td>Yes</td>
+<td>3</td>
 <td></td>
 </tr>
 <tr>
@@ -500,15 +563,6 @@ of uses-allocator construction</td>
 <td><a href="lwg-active.html#New">New</a></td>
 <td>21.3.12 [meta.const.eval]</td>
 <td><code>is_within_lifetime</code> should mandate <code>is_object</code></td>
-<td>Yes</td>
-<td>3</td>
-<td></td>
-</tr>
-<tr>
-<td id="4267"><a href="lwg-active.html#4267" title="Uses-allocator construction is meaningless for tuple of references (Status: New)">4267</a><sup><a href="https://cplusplus.github.io/LWG/issue4267">(i)</a></sup></td>
-<td><a href="lwg-active.html#New">New</a></td>
-<td>22.4.4.2 [tuple.cnstr]</td>
-<td>Uses-allocator construction is meaningless for tuple of references</td>
 <td>Yes</td>
 <td>3</td>
 <td></td>
@@ -610,15 +664,6 @@ of uses-allocator construction</td>
 <td>Strange specification of <code>max_size()</code> for an allocator</td>
 <td>Yes</td>
 <td>3</td>
-<td></td>
-</tr>
-<tr>
-<td id="4406"><a href="lwg-active.html#4406" title="optional::value_or return statement is inconsistent with Mandates (Status: New)">4406</a><sup><a href="https://cplusplus.github.io/LWG/issue4406">(i)</a></sup></td>
-<td><a href="lwg-active.html#New">New</a></td>
-<td>22.5.3.7 [optional.observe]</td>
-<td><code class='backtick'>optional::value_or</code> return statement is inconsistent with <i>Mandates</i></td>
-<td>Yes</td>
-<td></td>
 <td></td>
 </tr>
 <tr>
@@ -984,15 +1029,6 @@ constructor</td>
 <td><a href="lwg-active.html#New">New</a></td>
 <td>22.5.4.7 [optional.ref.monadic]</td>
 <td>Improve <code>optional&lt;T&amp;&gt;::or_else</code></td>
-<td>Yes</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td id="4370"><a href="lwg-active.html#4370" title="Comparison of optional&lt;T&gt; to T may be ill-formed (Status: New)">4370</a><sup><a href="https://cplusplus.github.io/LWG/issue4370">(i)</a></sup></td>
-<td><a href="lwg-active.html#New">New</a></td>
-<td>22.5.9 [optional.comp.with.t]</td>
-<td>Comparison of <code>optional&lt;T&gt;</code> to <code>T</code> may be ill-formed</td>
 <td>Yes</td>
 <td></td>
 <td></td>
@@ -1515,15 +1551,6 @@ co_await expression instead of same_as&lt;void&gt; (Status: New)">4357</a><sup><
 <td></td>
 </tr>
 <tr>
-<td id="4311"><a href="lwg-active.html#4311" title="Can std::pmr::polymorphic_allocator::construct just call std::uninitialized_construct_using_allocator? (Status: New)">4311</a><sup><a href="https://cplusplus.github.io/LWG/issue4311">(i)</a></sup></td>
-<td><a href="lwg-active.html#New">New</a></td>
-<td>20.5.3.3 [mem.poly.allocator.mem]</td>
-<td>Can <code class='backtick'>std::pmr::polymorphic_allocator::construct</code> just call <code class='backtick'>std::uninitialized_construct_using_allocator</code>?</td>
-<td>Yes</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
 <td id="4304"><a href="lwg-active.html#4304" title="std::optional&lt;NonReturnable&amp;&gt; is ill-formed due to value_or (Status: New)">4304</a><sup><a href="https://cplusplus.github.io/LWG/issue4304">(i)</a></sup></td>
 <td><a href="lwg-active.html#New">New</a></td>
 <td>22.5.4.6 [optional.ref.observe]</td>
@@ -1809,15 +1836,6 @@ max, and minmax is unclear (Status: New)">4167</a><sup><a href="https://cplusplu
 <td></td>
 </tr>
 <tr>
-<td id="4275"><a href="lwg-active.html#4275" title="std::dynamic_extent should also be defined in &lt;mdspan&gt; (Status: New)">4275</a><sup><a href="https://cplusplus.github.io/LWG/issue4275">(i)</a></sup></td>
-<td><a href="lwg-active.html#New">New</a></td>
-<td>23.7.3.2 [mdspan.syn]</td>
-<td><code class='backtick'>std::dynamic_extent</code> should also be defined in <code>&lt;mdspan&gt;</code></td>
-<td>Yes</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
 <td id="4273"><a href="lwg-active.html#4273" title="Standard execution policy types should be conventional tag class types (Status: New)">4273</a><sup><a href="https://cplusplus.github.io/LWG/issue4273">(i)</a></sup></td>
 <td><a href="lwg-active.html#New">New</a></td>
 <td>26.3.6 [execpol]</td>
@@ -2015,15 +2033,6 @@ complexity for algorithms that are in fact &#x1d4aa;(n)</td>
 <td><code>ranges::to</code> constructs associative containers via <code>c.emplace(c.end(), *it)</code></td>
 <td>Yes</td>
 <td>2</td>
-<td></td>
-</tr>
-<tr>
-<td id="4225"><a href="lwg-active.html#4225" title="What should happen when an exception is thrown on resizing std::deque, std::forward_list, or std::list? (Status: New)">4225</a><sup><a href="https://cplusplus.github.io/LWG/issue4225">(i)</a></sup></td>
-<td><a href="lwg-active.html#New">New</a></td>
-<td>23.3.5.3 [deque.capacity]</td>
-<td>What should happen when an exception is thrown on resizing <code class='backtick'>std::deque</code>, <code class='backtick'>std::forward_list</code>, or <code class='backtick'>std::list</code>?</td>
-<td><span class="no-pr">No</span></td>
-<td></td>
 <td></td>
 </tr>
 <tr>
@@ -4463,15 +4472,6 @@ inner-iterator with std::default_sentinel results in null pointer dereference (S
 <td>20.5.4 [mem.res.global]</td>
 <td>When are static-duration <code>memory_resource</code> objects destroyed?</td>
 <td><span class="no-pr">No</span></td>
-<td>3</td>
-<td></td>
-</tr>
-<tr>
-<td id="3627"><a href="lwg-active.html#3627" title="Inconsistent specifications for std::make_optional overloads (Status: New)">3627</a><sup><a href="https://cplusplus.github.io/LWG/issue3627">(i)</a></sup></td>
-<td><a href="lwg-active.html#New">New</a></td>
-<td>22.5.10 [optional.specalg]</td>
-<td>Inconsistent specifications for <code>std::make_optional</code> overloads</td>
-<td>Yes</td>
 <td>3</td>
 <td></td>
 </tr>

@@ -64,7 +64,7 @@
 <p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#New">New</a> status.</em></p>
 <h3 id="4267"><a href="lwg-active.html#4267">4267</a>. Uses-allocator construction is meaningless for tuple of references</h3>
 <p><b>Section:</b> 22.4.4.2 <a href="https://wg21.link/tuple.cnstr">[tuple.cnstr]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Jiang An <b>Opened:</b> 2025-05-24 <b>Last modified:</b> 2025-10-14</p>
+ <b>Submitter:</b> Jiang An <b>Opened:</b> 2025-05-24 <b>Last modified:</b> 2025-10-16</p>
 <p><b>Priority: </b>3
 </p>
 <p><b>View other</b> <a href="lwg-index-open.html#tuple.cnstr">active issues</a> in [tuple.cnstr].</p>
@@ -92,9 +92,9 @@ Set priority to 3 after reflector poll.
 construction of references as equivalent to normal construction."
 </p>
 
+<p><strong>Previous resolution [SUPERSEDED]:</strong></p>
+<blockquote class="note">
 
-
-<p id="res-4267"><b>Proposed resolution:</b></p>
 <p>
 This wording is relative to <a href="https://wg21.link/N5008" title=" Working Draft, Programming Languages — C++">N5008</a>.
 </p>
@@ -128,6 +128,49 @@ is <code class='backtick'>true</code> for at least one <code>T<sub><i>i</i></sub
 </li>
 
 </ol>
+
+</blockquote>
+
+<p><i>[2025-10-15; Jonathan provides new wording]</i></p>
+
+
+
+
+<p id="res-4267"><b>Proposed resolution:</b></p>
+<p>
+This wording is relative to <a href="https://wg21.link/N5014">N5014</a>.
+</p>
+<ol>
+
+<li><p>Modify 22.4.4.2 <a href="https://wg21.link/tuple.cnstr">[tuple.cnstr]</a> as indicated:</p>
+
+<blockquote>
+<pre>
+template&lt;class Alloc&gt;
+  constexpr explicit(<i>see below</i>)
+    tuple(allocator_arg_t, const Alloc&amp; a);
+[&hellip;]
+template&lt;class Alloc, tuple-like UTuple&gt;
+  constexpr explicit(<i>see below</i>)
+    tuple(allocator_arg_t, const Alloc&amp; a, UTuple&amp;&amp;);
+</pre>
+<blockquote>
+<p>
+-32- <i>Preconditions</i>: <code class='backtick'>Alloc</code> meets the <i>Cpp17Allocator</i> requirements (16.4.4.6.1 <a href="https://wg21.link/allocator.requirements.general">[allocator.requirements.general]</a>).
+<p/>
+-33- <i>Effects</i>:
+Equivalent to the preceding constructors except that each element
+<ins>of non-reference type</ins>
+is constructed with uses-allocator construction
+(20.2.8.2 <a href="https://wg21.link/allocator.uses.construction">[allocator.uses.construction]</a>).
+</p>
+</blockquote>
+</blockquote>
+
+</li>
+
+</ol>
+
 
 
 

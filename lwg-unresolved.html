@@ -54,7 +54,7 @@
 </style>
 </head>
 <body>
-<p>Revised 2025-10-15 at 11:31:05 UTC
+<p>Revised 2025-10-16 at 14:53:16 UTC
 </p><h2>Unresolved Issues</h2>
 <hr>
 <h3 id="423"><a href="#423">423</a><sup><a href="https://cplusplus.github.io/LWG/issue423">(i)</a></sup>. Effects of negative <code>streamsize</code> in iostreams</h3>
@@ -35383,60 +35383,6 @@ const_reference at(size_type frame_no) const;
 
 
 <hr>
-<h3 id="3627"><a href="#3627">3627</a><sup><a href="https://cplusplus.github.io/LWG/issue3627">(i)</a></sup>. Inconsistent specifications for <code>std::make_optional</code> overloads</h3>
-<p><b>Section:</b> 22.5.10 <a href="https://wg21.link/optional.specalg">[optional.specalg]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Jiang An <b>Opened:</b> 2021-10-23 <b>Last modified:</b> 2022-01-29</p>
-<p><b>Priority: </b>3
-</p>
-<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
-<p><b>Discussion:</b></p>
-<p>
-Three <code>std::make_optional</code> overloads are specified in 22.5.10 <a href="https://wg21.link/optional.specalg">[optional.specalg]</a>. 
-The first one is specified by "<i>Returns:</i>" and the other two are specified by "<i>Effects:</i> Equivalent to:".
-According to 16.3.2.4 <a href="https://wg21.link/structure.specifications">[structure.specifications]</a>/4, such uses of "<i>Effects:</i> Equivalent to:" 
-propagate the <i>Constraints</i> specified for constructors. As the selected constructor for the first 
-overload has "<i>Constraints:</i>" (22.5.3.2 <a href="https://wg21.link/optional.ctor">[optional.ctor]</a>/22), it seems that inconsistency is introduced here.
-<p/>
-Existing implementations are inconsistent: libstdc++ constrains all three overloads, 
-while libc++ and MSVC STL do not constrain any of them.
-<p/>
-IMO all three overloads should be constrained.
-</p>
-
-<p><i>[2022-01-29; Reflector poll]</i></p>
-
-<p>
-Set priority to 3 after reflector poll.
-</p>
-
-
-
-<p id="res-3627"><b>Proposed resolution:</b></p>
-<p>
-This wording is relative to <a href="https://wg21.link/n4901">N4901</a>.
-</p>
-
-<ol>
-<li><p>Modify 22.5.10 <a href="https://wg21.link/optional.specalg">[optional.specalg]</a> as indicated:</p>
-
-<blockquote>
-<pre>
-template&lt;class T&gt; constexpr optional&lt;decay_t&lt;T&gt;&gt; make_optional(T&amp;&amp; v);
-</pre>
-<blockquote>
-<p>
--3- <i><del>Returns</del><ins>Effects</ins>:</i> <ins>Equivalent to: </ins><code><ins>return </ins>optional&lt;decay_t&lt;T&gt;&gt;(std::forward&lt;T&gt;(v))<ins>;</ins></code><del>.</del>
-</p>
-</blockquote>
-</blockquote>
-</li>
-</ol>
-
-
-
-
-
-<hr>
 <h3 id="3628"><a href="#3628">3628</a><sup><a href="https://cplusplus.github.io/LWG/issue3628">(i)</a></sup>. "<i>Effects:</i> Equivalent to:" and uninitialized memory algorithms</h3>
 <p><b>Section:</b> 26.11 <a href="https://wg21.link/specialized.algorithms">[specialized.algorithms]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
  <b>Submitter:</b> Jiang An <b>Opened:</b> 2021-10-23 <b>Last modified:</b> 2022-01-29</p>
@@ -67068,8 +67014,8 @@ template&lt;ranges::input_range Range&gt;
 <hr>
 <h3 id="4225"><a href="#4225">4225</a><sup><a href="https://cplusplus.github.io/LWG/issue4225">(i)</a></sup>. What should happen when an exception is thrown on resizing <code class='backtick'>std::deque</code>, <code class='backtick'>std::forward_list</code>, or <code class='backtick'>std::list</code>?</h3>
 <p><b>Section:</b> 23.3.5.3 <a href="https://wg21.link/deque.capacity">[deque.capacity]</a>, 23.3.7.5 <a href="https://wg21.link/forward.list.modifiers">[forward.list.modifiers]</a>, 23.3.11.3 <a href="https://wg21.link/list.capacity">[list.capacity]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Jiang An <b>Opened:</b> 2025-03-15 <b>Last modified:</b> 2025-03-15</p>
-<p><b>Priority: </b>Not Prioritized
+ <b>Submitter:</b> Jiang An <b>Opened:</b> 2025-03-15 <b>Last modified:</b> 2025-10-16</p>
+<p><b>Priority: </b>3
 </p>
 <p><b>View all other</b> <a href="lwg-index.html#deque.capacity">issues</a> in [deque.capacity].</p>
 <p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
@@ -67088,8 +67034,134 @@ later effectively copied to <code class='backtick'>std::inplace_vector</code> be
 as much as possible that of <code class='backtick'>std::vector</code>.
 </p>
 
+<p><i>[2025-10-16; Reflector poll]</i></p>
+
+<p>
+Set priority to 3 after reflector poll.
+</p>
+
+<p><i>[2025-10-16; Jonathan provides wording]</i></p>
+
+<p>
+LWG <a href="lwg-defects.html#4106" title="basic_format_args should not be default-constructible (Status: WP)">4106</a><sup><a href="https://cplusplus.github.io/LWG/issue4106" title="Latest snapshot">(i)</a></sup> already fixed this for <code class='backtick'>std::forward_list</code>.
+For <code class='backtick'>std::list</code> the "If an exception is thrown, there are no effects" wording
+in 23.3.11.4 <a href="https://wg21.link/list.modifiers">[list.modifiers]</a> p2 doesn't apply to <code class='backtick'>std::list::resize</code>
+because it's in a different subclause (23.3.11.3 <a href="https://wg21.link/list.capacity">[list.capacity]</a>).
+We can fix that though.
+</p>
+
+
 
 <p id="res-4225"><b>Proposed resolution:</b></p>
+<p>
+This wording is relative to <a href="https://wg21.link/N5014">N5014</a>.
+</p>
+
+<ol>
+
+<li><p>Modify 23.3.5.3 <a href="https://wg21.link/deque.capacity">[deque.capacity]</a> as indicated:</p>
+
+<blockquote>
+<pre>
+constexpr void resize(size_type sz);
+</pre>
+<blockquote>
+<p>
+-1- <em>Preconditions</em>:
+<code class='backtick'>T</code> is <em>Cpp17MoveInsertable</em> and <em>Cpp17DefaultInsertable</em>
+into <code class='backtick'>deque</code>.
+</p>
+<p>
+-2- <em>Effects</em>:
+If <code>sz &lt; size()</code> <ins>is <code class='backtick'>true</code></ins>,
+erases the last <code class='backtick'>size() - sz</code> elements from the sequence.
+Otherwise, appends <code class='backtick'>sz - size()</code> default-inserted elements to the sequence.
+<ins>
+If an exception is thrown, there is no effect on the container.
+</ins>
+</p>
+</blockquote>
+
+<pre>
+constexpr void resize(size_type sz, const T&amp; c);
+</pre>
+<blockquote>
+<p>
+-3- <em>Preconditions</em>:
+<code class='backtick'>T</code> is <em>Cpp17CopyInsertable</em>
+into <code class='backtick'>deque</code>.
+</p>
+<p>
+-4- <em>Effects</em>:
+If <code>sz &lt; size()</code> <ins>is <code class='backtick'>true</code></ins>,
+erases the last <code class='backtick'>size() - sz</code> elements from the sequence.
+Otherwise, appends <code class='backtick'>sz - size()</code> copies of <code class='backtick'>c</code> to the sequence.
+<ins>
+If an exception is thrown, there is no effect on the container.
+</ins>
+</p>
+</blockquote>
+
+</blockquote>
+</li>
+
+<li><p>Modify 23.3.11.3 <a href="https://wg21.link/list.capacity">[list.capacity]</a> as indicated:</p>
+
+<blockquote>
+
+<pre>
+constexpr void resize(size_type sz);
+</pre>
+<blockquote>
+<p>
+-1- <em>Preconditions</em>:
+<code class='backtick'>T</code> is  <em>Cpp17DefaultInsertable</em> into <code class='backtick'>list</code>.
+</p>
+<p>
+-2- <em>Effects</em>:
+If <code>size() &lt; sz</code> <ins>is <code class='backtick'>true</code></ins>,
+appends <code class='backtick'>sz - size()</code> default-inserted elements to the sequence.
+If <code>sz &lt;= size()</code> <ins>is <code class='backtick'>true</code></ins>,
+equivalent to:
+<blockquote><pre>list&lt;T&gt;::iterator it = begin();
+advance(it, sz);
+erase(it, end());
+</pre></blockquote>
+<ins>
+If an exception is thrown, there is no effect on the container.
+</ins>
+</p>
+</blockquote>
+
+<pre>
+constexpr void resize(size_type sz, const T&amp; c);
+</pre>
+<blockquote>
+<p>
+-3- <em>Preconditions</em>:
+<code class='backtick'>T</code> is <em>Cpp17CopyInsertable</em> into <code class='backtick'>list</code>.
+</p>
+<p>
+-4- <em>Effects</em>:
+<del>As if by</del> <ins>Equivalent to</ins>:
+<blockquote><pre>if (sz &lt; size()
+  insert(end(), sz-size(), c);
+else if (sz &lt; size()) {
+  iterator i = begin();
+  advance(it, sz);
+  erase(it, end());
+}
+else
+  ;           <i>// do nothing</i>
+</pre></blockquote>
+</p>
+</blockquote>
+
+</blockquote>
+</li>
+
+</ol>
+
 
 
 
@@ -69801,7 +69873,7 @@ template&lt;class T&gt;
 <hr>
 <h3 id="4267"><a href="#4267">4267</a><sup><a href="https://cplusplus.github.io/LWG/issue4267">(i)</a></sup>. Uses-allocator construction is meaningless for tuple of references</h3>
 <p><b>Section:</b> 22.4.4.2 <a href="https://wg21.link/tuple.cnstr">[tuple.cnstr]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Jiang An <b>Opened:</b> 2025-05-24 <b>Last modified:</b> 2025-10-14</p>
+ <b>Submitter:</b> Jiang An <b>Opened:</b> 2025-05-24 <b>Last modified:</b> 2025-10-16</p>
 <p><b>Priority: </b>3
 </p>
 <p><b>View other</b> <a href="lwg-index-open.html#tuple.cnstr">active issues</a> in [tuple.cnstr].</p>
@@ -69829,9 +69901,9 @@ Set priority to 3 after reflector poll.
 construction of references as equivalent to normal construction."
 </p>
 
+<p><strong>Previous resolution [SUPERSEDED]:</strong></p>
+<blockquote class="note">
 
-
-<p id="res-4267"><b>Proposed resolution:</b></p>
 <p>
 This wording is relative to <a href="https://wg21.link/N5008" title=" Working Draft, Programming Languages — C++">N5008</a>.
 </p>
@@ -69865,6 +69937,49 @@ is <code class='backtick'>true</code> for at least one <code>T<sub><i>i</i></sub
 </li>
 
 </ol>
+
+</blockquote>
+
+<p><i>[2025-10-15; Jonathan provides new wording]</i></p>
+
+
+
+
+<p id="res-4267"><b>Proposed resolution:</b></p>
+<p>
+This wording is relative to <a href="https://wg21.link/N5014">N5014</a>.
+</p>
+<ol>
+
+<li><p>Modify 22.4.4.2 <a href="https://wg21.link/tuple.cnstr">[tuple.cnstr]</a> as indicated:</p>
+
+<blockquote>
+<pre>
+template&lt;class Alloc&gt;
+  constexpr explicit(<i>see below</i>)
+    tuple(allocator_arg_t, const Alloc&amp; a);
+[&hellip;]
+template&lt;class Alloc, tuple-like UTuple&gt;
+  constexpr explicit(<i>see below</i>)
+    tuple(allocator_arg_t, const Alloc&amp; a, UTuple&amp;&amp;);
+</pre>
+<blockquote>
+<p>
+-32- <i>Preconditions</i>: <code class='backtick'>Alloc</code> meets the <i>Cpp17Allocator</i> requirements (16.4.4.6.1 <a href="https://wg21.link/allocator.requirements.general">[allocator.requirements.general]</a>).
+<p/>
+-33- <i>Effects</i>:
+Equivalent to the preceding constructors except that each element
+<ins>of non-reference type</ins>
+is constructed with uses-allocator construction
+(20.2.8.2 <a href="https://wg21.link/allocator.uses.construction">[allocator.uses.construction]</a>).
+</p>
+</blockquote>
+</blockquote>
+
+</li>
+
+</ol>
+
 
 
 
@@ -71205,8 +71320,8 @@ inline constexpr execution::unsequenced_policy execution::unseq{ <del><i>unspeci
 <hr>
 <h3 id="4275"><a href="#4275">4275</a><sup><a href="https://cplusplus.github.io/LWG/issue4275">(i)</a></sup>. <code class='backtick'>std::dynamic_extent</code> should also be defined in <code>&lt;mdspan&gt;</code></h3>
 <p><b>Section:</b> 23.7.3.2 <a href="https://wg21.link/mdspan.syn">[mdspan.syn]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Aiden Grossman <b>Opened:</b> 2025-06-06 <b>Last modified:</b> 2025-06-10</p>
-<p><b>Priority: </b>Not Prioritized
+ <b>Submitter:</b> Aiden Grossman <b>Opened:</b> 2025-06-06 <b>Last modified:</b> 2025-10-16</p>
+<p><b>Priority: </b>3
 </p>
 <p><b>View all other</b> <a href="lwg-index.html#mdspan.syn">issues</a> in [mdspan.syn].</p>
 <p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
@@ -71249,6 +71364,13 @@ namespace std {
 
 <p><i>[2025-06-10; Jonathan provides improved wording]</i></p>
 
+
+
+<p><i>[2025-10-15; Reflector poll]</i></p>
+
+<p>
+Set priority to 3 after reflector poll.
+</p>
 
 
 
@@ -71419,8 +71541,8 @@ Could the <code class='backtick'>!exists(p)</code> part be implementation-define
 <hr>
 <h3 id="4281"><a href="#4281">4281</a><sup><a href="https://cplusplus.github.io/LWG/issue4281">(i)</a></sup>. Inconsistency between <code class='backtick'>value_or()</code> and <code class='backtick'>error_or()</code> in <code class='backtick'>std::expected</code></h3>
 <p><b>Section:</b> 22.5.3.7 <a href="https://wg21.link/optional.observe">[optional.observe]</a>, 22.8.6.6 <a href="https://wg21.link/expected.object.obs">[expected.object.obs]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Hiroaki Ando <b>Opened:</b> 2025-06-27 <b>Last modified:</b> 2025-10-15</p>
-<p><b>Priority: </b>Not Prioritized
+ <b>Submitter:</b> Hiroaki Ando <b>Opened:</b> 2025-06-27 <b>Last modified:</b> 2025-10-16</p>
+<p><b>Priority: </b>3
 </p>
 <p><b>View other</b> <a href="lwg-index-open.html#optional.observe">active issues</a> in [optional.observe].</p>
 <p><b>View all other</b> <a href="lwg-index.html#optional.observe">issues</a> in [optional.observe].</p>
@@ -71468,6 +71590,13 @@ else
 
 <p><i>[2025-10-15; would be resolved by LWG <a href="lwg-active.html#4406" title="optional::value_or return statement is inconsistent with Mandates (Status: New)">4406</a><sup><a href="https://cplusplus.github.io/LWG/issue4406" title="Latest snapshot">(i)</a></sup>]</i></p>
 
+
+
+<p><i>[2025-10-16; Reflector poll]</i></p>
+
+<p>
+Set priority to 3 after reflector poll.
+</p>
 
 
 
@@ -74157,8 +74286,8 @@ the corresponding successful <code class='backtick'>join()</code> return.
 <hr>
 <h3 id="4311"><a href="#4311">4311</a><sup><a href="https://cplusplus.github.io/LWG/issue4311">(i)</a></sup>. Can <code class='backtick'>std::pmr::polymorphic_allocator::construct</code> just call <code class='backtick'>std::uninitialized_construct_using_allocator</code>?</h3>
 <p><b>Section:</b> 20.5.3.3 <a href="https://wg21.link/mem.poly.allocator.mem">[mem.poly.allocator.mem]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Jiang An <b>Opened:</b> 2025-08-06 <b>Last modified:</b> 2025-08-16</p>
-<p><b>Priority: </b>Not Prioritized
+ <b>Submitter:</b> Jiang An <b>Opened:</b> 2025-08-06 <b>Last modified:</b> 2025-10-16</p>
+<p><b>Priority: </b>3
 </p>
 <p><b>View all other</b> <a href="lwg-index.html#mem.poly.allocator.mem">issues</a> in [mem.poly.allocator.mem].</p>
 <p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
@@ -74177,6 +74306,23 @@ As a result, it seems non-conforming to just use <code class='backtick'>uninitia
 perhaps we can just respecify <code class='backtick'>polymorphic_allocator::construct</code> to use 
 <code class='backtick'>uninitialized_construct_using_allocator</code>.
 </p>
+
+<p><i>[2025-10-15; Reflector poll]</i></p>
+
+<p>
+Set priority to 3 after reflector poll.
+</p>
+<p>
+"What is the extent of the breakage?
+<code class='backtick'>pmr::polymorphic_allocator::new_object</code> uses <code class='backtick'>construct</code>,
+so does this break users of that function?"
+</p>
+<p>
+We could modify <code class='backtick'>new_object</code> to allocate and construct
+<code>remove_cv_t&lt;T&gt;</code> instead of <code class='backtick'>T</code>,
+so that it could still use <code class='backtick'>construct</code>.
+</p>
+
 
 
 <p id="res-4311"><b>Proposed resolution:</b></p>
@@ -78901,255 +79047,6 @@ where <code><i>unspecified-exception</i></code> is a type derived from <code cla
 
 
 <hr>
-<h3 id="4370"><a href="#4370">4370</a><sup><a href="https://cplusplus.github.io/LWG/issue4370">(i)</a></sup>. Comparison of <code>optional&lt;T&gt;</code> to <code>T</code> may be ill-formed</h3>
-<p><b>Section:</b> 22.5.9 <a href="https://wg21.link/optional.comp.with.t">[optional.comp.with.t]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Hewill Kang <b>Opened:</b> 2025-09-06 <b>Last modified:</b> 2025-09-15</p>
-<p><b>Priority: </b>Not Prioritized
-</p>
-<p><b>View all other</b> <a href="lwg-index.html#optional.comp.with.t">issues</a> in [optional.comp.with.t].</p>
-<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
-<p><b>Discussion:</b></p>
-<p>
-When comparing an <code class='backtick'>optional</code> with its value type, the current wording specifies that the result is the
-ternary expression of <code class='backtick'>x.has_value() ? *x == v : false</code>, where <code class='backtick'>*x == v</code> returns a result that can be 
-implicitly converted to <code class='backtick'>bool</code>.
-<p/>
-However, when the result can also be constructed using <code class='backtick'>bool</code> (which is common), the ternary operation
-will be ill-formed due to ambiguity (<a href="https://godbolt.org/z/r55Wh51Y8">demo</a>):
-</p>
-<blockquote><pre>
-#include &lt;optional&gt;
-
-struct Bool {
-  Bool(bool);
-  operator bool() const;
-};
-
-struct S {
-  Bool operator==(S) const;
-};
-
-int main() {
-  return std::optional&lt;S&gt;{} == S{}; // <span style="color:#C80000;font-weight:bold">fire</span>
-}
-</pre></blockquote>
-
-
-<p id="res-4370"><b>Proposed resolution:</b></p>
-<p>
-This wording is relative to <a href="https://wg21.link/N5014">N5014</a>.
-</p>
-
-<ol>
-
-<li><p>Modify 22.5.9 <a href="https://wg21.link/optional.comp.with.t">[optional.comp.with.t]</a> as indicated:</p>
-
-<blockquote>
-<pre>
-template&lt;class T, class U&gt; constexpr bool operator==(const optional&lt;T&gt;&amp; x, const U&amp; v);
-</pre>
-<blockquote>
-<p>
--1- <i>Constraints</i>: <code class='backtick'>U</code> is not a specialization of <code class='backtick'>optional</code>. The expression <code class='backtick'>*x == v</code> is well-formed
-   and its result is convertible to <code class='backtick'>bool</code>.
-<p/>
-[<i>Note 1</i>: <code class='backtick'>T</code> need not be <i>Cpp17EqualityComparable</i>. &mdash; end note]
-<p/>
--2- <i>Effects</i>: Equivalent to: <del><code class='backtick'>return x.has_value() ? *x == v : false;</code></del>
-</p>
-<blockquote><pre>
-<ins>if (x.has_value())
-  return *x == v;
-return false;</ins>
-</pre></blockquote>
-</blockquote>
-<pre>
-template&lt;class T, class U&gt; constexpr bool operator==(const T&amp; v, const optional&lt;U&gt;&amp; x);
-</pre>
-<blockquote>
-<p>
--3- <i>Constraints</i>: <code class='backtick'>T</code> is not a specialization of <code class='backtick'>optional</code>. The expression <code class='backtick'>v == *x</code> is well-formed
-and its result is convertible to <code class='backtick'>bool</code>.
-<p/>
--4- <i>Effects</i>: Equivalent to: <del><code class='backtick'>return x.has_value() ? v == *x : false;</code></del>
-</p>
-<blockquote><pre>
-<ins>if (x.has_value())
-  return v == *x;
-return false;</ins>
-</pre></blockquote>
-</blockquote>
-<pre>
-template&lt;class T, class U&gt; constexpr bool operator!=(const optional&lt;T&gt;&amp; x, const U&amp; v);
-</pre>
-<blockquote>
-<p>
--5- <i>Constraints</i>: <code class='backtick'>U</code> is not a specialization of <code class='backtick'>optional</code>. The expression <code class='backtick'>*x != v</code> is well-formed
-and its result is convertible to <code class='backtick'>bool</code>.
-<p/>
--6- <i>Effects</i>: Equivalent to: <del><code class='backtick'>return x.has_value() ? *x != v : true;</code></del>
-</p>
-<blockquote><pre>
-<ins>if (x.has_value())
-  return *x != v;
-return true;</ins>
-</pre></blockquote>
-</blockquote>
-<pre>
-template&lt;class T, class U&gt; constexpr bool operator!=(const T&amp; v, const optional&lt;U&gt;&amp; x);
-</pre>
-<blockquote>
-<p>
--7- <i>Constraints</i>: <code class='backtick'>T</code> is not a specialization of <code class='backtick'>optional</code>. The expression <code class='backtick'>v != *x</code> is well-formed
-and its result is convertible to <code class='backtick'>bool</code>.
-<p/>
--8- <i>Effects</i>: Equivalent to: <del><code class='backtick'>return x.has_value() ? v != *x : true;</code></del>
-</p>
-<blockquote><pre>
-<ins>if (x.has_value())
-  return v != *x;
-return true;</ins>
-</pre></blockquote>
-</blockquote>
-<pre>
-template&lt;class T, class U&gt; constexpr bool operator&lt;(const optional&lt;T&gt;&amp; x, const U&amp; v);
-</pre>
-<blockquote>
-<p>
--9- <i>Constraints</i>: <code class='backtick'>U</code> is not a specialization of <code class='backtick'>optional</code>. The expression <code>*x &lt; v</code> is well-formed
-and its result is convertible to <code class='backtick'>bool</code>.
-<p/>
--10- <i>Effects</i>: Equivalent to: <del><code>return x.has_value() ? *x &lt; v : true;</code></del>
-</p>
-<blockquote><pre>
-<ins>if (x.has_value())
-  return *x &lt; v;
-return true;</ins>
-</pre></blockquote>
-</blockquote>
-<pre>
-template&lt;class T, class U&gt; constexpr bool operator&lt;(const T&amp; v, const optional&lt;U&gt;&amp; x);
-</pre>
-<blockquote>
-<p>
--11- <i>Constraints</i>: <code class='backtick'>T</code> is not a specialization of <code class='backtick'>optional</code>. The expression <code>v &lt; *x</code> 
-is well-formed and its result is convertible to <code class='backtick'>bool</code>.
-<p/>
--12- <i>Effects</i>: Equivalent to: <del><code>return x.has_value() ? v &lt; *x : false;</code></del>
-</p>
-<blockquote><pre>
-<ins>if (x.has_value())
-  return v &lt; *x;
-return false;</ins>
-</pre></blockquote>
-</blockquote>
-<pre>
-template&lt;class T, class U&gt; constexpr bool operator&gt;(const optional&lt;T&gt;&amp; x, const U&amp; v);
-</pre>
-<blockquote>
-<p>
--13- <i>Constraints</i>: <code class='backtick'>U</code> is not a specialization of <code class='backtick'>optional</code>. The expression <code>*x &gt; v</code> is 
-well-formed and its result is convertible to <code class='backtick'>bool</code>.
-<p/>
--14- <i>Effects</i>: Equivalent to: <del><code>return x.has_value() ? *x &gt; v : false;</code></del>
-</p>
-<blockquote><pre>
-<ins>if (x.has_value())
-  return *x &gt; v;
-return false;</ins>
-</pre></blockquote>
-</blockquote>
-<pre>
-template&lt;class T, class U&gt; constexpr bool operator&gt;(const T&amp; v, const optional&lt;U&gt;&amp; x);
-</pre>
-<blockquote>
-<p>
--15- <i>Constraints</i>: <code class='backtick'>T</code> is not a specialization of <code class='backtick'>optional</code>. The expression <code>v &gt; *x</code> 
-is well-formed and its result is convertible to <code class='backtick'>bool</code>.
-<p/>
--16- <i>Effects</i>: Equivalent to: <del><code>return x.has_value() ? v &gt; *x : true;</code></del>
-</p>
-<blockquote><pre>
-<ins>if (x.has_value())
-  return v &gt; *x;
-return true;</ins>
-</pre></blockquote>
-</blockquote>
-<pre>
-template&lt;class T, class U&gt; constexpr bool operator&lt;=(const optional&lt;T&gt;&amp; x, const U&amp; v);
-</pre>
-<blockquote>
-<p>
--17- <i>Constraints</i>: <code class='backtick'>U</code> is not a specialization of <code class='backtick'>optional</code>. The expression <code>*x &lt;= v</code> 
-is well-formed and its result is convertible to <code class='backtick'>bool</code>.
-<p/>
--18- <i>Effects</i>: Equivalent to: <del><code>return x.has_value() ? *x &lt;= v : true;</code></del>
-</p>
-<blockquote><pre>
-<ins>if (x.has_value())
-  return *x &lt;= v;
-return true;</ins>
-</pre></blockquote>
-</blockquote>
-<pre>
-template&lt;class T, class U&gt; constexpr bool operator&lt;=(const T&amp; v, const optional&lt;U&gt;&amp; x);
-</pre>
-<blockquote>
-<p>
--19- <i>Constraints</i>: <code class='backtick'>T</code> is not a specialization of <code class='backtick'>optional</code>. The expression <code>v &lt;= *x</code> 
-is well-formed and its result is convertible to <code class='backtick'>bool</code>.
-<p/>
--20- <i>Effects</i>: Equivalent to: <del><code>return x.has_value() ? v &lt;= *x : false;</code></del>
-</p>
-<blockquote><pre>
-<ins>if (x.has_value())
-  return v &lt;= *x;
-return false;</ins>
-</pre></blockquote>
-</blockquote>
-<pre>
-template&lt;class T, class U&gt; constexpr bool operator&gt;=(const optional&lt;T&gt;&amp; x, const U&amp; v);
-</pre>
-<blockquote>
-<p>
--21- <i>Constraints</i>: <code class='backtick'>U</code> is not a specialization of <code class='backtick'>optional</code>. The expression <code>*x &gt;= v</code> 
-is well-formed and its result is convertible to <code class='backtick'>bool</code>.
-<p/>
--22- <i>Effects</i>: Equivalent to: <del><code>return x.has_value() ? *x &gt;= v : false;</code></del>
-</p>
-<blockquote><pre>
-<ins>if (x.has_value())
-  return *x &gt;= v;
-return false;</ins>
-</pre></blockquote>
-</blockquote>
-<pre>
-template&lt;class T, class U&gt; constexpr bool operator&gt;=(const T&amp; v, const optional&lt;U&gt;&amp; x);
-</pre>
-<blockquote>
-<p>
--23- <i>Constraints</i>: <code class='backtick'>T</code> is not a specialization of <code class='backtick'>optional</code>. The expression <code>v &gt;= *x</code> 
-is well-formed and its result is convertible to <code class='backtick'>bool</code>.
-<p/>
--24- <i>Effects</i>: Equivalent to: <del><code>return x.has_value() ? v &gt;= *x : true;</code></del>
-</p>
-<blockquote><pre>
-<ins>if (x.has_value())
-  return v &gt;= *x;
-return true;</ins>
-</pre></blockquote>
-</blockquote>
-
-</blockquote>
-
-</li>
-
-</ol>
-
-
-
-
-<hr>
 <h3 id="4371"><a href="#4371">4371</a><sup><a href="https://cplusplus.github.io/LWG/issue4371">(i)</a></sup>. Container adaptor's <code class='backtick'>empty</code>/<code class='backtick'>size</code> should be <code class='backtick'>noexcept</code></h3>
 <p><b>Section:</b> 23.6.3.1 <a href="https://wg21.link/queue.defn">[queue.defn]</a>, 23.6.4.1 <a href="https://wg21.link/priqueue.overview">[priqueue.overview]</a>, 23.6.6.2 <a href="https://wg21.link/stack.defn">[stack.defn]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
  <b>Submitter:</b> Hewill Kang <b>Opened:</b> 2025-09-09 <b>Last modified:</b> 2025-09-16</p>
@@ -82387,8 +82284,8 @@ constexpr mdspan(<ins><i>convertible-to-non-slicing</i>&lt;</ins>data_handle_typ
 <hr>
 <h3 id="4406"><a href="#4406">4406</a><sup><a href="https://cplusplus.github.io/LWG/issue4406">(i)</a></sup>. <code class='backtick'>optional::value_or</code> return statement is inconsistent with <i>Mandates</i></h3>
 <p><b>Section:</b> 22.5.3.7 <a href="https://wg21.link/optional.observe">[optional.observe]</a>, 22.5.4.6 <a href="https://wg21.link/optional.ref.observe">[optional.ref.observe]</a>, 22.8.6.6 <a href="https://wg21.link/expected.object.obs">[expected.object.obs]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Hewill Kang <b>Opened:</b> 2025-09-06 <b>Last modified:</b> 2025-10-10</p>
-<p><b>Priority: </b>Not Prioritized
+ <b>Submitter:</b> Hewill Kang <b>Opened:</b> 2025-09-06 <b>Last modified:</b> 2025-10-16</p>
+<p><b>Priority: </b>3
 </p>
 <p><b>View other</b> <a href="lwg-index-open.html#optional.observe">active issues</a> in [optional.observe].</p>
 <p><b>View all other</b> <a href="lwg-index.html#optional.observe">issues</a> in [optional.observe].</p>
@@ -82421,6 +82318,17 @@ It is reasonable to create objects that stick to <i>Mandates</i>. The same goes 
 <p/>
 This issue has considerable overlap with LWG <a href="lwg-active.html#4281" title="Inconsistency between value_or() and error_or() in std::expected (Status: New)">4281</a><sup><a href="https://cplusplus.github.io/LWG/issue4281" title="Latest snapshot">(i)</a></sup>.
 </p>
+
+<p><i>[2025-10-16; Reflector poll]</i></p>
+
+<p>
+Set priority to 3 after reflector poll.
+</p>
+<p>
+This would need to use <code class='backtick'>val</code> instead of <code class='backtick'>**this</code> if LWG <a href="lwg-active.html#4015" title="LWG 3973 broke const overloads of std::optional monadic operations (Status: Open)">4015</a><sup><a href="https://cplusplus.github.io/LWG/issue4015" title="Latest snapshot">(i)</a></sup>
+is accepted.
+</p>
+
 
 
 <p id="res-4406"><b>Proposed resolution:</b></p>

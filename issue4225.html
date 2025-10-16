@@ -64,8 +64,8 @@
 <p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#New">New</a> status.</em></p>
 <h3 id="4225"><a href="lwg-active.html#4225">4225</a>. What should happen when an exception is thrown on resizing <code class='backtick'>std::deque</code>, <code class='backtick'>std::forward_list</code>, or <code class='backtick'>std::list</code>?</h3>
 <p><b>Section:</b> 23.3.5.3 <a href="https://wg21.link/deque.capacity">[deque.capacity]</a>, 23.3.7.5 <a href="https://wg21.link/forward.list.modifiers">[forward.list.modifiers]</a>, 23.3.11.3 <a href="https://wg21.link/list.capacity">[list.capacity]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Jiang An <b>Opened:</b> 2025-03-15 <b>Last modified:</b> 2025-03-15</p>
-<p><b>Priority: </b>Not Prioritized
+ <b>Submitter:</b> Jiang An <b>Opened:</b> 2025-03-15 <b>Last modified:</b> 2025-10-16</p>
+<p><b>Priority: </b>3
 </p>
 <p><b>View all other</b> <a href="lwg-index.html#deque.capacity">issues</a> in [deque.capacity].</p>
 <p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
@@ -84,8 +84,134 @@ later effectively copied to <code class='backtick'>std::inplace_vector</code> be
 as much as possible that of <code class='backtick'>std::vector</code>.
 </p>
 
+<p><i>[2025-10-16; Reflector poll]</i></p>
+
+<p>
+Set priority to 3 after reflector poll.
+</p>
+
+<p><i>[2025-10-16; Jonathan provides wording]</i></p>
+
+<p>
+LWG <a href="lwg-defects.html#4106" title="basic_format_args should not be default-constructible (Status: WP)">4106</a><sup><a href="https://cplusplus.github.io/LWG/issue4106" title="Latest snapshot">(i)</a></sup> already fixed this for <code class='backtick'>std::forward_list</code>.
+For <code class='backtick'>std::list</code> the "If an exception is thrown, there are no effects" wording
+in 23.3.11.4 <a href="https://wg21.link/list.modifiers">[list.modifiers]</a> p2 doesn't apply to <code class='backtick'>std::list::resize</code>
+because it's in a different subclause (23.3.11.3 <a href="https://wg21.link/list.capacity">[list.capacity]</a>).
+We can fix that though.
+</p>
+
+
 
 <p id="res-4225"><b>Proposed resolution:</b></p>
+<p>
+This wording is relative to <a href="https://wg21.link/N5014">N5014</a>.
+</p>
+
+<ol>
+
+<li><p>Modify 23.3.5.3 <a href="https://wg21.link/deque.capacity">[deque.capacity]</a> as indicated:</p>
+
+<blockquote>
+<pre>
+constexpr void resize(size_type sz);
+</pre>
+<blockquote>
+<p>
+-1- <em>Preconditions</em>:
+<code class='backtick'>T</code> is <em>Cpp17MoveInsertable</em> and <em>Cpp17DefaultInsertable</em>
+into <code class='backtick'>deque</code>.
+</p>
+<p>
+-2- <em>Effects</em>:
+If <code>sz &lt; size()</code> <ins>is <code class='backtick'>true</code></ins>,
+erases the last <code class='backtick'>size() - sz</code> elements from the sequence.
+Otherwise, appends <code class='backtick'>sz - size()</code> default-inserted elements to the sequence.
+<ins>
+If an exception is thrown, there is no effect on the container.
+</ins>
+</p>
+</blockquote>
+
+<pre>
+constexpr void resize(size_type sz, const T&amp; c);
+</pre>
+<blockquote>
+<p>
+-3- <em>Preconditions</em>:
+<code class='backtick'>T</code> is <em>Cpp17CopyInsertable</em>
+into <code class='backtick'>deque</code>.
+</p>
+<p>
+-4- <em>Effects</em>:
+If <code>sz &lt; size()</code> <ins>is <code class='backtick'>true</code></ins>,
+erases the last <code class='backtick'>size() - sz</code> elements from the sequence.
+Otherwise, appends <code class='backtick'>sz - size()</code> copies of <code class='backtick'>c</code> to the sequence.
+<ins>
+If an exception is thrown, there is no effect on the container.
+</ins>
+</p>
+</blockquote>
+
+</blockquote>
+</li>
+
+<li><p>Modify 23.3.11.3 <a href="https://wg21.link/list.capacity">[list.capacity]</a> as indicated:</p>
+
+<blockquote>
+
+<pre>
+constexpr void resize(size_type sz);
+</pre>
+<blockquote>
+<p>
+-1- <em>Preconditions</em>:
+<code class='backtick'>T</code> is  <em>Cpp17DefaultInsertable</em> into <code class='backtick'>list</code>.
+</p>
+<p>
+-2- <em>Effects</em>:
+If <code>size() &lt; sz</code> <ins>is <code class='backtick'>true</code></ins>,
+appends <code class='backtick'>sz - size()</code> default-inserted elements to the sequence.
+If <code>sz &lt;= size()</code> <ins>is <code class='backtick'>true</code></ins>,
+equivalent to:
+<blockquote><pre>list&lt;T&gt;::iterator it = begin();
+advance(it, sz);
+erase(it, end());
+</pre></blockquote>
+<ins>
+If an exception is thrown, there is no effect on the container.
+</ins>
+</p>
+</blockquote>
+
+<pre>
+constexpr void resize(size_type sz, const T&amp; c);
+</pre>
+<blockquote>
+<p>
+-3- <em>Preconditions</em>:
+<code class='backtick'>T</code> is <em>Cpp17CopyInsertable</em> into <code class='backtick'>list</code>.
+</p>
+<p>
+-4- <em>Effects</em>:
+<del>As if by</del> <ins>Equivalent to</ins>:
+<blockquote><pre>if (sz &lt; size()
+  insert(end(), sz-size(), c);
+else if (sz &lt; size()) {
+  iterator i = begin();
+  advance(it, sz);
+  erase(it, end());
+}
+else
+  ;           <i>// do nothing</i>
+</pre></blockquote>
+</p>
+</blockquote>
+
+</blockquote>
+</li>
+
+</ol>
+
 
 
 

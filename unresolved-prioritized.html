@@ -60,7 +60,7 @@
 <p>This document is the Table of Contents for the <a href="lwg-active.html">Library Active Issues List</a>,
 <a href="lwg-defects.html">Library Defect Reports and Accepted Issues</a>, and <a href="lwg-closed.html">Library Closed Issues List</a>,
 sorted by priority.</p>
-<p>Revised 2025-10-15 at 11:31:05 UTC
+<p>Revised 2025-10-16 at 14:53:16 UTC
 </p><h2 id="Priority_1">Priority 1 (9 issues)</h2>
 <table class="issues-index">
 <tr>
@@ -708,7 +708,7 @@ specified to make <code><i>N</i></code> copies of <code>T</code> into the destin
 <td></td>
 </tr>
 </table>
-<h2 id="Priority_3">Priority 3 (405 issues)</h2>
+<h2 id="Priority_3">Priority 3 (409 issues)</h2>
 <table class="issues-index">
 <tr>
   <th><a href="lwg-toc.html">Issue</a></th>
@@ -1567,6 +1567,15 @@ passed to allocator <code>construct</code> and <code>destroy</code></td>
 <td></td>
 </tr>
 <tr>
+<td id="4311"><a href="lwg-active.html#4311" title="Can std::pmr::polymorphic_allocator::construct just call std::uninitialized_construct_using_allocator? (Status: New)">4311</a><sup><a href="https://cplusplus.github.io/LWG/issue4311">(i)</a></sup></td>
+<td><a href="lwg-active.html#New">New</a></td>
+<td>20.5.3.3 [mem.poly.allocator.mem]</td>
+<td>Can <code class='backtick'>std::pmr::polymorphic_allocator::construct</code> just call <code class='backtick'>std::uninitialized_construct_using_allocator</code>?</td>
+<td>Yes</td>
+<td>3</td>
+<td></td>
+</tr>
+<tr>
 <td id="3634"><a href="lwg-active.html#3634" title="When are static-duration memory_resource objects destroyed? (Status: New)">3634</a><sup><a href="https://cplusplus.github.io/LWG/issue3634">(i)</a></sup></td>
 <td><a href="lwg-active.html#New">New</a></td>
 <td>20.5.4 [mem.res.global]</td>
@@ -1877,19 +1886,28 @@ the evaluation of type traits</td>
 <td></td>
 </tr>
 <tr>
-<td id="3613"><a href="lwg-active.html#3613" title="Specify that nullopt_t is copyable (Status: New)">3613</a><sup><a href="https://cplusplus.github.io/LWG/issue3613">(i)</a></sup></td>
+<td id="4281"><a href="lwg-active.html#4281" title="Inconsistency between value_or() and error_or() in std::expected (Status: New)">4281</a><sup><a href="https://cplusplus.github.io/LWG/issue4281">(i)</a></sup></td>
 <td><a href="lwg-active.html#New">New</a></td>
-<td>22.5.5 [optional.nullopt]</td>
-<td>Specify that <code>nullopt_t</code> is copyable</td>
+<td>22.5.3.7 [optional.observe]</td>
+<td>Inconsistency between <code class='backtick'>value_or()</code> and <code class='backtick'>error_or()</code> in <code class='backtick'>std::expected</code></td>
+<td><span class="no-pr">No</span></td>
+<td>3</td>
+<td></td>
+</tr>
+<tr>
+<td id="4406"><a href="lwg-active.html#4406" title="optional::value_or return statement is inconsistent with Mandates (Status: New)">4406</a><sup><a href="https://cplusplus.github.io/LWG/issue4406">(i)</a></sup></td>
+<td><a href="lwg-active.html#New">New</a></td>
+<td>22.5.3.7 [optional.observe]</td>
+<td><code class='backtick'>optional::value_or</code> return statement is inconsistent with <i>Mandates</i></td>
 <td>Yes</td>
 <td>3</td>
 <td></td>
 </tr>
 <tr>
-<td id="3627"><a href="lwg-active.html#3627" title="Inconsistent specifications for std::make_optional overloads (Status: New)">3627</a><sup><a href="https://cplusplus.github.io/LWG/issue3627">(i)</a></sup></td>
+<td id="3613"><a href="lwg-active.html#3613" title="Specify that nullopt_t is copyable (Status: New)">3613</a><sup><a href="https://cplusplus.github.io/LWG/issue3613">(i)</a></sup></td>
 <td><a href="lwg-active.html#New">New</a></td>
-<td>22.5.10 [optional.specalg]</td>
-<td>Inconsistent specifications for <code>std::make_optional</code> overloads</td>
+<td>22.5.5 [optional.nullopt]</td>
+<td>Specify that <code>nullopt_t</code> is copyable</td>
 <td>Yes</td>
 <td>3</td>
 <td></td>
@@ -2257,6 +2275,15 @@ arguments when no insertion happens</td>
 <td></td>
 </tr>
 <tr>
+<td id="4225"><a href="lwg-active.html#4225" title="What should happen when an exception is thrown on resizing std::deque, std::forward_list, or std::list? (Status: New)">4225</a><sup><a href="https://cplusplus.github.io/LWG/issue4225">(i)</a></sup></td>
+<td><a href="lwg-active.html#New">New</a></td>
+<td>23.3.5.3 [deque.capacity]</td>
+<td>What should happen when an exception is thrown on resizing <code class='backtick'>std::deque</code>, <code class='backtick'>std::forward_list</code>, or <code class='backtick'>std::list</code>?</td>
+<td>Yes</td>
+<td>3</td>
+<td></td>
+</tr>
+<tr>
 <td id="3308"><a href="lwg-active.html#3308" title="vector and deque iterator erase invalidates elements even when no change occurs (Status: New)">3308</a><sup><a href="https://cplusplus.github.io/LWG/issue3308">(i)</a></sup></td>
 <td><a href="lwg-active.html#New">New</a></td>
 <td>23.3.5.4 [deque.modifiers]</td>
@@ -2399,6 +2426,15 @@ should conditionally require <i>Cpp17CopyInsertable</i> in their preconditions</
 <td>23.7.3 [views.multidim]</td>
 <td>Issue with custom index conversion in <code>&lt;mdspan&gt;</code></td>
 <td><span class="no-pr">No</span></td>
+<td>3</td>
+<td></td>
+</tr>
+<tr>
+<td id="4275"><a href="lwg-active.html#4275" title="std::dynamic_extent should also be defined in &lt;mdspan&gt; (Status: New)">4275</a><sup><a href="https://cplusplus.github.io/LWG/issue4275">(i)</a></sup></td>
+<td><a href="lwg-active.html#New">New</a></td>
+<td>23.7.3.2 [mdspan.syn]</td>
+<td><code class='backtick'>std::dynamic_extent</code> should also be defined in <code>&lt;mdspan&gt;</code></td>
+<td>Yes</td>
 <td>3</td>
 <td></td>
 </tr>
@@ -5163,7 +5199,7 @@ should require the arguments to have the same length</td>
 <td></td>
 </tr>
 </table>
-<h2 id="Priority_99">Not Prioritized (175 issues)</h2>
+<h2 id="Priority_99">Not Prioritized (169 issues)</h2>
 <table class="issues-index">
 <tr>
   <th><a href="lwg-toc.html">Issue</a></th>
@@ -5274,15 +5310,6 @@ should require the arguments to have the same length</td>
 <td></td>
 </tr>
 <tr>
-<td id="4311"><a href="lwg-active.html#4311" title="Can std::pmr::polymorphic_allocator::construct just call std::uninitialized_construct_using_allocator? (Status: New)">4311</a><sup><a href="https://cplusplus.github.io/LWG/issue4311">(i)</a></sup></td>
-<td><a href="lwg-active.html#New">New</a></td>
-<td>20.5.3.3 [mem.poly.allocator.mem]</td>
-<td>Can <code class='backtick'>std::pmr::polymorphic_allocator::construct</code> just call <code class='backtick'>std::uninitialized_construct_using_allocator</code>?</td>
-<td>Yes</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
 <td id="2922"><a href="lwg-active.html#2922" title="The *_constant&lt;&gt; templates do not make use of template&lt;auto&gt; (Status: LEWG)">2922</a><sup><a href="https://cplusplus.github.io/LWG/issue2922">(i)</a></sup></td>
 <td><a href="lwg-active.html#LEWG">LEWG</a></td>
 <td>21.3.3 [meta.type.synop]</td>
@@ -5348,24 +5375,6 @@ should require the arguments to have the same length</td>
 <td><a href="lwg-closed.html#348" title="Minor issue with std::pair operator&lt; (Status: Dup)">348</a></td>
 </tr>
 <tr>
-<td id="4281"><a href="lwg-active.html#4281" title="Inconsistency between value_or() and error_or() in std::expected (Status: New)">4281</a><sup><a href="https://cplusplus.github.io/LWG/issue4281">(i)</a></sup></td>
-<td><a href="lwg-active.html#New">New</a></td>
-<td>22.5.3.7 [optional.observe]</td>
-<td>Inconsistency between <code class='backtick'>value_or()</code> and <code class='backtick'>error_or()</code> in <code class='backtick'>std::expected</code></td>
-<td><span class="no-pr">No</span></td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td id="4406"><a href="lwg-active.html#4406" title="optional::value_or return statement is inconsistent with Mandates (Status: New)">4406</a><sup><a href="https://cplusplus.github.io/LWG/issue4406">(i)</a></sup></td>
-<td><a href="lwg-active.html#New">New</a></td>
-<td>22.5.3.7 [optional.observe]</td>
-<td><code class='backtick'>optional::value_or</code> return statement is inconsistent with <i>Mandates</i></td>
-<td>Yes</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
 <td id="4304"><a href="lwg-active.html#4304" title="std::optional&lt;NonReturnable&amp;&gt; is ill-formed due to value_or (Status: New)">4304</a><sup><a href="https://cplusplus.github.io/LWG/issue4304">(i)</a></sup></td>
 <td><a href="lwg-active.html#New">New</a></td>
 <td>22.5.4.6 [optional.ref.observe]</td>
@@ -5388,15 +5397,6 @@ should require the arguments to have the same length</td>
 <td><a href="lwg-active.html#New">New</a></td>
 <td>22.5.4.7 [optional.ref.monadic]</td>
 <td>Improve <code>optional&lt;T&amp;&gt;::or_else</code></td>
-<td>Yes</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td id="4370"><a href="lwg-active.html#4370" title="Comparison of optional&lt;T&gt; to T may be ill-formed (Status: New)">4370</a><sup><a href="https://cplusplus.github.io/LWG/issue4370">(i)</a></sup></td>
-<td><a href="lwg-active.html#New">New</a></td>
-<td>22.5.9 [optional.comp.with.t]</td>
-<td>Comparison of <code>optional&lt;T&gt;</code> to <code>T</code> may be ill-formed</td>
 <td>Yes</td>
 <td></td>
 <td></td>
@@ -5508,15 +5508,6 @@ types &mdash; this is inconsistent with other types in the library</td>
 <td>23.2.4 [sequence.reqmts]</td>
 <td>Improve <code>inplace_vector(from_range_t, R&amp;&amp; rg)</code></td>
 <td>Yes</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td id="4225"><a href="lwg-active.html#4225" title="What should happen when an exception is thrown on resizing std::deque, std::forward_list, or std::list? (Status: New)">4225</a><sup><a href="https://cplusplus.github.io/LWG/issue4225">(i)</a></sup></td>
-<td><a href="lwg-active.html#New">New</a></td>
-<td>23.3.5.3 [deque.capacity]</td>
-<td>What should happen when an exception is thrown on resizing <code class='backtick'>std::deque</code>, <code class='backtick'>std::forward_list</code>, or <code class='backtick'>std::list</code>?</td>
-<td><span class="no-pr">No</span></td>
 <td></td>
 <td></td>
 </tr>
@@ -5646,15 +5637,6 @@ types &mdash; this is inconsistent with other types in the library</td>
 <td><a href="lwg-active.html#New">New</a></td>
 <td>23.7.2.2.3 [span.deduct]</td>
 <td>Should <code>span(R&amp;&amp;)</code> CTAD apply P2280?</td>
-<td>Yes</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td id="4275"><a href="lwg-active.html#4275" title="std::dynamic_extent should also be defined in &lt;mdspan&gt; (Status: New)">4275</a><sup><a href="https://cplusplus.github.io/LWG/issue4275">(i)</a></sup></td>
-<td><a href="lwg-active.html#New">New</a></td>
-<td>23.7.3.2 [mdspan.syn]</td>
-<td><code class='backtick'>std::dynamic_extent</code> should also be defined in <code>&lt;mdspan&gt;</code></td>
 <td>Yes</td>
 <td></td>
 <td></td>
