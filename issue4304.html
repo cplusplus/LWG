@@ -182,11 +182,7 @@ return has_value() ? *<i>val</i> : static_cast&lt;X&gt;(std::forward&lt;U&gt;(u)
 <ins>
 -?- <i>Remarks</i>:
 The return type is unspecified if <code class='backtick'>T</code> is an array type or a non-object type.
-[<i>Note ?</i>: For example,
-<code>decay_t&lt;T&gt;</code> or
-<code>conditional_t&lt;is_object_v&lt;T&gt; &amp;&amp; !is_array_v&lt;T&gt;,
-remove_cvref_t&lt;T&gt;, void&gt;</code>
-could be used to avoid the declaration being ill-formed.
+[<i>Note ?</i>: This is to avoid the declaration being ill-formed.
 <i>&mdash; end note</i>]
 </ins>
 </p>
