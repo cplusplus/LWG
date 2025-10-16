@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <title>Issue 2985: std::reverse should be permitted to be vectorized</title>
 <meta property="og:title" content="Issue 2985: std::reverse should be permitted to be vectorized">
-<meta property="og:description" content="C++ library issue. Status: LEWG">
+<meta property="og:description" content="C++ library issue. Status: Resolved">
 <meta property="og:url" content="https://cplusplus.github.io/LWG/issue2985.html">
 <meta property="og:type" content="website">
 <meta property="og:image" content="http://cplusplus.github.io/LWG/images/cpp_logo.png">
@@ -61,14 +61,14 @@
 </head>
 <body>
 <hr>
-<p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#LEWG">LEWG</a> status.</em></p>
-<h3 id="2985"><a href="lwg-active.html#2985">2985</a>. <code>std::reverse</code> should be permitted to be vectorized</h3>
-<p><b>Section:</b> 26.7.10 <a href="https://wg21.link/alg.reverse">[alg.reverse]</a> <b>Status:</b> <a href="lwg-active.html#LEWG">LEWG</a>
- <b>Submitter:</b> Billy O'Neal III <b>Opened:</b> 2017-06-24 <b>Last modified:</b> 2018-04-03</p>
+<p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#Resolved">Resolved</a> status.</em></p>
+<h3 id="2985"><a href="lwg-defects.html#2985">2985</a>. <code>std::reverse</code> should be permitted to be vectorized</h3>
+<p><b>Section:</b> 26.7.10 <a href="https://wg21.link/alg.reverse">[alg.reverse]</a> <b>Status:</b> <a href="lwg-active.html#Resolved">Resolved</a>
+ <b>Submitter:</b> Billy O'Neal III <b>Opened:</b> 2017-06-24 <b>Last modified:</b> 2025-10-16</p>
 <p><b>Priority: </b>Not Prioritized
 </p>
 <p><b>View all other</b> <a href="lwg-index.html#alg.reverse">issues</a> in [alg.reverse].</p>
-<p><b>View all issues with</b> <a href="lwg-status.html#LEWG">LEWG</a> status.</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#Resolved">Resolved</a> status.</p>
 <p><b>Discussion:</b></p>
 <p>
 The fine folks on our backend team suggested that we special case <code>std::reverse</code> of 1/2/4/8 to take 
@@ -93,6 +93,11 @@ pointers-to-trivially-copyable is now implementable without changes to <code>rev
 if the user has provided an alternate <code>swap</code> in their own namespace, but not if they explicitly specialized 
 <code>swap</code> or <code>iter_swap</code>).
 </p>
+
+<p><i>[2025-10-16 Status changed: LEWG &rarr; Resolved.]</i></p>
+
+<p>Resolved by <a href="https://wg21.link/P0551" title=" Thou Shalt Not Specialize std Function Templates!">P0551</a>.</p>
+
 
 
 <p id="res-2985"><b>Proposed resolution:</b></p>

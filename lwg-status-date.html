@@ -67,7 +67,7 @@
 This document is the Index by Status and Date for the <a href="lwg-active.html">Library Active Issues List</a>,
 <a href="lwg-defects.html">Library Defect Reports and Accepted Issues</a>, and <a href="lwg-closed.html">Library Closed Issues List</a>.
 </p>
-<p>Revised 2025-10-16 at 16:28:53 UTC
+<p>Revised 2025-10-16 at 21:01:27 UTC
 </p><h2 id="Ready">Ready (3 issues)</h2>
 <table class="issues-index">
 <tr>
@@ -5974,7 +5974,7 @@ the evaluation of type traits</td>
 <td></td>
 </tr>
 </table>
-<h2 id="Open">Open (84 issues)</h2>
+<h2 id="Open">Open (85 issues)</h2>
 <table class="issues-index">
 <tr>
   <th><a href="lwg-toc.html">Issue</a></th>
@@ -5984,6 +5984,15 @@ the evaluation of type traits</td>
   <th>Proposed Resolution</th>
   <th><a href="unresolved-prioritized.html">Priority</a></th>
   <th>Duplicates</th>
+</tr>
+<tr>
+<td id="2533"><a href="lwg-active.html#2533" title="[concurr.ts] Constrain threads where future::then can run a continuation (Status: Open)">2533</a><sup><a href="https://cplusplus.github.io/LWG/issue2533">(i)</a></sup></td>
+<td><a href="lwg-active.html#Open">Open</a></td>
+<td>99 [concurr.ts::futures.unique.future]</td>
+<td>[concurr.ts] Constrain threads where <code>future::then</code> can run a continuation</td>
+<td><span class="no-pr">No</span></td>
+<td></td>
+<td></td>
 </tr>
 <tr>
 <td id="2962"><a href="lwg-active.html#2962" title="Iterators of Containers of move-only types do not model InputIterator (Status: Open)">2962</a><sup><a href="https://cplusplus.github.io/LWG/issue2962">(i)</a></sup></td>
@@ -6744,7 +6753,7 @@ the evaluation of type traits</td>
 <td></td>
 </tr>
 </table>
-<h2 id="LEWG">LEWG (25 issues)</h2>
+<h2 id="LEWG">LEWG (21 issues)</h2>
 <table class="issues-index">
 <tr>
   <th><a href="lwg-toc.html">Issue</a></th>
@@ -6754,6 +6763,24 @@ the evaluation of type traits</td>
   <th>Proposed Resolution</th>
   <th><a href="unresolved-prioritized.html">Priority</a></th>
   <th>Duplicates</th>
+</tr>
+<tr>
+<td id="3114"><a href="lwg-active.html#3114" title="[networking.ts] Permit efficient composition when using DynamicBuffer (Status: LEWG)">3114</a><sup><a href="https://cplusplus.github.io/LWG/issue3114">(i)</a></sup></td>
+<td><a href="lwg-active.html#LEWG">LEWG</a></td>
+<td>16 [networking.ts::buffer]</td>
+<td>[networking.ts] Permit efficient composition when using <code>DynamicBuffer</code></td>
+<td>Yes</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td id="3445"><a href="lwg-active.html#3445" title="[networking.ts] net::basic_socket_istream::connect should be constrained (Status: LEWG)">3445</a><sup><a href="https://cplusplus.github.io/LWG/issue3445">(i)</a></sup></td>
+<td><a href="lwg-active.html#LEWG">LEWG</a></td>
+<td>19.2.1 [networking.ts::socket.iostream.cons]</td>
+<td>[networking.ts] <code>net::basic_socket_istream::connect</code> should be constrained</td>
+<td>Yes</td>
+<td>3</td>
+<td></td>
 </tr>
 <tr>
 <td id="4250"><a href="lwg-active.html#4250" title="swap overloads for indirect and polymorphic only found by ADL (Status: LEWG)">4250</a><sup><a href="https://cplusplus.github.io/LWG/issue4250">(i)</a></sup></td>
@@ -6797,15 +6824,6 @@ the evaluation of type traits</td>
 <td>25.6.6 [range.istream]</td>
 <td>Is <code>&lt;ranges&gt;</code> sufficient for <code>istream_view</code>?</td>
 <td><span class="no-pr">No</span></td>
-<td>3</td>
-<td></td>
-</tr>
-<tr>
-<td id="3445"><a href="lwg-active.html#3445" title="[networking.ts] net::basic_socket_istream::connect should be constrained (Status: LEWG)">3445</a><sup><a href="https://cplusplus.github.io/LWG/issue3445">(i)</a></sup></td>
-<td><a href="lwg-active.html#LEWG">LEWG</a></td>
-<td>19.2.1 [networking.ts::socket.iostream.cons]</td>
-<td>[networking.ts] <code>net::basic_socket_istream::connect</code> should be constrained</td>
-<td>Yes</td>
 <td>3</td>
 <td></td>
 </tr>
@@ -6855,50 +6873,12 @@ the evaluation of type traits</td>
 <td></td>
 </tr>
 <tr>
-<td id="3114"><a href="lwg-active.html#3114" title="[networking.ts] Permit efficient composition when using DynamicBuffer (Status: LEWG)">3114</a><sup><a href="https://cplusplus.github.io/LWG/issue3114">(i)</a></sup></td>
-<td><a href="lwg-active.html#LEWG">LEWG</a></td>
-<td>16 [networking.ts::buffer]</td>
-<td>[networking.ts] Permit efficient composition when using <code>DynamicBuffer</code></td>
-<td>Yes</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
 <td id="2307"><a href="lwg-active.html#2307" title="Should the Standard Library use explicit only when necessary? (Status: LEWG)">2307</a><sup><a href="https://cplusplus.github.io/LWG/issue2307">(i)</a></sup></td>
 <td><a href="lwg-active.html#LEWG">LEWG</a></td>
 <td>23 [containers]</td>
 <td>Should the Standard Library use <code>explicit</code> only when necessary?</td>
 <td><span class="no-pr">No</span></td>
 <td>2</td>
-<td></td>
-</tr>
-<tr>
-<td id="2985"><a href="lwg-active.html#2985" title="std::reverse should be permitted to be vectorized (Status: LEWG)">2985</a><sup><a href="https://cplusplus.github.io/LWG/issue2985">(i)</a></sup></td>
-<td><a href="lwg-active.html#LEWG">LEWG</a></td>
-<td>26.7.10 [alg.reverse]</td>
-<td><code>std::reverse</code> should be permitted to be vectorized</td>
-<td>Yes</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td id="2922"><a href="lwg-active.html#2922" title="The *_constant&lt;&gt; templates do not make use of template&lt;auto&gt; (Status: LEWG)">2922</a><sup><a href="https://cplusplus.github.io/LWG/issue2922">(i)</a></sup></td>
-<td><a href="lwg-active.html#LEWG">LEWG</a></td>
-<td>21.3.3 [meta.type.synop]</td>
-<td>The <code>*_constant&lt;&gt;</code> templates do not make use of <code>template&lt;auto&gt;</code></td>
-<td><span class="no-pr">No</span></td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td id="2885"><a href="lwg-active.html#2885" title="The relational operators of optional and variant completely reflect the semantics of the element 
-types &mdash; this is inconsistent with other types in the library (Status: LEWG)">2885</a><sup><a href="https://cplusplus.github.io/LWG/issue2885">(i)</a></sup></td>
-<td><a href="lwg-active.html#LEWG">LEWG</a></td>
-<td>23 [containers]</td>
-<td>The relational operators of <code>optional</code> and <code>variant</code> completely reflect the semantics of the element 
-types &mdash; this is inconsistent with other types in the library</td>
-<td><span class="no-pr">No</span></td>
-<td></td>
 <td></td>
 </tr>
 <tr>
@@ -6967,15 +6947,6 @@ types &mdash; this is inconsistent with other types in the library</td>
 <td></td>
 </tr>
 <tr>
-<td id="532"><a href="lwg-active.html#532" title="Tuple comparison (Status: LEWG)">532</a><sup><a href="https://cplusplus.github.io/LWG/issue532">(i)</a></sup></td>
-<td><a href="lwg-active.html#LEWG">LEWG</a></td>
-<td>22.4.9 [tuple.rel]</td>
-<td>Tuple comparison</td>
-<td>Yes</td>
-<td></td>
-<td><a href="lwg-closed.html#348" title="Minor issue with std::pair operator&lt; (Status: Dup)">348</a></td>
-</tr>
-<tr>
 <td id="1459"><a href="lwg-active.html#1459" title="Overlapping evaluations are allowed (Status: LEWG)">1459</a><sup><a href="https://cplusplus.github.io/LWG/issue1459">(i)</a></sup></td>
 <td><a href="lwg-active.html#LEWG">LEWG</a></td>
 <td>32.5.4 [atomics.order]</td>
@@ -7006,7 +6977,7 @@ types &mdash; this is inconsistent with other types in the library</td>
 <td></td>
 </tr>
 </table>
-<h2 id="SG1">SG1 (8 issues)</h2>
+<h2 id="SG1">SG1 (7 issues)</h2>
 <table class="issues-index">
 <tr>
   <th><a href="lwg-toc.html">Issue</a></th>
@@ -7051,15 +7022,6 @@ types &mdash; this is inconsistent with other types in the library</td>
 <td>The load and store operation in &sect;[atomics.order] p1 is ambiguous</td>
 <td><span class="no-pr">No</span></td>
 <td>3</td>
-<td></td>
-</tr>
-<tr>
-<td id="2533"><a href="lwg-active.html#2533" title="[concurr.ts] Constrain threads where future::then can run a continuation (Status: SG1)">2533</a><sup><a href="https://cplusplus.github.io/LWG/issue2533">(i)</a></sup></td>
-<td><a href="lwg-active.html#SG1">SG1</a></td>
-<td>99 [concurr.ts::futures.unique.future]</td>
-<td>[concurr.ts] Constrain threads where <code>future::then</code> can run a continuation</td>
-<td><span class="no-pr">No</span></td>
-<td></td>
 <td></td>
 </tr>
 <tr>
@@ -25264,7 +25226,7 @@ explicit (Status: C++17)">2407</a><sup><a href="https://cplusplus.github.io/LWG/
 <td></td>
 </tr>
 </table>
-<h2 id="Resolved">Resolved (400 issues)</h2>
+<h2 id="Resolved">Resolved (402 issues)</h2>
 <table class="issues-index">
 <tr>
   <th><a href="lwg-toc.html">Issue</a></th>
@@ -25274,6 +25236,24 @@ explicit (Status: C++17)">2407</a><sup><a href="https://cplusplus.github.io/LWG/
   <th>Proposed Resolution</th>
   <th><a href="unresolved-prioritized.html">Priority</a></th>
   <th>Duplicates</th>
+</tr>
+<tr>
+<td id="2922"><a href="lwg-defects.html#2922" title="The *_constant&lt;&gt; templates do not make use of template&lt;auto&gt; (Status: Resolved)">2922</a><sup><a href="https://cplusplus.github.io/LWG/issue2922">(i)</a></sup></td>
+<td><a href="lwg-active.html#Resolved">Resolved</a></td>
+<td>21.3.3 [meta.type.synop]</td>
+<td>The <code>*_constant&lt;&gt;</code> templates do not make use of <code>template&lt;auto&gt;</code></td>
+<td>Yes</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td id="2985"><a href="lwg-defects.html#2985" title="std::reverse should be permitted to be vectorized (Status: Resolved)">2985</a><sup><a href="https://cplusplus.github.io/LWG/issue2985">(i)</a></sup></td>
+<td><a href="lwg-active.html#Resolved">Resolved</a></td>
+<td>26.7.10 [alg.reverse]</td>
+<td><code>std::reverse</code> should be permitted to be vectorized</td>
+<td>Yes</td>
+<td></td>
+<td></td>
 </tr>
 <tr>
 <td id="4149"><a href="lwg-defects.html#4149" title="User defined macros without standard headers (294 redux) (Status: Resolved)">4149</a><sup><a href="https://cplusplus.github.io/LWG/issue4149">(i)</a></sup></td>
@@ -30794,7 +30774,7 @@ pair of T, not pair of const T&amp; (Status: NAD Editorial)">915</a><sup><a href
 <td></td>
 </tr>
 </table>
-<h2 id="NAD">NAD (449 issues)</h2>
+<h2 id="NAD">NAD (451 issues)</h2>
 <table class="issues-index">
 <tr>
   <th><a href="lwg-toc.html">Issue</a></th>
@@ -30804,6 +30784,26 @@ pair of T, not pair of const T&amp; (Status: NAD Editorial)">915</a><sup><a href
   <th>Proposed Resolution</th>
   <th><a href="unresolved-prioritized.html">Priority</a></th>
   <th>Duplicates</th>
+</tr>
+<tr>
+<td id="532"><a href="lwg-closed.html#532" title="Tuple comparison (Status: NAD)">532</a><sup><a href="https://cplusplus.github.io/LWG/issue532">(i)</a></sup></td>
+<td><a href="lwg-active.html#NAD">NAD</a></td>
+<td>22.4.9 [tuple.rel]</td>
+<td>Tuple comparison</td>
+<td>Yes</td>
+<td></td>
+<td><a href="lwg-closed.html#348" title="Minor issue with std::pair operator&lt; (Status: Dup)">348</a></td>
+</tr>
+<tr>
+<td id="2885"><a href="lwg-closed.html#2885" title="The relational operators of optional and variant completely reflect the semantics of the element 
+types &mdash; this is inconsistent with other types in the library (Status: NAD)">2885</a><sup><a href="https://cplusplus.github.io/LWG/issue2885">(i)</a></sup></td>
+<td><a href="lwg-active.html#NAD">NAD</a></td>
+<td>23 [containers]</td>
+<td>The relational operators of <code>optional</code> and <code>variant</code> completely reflect the semantics of the element 
+types &mdash; this is inconsistent with other types in the library</td>
+<td>Yes</td>
+<td></td>
+<td></td>
 </tr>
 <tr>
 <td id="657"><a href="lwg-closed.html#657" title="unclear requirement about header inclusion (Status: NAD)">657</a><sup><a href="https://cplusplus.github.io/LWG/issue657">(i)</a></sup></td>
@@ -35064,7 +35064,7 @@ implicitly convertible, so explicit constructors are ignored.</td>
 <td>Minor issue with std::pair operator&lt;</td>
 <td>Yes</td>
 <td></td>
-<td><a href="lwg-active.html#532" title="Tuple comparison (Status: LEWG)">532</a></td>
+<td><a href="lwg-closed.html#532" title="Tuple comparison (Status: NAD)">532</a></td>
 </tr>
 <tr>
 <td id="116"><a href="lwg-closed.html#116" title="bitset cannot be constructed with a const char* (Status: Dup)">116</a><sup><a href="https://cplusplus.github.io/LWG/issue116">(i)</a></sup></td>

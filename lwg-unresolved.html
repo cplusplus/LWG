@@ -54,7 +54,7 @@
 </style>
 </head>
 <body>
-<p>Revised 2025-10-16 at 16:28:53 UTC
+<p>Revised 2025-10-16 at 21:01:27 UTC
 </p><h2>Unresolved Issues</h2>
 <hr>
 <h3 id="423"><a href="#423">423</a><sup><a href="https://cplusplus.github.io/LWG/issue423">(i)</a></sup>. Effects of negative <code>streamsize</code> in iostreams</h3>
@@ -398,113 +398,6 @@ Move to NAD Future.
 
 
 <p id="res-523"><b>Proposed resolution:</b></p>
-
-
-
-
-
-<hr>
-<h3 id="532"><a href="#532">532</a><sup><a href="https://cplusplus.github.io/LWG/issue532">(i)</a></sup>. Tuple comparison</h3>
-<p><b>Section:</b> 22.4.9 <a href="https://wg21.link/tuple.rel">[tuple.rel]</a>, 99 [tr.tuple.rel] <b>Status:</b> <a href="lwg-active.html#LEWG">LEWG</a>
- <b>Submitter:</b> David Abrahams <b>Opened:</b> 2005-11-29 <b>Last modified:</b> 2016-01-28</p>
-<p><b>Priority: </b>Not Prioritized
-</p>
-<p><b>View other</b> <a href="lwg-index-open.html#tuple.rel">active issues</a> in [tuple.rel].</p>
-<p><b>View all other</b> <a href="lwg-index.html#tuple.rel">issues</a> in [tuple.rel].</p>
-<p><b>View all issues with</b> <a href="lwg-status.html#LEWG">LEWG</a> status.</p>
-<p><b>Duplicate of:</b> <a href="lwg-closed.html#348" title="Minor issue with std::pair operator&lt; (Status: Dup)">348</a></p>
-<p><b>Discussion:</b></p>
-<p>
-Where possible, <code>tuple</code> comparison operators &lt;,&lt;=,=&gt;, and &gt; ought to be
-defined in terms of <code>std::less</code> rather than <code>operator&lt;</code>, in order to
-support comparison of tuples of pointers.  
-</p>
-
-<p><i>[
-2009-07-28 Reopened by Alisdair.  No longer solved by concepts.
-]</i></p>
-
-
-<p><i>[
-2009-10 Santa Cruz:
-]</i></p>
-
-
-<blockquote>
-<p>
-If we solve this for <code>tuple</code> we would have to solve it for <code>pair</code>
-algorithms, etc.  It is too late to do that at this time.  Move to NAD Future.
-</p>
-</blockquote>
-
-
-
-<p id="res-532"><b>Proposed resolution:</b></p>
-<p>
-change 6.1.3.5/5 from:
-</p>
-
-<blockquote><p>
-  Returns: The result of a lexicographical comparison between t and
-  u. The result is defined as: (bool)(get&lt;0&gt;(t) &lt; get&lt;0&gt;(u)) ||
-  (!(bool)(get&lt;0&gt;(u) &lt; get&lt;0&gt;(t)) &amp;&amp; ttail &lt; utail), where rtail for
-  some tuple r is a tuple containing all but the first element of
-  r. For any two zero-length tuples e and f, e &lt; f returns false.
-</p></blockquote>
-
-<p>
-to:
-</p>
-
-<blockquote>
-<p>
-  Returns: The result of a lexicographical comparison between t and
-  u. For any two zero-length tuples e and f, e &lt; f returns false.
-  Otherwise, the result is defined as: cmp( get&lt;0&gt;(t), get&lt;0&gt;(u)) ||
-  (!cmp(get&lt;0&gt;(u), get&lt;0&gt;(t)) &amp;&amp; ttail &lt; utail), where rtail for some
-  tuple r is a tuple containing all but the first element of r, and
-  cmp(x,y) is an unspecified function template defined as follows.
-</p>
-<p>
-  Where T is the type of x and U is the type of y:
-</p>
-
-<p>
-     if T and U are pointer types and T is convertible to U, returns
-     less&lt;U&gt;()(x,y)
-</p>
-
-<p>
-     otherwise, if T and U are pointer types, returns less&lt;T&gt;()(x,y)
-</p>
-
-<p>
-     otherwise, returns (bool)(x &lt; y)
-</p>
-</blockquote>
-
-<p><i>[
-Berlin: This issue is much bigger than just tuple (pair, containers,
-algorithms). Dietmar will survey and work up proposed wording.
-]</i></p>
-
-
-
-
-<p><b>Rationale:</b></p>
-<p>
-Recommend NAD.  This will be fixed with the next revision of concepts.
-</p>
-
-<p><i>[
-San Francisco:
-]</i></p>
-
-
-<blockquote><p>
-Solved by
-<a href="http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2008/n2770.pdf">N2770</a>.
-</p></blockquote>
 
 
 
@@ -11866,11 +11759,11 @@ provider</em> has been destroyed. &mdash; <i>end note</i>]</ins>
 
 <hr>
 <h3 id="2533"><a href="#2533">2533</a><sup><a href="https://cplusplus.github.io/LWG/issue2533">(i)</a></sup>. [concurr.ts] Constrain threads where <code>future::then</code> can run a continuation</h3>
-<p><b>Section:</b> 99 [concurr.ts::futures.unique.future] <b>Status:</b> <a href="lwg-active.html#SG1">SG1</a>
- <b>Submitter:</b> Agust&iacute;n K-ballo Berg&eacute; <b>Opened:</b> 2015-09-03 <b>Last modified:</b> 2021-06-06</p>
+<p><b>Section:</b> 99 [concurr.ts::futures.unique.future] <b>Status:</b> <a href="lwg-active.html#Open">Open</a>
+ <b>Submitter:</b> Agust&iacute;n K-ballo Berg&eacute; <b>Opened:</b> 2015-09-03 <b>Last modified:</b> 2025-10-16</p>
 <p><b>Priority: </b>Not Prioritized
 </p>
-<p><b>View all issues with</b> <a href="lwg-status.html#SG1">SG1</a> status.</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#Open">Open</a> status.</p>
 <p><b>Discussion:</b></p>
 <p><b>Addresses: concurr.ts</b></p>
 <p>
@@ -17794,38 +17687,6 @@ element types.</p>
 
 
 <hr>
-<h3 id="2885"><a href="#2885">2885</a><sup><a href="https://cplusplus.github.io/LWG/issue2885">(i)</a></sup>. The relational operators of <code>optional</code> and <code>variant</code> completely reflect the semantics of the element 
-types &mdash; this is inconsistent with other types in the library</h3>
-<p><b>Section:</b> 23 <a href="https://wg21.link/containers">[containers]</a>, 22 <a href="https://wg21.link/utilities">[utilities]</a> <b>Status:</b> <a href="lwg-active.html#LEWG">LEWG</a>
- <b>Submitter:</b> Finland <b>Opened:</b> 2017-02-03 <b>Last modified:</b> 2017-07-15</p>
-<p><b>Priority: </b>Not Prioritized
-</p>
-<p><b>View other</b> <a href="lwg-index-open.html#containers">active issues</a> in [containers].</p>
-<p><b>View all other</b> <a href="lwg-index.html#containers">issues</a> in [containers].</p>
-<p><b>View all issues with</b> <a href="lwg-status.html#LEWG">LEWG</a> status.</p>
-<p><b>Discussion:</b></p>
-<b>Addresses FI 17</b>
-
-<p>The relational operators of optional and variant completely reflect the semantics of the element types; this is inconsistent 
-with other types in the library, like <code>pair</code>, <code>tuple</code> and containers. If we believe it's important that we don't 
-synthesize relational operators for wrapper types, we should believe it's important for other types as well. Otherwise comparing 
-containers of floating-point types and tuples/pairs etc. of floating point types will give incorrect answers.</p>
-<p>Proposed change: Make the relational operators of containers and utility components reflect the semantics of the operators for the underlying element types.</p>
-
-<p><i>[2017-07 Toronto Thurs Issue Prioritization]</i></p>
-
-<p>Move to LEWG</p>
-
-
-<p id="res-2885"><b>Proposed resolution:</b></p>
-<p>
-</p>
-
-
-
-
-
-<hr>
 <h3 id="2906"><a href="#2906">2906</a><sup><a href="https://cplusplus.github.io/LWG/issue2906">(i)</a></sup>. There is no ability to supply an allocator for the control block when constructing a <code>shared_ptr</code> from a 
 <code>unique_ptr</code></h3>
 <p><b>Section:</b> 20.3.2.2.2 <a href="https://wg21.link/util.smartptr.shared.const">[util.smartptr.shared.const]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
@@ -17853,83 +17714,6 @@ as the existing constructor taking a <code>unique_ptr</code>, but using the <cod
 <p id="res-2906"><b>Proposed resolution:</b></p>
 <p>
 </p>
-
-
-
-
-
-
-<hr>
-<h3 id="2922"><a href="#2922">2922</a><sup><a href="https://cplusplus.github.io/LWG/issue2922">(i)</a></sup>. The <code>*_constant&lt;&gt;</code> templates do not make use of <code>template&lt;auto&gt;</code></h3>
-<p><b>Section:</b> 21.3.3 <a href="https://wg21.link/meta.type.synop">[meta.type.synop]</a> <b>Status:</b> <a href="lwg-active.html#LEWG">LEWG</a>
- <b>Submitter:</b> United States <b>Opened:</b> 2017-02-03 <b>Last modified:</b> 2017-07-15</p>
-<p><b>Priority: </b>Not Prioritized
-</p>
-<p><b>View other</b> <a href="lwg-index-open.html#meta.type.synop">active issues</a> in [meta.type.synop].</p>
-<p><b>View all other</b> <a href="lwg-index.html#meta.type.synop">issues</a> in [meta.type.synop].</p>
-<p><b>View all issues with</b> <a href="lwg-status.html#LEWG">LEWG</a> status.</p>
-<p><b>Discussion:</b></p>
-<b>Addresses US 171</b>
-
-<p>The <code>*_constant&lt;&gt;</code> templates (including the proposed addition, <code>bool_constant&lt;&gt;</code>) do 
-not make use of the new <code>template&lt;auto&gt;</code> feature.</p>
-
-<p>Proposed change: Add a <code>constant&lt;&gt;</code> (subject to bikeshedding) template which uses <code>template&lt;auto&gt;</code>. </p>
-<p>Define <code>integral_constant&lt;&gt;</code> as <code>using integral_constant&lt;T, V&gt; = constant&lt;T(V)&gt;</code> or <code>integral_constant&lt;T, V&gt; = constant&lt;V&gt;</code>.</p>
-<p>Either remove <code>bool_constant</code>, define it as using <code>bool_constant = constant&lt;bool(B)&gt;</code> or 
-<code>using bool_constant = constant&lt;B&gt;</code>.</p>
-
-<p><i>[2017-03-03, Kona, LEWG]</i></p>
-
-<p>
-Straw polls:
-</p>
-<table border="1">
-<caption>Name:</caption>
-<tr style="text-align: left">
-<td style="width:70%"><code>constant</code></td><td style="width:10%">3</td></tr>
-<tr style="text-align: left">
-<td><code>numeric_constant</code></td><td>8</td></tr>
-<tr style="text-align: left">
-<td><code>static_constant</code></td><td>1</td></tr>
-<tr style="text-align: left">
-<td><code>scalar_constant</code></td><td>7</td></tr>
-<tr style="text-align: left">
-<td><code>integer_constant</code> (Over LWG's dead body)</td><td>1</td></tr>
-<tr style="text-align: left">
-<td><code>auto_constant</code></td><td>4</td></tr>
-<tr style="text-align: left">
-<td><code>integral_c</code></td><td>7</td></tr>
-<tr style="text-align: left">
-<td><code>int_</code></td><td>0</td></tr>
-<tr style="text-align: left">
-<td colspan="2"><code>&#x200b;</code></td></tr>
-<tr style="text-align: left">
-<td><code>scalar_constant</code></td><td>6</td></tr>
-<tr style="text-align: left">
-<td><code>numeric_constant</code></td><td>3</td></tr>
-<tr style="text-align: left">
-<td><code>integral_c</code></td><td>5</td></tr>
-</table>
-
-<p>
-Accept P0377 with "<code>scalar_constant</code>" for C++17 to address LWG 2922 and US 171:
-<p/>
-SF | F | N | A | SA
-<p/>
-0  | 1 | 3 | 7 | 5
-</p>
-
-<p><i>[2017-07 Toronto Thurs Issue Prioritization]</i></p>
-
-<p>Status LEWG with P0377</p>
-
-
-<p id="res-2922"><b>Proposed resolution:</b></p>
-<p>
-</p>
-
-
 
 
 
@@ -19310,74 +19094,6 @@ void f(basic_ios&lt;charT, traits&gt;&amp; str, const moneyT&amp; mon, bool intl
 The expression <code>out &lt;&lt; put_money(mon, intl)</code> shall have type 
 <code>basic_ostream&lt;<del>charT</del><ins><i>Ch</i></ins>, <del>traits</del><ins><i>Tr</i></ins>&gt;&amp;</code>
 and value <code>out</code>.
-</p>
-</blockquote>
-</blockquote>
-</li>
-</ol>
-
-
-
-
-<hr>
-<h3 id="2985"><a href="#2985">2985</a><sup><a href="https://cplusplus.github.io/LWG/issue2985">(i)</a></sup>. <code>std::reverse</code> should be permitted to be vectorized</h3>
-<p><b>Section:</b> 26.7.10 <a href="https://wg21.link/alg.reverse">[alg.reverse]</a> <b>Status:</b> <a href="lwg-active.html#LEWG">LEWG</a>
- <b>Submitter:</b> Billy O'Neal III <b>Opened:</b> 2017-06-24 <b>Last modified:</b> 2018-04-03</p>
-<p><b>Priority: </b>Not Prioritized
-</p>
-<p><b>View all other</b> <a href="lwg-index.html#alg.reverse">issues</a> in [alg.reverse].</p>
-<p><b>View all issues with</b> <a href="lwg-status.html#LEWG">LEWG</a> status.</p>
-<p><b>Discussion:</b></p>
-<p>
-The fine folks on our backend team suggested that we special case <code>std::reverse</code> of 1/2/4/8 to take 
-advantage of vector units. Unfortunately, at present <code>std::reverse</code> says it does <code>N/2 iter_swap</code>s, 
-which doesn't permit our vector implementation even if the iterator inputs are pointers to trivially copyable <code>T</code>s.
-<p/>
-The vectorized version for pointers to <code>short</code>s is 
-<a href="https://twitter.com/MalwareMinigun/status/878150939512717312">~8x faster on Skylake</a> than the serial version, 
-and about 7x faster for <code>unsigned long long</code>s; and users don't actually care whether or not we call <code>swap</code> here.
-</p>
-
-<p><i>[2017-07 Toronto Monday issue prioritization]</i></p>
-
-<p>Status to LEWG; this is similar to <a href="lwg-active.html#2973" title="inplace_merge exact comparison count complexity prohibits useful real-world optimizations (Status: LEWG)">2973</a><sup><a href="https://cplusplus.github.io/LWG/issue2973" title="Latest snapshot">(i)</a></sup></p>
-
-<p><i>[2018-04-02, Billy comments]</i></p>
-
-<p>
-This issue should be resolved by <a href="https://wg21.link/p0551">P0551</a>, because it prohibits user specialization of  
-<code>std::swap</code> and <code>std::iter_swap</code>, which means the proposed vectorization optimization for 
-pointers-to-trivially-copyable is now implementable without changes to <code>reverse</code>'s specification (We can detect 
-if the user has provided an alternate <code>swap</code> in their own namespace, but not if they explicitly specialized 
-<code>swap</code> or <code>iter_swap</code>).
-</p>
-
-
-<p id="res-2985"><b>Proposed resolution:</b></p>
-<p>
-This wording is relative to <a href="https://wg21.link/n4659">N4659</a>.
-</p>
-
-<ol>
-<li><p>Edit 26.7.10 <a href="https://wg21.link/alg.reverse">[alg.reverse]</a> as indicated:</p>
-
-<blockquote>
-<pre>
-template&lt;class BidirectionalIterator&gt;
-  void reverse(BidirectionalIterator first, BidirectionalIterator last);
-template&lt;class ExecutionPolicy, class BidirectionalIterator>
-  void reverse(ExecutionPolicy&amp;&amp; exec,
-               BidirectionalIterator first, BidirectionalIterator last);
-</pre>
-<blockquote>
-<p>
--1- <i>Requires:</i> <code>*first</code> shall be swappable (16.4.4.3 <a href="https://wg21.link/swappable.requirements">[swappable.requirements]</a>).
-<p/>
--2- <i>Effects:</i> For each non-negative integer <code>i &lt; (last - first) / 2</code>, applies <code>iter_swap</code> 
-to all pairs of iterators <code>first + i, (last - i) - 1</code>. <ins>If 
-<code>is_trivially_copyable_v&lt;typename iterator_traits&lt;BidirectionalIterator&gt;::value_type&gt;</code> is 
-<code>true</code>, an implementation may permute the elements by making temporary copies, rather than by calling 
-<code>iter_swap</code>. [<i>Note:</i> this allows the implementation to be vectorized. &mdash; <i>end note</i>]</ins>
 </p>
 </blockquote>
 </blockquote>
@@ -23297,7 +23013,7 @@ movable nor copyable. Making it movable seems to be the sane option, and consist
 <hr>
 <h3 id="3114"><a href="#3114">3114</a><sup><a href="https://cplusplus.github.io/LWG/issue3114">(i)</a></sup>. [networking.ts] Permit efficient composition when using <code>DynamicBuffer</code></h3>
 <p><b>Section:</b> 16 [networking.ts::buffer], 17 [networking.ts::buffer.stream] <b>Status:</b> <a href="lwg-active.html#LEWG">LEWG</a>
- <b>Submitter:</b> Vinnie Falco <b>Opened:</b> 2018-05-18 <b>Last modified:</b> 2020-09-06</p>
+ <b>Submitter:</b> Vinnie Falco <b>Opened:</b> 2018-05-18 <b>Last modified:</b> 2025-10-16</p>
 <p><b>Priority: </b>Not Prioritized
 </p>
 <p><b>View all issues with</b> <a href="lwg-status.html#LEWG">LEWG</a> status.</p>
@@ -23499,6 +23215,10 @@ addressing this.
 From <a href="https://github.com/cplusplus/papers/issues/337">Cologne 2019 paper discussion</a>:
 <a href="https://wg21.link/p1100">P1100</a> has been superseded by <a href="https://wg21.link/p1790">P1790</a>.
 </p>
+
+<p><i>[2025-10-16 Status changed: LEWG &rarr; SG4.]</i></p>
+
+<p>Discussed by LEWG in Wrocław, recommended to send to SG4.</p>
 
 
 <p id="res-3114"><b>Proposed resolution:</b></p>
@@ -30587,7 +30307,7 @@ timing out if the expiry time was reached before iterating through all endpoints
 <hr>
 <h3 id="3445"><a href="#3445">3445</a><sup><a href="https://cplusplus.github.io/LWG/issue3445">(i)</a></sup>. [networking.ts] <code>net::basic_socket_istream::connect</code> should be constrained</h3>
 <p><b>Section:</b> 19.2.1 [networking.ts::socket.iostream.cons], 19.2.2 [networking.ts::socket.iostream.members] <b>Status:</b> <a href="lwg-active.html#LEWG">LEWG</a>
- <b>Submitter:</b> Jonathan Wakely <b>Opened:</b> 2020-05-14 <b>Last modified:</b> 2021-05-10</p>
+ <b>Submitter:</b> Jonathan Wakely <b>Opened:</b> 2020-05-14 <b>Last modified:</b> 2025-10-16</p>
 <p><b>Priority: </b>3
 </p>
 <p><b>View all other</b> <a href="lwg-index.html#networking.ts::socket.iostream.cons">issues</a> in [networking.ts::socket.iostream.cons].</p>
@@ -30606,6 +30326,10 @@ In addition to that, the <code>basic_socket_iostream(Args&amp;&amp;...)</code> c
 
 <p><i>[2020-07-17; Priority set to 3 in telecon]</i></p>
 
+
+<p><i>[2025-10-16 Status changed: LEWG &rarr; SG4.]</i></p>
+
+<p>Discussed by LEWG in Wrocław, recommended to send to SG4.</p>
 
 
 <p id="res-3445"><b>Proposed resolution:</b></p>
