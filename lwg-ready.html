@@ -62,7 +62,7 @@
 </tr>
 <tr>
 <td align="left">Date:</td>
-<td align="left">Revised 2025-10-17 at 13:17:54 UTC
+<td align="left">Revised 2025-10-17 at 13:33:04 UTC
 </td>
 </tr>
 <tr>
@@ -1505,6 +1505,103 @@ with precision <code class='backtick'>precision</code>.
 <code>duration_cast&lt;precision&gt;(<del>abs(d)</del><ins><i>ABS_D</i></ins> - hours() - minutes() - seconds())</code>.</p></li>
 </ol>
 </blockquote>
+</blockquote>
+</li>
+
+</ol>
+
+
+
+
+
+<hr>
+<h3 id="4275"><a href="#4275">4275</a><sup><a href="https://cplusplus.github.io/LWG/issue4275">(i)</a></sup>. <code class='backtick'>std::dynamic_extent</code> should also be defined in <code>&lt;mdspan&gt;</code></h3>
+<p><b>Section:</b> 23.7.3.2 <a href="https://wg21.link/mdspan.syn">[mdspan.syn]</a> <b>Status:</b> <a href="lwg-active.html#Ready">Tentatively Ready</a>
+ <b>Submitter:</b> Aiden Grossman <b>Opened:</b> 2025-06-06 <b>Last modified:</b> 2025-10-17</p>
+<p><b>Priority: </b>3
+</p>
+<p><b>View all other</b> <a href="lwg-index.html#mdspan.syn">issues</a> in [mdspan.syn].</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#Tentatively Ready">Tentatively Ready</a> status.</p>
+<p><b>Discussion:</b></p>
+<p>
+<code class='backtick'>std::dynamic_extent</code> can be used in certain circumstances in <code class='backtick'>std::mdspan</code>, 
+such as with padded layouts. However, <code class='backtick'>std::dynamic_extent</code> is currently only 
+defined in <code>&lt;span&gt;</code> which necessitates including <code>&lt;span&gt;</code> 
+solely for the <code class='backtick'>std::dynamic_extent</code> definition.
+</p>
+<p><strong>Previous resolution [SUPERSEDED]:</strong></p>
+<blockquote class="note">
+
+<p>
+This wording is relative to <a href="https://wg21.link/N5008" title=" Working Draft, Programming Languages — C++">N5008</a>.
+</p>
+
+<ol>
+<li><p>Modify 23.7.3.2 <a href="https://wg21.link/mdspan.syn">[mdspan.syn]</a>, header <code>&lt;span&gt;</code> synopsis, as indicated:</p>
+
+<blockquote>
+<pre>
+<i>// all freestanding</i>
+namespace std {
+  <ins><i>// constants</i></ins>
+  <ins>inline constexpr size_t dynamic_extent = numeric_limits&lt;size_t&gt;::max();</ins>
+  
+  <i>// 23.7.3.3 <a href="https://wg21.link/mdspan.extents">[mdspan.extents]</a>, class template extents</i>
+  template&lt;class IndexType, size_t... Extents&gt;
+  class extents;
+
+  [&hellip;]
+}
+</pre>
+</blockquote>
+</li>
+
+</ol>
+</blockquote>
+
+<p><i>[2025-06-10; Jonathan provides improved wording]</i></p>
+
+
+
+<p><i>[2025-10-15; Reflector poll]</i></p>
+
+<p>
+Set priority to 3 after reflector poll.
+</p>
+
+
+<p><i>[2025-10-17; Reflector poll.]</i></p>
+
+<p>
+Set status to Tentatively Ready after eight votes in favour during reflector poll.
+</p>
+
+
+<p id="res-4275"><b>Proposed resolution:</b></p>
+<p>
+This wording is relative to <a href="https://wg21.link/N5008" title=" Working Draft, Programming Languages — C++">N5008</a>.
+</p>
+
+<ol>
+<li><p>Modify 23.7.1 <a href="https://wg21.link/views.general">[views.general]</a> as indicated:</p>
+
+<blockquote>
+<p>
+The header <code>&lt;span&gt;</code> (23.7.2.1 <a href="https://wg21.link/span.syn">[span.syn]</a>)
+defines the view <code class='backtick'>span</code>.
+The header <code>&lt;mdspan&gt;</code> (23.7.3.2 <a href="https://wg21.link/mdspan.syn">[mdspan.syn]</a>)
+defines the class template <code class='backtick'>mdspan</code> and other facilities for interacting
+with these multidimensional views.
+</p>
+<p>
+<ins>
+-?-
+In addition to being available via inclusion of the <code>&lt;span&gt;</code>
+header,
+<code class='backtick'>dynamic_extent</code> is available when the header <code>&lt;mdspan&gt;</code>
+is included.
+</ins>
+</p>
 </blockquote>
 </li>
 

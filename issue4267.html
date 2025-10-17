@@ -64,7 +64,7 @@
 <p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#New">New</a> status.</em></p>
 <h3 id="4267"><a href="lwg-active.html#4267">4267</a>. Uses-allocator construction is meaningless for tuple of references</h3>
 <p><b>Section:</b> 22.4.4.2 <a href="https://wg21.link/tuple.cnstr">[tuple.cnstr]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Jiang An <b>Opened:</b> 2025-05-24 <b>Last modified:</b> 2025-10-16</p>
+ <b>Submitter:</b> Jiang An <b>Opened:</b> 2025-05-24 <b>Last modified:</b> 2025-10-17</p>
 <p><b>Priority: </b>3
 </p>
 <p><b>View other</b> <a href="lwg-index-open.html#tuple.cnstr">active issues</a> in [tuple.cnstr].</p>
@@ -134,6 +134,13 @@ is <code class='backtick'>true</code> for at least one <code>T<sub><i>i</i></sub
 <p><i>[2025-10-15; Jonathan provides new wording]</i></p>
 
 
+<p>
+I don't think we care about uses-allocator construction of references in general.
+You can't construct a reference using <code class='backtick'>allocator_traits::construct</code> nor put references in containers.
+For a <code class='backtick'>std::pair</code> containing a reference, I think <code class='backtick'>make_obj_using_allocator</code> and <code class='backtick'>uses_allocator_construction_args</code> work fine.
+The problem only exists in the <code class='backtick'>std::tuple</code> wording where we say that the elements are constructed using uses-allocator construction.
+So let's just fix that.
+</p>
 
 
 <p id="res-4267"><b>Proposed resolution:</b></p>
