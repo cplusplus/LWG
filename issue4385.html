@@ -67,8 +67,8 @@
 <h3 id="4385"><a href="lwg-active.html#4385">4385</a>. Including <code>&lt;simd&gt;</code> doesn't provide <code class='backtick'>std::begin/end</code>
 </h3>
 <p><b>Section:</b> 24.7 <a href="https://wg21.link/iterator.range">[iterator.range]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Hewill Kang <b>Opened:</b> 2025-09-26 <b>Last modified:</b> 2025-09-27</p>
-<p><b>Priority: </b>Not Prioritized
+ <b>Submitter:</b> Hewill Kang <b>Opened:</b> 2025-09-26 <b>Last modified:</b> 2025-10-17</p>
+<p><b>Priority: </b>3
 </p>
 <p><b>View other</b> <a href="lwg-index-open.html#iterator.range">active issues</a> in [iterator.range].</p>
 <p><b>View all other</b> <a href="lwg-index.html#iterator.range">issues</a> in [iterator.range].</p>
@@ -77,6 +77,19 @@
 <p>
 <code class='backtick'>std::simd::basic_vec</code> and <code class='backtick'>std::simd::basic_mask</code> are ranges since <a href="https://wg21.link/P3480R6" title=" std::simd is a range">P3480R6</a>, 
 it is reasonable to enable range access utilities when introducing <code>&lt;simd&gt;</code>.
+</p>
+
+<p><i>[2025-10-17; Reflector poll.]</i></p>
+
+<p>
+Set priority to 3 after reflector poll.
+</p>
+<p>
+"This will be the first time we add the free-function begn/end interface to support a type where <code class='backtick'>end</code> returns a sentinel.
+I would not want to set precedent here without at least taking the time to think about it, and acknowledge a deliberate intent."
+</p>
+<p>
+"The intent has been deliberate since <a href="https://wg21.link/P0184R0" title=" Generalizing the Range-Based For Loop">P0184R0</a>."
 </p>
 
 

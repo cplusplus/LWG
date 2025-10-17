@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <title>Issue 4335: task shadows the environment's allocator</title>
 <meta property="og:title" content="Issue 4335: task shadows the environment's allocator">
-<meta property="og:description" content="C++ library issue. Status: New">
+<meta property="og:description" content="C++ library issue. Status: LEWG">
 <meta property="og:url" content="https://cplusplus.github.io/LWG/issue4335.html">
 <meta property="og:type" content="website">
 <meta property="og:image" content="http://cplusplus.github.io/LWG/images/cpp_logo.png">
@@ -61,15 +61,15 @@
 </head>
 <body>
 <hr>
-<p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#New">New</a> status.</em></p>
+<p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#LEWG">LEWG</a> status.</em></p>
 <h3 id="4335"><a href="lwg-active.html#4335">4335</a>. <code>task</code> shadows the environment's allocator</h3>
-<p><b>Section:</b> 33.13.6.5 <a href="https://wg21.link/task.promise">[task.promise]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Dietmar Kühl <b>Opened:</b> 2025-08-31 <b>Last modified:</b> 2025-09-01</p>
-<p><b>Priority: </b>Not Prioritized
+<p><b>Section:</b> 33.13.6.5 <a href="https://wg21.link/task.promise">[task.promise]</a> <b>Status:</b> <a href="lwg-active.html#LEWG">LEWG</a>
+ <b>Submitter:</b> Dietmar Kühl <b>Opened:</b> 2025-08-31 <b>Last modified:</b> 2025-10-17</p>
+<p><b>Priority: </b>2
 </p>
 <p><b>View other</b> <a href="lwg-index-open.html#task.promise">active issues</a> in [task.promise].</p>
 <p><b>View all other</b> <a href="lwg-index.html#task.promise">issues</a> in [task.promise].</p>
-<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#LEWG">LEWG</a> status.</p>
 <p><b>Discussion:</b></p>
 <p>
 Normally, the <code>get_allocator</code> query forwards the allocator
@@ -88,6 +88,12 @@ environment may provide an allocator which is incompatible with the
 allocator type used by the coroutine. It may be possible to use the
 receiver's allcoator if it is convertible to the allocator type
 used by the coroutine and to produce a compile-time error otherwise.
+</p>
+
+<p><i>[2025-10-17; Reflector poll. Status changed: New &rarr; LEWG.]</i></p>
+
+<p>
+Set priority to 2 after reflector poll. Send to LEWG.
 </p>
 
 

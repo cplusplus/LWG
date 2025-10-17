@@ -67,8 +67,8 @@
 <h3 id="4383"><a href="lwg-active.html#4383">4383</a>. <code class='backtick'>constant_wrapper</code>'s pseudo-mutators are underconstrained
 </h3>
 <p><b>Section:</b> 21.3.5 <a href="https://wg21.link/const.wrap.class">[const.wrap.class]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Hewill Kang <b>Opened:</b> 2025-09-24 <b>Last modified:</b> 2025-09-27</p>
-<p><b>Priority: </b>Not Prioritized
+ <b>Submitter:</b> Hewill Kang <b>Opened:</b> 2025-09-24 <b>Last modified:</b> 2025-10-17</p>
+<p><b>Priority: </b>1
 </p>
 <p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
 <p><b>Discussion:</b></p>
@@ -105,6 +105,15 @@ int main() {
 <p>
 Since these pseudo-mutators have constraints, it is reasonable to further require constant
 expressions.
+</p>
+
+<p><i>[2025-10-17; Reflector poll.]</i></p>
+
+<p>
+Set priority to 1 after reflector poll.
+</p>
+<p>
+<code class='backtick'>operator+=</code> changed between <a href="https://wg21.link/P2781R4" title=" std::constexpr_wrapper">P2781R4</a> and <a href="https://wg21.link/P2781R5" title=" std::constexpr_wrapper">P2781R5</a>, intent is unclear.
 </p>
 
 

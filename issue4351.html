@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <title>Issue 4351: integral-constant-like needs more remove_cvref_t</title>
 <meta property="og:title" content="Issue 4351: integral-constant-like needs more remove_cvref_t">
-<meta property="og:description" content="C++ library issue. Status: New">
+<meta property="og:description" content="C++ library issue. Status: Tentatively Ready">
 <meta property="og:url" content="https://cplusplus.github.io/LWG/issue4351.html">
 <meta property="og:type" content="website">
 <meta property="og:image" content="http://cplusplus.github.io/LWG/images/cpp_logo.png">
@@ -61,13 +61,13 @@
 </head>
 <body>
 <hr>
-<p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#New">New</a> status.</em></p>
+<p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#Ready">Tentatively Ready</a> status.</em></p>
 <h3 id="4351"><a href="lwg-active.html#4351">4351</a>. <code><i>integral-constant-like</i></code> needs more <code class='backtick'>remove_cvref_t</code></h3>
-<p><b>Section:</b> 23.7.2.1 <a href="https://wg21.link/span.syn">[span.syn]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Jonathan Wakely <b>Opened:</b> 2025-09-05 <b>Last modified:</b> 2025-09-07</p>
+<p><b>Section:</b> 23.7.2.1 <a href="https://wg21.link/span.syn">[span.syn]</a> <b>Status:</b> <a href="lwg-active.html#Ready">Tentatively Ready</a>
+ <b>Submitter:</b> Jonathan Wakely <b>Opened:</b> 2025-09-05 <b>Last modified:</b> 2025-10-17</p>
 <p><b>Priority: </b>Not Prioritized
 </p>
-<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#Tentatively Ready">Tentatively Ready</a> status.</p>
 <p><b>Discussion:</b></p>
 <p>
 <a href="https://wg21.link/P2781R9" title=" std::constexpr_wrapper">P2781R9</a> tweaked the definition of
@@ -90,6 +90,12 @@ template&lt;class T&gt;
 This was done so that <code>cw&lt;5&gt;</code> models the concept,
 but it needs an additional tweak so that
 <code>cw&lt;true&gt;</code> does not model it.
+</p>
+
+<p><i>[2025-10-17; Reflector poll.]</i></p>
+
+<p>
+Set status to Tentatively Ready after eight votes in favour during reflector poll.
 </p>
 
 

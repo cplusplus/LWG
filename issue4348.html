@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <title>Issue 4348: task doesn't support symmetric transfer</title>
 <meta property="og:title" content="Issue 4348: task doesn't support symmetric transfer">
-<meta property="og:description" content="C++ library issue. Status: New">
+<meta property="og:description" content="C++ library issue. Status: LEWG">
 <meta property="og:url" content="https://cplusplus.github.io/LWG/issue4348.html">
 <meta property="og:type" content="website">
 <meta property="og:image" content="http://cplusplus.github.io/LWG/images/cpp_logo.png">
@@ -61,15 +61,15 @@
 </head>
 <body>
 <hr>
-<p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#New">New</a> status.</em></p>
+<p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#LEWG">LEWG</a> status.</em></p>
 <h3 id="4348"><a href="lwg-active.html#4348">4348</a>. <code>task</code> doesn't support symmetric transfer</h3>
-<p><b>Section:</b> 33.13.6.2 <a href="https://wg21.link/task.class">[task.class]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Dietmar Kühl <b>Opened:</b> 2025-09-01 <b>Last modified:</b> 2025-09-01</p>
-<p><b>Priority: </b>Not Prioritized
+<p><b>Section:</b> 33.13.6.2 <a href="https://wg21.link/task.class">[task.class]</a> <b>Status:</b> <a href="lwg-active.html#LEWG">LEWG</a>
+ <b>Submitter:</b> Dietmar Kühl <b>Opened:</b> 2025-09-01 <b>Last modified:</b> 2025-10-17</p>
+<p><b>Priority: </b>2
 </p>
 <p><b>View other</b> <a href="lwg-index-open.html#task.class">active issues</a> in [task.class].</p>
 <p><b>View all other</b> <a href="lwg-index.html#task.class">issues</a> in [task.class].</p>
-<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#LEWG">LEWG</a> status.</p>
 <p><b>Discussion:</b></p>
 <p>
 The specification of <code>task</code> doesn't require symmetric
@@ -78,6 +78,12 @@ transfer which can help with stack overflow. Also, when another
 the <code>task</code> resumes is known and can be used to avoid
 unnecessary scheduling by comparing the scheduler currently installed
 by in two <code>task</code>s involved.
+</p>
+
+<p><i>[2025-10-17; Reflector poll. Status changed: New &rarr; LEWG.]</i></p>
+
+<p>
+Set priority to 2 after reflector poll. Send to LEWG.
 </p>
 
 

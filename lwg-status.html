@@ -62,7 +62,7 @@ This document is the Index by Status and Section for the <a href="lwg-active.htm
 <a href="lwg-defects.html">Library Defect Reports and Accepted Issues</a>, and <a href="lwg-closed.html">Library Closed Issues List</a>.
 </p>
 
-<p>Revised 2025-10-17 at 13:33:04 UTC
+<p>Revised 2025-10-17 at 14:35:48 UTC
 </p><h2 id="Ready">Ready (3 issues)</h2>
 <table class="issues-index">
 <tr>
@@ -102,7 +102,7 @@ This document is the Index by Status and Section for the <a href="lwg-active.htm
 <td></td>
 </tr>
 </table>
-<h2 id="Tentatively_Ready">Tentatively Ready (28 issues)</h2>
+<h2 id="Tentatively_Ready">Tentatively Ready (32 issues)</h2>
 <table class="issues-index">
 <tr>
   <th><a href="lwg-toc.html">Issue</a></th>
@@ -251,6 +251,15 @@ of uses-allocator construction</td>
 <td></td>
 </tr>
 <tr>
+<td id="4351"><a href="lwg-active.html#4351" title="integral-constant-like needs more remove_cvref_t (Status: Tentatively Ready)">4351</a><sup><a href="https://cplusplus.github.io/LWG/issue4351">(i)</a></sup></td>
+<td><a href="lwg-active.html#Ready">Tentatively Ready</a></td>
+<td>23.7.2.1 [span.syn]</td>
+<td><code><i>integral-constant-like</i></code> needs more <code class='backtick'>remove_cvref_t</code></td>
+<td>Yes</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
 <td id="4293"><a href="lwg-active.html#4293" title="span::subspan/first/last chooses wrong constructor when T is const-qualified bool (Status: Tentatively Ready)">4293</a><sup><a href="https://cplusplus.github.io/LWG/issue4293">(i)</a></sup></td>
 <td><a href="lwg-active.html#Ready">Tentatively Ready</a></td>
 <td>23.7.2.2.4 [span.sub]</td>
@@ -282,6 +291,15 @@ of uses-allocator construction</td>
 <td><a href="lwg-active.html#Ready">Tentatively Ready</a></td>
 <td>23.7.3.4.7 [mdspan.layout.stride]</td>
 <td><code class='backtick'>layout_stride::mapping</code> should treat empty mappings as exhaustive</td>
+<td>Yes</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td id="4372"><a href="lwg-active.html#4372" title="Weaken Mandates: for dynamic padding values in padded layouts (Status: Tentatively Ready)">4372</a><sup><a href="https://cplusplus.github.io/LWG/issue4372">(i)</a></sup></td>
+<td><a href="lwg-active.html#Ready">Tentatively Ready</a></td>
+<td>23.7.3.4.8.1 [mdspan.layout.leftpad.overview]</td>
+<td>Weaken <i>Mandates:</i> for dynamic padding values in padded layouts</td>
 <td>Yes</td>
 <td></td>
 <td></td>
@@ -369,8 +387,26 @@ constructor</td>
 <td></td>
 <td></td>
 </tr>
+<tr>
+<td id="4341"><a href="lwg-active.html#4341" title="Missing rvalue reference qualification for task::connect() (Status: Tentatively Ready)">4341</a><sup><a href="https://cplusplus.github.io/LWG/issue4341">(i)</a></sup></td>
+<td><a href="lwg-active.html#Ready">Tentatively Ready</a></td>
+<td>33.13.6.2 [task.class]</td>
+<td>Missing rvalue reference qualification for <code>task::connect()</code></td>
+<td>Yes</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td id="4345"><a href="lwg-active.html#4345" title="task::promise_type::return_value default template parameter (Status: Tentatively Ready)">4345</a><sup><a href="https://cplusplus.github.io/LWG/issue4345">(i)</a></sup></td>
+<td><a href="lwg-active.html#Ready">Tentatively Ready</a></td>
+<td>33.13.6.5 [task.promise]</td>
+<td><code>task::promise_type::return_value</code> default template parameter</td>
+<td>Yes</td>
+<td></td>
+<td></td>
+</tr>
 </table>
-<h2 id="Tentatively_NAD">Tentatively NAD (15 issues)</h2>
+<h2 id="Tentatively_NAD">Tentatively NAD (16 issues)</h2>
 <table class="issues-index">
 <tr>
   <th><a href="lwg-toc.html">Issue</a></th>
@@ -481,6 +517,15 @@ constructor</td>
 <td></td>
 </tr>
 <tr>
+<td id="4391"><a href="lwg-active.html#4391" title="Ambiguities of simd::basic_vec constructor (Status: Tentatively NAD)">4391</a><sup><a href="https://cplusplus.github.io/LWG/issue4391">(i)</a></sup></td>
+<td><a href="lwg-active.html#NAD">Tentatively NAD</a></td>
+<td>29.10.7.2 [simd.ctor]</td>
+<td>Ambiguities of <code class='backtick'>simd::basic_vec</code> constructor</td>
+<td>Yes</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
 <td id="4362"><a href="lwg-active.html#4362" title="Inconsistent usage of constexpr for inplace_stop_token and inplace_stop_source (Status: Tentatively NAD)">4362</a><sup><a href="https://cplusplus.github.io/LWG/issue4362">(i)</a></sup></td>
 <td><a href="lwg-active.html#NAD">Tentatively NAD</a></td>
 <td>32.3.8 [stoptoken.inplace]</td>
@@ -517,7 +562,7 @@ constructor</td>
 <td></td>
 </tr>
 </table>
-<h2 id="New">New (596 issues)</h2>
+<h2 id="New">New (588 issues)</h2>
 <table class="issues-index">
 <tr>
   <th><a href="lwg-toc.html">Issue</a></th>
@@ -1538,7 +1583,7 @@ of <code>TransformationTrait</code></td>
 <td><code class='backtick'>constant_wrapper</code>'s pseudo-mutators are underconstrained
 </td>
 <td>Yes</td>
-<td></td>
+<td>1</td>
 <td></td>
 </tr>
 <tr>
@@ -2560,15 +2605,6 @@ should conditionally require <i>Cpp17CopyInsertable</i> in their preconditions</
 <td></td>
 </tr>
 <tr>
-<td id="4351"><a href="lwg-active.html#4351" title="integral-constant-like needs more remove_cvref_t (Status: New)">4351</a><sup><a href="https://cplusplus.github.io/LWG/issue4351">(i)</a></sup></td>
-<td><a href="lwg-active.html#New">New</a></td>
-<td>23.7.2.1 [span.syn]</td>
-<td><code><i>integral-constant-like</i></code> needs more <code class='backtick'>remove_cvref_t</code></td>
-<td>Yes</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
 <td id="3813"><a href="lwg-active.html#3813" title="std::span&lt;volatile T, E&gt; is made ill-formed by P2278R4 when T is a normal class type (Status: New)">3813</a><sup><a href="https://cplusplus.github.io/LWG/issue3813">(i)</a></sup></td>
 <td><a href="lwg-active.html#New">New</a></td>
 <td>23.7.2.2.1 [span.overview]</td>
@@ -2618,15 +2654,6 @@ should conditionally require <i>Cpp17CopyInsertable</i> in their preconditions</
 <td><a href="lwg-active.html#New">New</a></td>
 <td>23.7.3.4 [mdspan.layout]</td>
 <td>Missing move in <code class='backtick'>mdspan</code> layout <code class='backtick'>mapping::operator()</code></td>
-<td>Yes</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td id="4372"><a href="lwg-active.html#4372" title="Weaken Mandates: for dynamic padding values in padded layouts (Status: New)">4372</a><sup><a href="https://cplusplus.github.io/LWG/issue4372">(i)</a></sup></td>
-<td><a href="lwg-active.html#New">New</a></td>
-<td>23.7.3.4.8.1 [mdspan.layout.leftpad.overview]</td>
-<td>Weaken <i>Mandates:</i> for dynamic padding values in padded layouts</td>
 <td>Yes</td>
 <td></td>
 <td></td>
@@ -2976,7 +3003,7 @@ forward_iterator (Status: New)">4120</a><sup><a href="https://cplusplus.github.i
 <td>Including <code>&lt;simd&gt;</code> doesn't provide <code class='backtick'>std::begin/end</code>
 </td>
 <td>Yes</td>
-<td></td>
+<td>3</td>
 <td></td>
 </tr>
 <tr>
@@ -4630,15 +4657,6 @@ should require the arguments to have the same length</td>
 <td></td>
 </tr>
 <tr>
-<td id="4391"><a href="lwg-active.html#4391" title="Ambiguities of simd::basic_vec constructor (Status: New)">4391</a><sup><a href="https://cplusplus.github.io/LWG/issue4391">(i)</a></sup></td>
-<td><a href="lwg-active.html#New">New</a></td>
-<td>29.10.7.2 [simd.ctor]</td>
-<td>Ambiguities of <code class='backtick'>simd::basic_vec</code> constructor</td>
-<td>Yes</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
 <td id="4408"><a href="lwg-active.html#4408" title="Hardening simd::vec::operator[] (Status: New)">4408</a><sup><a href="https://cplusplus.github.io/LWG/issue4408">(i)</a></sup></td>
 <td><a href="lwg-active.html#New">New</a></td>
 <td>29.10.7.3 [simd.subscr]</td>
@@ -4724,19 +4742,19 @@ should require the arguments to have the same length</td>
 <td></td>
 </tr>
 <tr>
-<td id="4376"><a href="lwg-active.html#4376" title="ABI tag in return type of [simd.mask.unary] is overconstrained (Status: New)">4376</a><sup><a href="https://cplusplus.github.io/LWG/issue4376">(i)</a></sup></td>
-<td><a href="lwg-active.html#New">New</a></td>
-<td>29.10.9.4 [simd.mask.unary]</td>
-<td>ABI tag in return type of [simd.mask.unary] is overconstrained</td>
-<td>Yes</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
 <td id="4238"><a href="lwg-active.html#4238" title="simd_mask&lt;complex&lt;double&gt;&gt;::operator+/-/~ return a disabled simd specialization (Status: New)">4238</a><sup><a href="https://cplusplus.github.io/LWG/issue4238">(i)</a></sup></td>
 <td><a href="lwg-active.html#New">New</a></td>
 <td>29.10.9.4 [simd.mask.unary]</td>
 <td><code>simd_mask&lt;complex&lt;double&gt;&gt;::operator+/-/~</code> return a disabled <code class='backtick'>simd</code> specialization</td>
+<td>Yes</td>
+<td>1</td>
+<td></td>
+</tr>
+<tr>
+<td id="4376"><a href="lwg-active.html#4376" title="ABI tag in return type of [simd.mask.unary] is overconstrained (Status: New)">4376</a><sup><a href="https://cplusplus.github.io/LWG/issue4376">(i)</a></sup></td>
+<td><a href="lwg-active.html#New">New</a></td>
+<td>29.10.9.4 [simd.mask.unary]</td>
+<td>ABI tag in return type of [simd.mask.unary] is overconstrained</td>
 <td>Yes</td>
 <td>1</td>
 <td></td>
@@ -5419,7 +5437,7 @@ fetch_meow members don't (Status: New)">3047</a><sup><a href="https://cplusplus.
 <td>33.5.1 [exec.fwd.env]</td>
 <td>Standard defined queries can't customize <code class='backtick'>forwarding_query_t</code> by inheriting from it</td>
 <td>Yes</td>
-<td></td>
+<td>4</td>
 <td></td>
 </tr>
 <tr>
@@ -5706,15 +5724,6 @@ co_await expression instead of same_as&lt;void&gt; (Status: New)">4357</a><sup><
 <td></td>
 </tr>
 <tr>
-<td id="4341"><a href="lwg-active.html#4341" title="Missing rvalue reference qualification for task::connect() (Status: New)">4341</a><sup><a href="https://cplusplus.github.io/LWG/issue4341">(i)</a></sup></td>
-<td><a href="lwg-active.html#New">New</a></td>
-<td>33.13.6.2 [task.class]</td>
-<td>Missing rvalue reference qualification for <code>task::connect()</code></td>
-<td>Yes</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
 <td id="4343"><a href="lwg-active.html#4343" title="Missing default template arguments for task (Status: New)">4343</a><sup><a href="https://cplusplus.github.io/LWG/issue4343">(i)</a></sup></td>
 <td><a href="lwg-active.html#New">New</a></td>
 <td>33.13.6.2 [task.class]</td>
@@ -5724,37 +5733,10 @@ co_await expression instead of same_as&lt;void&gt; (Status: New)">4357</a><sup><
 <td></td>
 </tr>
 <tr>
-<td id="4348"><a href="lwg-active.html#4348" title="task doesn't support symmetric transfer (Status: New)">4348</a><sup><a href="https://cplusplus.github.io/LWG/issue4348">(i)</a></sup></td>
-<td><a href="lwg-active.html#New">New</a></td>
-<td>33.13.6.2 [task.class]</td>
-<td><code>task</code> doesn't support symmetric transfer</td>
-<td><span class="no-pr">No</span></td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td id="4333"><a href="lwg-active.html#4333" title="task uses unusual allocator customisation (Status: New)">4333</a><sup><a href="https://cplusplus.github.io/LWG/issue4333">(i)</a></sup></td>
-<td><a href="lwg-active.html#New">New</a></td>
-<td>33.13.6.5 [task.promise]</td>
-<td><code>task</code> uses unusual allocator customisation</td>
-<td><span class="no-pr">No</span></td>
-<td></td>
-<td></td>
-</tr>
-<tr>
 <td id="4334"><a href="lwg-active.html#4334" title="task&lt;...&gt;::promise_type supports arbitrary allocator_arg position (Status: New)">4334</a><sup><a href="https://cplusplus.github.io/LWG/issue4334">(i)</a></sup></td>
 <td><a href="lwg-active.html#New">New</a></td>
 <td>33.13.6.5 [task.promise]</td>
 <td><code>task&lt;...&gt;::promise_type</code> supports arbitrary <code>allocator_arg</code> position</td>
-<td><span class="no-pr">No</span></td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td id="4335"><a href="lwg-active.html#4335" title="task shadows the environment's allocator (Status: New)">4335</a><sup><a href="https://cplusplus.github.io/LWG/issue4335">(i)</a></sup></td>
-<td><a href="lwg-active.html#New">New</a></td>
-<td>33.13.6.5 [task.promise]</td>
-<td><code>task</code> shadows the environment's allocator</td>
 <td><span class="no-pr">No</span></td>
 <td></td>
 <td></td>
@@ -5773,15 +5755,6 @@ co_await expression instead of same_as&lt;void&gt; (Status: New)">4357</a><sup><
 <td><a href="lwg-active.html#New">New</a></td>
 <td>33.13.6.5 [task.promise]</td>
 <td><code>task::promise_type::unhandled_stopped()</code> should be <code>noexcept</code></td>
-<td>Yes</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td id="4345"><a href="lwg-active.html#4345" title="task::promise_type::return_value default template parameter (Status: New)">4345</a><sup><a href="https://cplusplus.github.io/LWG/issue4345">(i)</a></sup></td>
-<td><a href="lwg-active.html#New">New</a></td>
-<td>33.13.6.5 [task.promise]</td>
-<td><code>task::promise_type::return_value</code> default template parameter</td>
 <td>Yes</td>
 <td></td>
 <td></td>
@@ -6748,7 +6721,7 @@ don't support <code>DynamicBuffer</code> lvalues</td>
 <td></td>
 </tr>
 </table>
-<h2 id="LEWG">LEWG (21 issues)</h2>
+<h2 id="LEWG">LEWG (24 issues)</h2>
 <table class="issues-index">
 <tr>
   <th><a href="lwg-toc.html">Issue</a></th>
@@ -6930,6 +6903,33 @@ don't support <code>DynamicBuffer</code> lvalues</td>
 <td>Add <code>mutex</code>, <code>recursive_mutex</code>, <code>is_locked</code> function</td>
 <td><span class="no-pr">No</span></td>
 <td></td>
+<td></td>
+</tr>
+<tr>
+<td id="4348"><a href="lwg-active.html#4348" title="task doesn't support symmetric transfer (Status: LEWG)">4348</a><sup><a href="https://cplusplus.github.io/LWG/issue4348">(i)</a></sup></td>
+<td><a href="lwg-active.html#LEWG">LEWG</a></td>
+<td>33.13.6.2 [task.class]</td>
+<td><code>task</code> doesn't support symmetric transfer</td>
+<td><span class="no-pr">No</span></td>
+<td>2</td>
+<td></td>
+</tr>
+<tr>
+<td id="4333"><a href="lwg-active.html#4333" title="task uses unusual allocator customisation (Status: LEWG)">4333</a><sup><a href="https://cplusplus.github.io/LWG/issue4333">(i)</a></sup></td>
+<td><a href="lwg-active.html#LEWG">LEWG</a></td>
+<td>33.13.6.5 [task.promise]</td>
+<td><code>task</code> uses unusual allocator customisation</td>
+<td><span class="no-pr">No</span></td>
+<td>2</td>
+<td></td>
+</tr>
+<tr>
+<td id="4335"><a href="lwg-active.html#4335" title="task shadows the environment's allocator (Status: LEWG)">4335</a><sup><a href="https://cplusplus.github.io/LWG/issue4335">(i)</a></sup></td>
+<td><a href="lwg-active.html#LEWG">LEWG</a></td>
+<td>33.13.6.5 [task.promise]</td>
+<td><code>task</code> shadows the environment's allocator</td>
+<td><span class="no-pr">No</span></td>
+<td>2</td>
 <td></td>
 </tr>
 <tr>

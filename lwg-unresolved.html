@@ -54,7 +54,7 @@
 </style>
 </head>
 <body>
-<p>Revised 2025-10-17 at 13:33:04 UTC
+<p>Revised 2025-10-17 at 14:35:48 UTC
 </p><h2>Unresolved Issues</h2>
 <hr>
 <h3 id="423"><a href="#423">423</a><sup><a href="https://cplusplus.github.io/LWG/issue423">(i)</a></sup>. Effects of negative <code>streamsize</code> in iostreams</h3>
@@ -67810,7 +67810,7 @@ Set priority to 3 after reflector poll.
 <hr>
 <h3 id="4238"><a href="#4238">4238</a><sup><a href="https://cplusplus.github.io/LWG/issue4238">(i)</a></sup>. <code>simd_mask&lt;complex&lt;double&gt;&gt;::operator+/-/~</code> return a disabled <code class='backtick'>simd</code> specialization</h3>
 <p><b>Section:</b> 29.10.9.4 <a href="https://wg21.link/simd.mask.unary">[simd.mask.unary]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Matthias Kretz <b>Opened:</b> 2025-03-27 <b>Last modified:</b> 2025-06-12</p>
+ <b>Submitter:</b> Matthias Kretz <b>Opened:</b> 2025-03-27 <b>Last modified:</b> 2025-10-17</p>
 <p><b>Priority: </b>1
 </p>
 <p><b>View other</b> <a href="lwg-index-open.html#simd.mask.unary">active issues</a> in [simd.mask.unary].</p>
@@ -67858,6 +67858,9 @@ basic_simd_mask&lt;<i>integer-from</i>&lt;16&gt;, Abi&gt;&gt;&gt;</code>
 <p>
 Set priority to 1 after reflector poll.
 </p>
+
+
+<p><i>[2025-10-17; related to <a href="lwg-active.html#4376" title="ABI tag in return type of [simd.mask.unary] is overconstrained (Status: New)">4376</a><sup><a href="https://cplusplus.github.io/LWG/issue4376" title="Latest snapshot">(i)</a></sup>.]</i></p>
 
 
 
@@ -75802,8 +75805,8 @@ template&lt;class U&gt;
 <hr>
 <h3 id="4326"><a href="#4326">4326</a><sup><a href="https://cplusplus.github.io/LWG/issue4326">(i)</a></sup>. Standard defined queries can't customize <code class='backtick'>forwarding_query_t</code> by inheriting from it</h3>
 <p><b>Section:</b> 33.5.1 <a href="https://wg21.link/exec.fwd.env">[exec.fwd.env]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Lewis Baker <b>Opened:</b> 2025-08-25 <b>Last modified:</b> 2025-08-27</p>
-<p><b>Priority: </b>Not Prioritized
+ <b>Submitter:</b> Lewis Baker <b>Opened:</b> 2025-08-25 <b>Last modified:</b> 2025-10-17</p>
+<p><b>Priority: </b>4
 </p>
 <p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
 <p><b>Discussion:</b></p>
@@ -75831,6 +75834,15 @@ support for customizing <code class='backtick'>forwarding_query_t</code> by inhe
 Remove the rule that checks for inheritance from <code class='backtick'>forwarding_query_t</code>. Any query can already 
 customize <code class='backtick'>forwarding_query_t</code> by defining a <code class='backtick'>query(forwarding_query_t)</code> member function, so 
 there is no loss of functionality from doing this and it would simplify the design.
+</p>
+
+<p><i>[2025-10-17; Reflector poll.]</i></p>
+
+<p>
+Set priority to 4 after reflector poll.
+</p>
+<p>
+"The fact that we didn't use customization by derivation yet doesn't mean we should remove that customization mechanism."
 </p>
 
 
@@ -76116,13 +76128,13 @@ to the scheduling operation.
 
 <hr>
 <h3 id="4333"><a href="#4333">4333</a><sup><a href="https://cplusplus.github.io/LWG/issue4333">(i)</a></sup>. <code>task</code> uses unusual allocator customisation</h3>
-<p><b>Section:</b> 33.13.6.5 <a href="https://wg21.link/task.promise">[task.promise]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Dietmar Kühl <b>Opened:</b> 2025-08-31 <b>Last modified:</b> 2025-09-01</p>
-<p><b>Priority: </b>Not Prioritized
+<p><b>Section:</b> 33.13.6.5 <a href="https://wg21.link/task.promise">[task.promise]</a> <b>Status:</b> <a href="lwg-active.html#LEWG">LEWG</a>
+ <b>Submitter:</b> Dietmar Kühl <b>Opened:</b> 2025-08-31 <b>Last modified:</b> 2025-10-17</p>
+<p><b>Priority: </b>2
 </p>
 <p><b>View other</b> <a href="lwg-index-open.html#task.promise">active issues</a> in [task.promise].</p>
 <p><b>View all other</b> <a href="lwg-index.html#task.promise">issues</a> in [task.promise].</p>
-<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#LEWG">LEWG</a> status.</p>
 <p><b>Discussion:</b></p>
 <p>
 Unlike <code>generator</code> the allocator customisation of
@@ -76142,6 +76154,13 @@ In this case it may also be resonable to not support the
 <code>get_allocator</code> query when <code>co_await</code>ing
 senders.
 </p>
+
+<p><i>[2025-10-17; Reflector poll. Status changed: New &rarr; LEWG.]</i></p>
+
+<p>
+Set priority to 2 after reflector poll. Send to LEWG.
+</p>
+
 
 
 <p id="res-4333"><b>Proposed resolution:</b></p>
@@ -76195,13 +76214,13 @@ to add the flexibility to <code>generator</code>.
 
 <hr>
 <h3 id="4335"><a href="#4335">4335</a><sup><a href="https://cplusplus.github.io/LWG/issue4335">(i)</a></sup>. <code>task</code> shadows the environment's allocator</h3>
-<p><b>Section:</b> 33.13.6.5 <a href="https://wg21.link/task.promise">[task.promise]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Dietmar Kühl <b>Opened:</b> 2025-08-31 <b>Last modified:</b> 2025-09-01</p>
-<p><b>Priority: </b>Not Prioritized
+<p><b>Section:</b> 33.13.6.5 <a href="https://wg21.link/task.promise">[task.promise]</a> <b>Status:</b> <a href="lwg-active.html#LEWG">LEWG</a>
+ <b>Submitter:</b> Dietmar Kühl <b>Opened:</b> 2025-08-31 <b>Last modified:</b> 2025-10-17</p>
+<p><b>Priority: </b>2
 </p>
 <p><b>View other</b> <a href="lwg-index-open.html#task.promise">active issues</a> in [task.promise].</p>
 <p><b>View all other</b> <a href="lwg-index.html#task.promise">issues</a> in [task.promise].</p>
-<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#LEWG">LEWG</a> status.</p>
 <p><b>Discussion:</b></p>
 <p>
 Normally, the <code>get_allocator</code> query forwards the allocator
@@ -76220,6 +76239,12 @@ environment may provide an allocator which is incompatible with the
 allocator type used by the coroutine. It may be possible to use the
 receiver's allcoator if it is convertible to the allocator type
 used by the coroutine and to produce a compile-time error otherwise.
+</p>
+
+<p><i>[2025-10-17; Reflector poll. Status changed: New &rarr; LEWG.]</i></p>
+
+<p>
+Set priority to 2 after reflector poll. Send to LEWG.
 </p>
 
 
@@ -76614,58 +76639,6 @@ associated with <code><i>STATE</i>(*this)</code> by invoking
 
 
 <hr>
-<h3 id="4341"><a href="#4341">4341</a><sup><a href="https://cplusplus.github.io/LWG/issue4341">(i)</a></sup>. Missing rvalue reference qualification for <code>task::connect()</code></h3>
-<p><b>Section:</b> 33.13.6.2 <a href="https://wg21.link/task.class">[task.class]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Dietmar Kühl <b>Opened:</b> 2025-08-31 <b>Last modified:</b> 2025-09-01</p>
-<p><b>Priority: </b>Not Prioritized
-</p>
-<p><b>View other</b> <a href="lwg-index-open.html#task.class">active issues</a> in [task.class].</p>
-<p><b>View all other</b> <a href="lwg-index.html#task.class">issues</a> in [task.class].</p>
-<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
-<p><b>Discussion:</b></p>
-<p>
-Coroutines can't be copied. Thus, a <code>task</code> can be
-<code>connect()</code> just once.  To represent that
-<code>task::connect()</code> should be rvalue reference qualified
-but currently it isn't.
-</p>
-
-
-<p id="res-4341"><b>Proposed resolution:</b></p>
-<p>
-In the synopsis in 33.13.6.2 <a href="https://wg21.link/task.class">[task.class]</a> add rvalue
-reference qualification to <code>task::connect()</code>:
-<blockquote><pre>
-namespace std::execution {
-  template&lt;class T, class Environment&gt;
-  class task {
-    ...
-    template&lt;receiver Rcvr&gt;
-        <i>state</i>&lt;Rcvr&gt; connect(Rcvr&amp;&amp; rcvr) <ins>&amp;&amp;</ins>;
-    ...
-  }
-}
-</pre></blockquote>
-</p>
-<p>
-In the specification in 33.13.6.3 <a href="https://wg21.link/task.members">[task.members]</a> paragraph 3 add rvalue
-reference qualification to <code>task::connect()</code>:
-<blockquote>
-<pre>
-template&lt;receiver Rcvr&gt;
-    <i>state</i>&lt;Rcvr&gt; connect(Rcvr&amp;&amp; rcvr) <ins>&amp;&amp;</ins>;
-</pre>
-<p>-3- <i>Precondition</i>: <code>bool(handle)</code> is <code>true</code>.</p>
-<p>-4- <i>Effects</i>: Equivalent to:</p>
-<pre>    return state&lt;Rcvr&gt;(exchange(handle, {}), std::forward&lt;Rcvr&gt;(recv));</pre>
-</blockquote>
-</p>
-
-
-
-
-
-<hr>
 <h3 id="4342"><a href="#4342">4342</a><sup><a href="https://cplusplus.github.io/LWG/issue4342">(i)</a></sup>. Missing rvalue reference qualification for <code>task_scheduler::ts-sender::connect()</code></h3>
 <p><b>Section:</b> 33.13.5 <a href="https://wg21.link/exec.task.scheduler">[exec.task.scheduler]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
  <b>Submitter:</b> Dietmar Kühl <b>Opened:</b> 2025-09-01 <b>Last modified:</b> 2025-09-01</p>
@@ -76834,50 +76807,6 @@ return transform_sender(
 
 
 <hr>
-<h3 id="4345"><a href="#4345">4345</a><sup><a href="https://cplusplus.github.io/LWG/issue4345">(i)</a></sup>. <code>task::promise_type::return_value</code> default template parameter</h3>
-<p><b>Section:</b> 33.13.6.5 <a href="https://wg21.link/task.promise">[task.promise]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Dietmar Kühl <b>Opened:</b> 2025-09-01 <b>Last modified:</b> 2025-09-01</p>
-<p><b>Priority: </b>Not Prioritized
-</p>
-<p><b>View other</b> <a href="lwg-index-open.html#task.promise">active issues</a> in [task.promise].</p>
-<p><b>View all other</b> <a href="lwg-index.html#task.promise">issues</a> in [task.promise].</p>
-<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
-<p><b>Discussion:</b></p>
-<p>
-The template parameter <code>V</code> of
-<code>task::promise_type::return_value</code> doesn't have a default
-template argument specified. Specifying a default template argument of <code>T</code>
-would enable use of <code>co_return { ... }</code> which would be
-consistent with normal <code>return</code> statements. This feature
-was not discussed in the design paper but based on the LEWG discussion
-on 2025-08-26 it is considered to be more a bug fix than a new feature.
-</p>
-
-
-<p id="res-4345"><b>Proposed resolution:</b></p>
-<p>
-Add a default template argument of <code>T</code> to the template
-parameter <code>V</code> of <code>task::promise_type::return_value</code>
-in the synopsis of 33.13.6.5 <a href="https://wg21.link/task.promise">[task.promise]</a>:
-<blockquote><pre>
-namespace std::execution {
-  template&lt;class T, class Environment&gt;
-  class task&lt;T, Environment&gt;::promise_type {
-     ...
-    template&lt;typename V <ins>= T</ins>&gt;
-    void return_value(V&amp;&amp; value);
-    ...
-  };
-
-}
-</pre></blockquote>
-</p>
-
-
-
-
-
-<hr>
 <h3 id="4346"><a href="#4346">4346</a><sup><a href="https://cplusplus.github.io/LWG/issue4346">(i)</a></sup>. <code>task::promise_type::return_void</code>/<code>value</code> lack a specification</h3>
 <p><b>Section:</b> 33.13.6.5 <a href="https://wg21.link/task.promise">[task.promise]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
  <b>Submitter:</b> Dietmar Kühl <b>Opened:</b> 2025-09-01 <b>Last modified:</b> 2025-09-01</p>
@@ -76967,13 +76896,13 @@ it is only created when accessed.
 
 <hr>
 <h3 id="4348"><a href="#4348">4348</a><sup><a href="https://cplusplus.github.io/LWG/issue4348">(i)</a></sup>. <code>task</code> doesn't support symmetric transfer</h3>
-<p><b>Section:</b> 33.13.6.2 <a href="https://wg21.link/task.class">[task.class]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Dietmar Kühl <b>Opened:</b> 2025-09-01 <b>Last modified:</b> 2025-09-01</p>
-<p><b>Priority: </b>Not Prioritized
+<p><b>Section:</b> 33.13.6.2 <a href="https://wg21.link/task.class">[task.class]</a> <b>Status:</b> <a href="lwg-active.html#LEWG">LEWG</a>
+ <b>Submitter:</b> Dietmar Kühl <b>Opened:</b> 2025-09-01 <b>Last modified:</b> 2025-10-17</p>
+<p><b>Priority: </b>2
 </p>
 <p><b>View other</b> <a href="lwg-index-open.html#task.class">active issues</a> in [task.class].</p>
 <p><b>View all other</b> <a href="lwg-index.html#task.class">issues</a> in [task.class].</p>
-<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#LEWG">LEWG</a> status.</p>
 <p><b>Discussion:</b></p>
 <p>
 The specification of <code>task</code> doesn't require symmetric
@@ -76982,6 +76911,12 @@ transfer which can help with stack overflow. Also, when another
 the <code>task</code> resumes is known and can be used to avoid
 unnecessary scheduling by comparing the scheduler currently installed
 by in two <code>task</code>s involved.
+</p>
+
+<p><i>[2025-10-17; Reflector poll. Status changed: New &rarr; LEWG.]</i></p>
+
+<p>
+Set priority to 2 after reflector poll. Send to LEWG.
 </p>
 
 
@@ -77086,67 +77021,6 @@ with those names must behave as expected, but we already require that for
 <p id="res-4350"><b>Proposed resolution:</b></p>
 <p>
 </p>
-
-
-
-
-
-<hr>
-<h3 id="4351"><a href="#4351">4351</a><sup><a href="https://cplusplus.github.io/LWG/issue4351">(i)</a></sup>. <code><i>integral-constant-like</i></code> needs more <code class='backtick'>remove_cvref_t</code></h3>
-<p><b>Section:</b> 23.7.2.1 <a href="https://wg21.link/span.syn">[span.syn]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Jonathan Wakely <b>Opened:</b> 2025-09-05 <b>Last modified:</b> 2025-09-07</p>
-<p><b>Priority: </b>Not Prioritized
-</p>
-<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
-<p><b>Discussion:</b></p>
-<p>
-<a href="https://wg21.link/P2781R9" title=" std::constexpr_wrapper">P2781R9</a> tweaked the definition of
-<code><i>integral-constant-like</i></code> to work with <code class='backtick'>constant_wrapper</code>,
-like so:
-</p>
-<blockquote>
-<pre>
-template&lt;class T&gt;
-    concept <i>integral-constant-like</i> =                    <i>// exposition only</i>
-      is_integral_v&lt;<ins>remove_cvref_t&lt;</ins>decltype(T::value)<ins>&gt;</ins>&gt; &amp;&amp;
-      !is_same_v&lt;bool, remove_const_t&lt;decltype(T::value)&gt;&gt; &amp;&amp;
-      convertible_to&lt;T, decltype(T::value)&gt; &amp;&amp;
-      equality_comparable_with&lt;T, decltype(T::value)&gt; &amp;&amp;
-      bool_constant&lt;T() == T::value&gt;::value &amp;&amp;
-      bool_constant&lt;static_cast&lt;decltype(T::value)&gt;(T()) == T::value&gt;::value;
-</pre>
-</blockquote>
-<p>
-This was done so that <code>cw&lt;5&gt;</code> models the concept,
-but it needs an additional tweak so that
-<code>cw&lt;true&gt;</code> does not model it.
-</p>
-
-
-<p id="res-4351"><b>Proposed resolution:</b></p>
-<p>
-This wording is relative to <a href="https://wg21.link/N5014">N5014</a>.
-</p>
-
-<ol>
-
-<li><p>Modify 23.7.2.1 <a href="https://wg21.link/span.syn">[span.syn]</a> as indicated:</p>
-
-<blockquote>
-<pre>
-template&lt;class T&gt;
-    concept <i>integral-constant-like</i> =                    <i>// exposition only</i>
-      is_integral_v&lt;remove_cvref_t&lt;decltype(T::value)&gt;&gt; &amp;&amp;
-      !is_same_v&lt;bool, remove_<ins>cvref</ins><del>const</del>_t&lt;decltype(T::value)&gt;&gt; &amp;&amp;
-      convertible_to&lt;T, decltype(T::value)&gt; &amp;&amp;
-      equality_comparable_with&lt;T, decltype(T::value)&gt; &amp;&amp;
-      bool_constant&lt;T() == T::value&gt;::value &amp;&amp;
-      bool_constant&lt;static_cast&lt;decltype(T::value)&gt;(T()) == T::value&gt;::value;
-</pre>
-</blockquote>
-</li>
-</ol>
-
 
 
 
@@ -78632,90 +78506,6 @@ namespace std {
 
 
 <hr>
-<h3 id="4372"><a href="#4372">4372</a><sup><a href="https://cplusplus.github.io/LWG/issue4372">(i)</a></sup>. Weaken <i>Mandates:</i> for dynamic padding values in padded layouts</h3>
-<p><b>Section:</b> 23.7.3.4.8.1 <a href="https://wg21.link/mdspan.layout.leftpad.overview">[mdspan.layout.leftpad.overview]</a>, 23.7.3.4.9.1 <a href="https://wg21.link/mdspan.layout.rightpad.overview">[mdspan.layout.rightpad.overview]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Luc Grosheintz <b>Opened:</b> 2025-09-09 <b>Last modified:</b> 2025-09-19</p>
-<p><b>Priority: </b>Not Prioritized
-</p>
-<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
-<p><b>Discussion:</b></p>
-<p>
-Two new layouts were added to <code>&lt;mdspan&gt;</code> in C++26. Both have a template
-parameter <code class='backtick'>size_t PaddingValue</code>. This value is allowed to be <code class='backtick'>std::dynamic_extent</code> 
-to signal that the padding value isn't known at compile time.
-<p/>
-A class <i>Mandates:</i> element (in 23.7.3.4.8.1 <a href="https://wg21.link/mdspan.layout.leftpad.overview">[mdspan.layout.leftpad.overview]</a> (5.2)
-and 23.7.3.4.9.1 <a href="https://wg21.link/mdspan.layout.rightpad.overview">[mdspan.layout.rightpad.overview]</a> (5.2), respectively) requires 
-(unconditionally) that
-</p>
-<ul>
-<li><p><code class='backtick'>PaddingValue</code> is representable as a value of <code class='backtick'>index_type</code>.</p></li>
-</ul>
-<p>
-Since <code class='backtick'>std::dynamic_extent</code> is defined as <code class='backtick'>size_t(-1)</code> (in 23.7.2.1 <a href="https://wg21.link/span.syn">[span.syn]</a>)
-this immediately prohibits all dynamically padded layout mappings for
-any <code class='backtick'>index_type</code> for which:
-</p>
-<blockquote><pre>
-numeric_limit&lt;index_type&gt;::max() &lt; numeric_limit&lt;size_t&gt;::max()
-</pre></blockquote>
-<p>
-One example is <code class='backtick'>int</code> on a 64-bit system.
-<p/>
-The proposed resolution states that the modified representability
-<i>Mandates:</i> element holds for <code>rank &lt;= 1</code>, even though in that case the 
-<code class='backtick'>PaddingValue</code> has no other effect. Hence, the <i>Mandates:</i> element could 
-be weakened further.
-</p>
-
-
-<p id="res-4372"><b>Proposed resolution:</b></p>
-<p>
-This wording is relative to <a href="https://wg21.link/N5014">N5014</a>.
-</p>
-
-<ol>
-
-<li><p>Modify 23.7.3.4.8.1 <a href="https://wg21.link/mdspan.layout.leftpad.overview">[mdspan.layout.leftpad.overview]</a> as indicated:</p>
-
-<blockquote>
-<p>
--5- <i>Mandates</i>:
-</p>
-<ol style="list-style-type: none">
-<li><p>(5.1) &mdash; [&hellip;]</p></li>
-<li><p>(5.2) &mdash; <ins>if <code class='backtick'>padding_value</code> is not equal to <code class='backtick'>dynamic_extent</code>, then</ins> 
-<code class='backtick'>padding_value</code> is representable as a value of type <code class='backtick'>index_type</code>.</p></li>
-<li><p>(5.3) &mdash; [&hellip;]</p></li>
-<li><p>(5.4) &mdash; [&hellip;]</p></li>
-</ol>
-</blockquote>
-
-</li>
-
-<li><p>Modify 23.7.3.4.9.1 <a href="https://wg21.link/mdspan.layout.rightpad.overview">[mdspan.layout.rightpad.overview]</a> as indicated:</p>
-
-<blockquote>
-<p>
--5- <i>Mandates</i>:
-</p>
-<ol style="list-style-type: none">
-<li><p>(5.1) &mdash; [&hellip;]</p></li>
-<li><p>(5.2) &mdash; <ins>if <code class='backtick'>padding_value</code> is not equal to <code class='backtick'>dynamic_extent</code>, then</ins> 
-<code class='backtick'>padding_value</code> is representable as a value of type <code class='backtick'>index_type</code>.</p></li>
-<li><p>(5.3) &mdash; [&hellip;]</p></li>
-<li><p>(5.4) &mdash; [&hellip;]</p></li>
-</ol>
-</blockquote>
-
-</li>
-
-</ol>
-
-
-
-
-<hr>
 <h3 id="4373"><a href="#4373">4373</a><sup><a href="https://cplusplus.github.io/LWG/issue4373">(i)</a></sup>. <code class='backtick'>function_ref</code> should provide <code class='backtick'>result_type</code></h3>
 <p><b>Section:</b> 22.10.17.6.2 <a href="https://wg21.link/func.wrap.ref.class">[func.wrap.ref.class]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
  <b>Submitter:</b> Hewill Kang <b>Opened:</b> 2025-09-12 <b>Last modified:</b> 2025-10-04</p>
@@ -78888,8 +78678,8 @@ template&lt;<i>simd-vec-type</i> V&gt; constexpr V bit_ceil(const V&amp; v) <del
 <hr>
 <h3 id="4376"><a href="#4376">4376</a><sup><a href="https://cplusplus.github.io/LWG/issue4376">(i)</a></sup>. ABI tag in return type of [simd.mask.unary] is overconstrained</h3>
 <p><b>Section:</b> 29.10.9.4 <a href="https://wg21.link/simd.mask.unary">[simd.mask.unary]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Matthias Kretz <b>Opened:</b> 2025-09-15 <b>Last modified:</b> 2025-09-20</p>
-<p><b>Priority: </b>Not Prioritized
+ <b>Submitter:</b> Matthias Kretz <b>Opened:</b> 2025-09-15 <b>Last modified:</b> 2025-10-17</p>
+<p><b>Priority: </b>1
 </p>
 <p><b>View other</b> <a href="lwg-index-open.html#simd.mask.unary">active issues</a> in [simd.mask.unary].</p>
 <p><b>View all other</b> <a href="lwg-index.html#simd.mask.unary">issues</a> in [simd.mask.unary].</p>
@@ -78935,6 +78725,15 @@ is useful for different architectures. If we require
 any <code>vec&lt;long long&gt;</code> would ever be, that's just brittle and 
 unnecessary template bloat.</p></li>
 </ol>
+
+<p><i>[2025-10-17; Reflector poll.]</i></p>
+
+<p>
+Set priority to 1 after reflector poll.
+</p>
+<p>
+"Should be addressed together with <a href="lwg-active.html#4238" title="simd_mask&lt;complex&lt;double&gt;&gt;::operator+/-/~ return a disabled simd specialization (Status: New)">4238</a><sup><a href="https://cplusplus.github.io/LWG/issue4238" title="Latest snapshot">(i)</a></sup>."
+</p>
 
 
 <p id="res-4376"><b>Proposed resolution:</b></p>
@@ -79644,8 +79443,8 @@ in <code class='backtick'>val</code>, [&hellip;]
 <h3 id="4383"><a href="#4383">4383</a><sup><a href="https://cplusplus.github.io/LWG/issue4383">(i)</a></sup>. <code class='backtick'>constant_wrapper</code>'s pseudo-mutators are underconstrained
 </h3>
 <p><b>Section:</b> 21.3.5 <a href="https://wg21.link/const.wrap.class">[const.wrap.class]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Hewill Kang <b>Opened:</b> 2025-09-24 <b>Last modified:</b> 2025-09-27</p>
-<p><b>Priority: </b>Not Prioritized
+ <b>Submitter:</b> Hewill Kang <b>Opened:</b> 2025-09-24 <b>Last modified:</b> 2025-10-17</p>
+<p><b>Priority: </b>1
 </p>
 <p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
 <p><b>Discussion:</b></p>
@@ -79682,6 +79481,15 @@ int main() {
 <p>
 Since these pseudo-mutators have constraints, it is reasonable to further require constant
 expressions.
+</p>
+
+<p><i>[2025-10-17; Reflector poll.]</i></p>
+
+<p>
+Set priority to 1 after reflector poll.
+</p>
+<p>
+<code class='backtick'>operator+=</code> changed between <a href="https://wg21.link/P2781R4" title=" std::constexpr_wrapper">P2781R4</a> and <a href="https://wg21.link/P2781R5" title=" std::constexpr_wrapper">P2781R5</a>, intent is unclear.
 </p>
 
 
@@ -79829,8 +79637,8 @@ iterator erase(const_iterator position);
 <h3 id="4385"><a href="#4385">4385</a><sup><a href="https://cplusplus.github.io/LWG/issue4385">(i)</a></sup>. Including <code>&lt;simd&gt;</code> doesn't provide <code class='backtick'>std::begin/end</code>
 </h3>
 <p><b>Section:</b> 24.7 <a href="https://wg21.link/iterator.range">[iterator.range]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Hewill Kang <b>Opened:</b> 2025-09-26 <b>Last modified:</b> 2025-09-27</p>
-<p><b>Priority: </b>Not Prioritized
+ <b>Submitter:</b> Hewill Kang <b>Opened:</b> 2025-09-26 <b>Last modified:</b> 2025-10-17</p>
+<p><b>Priority: </b>3
 </p>
 <p><b>View other</b> <a href="lwg-index-open.html#iterator.range">active issues</a> in [iterator.range].</p>
 <p><b>View all other</b> <a href="lwg-index.html#iterator.range">issues</a> in [iterator.range].</p>
@@ -79839,6 +79647,19 @@ iterator erase(const_iterator position);
 <p>
 <code class='backtick'>std::simd::basic_vec</code> and <code class='backtick'>std::simd::basic_mask</code> are ranges since <a href="https://wg21.link/P3480R6" title=" std::simd is a range">P3480R6</a>, 
 it is reasonable to enable range access utilities when introducing <code>&lt;simd&gt;</code>.
+</p>
+
+<p><i>[2025-10-17; Reflector poll.]</i></p>
+
+<p>
+Set priority to 3 after reflector poll.
+</p>
+<p>
+"This will be the first time we add the free-function begn/end interface to support a type where <code class='backtick'>end</code> returns a sentinel.
+I would not want to set precedent here without at least taking the time to think about it, and acknowledge a deliberate intent."
+</p>
+<p>
+"The intent has been deliberate since <a href="https://wg21.link/P0184R0" title=" Generalizing the Range-Based For Loop">P0184R0</a>."
 </p>
 
 
@@ -80309,124 +80130,6 @@ template&lt;class U <ins>= T</ins>&gt; constexpr explicit(<i>see below</i>) basi
 <p>
 -1- [&hellip;]
 </p>
-</blockquote>
-</blockquote>
-</li>
-</ol>
-
-
-
-
-
-
-<hr>
-<h3 id="4391"><a href="#4391">4391</a><sup><a href="https://cplusplus.github.io/LWG/issue4391">(i)</a></sup>. Ambiguities of <code class='backtick'>simd::basic_vec</code> constructor</h3>
-<p><b>Section:</b> 29.10.7.2 <a href="https://wg21.link/simd.ctor">[simd.ctor]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Hewill Kang <b>Opened:</b> 2025-09-29 <b>Last modified:</b> 2025-10-03</p>
-<p><b>Priority: </b>Not Prioritized
-</p>
-<p><b>View other</b> <a href="lwg-index-open.html#simd.ctor">active issues</a> in [simd.ctor].</p>
-<p><b>View all other</b> <a href="lwg-index.html#simd.ctor">issues</a> in [simd.ctor].</p>
-<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
-<p><b>Discussion:</b></p>
-<p>
-The broadcasting, generator-based, and range constructors of <code class='backtick'>simd::basic_vec</code> all take a single
-argument, and their constraints are not mutually exclusive.
-<p/>
-This means that when a type satisfies both characteristics, such as a range that can be converted to a
-<code class='backtick'>value_type</code>, this will lead to ambiguity:
-</p>
-<blockquote>
-<pre>
-#include &lt;simd&gt;
-
-struct S {
-  operator double() const;       // basic_vec(U&amp;&amp; value)
-  
-  double operator()(int) const;  // basic_vec(G&amp;&amp; gen)
-
-  double* begin() const;         // basic_vec(R&amp;&amp; r, flags&lt;Flags...&gt; = {});
-  double* end() const;
-  constexpr static int size() { return 2; }
-};
-
-int main() {
-  std::simd::vec&lt;double&gt; simd(S{}); // <span style="color:#C80000;font-weight:bold">error: call of overloaded 'basic_simd(S)' is ambiguous</span>
-}
-</pre>
-</blockquote>
-<p>
-Do we need more constraints, similar to the one in <code>string_view(R&amp;&amp; r)</code> that requires
-<code class='backtick'>R</code> not to be convertible to <code class='backtick'>const char*</code>, to make the above work, i.e., only invoke the
-broadcasting constructor?
-</p>
-
-
-<p id="res-4391"><b>Proposed resolution:</b></p>
-<p>
-This wording is relative to <a href="https://wg21.link/N5014">N5014</a>.
-</p>
-
-<ol>
-
-
-<li><p>Modify 29.10.7.2 <a href="https://wg21.link/simd.ctor">[simd.ctor]</a> as indicated:</p>
-
-<blockquote>
-<pre>
-template&lt;class G&gt; constexpr explicit basic_vec(G&amp;&amp; gen);
-</pre>
-<blockquote>
-<p>
--8- Let <code>From<sub><i>i</i></sub></code> denote the type
-   <code>decltype(gen(integral_constant&lt;<i>simd-size-type</i>, <i>i</i>&gt;()))</code>.
-<p/>
--9- <i>Constraints</i>:
-</p>
-<ol style="list-style-type: none">
-   <li><p>
-   <ins>(9.?) &mdash; <code>constructible_from&lt;value_type, G&gt;</code> is <code>false</code>.</ins>
-   </p></li>
-   <li><p>
-    <ins>(9.?) &mdash;</ins>
-    <code>From<sub><i>i</i></sub></code> satisfies <code>convertible_to&lt;value_type&gt;</code> for all 
-    <code><i>i</i></code> in the range of [<code>0, size()</code>). In addition, for all <i>i</i> in the range of
-    [<code>0, size()</code>), if <code>From<sub><i>i</i></sub></code> is an arithmetic type, conversion from 
-    <code>From<sub><i>i</i></sub></code> to <code>value_type</code> is value-preserving.</p>
-   </li>
-</ol>
-</blockquote>
-[&hellip;]
-<pre>
-template&lt;class R, class... Flags&gt;
-  constexpr basic_vec(R&amp;&amp; r, flags&lt;Flags...&gt; = {});
-template&lt;class R, class... Flags&gt;
-  constexpr basic_vec(R&amp;&amp; r, const mask_type&amp; mask, flags&lt;Flags...&gt; = {});
-</pre>
-<blockquote>
-<p>
--12- Let mask be <code class='backtick'>mask_type(true)</code> for the overload with no <code class='backtick'>mask</code> parameter.
-<p/>
--13- <i>Constraints</i>:
-</p>
-<ol style="list-style-type: none">
-   <li><p>
-   (13.1) &mdash; <code class='backtick'>R</code> models <code class='backtick'>ranges::contiguous_range</code> and <code class='backtick'>ranges::sized_range</code>,
-   </p></li>
-   <li><p>
-   (13.2) &mdash; <code class='backtick'>ranges::size(r)</code> is a constant expression, <del>and</del>
-   </p></li>
-   <li><p>
-   (13.3) &mdash; <code class='backtick'>ranges::size(r)</code> is equal to <code class='backtick'>size()</code><del>.</del><ins>,</ins>
-   </p></li>
-   <li><p>
-   <ins>(13.?) &mdash; <code>constructible_from&lt;value_type, R&gt;</code> is <code class='backtick'>false</code>, and</ins>
-   </p></li>
-   <li><p>
-   <ins>(13.?) &mdash; <code>r(integral_constant&lt;<i>simd-size-type</i>, 0&gt;())</code> is not a valid
-            expression.</ins>
-   </p></li>
-</ol>
 </blockquote>
 </blockquote>
 </li>
