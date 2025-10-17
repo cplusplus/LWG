@@ -64,8 +64,8 @@
 <p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#New">New</a> status.</em></p>
 <h3 id="4394"><a href="lwg-active.html#4394">4394</a>. <code class='backtick'>simd::unchecked_load(I first, S last)</code> construct <code class='backtick'>span</code> maybe ill-formed</h3>
 <p><b>Section:</b> 29.10.8.7 <a href="https://wg21.link/simd.loadstore">[simd.loadstore]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Hewill Kang <b>Opened:</b> 2025-09-30 <b>Last modified:</b> 2025-10-03</p>
-<p><b>Priority: </b>Not Prioritized
+ <b>Submitter:</b> Hewill Kang <b>Opened:</b> 2025-09-30 <b>Last modified:</b> 2025-10-17</p>
+<p><b>Priority: </b>3
 </p>
 <p><b>View other</b> <a href="lwg-index-open.html#simd.loadstore">active issues</a> in [simd.loadstore].</p>
 <p><b>View all other</b> <a href="lwg-index.html#simd.loadstore">issues</a> in [simd.loadstore].</p>
@@ -123,6 +123,19 @@ We still attempt to construct the <code class='backtick'>span</code> by calling 
 but because the lvalue sentinel cannot be converted to <code class='backtick'>size_t</code>, the call of <code class='backtick'>span(first, n)</code>
 is also invalid. This makes the construction of the <code class='backtick'>span</code> ill-formed and leads to a hard error in
 the function body.
+</p>
+
+<p><i>[2025-10-17; Reflector poll.]</i></p>
+
+<p>
+Set priority to 3 after reflector poll.
+</p>
+<p>
+"<code class='backtick'>unchecked_load(first, last)</code> needs to be equivalent to <code class='backtick'>unchecked_load(span(first, last))</code>.
+If <code class='backtick'>span</code> converts <code class='backtick'>last</code> to <code class='backtick'>size_t</code> then simd should do the same, not <code class='backtick'>span(first, last-first)</code>.
+Should simd (first,last) overloads have the same
+<code>is_convertible_v&lt;End, size_t&gt;</code>
+is <code class='backtick'>false</code> constraint as <code class='backtick'>span</code>?"
 </p>
 
 

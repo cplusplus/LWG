@@ -54,7 +54,7 @@
 </style>
 </head>
 <body>
-<p>Revised 2025-10-17 at 11:39:27 UTC
+<p>Revised 2025-10-17 at 13:16:08 UTC
 </p><h2>Unresolved Issues</h2>
 <hr>
 <h3 id="423"><a href="#423">423</a><sup><a href="https://cplusplus.github.io/LWG/issue423">(i)</a></sup>. Effects of negative <code>streamsize</code> in iostreams</h3>
@@ -42082,7 +42082,7 @@ sized_sentinel_for&lt;S, I&gt;</code> are <code>false</code>, where <code>I</cod
 <hr>
 <h3 id="3831"><a href="#3831">3831</a><sup><a href="https://cplusplus.github.io/LWG/issue3831">(i)</a></sup>. Two-digit formatting of negative <code>year</code> is ambiguous</h3>
 <p><b>Section:</b> 30.12 <a href="https://wg21.link/time.format">[time.format]</a>, 30.13 <a href="https://wg21.link/time.parse">[time.parse]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Matt Stephanson <b>Opened:</b> 2022-11-18 <b>Last modified:</b> 2022-11-30</p>
+ <b>Submitter:</b> Matt Stephanson <b>Opened:</b> 2022-11-18 <b>Last modified:</b> 2025-10-17</p>
 <p><b>Priority: </b>3
 </p>
 <p><b>View other</b> <a href="lwg-index-open.html#time.format">active issues</a> in [time.format].</p>
@@ -42174,9 +42174,9 @@ Set priority to 3 after reflector poll.
 </p>
 <p>A few votes for priority 2. Might need to go to LEWG.</p>
 
+<p><strong>Previous resolution [SUPERSEDED]:</strong></p>
+<blockquote class="note">
 
-
-<p id="res-3831"><b>Proposed resolution:</b></p>
 <p>
 This wording is relative to <a href="https://wg21.link/N4917" title=" Working Draft, Standard for Programming Language C++">N4917</a>.
 </p>
@@ -42327,6 +42327,93 @@ modified command <code>%<i>N</i> y</code> specifies the maximum number of charac
 not specified, the default is 2. Leading zeroes are permitted but not required. The<br/>
 modified commands <code>%Ey</code> and <code>%Oy</code> interpret the locale's alternative representation.<br/>
 <ins>[<i>Example ?:</i> <code>year y; istringstream{"-20 76"} &gt;&gt; parse("%3C %y", y);</code> results in<br/> 
+<code>y == -1976y</code>. &mdash; <i>end example</i>]</ins>
+</td>
+</tr>
+<tr>
+<td colspan="2" align="center">
+<code>[&hellip;]</code>
+</td>
+</tr>
+</table>
+
+</blockquote>
+</li>
+</ol>
+
+</blockquote>
+
+<p><i>[2025-10-17; Jonathan provides updated wording using Option B]</i></p>
+
+
+
+
+<p id="res-3831"><b>Proposed resolution:</b></p>
+<p>
+This wording is relative to <a href="https://wg21.link/N5014">N5014</a>.
+</p>
+
+<ol>
+<li><p>Modify 30.12 <a href="https://wg21.link/time.format">[time.format]</a>, Table [tab:time.format.spec] as indicated:</p>
+
+<blockquote>
+
+<table border="1">
+<caption>Table 133 &mdash; Meaning of conversion specifiers  [tab:time.format.spec]</caption>
+<tr style="text-align:center">
+<th>Specifier</th>
+<th>Replacement</th>
+</tr>
+<tr>
+<td colspan="2" align="center">
+<code>[&hellip;]</code>
+</td>
+</tr>
+<tr>
+<td><code>%y</code></td>
+<td>The last two decimal digits of the year<ins>, regardless of the sign of the year</ins>.<br/>
+If the result is a single digit it is prefixed by <code>0</code>.<br/>
+The modified command <code>%Oy</code> produces the locale's alternative representation. The<br/>
+modified command <code>%Ey</code> produces the locale's alternative representation of offset from<br/>
+<code>%EC</code> (year only).<br/>
+<ins>[<i>Example ?:</i> <code>cout &lt;&lt; format("{:%C %y}", -1976y);</code> prints <code>-20 76</code>. &mdash; <i>end example</i>]</ins>
+</td>
+</tr>
+<tr>
+<td colspan="2" align="center">
+<code>[&hellip;]</code>
+</td>
+</tr>
+</table>
+
+</blockquote>
+</li>
+
+<li><p>Modify 30.13 <a href="https://wg21.link/time.parse">[time.parse]</a>, Table [tab:time.parse.spec] as indicated:</p>
+
+<blockquote>
+
+<table border="1">
+<caption>Table 103 &mdash; Meaning of <code>parse</code> flags  [tab:time.parse.spec]</caption>
+<tr style="text-align:center">
+<th>Flag</th>
+<th>Parsed value</th>
+</tr>
+<tr>
+<td colspan="2" align="center">
+<code>[&hellip;]</code>
+</td>
+</tr>
+<tr>
+<td><code>%y</code></td>
+<td>The last two decimal digits of the year<ins>, regardless of the sign of the year</ins>.<br/>
+If the century is not otherwise specified (e.g.<br/>
+with <code>%C</code>), values in the range [<code>69</code>, <code>99</code>] are presumed to refer to the years 1969 to 1999,<br/>
+and values in the range [<code>00</code>, <code>68</code>] are presumed to refer to the years 2000 to 2068. The<br/>
+modified command <code>%<i>N</i> y</code> specifies the maximum number of characters to read. If <i>N</i> is<br/>
+not specified, the default is 2. Leading zeroes are permitted but not required. The<br/>
+modified commands <code>%Ey</code> and <code>%Oy</code> interpret the locale's alternative representation.<br/>
+<ins>[<i>Example ?:</i> <code>year y; istringstream{"-20 76"} &gt;&gt; parse("%3C %y", y);</code> results in<br/>
 <code>y == -1976y</code>. &mdash; <i>end example</i>]</ins>
 </td>
 </tr>
@@ -48881,8 +48968,8 @@ Set priority to 3 after reflector poll.
 <hr>
 <h3 id="3967"><a href="#3967">3967</a><sup><a href="https://cplusplus.github.io/LWG/issue3967">(i)</a></sup>. The specification for <code>std::is_nothrow_*</code> traits may be ambiguous in some cases involving <code>noexcept(false)</code></h3>
 <p><b>Section:</b> 21.3.6.4 <a href="https://wg21.link/meta.unary.prop">[meta.unary.prop]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Jiang An <b>Opened:</b> 2023-08-04 <b>Last modified:</b> 2023-08-05</p>
-<p><b>Priority: </b>Not Prioritized
+ <b>Submitter:</b> Jiang An <b>Opened:</b> 2023-08-04 <b>Last modified:</b> 2025-10-17</p>
+<p><b>Priority: </b>3
 </p>
 <p><b>View other</b> <a href="lwg-index-open.html#meta.unary.prop">active issues</a> in [meta.unary.prop].</p>
 <p><b>View all other</b> <a href="lwg-index.html#meta.unary.prop">issues</a> in [meta.unary.prop].</p>
@@ -48906,6 +48993,15 @@ and <a href="https://quuxplusone.github.io/blog/2023/04/17/noexcept-false-equals
 <p/> 
 Perhaps we may need to clarify that the implementation divergence is permitted, or unambiguously specify these 
 traits to give results consistent with exception specifications.
+</p>
+
+<p><i>[2025-10-17; Reflector poll.]</i></p>
+
+<p>
+Set priority to 3 after reflector poll.
+</p>
+<p>
+"NAD, this was just a GCC bug."
 </p>
 
 
@@ -53071,84 +53167,6 @@ fewer sharp edges here, and we encourage a paper exploring options.
 
 
 <hr>
-<h3 id="4020"><a href="#4020">4020</a><sup><a href="https://cplusplus.github.io/LWG/issue4020">(i)</a></sup>. <code>extents::<i>index-cast</i></code> weirdness</h3>
-<p><b>Section:</b> 23.7.3.3.2 <a href="https://wg21.link/mdspan.extents.expo">[mdspan.extents.expo]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Casey Carter <b>Opened:</b> 2023-11-29 <b>Last modified:</b> 2023-12-02</p>
-<p><b>Priority: </b>Not Prioritized
-</p>
-<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
-<p><b>Discussion:</b></p>
-<p>
-The exposition-only static member <code><i>index-cast</i></code> of <code>extents</code> is specified as 
-(23.7.3.3.2 <a href="https://wg21.link/mdspan.extents.expo">[mdspan.extents.expo]</a>/9):
-</p>
-<blockquote>
-<pre>
-template&lt;class OtherIndexType&gt;
-static constexpr auto <i>index-cast</i>(OtherIndexType&amp;&amp; i) noexcept;
-</pre>
-<blockquote>
-<p>
--9- <i>Effects</i>:
-</p>
-<ol style="list-style-type: none">
-<li><p>(9.1) &mdash; If <code>OtherIndexType</code> is an integral type other than <code>bool</code>, then equivalent 
-to <code>return i;</code>,</p></li>
-<li><p>(9.2) &mdash; otherwise, equivalent to <code>return static_cast&lt;index_type&gt;(i);</code>.</p></li>
-</ol>
-<p>
-[<i>Note 1</i>: This function will always return an integral type other than <code>bool</code>. Since this function's 
-call sites are constrained on convertibility of <code>OtherIndexType</code> to <code>index_type</code>, integer-class types 
-can use the <code>static_cast</code> branch without loss of precision. &mdash; <i>end note</i>]
-</p>
-</blockquote>
-</blockquote>
-<p>
-This function returns <code>T</code> when passed an rvalue of <i>cv</i>-unqualified integral type <code>T</code>, 
-but <code>index_type</code> when passed a <i>cv</i>-qualified and/or lvalue argument of any integral type. It 
-would seem more consistent and easier to reason about if 9.1 was instead conditional on 
-<code>remove_cvref_t&lt;OtherIndexType&gt;</code>.
-</p>
-
-
-<p id="res-4020"><b>Proposed resolution:</b></p>
-<p>
-This wording is relative to <a href="https://wg21.link/N4964" title=" Working Draft, Programming Languages — C++">N4964</a>.
-</p>
-
-<ol>
-
-<li><p>Modify 23.7.3.3.2 <a href="https://wg21.link/mdspan.extents.expo">[mdspan.extents.expo]</a> as indicated:</p>
-
-<blockquote>
-<pre>
-template&lt;class OtherIndexType&gt;
-  static constexpr auto <i>index-cast</i>(OtherIndexType&amp;&amp; i) noexcept;
-</pre>
-<blockquote>
-<p>
--9- <i>Effects</i>:
-</p>
-<ol style="list-style-type: none">
-<li><p>(9.1) &mdash; If <code><ins>remove_cvref_t&lt;</ins>OtherIndexType<ins>&gt;</ins></code> 
-is an integral type other than <code>bool</code>, then equivalent to <code>return i;</code>,</p></li>
-<li><p>(9.2) &mdash; otherwise, equivalent to <code>return static_cast&lt;index_type&gt;(i);</code>.</p></li>
-</ol>
-<p>
-[<i>Note 1</i>: This function will always return an integral type other than <code>bool</code>. Since this function's 
-call sites are constrained on convertibility of <code>OtherIndexType</code> to <code>index_type</code>, integer-class types 
-can use the <code>static_cast</code> branch without loss of precision. &mdash; <i>end note</i>]
-</p>
-</blockquote>
-</blockquote>
-</li>
-</ol>
-
-
-
-
-
-<hr>
 <h3 id="4021"><a href="#4021">4021</a><sup><a href="https://cplusplus.github.io/LWG/issue4021">(i)</a></sup>. <code>mdspan::is_always_<i>meow</i>()</code> should be <code>noexcept</code></h3>
 <p><b>Section:</b> 23.7.3.6.1 <a href="https://wg21.link/mdspan.mdspan.overview">[mdspan.mdspan.overview]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
  <b>Submitter:</b> Stephan T. Lavavej <b>Opened:</b> 2023-12-07 <b>Last modified:</b> 2023-12-10</p>
@@ -53252,8 +53270,8 @@ static constexpr bool is_always_strided() <ins>noexcept</ins>
 <hr>
 <h3 id="4022"><a href="#4022">4022</a><sup><a href="https://cplusplus.github.io/LWG/issue4022">(i)</a></sup>. Ambiguity in the formatting of negative years with format specifier <code>%C</code></h3>
 <p><b>Section:</b> 30.12 <a href="https://wg21.link/time.format">[time.format]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Jiang An <b>Opened:</b> 2023-12-08 <b>Last modified:</b> 2023-12-09</p>
-<p><b>Priority: </b>Not Prioritized
+ <b>Submitter:</b> Jiang An <b>Opened:</b> 2023-12-08 <b>Last modified:</b> 2025-10-17</p>
+<p><b>Priority: </b>3
 </p>
 <p><b>View other</b> <a href="lwg-index-open.html#time.format">active issues</a> in [time.format].</p>
 <p><b>View all other</b> <a href="lwg-index.html#time.format">issues</a> in [time.format].</p>
@@ -53296,8 +53314,18 @@ is considered as a single decimal digit, and there is implementation divergence
 This issue is somewhat related to LWG <a href="lwg-active.html#3831" title="Two-digit formatting of negative year is ambiguous (Status: New)">3831</a><sup><a href="https://cplusplus.github.io/LWG/issue3831" title="Latest snapshot">(i)</a></sup>.
 </p>
 
+<p><i>[2025-10-17; Reflector poll.]</i></p>
 
-<p id="res-4022"><b>Proposed resolution:</b></p>
+<p>
+Set priority to 3 after reflector poll.
+</p>
+<p>
+Howard intended Option B, i.e. <code class='backtick'>"-09"</code>, but Option B could possibly be interpreted to mean <code class='backtick'>"0-9"</code>.
+"Maybe something like the 0 is inserted before the sole digit, or after the sign, if any."
+</p>
+<p><strong>Previous resolution [SUPERSEDED]:</strong></p>
+<blockquote class="note">
+
 <p>
 This wording is relative to <a href="https://wg21.link/N4964" title=" Working Draft, Programming Languages — C++">N4964</a>.
 </p>
@@ -53380,6 +53408,54 @@ representation of the century.</td>
 </blockquote>
 </li>
 </ol>
+</blockquote>
+
+<p><i>[2025-10-17; Jonathan provides new wording based on Option B]</i></p>
+
+
+
+
+<p id="res-4022"><b>Proposed resolution:</b></p>
+<p>
+This wording is relative to <a href="https://wg21.link/N5014">N5014</a>.
+</p>
+
+<ol>
+
+<li><p>Modify 30.12 <a href="https://wg21.link/time.format">[time.format]</a>, Table 133 [tab:time.format.spec], as indicated:</p>
+
+<blockquote>
+<table border="1">
+<caption>Table 133 &mdash; Meaning of conversion specifiers  [tab:time.format.spec]</caption>
+<tr style="text-align:center">
+<th>Specifier</th>
+<th>Replacement</th>
+</tr>
+<tr>
+<td colspan="2" align="center">
+<code>[&hellip;]</code>
+</td>
+</tr>
+<tr>
+<td><code>%C</code></td>
+<td>The year divided by <code>100</code> using floored division. If the result is
+<del>a single decimal digit, it<br/>
+is prefixed with <code>0</code></del><br/>
+<ins>in the range <code>[-9, 9]</code> then <code>0</code> is inserted before
+the single digit (after the sign, if present)</ins>.<br/>
+The modified command <code>%EC</code> produces the locale's alternative<br/>
+representation of the century.</td>
+</tr>
+<tr>
+<td colspan="2" align="center">
+<code>[&hellip;]</code>
+</td>
+</tr>
+</table>
+</blockquote>
+</li>
+</ol>
+
 
 
 
@@ -53534,8 +53610,8 @@ all <code>true</code>.</ins>
 <hr>
 <h3 id="4028"><a href="#4028">4028</a><sup><a href="https://cplusplus.github.io/LWG/issue4028">(i)</a></sup>. <code>std::is_(nothrow_)convertible</code> should be reworded to avoid dependence on the <code>return</code> statement</h3>
 <p><b>Section:</b> 21.3.8 <a href="https://wg21.link/meta.rel">[meta.rel]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Jiang An <b>Opened:</b> 2023-12-18 <b>Last modified:</b> 2023-12-22</p>
-<p><b>Priority: </b>Not Prioritized
+ <b>Submitter:</b> Jiang An <b>Opened:</b> 2023-12-18 <b>Last modified:</b> 2025-10-17</p>
+<p><b>Priority: </b>2
 </p>
 <p><b>View other</b> <a href="lwg-index-open.html#meta.rel">active issues</a> in [meta.rel].</p>
 <p><b>View all other</b> <a href="lwg-index.html#meta.rel">issues</a> in [meta.rel].</p>
@@ -53549,6 +53625,18 @@ change the wording for <code>std::is_convertible</code> to avoid actual behavior
 <p/>
 IMO it's better to specify <code>std::is_convertible</code> in a such way that is independent to <code>return</code> statements. 
 The proposed resolution matches what mainstream implementations do, and should resolve LWG <a href="lwg-active.html#3400" title="Does is_nothrow_convertible consider destruction of the destination type? (Status: New)">3400</a><sup><a href="https://cplusplus.github.io/LWG/issue3400" title="Latest snapshot">(i)</a></sup> together.
+</p>
+
+<p><i>[2025-10-17; Reflector poll.]</i></p>
+
+<p>
+Set priority to 2 after reflector poll.
+</p>
+<p>
+"I think the P/R is either insufficient or redundant: either remove the words "To is neither array nor function type and" (because they are unnecessary assuming the P/R's definition of <code class='backtick'>conv-dest</code> must be well-formed) or else add "To is neither cv void nor array nor function type" (because the P/R's definition of <code class='backtick'>conv-dest</code> remains ill-formed in cases like <code>is_convertible_v&lt;int, void&gt;</code>."
+</p>
+<p>
+"Might need to revisit the hack added to 8.8.4 <a href="https://wg21.link/stmt.return">[stmt.return]</a> by <a href="https://wg21.link/P2748R5" title=" Disallow Binding a Returned Glvalue to a Temporary">P2748R5</a>."
 </p>
 
 
@@ -69839,101 +69927,6 @@ discarding results, and which we don't.
 
 
 <hr>
-<h3 id="4269"><a href="#4269">4269</a><sup><a href="https://cplusplus.github.io/LWG/issue4269">(i)</a></sup>. <code class='backtick'>unique_copy</code> passes arguments to its predicate backwards</h3>
-<p><b>Section:</b> 26.7.9 <a href="https://wg21.link/alg.unique">[alg.unique]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Jonathan Wakely <b>Opened:</b> 2025-05-29 <b>Last modified:</b> 2025-05-29</p>
-<p><b>Priority: </b>Not Prioritized
-</p>
-<p><b>View other</b> <a href="lwg-index-open.html#alg.unique">active issues</a> in [alg.unique].</p>
-<p><b>View all other</b> <a href="lwg-index.html#alg.unique">issues</a> in [alg.unique].</p>
-<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
-<p><b>Discussion:</b></p>
-<p>
-For the <code class='backtick'>unique</code> algorithms, 26.7.9 <a href="https://wg21.link/alg.unique">[alg.unique]</a> p1 says:
-</p>
-<blockquote>
-1. Let <code class='backtick'>pred</code> be <code class='backtick'>equal_to{}</code> for the overloads with no parameter <code class='backtick'>pred</code>,
-and let <i>E</i> be
-<ol style="list-style-type: none">
-<li> (1.1)
- &mdash; <code class='backtick'>bool(pred(*(i - 1), *i))</code> for the overloads in namespace <code class='backtick'>std</code>;
-</li>
-<li>(1.2)
- &mdash; <code class='backtick'>bool(invoke(comp, invoke(proj, *(i - 1)), invoke(proj, *i)))</code>
- for the overloads in namespace <code class='backtick'>ranges</code>.
-</li>
-</ol>
-</blockquote>
-<p>
-However for the <code class='backtick'>unique_copy</code> algorithms, 26.7.9 <a href="https://wg21.link/alg.unique">[alg.unique]</a> p6 says
-that the arguments <code class='backtick'>*i</code> and <code class='backtick'>*(i-1)</code> should be reversed:
-</p>
-<blockquote>
-6. Let <code class='backtick'>pred</code> be <code class='backtick'>equal_to{}</code> for the overloads with no parameter <code class='backtick'>pred</code>,
-and let <i>E</i> be
-<ol style="list-style-type: none">
-<li> (6.1)
- &mdash; <code class='backtick'>bool(pred(*i, *(i - 1)))</code> for the overloads in namespace <code class='backtick'>std</code>;
-</li>
-<li>(6.2)
- &mdash; <code class='backtick'>bool(invoke(comp, invoke(proj, *i), invoke(proj, *(i - 1))))</code>
- for the overloads in namespace <code class='backtick'>ranges</code>.
-</li>
-</ol>
-</blockquote>
-<p>
-This reversed order is consistent with the documentation for
-<a href="https://stl.boost.org/unique_copy.html">SGI STL <code class='backtick'>unique_copy</code></a>,
-although the docs for 
-<a href="https://stl.boost.org/unique_copy.html">SGI STL <code class='backtick'>unique</code></a>
-show reversed arguments too, and the C++ standard doesn't match that.
-</p>
-<p>
-A survey of known implementations shows that all three of libstdc++, libc++,
-and MSVC STL use the <code class='backtick'>pred(*(i - 1), *i)</code> order for all of <code class='backtick'>std::unique</code>,
-<code class='backtick'>std::unique_copy</code>, <code class='backtick'>ranges::unique</code>, and <code class='backtick'>ranges::unique_copy</code>. The range-v3
-library did the same, and even the SGI STL did too (despite what its docs said).
-Only two implementations were found which match the spec and use a different
-argument order for <code class='backtick'>unique</code> and <code class='backtick'>unique_copy</code>, Casey Carter's (cmcstl2) and
-Fraser Gordon's.
-</p>
-<p>
-In the absence of any known rationale for <code class='backtick'>unique</code> and <code class='backtick'>unique_copy</code> to differ,
-it seems sensible to make <code class='backtick'>unique_copy</code> more consistent with <code class='backtick'>unique</code>
-(and with the majority of implementations stretching back three decades).
-</p>
-
-
-<p id="res-4269"><b>Proposed resolution:</b></p>
-<p>
-This wording is relative to <a href="https://wg21.link/N5008" title=" Working Draft, Programming Languages — C++">N5008</a>.
-</p>
-
-<ol>
-<li><p>Modify 26.7.9 <a href="https://wg21.link/alg.unique">[alg.unique]</a> as indicated:</p>
-<blockquote>
-6. Let <code class='backtick'>pred</code> be <code class='backtick'>equal_to{}</code> for the overloads with no parameter <code class='backtick'>pred</code>,
-and let <i>E</i> be
-<ol style="list-style-type: none">
-<li> (6.1)
- &mdash; <code>bool(pred(<del>*i,</del> *(i - 1))<ins>, *i</ins>)</code>
- for the overloads in namespace <code class='backtick'>std</code>;
-</li>
-<li>(6.2)
- &mdash; <code>bool(invoke(comp, <del>invoke(proj, *i),</del>
- invoke(proj, *(i - 1))<ins>, invoke(proj, *i)</ins>))</code>
- for the overloads in namespace <code class='backtick'>ranges</code>.
-</li>
-</ol>
-</blockquote>
-</li>
-</ol>
-
-
-
-
-
-<hr>
 <h3 id="4270"><a href="#4270">4270</a><sup><a href="https://cplusplus.github.io/LWG/issue4270">(i)</a></sup>. Diagnose misuse of <code class='backtick'>std::projected::operator*</code></h3>
 <p><b>Section:</b> 24.3.6.4 <a href="https://wg21.link/projected">[projected]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
  <b>Submitter:</b> Jiang An <b>Opened:</b> 2025-05-30 <b>Last modified:</b> 2025-06-06</p>
@@ -80681,8 +80674,8 @@ template&lt;<i>simd-vec-type</i> V, ranges::contiguous_range R, <i>simd-integral
 <hr>
 <h3 id="4394"><a href="#4394">4394</a><sup><a href="https://cplusplus.github.io/LWG/issue4394">(i)</a></sup>. <code class='backtick'>simd::unchecked_load(I first, S last)</code> construct <code class='backtick'>span</code> maybe ill-formed</h3>
 <p><b>Section:</b> 29.10.8.7 <a href="https://wg21.link/simd.loadstore">[simd.loadstore]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Hewill Kang <b>Opened:</b> 2025-09-30 <b>Last modified:</b> 2025-10-03</p>
-<p><b>Priority: </b>Not Prioritized
+ <b>Submitter:</b> Hewill Kang <b>Opened:</b> 2025-09-30 <b>Last modified:</b> 2025-10-17</p>
+<p><b>Priority: </b>3
 </p>
 <p><b>View other</b> <a href="lwg-index-open.html#simd.loadstore">active issues</a> in [simd.loadstore].</p>
 <p><b>View all other</b> <a href="lwg-index.html#simd.loadstore">issues</a> in [simd.loadstore].</p>
@@ -80740,6 +80733,19 @@ We still attempt to construct the <code class='backtick'>span</code> by calling 
 but because the lvalue sentinel cannot be converted to <code class='backtick'>size_t</code>, the call of <code class='backtick'>span(first, n)</code>
 is also invalid. This makes the construction of the <code class='backtick'>span</code> ill-formed and leads to a hard error in
 the function body.
+</p>
+
+<p><i>[2025-10-17; Reflector poll.]</i></p>
+
+<p>
+Set priority to 3 after reflector poll.
+</p>
+<p>
+"<code class='backtick'>unchecked_load(first, last)</code> needs to be equivalent to <code class='backtick'>unchecked_load(span(first, last))</code>.
+If <code class='backtick'>span</code> converts <code class='backtick'>last</code> to <code class='backtick'>size_t</code> then simd should do the same, not <code class='backtick'>span(first, last-first)</code>.
+Should simd (first,last) overloads have the same
+<code>is_convertible_v&lt;End, size_t&gt;</code>
+is <code class='backtick'>false</code> constraint as <code class='backtick'>span</code>?"
 </p>
 
 
@@ -82026,8 +82032,8 @@ then <del><code class='backtick'>ranges::size(r)</code> ≥ <code class='backtic
 <hr>
 <h3 id="4410"><a href="#4410">4410</a><sup><a href="https://cplusplus.github.io/LWG/issue4410">(i)</a></sup>. <code class='backtick'>basic_string_view(It begin, End end)</code> is underconstrained</h3>
 <p><b>Section:</b> 27.3.3.2 <a href="https://wg21.link/string.view.cons">[string.view.cons]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Hewill Kang <b>Opened:</b> 2025-10-12 <b>Last modified:</b> 2025-10-12</p>
-<p><b>Priority: </b>Not Prioritized
+ <b>Submitter:</b> Hewill Kang <b>Opened:</b> 2025-10-12 <b>Last modified:</b> 2025-10-17</p>
+<p><b>Priority: </b>4
 </p>
 <p><b>View other</b> <a href="lwg-index-open.html#string.view.cons">active issues</a> in [string.view.cons].</p>
 <p><b>View all other</b> <a href="lwg-index.html#string.view.cons">issues</a> in [string.view.cons].</p>
@@ -82044,6 +82050,18 @@ std::string_view sv(p, p); // <span style="color:red;font-weight:bolder">error: 
 <p>
 Because the constructor currently only requires that the value type of the contiguous iterator be 
 <code class='backtick'>char</code>, which does not reject <code class='backtick'>volatile char*</code>, which fires when further initializing <code class='backtick'>const char*</code>.
+</p>
+
+<p><i>[2025-10-17; Reflector poll.]</i></p>
+
+<p>
+Set priority to 4 after reflector poll.
+</p>
+<p>
+"NAD, don't care about volatile."
+"Maybe make it <i>Mandates</i>: instead of <i>Constraints</i>:."
+"We already reject <code>span&lt;const char&gt; s(p,p)</code>
+so should also reject <code class='backtick'>string_view sv(p,p)</code>."
 </p>
 
 

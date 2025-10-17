@@ -64,8 +64,8 @@
 <p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#New">New</a> status.</em></p>
 <h3 id="4022"><a href="lwg-active.html#4022">4022</a>. Ambiguity in the formatting of negative years with format specifier <code>%C</code></h3>
 <p><b>Section:</b> 30.12 <a href="https://wg21.link/time.format">[time.format]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Jiang An <b>Opened:</b> 2023-12-08 <b>Last modified:</b> 2023-12-09</p>
-<p><b>Priority: </b>Not Prioritized
+ <b>Submitter:</b> Jiang An <b>Opened:</b> 2023-12-08 <b>Last modified:</b> 2025-10-17</p>
+<p><b>Priority: </b>3
 </p>
 <p><b>View other</b> <a href="lwg-index-open.html#time.format">active issues</a> in [time.format].</p>
 <p><b>View all other</b> <a href="lwg-index.html#time.format">issues</a> in [time.format].</p>
@@ -108,8 +108,18 @@ is considered as a single decimal digit, and there is implementation divergence
 This issue is somewhat related to LWG <a href="lwg-active.html#3831" title="Two-digit formatting of negative year is ambiguous (Status: New)">3831</a><sup><a href="https://cplusplus.github.io/LWG/issue3831" title="Latest snapshot">(i)</a></sup>.
 </p>
 
+<p><i>[2025-10-17; Reflector poll.]</i></p>
 
-<p id="res-4022"><b>Proposed resolution:</b></p>
+<p>
+Set priority to 3 after reflector poll.
+</p>
+<p>
+Howard intended Option B, i.e. <code class='backtick'>"-09"</code>, but Option B could possibly be interpreted to mean <code class='backtick'>"0-9"</code>.
+"Maybe something like the 0 is inserted before the sole digit, or after the sign, if any."
+</p>
+<p><strong>Previous resolution [SUPERSEDED]:</strong></p>
+<blockquote class="note">
+
 <p>
 This wording is relative to <a href="https://wg21.link/N4964" title=" Working Draft, Programming Languages — C++">N4964</a>.
 </p>
@@ -192,6 +202,54 @@ representation of the century.</td>
 </blockquote>
 </li>
 </ol>
+</blockquote>
+
+<p><i>[2025-10-17; Jonathan provides new wording based on Option B]</i></p>
+
+
+
+
+<p id="res-4022"><b>Proposed resolution:</b></p>
+<p>
+This wording is relative to <a href="https://wg21.link/N5014">N5014</a>.
+</p>
+
+<ol>
+
+<li><p>Modify 30.12 <a href="https://wg21.link/time.format">[time.format]</a>, Table 133 [tab:time.format.spec], as indicated:</p>
+
+<blockquote>
+<table border="1">
+<caption>Table 133 &mdash; Meaning of conversion specifiers  [tab:time.format.spec]</caption>
+<tr style="text-align:center">
+<th>Specifier</th>
+<th>Replacement</th>
+</tr>
+<tr>
+<td colspan="2" align="center">
+<code>[&hellip;]</code>
+</td>
+</tr>
+<tr>
+<td><code>%C</code></td>
+<td>The year divided by <code>100</code> using floored division. If the result is
+<del>a single decimal digit, it<br/>
+is prefixed with <code>0</code></del><br/>
+<ins>in the range <code>[-9, 9]</code> then <code>0</code> is inserted before
+the single digit (after the sign, if present)</ins>.<br/>
+The modified command <code>%EC</code> produces the locale's alternative<br/>
+representation of the century.</td>
+</tr>
+<tr>
+<td colspan="2" align="center">
+<code>[&hellip;]</code>
+</td>
+</tr>
+</table>
+</blockquote>
+</li>
+</ol>
+
 
 
 

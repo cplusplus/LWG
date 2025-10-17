@@ -64,7 +64,7 @@
 <p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#New">New</a> status.</em></p>
 <h3 id="3831"><a href="lwg-active.html#3831">3831</a>. Two-digit formatting of negative <code>year</code> is ambiguous</h3>
 <p><b>Section:</b> 30.12 <a href="https://wg21.link/time.format">[time.format]</a>, 30.13 <a href="https://wg21.link/time.parse">[time.parse]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Matt Stephanson <b>Opened:</b> 2022-11-18 <b>Last modified:</b> 2022-11-30</p>
+ <b>Submitter:</b> Matt Stephanson <b>Opened:</b> 2022-11-18 <b>Last modified:</b> 2025-10-17</p>
 <p><b>Priority: </b>3
 </p>
 <p><b>View other</b> <a href="lwg-index-open.html#time.format">active issues</a> in [time.format].</p>
@@ -156,9 +156,9 @@ Set priority to 3 after reflector poll.
 </p>
 <p>A few votes for priority 2. Might need to go to LEWG.</p>
 
+<p><strong>Previous resolution [SUPERSEDED]:</strong></p>
+<blockquote class="note">
 
-
-<p id="res-3831"><b>Proposed resolution:</b></p>
 <p>
 This wording is relative to <a href="https://wg21.link/N4917" title=" Working Draft, Standard for Programming Language C++">N4917</a>.
 </p>
@@ -309,6 +309,93 @@ modified command <code>%<i>N</i> y</code> specifies the maximum number of charac
 not specified, the default is 2. Leading zeroes are permitted but not required. The<br/>
 modified commands <code>%Ey</code> and <code>%Oy</code> interpret the locale's alternative representation.<br/>
 <ins>[<i>Example ?:</i> <code>year y; istringstream{"-20 76"} &gt;&gt; parse("%3C %y", y);</code> results in<br/> 
+<code>y == -1976y</code>. &mdash; <i>end example</i>]</ins>
+</td>
+</tr>
+<tr>
+<td colspan="2" align="center">
+<code>[&hellip;]</code>
+</td>
+</tr>
+</table>
+
+</blockquote>
+</li>
+</ol>
+
+</blockquote>
+
+<p><i>[2025-10-17; Jonathan provides updated wording using Option B]</i></p>
+
+
+
+
+<p id="res-3831"><b>Proposed resolution:</b></p>
+<p>
+This wording is relative to <a href="https://wg21.link/N5014">N5014</a>.
+</p>
+
+<ol>
+<li><p>Modify 30.12 <a href="https://wg21.link/time.format">[time.format]</a>, Table [tab:time.format.spec] as indicated:</p>
+
+<blockquote>
+
+<table border="1">
+<caption>Table 133 &mdash; Meaning of conversion specifiers  [tab:time.format.spec]</caption>
+<tr style="text-align:center">
+<th>Specifier</th>
+<th>Replacement</th>
+</tr>
+<tr>
+<td colspan="2" align="center">
+<code>[&hellip;]</code>
+</td>
+</tr>
+<tr>
+<td><code>%y</code></td>
+<td>The last two decimal digits of the year<ins>, regardless of the sign of the year</ins>.<br/>
+If the result is a single digit it is prefixed by <code>0</code>.<br/>
+The modified command <code>%Oy</code> produces the locale's alternative representation. The<br/>
+modified command <code>%Ey</code> produces the locale's alternative representation of offset from<br/>
+<code>%EC</code> (year only).<br/>
+<ins>[<i>Example ?:</i> <code>cout &lt;&lt; format("{:%C %y}", -1976y);</code> prints <code>-20 76</code>. &mdash; <i>end example</i>]</ins>
+</td>
+</tr>
+<tr>
+<td colspan="2" align="center">
+<code>[&hellip;]</code>
+</td>
+</tr>
+</table>
+
+</blockquote>
+</li>
+
+<li><p>Modify 30.13 <a href="https://wg21.link/time.parse">[time.parse]</a>, Table [tab:time.parse.spec] as indicated:</p>
+
+<blockquote>
+
+<table border="1">
+<caption>Table 103 &mdash; Meaning of <code>parse</code> flags  [tab:time.parse.spec]</caption>
+<tr style="text-align:center">
+<th>Flag</th>
+<th>Parsed value</th>
+</tr>
+<tr>
+<td colspan="2" align="center">
+<code>[&hellip;]</code>
+</td>
+</tr>
+<tr>
+<td><code>%y</code></td>
+<td>The last two decimal digits of the year<ins>, regardless of the sign of the year</ins>.<br/>
+If the century is not otherwise specified (e.g.<br/>
+with <code>%C</code>), values in the range [<code>69</code>, <code>99</code>] are presumed to refer to the years 1969 to 1999,<br/>
+and values in the range [<code>00</code>, <code>68</code>] are presumed to refer to the years 2000 to 2068. The<br/>
+modified command <code>%<i>N</i> y</code> specifies the maximum number of characters to read. If <i>N</i> is<br/>
+not specified, the default is 2. Leading zeroes are permitted but not required. The<br/>
+modified commands <code>%Ey</code> and <code>%Oy</code> interpret the locale's alternative representation.<br/>
+<ins>[<i>Example ?:</i> <code>year y; istringstream{"-20 76"} &gt;&gt; parse("%3C %y", y);</code> results in<br/>
 <code>y == -1976y</code>. &mdash; <i>end example</i>]</ins>
 </td>
 </tr>

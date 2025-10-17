@@ -66,7 +66,7 @@
 <p>This document is the Index by Section for the <a href="lwg-active.html">Library Active Issues List</a>.</p>
 <h2>Index by Section (non-Ready active issues only)</h2>
 <p><a href="lwg-index.html">(view all issues)</a></p>
-<p>Revised 2025-10-17 at 11:39:27 UTC
+<p>Revised 2025-10-17 at 13:16:08 UTC
 </p><h2 id="Section_3">Section 3 (2 issues)</h2>
 <p><a href="lwg-index.html#Section_3">(view all issues)</a></p>
 <table class="issues-index">
@@ -1438,7 +1438,7 @@ of <code>TransformationTrait</code></td>
 <td>21.3.6.4 [meta.unary.prop]<a id="meta.unary.prop"></a></td>
 <td>The specification for <code>std::is_nothrow_*</code> traits may be ambiguous in some cases involving <code>noexcept(false)</code></td>
 <td><span class="no-pr">No</span></td>
-<td></td>
+<td>3</td>
 <td></td>
 </tr>
 <tr>
@@ -1516,21 +1516,21 @@ the evaluation of type traits</td>
 <td></td>
 </tr>
 <tr>
-<td id="3400"><a href="lwg-active.html#3400" title="Does is_nothrow_convertible consider destruction of the destination type? (Status: New)">3400</a><sup><a href="https://cplusplus.github.io/LWG/issue3400">(i)</a></sup></td>
+<td id="4028"><a href="lwg-active.html#4028" title="std::is_(nothrow_)convertible should be reworded to avoid dependence on the return statement (Status: New)">4028</a><sup><a href="https://cplusplus.github.io/LWG/issue4028">(i)</a></sup></td>
 <td><a href="lwg-active.html#New">New</a></td>
 <td>21.3.8 [meta.rel]<a id="meta.rel"></a></td>
-<td>Does <code>is_nothrow_convertible</code> consider destruction of the destination type?</td>
-<td><span class="no-pr">No</span></td>
-<td>3</td>
+<td><code>std::is_(nothrow_)convertible</code> should be reworded to avoid dependence on the <code>return</code> statement</td>
+<td>Yes</td>
+<td>2</td>
 <td></td>
 </tr>
 <tr>
-<td id="4028"><a href="lwg-active.html#4028" title="std::is_(nothrow_)convertible should be reworded to avoid dependence on the return statement (Status: New)">4028</a><sup><a href="https://cplusplus.github.io/LWG/issue4028">(i)</a></sup></td>
+<td id="3400"><a href="lwg-active.html#3400" title="Does is_nothrow_convertible consider destruction of the destination type? (Status: New)">3400</a><sup><a href="https://cplusplus.github.io/LWG/issue3400">(i)</a></sup></td>
 <td><a href="lwg-active.html#New">New</a></td>
 <td>21.3.8 [meta.rel]</td>
-<td><code>std::is_(nothrow_)convertible</code> should be reworded to avoid dependence on the <code>return</code> statement</td>
-<td>Yes</td>
-<td></td>
+<td>Does <code>is_nothrow_convertible</code> consider destruction of the destination type?</td>
+<td><span class="no-pr">No</span></td>
+<td>3</td>
 <td></td>
 </tr>
 <tr>
@@ -2927,8 +2927,8 @@ should conditionally require <i>Cpp17CopyInsertable</i> in their preconditions</
 <td></td>
 </tr>
 <tr>
-<td id="4020"><a href="lwg-active.html#4020" title="extents::index-cast weirdness (Status: New)">4020</a><sup><a href="https://cplusplus.github.io/LWG/issue4020">(i)</a></sup></td>
-<td><a href="lwg-active.html#New">New</a></td>
+<td id="4020"><a href="lwg-active.html#4020" title="extents::index-cast weirdness (Status: Tentatively Ready)">4020</a><sup><a href="https://cplusplus.github.io/LWG/issue4020">(i)</a></sup></td>
+<td><a href="lwg-active.html#Ready">Tentatively Ready</a></td>
 <td>23.7.3.3.2 [mdspan.extents.expo]<a id="mdspan.extents.expo"></a></td>
 <td><code>extents::<i>index-cast</i></code> weirdness</td>
 <td>Yes</td>
@@ -4304,8 +4304,8 @@ inner-iterator with std::default_sentinel results in null pointer dereference (S
 <td></td>
 </tr>
 <tr>
-<td id="4269"><a href="lwg-active.html#4269" title="unique_copy passes arguments to its predicate backwards (Status: New)">4269</a><sup><a href="https://cplusplus.github.io/LWG/issue4269">(i)</a></sup></td>
-<td><a href="lwg-active.html#New">New</a></td>
+<td id="4269"><a href="lwg-active.html#4269" title="unique_copy passes arguments to its predicate backwards (Status: Tentatively Ready)">4269</a><sup><a href="https://cplusplus.github.io/LWG/issue4269">(i)</a></sup></td>
+<td><a href="lwg-active.html#Ready">Tentatively Ready</a></td>
 <td>26.7.9 [alg.unique]<a id="alg.unique"></a></td>
 <td><code class='backtick'>unique_copy</code> passes arguments to its predicate backwards</td>
 <td>Yes</td>
@@ -4591,7 +4591,7 @@ specified to make <code><i>N</i></code> copies of <code>T</code> into the destin
 <td>27.3.3.2 [string.view.cons]<a id="string.view.cons"></a></td>
 <td><code class='backtick'>basic_string_view(It begin, End end)</code> is underconstrained</td>
 <td>Yes</td>
-<td></td>
+<td>4</td>
 <td></td>
 </tr>
 <tr>
@@ -5540,19 +5540,19 @@ constructor</td>
 <td></td>
 </tr>
 <tr>
-<td id="4392"><a href="lwg-active.html#4392" title="simd::unchecked_load misses difference type casting (Status: New)">4392</a><sup><a href="https://cplusplus.github.io/LWG/issue4392">(i)</a></sup></td>
-<td><a href="lwg-active.html#New">New</a></td>
-<td>29.10.8.7 [simd.loadstore]</td>
-<td><code class='backtick'>simd::unchecked_load</code> misses difference type casting</td>
-<td>Yes</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
 <td id="4394"><a href="lwg-active.html#4394" title="simd::unchecked_load(I first, S last) construct span maybe ill-formed (Status: New)">4394</a><sup><a href="https://cplusplus.github.io/LWG/issue4394">(i)</a></sup></td>
 <td><a href="lwg-active.html#New">New</a></td>
 <td>29.10.8.7 [simd.loadstore]</td>
 <td><code class='backtick'>simd::unchecked_load(I first, S last)</code> construct <code class='backtick'>span</code> maybe ill-formed</td>
+<td>Yes</td>
+<td>3</td>
+<td></td>
+</tr>
+<tr>
+<td id="4392"><a href="lwg-active.html#4392" title="simd::unchecked_load misses difference type casting (Status: New)">4392</a><sup><a href="https://cplusplus.github.io/LWG/issue4392">(i)</a></sup></td>
+<td><a href="lwg-active.html#New">New</a></td>
+<td>29.10.8.7 [simd.loadstore]</td>
+<td><code class='backtick'>simd::unchecked_load</code> misses difference type casting</td>
 <td>Yes</td>
 <td></td>
 <td></td>
@@ -5746,9 +5746,27 @@ constructor</td>
 <td></td>
 </tr>
 <tr>
-<td id="4400"><a href="lwg-active.html#4400" title="enable_nonlocking_formatter_optimization for durations with custom rep (Status: New)">4400</a><sup><a href="https://cplusplus.github.io/LWG/issue4400">(i)</a></sup></td>
+<td id="3831"><a href="lwg-active.html#3831" title="Two-digit formatting of negative year is ambiguous (Status: New)">3831</a><sup><a href="https://cplusplus.github.io/LWG/issue3831">(i)</a></sup></td>
 <td><a href="lwg-active.html#New">New</a></td>
 <td>30.12 [time.format]<a id="time.format"></a></td>
+<td>Two-digit formatting of negative <code>year</code> is ambiguous</td>
+<td>Yes</td>
+<td>3</td>
+<td></td>
+</tr>
+<tr>
+<td id="4022"><a href="lwg-active.html#4022" title="Ambiguity in the formatting of negative years with format specifier %C (Status: New)">4022</a><sup><a href="https://cplusplus.github.io/LWG/issue4022">(i)</a></sup></td>
+<td><a href="lwg-active.html#New">New</a></td>
+<td>30.12 [time.format]</td>
+<td>Ambiguity in the formatting of negative years with format specifier <code>%C</code></td>
+<td>Yes</td>
+<td>3</td>
+<td></td>
+</tr>
+<tr>
+<td id="4400"><a href="lwg-active.html#4400" title="enable_nonlocking_formatter_optimization for durations with custom rep (Status: New)">4400</a><sup><a href="https://cplusplus.github.io/LWG/issue4400">(i)</a></sup></td>
+<td><a href="lwg-active.html#New">New</a></td>
+<td>30.12 [time.format]</td>
 <td><code class='backtick'>enable_nonlocking_formatter_optimization</code> for durations with custom rep</td>
 <td>Yes</td>
 <td>3</td>
@@ -5761,15 +5779,6 @@ constructor</td>
 <td>How should <code class='backtick'>duration</code> formatters format custom <code class='backtick'>rep</code> types?</td>
 <td>Yes</td>
 <td>3</td>
-<td></td>
-</tr>
-<tr>
-<td id="4022"><a href="lwg-active.html#4022" title="Ambiguity in the formatting of negative years with format specifier %C (Status: New)">4022</a><sup><a href="https://cplusplus.github.io/LWG/issue4022">(i)</a></sup></td>
-<td><a href="lwg-active.html#New">New</a></td>
-<td>30.12 [time.format]</td>
-<td>Ambiguity in the formatting of negative years with format specifier <code>%C</code></td>
-<td>Yes</td>
-<td></td>
 <td></td>
 </tr>
 <tr>
@@ -5789,15 +5798,6 @@ required to be correctly formatted? (Status: New)">3921</a><sup><a href="https:/
 <td>Is <code>std::chrono::duration&lt;std::int64_t, std::ratio&lt;INT64_MAX - 1, INT64_MAX&gt;&gt;{40}</code> 
 required to be correctly formatted?</td>
 <td><span class="no-pr">No</span></td>
-<td>3</td>
-<td></td>
-</tr>
-<tr>
-<td id="3831"><a href="lwg-active.html#3831" title="Two-digit formatting of negative year is ambiguous (Status: New)">3831</a><sup><a href="https://cplusplus.github.io/LWG/issue3831">(i)</a></sup></td>
-<td><a href="lwg-active.html#New">New</a></td>
-<td>30.12 [time.format]</td>
-<td>Two-digit formatting of negative <code>year</code> is ambiguous</td>
-<td>Yes</td>
 <td>3</td>
 <td></td>
 </tr>

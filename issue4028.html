@@ -64,8 +64,8 @@
 <p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#New">New</a> status.</em></p>
 <h3 id="4028"><a href="lwg-active.html#4028">4028</a>. <code>std::is_(nothrow_)convertible</code> should be reworded to avoid dependence on the <code>return</code> statement</h3>
 <p><b>Section:</b> 21.3.8 <a href="https://wg21.link/meta.rel">[meta.rel]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Jiang An <b>Opened:</b> 2023-12-18 <b>Last modified:</b> 2023-12-22</p>
-<p><b>Priority: </b>Not Prioritized
+ <b>Submitter:</b> Jiang An <b>Opened:</b> 2023-12-18 <b>Last modified:</b> 2025-10-17</p>
+<p><b>Priority: </b>2
 </p>
 <p><b>View other</b> <a href="lwg-index-open.html#meta.rel">active issues</a> in [meta.rel].</p>
 <p><b>View all other</b> <a href="lwg-index.html#meta.rel">issues</a> in [meta.rel].</p>
@@ -79,6 +79,18 @@ change the wording for <code>std::is_convertible</code> to avoid actual behavior
 <p/>
 IMO it's better to specify <code>std::is_convertible</code> in a such way that is independent to <code>return</code> statements. 
 The proposed resolution matches what mainstream implementations do, and should resolve LWG <a href="lwg-active.html#3400" title="Does is_nothrow_convertible consider destruction of the destination type? (Status: New)">3400</a><sup><a href="https://cplusplus.github.io/LWG/issue3400" title="Latest snapshot">(i)</a></sup> together.
+</p>
+
+<p><i>[2025-10-17; Reflector poll.]</i></p>
+
+<p>
+Set priority to 2 after reflector poll.
+</p>
+<p>
+"I think the P/R is either insufficient or redundant: either remove the words "To is neither array nor function type and" (because they are unnecessary assuming the P/R's definition of <code class='backtick'>conv-dest</code> must be well-formed) or else add "To is neither cv void nor array nor function type" (because the P/R's definition of <code class='backtick'>conv-dest</code> remains ill-formed in cases like <code>is_convertible_v&lt;int, void&gt;</code>."
+</p>
+<p>
+"Might need to revisit the hack added to 8.8.4 <a href="https://wg21.link/stmt.return">[stmt.return]</a> by <a href="https://wg21.link/P2748R5" title=" Disallow Binding a Returned Glvalue to a Temporary">P2748R5</a>."
 </p>
 
 

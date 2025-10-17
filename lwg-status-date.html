@@ -67,7 +67,7 @@
 This document is the Index by Status and Date for the <a href="lwg-active.html">Library Active Issues List</a>,
 <a href="lwg-defects.html">Library Defect Reports and Accepted Issues</a>, and <a href="lwg-closed.html">Library Closed Issues List</a>.
 </p>
-<p>Revised 2025-10-17 at 11:39:27 UTC
+<p>Revised 2025-10-17 at 13:16:08 UTC
 </p><h2 id="Ready">Ready (3 issues)</h2>
 <table class="issues-index">
 <tr>
@@ -107,7 +107,7 @@ This document is the Index by Status and Date for the <a href="lwg-active.html">
 <td></td>
 </tr>
 </table>
-<h2 id="Tentatively_Ready">Tentatively Ready (25 issues)</h2>
+<h2 id="Tentatively_Ready">Tentatively Ready (27 issues)</h2>
 <table class="issues-index">
 <tr>
   <th><a href="lwg-toc.html">Issue</a></th>
@@ -125,6 +125,24 @@ This document is the Index by Status and Date for the <a href="lwg-active.html">
 <td><code class='backtick'>enable_nonlocking_formatter_optimization</code> should be disabled for container adaptors</td>
 <td>Yes</td>
 <td>2</td>
+<td></td>
+</tr>
+<tr>
+<td id="4020"><a href="lwg-active.html#4020" title="extents::index-cast weirdness (Status: Tentatively Ready)">4020</a><sup><a href="https://cplusplus.github.io/LWG/issue4020">(i)</a></sup></td>
+<td><a href="lwg-active.html#Ready">Tentatively Ready</a></td>
+<td>23.7.3.3.2 [mdspan.extents.expo]</td>
+<td><code>extents::<i>index-cast</i></code> weirdness</td>
+<td>Yes</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td id="4269"><a href="lwg-active.html#4269" title="unique_copy passes arguments to its predicate backwards (Status: Tentatively Ready)">4269</a><sup><a href="https://cplusplus.github.io/LWG/issue4269">(i)</a></sup></td>
+<td><a href="lwg-active.html#Ready">Tentatively Ready</a></td>
+<td>26.7.9 [alg.unique]</td>
+<td><code class='backtick'>unique_copy</code> passes arguments to its predicate backwards</td>
+<td>Yes</td>
+<td></td>
 <td></td>
 </tr>
 <tr>
@@ -495,7 +513,7 @@ of uses-allocator construction</td>
 <td></td>
 </tr>
 </table>
-<h2 id="New">New (599 issues)</h2>
+<h2 id="New">New (597 issues)</h2>
 <table class="issues-index">
 <tr>
   <th><a href="lwg-toc.html">Issue</a></th>
@@ -507,10 +525,64 @@ of uses-allocator construction</td>
   <th>Duplicates</th>
 </tr>
 <tr>
+<td id="3967"><a href="lwg-active.html#3967" title="The specification for std::is_nothrow_* traits may be ambiguous in some cases involving noexcept(false) (Status: New)">3967</a><sup><a href="https://cplusplus.github.io/LWG/issue3967">(i)</a></sup></td>
+<td><a href="lwg-active.html#New">New</a></td>
+<td>21.3.6.4 [meta.unary.prop]</td>
+<td>The specification for <code>std::is_nothrow_*</code> traits may be ambiguous in some cases involving <code>noexcept(false)</code></td>
+<td><span class="no-pr">No</span></td>
+<td>3</td>
+<td></td>
+</tr>
+<tr>
+<td id="4028"><a href="lwg-active.html#4028" title="std::is_(nothrow_)convertible should be reworded to avoid dependence on the return statement (Status: New)">4028</a><sup><a href="https://cplusplus.github.io/LWG/issue4028">(i)</a></sup></td>
+<td><a href="lwg-active.html#New">New</a></td>
+<td>21.3.8 [meta.rel]</td>
+<td><code>std::is_(nothrow_)convertible</code> should be reworded to avoid dependence on the <code>return</code> statement</td>
+<td>Yes</td>
+<td>2</td>
+<td></td>
+</tr>
+<tr>
 <td id="4225"><a href="lwg-active.html#4225" title="What should happen when an exception is thrown on resizing std::deque, std::forward_list, or std::list? (Status: New)">4225</a><sup><a href="https://cplusplus.github.io/LWG/issue4225">(i)</a></sup></td>
 <td><a href="lwg-active.html#New">New</a></td>
 <td>23.3.5.3 [deque.capacity]</td>
 <td>What should happen when an exception is thrown on resizing <code class='backtick'>std::deque</code>, <code class='backtick'>std::forward_list</code>, or <code class='backtick'>std::list</code>?</td>
+<td>Yes</td>
+<td>3</td>
+<td></td>
+</tr>
+<tr>
+<td id="4410"><a href="lwg-active.html#4410" title="basic_string_view(It begin, End end) is underconstrained (Status: New)">4410</a><sup><a href="https://cplusplus.github.io/LWG/issue4410">(i)</a></sup></td>
+<td><a href="lwg-active.html#New">New</a></td>
+<td>27.3.3.2 [string.view.cons]</td>
+<td><code class='backtick'>basic_string_view(It begin, End end)</code> is underconstrained</td>
+<td>Yes</td>
+<td>4</td>
+<td></td>
+</tr>
+<tr>
+<td id="4394"><a href="lwg-active.html#4394" title="simd::unchecked_load(I first, S last) construct span maybe ill-formed (Status: New)">4394</a><sup><a href="https://cplusplus.github.io/LWG/issue4394">(i)</a></sup></td>
+<td><a href="lwg-active.html#New">New</a></td>
+<td>29.10.8.7 [simd.loadstore]</td>
+<td><code class='backtick'>simd::unchecked_load(I first, S last)</code> construct <code class='backtick'>span</code> maybe ill-formed</td>
+<td>Yes</td>
+<td>3</td>
+<td></td>
+</tr>
+<tr>
+<td id="3831"><a href="lwg-active.html#3831" title="Two-digit formatting of negative year is ambiguous (Status: New)">3831</a><sup><a href="https://cplusplus.github.io/LWG/issue3831">(i)</a></sup></td>
+<td><a href="lwg-active.html#New">New</a></td>
+<td>30.12 [time.format]</td>
+<td>Two-digit formatting of negative <code>year</code> is ambiguous</td>
+<td>Yes</td>
+<td>3</td>
+<td></td>
+</tr>
+<tr>
+<td id="4022"><a href="lwg-active.html#4022" title="Ambiguity in the formatting of negative years with format specifier %C (Status: New)">4022</a><sup><a href="https://cplusplus.github.io/LWG/issue4022">(i)</a></sup></td>
+<td><a href="lwg-active.html#New">New</a></td>
+<td>30.12 [time.format]</td>
+<td>Ambiguity in the formatting of negative years with format specifier <code>%C</code></td>
 <td>Yes</td>
 <td>3</td>
 <td></td>
@@ -716,15 +788,6 @@ vprint_unicode/vprint_nonunicode (Status: New)">4039</a><sup><a href="https://cp
 <td></td>
 </tr>
 <tr>
-<td id="4410"><a href="lwg-active.html#4410" title="basic_string_view(It begin, End end) is underconstrained (Status: New)">4410</a><sup><a href="https://cplusplus.github.io/LWG/issue4410">(i)</a></sup></td>
-<td><a href="lwg-active.html#New">New</a></td>
-<td>27.3.3.2 [string.view.cons]</td>
-<td><code class='backtick'>basic_string_view(It begin, End end)</code> is underconstrained</td>
-<td>Yes</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
 <td id="4409"><a href="lwg-active.html#4409" title="Constant expression ranges::size(r) Constraints and Mandates in [simd] (Status: New)">4409</a><sup><a href="https://cplusplus.github.io/LWG/issue4409">(i)</a></sup></td>
 <td><a href="lwg-active.html#New">New</a></td>
 <td>29.10 [simd]</td>
@@ -902,15 +965,6 @@ vprint_unicode/vprint_nonunicode (Status: New)">4039</a><sup><a href="https://cp
 <td><a href="lwg-active.html#New">New</a></td>
 <td>29.10.8.7 [simd.loadstore]</td>
 <td><code class='backtick'>simd::unchecked_load</code> misses difference type casting</td>
-<td>Yes</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td id="4394"><a href="lwg-active.html#4394" title="simd::unchecked_load(I first, S last) construct span maybe ill-formed (Status: New)">4394</a><sup><a href="https://cplusplus.github.io/LWG/issue4394">(i)</a></sup></td>
-<td><a href="lwg-active.html#New">New</a></td>
-<td>29.10.8.7 [simd.loadstore]</td>
-<td><code class='backtick'>simd::unchecked_load(I first, S last)</code> construct <code class='backtick'>span</code> maybe ill-formed</td>
 <td>Yes</td>
 <td></td>
 <td></td>
@@ -1899,15 +1953,6 @@ complexity for algorithms that are in fact &#x1d4aa;(n)</td>
 <td>22.10.4 [func.require]</td>
 <td><code>function&lt;void()&gt;</code> suppresses <code class='backtick'>nodiscard</code> warnings</td>
 <td><span class="no-pr">No</span></td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td id="4269"><a href="lwg-active.html#4269" title="unique_copy passes arguments to its predicate backwards (Status: New)">4269</a><sup><a href="https://cplusplus.github.io/LWG/issue4269">(i)</a></sup></td>
-<td><a href="lwg-active.html#New">New</a></td>
-<td>26.7.9 [alg.unique]</td>
-<td><code class='backtick'>unique_copy</code> passes arguments to its predicate backwards</td>
-<td>Yes</td>
 <td></td>
 <td></td>
 </tr>
@@ -3209,37 +3254,10 @@ is a non-move-constructible range</td>
 <td></td>
 </tr>
 <tr>
-<td id="4028"><a href="lwg-active.html#4028" title="std::is_(nothrow_)convertible should be reworded to avoid dependence on the return statement (Status: New)">4028</a><sup><a href="https://cplusplus.github.io/LWG/issue4028">(i)</a></sup></td>
-<td><a href="lwg-active.html#New">New</a></td>
-<td>21.3.8 [meta.rel]</td>
-<td><code>std::is_(nothrow_)convertible</code> should be reworded to avoid dependence on the <code>return</code> statement</td>
-<td>Yes</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
 <td id="4021"><a href="lwg-active.html#4021" title="mdspan::is_always_meow() should be noexcept (Status: New)">4021</a><sup><a href="https://cplusplus.github.io/LWG/issue4021">(i)</a></sup></td>
 <td><a href="lwg-active.html#New">New</a></td>
 <td>23.7.3.6.1 [mdspan.mdspan.overview]</td>
 <td><code>mdspan::is_always_<i>meow</i>()</code> should be <code>noexcept</code></td>
-<td>Yes</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td id="4022"><a href="lwg-active.html#4022" title="Ambiguity in the formatting of negative years with format specifier %C (Status: New)">4022</a><sup><a href="https://cplusplus.github.io/LWG/issue4022">(i)</a></sup></td>
-<td><a href="lwg-active.html#New">New</a></td>
-<td>30.12 [time.format]</td>
-<td>Ambiguity in the formatting of negative years with format specifier <code>%C</code></td>
-<td>Yes</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td id="4020"><a href="lwg-active.html#4020" title="extents::index-cast weirdness (Status: New)">4020</a><sup><a href="https://cplusplus.github.io/LWG/issue4020">(i)</a></sup></td>
-<td><a href="lwg-active.html#New">New</a></td>
-<td>23.7.3.3.2 [mdspan.extents.expo]</td>
-<td><code>extents::<i>index-cast</i></code> weirdness</td>
 <td>Yes</td>
 <td></td>
 <td></td>
@@ -3451,15 +3469,6 @@ should require the arguments to have the same length</td>
 <td><code>zip_view</code> and <code>adjacent_view</code> are underconstrained</td>
 <td>Yes</td>
 <td>3</td>
-<td></td>
-</tr>
-<tr>
-<td id="3967"><a href="lwg-active.html#3967" title="The specification for std::is_nothrow_* traits may be ambiguous in some cases involving noexcept(false) (Status: New)">3967</a><sup><a href="https://cplusplus.github.io/LWG/issue3967">(i)</a></sup></td>
-<td><a href="lwg-active.html#New">New</a></td>
-<td>21.3.6.4 [meta.unary.prop]</td>
-<td>The specification for <code>std::is_nothrow_*</code> traits may be ambiguous in some cases involving <code>noexcept(false)</code></td>
-<td><span class="no-pr">No</span></td>
-<td></td>
 <td></td>
 </tr>
 <tr>
@@ -3925,15 +3934,6 @@ not copy) their predicate object</td>
 <td><a href="lwg-active.html#New">New</a></td>
 <td>25.7.21.2 [range.reverse.view]</td>
 <td><code>reverse_view</code> should not cache when <code>ranges::next</code> has constant time complexity</td>
-<td>Yes</td>
-<td>3</td>
-<td></td>
-</tr>
-<tr>
-<td id="3831"><a href="lwg-active.html#3831" title="Two-digit formatting of negative year is ambiguous (Status: New)">3831</a><sup><a href="https://cplusplus.github.io/LWG/issue3831">(i)</a></sup></td>
-<td><a href="lwg-active.html#New">New</a></td>
-<td>30.12 [time.format]</td>
-<td>Two-digit formatting of negative <code>year</code> is ambiguous</td>
 <td>Yes</td>
 <td>3</td>
 <td></td>
