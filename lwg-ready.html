@@ -62,7 +62,7 @@
 </tr>
 <tr>
 <td align="left">Date:</td>
-<td align="left">Revised 2025-10-17 at 14:35:48 UTC
+<td align="left">Revised 2025-10-17 at 14:50:05 UTC
 </td>
 </tr>
 <tr>
@@ -3282,6 +3282,68 @@ template&lt;receiver Rcvr&gt;
 <p>-3- <i>Precondition</i>: <code>bool(handle)</code> is <code>true</code>.</p>
 <p>-4- <i>Effects</i>: Equivalent to:</p>
 <pre>    return state&lt;Rcvr&gt;(exchange(handle, {}), std::forward&lt;Rcvr&gt;(recv));</pre>
+</blockquote>
+</p>
+
+
+
+
+
+<hr>
+<h3 id="4342"><a href="#4342">4342</a><sup><a href="https://cplusplus.github.io/LWG/issue4342">(i)</a></sup>. Missing rvalue reference qualification for <code>task_scheduler::ts-sender::connect()</code></h3>
+<p><b>Section:</b> 33.13.5 <a href="https://wg21.link/exec.task.scheduler">[exec.task.scheduler]</a> <b>Status:</b> <a href="lwg-active.html#Ready">Tentatively Ready</a>
+ <b>Submitter:</b> Dietmar Kühl <b>Opened:</b> 2025-09-01 <b>Last modified:</b> 2025-10-17</p>
+<p><b>Priority: </b>Not Prioritized
+</p>
+<p><b>View other</b> <a href="lwg-index-open.html#exec.task.scheduler">active issues</a> in [exec.task.scheduler].</p>
+<p><b>View all other</b> <a href="lwg-index.html#exec.task.scheduler">issues</a> in [exec.task.scheduler].</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#Tentatively Ready">Tentatively Ready</a> status.</p>
+<p><b>Discussion:</b></p>
+<p>
+The result of <code>schedule(sched)</code> for a scheduler
+<code>sched</code> is only required to be movable. An object of
+this type may need to be forwarded to an operation state constructor
+by <code>task_scheduler::<i>ts-sender</i>::connect</code>. Thus,
+this function should be qualified with an rvalue reference.
+</p>
+
+<p><i>[2025-10-17; Reflector poll.]</i></p>
+
+<p>
+Set status to Tentatively Ready after six votes in favour during reflector poll.
+</p>
+
+
+<p id="res-4342"><b>Proposed resolution:</b></p>
+<p>
+Add an rvalue qualifier to the declaration of <code>connect</code> in 33.13.5 <a href="https://wg21.link/exec.task.scheduler">[exec.task.scheduler]</a> paragraph 8:
+<blockquote>
+<pre>
+namespace std::execution {
+  class task_scheduler::ts-sender {     // exposition only
+  public:
+    using sender_concept = sender_t;
+
+    template&lt;receiver Rcvr&gt;
+      <i>state</i>&lt;Rcvr&gt; connect(Rcvr&amp;&amp; rcvr)<ins> &amp;&amp;</ins>;
+  };
+}
+</pre>
+</blockquote>
+</p>
+<p>
+In the specification in 33.13.5 <a href="https://wg21.link/exec.task.scheduler">[exec.task.scheduler]</a> paragraph 10 add an rvalue qualifier to <code>connect</code>:
+<blockquote>
+<pre>
+template&lt;receiver Rcvr&gt;
+  <i>state</i>&lt;Rcvr&gt; connect(Rcvr&amp;&amp; rcvr)<ins> &amp;&amp;</ins>;
+</pre>
+<p>-10- <i>Effects</i>: Let <i>r</i> be an object of a type that
+models receiver and whose completion handlers result in invoking
+the corresponding completion handlers of <code>rcvr</code> or copy thereof.
+Returns an object of type <code><i>state</i>&lt;Rcvr&gt;</code> containing an operation state
+object initialized with <code>connect(<i>SENDER</i>(*this), std::move(<i>r</i>))</code>.
+</p>
 </blockquote>
 </p>
 

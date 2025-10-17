@@ -54,7 +54,7 @@
 </style>
 </head>
 <body>
-<p>Revised 2025-10-17 at 14:35:48 UTC
+<p>Revised 2025-10-17 at 14:50:05 UTC
 </p><h2>Unresolved Issues</h2>
 <hr>
 <h3 id="423"><a href="#423">423</a><sup><a href="https://cplusplus.github.io/LWG/issue423">(i)</a></sup>. Effects of negative <code>streamsize</code> in iostreams</h3>
@@ -72826,11 +72826,11 @@ member function of function type <code class='backtick'>F</code> or <code class=
 
 <hr>
 <h3 id="4302"><a href="#4302">4302</a><sup><a href="https://cplusplus.github.io/LWG/issue4302">(i)</a></sup>. Problematic <code class='backtick'>vector_sum_of_squares</code> wording</h3>
-<p><b>Section:</b> 29.9.13.8 <a href="https://wg21.link/linalg.algs.blas1.ssq">[linalg.algs.blas1.ssq]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Mark Hoemmen <b>Opened:</b> 2025-07-23 <b>Last modified:</b> 2025-10-10</p>
-<p><b>Priority: </b>Not Prioritized
+<p><b>Section:</b> 29.9.13.8 <a href="https://wg21.link/linalg.algs.blas1.ssq">[linalg.algs.blas1.ssq]</a> <b>Status:</b> <a href="lwg-active.html#LEWG">LEWG</a>
+ <b>Submitter:</b> Mark Hoemmen <b>Opened:</b> 2025-07-23 <b>Last modified:</b> 2025-10-17</p>
+<p><b>Priority: </b>1
 </p>
-<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#LEWG">LEWG</a> status.</p>
 <p><b>Discussion:</b></p>
 <p>
 The current wording for <code class='backtick'>vector_sum_of_squares</code>
@@ -72884,6 +72884,18 @@ about QoI of <code class='backtick'>vector_two_norm</code> should already know w
 somebody cares sufficiently, they can propose it back for C++29 and
 think about how to make it work for generic number types.
 </p>
+
+<p><i>[2025-10-17; Reflector poll. Status changed: New &rarr; LEWG.]</i></p>
+
+<p>
+Set priority to 1 after reflector poll. Send to LEWG.
+</p>
+<p>
+This is the subject of NB comment 169-276.
+LWG took a poll in the 2025-10-10 telecon and recommends that LEWG confirms
+this resolution.
+</p>
+
 
 
 <p id="res-4302"><b>Proposed resolution:</b></p>
@@ -76173,13 +76185,13 @@ Set priority to 2 after reflector poll. Send to LEWG.
 
 <hr>
 <h3 id="4334"><a href="#4334">4334</a><sup><a href="https://cplusplus.github.io/LWG/issue4334">(i)</a></sup>. <code>task&lt;...&gt;::promise_type</code> supports arbitrary <code>allocator_arg</code> position</h3>
-<p><b>Section:</b> 33.13.6.5 <a href="https://wg21.link/task.promise">[task.promise]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Dietmar Kühl <b>Opened:</b> 2025-08-31 <b>Last modified:</b> 2025-09-01</p>
-<p><b>Priority: </b>Not Prioritized
+<p><b>Section:</b> 33.13.6.5 <a href="https://wg21.link/task.promise">[task.promise]</a> <b>Status:</b> <a href="lwg-active.html#LEWG">LEWG</a>
+ <b>Submitter:</b> Dietmar Kühl <b>Opened:</b> 2025-08-31 <b>Last modified:</b> 2025-10-17</p>
+<p><b>Priority: </b>2
 </p>
 <p><b>View other</b> <a href="lwg-index-open.html#task.promise">active issues</a> in [task.promise].</p>
 <p><b>View all other</b> <a href="lwg-index.html#task.promise">issues</a> in [task.promise].</p>
-<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#LEWG">LEWG</a> status.</p>
 <p><b>Discussion:</b></p>
 <p>
 Normally the <code>allocator_arg</code> argument has to be the first
@@ -76202,6 +76214,13 @@ using a trailing argument list, i.e., adding <code>, auto&amp;&amp;...</code>.
 Instead of constraining <code>task</code> it may be more reasonable
 to add the flexibility to <code>generator</code>.
 </p>
+
+<p><i>[2025-10-17; Reflector poll. Status changed: New &rarr; LEWG.]</i></p>
+
+<p>
+Set priority to 2 after reflector poll.
+</p>
+
 
 
 <p id="res-4334"><b>Proposed resolution:</b></p>
@@ -76467,8 +76486,8 @@ coroutines.
 <hr>
 <h3 id="4339"><a href="#4339">4339</a><sup><a href="https://cplusplus.github.io/LWG/issue4339">(i)</a></sup>. <code>task</code>'s coroutine frame may be released late</h3>
 <p><b>Section:</b> 33.13.6 <a href="https://wg21.link/exec.task">[exec.task]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Dietmar Kühl <b>Opened:</b> 2025-08-31 <b>Last modified:</b> 2025-09-02</p>
-<p><b>Priority: </b>Not Prioritized
+ <b>Submitter:</b> Dietmar Kühl <b>Opened:</b> 2025-08-31 <b>Last modified:</b> 2025-10-17</p>
+<p><b>Priority: </b>2
 </p>
 <p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
 <p><b>Discussion:</b></p>
@@ -76502,6 +76521,15 @@ is a <code>variant</code> which only ever stores an
 reported via the awaiter return from <code>yield_value</code>).
 Thus, the <code>variant</code> can be replaced with an
 <code>exception_ptr</code>.
+</p>
+
+<p><i>[2025-10-17; Reflector poll.]</i></p>
+
+<p>
+Set priority to 2 after reflector poll.
+</p>
+<p>
+"P/R is incomplete - also needs to update at least <code class='backtick'>promise_type::uncaught_exception()</code>."
 </p>
 
 
@@ -76632,62 +76660,6 @@ coroutine_handle&lt;&gt; unhandled_stopped() <ins>noexcept</ins>;
 associated with <code><i>STATE</i>(*this)</code> by invoking
 <code>set_stopped(std::move(<i>RCVR</i>(*this)))</code>.</p>
 </blockquote> 
-</p>
-
-
-
-
-
-<hr>
-<h3 id="4342"><a href="#4342">4342</a><sup><a href="https://cplusplus.github.io/LWG/issue4342">(i)</a></sup>. Missing rvalue reference qualification for <code>task_scheduler::ts-sender::connect()</code></h3>
-<p><b>Section:</b> 33.13.5 <a href="https://wg21.link/exec.task.scheduler">[exec.task.scheduler]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Dietmar Kühl <b>Opened:</b> 2025-09-01 <b>Last modified:</b> 2025-09-01</p>
-<p><b>Priority: </b>Not Prioritized
-</p>
-<p><b>View other</b> <a href="lwg-index-open.html#exec.task.scheduler">active issues</a> in [exec.task.scheduler].</p>
-<p><b>View all other</b> <a href="lwg-index.html#exec.task.scheduler">issues</a> in [exec.task.scheduler].</p>
-<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
-<p><b>Discussion:</b></p>
-<p>
-The result of <code>schedule(sched)</code> for a scheduler
-<code>sched</code> is only required to be movable. An object of
-this type may need to be forwarded to an operation state constructor
-by <code>task_scheduler::<i>ts-sender</i>::connect</code>. Thus,
-this function should be qualified with an rvalue reference.
-</p>
-
-
-<p id="res-4342"><b>Proposed resolution:</b></p>
-<p>
-Add an rvalue qualifier to the declaration of <code>connect</code> in 33.13.5 <a href="https://wg21.link/exec.task.scheduler">[exec.task.scheduler]</a> paragraph 8:
-<blockquote>
-<pre>
-namespace std::execution {
-  class task_scheduler::ts-sender {     // exposition only
-  public:
-    using sender_concept = sender_t;
-
-    template&lt;receiver Rcvr&gt;
-      <i>state</i>&lt;Rcvr&gt; connect(Rcvr&amp;&amp; rcvr)<ins> &amp;&amp;</ins>;
-  };
-}
-</pre>
-</blockquote>
-</p>
-<p>
-In the specification in 33.13.5 <a href="https://wg21.link/exec.task.scheduler">[exec.task.scheduler]</a> paragraph 10 add an rvalue qualifier to <code>connect</code>:
-<blockquote>
-<pre>
-template&lt;receiver Rcvr&gt;
-  <i>state</i>&lt;Rcvr&gt; connect(Rcvr&amp;&amp; rcvr)<ins> &amp;&amp;</ins>;
-</pre>
-<p>-10- <i>Effects</i>: Let <i>r</i> be an object of a type that
-models receiver and whose completion handlers result in invoking
-the corresponding completion handlers of <code>rcvr</code> or copy thereof.
-Returns an object of type <code><i>state</i>&lt;Rcvr&gt;</code> containing an operation state
-object initialized with <code>connect(<i>SENDER</i>(*this), std::move(<i>r</i>))</code>.
-</p>
-</blockquote>
 </p>
 
 
@@ -76856,8 +76828,8 @@ template&lt;class V&gt;
 <hr>
 <h3 id="4347"><a href="#4347">4347</a><sup><a href="https://cplusplus.github.io/LWG/issue4347">(i)</a></sup>. <code>task</code>'s stop source is always created</h3>
 <p><b>Section:</b> 33.13.6.5 <a href="https://wg21.link/task.promise">[task.promise]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Dietmar Kühl <b>Opened:</b> 2025-09-01 <b>Last modified:</b> 2025-09-01</p>
-<p><b>Priority: </b>Not Prioritized
+ <b>Submitter:</b> Dietmar Kühl <b>Opened:</b> 2025-09-01 <b>Last modified:</b> 2025-10-17</p>
+<p><b>Priority: </b>2
 </p>
 <p><b>View other</b> <a href="lwg-index-open.html#task.promise">active issues</a> in [task.promise].</p>
 <p><b>View all other</b> <a href="lwg-index.html#task.promise">issues</a> in [task.promise].</p>
@@ -76883,6 +76855,12 @@ stop source. The fix is to show the stop source as an optionally
 present member of of the operation state and it should be of type
 <code>std::optional&lt;stop_source_type&gt;</code> to imply that
 it is only created when accessed.
+</p>
+
+<p><i>[2025-10-17; Reflector poll.]</i></p>
+
+<p>
+Set priority to 2 after reflector poll.
 </p>
 
 

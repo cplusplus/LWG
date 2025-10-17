@@ -62,8 +62,8 @@ This document is the Index by Status and Section for the <a href="lwg-active.htm
 <a href="lwg-defects.html">Library Defect Reports and Accepted Issues</a>, and <a href="lwg-closed.html">Library Closed Issues List</a>.
 </p>
 
-<p>Revised 2025-10-17 at 14:35:48 UTC
-</p><h2 id="New">New (588 issues)</h2>
+<p>Revised 2025-10-17 at 14:50:05 UTC
+</p><h2 id="New">New (585 issues)</h2>
 <table class="issues-index">
 <tr>
   <th><a href="lwg-toc.html">Issue</a></th>
@@ -4131,15 +4131,6 @@ should require the arguments to have the same length</td>
 <td></td>
 </tr>
 <tr>
-<td id="4302"><a href="lwg-active.html#4302" title="Problematic vector_sum_of_squares wording (Status: New)">4302</a><sup><a href="https://cplusplus.github.io/LWG/issue4302">(i)</a></sup></td>
-<td><a href="lwg-active.html#New">New</a></td>
-<td>29.9.13.8 [linalg.algs.blas1.ssq]</td>
-<td>Problematic <code class='backtick'>vector_sum_of_squares</code> wording</td>
-<td>Yes</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
 <td id="4409"><a href="lwg-active.html#4409" title="Constant expression ranges::size(r) Constraints and Mandates in [simd] (Status: New)">4409</a><sup><a href="https://cplusplus.github.io/LWG/issue4409">(i)</a></sup></td>
 <td><a href="lwg-active.html#New">New</a></td>
 <td>29.10 [simd]</td>
@@ -5198,21 +5189,12 @@ co_await expression instead of same_as&lt;void&gt; (Status: New)">4357</a><sup><
 <td></td>
 </tr>
 <tr>
-<td id="4342"><a href="lwg-active.html#4342" title="Missing rvalue reference qualification for task_scheduler::ts-sender::connect() (Status: New)">4342</a><sup><a href="https://cplusplus.github.io/LWG/issue4342">(i)</a></sup></td>
-<td><a href="lwg-active.html#New">New</a></td>
-<td>33.13.5 [exec.task.scheduler]</td>
-<td>Missing rvalue reference qualification for <code>task_scheduler::ts-sender::connect()</code></td>
-<td>Yes</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
 <td id="4339"><a href="lwg-active.html#4339" title="task's coroutine frame may be released late (Status: New)">4339</a><sup><a href="https://cplusplus.github.io/LWG/issue4339">(i)</a></sup></td>
 <td><a href="lwg-active.html#New">New</a></td>
 <td>33.13.6 [exec.task]</td>
 <td><code>task</code>'s coroutine frame may be released late</td>
 <td>Yes</td>
-<td></td>
+<td>2</td>
 <td></td>
 </tr>
 <tr>
@@ -5234,12 +5216,12 @@ co_await expression instead of same_as&lt;void&gt; (Status: New)">4357</a><sup><
 <td></td>
 </tr>
 <tr>
-<td id="4334"><a href="lwg-active.html#4334" title="task&lt;...&gt;::promise_type supports arbitrary allocator_arg position (Status: New)">4334</a><sup><a href="https://cplusplus.github.io/LWG/issue4334">(i)</a></sup></td>
+<td id="4347"><a href="lwg-active.html#4347" title="task's stop source is always created (Status: New)">4347</a><sup><a href="https://cplusplus.github.io/LWG/issue4347">(i)</a></sup></td>
 <td><a href="lwg-active.html#New">New</a></td>
 <td>33.13.6.5 [task.promise]</td>
-<td><code>task&lt;...&gt;::promise_type</code> supports arbitrary <code>allocator_arg</code> position</td>
+<td><code>task</code>'s stop source is always created</td>
 <td><span class="no-pr">No</span></td>
-<td></td>
+<td>2</td>
 <td></td>
 </tr>
 <tr>
@@ -5266,15 +5248,6 @@ co_await expression instead of same_as&lt;void&gt; (Status: New)">4357</a><sup><
 <td>33.13.6.5 [task.promise]</td>
 <td><code>task::promise_type::return_void</code>/<code>value</code> lack a specification</td>
 <td>Yes</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td id="4347"><a href="lwg-active.html#4347" title="task's stop source is always created (Status: New)">4347</a><sup><a href="https://cplusplus.github.io/LWG/issue4347">(i)</a></sup></td>
-<td><a href="lwg-active.html#New">New</a></td>
-<td>33.13.6.5 [task.promise]</td>
-<td><code>task</code>'s stop source is always created</td>
-<td><span class="no-pr">No</span></td>
 <td></td>
 <td></td>
 </tr>
@@ -6222,7 +6195,7 @@ don't support <code>DynamicBuffer</code> lvalues</td>
 <td></td>
 </tr>
 </table>
-<h2 id="LEWG">LEWG (24 issues)</h2>
+<h2 id="LEWG">LEWG (26 issues)</h2>
 <table class="issues-index">
 <tr>
   <th><a href="lwg-toc.html">Issue</a></th>
@@ -6353,6 +6326,15 @@ don't support <code>DynamicBuffer</code> lvalues</td>
 <td></td>
 </tr>
 <tr>
+<td id="4302"><a href="lwg-active.html#4302" title="Problematic vector_sum_of_squares wording (Status: LEWG)">4302</a><sup><a href="https://cplusplus.github.io/LWG/issue4302">(i)</a></sup></td>
+<td><a href="lwg-active.html#LEWG">LEWG</a></td>
+<td>29.9.13.8 [linalg.algs.blas1.ssq]</td>
+<td>Problematic <code class='backtick'>vector_sum_of_squares</code> wording</td>
+<td>Yes</td>
+<td>1</td>
+<td></td>
+</tr>
+<tr>
 <td id="1484"><a href="lwg-active.html#1484" title="Need a way to join a thread with a timeout (Status: LEWG)">1484</a><sup><a href="https://cplusplus.github.io/LWG/issue1484">(i)</a></sup></td>
 <td><a href="lwg-active.html#LEWG">LEWG</a></td>
 <td>32.4.3 [thread.thread.class]</td>
@@ -6420,6 +6402,15 @@ don't support <code>DynamicBuffer</code> lvalues</td>
 <td><a href="lwg-active.html#LEWG">LEWG</a></td>
 <td>33.13.6.5 [task.promise]</td>
 <td><code>task</code> uses unusual allocator customisation</td>
+<td><span class="no-pr">No</span></td>
+<td>2</td>
+<td></td>
+</tr>
+<tr>
+<td id="4334"><a href="lwg-active.html#4334" title="task&lt;...&gt;::promise_type supports arbitrary allocator_arg position (Status: LEWG)">4334</a><sup><a href="https://cplusplus.github.io/LWG/issue4334">(i)</a></sup></td>
+<td><a href="lwg-active.html#LEWG">LEWG</a></td>
+<td>33.13.6.5 [task.promise]</td>
+<td><code>task&lt;...&gt;::promise_type</code> supports arbitrary <code>allocator_arg</code> position</td>
 <td><span class="no-pr">No</span></td>
 <td>2</td>
 <td></td>
