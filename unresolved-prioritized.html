@@ -60,7 +60,7 @@
 <p>This document is the Table of Contents for the <a href="lwg-active.html">Library Active Issues List</a>,
 <a href="lwg-defects.html">Library Defect Reports and Accepted Issues</a>, and <a href="lwg-closed.html">Library Closed Issues List</a>,
 sorted by priority.</p>
-<p>Revised 2025-10-17 at 14:57:41 UTC
+<p>Revised 2025-10-17 at 21:39:31 UTC
 </p><h2 id="Priority_1">Priority 1 (13 issues)</h2>
 <table class="issues-index">
 <tr>
@@ -818,7 +818,7 @@ specified to make <code><i>N</i></code> copies of <code>T</code> into the destin
 <td></td>
 </tr>
 </table>
-<h2 id="Priority_3">Priority 3 (413 issues)</h2>
+<h2 id="Priority_3">Priority 3 (415 issues)</h2>
 <table class="issues-index">
 <tr>
   <th><a href="lwg-toc.html">Issue</a></th>
@@ -3449,6 +3449,15 @@ max, and minmax is unclear (Status: New)">4167</a><sup><a href="https://cplusplu
 <td></td>
 </tr>
 <tr>
+<td id="4261"><a href="lwg-active.html#4261" title="P1206R7 broke uses of container adaptors with old custom sequence containers (Status: New)">4261</a><sup><a href="https://cplusplus.github.io/LWG/issue4261">(i)</a></sup></td>
+<td><a href="lwg-active.html#New">New</a></td>
+<td>27.4.3.8.2 [string.find]</td>
+<td>P1206R7 broke uses of container adaptors with old custom sequence containers</td>
+<td><span class="no-pr">No</span></td>
+<td>3</td>
+<td></td>
+</tr>
+<tr>
 <td id="3837"><a href="lwg-active.html#3837" title="std::erase_if overloads for non-associative containers should move (and
 not copy) their predicate object (Status: New)">3837</a><sup><a href="https://cplusplus.github.io/LWG/issue3837">(i)</a></sup></td>
 <td><a href="lwg-active.html#New">New</a></td>
@@ -3581,6 +3590,15 @@ not copy) their predicate object</td>
 <td><a href="lwg-active.html#New">New</a></td>
 <td>28.5 [format]</td>
 <td>Unspecified lifetime guarantees for the format string</td>
+<td><span class="no-pr">No</span></td>
+<td>3</td>
+<td></td>
+</tr>
+<tr>
+<td id="4263"><a href="lwg-active.html#4263" title="What should std::format_to etc. behave when the output is overlong? (Status: New)">4263</a><sup><a href="https://cplusplus.github.io/LWG/issue4263">(i)</a></sup></td>
+<td><a href="lwg-active.html#New">New</a></td>
+<td>28.5 [format]</td>
+<td>What should <code class='backtick'>std::format_to</code> etc. behave when the output is overlong?</td>
 <td><span class="no-pr">No</span></td>
 <td>3</td>
 <td></td>
@@ -5394,7 +5412,7 @@ vprint_unicode/vprint_nonunicode (Status: New)">4039</a><sup><a href="https://cp
 <td></td>
 </tr>
 </table>
-<h2 id="Priority_99">Not Prioritized (127 issues)</h2>
+<h2 id="Priority_99">Not Prioritized (125 issues)</h2>
 <table class="issues-index">
 <tr>
   <th><a href="lwg-toc.html">Issue</a></th>
@@ -6025,28 +6043,10 @@ in <code>&lt;ranges&gt;</code></td>
 <td></td>
 </tr>
 <tr>
-<td id="4261"><a href="lwg-active.html#4261" title="P1206R7 broke uses of container adaptors with old custom sequence containers (Status: New)">4261</a><sup><a href="https://cplusplus.github.io/LWG/issue4261">(i)</a></sup></td>
-<td><a href="lwg-active.html#New">New</a></td>
-<td>27.4.3.8.2 [string.find]</td>
-<td>P1206R7 broke uses of container adaptors with old custom sequence containers</td>
-<td><span class="no-pr">No</span></td>
-<td></td>
-<td></td>
-</tr>
-<tr>
 <td id="4285"><a href="lwg-active.html#4285" title="time_get::do_get_date is problematic even after LWG 461 (Status: New)">4285</a><sup><a href="https://cplusplus.github.io/LWG/issue4285">(i)</a></sup></td>
 <td><a href="lwg-active.html#New">New</a></td>
 <td>28.3.4.6.2.2 [locale.time.get.members]</td>
 <td><code class='backtick'>time_get::do_get_date</code> is problematic even after LWG 461</td>
-<td><span class="no-pr">No</span></td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td id="4263"><a href="lwg-active.html#4263" title="What should std::format_to etc. behave when the output is overlong? (Status: New)">4263</a><sup><a href="https://cplusplus.github.io/LWG/issue4263">(i)</a></sup></td>
-<td><a href="lwg-active.html#New">New</a></td>
-<td>28.5 [format]</td>
-<td>What should <code class='backtick'>std::format_to</code> etc. behave when the output is overlong?</td>
 <td><span class="no-pr">No</span></td>
 <td></td>
 <td></td>
@@ -6092,6 +6092,15 @@ in <code>&lt;ranges&gt;</code></td>
 <td><a href="lwg-active.html#New">New</a></td>
 <td>29.10 [simd]</td>
 <td>Constant expression <code class='backtick'>ranges::size(r)</code> <i>Constraints</i> and <i>Mandates</i> in [simd]</td>
+<td>Yes</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td id="4412"><a href="lwg-active.html#4412" title="Fix declaration of zero_element and uninit_element (Status: New)">4412</a><sup><a href="https://cplusplus.github.io/LWG/issue4412">(i)</a></sup></td>
+<td><a href="lwg-active.html#New">New</a></td>
+<td>29.10.3 [simd.syn]</td>
+<td>Fix declaration of <code class='backtick'>zero_element</code> and <code class='backtick'>uninit_element</code></td>
 <td>Yes</td>
 <td></td>
 <td></td>
@@ -6523,15 +6532,6 @@ co_await expression instead of same_as&lt;void&gt; (Status: New)">4357</a><sup><
 <td><a href="lwg-active.html#New">New</a></td>
 <td>33.13.6.5 [task.promise]</td>
 <td><code>co_await change_coroutine_scheduler(s)</code> requires assignable</td>
-<td>Yes</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td id="4340"><a href="lwg-active.html#4340" title="task::promise_type::unhandled_stopped() should be noexcept (Status: New)">4340</a><sup><a href="https://cplusplus.github.io/LWG/issue4340">(i)</a></sup></td>
-<td><a href="lwg-active.html#New">New</a></td>
-<td>33.13.6.5 [task.promise]</td>
-<td><code>task::promise_type::unhandled_stopped()</code> should be <code>noexcept</code></td>
 <td>Yes</td>
 <td></td>
 <td></td>

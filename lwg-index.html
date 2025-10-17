@@ -66,7 +66,7 @@
 <p>This document is the Index by Section for the <a href="lwg-active.html">Library Active Issues List</a>, <a href="lwg-defects.html">Library Defect Reports and Accepted Issues</a>, and <a href="lwg-closed.html">Library Closed Issues List</a>.</p>
 <h2>Index by Section</h2>
 <p><a href="lwg-index-open.html">(view only non-Ready open issues)</a></p>
-<p>Revised 2025-10-17 at 14:57:41 UTC
+<p>Revised 2025-10-17 at 21:39:31 UTC
 </p><h2 id="Section_2">Section 2 (2 issues)</h2>
 <table class="issues-index">
 <tr>
@@ -21556,20 +21556,20 @@ cleaner interoperation with legacy APIs</td>
 <td><a href="lwg-defects.html#5" title="String::compare specification questionable (Status: TC1)">5</a></td>
 </tr>
 <tr>
-<td id="4259"><a href="lwg-active.html#4259" title="P1148R0 changed the return values of searching functions of std::basic_string on some platforms (Status: New)">4259</a><sup><a href="https://cplusplus.github.io/LWG/issue4259">(i)</a></sup></td>
+<td id="4261"><a href="lwg-active.html#4261" title="P1206R7 broke uses of container adaptors with old custom sequence containers (Status: New)">4261</a><sup><a href="https://cplusplus.github.io/LWG/issue4261">(i)</a></sup></td>
 <td><a href="lwg-active.html#New">New</a></td>
 <td>27.4.3.8.2 [string.find]<a id="string.find"></a></td>
-<td>P1148R0 changed the return values of searching functions of <code class='backtick'>std::basic_string</code> on some platforms</td>
-<td>Yes</td>
-<td></td>
+<td>P1206R7 broke uses of container adaptors with old custom sequence containers</td>
+<td><span class="no-pr">No</span></td>
+<td>3</td>
 <td></td>
 </tr>
 <tr>
-<td id="4261"><a href="lwg-active.html#4261" title="P1206R7 broke uses of container adaptors with old custom sequence containers (Status: New)">4261</a><sup><a href="https://cplusplus.github.io/LWG/issue4261">(i)</a></sup></td>
+<td id="4259"><a href="lwg-active.html#4259" title="P1148R0 changed the return values of searching functions of std::basic_string on some platforms (Status: New)">4259</a><sup><a href="https://cplusplus.github.io/LWG/issue4259">(i)</a></sup></td>
 <td><a href="lwg-active.html#New">New</a></td>
 <td>27.4.3.8.2 [string.find]</td>
-<td>P1206R7 broke uses of container adaptors with old custom sequence containers</td>
-<td><span class="no-pr">No</span></td>
+<td>P1148R0 changed the return values of searching functions of <code class='backtick'>std::basic_string</code> on some platforms</td>
+<td>Yes</td>
 <td></td>
 <td></td>
 </tr>
@@ -23146,7 +23146,7 @@ not copy) their predicate object</td>
 <td>28.5 [format]<a id="format"></a></td>
 <td>What should <code class='backtick'>std::format_to</code> etc. behave when the output is overlong?</td>
 <td><span class="no-pr">No</span></td>
-<td></td>
+<td>3</td>
 <td></td>
 </tr>
 <tr>
@@ -24470,7 +24470,7 @@ regards to <code>ClassAtomCollatingElement</code></td>
 <td></td>
 </tr>
 </table>
-<h2 id="Section_29">Section 29 (206 issues)</h2>
+<h2 id="Section_29">Section 29 (207 issues)</h2>
 <p><a href="lwg-index-open.html#Section_29">(view only non-Ready open issues)</a></p>
 <table class="issues-index">
 <tr>
@@ -26181,9 +26181,18 @@ double in order to be compatible with C++98 and C (Status: C++17)">2735</a><sup>
 <td></td>
 </tr>
 <tr>
+<td id="4412"><a href="lwg-active.html#4412" title="Fix declaration of zero_element and uninit_element (Status: New)">4412</a><sup><a href="https://cplusplus.github.io/LWG/issue4412">(i)</a></sup></td>
+<td><a href="lwg-active.html#New">New</a></td>
+<td>29.10.3 [simd.syn]<a id="simd.syn"></a></td>
+<td>Fix declaration of <code class='backtick'>zero_element</code> and <code class='backtick'>uninit_element</code></td>
+<td>Yes</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
 <td id="4231"><a href="lwg-defects.html#4231" title="datapar::chunk&lt;N&gt; should use simd-size-type instead of size_t (Status: WP)">4231</a><sup><a href="https://cplusplus.github.io/LWG/issue4231">(i)</a></sup></td>
 <td><a href="lwg-active.html#WP">WP</a></td>
-<td>29.10.3 [simd.syn]<a id="simd.syn"></a></td>
+<td>29.10.3 [simd.syn]</td>
 <td><code>datapar::chunk&lt;N&gt;</code> should use <code><i>simd-size-type</i></code> instead of <code>size_t</code></td>
 <td>Yes</td>
 <td></td>
@@ -33214,9 +33223,18 @@ co_await expression instead of same_as&lt;void&gt; (Status: New)">4357</a><sup><
 <td></td>
 </tr>
 <tr>
-<td id="4345"><a href="lwg-active.html#4345" title="task::promise_type::return_value default template parameter (Status: Tentatively Ready)">4345</a><sup><a href="https://cplusplus.github.io/LWG/issue4345">(i)</a></sup></td>
+<td id="4340"><a href="lwg-active.html#4340" title="task::promise_type::unhandled_stopped() should be noexcept (Status: Tentatively Ready)">4340</a><sup><a href="https://cplusplus.github.io/LWG/issue4340">(i)</a></sup></td>
 <td><a href="lwg-active.html#Ready">Tentatively Ready</a></td>
 <td>33.13.6.5 [task.promise]<a id="task.promise"></a></td>
+<td><code>task::promise_type::unhandled_stopped()</code> should be <code>noexcept</code></td>
+<td>Yes</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td id="4345"><a href="lwg-active.html#4345" title="task::promise_type::return_value default template parameter (Status: Tentatively Ready)">4345</a><sup><a href="https://cplusplus.github.io/LWG/issue4345">(i)</a></sup></td>
+<td><a href="lwg-active.html#Ready">Tentatively Ready</a></td>
+<td>33.13.6.5 [task.promise]</td>
 <td><code>task::promise_type::return_value</code> default template parameter</td>
 <td>Yes</td>
 <td></td>
@@ -33236,15 +33254,6 @@ co_await expression instead of same_as&lt;void&gt; (Status: New)">4357</a><sup><
 <td><a href="lwg-active.html#New">New</a></td>
 <td>33.13.6.5 [task.promise]</td>
 <td><code>co_await change_coroutine_scheduler(s)</code> requires assignable</td>
-<td>Yes</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td id="4340"><a href="lwg-active.html#4340" title="task::promise_type::unhandled_stopped() should be noexcept (Status: New)">4340</a><sup><a href="https://cplusplus.github.io/LWG/issue4340">(i)</a></sup></td>
-<td><a href="lwg-active.html#New">New</a></td>
-<td>33.13.6.5 [task.promise]</td>
-<td><code>task::promise_type::unhandled_stopped()</code> should be <code>noexcept</code></td>
 <td>Yes</td>
 <td></td>
 <td></td>

@@ -67,7 +67,7 @@
 This document is the Index by Status and Date for the <a href="lwg-active.html">Library Active Issues List</a>,
 <a href="lwg-defects.html">Library Defect Reports and Accepted Issues</a>, and <a href="lwg-closed.html">Library Closed Issues List</a>.
 </p>
-<p>Revised 2025-10-17 at 14:57:41 UTC
+<p>Revised 2025-10-17 at 21:39:31 UTC
 </p><h2 id="Ready">Ready (3 issues)</h2>
 <table class="issues-index">
 <tr>
@@ -107,7 +107,7 @@ This document is the Index by Status and Date for the <a href="lwg-active.html">
 <td></td>
 </tr>
 </table>
-<h2 id="Tentatively_Ready">Tentatively Ready (34 issues)</h2>
+<h2 id="Tentatively_Ready">Tentatively Ready (35 issues)</h2>
 <table class="issues-index">
 <tr>
   <th><a href="lwg-toc.html">Issue</a></th>
@@ -224,6 +224,15 @@ constructor</td>
 <td><a href="lwg-active.html#Ready">Tentatively Ready</a></td>
 <td>33.13.6.2 [task.class]</td>
 <td>Missing default template arguments for <code>task</code></td>
+<td>Yes</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td id="4340"><a href="lwg-active.html#4340" title="task::promise_type::unhandled_stopped() should be noexcept (Status: Tentatively Ready)">4340</a><sup><a href="https://cplusplus.github.io/LWG/issue4340">(i)</a></sup></td>
+<td><a href="lwg-active.html#Ready">Tentatively Ready</a></td>
+<td>33.13.6.5 [task.promise]</td>
+<td><code>task::promise_type::unhandled_stopped()</code> should be <code>noexcept</code></td>
 <td>Yes</td>
 <td></td>
 <td></td>
@@ -664,12 +673,39 @@ of uses-allocator construction</td>
 <td></td>
 </tr>
 <tr>
+<td id="4261"><a href="lwg-active.html#4261" title="P1206R7 broke uses of container adaptors with old custom sequence containers (Status: New)">4261</a><sup><a href="https://cplusplus.github.io/LWG/issue4261">(i)</a></sup></td>
+<td><a href="lwg-active.html#New">New</a></td>
+<td>27.4.3.8.2 [string.find]</td>
+<td>P1206R7 broke uses of container adaptors with old custom sequence containers</td>
+<td><span class="no-pr">No</span></td>
+<td>3</td>
+<td></td>
+</tr>
+<tr>
 <td id="4287"><a href="lwg-active.html#4287" title="&sect;[locale.codecvt.virtuals] do_in and do_out could do with better specification (Status: New)">4287</a><sup><a href="https://cplusplus.github.io/LWG/issue4287">(i)</a></sup></td>
 <td><a href="lwg-active.html#New">New</a></td>
 <td>28.3.4.2.5.3 [locale.codecvt.virtuals]</td>
 <td>&sect;[locale.codecvt.virtuals] <code class='backtick'>do_in</code> and <code class='backtick'>do_out</code> could do with better specification</td>
 <td>Yes</td>
 <td>3</td>
+<td></td>
+</tr>
+<tr>
+<td id="4263"><a href="lwg-active.html#4263" title="What should std::format_to etc. behave when the output is overlong? (Status: New)">4263</a><sup><a href="https://cplusplus.github.io/LWG/issue4263">(i)</a></sup></td>
+<td><a href="lwg-active.html#New">New</a></td>
+<td>28.5 [format]</td>
+<td>What should <code class='backtick'>std::format_to</code> etc. behave when the output is overlong?</td>
+<td><span class="no-pr">No</span></td>
+<td>3</td>
+<td></td>
+</tr>
+<tr>
+<td id="4412"><a href="lwg-active.html#4412" title="Fix declaration of zero_element and uninit_element (Status: New)">4412</a><sup><a href="https://cplusplus.github.io/LWG/issue4412">(i)</a></sup></td>
+<td><a href="lwg-active.html#New">New</a></td>
+<td>29.10.3 [simd.syn]</td>
+<td>Fix declaration of <code class='backtick'>zero_element</code> and <code class='backtick'>uninit_element</code></td>
+<td>Yes</td>
+<td></td>
 <td></td>
 </tr>
 <tr>
@@ -1427,15 +1463,6 @@ co_await expression instead of same_as&lt;void&gt; (Status: New)">4357</a><sup><
 <td></td>
 </tr>
 <tr>
-<td id="4340"><a href="lwg-active.html#4340" title="task::promise_type::unhandled_stopped() should be noexcept (Status: New)">4340</a><sup><a href="https://cplusplus.github.io/LWG/issue4340">(i)</a></sup></td>
-<td><a href="lwg-active.html#New">New</a></td>
-<td>33.13.6.5 [task.promise]</td>
-<td><code>task::promise_type::unhandled_stopped()</code> should be <code>noexcept</code></td>
-<td>Yes</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
 <td id="4346"><a href="lwg-active.html#4346" title="task::promise_type::return_void/value lack a specification (Status: New)">4346</a><sup><a href="https://cplusplus.github.io/LWG/issue4346">(i)</a></sup></td>
 <td><a href="lwg-active.html#New">New</a></td>
 <td>33.13.6.5 [task.promise]</td>
@@ -1926,24 +1953,6 @@ complexity for algorithms that are in fact &#x1d4aa;(n)</td>
 <td>26.7.1 [alg.copy]</td>
 <td><code class='backtick'>copy_if</code>, <code class='backtick'>remove_copy</code>, <code class='backtick'>remove_copy_if</code>, <code class='backtick'>unique_copy</code> have too strong preconditions</td>
 <td>Yes</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td id="4261"><a href="lwg-active.html#4261" title="P1206R7 broke uses of container adaptors with old custom sequence containers (Status: New)">4261</a><sup><a href="https://cplusplus.github.io/LWG/issue4261">(i)</a></sup></td>
-<td><a href="lwg-active.html#New">New</a></td>
-<td>27.4.3.8.2 [string.find]</td>
-<td>P1206R7 broke uses of container adaptors with old custom sequence containers</td>
-<td><span class="no-pr">No</span></td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td id="4263"><a href="lwg-active.html#4263" title="What should std::format_to etc. behave when the output is overlong? (Status: New)">4263</a><sup><a href="https://cplusplus.github.io/LWG/issue4263">(i)</a></sup></td>
-<td><a href="lwg-active.html#New">New</a></td>
-<td>28.5 [format]</td>
-<td>What should <code class='backtick'>std::format_to</code> etc. behave when the output is overlong?</td>
-<td><span class="no-pr">No</span></td>
 <td></td>
 <td></td>
 </tr>

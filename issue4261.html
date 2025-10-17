@@ -64,8 +64,8 @@
 <p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#New">New</a> status.</em></p>
 <h3 id="4261"><a href="lwg-active.html#4261">4261</a>. P1206R7 broke uses of container adaptors with old custom sequence containers</h3>
 <p><b>Section:</b> 27.4.3.8.2 <a href="https://wg21.link/string.find">[string.find]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Jiang An <b>Opened:</b> 2025-05-07 <b>Last modified:</b> 2025-05-18</p>
-<p><b>Priority: </b>Not Prioritized
+ <b>Submitter:</b> Jiang An <b>Opened:</b> 2025-05-07 <b>Last modified:</b> 2025-10-17</p>
+<p><b>Priority: </b>3
 </p>
 <p><b>View other</b> <a href="lwg-index-open.html#string.find">active issues</a> in [string.find].</p>
 <p><b>View all other</b> <a href="lwg-index.html#string.find">issues</a> in [string.find].</p>
@@ -83,6 +83,15 @@ it is unclear whether such uses are intentionally rejected.
 <p/>
 Perhaps the requirements on <code class='backtick'>from_range_t</code> constructor, <code class='backtick'>insert_range</code> and <code class='backtick'>assign_range</code> should be made optional, 
 although these operations should have specified semantics whenever being well-formed in immediate contexts.
+</p>
+
+<p><i>[2025-10-17; Reflector poll.]</i></p>
+
+<p>
+Set priority to 3 after reflector poll.
+</p>
+<p>
+"We keep adding container requirements, cleaning up the adaptors might need a paper."
 </p>
 
 
