@@ -62,7 +62,7 @@
 </tr>
 <tr>
 <td align="left">Date:</td>
-<td align="left">Revised 2025-10-17 at 09:18:08 UTC
+<td align="left">Revised 2025-10-17 at 11:39:27 UTC
 </td>
 </tr>
 <tr>
@@ -3505,6 +3505,147 @@ namespace std {
       (enable_nonlocking_formatter_optimization&lt;<ins>remove_cvref_t&lt;</ins>Ts<ins>&gt;</ins>&gt; &amp;&amp; ...);
 }
 </pre>
+</blockquote>
+</blockquote>
+</li>
+</ol>
+
+
+
+
+
+
+<hr>
+<h3 id="4403"><a href="#4403">4403</a><sup><a href="https://cplusplus.github.io/LWG/issue4403">(i)</a></sup>. <code class='backtick'>simd::basic_vec</code> CTAD misses difference type casting</h3>
+<p><b>Section:</b> 29.10.7.2 <a href="https://wg21.link/simd.ctor">[simd.ctor]</a> <b>Status:</b> <a href="lwg-active.html#Ready">Tentatively Ready</a>
+ <b>Submitter:</b> Hewill Kang <b>Opened:</b> 2025-10-04 <b>Last modified:</b> 2025-10-17</p>
+<p><b>Priority: </b>Not Prioritized
+</p>
+<p><b>View other</b> <a href="lwg-index-open.html#simd.ctor">active issues</a> in [simd.ctor].</p>
+<p><b>View all other</b> <a href="lwg-index.html#simd.ctor">issues</a> in [simd.ctor].</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#Tentatively Ready">Tentatively Ready</a> status.</p>
+<p><b>Discussion:</b></p>
+<p>
+Currently, <code class='backtick'>basic_vec</code> can take an object <code class='backtick'>r</code> of range type <code class='backtick'>R</code> whose size is a
+constant expression and deduced to <code>vec&lt;ranges::range_value_t&lt;R&gt;, ranges::size(r)&gt;</code>.
+<p/>
+However, such a deduced type is ill-formed when <code class='backtick'>R</code> has a an integer-class type size which cannot
+be implicitly converted to <code><i>simd-size-type</i></code>, which is a signed integer type.
+<p/>
+It is necessary to perform difference type casting here, and the narrowing
+conversion will still correctly be rejected due to the constructor's constraints.
+</p>
+
+<p><i>[2025-10-17; Reflector poll]</i></p>
+
+<p>
+Set status to Tentatively Ready after six votes in favour during reflector poll.
+</p>
+
+
+
+<p id="res-4403"><b>Proposed resolution:</b></p>
+<p>
+This wording is relative to <a href="https://wg21.link/N5014">N5014</a>.
+</p>
+
+<ol>
+
+<li><p>Modify 29.10.7.2 <a href="https://wg21.link/simd.ctor">[simd.ctor]</a> as indicated:</p>
+
+<blockquote>
+<pre>
+template&lt;class R, class... Ts&gt;
+  basic_vec(R&amp;&amp; r, Ts...) -&gt; <i>see below</i>;
+</pre>
+<blockquote>
+<p>
+-17- <i>Constraints</i>:
+</p>
+<ol style="list-style-type: none">
+  <li><p>
+  (17.1) &mdash; <code class='backtick'>R</code> models <code class='backtick'>ranges::contiguous_range</code> and <code class='backtick'>ranges::sized_range</code>, and
+  </p></li>
+  <li><p>
+  (17.2) &mdash; <code class='backtick'>ranges::size(r)</code> is a constant expression.
+  </p></li>
+</ol>
+<p>
+-18- <i>Remarks</i>: The deduced type is equivalent to <code>
+vec&lt;ranges::range_value_t&lt;R&gt;, <ins>static_cast&lt;<i>simd-size-type</i>&gt;(</ins>ranges::size(r)<ins>)</ins>&gt;
+</code>
+</p>
+</blockquote>
+</blockquote>
+</li>
+
+</ol>
+
+
+
+
+
+
+<hr>
+<h3 id="4407"><a href="#4407">4407</a><sup><a href="https://cplusplus.github.io/LWG/issue4407">(i)</a></sup>. <code><i>constexpr-wrapper-like</i></code> needs <code class='backtick'>remove_cvref_t</code> in <code class='backtick'>simd::basic_vec</code>
+constructor</h3>
+<p><b>Section:</b> 29.10.7.2 <a href="https://wg21.link/simd.ctor">[simd.ctor]</a> <b>Status:</b> <a href="lwg-active.html#Ready">Tentatively Ready</a>
+ <b>Submitter:</b> Hewill Kang <b>Opened:</b> 2025-10-05 <b>Last modified:</b> 2025-10-17</p>
+<p><b>Priority: </b>Not Prioritized
+</p>
+<p><b>View other</b> <a href="lwg-index-open.html#simd.ctor">active issues</a> in [simd.ctor].</p>
+<p><b>View all other</b> <a href="lwg-index.html#simd.ctor">issues</a> in [simd.ctor].</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#Tentatively Ready">Tentatively Ready</a> status.</p>
+<p><b>Discussion:</b></p>
+<p>
+<code class='backtick'>decltype(From::value)</code> would be <code>const int&amp;</code> if <code class='backtick'>From</code> is a type of <code>std::cw&lt;42&gt;</code>, 
+so the reference also needs to be removed for checking the arithmetic type.
+</p>
+
+<p><i>[2025-10-17; Reflector poll]</i></p>
+
+<p>
+Set status to Tentatively Ready after seven votes in favour during reflector poll.
+</p>
+
+
+
+<p id="res-4407"><b>Proposed resolution:</b></p>
+<p>
+This wording is relative to <a href="https://wg21.link/N5014">N5014</a>.
+</p>
+
+<ol>
+
+<li><p>Modify 29.10.7.2 <a href="https://wg21.link/simd.ctor">[simd.ctor]</a> as indicated:</p>
+
+<blockquote>
+<pre>
+template&lt;class U&gt; constexpr explicit(<i>see below</i>) basic_vec(U&amp;&amp; value) noexcept;
+</pre>
+<blockquote>
+<p>
+-1- Let <code class='backtick'>From</code> denote the type <code>remove_cvref_t&lt;U&gt;</code>.
+<p/>
+[&hellip;]
+<p/>
+-4- <i>Remarks</i>:  The expression inside <code class='backtick'>explicit</code> evaluates to <code class='backtick'>false</code> if and only if <code class='backtick'>U</code> 
+satisfies <code>convertible_to&lt;value_type&gt;</code>, and either
+</p>
+<ol style="list-style-type: none">
+<li><p>
+(4.1) &mdash; <code class='backtick'>From</code> is not an arithmetic type and does not satisfy <code><i>constexpr-wrapper-like</i></code>,
+</p></li>
+<li><p>
+(4.2) &mdash; <code class='backtick'>From</code> is an arithmetic type and the conversion from <code class='backtick'>From</code> to <code class='backtick'>value_type</code> is 
+value-preserving (29.10.1 <a href="https://wg21.link/simd.general">[simd.general]</a>), or
+</p></li>
+<li><p> 
+(4.3) &mdash; <code class='backtick'>From</code> satisfies <code><i>constexpr-wrapper-like</i></code>, 
+<code><ins>remove_cvref_t</ins><del>remove_const_t</del>&lt;decltype(From::value)&gt;</code> 
+is an arithmetic type, and <code class='backtick'>From::value</code> is representable by <code class='backtick'>value_type</code>.
+</p></li>
+</ol>
 </blockquote>
 </blockquote>
 </li>

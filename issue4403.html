@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <title>Issue 4403: simd::basic_vec CTAD misses difference type casting</title>
 <meta property="og:title" content="Issue 4403: simd::basic_vec CTAD misses difference type casting">
-<meta property="og:description" content="C++ library issue. Status: New">
+<meta property="og:description" content="C++ library issue. Status: Tentatively Ready">
 <meta property="og:url" content="https://cplusplus.github.io/LWG/issue4403.html">
 <meta property="og:type" content="website">
 <meta property="og:image" content="http://cplusplus.github.io/LWG/images/cpp_logo.png">
@@ -61,15 +61,15 @@
 </head>
 <body>
 <hr>
-<p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#New">New</a> status.</em></p>
+<p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#Ready">Tentatively Ready</a> status.</em></p>
 <h3 id="4403"><a href="lwg-active.html#4403">4403</a>. <code class='backtick'>simd::basic_vec</code> CTAD misses difference type casting</h3>
-<p><b>Section:</b> 29.10.7.2 <a href="https://wg21.link/simd.ctor">[simd.ctor]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Hewill Kang <b>Opened:</b> 2025-10-04 <b>Last modified:</b> 2025-10-04</p>
+<p><b>Section:</b> 29.10.7.2 <a href="https://wg21.link/simd.ctor">[simd.ctor]</a> <b>Status:</b> <a href="lwg-active.html#Ready">Tentatively Ready</a>
+ <b>Submitter:</b> Hewill Kang <b>Opened:</b> 2025-10-04 <b>Last modified:</b> 2025-10-17</p>
 <p><b>Priority: </b>Not Prioritized
 </p>
 <p><b>View other</b> <a href="lwg-index-open.html#simd.ctor">active issues</a> in [simd.ctor].</p>
 <p><b>View all other</b> <a href="lwg-index.html#simd.ctor">issues</a> in [simd.ctor].</p>
-<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#Tentatively Ready">Tentatively Ready</a> status.</p>
 <p><b>Discussion:</b></p>
 <p>
 Currently, <code class='backtick'>basic_vec</code> can take an object <code class='backtick'>r</code> of range type <code class='backtick'>R</code> whose size is a
@@ -81,6 +81,13 @@ be implicitly converted to <code><i>simd-size-type</i></code>, which is a signed
 It is necessary to perform difference type casting here, and the narrowing
 conversion will still correctly be rejected due to the constructor's constraints.
 </p>
+
+<p><i>[2025-10-17; Reflector poll]</i></p>
+
+<p>
+Set status to Tentatively Ready after six votes in favour during reflector poll.
+</p>
+
 
 
 <p id="res-4403"><b>Proposed resolution:</b></p>

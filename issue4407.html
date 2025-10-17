@@ -6,7 +6,7 @@
 constructor</title>
 <meta property="og:title" content="Issue 4407: constexpr-wrapper-like needs remove_cvref_t in simd::basic_vec
 constructor">
-<meta property="og:description" content="C++ library issue. Status: New">
+<meta property="og:description" content="C++ library issue. Status: Tentatively Ready">
 <meta property="og:url" content="https://cplusplus.github.io/LWG/issue4407.html">
 <meta property="og:type" content="website">
 <meta property="og:image" content="http://cplusplus.github.io/LWG/images/cpp_logo.png">
@@ -63,21 +63,28 @@ constructor">
 </head>
 <body>
 <hr>
-<p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#New">New</a> status.</em></p>
+<p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#Ready">Tentatively Ready</a> status.</em></p>
 <h3 id="4407"><a href="lwg-active.html#4407">4407</a>. <code><i>constexpr-wrapper-like</i></code> needs <code class='backtick'>remove_cvref_t</code> in <code class='backtick'>simd::basic_vec</code>
 constructor</h3>
-<p><b>Section:</b> 29.10.7.2 <a href="https://wg21.link/simd.ctor">[simd.ctor]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Hewill Kang <b>Opened:</b> 2025-10-05 <b>Last modified:</b> 2025-10-10</p>
+<p><b>Section:</b> 29.10.7.2 <a href="https://wg21.link/simd.ctor">[simd.ctor]</a> <b>Status:</b> <a href="lwg-active.html#Ready">Tentatively Ready</a>
+ <b>Submitter:</b> Hewill Kang <b>Opened:</b> 2025-10-05 <b>Last modified:</b> 2025-10-17</p>
 <p><b>Priority: </b>Not Prioritized
 </p>
 <p><b>View other</b> <a href="lwg-index-open.html#simd.ctor">active issues</a> in [simd.ctor].</p>
 <p><b>View all other</b> <a href="lwg-index.html#simd.ctor">issues</a> in [simd.ctor].</p>
-<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#Tentatively Ready">Tentatively Ready</a> status.</p>
 <p><b>Discussion:</b></p>
 <p>
 <code class='backtick'>decltype(From::value)</code> would be <code>const int&amp;</code> if <code class='backtick'>From</code> is a type of <code>std::cw&lt;42&gt;</code>, 
 so the reference also needs to be removed for checking the arithmetic type.
 </p>
+
+<p><i>[2025-10-17; Reflector poll]</i></p>
+
+<p>
+Set status to Tentatively Ready after seven votes in favour during reflector poll.
+</p>
+
 
 
 <p id="res-4407"><b>Proposed resolution:</b></p>

@@ -54,7 +54,7 @@
 </style>
 </head>
 <body>
-<p>Revised 2025-10-17 at 09:18:08 UTC
+<p>Revised 2025-10-17 at 11:39:27 UTC
 </p><h2>Unresolved Issues</h2>
 <hr>
 <h3 id="423"><a href="#423">423</a><sup><a href="https://cplusplus.github.io/LWG/issue423">(i)</a></sup>. Effects of negative <code>streamsize</code> in iostreams</h3>
@@ -66807,7 +66807,7 @@ template&lt;ranges::input_range Range&gt;
 <hr>
 <h3 id="4225"><a href="#4225">4225</a><sup><a href="https://cplusplus.github.io/LWG/issue4225">(i)</a></sup>. What should happen when an exception is thrown on resizing <code class='backtick'>std::deque</code>, <code class='backtick'>std::forward_list</code>, or <code class='backtick'>std::list</code>?</h3>
 <p><b>Section:</b> 23.3.5.3 <a href="https://wg21.link/deque.capacity">[deque.capacity]</a>, 23.3.7.5 <a href="https://wg21.link/forward.list.modifiers">[forward.list.modifiers]</a>, 23.3.11.3 <a href="https://wg21.link/list.capacity">[list.capacity]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Jiang An <b>Opened:</b> 2025-03-15 <b>Last modified:</b> 2025-10-16</p>
+ <b>Submitter:</b> Jiang An <b>Opened:</b> 2025-03-15 <b>Last modified:</b> 2025-10-17</p>
 <p><b>Priority: </b>3
 </p>
 <p><b>View all other</b> <a href="lwg-index.html#deque.capacity">issues</a> in [deque.capacity].</p>
@@ -66843,6 +66843,11 @@ because it's in a different subclause (23.3.11.3 <a href="https://wg21.link/list
 We can fix that though.
 </p>
 
+<p><i>[2025-10-17; Comment from Nevin.]</i></p>
+
+<p>
+<code class='backtick'>deque::resize</code> invalidates all iterators if it causes a map reallocation.
+</p>
 
 
 <p id="res-4225"><b>Proposed resolution:</b></p>
@@ -78060,119 +78065,6 @@ struct <i>basic-receiver</i> { // <i>exposition only</i>
 
 
 <hr>
-<h3 id="4362"><a href="#4362">4362</a><sup><a href="https://cplusplus.github.io/LWG/issue4362">(i)</a></sup>. Inconsistent usage of <code class='backtick'>constexpr</code> for <code class='backtick'>inplace_stop_token</code> and <code class='backtick'>inplace_stop_source</code></h3>
-<p><b>Section:</b> 32.3.8 <a href="https://wg21.link/stoptoken.inplace">[stoptoken.inplace]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Lewis Baker <b>Opened:</b> 2025-08-28 <b>Last modified:</b> 2025-09-15</p>
-<p><b>Priority: </b>Not Prioritized
-</p>
-<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
-<p><b>Discussion:</b></p>
-<p>
-The <code class='backtick'>inplace_stop_source::get_token()</code> member function is declared <code class='backtick'>constexpr</code>, 
-but there are no <code class='backtick'>constexpr</code> member-functions declared on <code class='backtick'>inplace_stop_token</code>, 
-making the utility of being able to call this member function during constant 
-evaluation limited.
-<p/>
-Should the member functions of <code class='backtick'>inplace_stop_token</code> also be declared <code class='backtick'>constexpr</code>?
-i.e. <code class='backtick'>operator==</code>, <code class='backtick'>swap()</code>, <code class='backtick'>stop_possible()</code> and <code class='backtick'>stop_requested()</code>.
-<p/>
-The <code class='backtick'>operator==</code> and <code class='backtick'>stop_possible()</code> and <code class='backtick'>swap()</code> member functions should be 
-able to be made <code class='backtick'>constexpr</code> trivially as they are just required to compare/modify 
-pointers to the associated stop source.
-<p/>
-The <code class='backtick'>stop_requested()</code> member function is specified to be equivalent to calling 
-<code class='backtick'>stop_requested()</code> on the associated <code class='backtick'>inplace_stop_source</code> (if any), which is not 
-currently declared <code class='backtick'>constexpr</code> primarily because its implementation requires 
-synchronisation/atomic operations.
-<p/>
-Now that <code class='backtick'>std::atomic</code> operations are now <code class='backtick'>constexpr</code>, it may be possible/appropriate 
-for <code class='backtick'>stop_requested()</code> on both <code class='backtick'>inplace_stop_source</code> and <code class='backtick'>inplace_stop_token</code> to also 
-be declared <code class='backtick'>constexpr</code>.
-</p>
-
-
-<p id="res-4362"><b>Proposed resolution:</b></p>
-<p>
-This wording is relative to <a href="https://wg21.link/N5014">N5014</a>.
-</p>
-
-<blockquote class="note">
-<p>
-[<i>Drafting note:</i>: This is the minimum proposed wording change. Additionally, consider adding 
-<code class='backtick'>constexpr</code> to the declaration of <code class='backtick'>inplace_stop_token::stop_requested()</code> (in 
-32.3.8.1 <a href="https://wg21.link/stoptoken.inplace.general">[stoptoken.inplace.general]</a> and 32.3.8.2 <a href="https://wg21.link/stoptoken.inplace.mem">[stoptoken.inplace.mem]</a>) and to 
-<code class='backtick'>inplace_stop_source::stop_requested()</code> (in 32.3.9.1 <a href="https://wg21.link/stopsource.inplace.general">[stopsource.inplace.general]</a> and 
-32.3.9.3 <a href="https://wg21.link/stopsource.inplace.mem">[stopsource.inplace.mem]</a>)]
-</p>
-</blockquote>
-
-<ol>
-
-<li><p>Modify 32.3.8.1 <a href="https://wg21.link/stoptoken.inplace.general">[stoptoken.inplace.general]</a>, class <code class='backtick'>inplace_stop_token</code> synopsis, as indicated:</p>
-
-<blockquote><pre>
-namespace std {
-  class inplace_stop_token {
-  public:
-    template&lt;class CallbackFn&gt;
-      using callback_type = inplace_stop_callback&lt;CallbackFn&gt;;
-    
-    <ins>constexpr</ins> inplace_stop_token() = default;
-    <ins>constexpr</ins> bool operator==(const inplace_stop_token&amp;) const = default;
-    
-    // <i>32.3.8.2 <a href="https://wg21.link/stoptoken.inplace.mem">[stoptoken.inplace.mem]</a>, member functions</i>
-    bool stop_requested() const noexcept;
-    <ins>constexpr</ins> bool stop_possible() const noexcept;
-    <ins>constexpr</ins> void swap(inplace_stop_token&amp;) noexcept;
-    
-  private:
-    const inplace_stop_source* <i>stop-source</i> = nullptr; // <i>exposition only</i>
-  };
-}
-</pre></blockquote>
-
-</li>
-
-
-<li><p>Modify 32.3.8.2 <a href="https://wg21.link/stoptoken.inplace.mem">[stoptoken.inplace.mem]</a> as indicated:</p>
-
-<blockquote class="note">
-<p>
-[<i>Drafting note:</i>: As a drive-by fix this adds the missing return type <code class='backtick'>bool</code> to the
-<code class='backtick'>stop_possible()</code> prototype]
-</p>
-</blockquote>
-
-<blockquote>
-<pre>
-<ins>constexpr</ins> void swap(inplace_stop_token&amp; rhs) noexcept;
-</pre>
-<blockquote>
-<p>
--1- <i>Effects</i>: Exchanges the values of <code><i>stop-source</i></code> and <code>rhs.<i>stop-source</i></code>.
-</p>
-</blockquote>
-[&hellip;]
-<pre>
-<ins>constexpr bool</ins> stop_possible() const noexcept;
-</pre>
-<blockquote>
-<p>
--4- <i>Returns</i>: <code><i>stop-source</i> != nullptr</code>.
-</p>
-</blockquote>
-
-</blockquote>
-
-</li>
-
-</ol>
-
-
-
-
-
-<hr>
 <h3 id="4363"><a href="#4363">4363</a><sup><a href="https://cplusplus.github.io/LWG/issue4363">(i)</a></sup>. <code class='backtick'>transform_sender</code> comparing types ignoring <i>cv</i>-qualifiers doesn't take into account differences in value category</h3>
 <p><b>Section:</b> 33.9.6 <a href="https://wg21.link/exec.snd.transform">[exec.snd.transform]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
  <b>Submitter:</b> Lewis Baker <b>Opened:</b> 2025-08-28 <b>Last modified:</b> 2025-09-15</p>
@@ -81472,70 +81364,6 @@ namespace std::simd {
 
 
 <hr>
-<h3 id="4403"><a href="#4403">4403</a><sup><a href="https://cplusplus.github.io/LWG/issue4403">(i)</a></sup>. <code class='backtick'>simd::basic_vec</code> CTAD misses difference type casting</h3>
-<p><b>Section:</b> 29.10.7.2 <a href="https://wg21.link/simd.ctor">[simd.ctor]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Hewill Kang <b>Opened:</b> 2025-10-04 <b>Last modified:</b> 2025-10-04</p>
-<p><b>Priority: </b>Not Prioritized
-</p>
-<p><b>View other</b> <a href="lwg-index-open.html#simd.ctor">active issues</a> in [simd.ctor].</p>
-<p><b>View all other</b> <a href="lwg-index.html#simd.ctor">issues</a> in [simd.ctor].</p>
-<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
-<p><b>Discussion:</b></p>
-<p>
-Currently, <code class='backtick'>basic_vec</code> can take an object <code class='backtick'>r</code> of range type <code class='backtick'>R</code> whose size is a
-constant expression and deduced to <code>vec&lt;ranges::range_value_t&lt;R&gt;, ranges::size(r)&gt;</code>.
-<p/>
-However, such a deduced type is ill-formed when <code class='backtick'>R</code> has a an integer-class type size which cannot
-be implicitly converted to <code><i>simd-size-type</i></code>, which is a signed integer type.
-<p/>
-It is necessary to perform difference type casting here, and the narrowing
-conversion will still correctly be rejected due to the constructor's constraints.
-</p>
-
-
-<p id="res-4403"><b>Proposed resolution:</b></p>
-<p>
-This wording is relative to <a href="https://wg21.link/N5014">N5014</a>.
-</p>
-
-<ol>
-
-<li><p>Modify 29.10.7.2 <a href="https://wg21.link/simd.ctor">[simd.ctor]</a> as indicated:</p>
-
-<blockquote>
-<pre>
-template&lt;class R, class... Ts&gt;
-  basic_vec(R&amp;&amp; r, Ts...) -&gt; <i>see below</i>;
-</pre>
-<blockquote>
-<p>
--17- <i>Constraints</i>:
-</p>
-<ol style="list-style-type: none">
-  <li><p>
-  (17.1) &mdash; <code class='backtick'>R</code> models <code class='backtick'>ranges::contiguous_range</code> and <code class='backtick'>ranges::sized_range</code>, and
-  </p></li>
-  <li><p>
-  (17.2) &mdash; <code class='backtick'>ranges::size(r)</code> is a constant expression.
-  </p></li>
-</ol>
-<p>
--18- <i>Remarks</i>: The deduced type is equivalent to <code>
-vec&lt;ranges::range_value_t&lt;R&gt;, <ins>static_cast&lt;<i>simd-size-type</i>&gt;(</ins>ranges::size(r)<ins>)</ins>&gt;
-</code>
-</p>
-</blockquote>
-</blockquote>
-</li>
-
-</ol>
-
-
-
-
-
-
-<hr>
 <h3 id="4404"><a href="#4404">4404</a><sup><a href="https://cplusplus.github.io/LWG/issue4404">(i)</a></sup>. Should <code>span(R&amp;&amp;)</code> CTAD apply P2280?</h3>
 <p><b>Section:</b> 23.7.2.2.3 <a href="https://wg21.link/span.deduct">[span.deduct]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
  <b>Submitter:</b> Hewill Kang <b>Opened:</b> 2025-10-04 <b>Last modified:</b> 2025-10-05</p>
@@ -81962,69 +81790,6 @@ template&lt;class U = remove_cv_t&lt;T&gt;&gt; constexpr T value_or(U&amp;&amp; 
   return std::move(**this);
 return std::forward&lt;U&gt;(v);</ins>
 </pre></blockquote>
-</blockquote>
-</blockquote>
-</li>
-</ol>
-
-
-
-
-
-
-<hr>
-<h3 id="4407"><a href="#4407">4407</a><sup><a href="https://cplusplus.github.io/LWG/issue4407">(i)</a></sup>. <code><i>constexpr-wrapper-like</i></code> needs <code class='backtick'>remove_cvref_t</code> in <code class='backtick'>simd::basic_vec</code>
-constructor</h3>
-<p><b>Section:</b> 29.10.7.2 <a href="https://wg21.link/simd.ctor">[simd.ctor]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Hewill Kang <b>Opened:</b> 2025-10-05 <b>Last modified:</b> 2025-10-10</p>
-<p><b>Priority: </b>Not Prioritized
-</p>
-<p><b>View other</b> <a href="lwg-index-open.html#simd.ctor">active issues</a> in [simd.ctor].</p>
-<p><b>View all other</b> <a href="lwg-index.html#simd.ctor">issues</a> in [simd.ctor].</p>
-<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
-<p><b>Discussion:</b></p>
-<p>
-<code class='backtick'>decltype(From::value)</code> would be <code>const int&amp;</code> if <code class='backtick'>From</code> is a type of <code>std::cw&lt;42&gt;</code>, 
-so the reference also needs to be removed for checking the arithmetic type.
-</p>
-
-
-<p id="res-4407"><b>Proposed resolution:</b></p>
-<p>
-This wording is relative to <a href="https://wg21.link/N5014">N5014</a>.
-</p>
-
-<ol>
-
-<li><p>Modify 29.10.7.2 <a href="https://wg21.link/simd.ctor">[simd.ctor]</a> as indicated:</p>
-
-<blockquote>
-<pre>
-template&lt;class U&gt; constexpr explicit(<i>see below</i>) basic_vec(U&amp;&amp; value) noexcept;
-</pre>
-<blockquote>
-<p>
--1- Let <code class='backtick'>From</code> denote the type <code>remove_cvref_t&lt;U&gt;</code>.
-<p/>
-[&hellip;]
-<p/>
--4- <i>Remarks</i>:  The expression inside <code class='backtick'>explicit</code> evaluates to <code class='backtick'>false</code> if and only if <code class='backtick'>U</code> 
-satisfies <code>convertible_to&lt;value_type&gt;</code>, and either
-</p>
-<ol style="list-style-type: none">
-<li><p>
-(4.1) &mdash; <code class='backtick'>From</code> is not an arithmetic type and does not satisfy <code><i>constexpr-wrapper-like</i></code>,
-</p></li>
-<li><p>
-(4.2) &mdash; <code class='backtick'>From</code> is an arithmetic type and the conversion from <code class='backtick'>From</code> to <code class='backtick'>value_type</code> is 
-value-preserving (29.10.1 <a href="https://wg21.link/simd.general">[simd.general]</a>), or
-</p></li>
-<li><p> 
-(4.3) &mdash; <code class='backtick'>From</code> satisfies <code><i>constexpr-wrapper-like</i></code>, 
-<code><ins>remove_cvref_t</ins><del>remove_const_t</del>&lt;decltype(From::value)&gt;</code> 
-is an arithmetic type, and <code class='backtick'>From::value</code> is representable by <code class='backtick'>value_type</code>.
-</p></li>
-</ol>
 </blockquote>
 </blockquote>
 </li>
