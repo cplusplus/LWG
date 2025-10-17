@@ -62,7 +62,7 @@
 </tr>
 <tr>
 <td align="left">Date:</td>
-<td align="left">Revised 2025-10-16 at 21:11:32 UTC
+<td align="left">Revised 2025-10-17 at 09:18:08 UTC
 </td>
 </tr>
 <tr>
@@ -3329,6 +3329,188 @@ return true;</ins>
 </li>
 
 </ol>
+
+
+
+
+<hr>
+<h3 id="4398"><a href="#4398">4398</a><sup><a href="https://cplusplus.github.io/LWG/issue4398">(i)</a></sup>. <code class='backtick'>enable_nonlocking_formatter_optimization</code> should be disabled for container adaptors</h3>
+<p><b>Section:</b> 23.6.2 <a href="https://wg21.link/queue.syn">[queue.syn]</a>, 23.6.5 <a href="https://wg21.link/stack.syn">[stack.syn]</a> <b>Status:</b> <a href="lwg-active.html#Ready">Tentatively Ready</a>
+ <b>Submitter:</b> Tomasz Kamiński <b>Opened:</b> 2025-10-02 <b>Last modified:</b> 2025-10-17</p>
+<p><b>Priority: </b>2
+</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#Tentatively Ready">Tentatively Ready</a> status.</p>
+<p><b>Discussion:</b></p>
+<p>
+As the standard currently defines formatters for <code class='backtick'>queue</code>, <code class='backtick'>prioriy_queue</code>, and <code class='backtick'>stack</code>  
+<code class='backtick'>enable_nonlocking_formatter_optimization</code> is specialized to <code class='backtick'>true</code> for these adaptors per 
+28.5.6.4 <a href="https://wg21.link/format.formatter.spec">[format.formatter.spec]</a> p3:
+</p>
+<blockquote>
+<p>
+Unless specified otherwise, for each type <code class='backtick'>T</code> for which a formatter specialization is provided 
+by the library, each of the headers provides the following specialization: 
+</p>
+<blockquote><pre>
+template&lt;&gt; inline constexpr bool enable_nonlocking_formatter_optimization&lt;T&gt; = true;
+</pre></blockquote>
+</blockquote>
+<p>
+However, formatting an adaptor requires formatting of the underlying range
+in terms of <code class='backtick'>ranges::ref_view</code>, and we disable the nonlocking_optimizations for all ranges, including <code class='backtick'>ranges::ref_view</code>.
+<p/>
+This problem does not occur for the <code class='backtick'>flat_set</code>, <code class='backtick'>flat_map</code> adaptors, which are
+also ranges, but unlike <code class='backtick'>stack</code> etc. they do not have a specialized formatter.
+They use the <code class='backtick'>formatter</code> specialization for ranges and we already disable the
+optimization for that formatter.
+<p/>
+The proposed wording has recently been implemented in 
+<a href="https://gcc.gnu.org/pipermail/libstdc++/2025-October/063758.html">gcc's libstdc++</a>.
+</p>
+
+<p><i>[2025-10-14; Reflector poll]</i></p>
+
+<p>
+Set priority to 2 after reflector poll.
+</p>
+<p>
+This is a duplicate of LWG <a href="lwg-active.html#4146" title="&sect;[format.formatter.spec]/3 unconditionally enables nonlocking for container adaptors (Status: New)">4146</a><sup><a href="https://cplusplus.github.io/LWG/issue4146" title="Latest snapshot">(i)</a></sup>,
+with a different proposed resolution.
+</p>
+
+
+<p><i>[2025-10-17; Reflector poll]</i></p>
+
+<p>
+Set status to Tentatively Ready after five votes in favour during reflector poll.
+</p>
+
+
+
+<p id="res-4398"><b>Proposed resolution:</b></p>
+<p>
+This wording is relative to <a href="https://wg21.link/N5014">N5014</a>.
+</p>
+
+<ol>
+
+<li><p>Modify 23.6.2 <a href="https://wg21.link/queue.syn">[queue.syn]</a>, header <code>&lt;queue&gt;</code> synopsis, as indicated:</p>
+
+<blockquote>
+<pre>
+[&hellip;]
+// <i>23.6.13 <a href="https://wg21.link/container.adaptors.format">[container.adaptors.format]</a>, formatter specialization for queue</i>
+template&lt;class charT, class T, formattable&lt;charT&gt; Container&gt;
+  struct formatter&lt;queue&lt;T, Container&gt;, charT&gt;;
+  
+<ins>template&lt;class T, class Container&gt;
+  constexpr bool enable_nonlocking_formatter_optimization&lt;queue&lt;T, Container&gt;&gt; = false;</ins>
+
+// <i>23.6.4 <a href="https://wg21.link/priority.queue">[priority.queue]</a>, class template priority_queue</i>
+template&lt;class T, class Container = vector&lt;T&gt;,
+         class Compare = less&lt;typename Container::value_type&gt;&gt;
+  class priority_queue;
+[&hellip;]
+// <i>23.6.13 <a href="https://wg21.link/container.adaptors.format">[container.adaptors.format]</a>, formatter specialization for priority_queue</i>
+template&lt;class charT, class T, formattable&lt;charT&gt; Container, class Compare&gt;
+  struct formatter&lt;priority_queue&lt;T, Container, Compare&gt;, charT&gt;;
+  
+<ins>template&lt;class T, class Container, class Compare&gt;
+  constexpr bool enable_nonlocking_formatter_optimization&lt;priority_queue&lt;T, Container, Compare&gt;&gt; = false;</ins>
+[&hellip;]
+</pre>
+</blockquote>
+</li>
+
+<li><p>Modify 23.6.5 <a href="https://wg21.link/stack.syn">[stack.syn]</a>, header <code>&lt;stack&gt;</code> synopsis, as indicated:</p>
+
+<blockquote>
+<pre>
+[&hellip;]
+
+// <i>23.6.13 <a href="https://wg21.link/container.adaptors.format">[container.adaptors.format]</a>, formatter specialization for stack</i>
+template&lt;class charT, class T, formattable&lt;charT&gt; Container&gt;
+  struct formatter&lt;stack&lt;T, Container&gt;, charT&gt;;
+
+<ins>template&lt;class T, class Container&gt;
+  constexpr bool enable_nonlocking_formatter_optimization&lt;stack&lt;T, Container&gt;&gt; = false;</ins>
+
+[&hellip;]
+</pre>
+</blockquote>
+</li>
+</ol>
+
+
+
+
+
+
+<hr>
+<h3 id="4399"><a href="#4399">4399</a><sup><a href="https://cplusplus.github.io/LWG/issue4399">(i)</a></sup>. <code class='backtick'>enable_nonlocking_formatter_optimization</code> for <code class='backtick'>pair</code> and <code class='backtick'>tuple</code> needs <code class='backtick'>remove_cvref_t</code></h3>
+<p><b>Section:</b> 28.5.9 <a href="https://wg21.link/format.tuple">[format.tuple]</a> <b>Status:</b> <a href="lwg-active.html#Ready">Tentatively Ready</a>
+ <b>Submitter:</b> Tomasz Kamiński <b>Opened:</b> 2025-10-02 <b>Last modified:</b> 2025-10-17</p>
+<p><b>Priority: </b>Not Prioritized
+</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#Tentatively Ready">Tentatively Ready</a> status.</p>
+<p><b>Discussion:</b></p>
+<p>
+The <code class='backtick'>enable_nonlocking_formatter_optimization</code> variable template is specialized only for <i>cv</i>-unqualified 
+types. However, the specialization for <code class='backtick'>pair</code> and <code class='backtick'>tuple</code> does not remove the references and 
+<i>cv</i>-qualifiers from the elements:
+</p>
+<blockquote><pre>
+template&lt;class... Ts&gt; 
+  constexpr bool enable_nonlocking_formatter_optimization&lt;<i>pair-or-tuple</i>&lt;Ts...&gt;&gt; = 
+    (enable_nonlocking_formatter_optimization&lt;Ts&gt; &amp;&amp; ...);
+</pre></blockquote>
+<p>
+As consequence <code>pair&lt;const std::string, int&gt;</code> or 
+<code>pair&lt;const std::string&amp;, int&amp;&gt;</code> (<code class='backtick'>map</code> and <code class='backtick'>flat_map</code> reference types) 
+will not use unbuffered prints.
+<p/>
+The proposed wording has recently been implemented in 
+<a href="https://gcc.gnu.org/pipermail/libstdc++/2025-October/063758.html">gcc's libstdc++</a>.
+</p>
+
+<p><i>[2025-10-17; Reflector poll]</i></p>
+
+<p>
+Set status to Tentatively Ready after seven votes in favour during reflector poll.
+</p>
+
+
+
+<p id="res-4399"><b>Proposed resolution:</b></p>
+<p>
+This wording is relative to <a href="https://wg21.link/N5014">N5014</a>.
+</p>
+
+<ol>
+
+<li><p>Modify 28.5.9 <a href="https://wg21.link/format.tuple">[format.tuple]</a> as indicated:</p>
+
+<blockquote>
+<p>
+-1- For each of <code class='backtick'>pair</code> and <code class='backtick'>tuple</code>, the library provides the following formatter specialization 
+where <code><i>pair-or-tuple</i></code> is the name of the template:
+</p>
+<blockquote>
+<pre>
+namespace std {
+  [&hellip;]
+  
+  template&lt;class... Ts&gt; 
+    constexpr bool enable_nonlocking_formatter_optimization&lt;<i>pair-or-tuple</i>&lt;Ts...&gt;&gt; = 
+      (enable_nonlocking_formatter_optimization&lt;<ins>remove_cvref_t&lt;</ins>Ts<ins>&gt;</ins>&gt; &amp;&amp; ...);
+}
+</pre>
+</blockquote>
+</blockquote>
+</li>
+</ol>
+
+
 
 
 
