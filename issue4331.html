@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <title>Issue 4331: affine_on shape may be wrong</title>
 <meta property="og:title" content="Issue 4331: affine_on shape may be wrong">
-<meta property="og:description" content="C++ library issue. Status: New">
+<meta property="og:description" content="C++ library issue. Status: LEWG">
 <meta property="og:url" content="https://cplusplus.github.io/LWG/issue4331.html">
 <meta property="og:type" content="website">
 <meta property="og:image" content="http://cplusplus.github.io/LWG/images/cpp_logo.png">
@@ -61,15 +61,15 @@
 </head>
 <body>
 <hr>
-<p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#New">New</a> status.</em></p>
+<p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#LEWG">LEWG</a> status.</em></p>
 <h3 id="4331"><a href="lwg-active.html#4331">4331</a>. <code>affine_on</code> shape may be wrong</h3>
-<p><b>Section:</b> 33.13.3 <a href="https://wg21.link/exec.affine.on">[exec.affine.on]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Dietmar Kühl <b>Opened:</b> 2025-08-31 <b>Last modified:</b> 2025-09-01</p>
-<p><b>Priority: </b>Not Prioritized
+<p><b>Section:</b> 33.13.3 <a href="https://wg21.link/exec.affine.on">[exec.affine.on]</a> <b>Status:</b> <a href="lwg-active.html#LEWG">LEWG</a>
+ <b>Submitter:</b> Dietmar Kühl <b>Opened:</b> 2025-08-31 <b>Last modified:</b> 2025-10-17</p>
+<p><b>Priority: </b>2
 </p>
 <p><b>View other</b> <a href="lwg-index-open.html#exec.affine.on">active issues</a> in [exec.affine.on].</p>
 <p><b>View all other</b> <a href="lwg-index.html#exec.affine.on">issues</a> in [exec.affine.on].</p>
-<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#LEWG">LEWG</a> status.</p>
 <p><b>Discussion:</b></p>
 <p>
 <code>affine_on</code> is specified to take a sender and a scheduler
@@ -79,6 +79,12 @@ environment.  Thus, the scheduler argument is redundant and the
 semantics become weird if these two schedulers don't match. The
 <code>affine_on</code> algorithm should only take the sender as
 argument.
+</p>
+
+<p><i>[2025-10-17; Reflector poll. Status changed: New &rarr; LEWG.]</i></p>
+
+<p>
+Set priority to 2 after reflector poll. Send to LEWG.
 </p>
 
 

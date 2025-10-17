@@ -54,7 +54,7 @@
 </style>
 </head>
 <body>
-<p>Revised 2025-10-17 at 14:50:05 UTC
+<p>Revised 2025-10-17 at 14:57:41 UTC
 </p><h2>Unresolved Issues</h2>
 <hr>
 <h3 id="423"><a href="#423">423</a><sup><a href="https://cplusplus.github.io/LWG/issue423">(i)</a></sup>. Effects of negative <code>streamsize</code> in iostreams</h3>
@@ -71790,8 +71790,8 @@ Maybe an implementation should be allowed to use that format <b>instead</b> of t
 <hr>
 <h3 id="4287"><a href="#4287">4287</a><sup><a href="https://cplusplus.github.io/LWG/issue4287">(i)</a></sup>. &sect;[locale.codecvt.virtuals] <code class='backtick'>do_in</code> and <code class='backtick'>do_out</code> could do with better specification</h3>
 <p><b>Section:</b> 28.3.4.2.5.3 <a href="https://wg21.link/locale.codecvt.virtuals">[locale.codecvt.virtuals]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> S. B. Tam <b>Opened:</b> 2025-06-18 <b>Last modified:</b> 2025-07-05</p>
-<p><b>Priority: </b>Not Prioritized
+ <b>Submitter:</b> S. B. Tam <b>Opened:</b> 2025-06-18 <b>Last modified:</b> 2025-10-17</p>
+<p><b>Priority: </b>3
 </p>
 <p><b>View other</b> <a href="lwg-index-open.html#locale.codecvt.virtuals">active issues</a> in [locale.codecvt.virtuals].</p>
 <p><b>View all other</b> <a href="lwg-index.html#locale.codecvt.virtuals">issues</a> in [locale.codecvt.virtuals].</p>
@@ -71808,6 +71808,15 @@ The specification of <code class='backtick'>codecvt::do_in</code> and <code clas
 <li><p>the specification talks about "the input sequence [from, from_next)", but <code class='backtick'>from_next</code> is supposed to be an out parameter. 
 I think it should say "[from, from_end)" instead.</p></li>
 </ol>
+
+<p><i>[2025-10-17; Reflector poll.]</i></p>
+
+<p>
+Set priority to 3 after reflector poll.
+</p>
+<p>
+"first element of the input that was not converted" doesn't make sense if there is no such element; similarly for the "first unchanged element".
+</p>
 
 
 <p id="res-4287"><b>Proposed resolution:</b></p>
@@ -76081,13 +76090,13 @@ context that is different from the one specified by the scheduler.
 
 <hr>
 <h3 id="4331"><a href="#4331">4331</a><sup><a href="https://cplusplus.github.io/LWG/issue4331">(i)</a></sup>. <code>affine_on</code> shape may be wrong</h3>
-<p><b>Section:</b> 33.13.3 <a href="https://wg21.link/exec.affine.on">[exec.affine.on]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Dietmar Kühl <b>Opened:</b> 2025-08-31 <b>Last modified:</b> 2025-09-01</p>
-<p><b>Priority: </b>Not Prioritized
+<p><b>Section:</b> 33.13.3 <a href="https://wg21.link/exec.affine.on">[exec.affine.on]</a> <b>Status:</b> <a href="lwg-active.html#LEWG">LEWG</a>
+ <b>Submitter:</b> Dietmar Kühl <b>Opened:</b> 2025-08-31 <b>Last modified:</b> 2025-10-17</p>
+<p><b>Priority: </b>2
 </p>
 <p><b>View other</b> <a href="lwg-index-open.html#exec.affine.on">active issues</a> in [exec.affine.on].</p>
 <p><b>View all other</b> <a href="lwg-index.html#exec.affine.on">issues</a> in [exec.affine.on].</p>
-<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#LEWG">LEWG</a> status.</p>
 <p><b>Discussion:</b></p>
 <p>
 <code>affine_on</code> is specified to take a sender and a scheduler
@@ -76097,6 +76106,12 @@ environment.  Thus, the scheduler argument is redundant and the
 semantics become weird if these two schedulers don't match. The
 <code>affine_on</code> algorithm should only take the sender as
 argument.
+</p>
+
+<p><i>[2025-10-17; Reflector poll. Status changed: New &rarr; LEWG.]</i></p>
+
+<p>
+Set priority to 2 after reflector poll. Send to LEWG.
 </p>
 
 
@@ -76667,65 +76682,10 @@ associated with <code><i>STATE</i>(*this)</code> by invoking
 
 
 <hr>
-<h3 id="4343"><a href="#4343">4343</a><sup><a href="https://cplusplus.github.io/LWG/issue4343">(i)</a></sup>. Missing default template arguments for <code>task</code></h3>
-<p><b>Section:</b> 33.13.6.2 <a href="https://wg21.link/task.class">[task.class]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Dietmar Kühl <b>Opened:</b> 2025-09-01 <b>Last modified:</b> 2025-09-01</p>
-<p><b>Priority: </b>Not Prioritized
-</p>
-<p><b>View other</b> <a href="lwg-index-open.html#task.class">active issues</a> in [task.class].</p>
-<p><b>View all other</b> <a href="lwg-index.html#task.class">issues</a> in [task.class].</p>
-<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
-<p><b>Discussion:</b></p>
-<p>
-The design discussion of <code>task</code> describes defaults for
-the two template parameters <code>T</code> and <code>Environment</code>
-of <code>task</code> but these defaults are not reflected in the
-synopsis of 33.13.6.2 <a href="https://wg21.link/task.class">[task.class]</a>.
-This is an oversight and should be fixed.  The default for
-<code>T</code> should be <code>void</code> and the default for
-<code>Environment</code> should be <code>env&lt;&gt;</code> (the
-design paper used <code>empty_env</code> but this <code>struct</code>
-was replaced by the class template <code>env</code> by <a href="https://wg21.link/P3325R5" title=" A Utility for Creating Execution Environments">P3325R5</a>).
-</p>
-<p>
-There could be a counter argument to defining a default for the
-<code>Environment</code> template parameter: this type is used to
-determine various customizations of <code>task</code>, e.g., the
-<code>allocator_type</code>, the <code>scheduler_type</code>, and
-the <code>stop_source_type</code>. Leaving the type a required
-argument means that a future standard could choose a possibly better
-default than the types determined when the <code>Environment</code>
-doesn't define them. On the other hand, a future standard could
-provide a suitable alias with modified types under a different
-name and/or a different namespace. Based on the LEWG discussion
-on 2025-08-26 the direction is to add the default arguments.
-</p>
-
-
-<p id="res-4343"><b>Proposed resolution:</b></p>
-<p>
-Add default template arguments for <code>task</code> for
-<code>T = void</code> and <code>Environment = env&lt;&gt;</code>
-in the synopsis of 33.13.6.2 <a href="https://wg21.link/task.class">[task.class]</a>:
-<blockquote><pre>
-namespace std::execution {
-  template&lt;class T <ins>= void</ins>, class Environment <ins>= env&lt;&gt;</ins>&gt;
-  class task {
-     ...
-  };
-}
-</pre></blockquote>
-</p>
-
-
-
-
-
-<hr>
 <h3 id="4344"><a href="#4344">4344</a><sup><a href="https://cplusplus.github.io/LWG/issue4344">(i)</a></sup>. <code>affine_on</code> has no specification for the default</h3>
 <p><b>Section:</b> 33.13.3 <a href="https://wg21.link/exec.affine.on">[exec.affine.on]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Dietmar Kühl <b>Opened:</b> 2025-09-01 <b>Last modified:</b> 2025-09-01</p>
-<p><b>Priority: </b>Not Prioritized
+ <b>Submitter:</b> Dietmar Kühl <b>Opened:</b> 2025-09-01 <b>Last modified:</b> 2025-10-17</p>
+<p><b>Priority: </b>2
 </p>
 <p><b>View other</b> <a href="lwg-index-open.html#exec.affine.on">active issues</a> in [exec.affine.on].</p>
 <p><b>View all other</b> <a href="lwg-index.html#exec.affine.on">issues</a> in [exec.affine.on].</p>
@@ -76743,6 +76703,12 @@ if the implementation can determine if a sender completed already
 on the correct execution agent it should be allowed to avoid
 scheduling. A specification should provide enough lattitude to
 allow that.
+</p>
+
+<p><i>[2025-10-17; Reflector poll.]</i></p>
+
+<p>
+Set priority to 2 after reflector poll.
 </p>
 
 
