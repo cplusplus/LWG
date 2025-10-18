@@ -54,7 +54,7 @@
 </style>
 </head>
 <body>
-<p>Revised 2025-10-18 at 15:57:46 UTC
+<p>Revised 2025-10-18 at 16:41:04 UTC
 </p><h2>Unresolved Issues</h2>
 <hr>
 <h3 id="423"><a href="#423">423</a><sup><a href="https://cplusplus.github.io/LWG/issue423">(i)</a></sup>. Effects of negative <code>streamsize</code> in iostreams</h3>
@@ -81741,6 +81741,7 @@ This wording is relative to <a href="https://wg21.link/N5014">N5014</a>.
  <b>Submitter:</b> Matthias Kretz <b>Opened:</b> 2025-10-15 <b>Last modified:</b> 2025-10-18</p>
 <p><b>Priority: </b>Not Prioritized
 </p>
+<p><b>View other</b> <a href="lwg-index-open.html#simd.traits">active issues</a> in [simd.traits].</p>
 <p><b>View all other</b> <a href="lwg-index.html#simd.traits">issues</a> in [simd.traits].</p>
 <p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
 <p><b>Discussion:</b></p>
@@ -81775,6 +81776,81 @@ template&lt;class T, class U = typename T::value_type&gt; struct alignment { <i>
 </p></li>
 <li><p>
 <del>(1.2) &mdash;</del> <code class='backtick'>T</code> is a specialization of <code class='backtick'>basic_vec</code> and <code class='backtick'>U</code> is a vectorizable type.
+</p></li>
+</ol>
+</blockquote>
+</blockquote>
+</li>
+</ol>
+
+
+
+
+
+
+<hr>
+<h3 id="4414"><a href="#4414">4414</a><sup><a href="https://cplusplus.github.io/LWG/issue4414">(i)</a></sup>. &sect;[simd.traits] <code class='backtick'>rebind</code> and <code class='backtick'>resize</code> reference a <code class='backtick'>type</code> member that doesn't exist</h3>
+<p><b>Section:</b> 29.10.4 <a href="https://wg21.link/simd.traits">[simd.traits]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
+ <b>Submitter:</b> Matthias Kretz <b>Opened:</b> 2025-10-15 <b>Last modified:</b> 2025-10-18</p>
+<p><b>Priority: </b>Not Prioritized
+</p>
+<p><b>View other</b> <a href="lwg-index-open.html#simd.traits">active issues</a> in [simd.traits].</p>
+<p><b>View all other</b> <a href="lwg-index.html#simd.traits">issues</a> in [simd.traits].</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
+<p><b>Discussion:</b></p>
+<p>
+In 29.10.4 <a href="https://wg21.link/simd.traits">[simd.traits]</a> <code class='backtick'>rebind</code> and <code class='backtick'>resize</code> say "<code><i>deduce-abi-t</i>&lt;T, V::size()&gt;</code> 
+has a member type <code class='backtick'>type</code>". But <code><i>deduce-abi-t</i></code> is specified in 
+29.10.2.2 <a href="https://wg21.link/simd.expos.abi">[simd.expos.abi]</a> p4-5 as an alias that is either defined or not.
+</p>
+
+
+<p id="res-4414"><b>Proposed resolution:</b></p>
+<p>
+This wording is relative to <a href="https://wg21.link/N5014">N5014</a>.
+</p>
+
+<ol>
+<li><p>Modify 29.10.3 <a href="https://wg21.link/simd.syn">[simd.syn]</a> as indicated:</p>
+
+<blockquote>
+<pre>
+template&lt;class T, class V&gt; struct rebind { using type = <i>see below</i>; };
+</pre>
+<blockquote>
+<p>
+-4- The member <code class='backtick'>type</code> is present if and only if
+</p>
+<ol style="list-style-type: none">
+<li><p>
+(4.1) &mdash; <code class='backtick'>V</code> is a data-parallel type,
+</p></li>
+<li><p>
+(4.2) &mdash; <code class='backtick'>T</code> is a vectorizable type, and
+</p></li>
+<li><p>
+(4.3) &mdash; <code><i>deduce-abi-t</i>&lt;T, V::size()&gt;</code> <del>has a member type <code class='backtick'>type</code></del>
+<ins>is defined</ins>.
+</p></li>
+</ol>
+[&hellip;]
+</blockquote>
+<pre>
+template&lt;<i>simd-size-type</i> N, class V&gt; struct resize { using type = <i>see below</i>; };
+</pre>
+<blockquote>
+<p>
+-7- Let <code class='backtick'>T</code> denote [&hellip;]
+<p/>
+-8- The member <code class='backtick'>type</code> is present if and only if
+</p>
+<ol style="list-style-type: none">
+<li><p>
+(8.1) &mdash; <code class='backtick'>V</code> is a data-parallel type, and
+</p></li>
+<li><p>
+(8.2) &mdash; <code><i>deduce-abi-t</i>&lt;T, N&gt;</code> <del>has a member type <code class='backtick'>type</code></del>
+<ins>is defined</ins>.
 </p></li>
 </ol>
 </blockquote>
