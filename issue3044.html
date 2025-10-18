@@ -64,7 +64,7 @@
 <p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#New">New</a> status.</em></p>
 <h3 id="3044"><a href="lwg-active.html#3044">3044</a>. Strange specification of <code>max_size()</code> for an allocator</h3>
 <p><b>Section:</b> 16.4.4.6 <a href="https://wg21.link/allocator.requirements">[allocator.requirements]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Jon Cohen <b>Opened:</b> 2017-12-06 <b>Last modified:</b> 2025-10-10</p>
+ <b>Submitter:</b> Jon Cohen <b>Opened:</b> 2017-12-06 <b>Last modified:</b> 2025-10-18</p>
 <p><b>Priority: </b>3
 </p>
 <p><b>View other</b> <a href="lwg-index-open.html#allocator.requirements">active issues</a> in [allocator.requirements].</p>
@@ -281,6 +281,22 @@ a<ins>3</ins>.max_size()
 
 <p><i>[2025-10-10; Jonathan provides improved wording]</i></p>
 
+<p><i>[2025-10-18; Jonathan removes the note from the wording]</i></p>
+
+<p>
+After reflector discussion, I've remove the following note from the proposed resolution:
+<ins>[<i>Note:</i> Larger values can cause an exception to be thrown. &mdash; <i>end note</i>]</ins>
+</p>
+<p>
+I also suggested an alternative:
+<ins>[<i>Note:</i>
+Containers and other users of allocators can use this function to avoid
+making calls to <code class='backtick'>X::allocate</code> which are unlikely ever to succeed.
+&mdash; <i>end note</i>]</ins>
+</p>
+<p>
+Those notes will be recorded here, but are not part of the proposed resolution.
+</p>
 
 
 
@@ -313,8 +329,6 @@ a<ins>3</ins>.max_size()
 -50- <i>Result:</i> <code>X::size_type</code>
 <p/>
 -51- <i>Returns:</i> The largest value that can meaningfully be passed to <code>X::allocate()</code>.
-<p/>
-<ins>[<i>Note:</i> Larger values can cause an exception to be thrown. &mdash; <i>end note</i>]</ins>
 <p/>
 <ins>-?- <i>Throws:</i> Nothing.</ins>
 <p/>
