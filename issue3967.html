@@ -64,7 +64,7 @@
 <p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#New">New</a> status.</em></p>
 <h3 id="3967"><a href="lwg-active.html#3967">3967</a>. The specification for <code>std::is_nothrow_*</code> traits may be ambiguous in some cases involving <code>noexcept(false)</code></h3>
 <p><b>Section:</b> 21.3.6.4 <a href="https://wg21.link/meta.unary.prop">[meta.unary.prop]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Jiang An <b>Opened:</b> 2023-08-04 <b>Last modified:</b> 2025-10-17</p>
+ <b>Submitter:</b> Jiang An <b>Opened:</b> 2023-08-04 <b>Last modified:</b> 2025-10-18</p>
 <p><b>Priority: </b>3
 </p>
 <p><b>View other</b> <a href="lwg-index-open.html#meta.unary.prop">active issues</a> in [meta.unary.prop].</p>
@@ -100,8 +100,55 @@ Set priority to 3 after reflector poll.
 "NAD, this was just a GCC bug."
 </p>
 
+<p><i>[2025-10-18; Arthur provides wording]</i></p>
+
+
+
 
 <p id="res-3967"><b>Proposed resolution:</b></p>
+
+<p>
+This wording is relative to <a href="https://wg21.link/N5014">N5014</a>.
+</p>
+
+<ol>
+
+<li><p>
+Modify  [tab:meta.unary.prop], Table 54 Type property predicates,
+as indicated:
+</p>
+
+<table style="border-spacing: 4em; border-style: none; text-align: center">
+<tr>
+<th>Template</th><th>Condition</th><th>Preconditions</th>
+</tr>
+<tr><td>...</td><td>...</td><td>...</td></tr>
+<tr style="text-align: left; vertical-align: top">
+<td>
+<pre>
+template&lt;class T, class... Args&gt;
+struct is_nothrow_constructible;
+</pre>
+</td>
+<td>
+<code>is_constructible_v&lt;T, Args...&gt;</code> is <code class='backtick'>true</code> and
+the variable definition for <code class='backtick'>is_constructible</code>, as defined below,
+<ins>
+contains no potentially-throwing expression (14.5 <a href="https://wg21.link/except.spec">[except.spec]</a>)
+</ins>
+<del>is known not to throw any exceptions
+(7.6.2.7 <a href="https://wg21.link/expr.unary.noexcept">[expr.unary.noexcept]</a>)</del>.
+</td>
+<td>
+<code class='backtick'>T</code> and all types in the template parameter pack <code class='backtick'>Args</code> shall be complete types,
+<i>cv</i> <code class='backtick'>void</code>, or arrays of unknown bound.
+</td>
+</tr>
+<tr><td>...</td><td>...</td><td>...</td></tr>
+</table>
+</li>
+</ol>
+
 
 
 
