@@ -89,8 +89,8 @@ std::generator&lt;int&gt; f()
 </blockquote>
 <p>
 This doesn't compile because the overload listed in 25.8.5 <a href="https://wg21.link/coro.generator.promise">[coro.generator.promise]</a> p13 
-requires <code>convertible_to&lt;ranges::range_reference_t&lt;R&gt;, yielded&gt;</code> or 
-<code>convertible_to&lt;int&amp;, int&amp;&amp;&gt;</code> which isn't satisfied.
+requires <code>convertible_to&lt;ranges::range_reference_t&lt;R&gt;, yielded&gt;</code> (i.e.  
+<code>convertible_to&lt;int&amp;, int&amp;&amp;&gt;</code>) which isn't satisfied.
 <p/>
 So it seems clear enough that something got lost in the translation from the design intent to 
 wording. My understanding of the intent is that <code class='backtick'>co_yield elements_of(rng)</code> should be 
