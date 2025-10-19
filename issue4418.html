@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Issue 4418: co_yield elements_of(vector&lt;int&gt;()) does not compile</title>
+<meta property="og:title" content="Issue 4418: co_yield elements_of(vector&lt;int&gt;()) does not compile">
+<meta property="og:description" content="C++ library issue. Status: New">
+<meta property="og:url" content="https://cplusplus.github.io/LWG/issue4418.html">
+<meta property="og:type" content="website">
+<meta property="og:image" content="http://cplusplus.github.io/LWG/images/cpp_logo.png">
+<meta property="og:image:alt" content="C++ logo">
+<style>
+  p {text-align:justify}
+  li {text-align:justify}
+  pre code.backtick::before { content: "`" }
+  pre code.backtick::after { content: "`" }
+  blockquote.note
+  {
+    background-color:#E0E0E0;
+    padding-left: 15px;
+    padding-right: 15px;
+    padding-top: 1px;
+    padding-bottom: 1px;
+  }
+  ins {background-color:#A0FFA0}
+  del {background-color:#FFA0A0}
+  table.issues-index { border: 1px solid; border-collapse: collapse; }
+  table.issues-index th { text-align: center; padding: 4px; border: 1px solid; }
+  table.issues-index td { padding: 4px; border: 1px solid; }
+  table.issues-index td:nth-child(1) { text-align: right; }
+  table.issues-index td:nth-child(2) { text-align: left; }
+  table.issues-index td:nth-child(3) { text-align: left; }
+  table.issues-index td:nth-child(4) { text-align: left; }
+  table.issues-index td:nth-child(5) { text-align: center; }
+  table.issues-index td:nth-child(6) { text-align: center; }
+  table.issues-index td:nth-child(7) { text-align: left; }
+  table.issues-index td:nth-child(5) span.no-pr { color: red; }
+  @media (prefers-color-scheme: dark) {
+     html {
+        color: #ddd;
+        background-color: black;
+     }
+     ins {
+        background-color: #225522
+     }
+     del {
+        background-color: #662222
+     }
+     a {
+        color: #6af
+     }
+     a:visited {
+        color: #6af
+     }
+     blockquote.note
+     {
+        background-color: rgba(255, 255, 255, .10)
+     }
+  }
+</style>
+</head>
+<body>
+<hr>
+<p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#New">New</a> status.</em></p>
+<h3 id="4418"><a href="lwg-active.html#4418">4418</a>. <code>co_yield elements_of(vector&lt;int&gt;())</code> does not compile</h3>
+<p><b>Section:</b> 25.8.5 <a href="https://wg21.link/coro.generator.promise">[coro.generator.promise]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
+ <b>Submitter:</b> Mathias Stearn <b>Opened:</b> 2025-10-16 <b>Last modified:</b> 2025-10-19</p>
+<p><b>Priority: </b>Not Prioritized
+</p>
+<p><b>View all other</b> <a href="lwg-index.html#coro.generator.promise">issues</a> in [coro.generator.promise].</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
+<p><b>Discussion:</b></p>
+<p>
+The std::generator proposal (<a href="https://wg21.link/P2502" title=" std::generator: Synchronous Coroutine Generator for Ranges">P2502</a>) explicitly says that the following example is supposed to work, 
+but it does not compile:
+</p>
+<blockquote style="border-left: 3px solid #ccc;padding-left: 15px;">
+<p>
+For convenience, we further propose that <code class='backtick'>co_yield elements_of(x)</code> be extended to support yielding the values 
+of arbitrary ranges beyond generators, ie
+</p>
+<blockquote><pre>
+std::generator&lt;int&gt; f()
+{
+  std::vector&lt;int&gt; v = /*... */;
+  co_yield std::ranges::elements_of(v);
+}
+</pre></blockquote>
+</blockquote>
+<p>
+This doesn't compile because the overload listed in 25.8.5 <a href="https://wg21.link/coro.generator.promise">[coro.generator.promise]</a> p13 
+requires <code>convertible_to&lt;ranges::range_reference_t&lt;R&gt;, yielded&gt;</code> or 
+<code>convertible_to&lt;int&amp;, int&amp;&amp;&gt;</code> which isn't satisfied.
+<p/>
+So it seems clear enough that something got lost in the translation from the design intent to 
+wording. My understanding of the intent is that <code class='backtick'>co_yield elements_of(rng)</code> should be 
+<em>semantically</em> similar to the following code, but require a specific optimization in the
+case where <code class='backtick'>rng</code> is the same type of generator as the current coroutine:
+</p>
+<blockquote><pre>
+for (auto&amp;&amp; x : rng) {
+  co_yield std::forward&lt;decltype(x)&gt;(x);
+}
+</pre></blockquote>
+<p>
+Note that that code <b>does</b> compile correctly where <code class='backtick'>rng</code> is a <code>vector&lt;int&gt;</code>, so 
+I think the original code should as well.
+<p/>
+Speculation on how this happened: Prior to <a href="https://wg21.link/P2529" title=" generator should have T&amp;&amp; reference_type">P2529</a>, the <code>generator&lt;T&gt;</code> 
+in <a href="https://wg21.link/P2502R0" title=" std::generator: Synchronous Coroutine Generator for Ranges">P2502R0</a> was basically the same as <code>generator&lt;const T&amp;&gt;</code> where 
+<code>co_yield elements_of(vector&lt;int&gt;())</code> <i>does</i> work. After P2529 (which was a 
+design paper w/o wording) was approved by LEWG, <a href="https://wg21.link/P2502R1" title=" std::generator: Synchronous Coroutine Generator for Ranges">P2502R1</a> was updated to change the 
+reference type to <code>T&amp;&amp;</code>. However, when making the change, I assume that the impact 
+it had on the <code class='backtick'>elements_of</code>-non-generator overload of <code class='backtick'>yield_value</code> was not considered, so it was 
+unmodified. 
+</p>
+
+
+<p id="res-4418"><b>Proposed resolution:</b></p>
+<p>
+This wording is relative to <a href="https://wg21.link/N5014">N5014</a>.
+</p>
+
+<ol>
+<li><p>Modify 25.8.5 <a href="https://wg21.link/coro.generator.promise">[coro.generator.promise]</a> as indicated:</p>
+
+<blockquote class="note">
+<p>
+[<i>Drafting note:</i> The following changes would check that <code class='backtick'>co_yield *i</code> would match 
+one of the overloads of <code class='backtick'>yield_value()</code> described in paragraphs 4 or 6. Alternatively 
+this could be expressed more directly as a helper comment or in prose in a <i>Mandates:</i> 
+element.
+</p>
+</blockquote>
+
+<blockquote>
+<blockquote>
+<pre>
+namespace std {
+  template&lt;class Ref, class Val, class Allocator&gt;
+  class generator&lt;Ref, Val, Allocator&gt;::promise_type {
+  public:
+    [&hellip;]
+    template&lt;ranges::input_range R, class Alloc&gt;
+      requires convertible_to&lt;ranges::range_reference_t&lt;R&gt;, yielded&gt; <ins>|| 
+               (is_rvalue_reference_v&lt;yielded&gt; &amp;&amp; constructible_from&lt;remove_cvref_t&lt;yielded&gt;, 
+               const remove_reference_t&lt;yielded&gt;&amp;&gt;)</ins>
+        auto yield_value(ranges::elements_of&lt;R, Alloc&gt; r);
+    [&hellip;]
+  };
+}
+</pre>
+</blockquote>
+[&hellip;]
+<pre>
+template&lt;ranges::input_range R, class Alloc&gt;
+  requires convertible_to&lt;ranges::range_reference_t&lt;R&gt;, yielded&gt; <ins>|| 
+           (is_rvalue_reference_v&lt;yielded&gt; &amp;&amp; constructible_from&lt;remove_cvref_t&lt;yielded&gt;, 
+           const remove_reference_t&lt;yielded&gt;&amp;&gt;)</ins>
+  auto yield_value(ranges::elements_of&lt;R, Alloc&gt; r);
+</pre>
+<blockquote>
+<p>
+-13- <i>Effects</i>: Equivalent to:
+</p>
+<blockquote><pre>
+auto nested = [](allocator_arg_t, Alloc, ranges::iterator_t&lt;R&gt; i, ranges::sentinel_t&lt;R&gt; s)
+  -&gt; generator&lt;yielded, void, Alloc&gt; {
+    for (; i != s; ++i) {
+      co_yield <del>static_cast&lt;yielded&gt;(</del>*i<del>)</del>;
+    }
+  };
+return yield_value(ranges::elements_of(nested(
+  allocator_arg, r.allocator, ranges::begin(r.range), ranges::end(r.range))));
+</pre></blockquote>
+</blockquote>
+</blockquote>
+</li>
+</ol>
+
+
+
+
+
+
+</body>
+</html>
