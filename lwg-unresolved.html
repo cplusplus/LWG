@@ -54,7 +54,7 @@
 </style>
 </head>
 <body>
-<p>Revised 2025-10-20 at 14:47:46 UTC
+<p>Revised 2025-10-20 at 14:56:00 UTC
 </p><h2>Unresolved Issues</h2>
 <hr>
 <h3 id="423"><a href="#423">423</a><sup><a href="https://cplusplus.github.io/LWG/issue423">(i)</a></sup>. Effects of negative <code>streamsize</code> in iostreams</h3>
@@ -68245,55 +68245,6 @@ template&lt;input_iterator I, class Proj = identity,
 </li>
 
 </ol>
-
-
-
-
-
-<hr>
-<h3 id="4244"><a href="#4244">4244</a><sup><a href="https://cplusplus.github.io/LWG/issue4244">(i)</a></sup>. Whether the spuriously failed comparison applies to <code class='backtick'>compare_exchange_strong</code> is unclear</h3>
-<p><b>Section:</b> 32.5.7.2 <a href="https://wg21.link/atomics.ref.ops">[atomics.ref.ops]</a>, 32.5.8.2 <a href="https://wg21.link/atomics.types.operations">[atomics.types.operations]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> jim x <b>Opened:</b> 2025-04-17 <b>Last modified:</b> 2025-04-21</p>
-<p><b>Priority: </b>Not Prioritized
-</p>
-<p><b>View other</b> <a href="lwg-index-open.html#atomics.ref.ops">active issues</a> in [atomics.ref.ops].</p>
-<p><b>View all other</b> <a href="lwg-index.html#atomics.ref.ops">issues</a> in [atomics.ref.ops].</p>
-<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
-<p><b>Discussion:</b></p>
-<p>
-Both <code class='backtick'>compare_exchange_strong</code> and <code class='backtick'>compare_exchange_weak</code> share the same specified rule
-</p>
-<blockquote style="border-left: 3px solid #ccc;padding-left: 15px;">
-<p>
-If and only if the comparison is <code class='backtick'>false</code> then, after the atomic operation, the value in 
-<code class='backtick'>expected</code> is replaced by the value read from the value referenced by <code class='backtick'>*ptr</code> during the 
-atomic comparison.
-</p>
-</blockquote>
-<p>
-However, there is a remark for the weak version
-</p>
-<blockquote style="border-left: 3px solid #ccc;padding-left: 15px;">
-<p>
-A weak compare-and-exchange operation may fail spuriously.
-</p>
-</blockquote>
-<p>
-That is, even when the contents of memory referred to by <code class='backtick'>expected</code> and <code class='backtick'>ptr</code> are equal, 
-it may return <code class='backtick'>false</code> and store back to expected the same memory contents that were 
-originally there.
-<p/>
-However, we don't explicitly say whether the strong version can have the spuriously failed 
-comparison. The status quo is that we can only infer the point from the name, namely, the 
-strong version should have a stronger guarantee than the weak version.
-<p/>
-<b>Suggested resolution:</b>
-<p/>
-Explicitly specify whether <code class='backtick'>compare_exchange_strong</code> can have the spurious failed comparison.
-</p>
-
-
-<p id="res-4244"><b>Proposed resolution:</b></p>
 
 
 

@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <title>Issue 4244: Whether the spuriously failed comparison applies to compare_exchange_strong is unclear</title>
 <meta property="og:title" content="Issue 4244: Whether the spuriously failed comparison applies to compare_exchange_strong is unclear">
-<meta property="og:description" content="C++ library issue. Status: New">
+<meta property="og:description" content="C++ library issue. Status: Tentatively NAD">
 <meta property="og:url" content="https://cplusplus.github.io/LWG/issue4244.html">
 <meta property="og:type" content="website">
 <meta property="og:image" content="http://cplusplus.github.io/LWG/images/cpp_logo.png">
@@ -61,15 +61,15 @@
 </head>
 <body>
 <hr>
-<p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#New">New</a> status.</em></p>
+<p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#NAD">Tentatively NAD</a> status.</em></p>
 <h3 id="4244"><a href="lwg-active.html#4244">4244</a>. Whether the spuriously failed comparison applies to <code class='backtick'>compare_exchange_strong</code> is unclear</h3>
-<p><b>Section:</b> 32.5.7.2 <a href="https://wg21.link/atomics.ref.ops">[atomics.ref.ops]</a>, 32.5.8.2 <a href="https://wg21.link/atomics.types.operations">[atomics.types.operations]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> jim x <b>Opened:</b> 2025-04-17 <b>Last modified:</b> 2025-04-21</p>
+<p><b>Section:</b> 32.5.7.2 <a href="https://wg21.link/atomics.ref.ops">[atomics.ref.ops]</a>, 32.5.8.2 <a href="https://wg21.link/atomics.types.operations">[atomics.types.operations]</a> <b>Status:</b> <a href="lwg-active.html#NAD">Tentatively NAD</a>
+ <b>Submitter:</b> jim x <b>Opened:</b> 2025-04-17 <b>Last modified:</b> 2025-10-20</p>
 <p><b>Priority: </b>Not Prioritized
 </p>
 <p><b>View other</b> <a href="lwg-index-open.html#atomics.ref.ops">active issues</a> in [atomics.ref.ops].</p>
 <p><b>View all other</b> <a href="lwg-index.html#atomics.ref.ops">issues</a> in [atomics.ref.ops].</p>
-<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#Tentatively NAD">Tentatively NAD</a> status.</p>
 <p><b>Discussion:</b></p>
 <p>
 Both <code class='backtick'>compare_exchange_strong</code> and <code class='backtick'>compare_exchange_weak</code> share the same specified rule
@@ -101,6 +101,17 @@ strong version should have a stronger guarantee than the weak version.
 <b>Suggested resolution:</b>
 <p/>
 Explicitly specify whether <code class='backtick'>compare_exchange_strong</code> can have the spurious failed comparison.
+</p>
+
+<p><i>[2025-10-20; Reflector poll. Status changed: New &rarr; Tentatively NAD.]</i></p>
+
+<p>
+"The <i>Effects</i>: explain the behaviour, and don't allow for spurious failures."
+</p>
+<p>
+"The <i>Remarks</i>: are normative and are explicitly adding permission to fail
+spuriously. Absent such permission, the specification for strong operations
+is clear and has no spurious failures."
 </p>
 
 
