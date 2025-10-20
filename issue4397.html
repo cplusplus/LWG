@@ -64,8 +64,8 @@
 <p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#New">New</a> status.</em></p>
 <h3 id="4397"><a href="lwg-active.html#4397">4397</a>. Improve <code>span(R&amp;&amp; r)</code></h3>
 <p><b>Section:</b> 23.7.2.2.2 <a href="https://wg21.link/span.cons">[span.cons]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Hewill Kang <b>Opened:</b> 2025-10-02 <b>Last modified:</b> 2025-10-04</p>
-<p><b>Priority: </b>Not Prioritized
+ <b>Submitter:</b> Hewill Kang <b>Opened:</b> 2025-10-02 <b>Last modified:</b> 2025-10-20</p>
+<p><b>Priority: </b>3
 </p>
 <p><b>View all other</b> <a href="lwg-index.html#span.cons">issues</a> in [span.cons].</p>
 <p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
@@ -74,6 +74,20 @@
 It is preferable to reject <code>span&lt;int, 42&gt;(views::empty&lt;int&gt;)</code>
 at compile-time after <a href="https://wg21.link/P2280R4" title=" Using unknown references in constant expressions">P2280R4</a>, since applying <code class='backtick'>ranges::size</code> on those 
 ranges is a constant expression now.
+</p>
+
+<p><i>[2025-10-20; Reflector poll.]</i></p>
+
+<p>
+Set priority to 3 after reflector poll.
+</p>
+<p>
+The opinions on reflector discussion where split regarding,
+if this should be considered LEWG matter.
+</p>
+<p>
+Question was raised, if <code>ranges::size(r) == N</code> is required
+to be usable at compile-time for integer-class types.
 </p>
 
 
