@@ -54,7 +54,7 @@
 </style>
 </head>
 <body>
-<p>Revised 2025-10-20 at 16:16:29 UTC
+<p>Revised 2025-10-20 at 16:18:32 UTC
 </p><h2>Unresolved Issues</h2>
 <hr>
 <h3 id="423"><a href="#423">423</a><sup><a href="https://cplusplus.github.io/LWG/issue423">(i)</a></sup>. Effects of negative <code>streamsize</code> in iostreams</h3>
@@ -56077,8 +56077,8 @@ constexpr <i>iterator</i>&amp; operator--()
 <hr>
 <h3 id="4062"><a href="#4062">4062</a><sup><a href="https://cplusplus.github.io/LWG/issue4062">(i)</a></sup>. <code>ranges::empty</code> has no semantic requirements for <code>forward_range</code>s</h3>
 <p><b>Section:</b> 25.3.13 <a href="https://wg21.link/range.prim.empty">[range.prim.empty]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Hewill Kang <b>Opened:</b> 2024-03-30 <b>Last modified:</b> 2024-03-30</p>
-<p><b>Priority: </b>Not Prioritized
+ <b>Submitter:</b> Hewill Kang <b>Opened:</b> 2024-03-30 <b>Last modified:</b> 2025-10-20</p>
+<p><b>Priority: </b>3
 </p>
 <p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
 <p><b>Discussion:</b></p>
@@ -56107,6 +56107,20 @@ inconsistent with the current wording as no other CPOs have.
 Alternatively, maybe we could move bullets targeting <code>forward_range</code>s to the very beginning so that
 <code>ranges::empty</code> always has correct semantics with <code>bool(ranges::begin(t) == ranges::end(t))</code> when
 applied to <code>forward_range</code>s.
+</p>
+
+<p><i>[2025-10-20; Reflector poll.]</i></p>
+
+<p>
+Set priority to 3 after reflector poll.
+</p>
+<p>
+"This is the part of <a href="https://wg21.link/P3156" title=" empty_checkable_range">P3156</a> that is actually a defect.
+We need to require ranges::empty to actually mean what we think it means.
+Would be reasonable to add a sematic requirement to the <code class='backtick'>range</code> concept
+that if <code class='backtick'>ranges::empty(r)</code> is well-formed then it does what it should do
+(equal to <code class='backtick'>bool(begin == end)</code>, has amortized constant complexity,
+does not modify <code class='backtick'>r</code>, is not required to be valid after <code class='backtick'>begin</code> for non-forward)."
 </p>
 
 
@@ -56251,8 +56265,8 @@ pointer_traits&lt;XX::pointer&gt;::pointer_to(r)
 <hr>
 <h3 id="4066"><a href="#4066">4066</a><sup><a href="https://cplusplus.github.io/LWG/issue4066">(i)</a></sup>. <code>ranges::to</code> should reserve when <code>sized_sentinel_for</code> is satisfied</h3>
 <p><b>Section:</b> 25.5.7.2 <a href="https://wg21.link/range.utility.conv.to">[range.utility.conv.to]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Hewill Kang <b>Opened:</b> 2024-04-13 <b>Last modified:</b> 2025-02-27</p>
-<p><b>Priority: </b>Not Prioritized
+ <b>Submitter:</b> Hewill Kang <b>Opened:</b> 2024-04-13 <b>Last modified:</b> 2025-10-20</p>
+<p><b>Priority: </b>4
 </p>
 <p><b>View other</b> <a href="lwg-index-open.html#range.utility.conv.to">active issues</a> in [range.utility.conv.to].</p>
 <p><b>View all other</b> <a href="lwg-index.html#range.utility.conv.to">issues</a> in [range.utility.conv.to].</p>
@@ -56276,8 +56290,29 @@ It also conflicts with LWG <a href="lwg-active.html#3722" title="ranges::to rese
 </p>
 
 
+<p><i>[2025-10-20; Reflector poll.]</i></p>
 
-<p id="res-4066"><b>Proposed resolution:</b></p>
+<p>
+Set priority to 4 after reflector poll. Most votes were "P4 or NAD".
+</p>
+<p>
+"I do not see a motivating example of <code class='backtick'>input_range</code> that would produce
+<code class='backtick'>sized_sentinel_for</code> for <code class='backtick'>begin</code>/<code class='backtick'>end</code> but would not be sized itself.
+However, the fix seems correct.
+Would prefer if would check if produced <code class='backtick'>subrange</code> is sized,
+instead of using a requires expression."
+</p>
+<p>
+"Might as well do it, even though a <code class='backtick'>sized_sentinel_for</code>-but-not-sized
+input range feels like an extreme corner case."
+</p>
+<p>
+"This is just applying the contrived case mentioned in LWG <a href="lwg-defects.html#3737" title="take_view::sentinel should provide operator- (Status: C++23)">3737</a><sup><a href="https://cplusplus.github.io/LWG/issue3737" title="Latest snapshot">(i)</a></sup>
+to <code class='backtick'>ranges::to</code>."
+</p>
+<p><strong>Previous resolution [SUPERSEDED]:</strong></p>
+<blockquote class="note">
+
 <p>
 This wording is relative to <a href="https://wg21.link/N4981" title=" Working Draft, Programming Languages — C++">N4981</a>.
 </p>
@@ -56328,6 +56363,65 @@ ranges::for_each(<del>r</del><ins>s</ins>, <i>container-append</i>(c));
 </blockquote>
 </li>
 </ol>
+</blockquote>
+
+<p><i>[2025-10-20; Jonathan provides updated wording]</i></p>
+
+
+
+
+<p id="res-4066"><b>Proposed resolution:</b></p>
+<p>
+This wording is relative to <a href="https://wg21.link/N5014">N5014</a>.
+</p>
+
+<ol>
+<li><p>Modify 25.5.7.2 <a href="https://wg21.link/range.utility.conv.to">[range.utility.conv.to]</a> as indicated:</p>
+
+<blockquote>
+<pre>
+template&lt;class C, input_range R, class... Args&gt; requires (!view&lt;C&gt;)
+  constexpr C to(R&amp;&amp; r, Args&amp;&amp;... args);
+</pre>
+<blockquote>
+<p>
+-1- <i>Mandates</i>: <code>C</code> is a cv-unqualified class type.
+</p>
+<p>
+-2- <i>Returns</i>: An object of type <code>C</code> constructed from the elements of <code>r</code> in the following manner:
+</p>
+<ol style="list-style-type: none">
+<li><p>(2.1) &mdash; [&hellip;]</p>
+<ol style="list-style-type: none">
+<li><p>(2.1.1) &mdash; [&hellip;]</p></li>
+<li><p>(2.1.2) &mdash; [&hellip;]</p></li>
+<li><p>(2.1.3) &mdash; [&hellip;]</p></li>
+<li><p>(2.1.4) &mdash; Otherwise, if</p>
+<ol style="list-style-type: none">
+<li><p>(2.1.4.1) &mdash; <code>constructible_from&lt;C, Args...&gt;</code> is <code>true</code>, and</p></li>
+<li><p>(2.1.4.2) &mdash; <code><i>container-appendable</i>&lt;C, range_reference_t&lt;R&gt;&gt;</code> is
+<code>true</code>:</p>
+<blockquote>
+<pre>
+C c(std::forward&lt;Args&gt;(args)...);
+<ins>subrange s{r};</ins>
+if constexpr (sized_range&lt;<del>R</del><ins>decltype(s)</ins>&gt; &amp;&amp; <i>reservable-container</i>&lt;C&gt;)
+  c.reserve(static_cast&lt;range_size_t&lt;C&gt;&gt;(<del>ranges::size(r)</del><ins>s.size()</ins>));
+ranges::for_each(<del>r</del><ins>s</ins>, <i>container-append</i>(c));
+</pre>
+</blockquote>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</blockquote>
+
+</blockquote>
+</li>
+</ol>
+
 
 
 
@@ -67390,132 +67484,6 @@ friend constexpr range_difference_t&lt;<i>maybe-const</i>&lt;OtherConst, V&gt;&g
 
 
 <hr>
-<h3 id="4229"><a href="#4229">4229</a><sup><a href="https://cplusplus.github.io/LWG/issue4229">(i)</a></sup>. <code class='backtick'>std::ranges::to</code> with union return type</h3>
-<p><b>Section:</b> 25.5.7.2 <a href="https://wg21.link/range.utility.conv.to">[range.utility.conv.to]</a>, 25.5.7.3 <a href="https://wg21.link/range.utility.conv.adaptors">[range.utility.conv.adaptors]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Jiang An <b>Opened:</b> 2025-03-20 <b>Last modified:</b> 2025-03-22</p>
-<p><b>Priority: </b>Not Prioritized
-</p>
-<p><b>View other</b> <a href="lwg-index-open.html#range.utility.conv.to">active issues</a> in [range.utility.conv.to].</p>
-<p><b>View all other</b> <a href="lwg-index.html#range.utility.conv.to">issues</a> in [range.utility.conv.to].</p>
-<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
-<p><b>Discussion:</b></p>
-<p>
-LWG <a href="lwg-defects.html#3847" title="ranges::to can still return views (Status: C++23)">3847</a><sup><a href="https://cplusplus.github.io/LWG/issue3847" title="Latest snapshot">(i)</a></sup> made <code class='backtick'>std::ranges::to</code> require the return type (or the target type for the overload 
-returning range adaptor closure object) to be a <i>cv</i>-unqualified class type. Although the term 
-"class type" in core language specification also covers union types, implementations (libstdc++ and MSVC STL) 
-tend to implement this part of the <i>Mandates</i> only with <code class='backtick'>std::is_class_v</code>, which rejects union types.
-<p/>
-E.g. the following program is rejected by libstdc++ and MSVC STL 
-(<a href="https://godbolt.org/z/MnsY4Tzen">https://godbolt.org/z/MnsY4Tzen</a>):
-</p>
-<blockquote><pre>
-#include &lt;memory&gt;
-#include &lt;ranges&gt;
-#include &lt;type_traits&gt;
-#include &lt;utility&gt;
-#include &lt;vector&gt;
-
-template&lt;class T, class A = std::allocator&lt;T&gt;&gt;
-union weird_vector {
-  std::vector&lt;T, A&gt; vec_;
-
-  constexpr weird_vector() : vec_() {}
-  constexpr weird_vector(const weird_vector&amp; other) : vec_(other.vec_) {}
-  constexpr weird_vector(weird_vector&amp;&amp; other) noexcept : vec_(std::move(other.vec_)) {}
-
-  template&lt;class U&gt;
-    requires (!std::same_as&lt;std::remove_cvref_t&lt;U&gt;, weird_vector&gt;) &amp;&amp;
-      (!std::same_as&lt;std::remove_cvref_t&lt;U&gt;, std::vector&lt;T, A&gt;&gt;) &amp;&amp;
-      requires(U&amp;&amp; u) { std::vector&lt;T, A&gt;(std::forward&lt;U&gt;(u)); }
-  constexpr explicit weird_vector(U&amp;&amp; u) : vec_(std::forward&lt;U&gt;(u)) {}
-
-  template&lt;class T1, class T2, class... Ts&gt;
-    requires requires(T1&amp;&amp; t1, T2&amp;&amp; t2, Ts&amp;&amp;... ts) {
-      std::vector&lt;T, A&gt;(std::forward&lt;T1&gt;(t1), std::forward&lt;T2&gt;(t2), std::forward&lt;Ts&gt;(ts)...);
-    }
-  constexpr weird_vector(T1&amp;&amp; t1, T2&amp;&amp; t2, Ts&amp;&amp;... ts)
-    : vec_(std::forward&lt;T1&gt;(t1), std::forward&lt;T2&gt;(t2), std::forward&lt;Ts&gt;(ts)...) {}
-
-  constexpr weird_vector&amp; operator=(const weird_vector&amp; other) {
-    vec_ = other.vec_;
-    return *this;
-  }
-  constexpr weird_vector&amp; operator=(weird_vector&amp;&amp; other)
-    noexcept(std::is_nothrow_move_assignable_v&lt;std::vector&lt;T, A&gt;&gt;) {
-    vec_ = std::move(other.vec_);
-    return *this;
-  }
-
-  constexpr ~weird_vector() {
-    vec_.~vector();
-  }
-};
-
-int main() {
-  int arr[]{42, 1729};
-  auto v [[maybe_unused]] = std::ranges::to&lt;weird_vector&lt;int&gt;&gt;(arr);
-}
-</pre></blockquote>
-<p>
-Although libc++ currently accepts this example, the acceptance seems to be a bug, because libc++ hasn't 
-implemented the "class" part in the <i>Mandates</i> at all 
-(<a href="https://github.com/llvm/llvm-project/issues/132133">llvm/llvm-project#132133</a>).
-<p/>
-It's unclear whether union types were intended to be accepted. Perhaps we should follow implementations' 
-choices and reject them.
-</p>
-
-
-<p id="res-4229"><b>Proposed resolution:</b></p>
-<p>
-This wording is relative to <a href="https://wg21.link/N5008" title=" Working Draft, Programming Languages — C++">N5008</a>.
-</p>
-
-<ol>
-
-<li><p>Modify 25.5.7.2 <a href="https://wg21.link/range.utility.conv.to">[range.utility.conv.to]</a> as indicated:</p>
-
-<blockquote>
-<pre>
-template&lt;class C, input_range R, class... Args&gt; requires (!view&lt;C&gt;)
-  constexpr C to(R&amp;&amp; r, Args&amp;&amp;... args);
-</pre>
-<blockquote>
-<p>
--1- <i>Mandates</i>: <code class='backtick'>C</code> is a cv-unqualified <ins>non-union</ins> class type.
-<p/>
-[&hellip;]
-</p>
-</blockquote>
-</blockquote>
-</li>
-
-<li><p>Modify 25.5.7.3 <a href="https://wg21.link/range.utility.conv.adaptors">[range.utility.conv.adaptors]</a> as indicated:</p>
-
-<blockquote>
-<pre>
-template&lt;class C, class... Args&gt; requires (!view&lt;C&gt;)
-  constexpr auto to(Args&amp;&amp;... args);
-template&lt;template&lt;class...&gt; class C, class... Args&gt;
-  constexpr auto to(Args&amp;&amp;... args);
-</pre>
-<blockquote>
-<p>
--1- <i>Mandates</i>: For the first overload, <code class='backtick'>C</code> is a cv-unqualified <ins>non-union</ins> class type.
-<p/>
-[&hellip;]
-</p>
-</blockquote>
-</blockquote>
-</li>
-
-</ol>
-
-
-
-
-
-<hr>
 <h3 id="4230"><a href="#4230">4230</a><sup><a href="https://cplusplus.github.io/LWG/issue4230">(i)</a></sup>. <code>simd&lt;complex&gt;::real/imag</code> is overconstrained</h3>
 <p><b>Section:</b> 29.10.8.4 <a href="https://wg21.link/simd.complex.access">[simd.complex.access]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
  <b>Submitter:</b> Matthias Kretz <b>Opened:</b> 2025-03-18 <b>Last modified:</b> 2025-08-16</p>
@@ -69978,8 +69946,8 @@ discarding results, and which we don't.
 <hr>
 <h3 id="4270"><a href="#4270">4270</a><sup><a href="https://cplusplus.github.io/LWG/issue4270">(i)</a></sup>. Diagnose misuse of <code class='backtick'>std::projected::operator*</code></h3>
 <p><b>Section:</b> 24.3.6.4 <a href="https://wg21.link/projected">[projected]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Jiang An <b>Opened:</b> 2025-05-30 <b>Last modified:</b> 2025-06-06</p>
-<p><b>Priority: </b>Not Prioritized
+ <b>Submitter:</b> Jiang An <b>Opened:</b> 2025-05-30 <b>Last modified:</b> 2025-10-20</p>
+<p><b>Priority: </b>3
 </p>
 <p><b>View all other</b> <a href="lwg-index.html#projected">issues</a> in [projected].</p>
 <p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
@@ -69993,6 +69961,15 @@ It seems better to diagnose such misuse, as we are already diagnosing misuse of 
 (22.2.6 <a href="https://wg21.link/declval">[declval]</a>/2). Implementation used to perform such misuse via <code class='backtick'>std::ranges::iter_move</code>, 
 but libc++ and libstdc++ have already switched not to do this (see 
 <a href="https://github.com/microsoft/STL/issues/5555">microsoft/STL#5555</a>).
+</p>
+
+<p><i>[2025-10-20; Reflector poll.]</i></p>
+
+<p>
+Set priority to 3 after reflector poll.
+</p>
+<p>
+"NAD, the standard is clear that it can't be used."
 </p>
 
 
@@ -78976,8 +78953,8 @@ past-the-end iterator, remain valid.
 <h3 id="4381"><a href="#4381">4381</a><sup><a href="https://cplusplus.github.io/LWG/issue4381">(i)</a></sup>. <code class='backtick'>std::ranges::to specification</code> using CTAD not supported by core language
 </h3>
 <p><b>Section:</b> 25.5.7.2 <a href="https://wg21.link/range.utility.conv.to">[range.utility.conv.to]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Jens Maurer <b>Opened:</b> 2025-09-23 <b>Last modified:</b> 2025-09-26</p>
-<p><b>Priority: </b>Not Prioritized
+ <b>Submitter:</b> Jens Maurer <b>Opened:</b> 2025-09-23 <b>Last modified:</b> 2025-10-20</p>
+<p><b>Priority: </b>2
 </p>
 <p><b>View other</b> <a href="lwg-index-open.html#range.utility.conv.to">active issues</a> in [range.utility.conv.to].</p>
 <p><b>View all other</b> <a href="lwg-index.html#range.utility.conv.to">issues</a> in [range.utility.conv.to].</p>
@@ -78994,6 +78971,15 @@ clarify the core wording accordingly.
 <p/>
 Suggested resolution: Remove 25.5.7.2 <a href="https://wg21.link/range.utility.conv.to">[range.utility.conv.to]</a> p3, p4, p5 
 and the respective entry in the synopsis as unimplementable.
+</p>
+
+<p><i>[2025-10-20; Reflector poll.]</i></p>
+
+<p>
+Set priority to 2 after reflector poll.
+</p>
+<p>
+The core language needs to be fixed so this works.
 </p>
 
 
@@ -82291,9 +82277,16 @@ if <code class='backtick'>options.alignment</code> contains a value, it is an al
 <p><b>Discussion:</b></p>
 <p>
 The <code class='backtick'>meta::define_aggregate</code> function doesn't say what happens if <i>C</i>
-does not represent a class type. It's also unclear whether it should work
+does not represent a class type.
+</p>
+<p>It's also unclear whether it should work
 with aliases to class types, e.g.
 <pre>struct S; using A = S; ... meta::define_aggregate(^^A, {});</pre>
+</p>
+<p>
+And what happens if you try to define a cv-qualified type:
+<pre>struct S; meta::define_aggregate(^^const S, {});</pre>
+Should this be an error, or inject a definition of the unqualified type?
 </p>
 
 

@@ -66,7 +66,7 @@
 <p>This document is the Index by Section for the <a href="lwg-active.html">Library Active Issues List</a>.</p>
 <h2>Index by Section (non-Ready active issues only)</h2>
 <p><a href="lwg-index.html">(view all issues)</a></p>
-<p>Revised 2025-10-20 at 16:16:29 UTC
+<p>Revised 2025-10-20 at 16:18:32 UTC
 </p><h2 id="Section_3">Section 3 (2 issues)</h2>
 <p><a href="lwg-index.html#Section_3">(view all issues)</a></p>
 <table class="issues-index">
@@ -3181,7 +3181,7 @@ complexity for algorithms that are in fact &#x1d4aa;(n)</td>
 <td>24.3.6.4 [projected]<a id="projected"></a></td>
 <td>Diagnose misuse of <code class='backtick'>std::projected::operator*</code></td>
 <td>Yes</td>
-<td></td>
+<td>3</td>
 <td></td>
 </tr>
 <tr>
@@ -3537,7 +3537,7 @@ in <code>&lt;ranges&gt;</code></td>
 <td>25.3.13 [range.prim.empty]<a id="range.prim.empty"></a></td>
 <td><code>ranges::empty</code> has no semantic requirements for <code>forward_range</code>s</td>
 <td><span class="no-pr">No</span></td>
-<td></td>
+<td>3</td>
 <td></td>
 </tr>
 <tr>
@@ -3604,12 +3604,30 @@ in <code>&lt;ranges&gt;</code></td>
 <td></td>
 </tr>
 <tr>
-<td id="3958"><a href="lwg-active.html#3958" title="ranges::to should prioritize the &quot;reserve&quot; branch (Status: Tentatively NAD)">3958</a><sup><a href="https://cplusplus.github.io/LWG/issue3958">(i)</a></sup></td>
+<td id="4229"><a href="lwg-active.html#4229" title="std::ranges::to with union return type (Status: Tentatively NAD)">4229</a><sup><a href="https://cplusplus.github.io/LWG/issue4229">(i)</a></sup></td>
 <td><a href="lwg-active.html#NAD">Tentatively NAD</a></td>
 <td>25.5.7.2 [range.utility.conv.to]<a id="range.utility.conv.to"></a></td>
+<td><code class='backtick'>std::ranges::to</code> with union return type</td>
+<td>Yes</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td id="3958"><a href="lwg-active.html#3958" title="ranges::to should prioritize the &quot;reserve&quot; branch (Status: Tentatively NAD)">3958</a><sup><a href="https://cplusplus.github.io/LWG/issue3958">(i)</a></sup></td>
+<td><a href="lwg-active.html#NAD">Tentatively NAD</a></td>
+<td>25.5.7.2 [range.utility.conv.to]</td>
 <td><code>ranges::to</code> should prioritize the "<code>reserve</code>" branch</td>
 <td>Yes</td>
 <td></td>
+<td></td>
+</tr>
+<tr>
+<td id="4066"><a href="lwg-active.html#4066" title="ranges::to should reserve when sized_sentinel_for is satisfied (Status: New)">4066</a><sup><a href="https://cplusplus.github.io/LWG/issue4066">(i)</a></sup></td>
+<td><a href="lwg-active.html#New">New</a></td>
+<td>25.5.7.2 [range.utility.conv.to]</td>
+<td><code>ranges::to</code> should reserve when <code>sized_sentinel_for</code> is satisfied</td>
+<td>Yes</td>
+<td>4</td>
 <td></td>
 </tr>
 <tr>
@@ -3620,16 +3638,7 @@ in <code>&lt;ranges&gt;</code></td>
 <td><code class='backtick'>std::ranges::to specification</code> using CTAD not supported by core language
 </td>
 <td>Yes</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td id="4229"><a href="lwg-active.html#4229" title="std::ranges::to with union return type (Status: New)">4229</a><sup><a href="https://cplusplus.github.io/LWG/issue4229">(i)</a></sup></td>
-<td><a href="lwg-active.html#New">New</a></td>
-<td>25.5.7.2 [range.utility.conv.to]</td>
-<td><code class='backtick'>std::ranges::to</code> with union return type</td>
-<td>Yes</td>
-<td></td>
+<td>2</td>
 <td></td>
 </tr>
 <tr>
@@ -3639,15 +3648,6 @@ in <code>&lt;ranges&gt;</code></td>
 <td><code>ranges::to</code> <code>reserve</code>s the wrong size</td>
 <td>Yes</td>
 <td>4</td>
-<td></td>
-</tr>
-<tr>
-<td id="4066"><a href="lwg-active.html#4066" title="ranges::to should reserve when sized_sentinel_for is satisfied (Status: New)">4066</a><sup><a href="https://cplusplus.github.io/LWG/issue4066">(i)</a></sup></td>
-<td><a href="lwg-active.html#New">New</a></td>
-<td>25.5.7.2 [range.utility.conv.to]</td>
-<td><code>ranges::to</code> should reserve when <code>sized_sentinel_for</code> is satisfied</td>
-<td>Yes</td>
-<td></td>
 <td></td>
 </tr>
 <tr>

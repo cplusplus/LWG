@@ -73,9 +73,16 @@
 <p><b>Discussion:</b></p>
 <p>
 The <code class='backtick'>meta::define_aggregate</code> function doesn't say what happens if <i>C</i>
-does not represent a class type. It's also unclear whether it should work
+does not represent a class type.
+</p>
+<p>It's also unclear whether it should work
 with aliases to class types, e.g.
 <pre>struct S; using A = S; ... meta::define_aggregate(^^A, {});</pre>
+</p>
+<p>
+And what happens if you try to define a cv-qualified type:
+<pre>struct S; meta::define_aggregate(^^const S, {});</pre>
+Should this be an error, or inject a definition of the unqualified type?
 </p>
 
 

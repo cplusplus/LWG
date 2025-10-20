@@ -64,8 +64,8 @@
 <p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#New">New</a> status.</em></p>
 <h3 id="4270"><a href="lwg-active.html#4270">4270</a>. Diagnose misuse of <code class='backtick'>std::projected::operator*</code></h3>
 <p><b>Section:</b> 24.3.6.4 <a href="https://wg21.link/projected">[projected]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Jiang An <b>Opened:</b> 2025-05-30 <b>Last modified:</b> 2025-06-06</p>
-<p><b>Priority: </b>Not Prioritized
+ <b>Submitter:</b> Jiang An <b>Opened:</b> 2025-05-30 <b>Last modified:</b> 2025-10-20</p>
+<p><b>Priority: </b>3
 </p>
 <p><b>View all other</b> <a href="lwg-index.html#projected">issues</a> in [projected].</p>
 <p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
@@ -79,6 +79,15 @@ It seems better to diagnose such misuse, as we are already diagnosing misuse of 
 (22.2.6 <a href="https://wg21.link/declval">[declval]</a>/2). Implementation used to perform such misuse via <code class='backtick'>std::ranges::iter_move</code>, 
 but libc++ and libstdc++ have already switched not to do this (see 
 <a href="https://github.com/microsoft/STL/issues/5555">microsoft/STL#5555</a>).
+</p>
+
+<p><i>[2025-10-20; Reflector poll.]</i></p>
+
+<p>
+Set priority to 3 after reflector poll.
+</p>
+<p>
+"NAD, the standard is clear that it can't be used."
 </p>
 
 
