@@ -54,7 +54,7 @@
 </style>
 </head>
 <body>
-<p>Revised 2025-10-20 at 14:40:15 UTC
+<p>Revised 2025-10-20 at 14:44:10 UTC
 </p><h2>Tentative Issues</h2>
 <hr>
 <h3 id="3627"><a href="#3627">3627</a><sup><a href="https://cplusplus.github.io/LWG/issue3627">(i)</a></sup>. Inconsistent specifications for <code>std::make_optional</code> overloads</h3>
@@ -4615,6 +4615,99 @@ This wording is relative to <a href="https://wg21.link/N5014">N5014</a>.
 </li>
 
 </ol>
+
+
+
+
+<hr>
+<h3 id="4377"><a href="#4377">4377</a><sup><a href="https://cplusplus.github.io/LWG/issue4377">(i)</a></sup>. Misleading note about lock-free property of <code class='backtick'>std::atomic_ref</code></h3>
+<p><b>Section:</b> 32.5.7.2 <a href="https://wg21.link/atomics.ref.ops">[atomics.ref.ops]</a> <b>Status:</b> <a href="lwg-active.html#Ready">Tentatively Ready</a>
+ <b>Submitter:</b> Brian Bi <b>Opened:</b> 2025-09-15 <b>Last modified:</b> 2025-10-20</p>
+<p><b>Priority: </b>Not Prioritized
+</p>
+<p><b>View other</b> <a href="lwg-index-open.html#atomics.ref.ops">active issues</a> in [atomics.ref.ops].</p>
+<p><b>View all other</b> <a href="lwg-index.html#atomics.ref.ops">issues</a> in [atomics.ref.ops].</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#Tentatively Ready">Tentatively Ready</a> status.</p>
+<p><b>Discussion:</b></p>
+<p>
+Note 1 to 32.5.7.2 <a href="https://wg21.link/atomics.ref.ops">[atomics.ref.ops]</a> states:
+</p>
+<blockquote style="border-left: 3px solid #ccc;padding-left: 15px;">
+<p>
+Hardware could require an object referenced by an <code class='backtick'>atomic_ref</code> to have stricter alignment 
+(6.8.3 <a href="https://wg21.link/basic.align">[basic.align]</a>) than other objects of type <code class='backtick'>T</code>. Further, whether operations 
+on an <code class='backtick'>atomic_ref</code> are lock-free could depend on the alignment of the referenced object. 
+For example, lock-free operations on <code>std::complex&lt;double&gt;</code> could be supported 
+only if aligned to <code class='backtick'>2*alignof(double)</code>.
+</p>
+</blockquote>
+<p>
+By using the word "Further", the note misleadingly implies that <code class='backtick'>required_alignment</code> may 
+need to be greater than <code class='backtick'>alignof(T)</code> even before considering lock freedom, i.e., that 
+<code>std::atomic_ref&lt;T&gt;</code> may be completely unimplementable on given hardware if 
+the stricter alignment requirement is not met. However, that can never be true because 
+falling back to a lock-based implementation is always possible.
+<p/>
+The note could also be misinterpreted to imply that even though an object may be aligned to 
+<code class='backtick'>required_alignment</code> and thus referenceable by an <code class='backtick'>atomic_ref</code>, operations could still fail 
+to be lock-free because there is a stricter alignment requirement that the object does not 
+meet. Such an interpretation is, however, at odds with p4.
+<p/>
+The example given by the note is also confusing in that it does not necessarily demonstrate 
+a situation in which <code>std::atomic_ref&lt;T&gt;::required_alignment</code> is greater than 
+<code class='backtick'>alignof(T)</code>.
+<p/>
+In conclusion, this note appears to be a convoluted way of saying that, in order to ensure 
+that operations on <code>atomic_ref&lt;T&gt;</code> are lock-free, the implementation may 
+define <code class='backtick'>required_alignment</code> to a value greater than <code class='backtick'>alignof(T)</code>. The note should be 
+modified to say this much more clearly.
+</p>
+
+<p><i>[2025-10-20; Reflector poll.]</i></p>
+
+<p>
+Set status to Tentatively Ready after five votes in favour during reflector poll.
+</p>
+<p>
+Also ask SG1 to take a look.
+</p>
+
+
+<p id="res-4377"><b>Proposed resolution:</b></p>
+<p>
+This wording is relative to <a href="https://wg21.link/N5014">N5014</a>.
+</p>
+
+<ol>
+
+
+<li><p>Modify 32.5.7.2 <a href="https://wg21.link/atomics.ref.ops">[atomics.ref.ops]</a> as indicated:</p>
+
+<blockquote>
+<pre>
+static constexpr size_t required_alignment;
+</pre>
+<blockquote>
+<p>
+-1- The alignment required for an object to be referenced by an atomic reference, which is at least
+<code class='backtick'>alignof(T)</code>.
+<p/>
+-2- [<i>Note 1</i>: <del>Hardware could require an object referenced by an <code class='backtick'>atomic_ref</code> to have stricter 
+alignment (6.8.3 <a href="https://wg21.link/basic.align">[basic.align]</a>) than other objects of type <code class='backtick'>T</code>. Further, whether operations 
+on an <code class='backtick'>atomic_ref</code> are lock-free could depend on the alignment of the referenced object. For example, 
+lock-free operations on <code>std::complex&lt;double&gt;</code> could be supported only if aligned to 
+<code class='backtick'>2*alignof(double)</code></del><ins>An implementation can choose to define 
+<code>atomic_ref&lt;T&gt;::required_alignment</code> to a value greater than <code class='backtick'>alignof(T)</code> in order to 
+ensure that operations on all objects of type <code>atomic_ref&lt;T&gt;</code> are lock-free</ins>. 
+&mdash; <i>end note</i>]
+</p>
+</blockquote>
+</blockquote>
+
+</li>
+
+</ol>
+
 
 
 
