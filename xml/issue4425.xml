@@ -1,0 +1,67 @@
+<?xml version='1.0' encoding='utf-8' standalone='no'?>
+<!DOCTYPE issue SYSTEM "lwg-issue.dtd">
+
+<issue num="4425" status="New">
+<title>CTAD <tt>function_ref</tt> of data member pointer should produce <tt>noexcept</tt> signature</title>
+<section><sref ref="[func.wrap.ref.deduct]"/></section>
+<submitter>Tomasz Kami&nacute;ski</submitter>
+<date>20 Oct 2025</date>
+<priority>99</priority>
+
+<discussion>
+<b>Addresses PL-005.</b>
+
+<p>
+For data member pointer <tt>M C::* dmp</tt>, template argument deduction in form
+<tt>std::function_ref fr(std::nontype&lt;dmp&gt;, x)</tt> results in
+<tt>std::function_ref&lt;M&amp;()&gt;</tt>, that returns a reference to designated
+member. As accessing a data member can never throw exception and <tt>function_ref</tt>
+support <tt>noexcept</tt> qualifed function types, the deduction guide should be 
+updated to produce <tt>noexcept</tt>-qualified signature.</p>
+
+</discussion>
+
+<resolution>
+<p>
+This wording is relative to <paper num="N5014"/>.
+</p>
+<ol>
+
+<li><p>Modify <sref ref="[func.wrap.ref.deduct]"/> as indicated:</p>
+
+<blockquote>
+<pre>
+template&lt;class F&gt;
+function_ref(nontype_t&lt;f&gt;, T&amp;&amp;) -> function_ref&lt;<i>see below</i>&gt;;
+</pre>
+<blockquote>
+<p>Let <tt>F</tt> be <tt>decltype(f)</tt>.</p>
+
+<p>
+-6- <i>Constraint</i>: 
+<ol style="list-style-type:none">
+<li>(6.1) &mdash; <tt>F</tt> is of the form 
+  <tt>R(G::*)(A...) <it>cv</it> &amp;<sub>opt</sub> noexcept(E)</tt> for type <tt>G</tt>, or</li>
+<li>(6.2) &mdash; <tt>F</tt> is of the form <tt>M G::*</tt> for type <tt>G</tt> and
+  object type <tt>M</tt>, in which case let <tt>R</tt> be <tt>invoke_result_t&lt;F, T&amp;&gt;</tt>,
+  <tt>A...</tt> be an empty pack, and <tt>E</tt> be <del><tt>false</tt></del>
+  <ins><tt>true</tt></ins>, or</li>
+<li>(6.3) &mdash; <tt>F</tt> is of the form 
+  <tt>R(*)(G, A...) noexcept(E)</tt> for type <tt>G</tt>.</li>
+</ol>
+</p>
+
+<p>
+-7- <i>Remarks</i>: The deduced type is <tt>function_ref&lt;R(A...) noexcept(E)&gt;</tt>.
+</p>
+
+</blockquote>
+</blockquote>
+
+</li>
+</ol>
+
+
+</resolution>
+
+</issue>
