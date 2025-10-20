@@ -41,7 +41,7 @@ function_ref(nontype_t&lt;f&gt;, T&amp;&amp;) -> function_ref&lt;<i>see below</i
 -6- <i>Constraint</i>: 
 <ol style="list-style-type:none">
 <li>(6.1) &mdash; <tt>F</tt> is of the form 
-  <tt>R(G::*)(A...) <it>cv</it> &amp;<sub>opt</sub> noexcept(E)</tt> for type <tt>G</tt>, or</li>
+  <tt>R(G::*)(A...) <i>cv</i> &amp;<sub>opt</sub> noexcept(E)</tt> for type <tt>G</tt>, or</li>
 <li>(6.2) &mdash; <tt>F</tt> is of the form <tt>M G::*</tt> for type <tt>G</tt> and
   object type <tt>M</tt>, in which case let <tt>R</tt> be <tt>invoke_result_t&lt;F, T&amp;&gt;</tt>,
   <tt>A...</tt> be an empty pack, and <tt>E</tt> be <del><tt>false</tt></del>
