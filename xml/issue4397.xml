@@ -6,13 +6,26 @@
 <section><sref ref="[span.cons]"/></section>
 <submitter>Hewill Kang</submitter>
 <date>02 Oct 2025</date>
-<priority>99</priority>
+<priority>3</priority>
 
 <discussion>
 <p>
 It is preferable to reject <code>span&lt;int, 42&gt;(views::empty&lt;int&gt;)</code>
 at compile-time after <paper num="P2280R4"/>, since applying `ranges::size` on those 
 ranges is a constant expression now.
+</p>
+
+<note>2025-10-20; Reflector poll.</note>
+<p>
+Set priority to 3 after reflector poll.
+</p>
+<p>
+The opinions on reflector discussion where split regarding,
+if this should be considered LEWG matter.
+</p>
+<p>
+Question was raised, if <tt>ranges::size(r) == N</tt> is required
+to be usable at compile-time for integer-class types.
 </p>
 </discussion>
 
