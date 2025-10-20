@@ -60,7 +60,7 @@
 <p>This document is the Table of Contents for the <a href="lwg-active.html">Library Active Issues List</a>,
 <a href="lwg-defects.html">Library Defect Reports and Accepted Issues</a>, and <a href="lwg-closed.html">Library Closed Issues List</a>,
 sorted by priority.</p>
-<p>Revised 2025-10-20 at 14:31:50 UTC
+<p>Revised 2025-10-20 at 14:40:15 UTC
 </p><h2 id="Priority_1">Priority 1 (14 issues)</h2>
 <table class="issues-index">
 <tr>
@@ -827,7 +827,7 @@ specified to make <code><i>N</i></code> copies of <code>T</code> into the destin
 <td></td>
 </tr>
 </table>
-<h2 id="Priority_3">Priority 3 (415 issues)</h2>
+<h2 id="Priority_3">Priority 3 (416 issues)</h2>
 <table class="issues-index">
 <tr>
   <th><a href="lwg-toc.html">Issue</a></th>
@@ -2861,6 +2861,17 @@ initializer_list (Status: New)">3537</a><sup><a href="https://cplusplus.github.i
 <td></td>
 </tr>
 <tr>
+<td id="4387"><a href="lwg-active.html#4387" title="Including &lt;stacktrace&gt; doesn't provide std::begin/end
+ (Status: Open)">4387</a><sup><a href="https://cplusplus.github.io/LWG/issue4387">(i)</a></sup></td>
+<td><a href="lwg-active.html#Open">Open</a></td>
+<td>24.7 [iterator.range]</td>
+<td>Including <code>&lt;stacktrace&gt;</code> doesn't provide <code class='backtick'>std::begin/end</code>
+</td>
+<td>Yes</td>
+<td>3</td>
+<td></td>
+</tr>
+<tr>
 <td id="4010"><a href="lwg-active.html#4010" title="subrange::advance should be improved (Status: New)">4010</a><sup><a href="https://cplusplus.github.io/LWG/issue4010">(i)</a></sup></td>
 <td><a href="lwg-active.html#New">New</a></td>
 <td>25.5.4.3 [range.subrange.access]</td>
@@ -4622,7 +4633,7 @@ don't support <code>DynamicBuffer</code> lvalues</td>
 <td></td>
 </tr>
 </table>
-<h2 id="Priority_4">Priority 4 (88 issues)</h2>
+<h2 id="Priority_4">Priority 4 (89 issues)</h2>
 <table class="issues-index">
 <tr>
   <th><a href="lwg-toc.html">Issue</a></th>
@@ -5304,6 +5315,15 @@ vprint_unicode/vprint_nonunicode (Status: New)">4039</a><sup><a href="https://cp
 <td></td>
 </tr>
 <tr>
+<td id="2236"><a href="lwg-active.html#2236" title="kill_dependency unconditionally noexcept (Status: SG1)">2236</a><sup><a href="https://cplusplus.github.io/LWG/issue2236">(i)</a></sup></td>
+<td><a href="lwg-active.html#SG1">SG1</a></td>
+<td>32.5.2 [atomics.syn]</td>
+<td><code>kill_dependency</code> unconditionally noexcept</td>
+<td><span class="no-pr">No</span></td>
+<td>4</td>
+<td></td>
+</tr>
+<tr>
 <td id="2265"><a href="lwg-active.html#2265" title="29.3p9 appears to rule out some acceptable executions (Status: Open)">2265</a><sup><a href="https://cplusplus.github.io/LWG/issue2265">(i)</a></sup></td>
 <td><a href="lwg-active.html#Open">Open</a></td>
 <td>32.5.4 [atomics.order]</td>
@@ -5430,7 +5450,7 @@ vprint_unicode/vprint_nonunicode (Status: New)">4039</a><sup><a href="https://cp
 <td></td>
 </tr>
 </table>
-<h2 id="Priority_99">Not Prioritized (135 issues)</h2>
+<h2 id="Priority_99">Not Prioritized (133 issues)</h2>
 <table class="issues-index">
 <tr>
   <th><a href="lwg-toc.html">Issue</a></th>
@@ -5857,17 +5877,6 @@ complexity for algorithms that are in fact &#x1d4aa;(n)</td>
 <td><a href="lwg-active.html#New">New</a></td>
 <td>24.3.6.4 [projected]</td>
 <td>Diagnose misuse of <code class='backtick'>std::projected::operator*</code></td>
-<td>Yes</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td id="4387"><a href="lwg-active.html#4387" title="Including &lt;stacktrace&gt; doesn't provide std::begin/end
- (Status: Open)">4387</a><sup><a href="https://cplusplus.github.io/LWG/issue4387">(i)</a></sup></td>
-<td><a href="lwg-active.html#Open">Open</a></td>
-<td>24.7 [iterator.range]</td>
-<td>Including <code>&lt;stacktrace&gt;</code> doesn't provide <code class='backtick'>std::begin/end</code>
-</td>
 <td>Yes</td>
 <td></td>
 <td></td>
@@ -6339,15 +6348,6 @@ in <code>&lt;ranges&gt;</code></td>
 <td><a href="lwg-active.html#New">New</a></td>
 <td>32.4.3.3 [thread.thread.constr]</td>
 <td>Is "the completion of the invocation of the constructor" considered as an expression?</td>
-<td><span class="no-pr">No</span></td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td id="2236"><a href="lwg-active.html#2236" title="kill_dependency unconditionally noexcept (Status: SG1)">2236</a><sup><a href="https://cplusplus.github.io/LWG/issue2236">(i)</a></sup></td>
-<td><a href="lwg-active.html#SG1">SG1</a></td>
-<td>32.5.2 [atomics.syn]</td>
-<td><code>kill_dependency</code> unconditionally noexcept</td>
 <td><span class="no-pr">No</span></td>
 <td></td>
 <td></td>
