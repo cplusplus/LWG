@@ -8,7 +8,7 @@
 </section>
 <submitter>Luc Grosheintz</submitter>
 <date>13 Aug 2025</date>
-<priority>99</priority>
+<priority>2</priority>
 
 <discussion>
 <p>
@@ -70,6 +70,19 @@ in the Proposed Resolution.
 This inconsistency was noticed while fixing 
 <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=121061">PR121061</a> 
 and these changes have been applied to all layout mappings implemented in libstdc++.
+</p>
+
+<note>2025-10-21; Reflector poll.</note>
+<p>
+Set priority to 2 after reflector poll.
+</p>
+<p>
+The resolution bypasses <tt>extents_type::<i>index-cast</i></tt> that would
+validate if input value is representable.
+</p>
+<p>
+We should require convertibility without regard to const and
+value category.
 </p>
 </discussion>
 
