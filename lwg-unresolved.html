@@ -54,7 +54,7 @@
 </style>
 </head>
 <body>
-<p>Revised 2025-10-21 at 12:19:40 UTC
+<p>Revised 2025-10-21 at 13:14:14 UTC
 </p><h2>Unresolved Issues</h2>
 <hr>
 <h3 id="423"><a href="#423">423</a><sup><a href="https://cplusplus.github.io/LWG/issue423">(i)</a></sup>. Effects of negative <code>streamsize</code> in iostreams</h3>
@@ -71684,8 +71684,128 @@ when <code class='backtick'>do_date_order()</code> returns <code class='backtick
 correct then it should have returned <code class='backtick'>mdy</code>!"
 </p>
 
+<p><i>[2025-10-21; Jonathan adds wording]</i></p>
+
+<p>
+This restores the slashes lost by LWG <a href="lwg-defects.html#461" title="time_get hard or impossible to implement (Status: CD1)">461</a><sup><a href="https://cplusplus.github.io/LWG/issue461" title="Latest snapshot">(i)</a></sup>
+and attempts to make the use and effects of <code class='backtick'>no_order</code> more useful.
+It does not attempt to address the problem that <code class='backtick'>do_date_order()</code>
+has no access to an <code class='backtick'>ios_base</code> object.
+</p>
+
 
 <p id="res-4285"><b>Proposed resolution:</b></p>
+<p>
+This wording is relative to <a href="https://wg21.link/N5014">N5014</a>.
+</p>
+
+<ol>
+
+<li><p>Modify 28.3.4.6.2.3 <a href="https://wg21.link/locale.time.get.virtuals">[locale.time.get.virtuals]</a> as indicated:</p>
+
+<blockquote>
+<pre>dateorder do_date_order() const;</pre>
+<blockquote>
+<p>-1- <i>Returns</i>:
+An enumeration value indicating the preferred order of components for
+those date formats that are composed of day, month, and year.<del><sup>228</sup></del>
+Returns <code class='backtick'>no_order</code> if the date format specified by <code class='backtick'>'x'</code>
+<del>
+contains other variable components (e.g., Julian day, week number, week day)
+</del>
+<ins>
+does not match one of the formats in Table [tab:locale.time.get.dogetdate]
+</ins>
+.
+</p>
+<blockquote>
+<del>
+228) This function is intended as a convenience only, for common formats,
+and can return <code class='backtick'>no_order</code> in valid locales.
+</del>
+</blockquote>
+</blockquote>
+
+<pre>
+iter_type do_get_time(iter_type s, iter_type end, ios_base&amp; str,
+                      ios_base::iostate&amp; err, tm* t) const;
+</pre>
+<blockquote>[...]</blockquote>
+
+<pre>
+iter_type do_get_date(iter_type s, iter_type end, ios_base&amp; str,
+                      ios_base::iostate&amp; err, tm* t) const;
+</pre>
+<blockquote>
+<p>
+<i>-4- Effects</i>:
+Reads characters starting at s until it has extracted those <code class='backtick'>tm</code>
+members and remaining format characters used by
+<code>time_put&lt;&gt;::put</code>
+to produce one of the following formats, or until it encounters an error.
+The format depends on the value returned by <code class='backtick'>date_order()</code> as shown in
+Table 102.
+<ins>
+When <code class='backtick'>do_date_order()</code> returns <code class='backtick'>no_order</code>, it is unspecified whether
+the format shown in the table is used, or whether additional
+implementation-defined formats are accepted.
+</ins>
+</p>
+<p><ins>[<i>Note ?</i>:
+For example, an implementation can accept dates in the format specified by
+<code class='backtick'>'x'</code> as well as, or instead of, the format <code class='backtick'>"%m/%d/%y"</code>.
+&mdash; <i>end note</i></ins>
+</p>
+<p><del>-5-
+An implementation may also accept additional implementation-defined formats.
+</del>
+</p>
+<p>-6- <i>Returns</i>:
+An iterator pointing immediately beyond the last character recognized as
+possibly part of a valid date.
+</p>
+</blockquote>
+
+<p>Table 102 &mdash; <code class='backtick'>do_get_date</code> effects [tab:locale.time.get.dogetdate]</p>
+
+<style>
+table { border-collapse: separate; border-spacing: 0 6px; width: auto; }
+thead, tbody { box-shadow: 0 0 0 1px black; border-spacing: 1em; }
+th, td { padding-left: 0.5em; padding-right: 0.5em; }
+</style>
+
+<table>
+<thead>
+<tr> <th><code class='backtick'>date_order()</code></th><th>Format</th> </tr>
+</thead>
+<tbody>
+<tr>
+<td><code class='backtick'>no_order</code></td>
+<td><code>"%m<ins>/</ins>%d<ins>/</ins>%y"</code></td></tr>
+<tr>
+<td><code class='backtick'>dmy</code></td>
+<td><code>"%d<ins>/</ins>%m<ins>/</ins>%y"</code></td>
+</tr>
+<tr>
+<td><code class='backtick'>mdy</code></td>
+<td><code>"%m<ins>/</ins>%d<ins>/</ins>%y"</code></td>
+</tr>
+<tr>
+<td><code class='backtick'>ymd</code></td>
+<td><code>"%y<ins>/</ins>%m<ins>/</ins>%d"</code></td>
+</tr>
+<tr>
+<td><code class='backtick'>ydm</code></td>
+<td><code>"%y<ins>/</ins>%d<ins>/</ins>%m"</code></td>
+</tr>
+</tbody>
+</table>
+
+</blockquote>
+
+</li>
+</ol>
+
 
 
 
