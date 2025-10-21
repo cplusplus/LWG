@@ -6,7 +6,7 @@
 <section><sref ref="[func.require]"/></section>
 <submitter>Jonathan Wakely</submitter>
 <date>29 May 2025</date>
-<priority>99</priority>
+<priority>3</priority>
 
 <discussion>
 <pre><code>struct [[nodiscard]] A { };
@@ -42,6 +42,21 @@ be adjusted to preserve the explicit conversion to void.
 That would allow us to be selective about which uses of
 <code><i>INVOKE</i>&lt;void&gt;</code> we consider to be explicit about
 discarding results, and which we don't.
+</p>
+
+<note>2025-10-21; Reflector poll.</note>
+<p>
+Set priority to 3 after reflector poll.
+</p>
+<p>
+Split opinions between considering this NAD due warnings being QoI matter,
+and explicit use <tt>static_cast&lt;void&gt;</tt> indicating that any
+<tt>nodiscard</tt> warning should be silenced.
+</p>
+<p>
+Concerns where expressed that removing <tt>static_assert</tt> is insufficient,
+as warnings may be still suppressed by heuristics that remove warnings
+originating from system headers.
 </p>
 </discussion>
 
