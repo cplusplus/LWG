@@ -11,7 +11,7 @@
 </section>
 <submitter>Jonathan Wakely</submitter>
 <date>05 Sep 2025</date>
-<priority>99</priority>
+<priority>2</priority>
 
 <discussion>
 <p>
@@ -27,6 +27,15 @@ the `xxx_range` member if they exist?
 That would mean that user containers need to ensure that any member functions
 with those names must behave as expected, but we already require that for
 `std::queue`.
+</p>
+
+<note>2025-10-21; Reflector poll.</note>
+<p>
+Set priority to 2 after reflector poll.
+</p>
+<p>
+Use <tt>append_range</tt> to be consitient with other adapters.
+Send to LEWG for confirmation.
 </p>
 </discussion>
 
