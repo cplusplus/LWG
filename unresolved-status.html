@@ -62,8 +62,8 @@ This document is the Index by Status and Section for the <a href="lwg-active.htm
 <a href="lwg-defects.html">Library Defect Reports and Accepted Issues</a>, and <a href="lwg-closed.html">Library Closed Issues List</a>.
 </p>
 
-<p>Revised 2025-10-21 at 15:50:15 UTC
-</p><h2 id="New">New (583 issues)</h2>
+<p>Revised 2025-10-21 at 16:46:52 UTC
+</p><h2 id="New">New (580 issues)</h2>
 <table class="issues-index">
 <tr>
   <th><a href="lwg-toc.html">Issue</a></th>
@@ -1558,21 +1558,21 @@ the evaluation of type traits</td>
 <td></td>
 </tr>
 <tr>
+<td id="4268"><a href="lwg-active.html#4268" title="function&lt;void()&gt; suppresses nodiscard warnings (Status: New)">4268</a><sup><a href="https://cplusplus.github.io/LWG/issue4268">(i)</a></sup></td>
+<td><a href="lwg-active.html#New">New</a></td>
+<td>22.10.4 [func.require]</td>
+<td><code>function&lt;void()&gt;</code> suppresses <code class='backtick'>nodiscard</code> warnings</td>
+<td><span class="no-pr">No</span></td>
+<td>3</td>
+<td></td>
+</tr>
+<tr>
 <td id="4319"><a href="lwg-active.html#4319" title="Supporting copy-elision in function wrappers (Status: New)">4319</a><sup><a href="https://cplusplus.github.io/LWG/issue4319">(i)</a></sup></td>
 <td><a href="lwg-active.html#New">New</a></td>
 <td>22.10.4 [func.require]</td>
 <td>Supporting copy-elision in function wrappers</td>
 <td>Yes</td>
 <td>3</td>
-<td></td>
-</tr>
-<tr>
-<td id="4268"><a href="lwg-active.html#4268" title="function&lt;void()&gt; suppresses nodiscard warnings (Status: New)">4268</a><sup><a href="https://cplusplus.github.io/LWG/issue4268">(i)</a></sup></td>
-<td><a href="lwg-active.html#New">New</a></td>
-<td>22.10.4 [func.require]</td>
-<td><code>function&lt;void()&gt;</code> suppresses <code class='backtick'>nodiscard</code> warnings</td>
-<td><span class="no-pr">No</span></td>
-<td></td>
 <td></td>
 </tr>
 <tr>
@@ -1626,7 +1626,7 @@ the evaluation of type traits</td>
 <td>22.10.17.1 [func.wrap.general]</td>
 <td>Skipping indirection is not allowed for <code>function_ref</code></td>
 <td>Yes</td>
-<td></td>
+<td>2</td>
 <td></td>
 </tr>
 <tr>
@@ -1670,33 +1670,6 @@ the evaluation of type traits</td>
 <td><a href="lwg-active.html#New">New</a></td>
 <td>22.10.17.6.2 [func.wrap.ref.class]</td>
 <td><code class='backtick'>function_ref</code> should provide <code class='backtick'>result_type</code></td>
-<td>Yes</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td id="4256"><a href="lwg-active.html#4256" title="Incorrect constrains for function_ref constructors from nontype_t (Status: New)">4256</a><sup><a href="https://cplusplus.github.io/LWG/issue4256">(i)</a></sup></td>
-<td><a href="lwg-active.html#New">New</a></td>
-<td>22.10.17.6.3 [func.wrap.ref.ctor]</td>
-<td>Incorrect constrains for <code>function_ref</code> constructors from <code>nontype_t</code></td>
-<td>Yes</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td id="4425"><a href="lwg-active.html#4425" title="CTAD function_ref of data member pointer should produce noexcept signature (Status: New)">4425</a><sup><a href="https://cplusplus.github.io/LWG/issue4425">(i)</a></sup></td>
-<td><a href="lwg-active.html#New">New</a></td>
-<td>22.10.17.6.5 [func.wrap.ref.deduct]</td>
-<td>CTAD <code>function_ref</code> of data member pointer should produce <code>noexcept</code> signature</td>
-<td>Yes</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td id="4365"><a href="lwg-active.html#4365" title="boyer_moore_searcher and boyer_moore_horspool_searcher should be constexpr-friendly (Status: New)">4365</a><sup><a href="https://cplusplus.github.io/LWG/issue4365">(i)</a></sup></td>
-<td><a href="lwg-active.html#New">New</a></td>
-<td>22.10.18.3 [func.search.bm]</td>
-<td><code class='backtick'>boyer_moore_searcher</code> and <code class='backtick'>boyer_moore_horspool_searcher</code> should be <code class='backtick'>constexpr</code>-friendly</td>
 <td>Yes</td>
 <td></td>
 <td></td>
@@ -6175,7 +6148,7 @@ don't support <code>DynamicBuffer</code> lvalues</td>
 <td></td>
 </tr>
 </table>
-<h2 id="LEWG">LEWG (29 issues)</h2>
+<h2 id="LEWG">LEWG (30 issues)</h2>
 <table class="issues-index">
 <tr>
   <th><a href="lwg-toc.html">Issue</a></th>
@@ -6220,6 +6193,15 @@ don't support <code>DynamicBuffer</code> lvalues</td>
 <td>Narrowing of the non-member <code>swap</code> contract</td>
 <td><span class="no-pr">No</span></td>
 <td>2</td>
+<td></td>
+</tr>
+<tr>
+<td id="4365"><a href="lwg-active.html#4365" title="boyer_moore_searcher and boyer_moore_horspool_searcher should be constexpr-friendly (Status: LEWG)">4365</a><sup><a href="https://cplusplus.github.io/LWG/issue4365">(i)</a></sup></td>
+<td><a href="lwg-active.html#LEWG">LEWG</a></td>
+<td>22.10.18.3 [func.search.bm]</td>
+<td><code class='backtick'>boyer_moore_searcher</code> and <code class='backtick'>boyer_moore_horspool_searcher</code> should be <code class='backtick'>constexpr</code>-friendly</td>
+<td>Yes</td>
+<td>4</td>
 <td></td>
 </tr>
 <tr>

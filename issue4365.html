@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <title>Issue 4365: boyer_moore_searcher and boyer_moore_horspool_searcher should be constexpr-friendly</title>
 <meta property="og:title" content="Issue 4365: boyer_moore_searcher and boyer_moore_horspool_searcher should be constexpr-friendly">
-<meta property="og:description" content="C++ library issue. Status: New">
+<meta property="og:description" content="C++ library issue. Status: LEWG">
 <meta property="og:url" content="https://cplusplus.github.io/LWG/issue4365.html">
 <meta property="og:type" content="website">
 <meta property="og:image" content="http://cplusplus.github.io/LWG/images/cpp_logo.png">
@@ -61,15 +61,15 @@
 </head>
 <body>
 <hr>
-<p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#New">New</a> status.</em></p>
+<p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#LEWG">LEWG</a> status.</em></p>
 <h3 id="4365"><a href="lwg-active.html#4365">4365</a>. <code class='backtick'>boyer_moore_searcher</code> and <code class='backtick'>boyer_moore_horspool_searcher</code> should be <code class='backtick'>constexpr</code>-friendly</h3>
-<p><b>Section:</b> 22.10.18.3 <a href="https://wg21.link/func.search.bm">[func.search.bm]</a>, 22.10.18.4 <a href="https://wg21.link/func.search.bmh">[func.search.bmh]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Hewill Kang <b>Opened:</b> 2025-09-03 <b>Last modified:</b> 2025-09-15</p>
-<p><b>Priority: </b>Not Prioritized
+<p><b>Section:</b> 22.10.18.3 <a href="https://wg21.link/func.search.bm">[func.search.bm]</a>, 22.10.18.4 <a href="https://wg21.link/func.search.bmh">[func.search.bmh]</a> <b>Status:</b> <a href="lwg-active.html#LEWG">LEWG</a>
+ <b>Submitter:</b> Hewill Kang <b>Opened:</b> 2025-09-03 <b>Last modified:</b> 2025-10-21</p>
+<p><b>Priority: </b>4
 </p>
 <p><b>View other</b> <a href="lwg-index-open.html#func.search.bm">active issues</a> in [func.search.bm].</p>
 <p><b>View all other</b> <a href="lwg-index.html#func.search.bm">issues</a> in [func.search.bm].</p>
-<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#LEWG">LEWG</a> status.</p>
 <p><b>Discussion:</b></p>
 <p>
 Currently, <code class='backtick'>boyer_moore_searcher</code> and <code class='backtick'>boyer_moore_horspool_searcher</code> are not
@@ -87,6 +87,9 @@ Not to mention that library implementations usually simply use arrays instead of
 hash tables for the common string case because characters only have 256 values, 
 so <code class='backtick'>unordered_map</code> is not actually used.
 </p>
+
+<p><i>[2025-10-21 Reflector poll; Status changed: New &rarr; LEWG and priority set to P4.]</i></p>
+
 
 
 <p id="res-4365"><b>Proposed resolution:</b></p>

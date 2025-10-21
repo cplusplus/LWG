@@ -62,7 +62,7 @@
 </tr>
 <tr>
 <td align="left">Date:</td>
-<td align="left">Revised 2025-10-21 at 15:50:15 UTC
+<td align="left">Revised 2025-10-21 at 16:46:52 UTC
 </td>
 </tr>
 <tr>
@@ -1144,6 +1144,95 @@ namespace std {
 </blockquote>
 </li>
 </ol>
+
+
+
+
+
+<hr>
+<h3 id="4256"><a href="#4256">4256</a><sup><a href="https://cplusplus.github.io/LWG/issue4256">(i)</a></sup>. Incorrect constrains for <code>function_ref</code> constructors from <code>nontype_t</code></h3>
+<p><b>Section:</b> 22.10.17.6.3 <a href="https://wg21.link/func.wrap.ref.ctor">[func.wrap.ref.ctor]</a> <b>Status:</b> <a href="lwg-active.html#Ready">Tentatively Ready</a>
+ <b>Submitter:</b> Tomasz Kami&nacute;ski <b>Opened:</b> 2025-05-14 <b>Last modified:</b> 2025-10-21</p>
+<p><b>Priority: </b>Not Prioritized
+</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#Tentatively Ready">Tentatively Ready</a> status.</p>
+<p><b>Discussion:</b></p>
+<p>
+For the following class:
+</p>
+<pre>
+struct M
+{
+   void operator()();
+};
+</pre>
+<p>
+The constructor of <code>function_ref&lt;void()&gt;</code> from <code>nontype_t</code>
+is considered to be valid candidate 
+(<code>is_constructible_v&lt;function_ref&lt;void()&gt;, nontype_t&lt;M{}&gt;&gt;</code> 
+is <code>true</code>), despite the fact that the corresponding invocation of template 
+argument object, that is const lvalue, is ill-formed. As consequence we produce a hard 
+error from inside of this constructor.
+</p>
+<p>
+This is caused by the fact that for constructors with non-type <code>auto f</code> parameter,
+we are checking if <code><i>is-invocable-using</i>&lt;F&gt;</code> is <code>true</code>,
+where <code>F</code> is <code>decltype(f)</code> i.e. <code>M</code> for the example.
+We should use <code>const F&amp;</code> or <code>decltype((f))</code>.
+</p>
+
+
+<p><i>[2025-10-21; Reflector poll.]</i></p>
+
+<p>
+Set status to Tentatively Ready after six votes in favour during reflector poll.
+</p>
+
+
+<p id="res-4256"><b>Proposed resolution:</b></p>
+<p>
+This wording is relative to <a href="https://wg21.link/N5008" title=" Working Draft, Programming Languages — C++">N5008</a>.
+</p>
+<ol>
+
+<li><p>Modify 22.10.17.6.3 <a href="https://wg21.link/func.wrap.ref.ctor">[func.wrap.ref.ctor]</a> as indicated:</p>
+
+<blockquote>
+<pre>
+template&lt;auto f&gt; constexpr function_ref(nontype_t&lt;f&gt;) noexcept;
+</pre>
+<blockquote>
+<p>-8- Let <code>F</code> be <code>decltype(f)</code>.</p>
+<p>-9- <i>Constraints</i>: <code><i>is-invocable-using</i>&lt;<ins>const </ins>F<ins>&amp;</ins>&gt;</code> is <code>true</code>.</p>
+[&hellip;]
+</blockquote>
+
+<pre>
+template&lt;auto f, class U&gt; constexpr function_ref(nontype_t&lt;f&gt;, U&amp;&amp; obj) noexcept;
+</pre>
+<blockquote>
+<p>-12- Let <code>T</code> be <code>remove_reference_t&lt;U&gt;</code> and <code>F</code> be <code>decltype(f)</code>.</p>
+<p>-13- <i>Constraints:</i>:</p>
+<ol style="list-style-type: none">
+<li><p>(13.1) &mdash; <code>is_rvalue_reference_v&lt;U&amp;&amp;&gt;</code> is false, and</p></li>
+<li><p>(13.2) &mdash; <code><i>is-invocable-using</i>&lt;<ins>const </ins>F<ins>&amp;</ins>, T <i>cv</i>&amp;&gt;</code> is <code>true</code>.</p></li>
+</ol>
+[&hellip;]
+</blockquote>
+
+<pre>
+template&lt;auto f, class T&gt; constexpr function_ref(nontype_t&lt;f&gt;, T <i>cv</i>* obj) noexcept;
+</pre>
+<blockquote>
+<p>-17- Let <code>F</code> be <code>decltype(f)</code>.</p>
+<p>-16- <i>Constraints</i>: <code><i>is-invocable-using</i>&lt;<ins>const </ins>F<ins>&amp;</ins>, T <i>cv</i>*&gt;</code> is <code>true</code>.</p>
+[&hellip;]
+</blockquote>
+</blockquote>
+
+</li>
+</ol>
+
 
 
 
@@ -4892,6 +4981,78 @@ namespace std {
 </blockquote>
 </li>
 </ol>
+
+
+
+
+
+
+<hr>
+<h3 id="4425"><a href="#4425">4425</a><sup><a href="https://cplusplus.github.io/LWG/issue4425">(i)</a></sup>. CTAD <code>function_ref</code> of data member pointer should produce <code>noexcept</code> signature</h3>
+<p><b>Section:</b> 22.10.17.6.5 <a href="https://wg21.link/func.wrap.ref.deduct">[func.wrap.ref.deduct]</a> <b>Status:</b> <a href="lwg-active.html#Ready">Tentatively Ready</a>
+ <b>Submitter:</b> Tomasz Kami&nacute;ski <b>Opened:</b> 2025-10-20 <b>Last modified:</b> 2025-10-21</p>
+<p><b>Priority: </b>Not Prioritized
+</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#Tentatively Ready">Tentatively Ready</a> status.</p>
+<p><b>Discussion:</b></p>
+<b>Addresses PL-005.</b>
+
+<p>
+For data member pointer <code>M C::* dmp</code>, template argument deduction in form
+<code>std::function_ref fr(std::nontype&lt;dmp&gt;, x)</code> results in
+<code>std::function_ref&lt;M&amp;()&gt;</code>, that returns a reference to designated
+member. As accessing a data member can never throw exception and <code>function_ref</code>
+support <code>noexcept</code> qualifed function types, the deduction guide should be 
+updated to produce <code>noexcept</code>-qualified signature.</p>
+
+
+<p><i>[2025-10-21; Reflector poll.]</i></p>
+
+<p>
+Set status to Tentatively Ready after six votes in favour during reflector poll.
+</p>
+
+
+<p id="res-4425"><b>Proposed resolution:</b></p>
+<p>
+This wording is relative to <a href="https://wg21.link/N5014">N5014</a>.
+</p>
+<ol>
+
+<li><p>Modify 22.10.17.6.5 <a href="https://wg21.link/func.wrap.ref.deduct">[func.wrap.ref.deduct]</a> as indicated:</p>
+
+<blockquote>
+<pre>
+template&lt;class F&gt;
+function_ref(nontype_t&lt;f&gt;, T&amp;&amp;) -> function_ref&lt;<i>see below</i>&gt;;
+</pre>
+<blockquote>
+<p>Let <code>F</code> be <code>decltype(f)</code>.</p>
+
+<p>
+-6- <i>Constraint</i>: 
+<ol style="list-style-type:none">
+<li>(6.1) &mdash; <code>F</code> is of the form 
+  <code>R(G::*)(A...) <i>cv</i> &amp;<sub>opt</sub> noexcept(E)</code> for type <code>G</code>, or</li>
+<li>(6.2) &mdash; <code>F</code> is of the form <code>M G::*</code> for type <code>G</code> and
+  object type <code>M</code>, in which case let <code>R</code> be <code>invoke_result_t&lt;F, T&amp;&gt;</code>,
+  <code>A...</code> be an empty pack, and <code>E</code> be <del><code>false</code></del>
+  <ins><code>true</code></ins>, or</li>
+<li>(6.3) &mdash; <code>F</code> is of the form 
+  <code>R(*)(G, A...) noexcept(E)</code> for type <code>G</code>.</li>
+</ol>
+</p>
+
+<p>
+-7- <i>Remarks</i>: The deduced type is <code>function_ref&lt;R(A...) noexcept(E)&gt;</code>.
+</p>
+
+</blockquote>
+</blockquote>
+
+</li>
+</ol>
+
 
 
 
