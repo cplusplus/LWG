@@ -1,14 +1,14 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="4365" status="New">
+<issue num="4365" status="LEWG">
 <title>`boyer_moore_searcher` and `boyer_moore_horspool_searcher` should be `constexpr`-friendly</title>
 <section>
 <sref ref="[func.search.bm]"/><sref ref="[func.search.bmh]"/>
 </section>
 <submitter>Hewill Kang</submitter>
 <date>03 Sep 2025</date>
-<priority>99</priority>
+<priority>4</priority>
 
 <discussion>
 <p>
@@ -27,6 +27,8 @@ Not to mention that library implementations usually simply use arrays instead of
 hash tables for the common string case because characters only have 256 values, 
 so `unordered_map` is not actually used.
 </p>
+
+<note>2025-10-21 Reflector poll; Status changed: New &rarr; LEWG and priority set to P4.</note>
 </discussion>
 
 <resolution>
