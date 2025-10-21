@@ -54,7 +54,7 @@
 </style>
 </head>
 <body>
-<p>Revised 2025-10-21 at 09:47:21 UTC
+<p>Revised 2025-10-21 at 11:46:56 UTC
 </p><h2>Unresolved Issues</h2>
 <hr>
 <h3 id="423"><a href="#423">423</a><sup><a href="https://cplusplus.github.io/LWG/issue423">(i)</a></sup>. Effects of negative <code>streamsize</code> in iostreams</h3>
@@ -17623,8 +17623,8 @@ template &lt;class Iterator1, class Iterator2&gt;
 <h3 id="2883"><a href="#2883">2883</a><sup><a href="https://cplusplus.github.io/LWG/issue2883">(i)</a></sup>. The standard library should provide <code>string_view</code> parameters instead or in addition for functions 
       defined with <code>char const *</code> or <code>string const &amp;</code> as parameter types.</h3>
 <p><b>Section:</b> 27.3 <a href="https://wg21.link/string.view">[string.view]</a> <b>Status:</b> <a href="lwg-active.html#LEWG">LEWG</a>
- <b>Submitter:</b> Switzerland <b>Opened:</b> 2017-02-03 <b>Last modified:</b> 2017-07-15</p>
-<p><b>Priority: </b>Not Prioritized
+ <b>Submitter:</b> Switzerland <b>Opened:</b> 2017-02-03 <b>Last modified:</b> 2025-10-21</p>
+<p><b>Priority: </b>4
 </p>
 <p><b>View other</b> <a href="lwg-index-open.html#string.view">active issues</a> in [string.view].</p>
 <p><b>View all other</b> <a href="lwg-index.html#string.view">issues</a> in [string.view].</p>
@@ -17654,6 +17654,10 @@ it is usable to have <code>string_view</code> overloads and there might be many 
 <p><i>[2017-07 Toronto Thurs Issue Prioritization]</i></p>
 
 <p>Status LEWG - they're already looking at this.</p>
+
+<p><i>[2025-10-21; Priority set to 4 based on age of issue and lack of activity.]</i></p>
+
+
 
 
 <p id="res-2883"><b>Proposed resolution:</b></p>
@@ -18810,8 +18814,8 @@ specification allows calling <code>iota</code> with a <code>const</code> output 
 <hr>
 <h3 id="2973"><a href="#2973">2973</a><sup><a href="https://cplusplus.github.io/LWG/issue2973">(i)</a></sup>. <code>inplace_merge</code> exact comparison count complexity prohibits useful real-world optimizations</h3>
 <p><b>Section:</b> 26.8.6 <a href="https://wg21.link/alg.merge">[alg.merge]</a> <b>Status:</b> <a href="lwg-active.html#LEWG">LEWG</a>
- <b>Submitter:</b> Billy Robert O'Neal III <b>Opened:</b> 2017-06-08 <b>Last modified:</b> 2020-09-06</p>
-<p><b>Priority: </b>Not Prioritized
+ <b>Submitter:</b> Billy Robert O'Neal III <b>Opened:</b> 2017-06-08 <b>Last modified:</b> 2025-10-21</p>
+<p><b>Priority: </b>4
 </p>
 <p><b>View all other</b> <a href="lwg-index.html#alg.merge">issues</a> in [alg.merge].</p>
 <p><b>View all issues with</b> <a href="lwg-status.html#LEWG">LEWG</a> status.</p>
@@ -18829,6 +18833,10 @@ compares like this, given that users must be prepared for the fallback "not enou
 <p><i>[2017-07 Toronto Monday issue prioritization]</i></p>
 
 <p>Status to LEWG</p>
+
+<p><i>[2025-10-21; Priority set to 4 based on age of issue and lack of activity.]</i></p>
+
+
 
 
 <p id="res-2973"><b>Proposed resolution:</b></p>
@@ -68991,8 +68999,8 @@ and making the requirement stricter seems evolutionary."
 <hr>
 <h3 id="4259"><a href="#4259">4259</a><sup><a href="https://cplusplus.github.io/LWG/issue4259">(i)</a></sup>. P1148R0 changed the return values of searching functions of <code class='backtick'>std::basic_string</code> on some platforms</h3>
 <p><b>Section:</b> 27.4.3.8.2 <a href="https://wg21.link/string.find">[string.find]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Jiang An <b>Opened:</b> 2025-05-05 <b>Last modified:</b> 2025-06-14</p>
-<p><b>Priority: </b>Not Prioritized
+ <b>Submitter:</b> Jiang An <b>Opened:</b> 2025-05-05 <b>Last modified:</b> 2025-10-21</p>
+<p><b>Priority: </b>3
 </p>
 <p><b>View other</b> <a href="lwg-index-open.html#string.find">active issues</a> in [string.find].</p>
 <p><b>View all other</b> <a href="lwg-index.html#string.find">issues</a> in [string.find].</p>
@@ -69055,6 +69063,12 @@ else
 <p>
 During reflector discussion of this issue there was a preference to adjust the
 proposed wording to use <code class='backtick'>s.npos</code> instead of <code class='backtick'>size_t(-1)</code>. 
+</p>
+
+<p><i>[2025-10-21; Reflector poll.]</i></p>
+
+<p>
+Set priority to 3 after reflector poll.
 </p>
 
 
@@ -69186,8 +69200,8 @@ Set priority to 3 after reflector poll.
 <hr>
 <h3 id="4262"><a href="#4262">4262</a><sup><a href="https://cplusplus.github.io/LWG/issue4262">(i)</a></sup>. <code class='backtick'>copy_if</code>, <code class='backtick'>remove_copy</code>, <code class='backtick'>remove_copy_if</code>, <code class='backtick'>unique_copy</code> have too strong preconditions</h3>
 <p><b>Section:</b> 26.7.1 <a href="https://wg21.link/alg.copy">[alg.copy]</a>, 26.7.8 <a href="https://wg21.link/alg.remove">[alg.remove]</a>, 26.7.9 <a href="https://wg21.link/alg.unique">[alg.unique]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Alex Guteniev <b>Opened:</b> 2025-05-12 <b>Last modified:</b> 2025-05-18</p>
-<p><b>Priority: </b>Not Prioritized
+ <b>Submitter:</b> Alex Guteniev <b>Opened:</b> 2025-05-12 <b>Last modified:</b> 2025-10-21</p>
+<p><b>Priority: </b>3
 </p>
 <p><b>View other</b> <a href="lwg-index-open.html#alg.copy">active issues</a> in [alg.copy].</p>
 <p><b>View all other</b> <a href="lwg-index.html#alg.copy">issues</a> in [alg.copy].</p>
@@ -69222,6 +69236,29 @@ I think there should be a weaker precondition, like 26.7.1 <a href="https://wg21
 <i>Preconditions</i>: <code class='backtick'>result</code> is not in the range <code class='backtick'>[first, last)</code>.
 </p>
 </blockquote>
+
+<p><i>[2025-10-21; Reflector poll.]</i></p>
+
+<p>
+Set priority to 3 after reflector poll.
+</p>
+<p>
+"The proposed resolution is incorrect, because the output iterator could ‘enter’
+the range [first, last) via being incremented. If the output iterator is a
+reverse iterator, it starts writing to the end of [first,last) before we
+need to read from there."
+</p>
+<p>
+"NAD - nothing is broken with the existing constraint. Relaxing it is a design change."
+</p>
+<p>
+"NAD.  The right behavior, if the algorithm runs out of output space,
+is to return the last processed input iterator and the "next spot"
+output iterator.  This is what <a href="https://wg21.link/P3179" title=" C++ parallel range algorithms">P3179</a>  (parallel ranges algorithms) does
+with its range-as-output algorithms.  I would not want the proposed
+resolution without this change.  Otherwise, we would be introducing
+new UB unnecessarily."
+</p>
 
 
 <p id="res-4262"><b>Proposed resolution:</b></p>
@@ -69591,71 +69628,6 @@ f2(); // it is unspecified if <code class='backtick'>f1</code> or <code class='b
 </li>
 </ol>
 
-
-
-
-
-
-
-<hr>
-<h3 id="4265"><a href="#4265">4265</a><sup><a href="https://cplusplus.github.io/LWG/issue4265">(i)</a></sup>. <code class='backtick'>std::midpoint</code> should not accept <code class='backtick'>const bool</code></h3>
-<p><b>Section:</b> 26.10.16 <a href="https://wg21.link/numeric.ops.midpoint">[numeric.ops.midpoint]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Jan Schultke <b>Opened:</b> 2025-05-21 <b>Last modified:</b> 2025-05-24</p>
-<p><b>Priority: </b>Not Prioritized
-</p>
-<p><b>View all other</b> <a href="lwg-index.html#numeric.ops.midpoint">issues</a> in [numeric.ops.midpoint].</p>
-<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
-<p><b>Discussion:</b></p>
-<p>
-The constraints of the first overload of <code class='backtick'>std::midpoint</code> are as follows:
-</p>
-<blockquote>
-<pre>
-template&lt;class T&gt;
-  constexpr T midpoint(T a, T b) noexcept;
-</pre>
-<blockquote>
-<p>
--1- <i>Constraints</i>: <code class='backtick'>T</code> is an arithmetic type other than <code class='backtick'>bool</code>.
-</p>
-</blockquote>
-</blockquote>
-<p>
-It does not appear intentional that <code class='backtick'>const bool</code> is supported considering that 
-26.10.14 <a href="https://wg21.link/numeric.ops.gcd">[numeric.ops.gcd]</a> excludes <i>cv</i> <code class='backtick'>bool</code>.
-<p/>
-More generally, it is questionable that <i>cv</i>-qualified arithmetic types aren't 
-excluded in general, considering that 26.10.17 <a href="https://wg21.link/numeric.sat">[numeric.sat]</a> excludes them with 
-the "signed or unsigned integer type" constraint. However, tightening the constraints 
-for these other functions seems evolutionary, not like fixing an obvious oversight, 
-and so it likely requires a separate issue.
-</p>
-
-
-
-<p id="res-4265"><b>Proposed resolution:</b></p>
-<p>
-This wording is relative to <a href="https://wg21.link/N5008" title=" Working Draft, Programming Languages — C++">N5008</a>.
-</p>
-<ol>
-
-<li><p>Modify 26.10.16 <a href="https://wg21.link/numeric.ops.midpoint">[numeric.ops.midpoint]</a> as indicated:</p>
-
-<blockquote>
-<pre>
-template&lt;class T&gt;
-  constexpr T midpoint(T a, T b) noexcept;
-</pre>
-<blockquote>
-<p>
--1- <i>Constraints</i>: <code class='backtick'>T</code> is an arithmetic type other than <ins><i>cv</i></ins> <code class='backtick'>bool</code>.
-</p>
-</blockquote>
-</blockquote>
-
-</li>
-
-</ol>
 
 
 
@@ -71662,8 +71634,8 @@ iterator of the format context.
 <hr>
 <h3 id="4285"><a href="#4285">4285</a><sup><a href="https://cplusplus.github.io/LWG/issue4285">(i)</a></sup>. <code class='backtick'>time_get::do_get_date</code> is problematic even after LWG 461</h3>
 <p><b>Section:</b> 28.3.4.6.2.2 <a href="https://wg21.link/locale.time.get.members">[locale.time.get.members]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> S. B. Tam <b>Opened:</b> 2025-06-27 <b>Last modified:</b> 2025-07-01</p>
-<p><b>Priority: </b>Not Prioritized
+ <b>Submitter:</b> S. B. Tam <b>Opened:</b> 2025-06-27 <b>Last modified:</b> 2025-10-21</p>
+<p><b>Priority: </b>3
 </p>
 <p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
 <p><b>Discussion:</b></p>
@@ -71690,6 +71662,26 @@ to accept additional formats, ambiguity could arise if the locale's format disag
 <p>
 On POSIX systems, it is possible to query the locale's date format using <code class='backtick'>nl_langinfo(D_FMT)</code>. 
 Maybe an implementation should be allowed to use that format <b>instead</b> of the one indicated by <code class='backtick'>date_order()</code>.
+</p>
+
+<p><i>[2025-10-21; Reflector poll.]</i></p>
+
+<p>
+Set priority to 3 after reflector poll.
+</p>
+<p>
+"The current wording of <code class='backtick'>do_date_order()</code> suggests it should return one of the
+<code class='backtick'>dmy</code>, <code class='backtick'>mdy</code>, <code class='backtick'>ymd</code>, <code class='backtick'>ymd</code>, or <code class='backtick'>ydm</code> enumerators as long as the date format
+specified by <code class='backtick'>%x</code> has no components except day, month, and year.
+But that fails to consider alternative separators between the components. 
+The <code class='backtick'>kok_IN</code> locale uses `"%d-%m-%y" which does not contain
+"other variable components" but still doesn't match any of the fixed formats
+in Table 102.
+We need normative wording allowing <code class='backtick'>no_order</code>, instead of just a footnoote,
+and we need to say <code class='backtick'>do_get_date</code> only has to use the formats in the table
+when <code class='backtick'>do_date_order() != no_order</code>. It should not default to the <code class='backtick'>mdy</code> format
+when <code class='backtick'>do_date_order()</code> returns <code class='backtick'>no_order</code>, because if the <code class='backtick'>mdy</code> format is
+correct then it should have returned <code class='backtick'>mdy</code>!"
 </p>
 
 
@@ -72517,148 +72509,6 @@ program."
 <p id="res-4296"><b>Proposed resolution:</b></p>
 <p>
 </p>
-
-
-
-
-
-<hr>
-<h3 id="4297"><a href="#4297">4297</a><sup><a href="https://cplusplus.github.io/LWG/issue4297">(i)</a></sup>. Missing <code class='backtick'>permutable</code> constraint for iterator overloads in Parallel Range Algorithms</h3>
-<p><b>Section:</b> 26.4 <a href="https://wg21.link/algorithm.syn">[algorithm.syn]</a>, 26.7.8 <a href="https://wg21.link/alg.remove">[alg.remove]</a>, 26.8.5 <a href="https://wg21.link/alg.partitions">[alg.partitions]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Ruslan Arutyunyan <b>Opened:</b> 2025-06-27 <b>Last modified:</b> 2025-08-16</p>
-<p><b>Priority: </b>Not Prioritized
-</p>
-<p><b>View other</b> <a href="lwg-index-open.html#algorithm.syn">active issues</a> in [algorithm.syn].</p>
-<p><b>View all other</b> <a href="lwg-index.html#algorithm.syn">issues</a> in [algorithm.syn].</p>
-<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
-<p><b>Discussion:</b></p>
-<p>
-The <a href="https://wg21.link/P3179R9" title=" C++ parallel range algorithms">P3179R9</a>: Parallel Range Algorithms paper was accepted to C++ working draft for C++ 26. 
-Unfortunately, there is an oversight for three algorithms &mdash; <code class='backtick'>remove</code>, <code class='backtick'>remove_if</code> and <code class='backtick'>partition</code> &mdash; 
-where the <code class='backtick'>permutable</code> constraint is missing. This applies to "Iterator and Sentinel" overloads only. The 
-issue exists in 26.4 <a href="https://wg21.link/algorithm.syn">[algorithm.syn]</a> as well as in per-algorithm sections: 
-26.8.5 <a href="https://wg21.link/alg.partitions">[alg.partitions]</a> and 26.7.8 <a href="https://wg21.link/alg.remove">[alg.remove]</a>.
-</p>
-
-
-<p id="res-4297"><b>Proposed resolution:</b></p>
-<p>
-This wording is relative to <a href="https://wg21.link/N5014">N5014</a>.
-</p>
-
-
-<ol>
-
-<li><p>Modify 26.4 <a href="https://wg21.link/algorithm.syn">[algorithm.syn]</a>, header <code>&lt;algorithm&gt;</code>, as indicated:</p>
-
-<blockquote>
-<pre>
-[&hellip;]
-template&lt;<i>execution-policy</i> Ep, random_access_iterator I, sized_sentinel_for&lt;I&gt; S,
-         class Proj = identity, class T = projected_value_t&lt;I, Proj&gt;&gt;
-  requires <ins>permutable&lt;I&gt; &amp;&amp;</ins>
-           indirect_binary_predicate&lt;ranges::equal_to, projected&lt;I, Proj&gt;, const T*&gt;
-  subrange&lt;I&gt; remove(Ep&amp; exec, I first, S last, const T&amp; value,
-                     Proj proj = {}); <i>// freestanding-deleted</i>
-template&lt;<i>execution-policy</i> Ep, <i>sized-random-access-range</i> R, class Proj = identity,
-         class T = projected_value_t&lt;iterator_t&lt;R&gt;, Proj&gt;&gt;
-  requires permutable&lt;iterator_t&lt;R&gt;&gt; &amp;&amp;
-           indirect_binary_predicate&lt;ranges::equal_to,
-                                     projected&lt;iterator_t&lt;R&gt;, Proj&gt;, const T*&gt;
-  borrowed_subrange_t&lt;R&gt;
-    remove(Ep&amp;&amp; exec, R&amp;&amp; r, const T&amp; value, Proj proj = {}); <i>// freestanding-deleted</i>                                     
-[&hellip;]
-template&lt;<i>execution-policy</i> Ep, random_access_iterator I, sized_sentinel_for&lt;I&gt; S,
-         class Proj = identity, indirect_unary_predicate&lt;projected&lt;I, Proj&gt;&gt; Pred&gt;
-  <ins>requires permutable&lt;I&gt;</ins>
-  subrange&lt;I&gt;
-    remove_if(Ep&amp; exec, I first, S last, Pred pred, Proj proj = {}); <i>// freestanding-deleted</i>
-template&lt;<i>execution-policy</i> Ep, <i>sized-random-access-range</i> R, class Proj = identity,
-         indirect_unary_predicate&lt;projected&lt;iterator_t&lt;R&gt;, Proj&gt;&gt; Pred&gt;
-  requires permutable&lt;iterator_t&lt;R&gt;&gt;
-  borrowed_subrange_t&lt;R&gt;
-    remove_if(Ep&amp; exec, R&amp; r, Pred pred, Proj proj = {}); <i>// freestanding-deleted</i>
-[&hellip;]
-template&lt;execution-policy Ep, random_access_iterator I, sized_sentinel_for&lt;I&gt; S,
-         class Proj = identity, indirect_unary_predicate&lt;projected&lt;I, Proj&gt;&gt; Pred&gt;
-  <ins>requires permutable&lt;I&gt;</ins>
-  subrange&lt;I&gt;
-    partition(Ep&amp;&amp; exec, I first, S last, Pred pred, Proj proj = {}); <i>// freestanding-deleted</i>
-template&lt;<i>execution-policy</i> Ep, <i>sized-random-access-range</i> R, class Proj = identity,
-         indirect_unary_predicate&lt;projected&lt;iterator_t&lt;R&gt;, Proj&gt;&gt; Pred&gt;
-  requires permutable&lt;iterator_t&lt;R&gt;&gt;
-  borrowed_subrange_t&lt;R&gt;
-    partition(Ep&amp;&amp; exec, R&amp;&amp; r, Pred pred, Proj proj = {}); <i>// freestanding-deleted</i>
-[&hellip;]
-</pre>
-</blockquote>
-</li>
-
-
-<li><p>Modify 26.7.8 <a href="https://wg21.link/alg.remove">[alg.remove]</a> as indicated:</p>
-
-<blockquote>
-<pre>
-[&hellip;]
-template&lt;<i>execution-policy</i> Ep, random_access_iterator I, sized_sentinel_for&lt;I&gt; S,
-         class Proj = identity, class T = projected_value_t&lt;I, Proj&gt;&gt;
-  requires <ins>permutable&lt;I&gt; &amp;&amp;</ins>
-           indirect_binary_predicate&lt;ranges::equal_to, projected&lt;I, Proj&gt;, const T*&gt;
-  subrange&lt;I&gt; 
-    ranges::remove(Ep&amp; exec, I first, S last, const T&amp; value, Proj proj = {});
-template&lt;<i>execution-policy</i> Ep, <i>sized-random-access-range</i> R, class Proj = identity,
-         class T = projected_value_t&lt;iterator_t&lt;R&gt;, Proj&gt;&gt;
-  requires permutable&lt;iterator_t&lt;R&gt;&gt; &amp;&amp;
-           indirect_binary_predicate&lt;ranges::equal_to,
-                                     projected&lt;iterator_t&lt;R&gt;, Proj&gt;, const T*&gt;
-  borrowed_subrange_t&lt;R&gt;
-    ranges::remove(Ep&amp;&amp; exec, R&amp;&amp; r, const T&amp; value, Proj proj = {});                                  
-[&hellip;]
-template&lt;<i>execution-policy</i> Ep, random_access_iterator I, sized_sentinel_for&lt;I&gt; S,
-         class Proj = identity, indirect_unary_predicate&lt;projected&lt;I, Proj&gt;&gt; Pred&gt;
-  <ins>requires permutable&lt;I&gt;</ins>
-  subrange&lt;I&gt;
-    ranges::remove_if(Ep&amp; exec, I first, S last, Pred pred, Proj proj = {});
-template&lt;<i>execution-policy</i> Ep, <i>sized-random-access-range</i> R, class Proj = identity,
-         indirect_unary_predicate&lt;projected&lt;iterator_t&lt;R&gt;, Proj&gt;&gt; Pred&gt;
-  requires permutable&lt;iterator_t&lt;R&gt;&gt;
-  borrowed_subrange_t&lt;R&gt;
-    ranges::remove_if(Ep&amp; exec, R&amp; r, Pred pred, Proj proj = {});
-</pre>
-<blockquote>
-<p>
--1- Let <code><i>E</i></code> be [&hellip;]
-</p>
-</blockquote>
-</blockquote>
-</li>
-
-
-<li><p>Modify 26.8.5 <a href="https://wg21.link/alg.partitions">[alg.partitions]</a> as indicated:</p>
-
-<blockquote>
-<pre>
-[&hellip;]
-template&lt;execution-policy Ep, random_access_iterator I, sized_sentinel_for&lt;I&gt; S,
-         class Proj = identity, indirect_unary_predicate&lt;projected&lt;I, Proj&gt;&gt; Pred&gt;
-  <ins>requires permutable&lt;I&gt;</ins>
-  subrange&lt;I&gt;
-    ranges::partition(Ep&amp;&amp; exec, I first, S last, Pred pred, Proj proj = {});
-template&lt;<i>execution-policy</i> Ep, <i>sized-random-access-range</i> R, class Proj = identity,
-         indirect_unary_predicate&lt;projected&lt;iterator_t&lt;R&gt;, Proj&gt;&gt; Pred&gt;
-  requires permutable&lt;iterator_t&lt;R&gt;&gt;
-  borrowed_subrange_t&lt;R&gt;
-    ranges::partition(Ep&amp;&amp; exec, R&amp;&amp; r, Pred pred, Proj proj = {});
-</pre>
-<blockquote>
-<p>
--1- Let <code class='backtick'>proj</code> be <code class='backtick'>identity{}</code> for the overloads with no parameter named <code class='backtick'>proj</code>.
-</p>
-</blockquote>
-</blockquote>
-</li>
-
-</ol>
 
 
 
@@ -78633,8 +78483,8 @@ constexpr <del>basic_vec&lt;<i>integer-from</i>&lt;Bytes&gt;, Abi&gt;</del><ins>
 <hr>
 <h3 id="4378"><a href="#4378">4378</a><sup><a href="https://cplusplus.github.io/LWG/issue4378">(i)</a></sup>. Inconsistency between <code class='backtick'>std::basic_string</code>'s <code class='backtick'>data()</code> and <code class='backtick'>operator[]</code> specification</h3>
 <p><b>Section:</b> 27.4.3.6 <a href="https://wg21.link/string.access">[string.access]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Peter Bindels <b>Opened:</b> 2025-09-16 <b>Last modified:</b> 2025-09-21</p>
-<p><b>Priority: </b>Not Prioritized
+ <b>Submitter:</b> Peter Bindels <b>Opened:</b> 2025-09-16 <b>Last modified:</b> 2025-10-21</p>
+<p><b>Priority: </b>4
 </p>
 <p><b>View all other</b> <a href="lwg-index.html#string.access">issues</a> in [string.access].</p>
 <p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
@@ -78675,6 +78525,30 @@ This moves it inline with the <code class='backtick'>data()</code> specification
 <code>pos &lt;= size()</code> this does not change behavior for any in-contract access, and we do 
 not define what the feature does when called with broken preconditions. I have been looking at 
 the latter but that will be an EWG paper instead.
+</p>
+
+<p><i>[2025-10-21; Reflector poll.]</i></p>
+
+<p>
+Set priority to 4 after reflector poll.
+</p>
+<p>
+"NAD. <code class='backtick'>begin() + size()</code> is not dereferenceable and should remain that way."
+</p>
+<p>
+"Saying "if <code>pos &lt;= size()</code> is redundant given the precondition above."
+</p>
+<p>
+"The resolution removes any guarantee that the value at <code class='backtick'>str[str.size()]</code>
+is <code class='backtick'>charT()</code>. Furthermore, the premise of the issue is incorrect,
+returning the address of a different null terminator not belonging to the
+string would make traversing it with other string operations UB, so it
+has to return a reference to a terminator that's within the same array."
+</p>
+<p>
+"<code class='backtick'>*(begin() = size())</code> is UB, but could use <code class='backtick'>*(data() + size())</code> instead.
+Personally I'd like <code class='backtick'>*end()</code> to be valid, but that's certainly LEWG business
+requiring a paper."
 </p>
 
 

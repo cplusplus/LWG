@@ -62,7 +62,7 @@
 </tr>
 <tr>
 <td align="left">Date:</td>
-<td align="left">Revised 2025-10-21 at 09:47:21 UTC
+<td align="left">Revised 2025-10-21 at 11:46:56 UTC
 </td>
 </tr>
 <tr>
@@ -1231,6 +1231,91 @@ is a valid expression.</ins>
 
 
 <hr>
+<h3 id="4265"><a href="#4265">4265</a><sup><a href="https://cplusplus.github.io/LWG/issue4265">(i)</a></sup>. <code class='backtick'>std::midpoint</code> should not accept <code class='backtick'>const bool</code></h3>
+<p><b>Section:</b> 26.10.16 <a href="https://wg21.link/numeric.ops.midpoint">[numeric.ops.midpoint]</a> <b>Status:</b> <a href="lwg-active.html#Ready">Tentatively Ready</a>
+ <b>Submitter:</b> Jan Schultke <b>Opened:</b> 2025-05-21 <b>Last modified:</b> 2025-10-21</p>
+<p><b>Priority: </b>Not Prioritized
+</p>
+<p><b>View all other</b> <a href="lwg-index.html#numeric.ops.midpoint">issues</a> in [numeric.ops.midpoint].</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#Tentatively Ready">Tentatively Ready</a> status.</p>
+<p><b>Discussion:</b></p>
+<p>
+The constraints of the first overload of <code class='backtick'>std::midpoint</code> are as follows:
+</p>
+<blockquote>
+<pre>
+template&lt;class T&gt;
+  constexpr T midpoint(T a, T b) noexcept;
+</pre>
+<blockquote>
+<p>
+-1- <i>Constraints</i>: <code class='backtick'>T</code> is an arithmetic type other than <code class='backtick'>bool</code>.
+</p>
+</blockquote>
+</blockquote>
+<p>
+It does not appear intentional that <code class='backtick'>const bool</code> is supported considering that 
+26.10.14 <a href="https://wg21.link/numeric.ops.gcd">[numeric.ops.gcd]</a> excludes <i>cv</i> <code class='backtick'>bool</code>.
+<p/>
+More generally, it is questionable that <i>cv</i>-qualified arithmetic types aren't 
+excluded in general, considering that 26.10.17 <a href="https://wg21.link/numeric.sat">[numeric.sat]</a> excludes them with 
+the "signed or unsigned integer type" constraint. However, tightening the constraints 
+for these other functions seems evolutionary, not like fixing an obvious oversight, 
+and so it likely requires a separate issue.
+</p>
+
+
+<p><i>[2025-10-21; Reflector poll.]</i></p>
+
+<p>
+Set status to Tentatively Ready after seven votes in favour during reflector poll.
+</p>
+<p>
+This requires template argument to be explicty specified, i.e.
+<code>midpoint&lt;const bool&gt;</code>.
+I would prefer to address all cv-qualified types at once, e.g.
+<i>Constraints</i>:
+<code>remove_cv_t&lt;T&gt;</code> is an arithmetic type other than <code class='backtick'>bool</code>."
+</p>
+<p>
+"This is locally consistent with <code class='backtick'>gcd</code> and <code class='backtick'>lcm</code> which only exclude <i>cv</i> <code class='backtick'>bool</code>.
+ [algorithms.requirement] p15 makes it unspecified to use an explicit
+template argument list here, so <code>midpoint&lt;const bool&gt;</code>
+and <code>midpoint&lt;const int&gt;</code> are already unspecified,
+this issue just ensures that <code class='backtick'>const bool</code> is explicitly rejected, like <code class='backtick'>bool</code>."
+</p>
+
+
+<p id="res-4265"><b>Proposed resolution:</b></p>
+<p>
+This wording is relative to <a href="https://wg21.link/N5008" title=" Working Draft, Programming Languages — C++">N5008</a>.
+</p>
+<ol>
+
+<li><p>Modify 26.10.16 <a href="https://wg21.link/numeric.ops.midpoint">[numeric.ops.midpoint]</a> as indicated:</p>
+
+<blockquote>
+<pre>
+template&lt;class T&gt;
+  constexpr T midpoint(T a, T b) noexcept;
+</pre>
+<blockquote>
+<p>
+-1- <i>Constraints</i>: <code class='backtick'>T</code> is an arithmetic type other than <ins><i>cv</i></ins> <code class='backtick'>bool</code>.
+</p>
+</blockquote>
+</blockquote>
+
+</li>
+
+</ol>
+
+
+
+
+
+
+<hr>
 <h3 id="4266"><a href="#4266">4266</a><sup><a href="https://cplusplus.github.io/LWG/issue4266">(i)</a></sup>. <code class='backtick'>layout_stride::mapping</code> should treat empty mappings as exhaustive</h3>
 <p><b>Section:</b> 23.7.3.4.7 <a href="https://wg21.link/mdspan.layout.stride">[mdspan.layout.stride]</a> <b>Status:</b> <a href="lwg-active.html#Ready">Tentatively Ready</a>
  <b>Submitter:</b> Tomasz Kamiński <b>Opened:</b> 2025-05-22 <b>Last modified:</b> 2025-06-13</p>
@@ -2222,6 +2307,154 @@ template&lt;class charT&gt;
 </ol>
 
 
+
+
+
+
+
+<hr>
+<h3 id="4297"><a href="#4297">4297</a><sup><a href="https://cplusplus.github.io/LWG/issue4297">(i)</a></sup>. Missing <code class='backtick'>permutable</code> constraint for iterator overloads in Parallel Range Algorithms</h3>
+<p><b>Section:</b> 26.4 <a href="https://wg21.link/algorithm.syn">[algorithm.syn]</a>, 26.7.8 <a href="https://wg21.link/alg.remove">[alg.remove]</a>, 26.8.5 <a href="https://wg21.link/alg.partitions">[alg.partitions]</a> <b>Status:</b> <a href="lwg-active.html#Ready">Tentatively Ready</a>
+ <b>Submitter:</b> Ruslan Arutyunyan <b>Opened:</b> 2025-06-27 <b>Last modified:</b> 2025-10-21</p>
+<p><b>Priority: </b>Not Prioritized
+</p>
+<p><b>View other</b> <a href="lwg-index-open.html#algorithm.syn">active issues</a> in [algorithm.syn].</p>
+<p><b>View all other</b> <a href="lwg-index.html#algorithm.syn">issues</a> in [algorithm.syn].</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#Tentatively Ready">Tentatively Ready</a> status.</p>
+<p><b>Discussion:</b></p>
+<p>
+The <a href="https://wg21.link/P3179R9" title=" C++ parallel range algorithms">P3179R9</a>: Parallel Range Algorithms paper was accepted to C++ working draft for C++ 26. 
+Unfortunately, there is an oversight for three algorithms &mdash; <code class='backtick'>remove</code>, <code class='backtick'>remove_if</code> and <code class='backtick'>partition</code> &mdash; 
+where the <code class='backtick'>permutable</code> constraint is missing. This applies to "Iterator and Sentinel" overloads only. The 
+issue exists in 26.4 <a href="https://wg21.link/algorithm.syn">[algorithm.syn]</a> as well as in per-algorithm sections: 
+26.8.5 <a href="https://wg21.link/alg.partitions">[alg.partitions]</a> and 26.7.8 <a href="https://wg21.link/alg.remove">[alg.remove]</a>.
+</p>
+
+<p><i>[2025-10-21; Reflector poll.]</i></p>
+
+<p>
+Set status to Tentatively Ready after seven votes in favour during reflector poll.
+</p>
+
+
+<p id="res-4297"><b>Proposed resolution:</b></p>
+<p>
+This wording is relative to <a href="https://wg21.link/N5014">N5014</a>.
+</p>
+
+
+<ol>
+
+<li><p>Modify 26.4 <a href="https://wg21.link/algorithm.syn">[algorithm.syn]</a>, header <code>&lt;algorithm&gt;</code>, as indicated:</p>
+
+<blockquote>
+<pre>
+[&hellip;]
+template&lt;<i>execution-policy</i> Ep, random_access_iterator I, sized_sentinel_for&lt;I&gt; S,
+         class Proj = identity, class T = projected_value_t&lt;I, Proj&gt;&gt;
+  requires <ins>permutable&lt;I&gt; &amp;&amp;</ins>
+           indirect_binary_predicate&lt;ranges::equal_to, projected&lt;I, Proj&gt;, const T*&gt;
+  subrange&lt;I&gt; remove(Ep&amp; exec, I first, S last, const T&amp; value,
+                     Proj proj = {}); <i>// freestanding-deleted</i>
+template&lt;<i>execution-policy</i> Ep, <i>sized-random-access-range</i> R, class Proj = identity,
+         class T = projected_value_t&lt;iterator_t&lt;R&gt;, Proj&gt;&gt;
+  requires permutable&lt;iterator_t&lt;R&gt;&gt; &amp;&amp;
+           indirect_binary_predicate&lt;ranges::equal_to,
+                                     projected&lt;iterator_t&lt;R&gt;, Proj&gt;, const T*&gt;
+  borrowed_subrange_t&lt;R&gt;
+    remove(Ep&amp;&amp; exec, R&amp;&amp; r, const T&amp; value, Proj proj = {}); <i>// freestanding-deleted</i>                                     
+[&hellip;]
+template&lt;<i>execution-policy</i> Ep, random_access_iterator I, sized_sentinel_for&lt;I&gt; S,
+         class Proj = identity, indirect_unary_predicate&lt;projected&lt;I, Proj&gt;&gt; Pred&gt;
+  <ins>requires permutable&lt;I&gt;</ins>
+  subrange&lt;I&gt;
+    remove_if(Ep&amp; exec, I first, S last, Pred pred, Proj proj = {}); <i>// freestanding-deleted</i>
+template&lt;<i>execution-policy</i> Ep, <i>sized-random-access-range</i> R, class Proj = identity,
+         indirect_unary_predicate&lt;projected&lt;iterator_t&lt;R&gt;, Proj&gt;&gt; Pred&gt;
+  requires permutable&lt;iterator_t&lt;R&gt;&gt;
+  borrowed_subrange_t&lt;R&gt;
+    remove_if(Ep&amp; exec, R&amp; r, Pred pred, Proj proj = {}); <i>// freestanding-deleted</i>
+[&hellip;]
+template&lt;execution-policy Ep, random_access_iterator I, sized_sentinel_for&lt;I&gt; S,
+         class Proj = identity, indirect_unary_predicate&lt;projected&lt;I, Proj&gt;&gt; Pred&gt;
+  <ins>requires permutable&lt;I&gt;</ins>
+  subrange&lt;I&gt;
+    partition(Ep&amp;&amp; exec, I first, S last, Pred pred, Proj proj = {}); <i>// freestanding-deleted</i>
+template&lt;<i>execution-policy</i> Ep, <i>sized-random-access-range</i> R, class Proj = identity,
+         indirect_unary_predicate&lt;projected&lt;iterator_t&lt;R&gt;, Proj&gt;&gt; Pred&gt;
+  requires permutable&lt;iterator_t&lt;R&gt;&gt;
+  borrowed_subrange_t&lt;R&gt;
+    partition(Ep&amp;&amp; exec, R&amp;&amp; r, Pred pred, Proj proj = {}); <i>// freestanding-deleted</i>
+[&hellip;]
+</pre>
+</blockquote>
+</li>
+
+
+<li><p>Modify 26.7.8 <a href="https://wg21.link/alg.remove">[alg.remove]</a> as indicated:</p>
+
+<blockquote>
+<pre>
+[&hellip;]
+template&lt;<i>execution-policy</i> Ep, random_access_iterator I, sized_sentinel_for&lt;I&gt; S,
+         class Proj = identity, class T = projected_value_t&lt;I, Proj&gt;&gt;
+  requires <ins>permutable&lt;I&gt; &amp;&amp;</ins>
+           indirect_binary_predicate&lt;ranges::equal_to, projected&lt;I, Proj&gt;, const T*&gt;
+  subrange&lt;I&gt; 
+    ranges::remove(Ep&amp; exec, I first, S last, const T&amp; value, Proj proj = {});
+template&lt;<i>execution-policy</i> Ep, <i>sized-random-access-range</i> R, class Proj = identity,
+         class T = projected_value_t&lt;iterator_t&lt;R&gt;, Proj&gt;&gt;
+  requires permutable&lt;iterator_t&lt;R&gt;&gt; &amp;&amp;
+           indirect_binary_predicate&lt;ranges::equal_to,
+                                     projected&lt;iterator_t&lt;R&gt;, Proj&gt;, const T*&gt;
+  borrowed_subrange_t&lt;R&gt;
+    ranges::remove(Ep&amp;&amp; exec, R&amp;&amp; r, const T&amp; value, Proj proj = {});                                  
+[&hellip;]
+template&lt;<i>execution-policy</i> Ep, random_access_iterator I, sized_sentinel_for&lt;I&gt; S,
+         class Proj = identity, indirect_unary_predicate&lt;projected&lt;I, Proj&gt;&gt; Pred&gt;
+  <ins>requires permutable&lt;I&gt;</ins>
+  subrange&lt;I&gt;
+    ranges::remove_if(Ep&amp; exec, I first, S last, Pred pred, Proj proj = {});
+template&lt;<i>execution-policy</i> Ep, <i>sized-random-access-range</i> R, class Proj = identity,
+         indirect_unary_predicate&lt;projected&lt;iterator_t&lt;R&gt;, Proj&gt;&gt; Pred&gt;
+  requires permutable&lt;iterator_t&lt;R&gt;&gt;
+  borrowed_subrange_t&lt;R&gt;
+    ranges::remove_if(Ep&amp; exec, R&amp; r, Pred pred, Proj proj = {});
+</pre>
+<blockquote>
+<p>
+-1- Let <code><i>E</i></code> be [&hellip;]
+</p>
+</blockquote>
+</blockquote>
+</li>
+
+
+<li><p>Modify 26.8.5 <a href="https://wg21.link/alg.partitions">[alg.partitions]</a> as indicated:</p>
+
+<blockquote>
+<pre>
+[&hellip;]
+template&lt;execution-policy Ep, random_access_iterator I, sized_sentinel_for&lt;I&gt; S,
+         class Proj = identity, indirect_unary_predicate&lt;projected&lt;I, Proj&gt;&gt; Pred&gt;
+  <ins>requires permutable&lt;I&gt;</ins>
+  subrange&lt;I&gt;
+    ranges::partition(Ep&amp;&amp; exec, I first, S last, Pred pred, Proj proj = {});
+template&lt;<i>execution-policy</i> Ep, <i>sized-random-access-range</i> R, class Proj = identity,
+         indirect_unary_predicate&lt;projected&lt;iterator_t&lt;R&gt;, Proj&gt;&gt; Pred&gt;
+  requires permutable&lt;iterator_t&lt;R&gt;&gt;
+  borrowed_subrange_t&lt;R&gt;
+    ranges::partition(Ep&amp;&amp; exec, R&amp;&amp; r, Pred pred, Proj proj = {});
+</pre>
+<blockquote>
+<p>
+-1- Let <code class='backtick'>proj</code> be <code class='backtick'>identity{}</code> for the overloads with no parameter named <code class='backtick'>proj</code>.
+</p>
+</blockquote>
+</blockquote>
+</li>
+
+</ol>
 
 
 

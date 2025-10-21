@@ -67,7 +67,7 @@
 This document is the Index by Status and Date for the <a href="lwg-active.html">Library Active Issues List</a>,
 <a href="lwg-defects.html">Library Defect Reports and Accepted Issues</a>, and <a href="lwg-closed.html">Library Closed Issues List</a>.
 </p>
-<p>Revised 2025-10-21 at 09:47:21 UTC
+<p>Revised 2025-10-21 at 11:46:56 UTC
 </p><h2 id="Ready">Ready (3 issues)</h2>
 <table class="issues-index">
 <tr>
@@ -107,7 +107,7 @@ This document is the Index by Status and Date for the <a href="lwg-active.html">
 <td></td>
 </tr>
 </table>
-<h2 id="Tentatively_Ready">Tentatively Ready (38 issues)</h2>
+<h2 id="Tentatively_Ready">Tentatively Ready (40 issues)</h2>
 <table class="issues-index">
 <tr>
   <th><a href="lwg-toc.html">Issue</a></th>
@@ -117,6 +117,24 @@ This document is the Index by Status and Date for the <a href="lwg-active.html">
   <th>Proposed Resolution</th>
   <th><a href="unresolved-prioritized.html">Priority</a></th>
   <th>Duplicates</th>
+</tr>
+<tr>
+<td id="4297"><a href="lwg-active.html#4297" title="Missing permutable constraint for iterator overloads in Parallel Range Algorithms (Status: Tentatively Ready)">4297</a><sup><a href="https://cplusplus.github.io/LWG/issue4297">(i)</a></sup></td>
+<td><a href="lwg-active.html#Ready">Tentatively Ready</a></td>
+<td>26.4 [algorithm.syn]</td>
+<td>Missing <code class='backtick'>permutable</code> constraint for iterator overloads in Parallel Range Algorithms</td>
+<td>Yes</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td id="4265"><a href="lwg-active.html#4265" title="std::midpoint should not accept const bool (Status: Tentatively Ready)">4265</a><sup><a href="https://cplusplus.github.io/LWG/issue4265">(i)</a></sup></td>
+<td><a href="lwg-active.html#Ready">Tentatively Ready</a></td>
+<td>26.10.16 [numeric.ops.midpoint]</td>
+<td><code class='backtick'>std::midpoint</code> should not accept <code class='backtick'>const bool</code></td>
+<td>Yes</td>
+<td></td>
+<td></td>
 </tr>
 <tr>
 <td id="4416"><a href="lwg-active.html#4416" title="&lt;meta&gt; should include &lt;compare&gt; (Status: Tentatively Ready)">4416</a><sup><a href="https://cplusplus.github.io/LWG/issue4416">(i)</a></sup></td>
@@ -657,7 +675,7 @@ of uses-allocator construction</td>
 <td></td>
 </tr>
 </table>
-<h2 id="New">New (588 issues)</h2>
+<h2 id="New">New (586 issues)</h2>
 <table class="issues-index">
 <tr>
   <th><a href="lwg-toc.html">Issue</a></th>
@@ -683,6 +701,42 @@ of uses-allocator construction</td>
 <td>23.7.3.6.1 [mdspan.mdspan.overview]</td>
 <td><code>mdspan::is_always_<i>meow</i>()</code> should be <code>noexcept</code></td>
 <td>Yes</td>
+<td>3</td>
+<td></td>
+</tr>
+<tr>
+<td id="4262"><a href="lwg-active.html#4262" title="copy_if, remove_copy, remove_copy_if, unique_copy have too strong preconditions (Status: New)">4262</a><sup><a href="https://cplusplus.github.io/LWG/issue4262">(i)</a></sup></td>
+<td><a href="lwg-active.html#New">New</a></td>
+<td>26.7.1 [alg.copy]</td>
+<td><code class='backtick'>copy_if</code>, <code class='backtick'>remove_copy</code>, <code class='backtick'>remove_copy_if</code>, <code class='backtick'>unique_copy</code> have too strong preconditions</td>
+<td>Yes</td>
+<td>3</td>
+<td></td>
+</tr>
+<tr>
+<td id="4378"><a href="lwg-active.html#4378" title="Inconsistency between std::basic_string's data() and operator[] specification (Status: New)">4378</a><sup><a href="https://cplusplus.github.io/LWG/issue4378">(i)</a></sup></td>
+<td><a href="lwg-active.html#New">New</a></td>
+<td>27.4.3.6 [string.access]</td>
+<td>Inconsistency between <code class='backtick'>std::basic_string</code>'s <code class='backtick'>data()</code> and <code class='backtick'>operator[]</code> specification</td>
+<td>Yes</td>
+<td>4</td>
+<td></td>
+</tr>
+<tr>
+<td id="4259"><a href="lwg-active.html#4259" title="P1148R0 changed the return values of searching functions of std::basic_string on some platforms (Status: New)">4259</a><sup><a href="https://cplusplus.github.io/LWG/issue4259">(i)</a></sup></td>
+<td><a href="lwg-active.html#New">New</a></td>
+<td>27.4.3.8.2 [string.find]</td>
+<td>P1148R0 changed the return values of searching functions of <code class='backtick'>std::basic_string</code> on some platforms</td>
+<td>Yes</td>
+<td>3</td>
+<td></td>
+</tr>
+<tr>
+<td id="4285"><a href="lwg-active.html#4285" title="time_get::do_get_date is problematic even after LWG 461 (Status: New)">4285</a><sup><a href="https://cplusplus.github.io/LWG/issue4285">(i)</a></sup></td>
+<td><a href="lwg-active.html#New">New</a></td>
+<td>28.3.4.6.2.2 [locale.time.get.members]</td>
+<td><code class='backtick'>time_get::do_get_date</code> is problematic even after LWG 461</td>
+<td><span class="no-pr">No</span></td>
 <td>3</td>
 <td></td>
 </tr>
@@ -1423,15 +1477,6 @@ vprint_unicode/vprint_nonunicode (Status: New)">4039</a><sup><a href="https://cp
 <td></td>
 </tr>
 <tr>
-<td id="4378"><a href="lwg-active.html#4378" title="Inconsistency between std::basic_string's data() and operator[] specification (Status: New)">4378</a><sup><a href="https://cplusplus.github.io/LWG/issue4378">(i)</a></sup></td>
-<td><a href="lwg-active.html#New">New</a></td>
-<td>27.4.3.6 [string.access]</td>
-<td>Inconsistency between <code class='backtick'>std::basic_string</code>'s <code class='backtick'>data()</code> and <code class='backtick'>operator[]</code> specification</td>
-<td>Yes</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
 <td id="4284"><a href="lwg-active.html#4284" title="Integer-class types should be formattable (Status: New)">4284</a><sup><a href="https://cplusplus.github.io/LWG/issue4284">(i)</a></sup></td>
 <td><a href="lwg-active.html#New">New</a></td>
 <td>28.5.6.4 [format.formatter.spec]</td>
@@ -1834,15 +1879,6 @@ in <code>&lt;ranges&gt;</code></td>
 <td></td>
 </tr>
 <tr>
-<td id="4297"><a href="lwg-active.html#4297" title="Missing permutable constraint for iterator overloads in Parallel Range Algorithms (Status: New)">4297</a><sup><a href="https://cplusplus.github.io/LWG/issue4297">(i)</a></sup></td>
-<td><a href="lwg-active.html#New">New</a></td>
-<td>26.4 [algorithm.syn]</td>
-<td>Missing <code class='backtick'>permutable</code> constraint for iterator overloads in Parallel Range Algorithms</td>
-<td>Yes</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
 <td id="4230"><a href="lwg-active.html#4230" title="simd&lt;complex&gt;::real/imag is overconstrained (Status: New)">4230</a><sup><a href="https://cplusplus.github.io/LWG/issue4230">(i)</a></sup></td>
 <td><a href="lwg-active.html#New">New</a></td>
 <td>29.10.8.4 [simd.complex.access]</td>
@@ -1899,15 +1935,6 @@ initializer_list (Status: New)">3537</a><sup><a href="https://cplusplus.github.i
 <td></td>
 </tr>
 <tr>
-<td id="4285"><a href="lwg-active.html#4285" title="time_get::do_get_date is problematic even after LWG 461 (Status: New)">4285</a><sup><a href="https://cplusplus.github.io/LWG/issue4285">(i)</a></sup></td>
-<td><a href="lwg-active.html#New">New</a></td>
-<td>28.3.4.6.2.2 [locale.time.get.members]</td>
-<td><code class='backtick'>time_get::do_get_date</code> is problematic even after LWG 461</td>
-<td><span class="no-pr">No</span></td>
-<td></td>
-<td></td>
-</tr>
-<tr>
 <td id="4282"><a href="lwg-active.html#4282" title="Imprecise Throws: clause in std::relocate (Status: New)">4282</a><sup><a href="https://cplusplus.github.io/LWG/issue4282">(i)</a></sup></td>
 <td><a href="lwg-active.html#New">New</a></td>
 <td>20.2.6 [obj.lifetime]</td>
@@ -1939,15 +1966,6 @@ initializer_list (Status: New)">3537</a><sup><a href="https://cplusplus.github.i
 <td><a href="lwg-active.html#New">New</a></td>
 <td>26.2 [algorithms.requirements]</td>
 <td>&sect;[algorithms.requirements] It is unclear what an algorithm is</td>
-<td>Yes</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td id="4259"><a href="lwg-active.html#4259" title="P1148R0 changed the return values of searching functions of std::basic_string on some platforms (Status: New)">4259</a><sup><a href="https://cplusplus.github.io/LWG/issue4259">(i)</a></sup></td>
-<td><a href="lwg-active.html#New">New</a></td>
-<td>27.4.3.8.2 [string.find]</td>
-<td>P1148R0 changed the return values of searching functions of <code class='backtick'>std::basic_string</code> on some platforms</td>
 <td>Yes</td>
 <td></td>
 <td></td>
@@ -2092,28 +2110,10 @@ complexity for algorithms that are in fact &#x1d4aa;(n)</td>
 <td></td>
 </tr>
 <tr>
-<td id="4265"><a href="lwg-active.html#4265" title="std::midpoint should not accept const bool (Status: New)">4265</a><sup><a href="https://cplusplus.github.io/LWG/issue4265">(i)</a></sup></td>
-<td><a href="lwg-active.html#New">New</a></td>
-<td>26.10.16 [numeric.ops.midpoint]</td>
-<td><code class='backtick'>std::midpoint</code> should not accept <code class='backtick'>const bool</code></td>
-<td>Yes</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
 <td id="4255"><a href="lwg-active.html#4255" title="move_only_function constructor should recognize empty copyable_functions (Status: New)">4255</a><sup><a href="https://cplusplus.github.io/LWG/issue4255">(i)</a></sup></td>
 <td><a href="lwg-active.html#New">New</a></td>
 <td>22.10.17.4.3 [func.wrap.move.ctor]</td>
 <td><code class='backtick'>move_only_function</code> constructor should recognize empty <code class='backtick'>copyable_function</code>s</td>
-<td>Yes</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td id="4262"><a href="lwg-active.html#4262" title="copy_if, remove_copy, remove_copy_if, unique_copy have too strong preconditions (Status: New)">4262</a><sup><a href="https://cplusplus.github.io/LWG/issue4262">(i)</a></sup></td>
-<td><a href="lwg-active.html#New">New</a></td>
-<td>26.7.1 [alg.copy]</td>
-<td><code class='backtick'>copy_if</code>, <code class='backtick'>remove_copy</code>, <code class='backtick'>remove_copy_if</code>, <code class='backtick'>unique_copy</code> have too strong preconditions</td>
 <td>Yes</td>
 <td></td>
 <td></td>
@@ -6828,6 +6828,26 @@ the evaluation of type traits</td>
   <th>Duplicates</th>
 </tr>
 <tr>
+<td id="2973"><a href="lwg-active.html#2973" title="inplace_merge exact comparison count complexity prohibits useful real-world optimizations (Status: LEWG)">2973</a><sup><a href="https://cplusplus.github.io/LWG/issue2973">(i)</a></sup></td>
+<td><a href="lwg-active.html#LEWG">LEWG</a></td>
+<td>26.8.6 [alg.merge]</td>
+<td><code>inplace_merge</code> exact comparison count complexity prohibits useful real-world optimizations</td>
+<td>Yes</td>
+<td>4</td>
+<td></td>
+</tr>
+<tr>
+<td id="2883"><a href="lwg-active.html#2883" title="The standard library should provide string_view parameters instead or in addition for functions 
+      defined with char const * or string const &amp; as parameter types. (Status: LEWG)">2883</a><sup><a href="https://cplusplus.github.io/LWG/issue2883">(i)</a></sup></td>
+<td><a href="lwg-active.html#LEWG">LEWG</a></td>
+<td>27.3 [string.view]</td>
+<td>The standard library should provide <code>string_view</code> parameters instead or in addition for functions 
+      defined with <code>char const *</code> or <code>string const &amp;</code> as parameter types.</td>
+<td><span class="no-pr">No</span></td>
+<td>4</td>
+<td></td>
+</tr>
+<tr>
 <td id="4302"><a href="lwg-active.html#4302" title="Problematic vector_sum_of_squares wording (Status: LEWG)">4302</a><sup><a href="https://cplusplus.github.io/LWG/issue4302">(i)</a></sup></td>
 <td><a href="lwg-active.html#LEWG">LEWG</a></td>
 <td>29.9.13.8 [linalg.algs.blas1.ssq]</td>
@@ -6981,32 +7001,12 @@ the evaluation of type traits</td>
 <td></td>
 </tr>
 <tr>
-<td id="2973"><a href="lwg-active.html#2973" title="inplace_merge exact comparison count complexity prohibits useful real-world optimizations (Status: LEWG)">2973</a><sup><a href="https://cplusplus.github.io/LWG/issue2973">(i)</a></sup></td>
-<td><a href="lwg-active.html#LEWG">LEWG</a></td>
-<td>26.8.6 [alg.merge]</td>
-<td><code>inplace_merge</code> exact comparison count complexity prohibits useful real-world optimizations</td>
-<td>Yes</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
 <td id="2307"><a href="lwg-active.html#2307" title="Should the Standard Library use explicit only when necessary? (Status: LEWG)">2307</a><sup><a href="https://cplusplus.github.io/LWG/issue2307">(i)</a></sup></td>
 <td><a href="lwg-active.html#LEWG">LEWG</a></td>
 <td>23 [containers]</td>
 <td>Should the Standard Library use <code>explicit</code> only when necessary?</td>
 <td><span class="no-pr">No</span></td>
 <td>2</td>
-<td></td>
-</tr>
-<tr>
-<td id="2883"><a href="lwg-active.html#2883" title="The standard library should provide string_view parameters instead or in addition for functions 
-      defined with char const * or string const &amp; as parameter types. (Status: LEWG)">2883</a><sup><a href="https://cplusplus.github.io/LWG/issue2883">(i)</a></sup></td>
-<td><a href="lwg-active.html#LEWG">LEWG</a></td>
-<td>27.3 [string.view]</td>
-<td>The standard library should provide <code>string_view</code> parameters instead or in addition for functions 
-      defined with <code>char const *</code> or <code>string const &amp;</code> as parameter types.</td>
-<td><span class="no-pr">No</span></td>
-<td></td>
 <td></td>
 </tr>
 <tr>

@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <title>Issue 4265: std::midpoint should not accept const bool</title>
 <meta property="og:title" content="Issue 4265: std::midpoint should not accept const bool">
-<meta property="og:description" content="C++ library issue. Status: New">
+<meta property="og:description" content="C++ library issue. Status: Tentatively Ready">
 <meta property="og:url" content="https://cplusplus.github.io/LWG/issue4265.html">
 <meta property="og:type" content="website">
 <meta property="og:image" content="http://cplusplus.github.io/LWG/images/cpp_logo.png">
@@ -61,14 +61,14 @@
 </head>
 <body>
 <hr>
-<p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#New">New</a> status.</em></p>
+<p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#Ready">Tentatively Ready</a> status.</em></p>
 <h3 id="4265"><a href="lwg-active.html#4265">4265</a>. <code class='backtick'>std::midpoint</code> should not accept <code class='backtick'>const bool</code></h3>
-<p><b>Section:</b> 26.10.16 <a href="https://wg21.link/numeric.ops.midpoint">[numeric.ops.midpoint]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Jan Schultke <b>Opened:</b> 2025-05-21 <b>Last modified:</b> 2025-05-24</p>
+<p><b>Section:</b> 26.10.16 <a href="https://wg21.link/numeric.ops.midpoint">[numeric.ops.midpoint]</a> <b>Status:</b> <a href="lwg-active.html#Ready">Tentatively Ready</a>
+ <b>Submitter:</b> Jan Schultke <b>Opened:</b> 2025-05-21 <b>Last modified:</b> 2025-10-21</p>
 <p><b>Priority: </b>Not Prioritized
 </p>
 <p><b>View all other</b> <a href="lwg-index.html#numeric.ops.midpoint">issues</a> in [numeric.ops.midpoint].</p>
-<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#Tentatively Ready">Tentatively Ready</a> status.</p>
 <p><b>Discussion:</b></p>
 <p>
 The constraints of the first overload of <code class='backtick'>std::midpoint</code> are as follows:
@@ -95,6 +95,26 @@ for these other functions seems evolutionary, not like fixing an obvious oversig
 and so it likely requires a separate issue.
 </p>
 
+
+<p><i>[2025-10-21; Reflector poll.]</i></p>
+
+<p>
+Set status to Tentatively Ready after seven votes in favour during reflector poll.
+</p>
+<p>
+This requires template argument to be explicty specified, i.e.
+<code>midpoint&lt;const bool&gt;</code>.
+I would prefer to address all cv-qualified types at once, e.g.
+<i>Constraints</i>:
+<code>remove_cv_t&lt;T&gt;</code> is an arithmetic type other than <code class='backtick'>bool</code>."
+</p>
+<p>
+"This is locally consistent with <code class='backtick'>gcd</code> and <code class='backtick'>lcm</code> which only exclude <i>cv</i> <code class='backtick'>bool</code>.
+ [algorithms.requirement] p15 makes it unspecified to use an explicit
+template argument list here, so <code>midpoint&lt;const bool&gt;</code>
+and <code>midpoint&lt;const int&gt;</code> are already unspecified,
+this issue just ensures that <code class='backtick'>const bool</code> is explicitly rejected, like <code class='backtick'>bool</code>."
+</p>
 
 
 <p id="res-4265"><b>Proposed resolution:</b></p>

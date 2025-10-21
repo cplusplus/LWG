@@ -64,8 +64,8 @@
 <p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#New">New</a> status.</em></p>
 <h3 id="4285"><a href="lwg-active.html#4285">4285</a>. <code class='backtick'>time_get::do_get_date</code> is problematic even after LWG 461</h3>
 <p><b>Section:</b> 28.3.4.6.2.2 <a href="https://wg21.link/locale.time.get.members">[locale.time.get.members]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> S. B. Tam <b>Opened:</b> 2025-06-27 <b>Last modified:</b> 2025-07-01</p>
-<p><b>Priority: </b>Not Prioritized
+ <b>Submitter:</b> S. B. Tam <b>Opened:</b> 2025-06-27 <b>Last modified:</b> 2025-10-21</p>
+<p><b>Priority: </b>3
 </p>
 <p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
 <p><b>Discussion:</b></p>
@@ -92,6 +92,26 @@ to accept additional formats, ambiguity could arise if the locale's format disag
 <p>
 On POSIX systems, it is possible to query the locale's date format using <code class='backtick'>nl_langinfo(D_FMT)</code>. 
 Maybe an implementation should be allowed to use that format <b>instead</b> of the one indicated by <code class='backtick'>date_order()</code>.
+</p>
+
+<p><i>[2025-10-21; Reflector poll.]</i></p>
+
+<p>
+Set priority to 3 after reflector poll.
+</p>
+<p>
+"The current wording of <code class='backtick'>do_date_order()</code> suggests it should return one of the
+<code class='backtick'>dmy</code>, <code class='backtick'>mdy</code>, <code class='backtick'>ymd</code>, <code class='backtick'>ymd</code>, or <code class='backtick'>ydm</code> enumerators as long as the date format
+specified by <code class='backtick'>%x</code> has no components except day, month, and year.
+But that fails to consider alternative separators between the components. 
+The <code class='backtick'>kok_IN</code> locale uses `"%d-%m-%y" which does not contain
+"other variable components" but still doesn't match any of the fixed formats
+in Table 102.
+We need normative wording allowing <code class='backtick'>no_order</code>, instead of just a footnoote,
+and we need to say <code class='backtick'>do_get_date</code> only has to use the formats in the table
+when <code class='backtick'>do_date_order() != no_order</code>. It should not default to the <code class='backtick'>mdy</code> format
+when <code class='backtick'>do_date_order()</code> returns <code class='backtick'>no_order</code>, because if the <code class='backtick'>mdy</code> format is
+correct then it should have returned <code class='backtick'>mdy</code>!"
 </p>
 
 

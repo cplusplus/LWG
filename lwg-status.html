@@ -62,7 +62,7 @@ This document is the Index by Status and Section for the <a href="lwg-active.htm
 <a href="lwg-defects.html">Library Defect Reports and Accepted Issues</a>, and <a href="lwg-closed.html">Library Closed Issues List</a>.
 </p>
 
-<p>Revised 2025-10-21 at 09:47:21 UTC
+<p>Revised 2025-10-21 at 11:46:56 UTC
 </p><h2 id="Ready">Ready (3 issues)</h2>
 <table class="issues-index">
 <tr>
@@ -102,7 +102,7 @@ This document is the Index by Status and Section for the <a href="lwg-active.htm
 <td></td>
 </tr>
 </table>
-<h2 id="Tentatively_Ready">Tentatively Ready (38 issues)</h2>
+<h2 id="Tentatively_Ready">Tentatively Ready (40 issues)</h2>
 <table class="issues-index">
 <tr>
   <th><a href="lwg-toc.html">Issue</a></th>
@@ -323,10 +323,28 @@ of uses-allocator construction</td>
 <td></td>
 </tr>
 <tr>
+<td id="4297"><a href="lwg-active.html#4297" title="Missing permutable constraint for iterator overloads in Parallel Range Algorithms (Status: Tentatively Ready)">4297</a><sup><a href="https://cplusplus.github.io/LWG/issue4297">(i)</a></sup></td>
+<td><a href="lwg-active.html#Ready">Tentatively Ready</a></td>
+<td>26.4 [algorithm.syn]</td>
+<td>Missing <code class='backtick'>permutable</code> constraint for iterator overloads in Parallel Range Algorithms</td>
+<td>Yes</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
 <td id="4269"><a href="lwg-active.html#4269" title="unique_copy passes arguments to its predicate backwards (Status: Tentatively Ready)">4269</a><sup><a href="https://cplusplus.github.io/LWG/issue4269">(i)</a></sup></td>
 <td><a href="lwg-active.html#Ready">Tentatively Ready</a></td>
 <td>26.7.9 [alg.unique]</td>
 <td><code class='backtick'>unique_copy</code> passes arguments to its predicate backwards</td>
+<td>Yes</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td id="4265"><a href="lwg-active.html#4265" title="std::midpoint should not accept const bool (Status: Tentatively Ready)">4265</a><sup><a href="https://cplusplus.github.io/LWG/issue4265">(i)</a></sup></td>
+<td><a href="lwg-active.html#Ready">Tentatively Ready</a></td>
+<td>26.10.16 [numeric.ops.midpoint]</td>
+<td><code class='backtick'>std::midpoint</code> should not accept <code class='backtick'>const bool</code></td>
 <td>Yes</td>
 <td></td>
 <td></td>
@@ -652,7 +670,7 @@ constructor</td>
 <td></td>
 </tr>
 </table>
-<h2 id="New">New (588 issues)</h2>
+<h2 id="New">New (586 issues)</h2>
 <table class="issues-index">
 <tr>
   <th><a href="lwg-toc.html">Issue</a></th>
@@ -3752,15 +3770,6 @@ inner-iterator with std::default_sentinel results in null pointer dereference (S
 <td></td>
 </tr>
 <tr>
-<td id="4297"><a href="lwg-active.html#4297" title="Missing permutable constraint for iterator overloads in Parallel Range Algorithms (Status: New)">4297</a><sup><a href="https://cplusplus.github.io/LWG/issue4297">(i)</a></sup></td>
-<td><a href="lwg-active.html#New">New</a></td>
-<td>26.4 [algorithm.syn]</td>
-<td>Missing <code class='backtick'>permutable</code> constraint for iterator overloads in Parallel Range Algorithms</td>
-<td>Yes</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
 <td id="4241"><a href="lwg-active.html#4241" title="ranges::for_each(_n) should be less constrained (Status: New)">4241</a><sup><a href="https://cplusplus.github.io/LWG/issue4241">(i)</a></sup></td>
 <td><a href="lwg-active.html#New">New</a></td>
 <td>26.6.5 [alg.foreach]</td>
@@ -3811,7 +3820,7 @@ inner-iterator with std::default_sentinel results in null pointer dereference (S
 <td>26.7.1 [alg.copy]</td>
 <td><code class='backtick'>copy_if</code>, <code class='backtick'>remove_copy</code>, <code class='backtick'>remove_copy_if</code>, <code class='backtick'>unique_copy</code> have too strong preconditions</td>
 <td>Yes</td>
-<td></td>
+<td>3</td>
 <td></td>
 </tr>
 <tr>
@@ -3908,15 +3917,6 @@ specified to make <code><i>N</i></code> copies of <code>T</code> into the destin
 <td>Incorrect requirements for <code>transform_inclusive_scan</code> without initial value</td>
 <td>Yes</td>
 <td>3</td>
-<td></td>
-</tr>
-<tr>
-<td id="4265"><a href="lwg-active.html#4265" title="std::midpoint should not accept const bool (Status: New)">4265</a><sup><a href="https://cplusplus.github.io/LWG/issue4265">(i)</a></sup></td>
-<td><a href="lwg-active.html#New">New</a></td>
-<td>26.10.16 [numeric.ops.midpoint]</td>
-<td><code class='backtick'>std::midpoint</code> should not accept <code class='backtick'>const bool</code></td>
-<td>Yes</td>
-<td></td>
 <td></td>
 </tr>
 <tr>
@@ -4105,7 +4105,7 @@ specified to make <code><i>N</i></code> copies of <code>T</code> into the destin
 <td>27.4.3.6 [string.access]</td>
 <td>Inconsistency between <code class='backtick'>std::basic_string</code>'s <code class='backtick'>data()</code> and <code class='backtick'>operator[]</code> specification</td>
 <td>Yes</td>
-<td></td>
+<td>4</td>
 <td></td>
 </tr>
 <tr>
@@ -4118,21 +4118,21 @@ specified to make <code><i>N</i></code> copies of <code>T</code> into the destin
 <td></td>
 </tr>
 <tr>
+<td id="4259"><a href="lwg-active.html#4259" title="P1148R0 changed the return values of searching functions of std::basic_string on some platforms (Status: New)">4259</a><sup><a href="https://cplusplus.github.io/LWG/issue4259">(i)</a></sup></td>
+<td><a href="lwg-active.html#New">New</a></td>
+<td>27.4.3.8.2 [string.find]</td>
+<td>P1148R0 changed the return values of searching functions of <code class='backtick'>std::basic_string</code> on some platforms</td>
+<td>Yes</td>
+<td>3</td>
+<td></td>
+</tr>
+<tr>
 <td id="4261"><a href="lwg-active.html#4261" title="P1206R7 broke uses of container adaptors with old custom sequence containers (Status: New)">4261</a><sup><a href="https://cplusplus.github.io/LWG/issue4261">(i)</a></sup></td>
 <td><a href="lwg-active.html#New">New</a></td>
 <td>27.4.3.8.2 [string.find]</td>
 <td>P1206R7 broke uses of container adaptors with old custom sequence containers</td>
 <td><span class="no-pr">No</span></td>
 <td>3</td>
-<td></td>
-</tr>
-<tr>
-<td id="4259"><a href="lwg-active.html#4259" title="P1148R0 changed the return values of searching functions of std::basic_string on some platforms (Status: New)">4259</a><sup><a href="https://cplusplus.github.io/LWG/issue4259">(i)</a></sup></td>
-<td><a href="lwg-active.html#New">New</a></td>
-<td>27.4.3.8.2 [string.find]</td>
-<td>P1148R0 changed the return values of searching functions of <code class='backtick'>std::basic_string</code> on some platforms</td>
-<td>Yes</td>
-<td></td>
 <td></td>
 </tr>
 <tr>
@@ -4260,7 +4260,7 @@ not copy) their predicate object</td>
 <td>28.3.4.6.2.2 [locale.time.get.members]</td>
 <td><code class='backtick'>time_get::do_get_date</code> is problematic even after LWG 461</td>
 <td><span class="no-pr">No</span></td>
-<td></td>
+<td>3</td>
 <td></td>
 </tr>
 <tr>
@@ -6909,7 +6909,7 @@ don't support <code>DynamicBuffer</code> lvalues</td>
 <td>26.8.6 [alg.merge]</td>
 <td><code>inplace_merge</code> exact comparison count complexity prohibits useful real-world optimizations</td>
 <td>Yes</td>
-<td></td>
+<td>4</td>
 <td></td>
 </tr>
 <tr>
@@ -6929,7 +6929,7 @@ don't support <code>DynamicBuffer</code> lvalues</td>
 <td>The standard library should provide <code>string_view</code> parameters instead or in addition for functions 
       defined with <code>char const *</code> or <code>string const &amp;</code> as parameter types.</td>
 <td><span class="no-pr">No</span></td>
-<td></td>
+<td>4</td>
 <td></td>
 </tr>
 <tr>
