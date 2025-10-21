@@ -60,7 +60,7 @@
 <p>This document is the Table of Contents for the <a href="lwg-active.html">Library Active Issues List</a>,
 <a href="lwg-defects.html">Library Defect Reports and Accepted Issues</a>, and <a href="lwg-closed.html">Library Closed Issues List</a>,
 sorted by priority.</p>
-<p>Revised 2025-10-21 at 14:09:30 UTC
+<p>Revised 2025-10-21 at 14:27:22 UTC
 </p><h2 id="Priority_1">Priority 1 (14 issues)</h2>
 <table class="issues-index">
 <tr>
@@ -4788,7 +4788,7 @@ don't support <code>DynamicBuffer</code> lvalues</td>
 <td></td>
 </tr>
 </table>
-<h2 id="Priority_4">Priority 4 (95 issues)</h2>
+<h2 id="Priority_4">Priority 4 (102 issues)</h2>
 <table class="issues-index">
 <tr>
   <th><a href="lwg-toc.html">Issue</a></th>
@@ -5526,6 +5526,15 @@ vprint_unicode/vprint_nonunicode (Status: New)">4039</a><sup><a href="https://cp
 <td></td>
 </tr>
 <tr>
+<td id="1484"><a href="lwg-active.html#1484" title="Need a way to join a thread with a timeout (Status: LEWG)">1484</a><sup><a href="https://cplusplus.github.io/LWG/issue1484">(i)</a></sup></td>
+<td><a href="lwg-active.html#LEWG">LEWG</a></td>
+<td>32.4.3 [thread.thread.class]</td>
+<td>Need a way to join a thread with a timeout</td>
+<td><span class="no-pr">No</span></td>
+<td>4</td>
+<td></td>
+</tr>
+<tr>
 <td id="2236"><a href="lwg-active.html#2236" title="kill_dependency unconditionally noexcept (Status: SG1)">2236</a><sup><a href="https://cplusplus.github.io/LWG/issue2236">(i)</a></sup></td>
 <td><a href="lwg-active.html#SG1">SG1</a></td>
 <td>32.5.2 [atomics.syn]</td>
@@ -5533,6 +5542,15 @@ vprint_unicode/vprint_nonunicode (Status: New)">4039</a><sup><a href="https://cp
 <td><span class="no-pr">No</span></td>
 <td>4</td>
 <td></td>
+</tr>
+<tr>
+<td id="1459"><a href="lwg-active.html#1459" title="Overlapping evaluations are allowed (Status: LEWG)">1459</a><sup><a href="https://cplusplus.github.io/LWG/issue1459">(i)</a></sup></td>
+<td><a href="lwg-active.html#LEWG">LEWG</a></td>
+<td>32.5.4 [atomics.order]</td>
+<td>Overlapping evaluations are allowed</td>
+<td><span class="no-pr">No</span></td>
+<td>4</td>
+<td><a href="lwg-closed.html#1458" title="Overlapping evaluations are allowed (Status: Dup)">1458</a></td>
 </tr>
 <tr>
 <td id="2265"><a href="lwg-active.html#2265" title="29.3p9 appears to rule out some acceptable executions (Status: Open)">2265</a><sup><a href="https://cplusplus.github.io/LWG/issue2265">(i)</a></sup></td>
@@ -5566,6 +5584,42 @@ vprint_unicode/vprint_nonunicode (Status: New)">4039</a><sup><a href="https://cp
 <td><a href="lwg-active.html#SG1">SG1</a></td>
 <td>32.5.4 [atomics.order]</td>
 <td>&sect;[atomics.order] p8 "circularly depend on their own computation" is unclear for loop</td>
+<td><span class="no-pr">No</span></td>
+<td>4</td>
+<td></td>
+</tr>
+<tr>
+<td id="1488"><a href="lwg-active.html#1488" title="Improve interoperability between the C++0x and C1x threads APIs (Status: LEWG)">1488</a><sup><a href="https://cplusplus.github.io/LWG/issue1488">(i)</a></sup></td>
+<td><a href="lwg-active.html#LEWG">LEWG</a></td>
+<td>32.6 [thread.mutex]</td>
+<td>Improve interoperability between the C++0x and C1x threads APIs</td>
+<td><span class="no-pr">No</span></td>
+<td>4</td>
+<td></td>
+</tr>
+<tr>
+<td id="936"><a href="lwg-active.html#936" title="Mutex type overspecified (Status: LEWG)">936</a><sup><a href="https://cplusplus.github.io/LWG/issue936">(i)</a></sup></td>
+<td><a href="lwg-active.html#LEWG">LEWG</a></td>
+<td>32.6.4 [thread.mutex.requirements]</td>
+<td>Mutex type overspecified</td>
+<td><span class="no-pr">No</span></td>
+<td>4</td>
+<td><a href="lwg-active.html#961" title="Various threading bugs #11 (Status: LEWG)">961</a></td>
+</tr>
+<tr>
+<td id="961"><a href="lwg-active.html#961" title="Various threading bugs #11 (Status: LEWG)">961</a><sup><a href="https://cplusplus.github.io/LWG/issue961">(i)</a></sup></td>
+<td><a href="lwg-active.html#LEWG">LEWG</a></td>
+<td>32.6.4 [thread.mutex.requirements]</td>
+<td>Various threading bugs #11</td>
+<td><span class="no-pr">No</span></td>
+<td>4</td>
+<td><a href="lwg-active.html#936" title="Mutex type overspecified (Status: LEWG)">936</a></td>
+</tr>
+<tr>
+<td id="1493"><a href="lwg-active.html#1493" title="Add mutex, recursive_mutex, is_locked function (Status: LEWG)">1493</a><sup><a href="https://cplusplus.github.io/LWG/issue1493">(i)</a></sup></td>
+<td><a href="lwg-active.html#LEWG">LEWG</a></td>
+<td>32.6.4 [thread.mutex.requirements]</td>
+<td>Add <code>mutex</code>, <code>recursive_mutex</code>, <code>is_locked</code> function</td>
 <td><span class="no-pr">No</span></td>
 <td>4</td>
 <td></td>
@@ -5660,8 +5714,17 @@ vprint_unicode/vprint_nonunicode (Status: New)">4039</a><sup><a href="https://cp
 <td>4</td>
 <td></td>
 </tr>
+<tr>
+<td id="3114"><a href="lwg-active.html#3114" title="[networking.ts] Permit efficient composition when using DynamicBuffer (Status: LEWG)">3114</a><sup><a href="https://cplusplus.github.io/LWG/issue3114">(i)</a></sup></td>
+<td><a href="lwg-active.html#LEWG">LEWG</a></td>
+<td>16 [networking.ts::buffer]</td>
+<td>[networking.ts] Permit efficient composition when using <code>DynamicBuffer</code></td>
+<td>Yes</td>
+<td>4</td>
+<td></td>
+</tr>
 </table>
-<h2 id="Priority_99">Not Prioritized (102 issues)</h2>
+<h2 id="Priority_99">Not Prioritized (95 issues)</h2>
 <table class="issues-index">
 <tr>
   <th><a href="lwg-toc.html">Issue</a></th>
@@ -6279,15 +6342,6 @@ in <code>&lt;ranges&gt;</code></td>
 <td></td>
 </tr>
 <tr>
-<td id="1484"><a href="lwg-active.html#1484" title="Need a way to join a thread with a timeout (Status: LEWG)">1484</a><sup><a href="https://cplusplus.github.io/LWG/issue1484">(i)</a></sup></td>
-<td><a href="lwg-active.html#LEWG">LEWG</a></td>
-<td>32.4.3 [thread.thread.class]</td>
-<td>Need a way to join a thread with a timeout</td>
-<td><span class="no-pr">No</span></td>
-<td></td>
-<td></td>
-</tr>
-<tr>
 <td id="4310"><a href="lwg-active.html#4310" title="Is &quot;the completion of the invocation of the constructor&quot; considered as an expression? (Status: New)">4310</a><sup><a href="https://cplusplus.github.io/LWG/issue4310">(i)</a></sup></td>
 <td><a href="lwg-active.html#New">New</a></td>
 <td>32.4.3.3 [thread.thread.constr]</td>
@@ -6295,15 +6349,6 @@ in <code>&lt;ranges&gt;</code></td>
 <td><span class="no-pr">No</span></td>
 <td></td>
 <td></td>
-</tr>
-<tr>
-<td id="1459"><a href="lwg-active.html#1459" title="Overlapping evaluations are allowed (Status: LEWG)">1459</a><sup><a href="https://cplusplus.github.io/LWG/issue1459">(i)</a></sup></td>
-<td><a href="lwg-active.html#LEWG">LEWG</a></td>
-<td>32.5.4 [atomics.order]</td>
-<td>Overlapping evaluations are allowed</td>
-<td><span class="no-pr">No</span></td>
-<td></td>
-<td><a href="lwg-closed.html#1458" title="Overlapping evaluations are allowed (Status: Dup)">1458</a></td>
 </tr>
 <tr>
 <td id="4309"><a href="lwg-active.html#4309" title="How are two seq_cst operations ordered in the single total order if these two operations are unsequenced? (Status: New)">4309</a><sup><a href="https://cplusplus.github.io/LWG/issue4309">(i)</a></sup></td>
@@ -6319,42 +6364,6 @@ in <code>&lt;ranges&gt;</code></td>
 <td><a href="lwg-active.html#New">New</a></td>
 <td>32.5.8.2 [atomics.types.operations]</td>
 <td>How are evaluations occurring within a store and a load operation ordered where the store synchronized with the load</td>
-<td><span class="no-pr">No</span></td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td id="1488"><a href="lwg-active.html#1488" title="Improve interoperability between the C++0x and C1x threads APIs (Status: LEWG)">1488</a><sup><a href="https://cplusplus.github.io/LWG/issue1488">(i)</a></sup></td>
-<td><a href="lwg-active.html#LEWG">LEWG</a></td>
-<td>32.6 [thread.mutex]</td>
-<td>Improve interoperability between the C++0x and C1x threads APIs</td>
-<td><span class="no-pr">No</span></td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td id="936"><a href="lwg-active.html#936" title="Mutex type overspecified (Status: LEWG)">936</a><sup><a href="https://cplusplus.github.io/LWG/issue936">(i)</a></sup></td>
-<td><a href="lwg-active.html#LEWG">LEWG</a></td>
-<td>32.6.4 [thread.mutex.requirements]</td>
-<td>Mutex type overspecified</td>
-<td><span class="no-pr">No</span></td>
-<td></td>
-<td><a href="lwg-active.html#961" title="Various threading bugs #11 (Status: LEWG)">961</a></td>
-</tr>
-<tr>
-<td id="961"><a href="lwg-active.html#961" title="Various threading bugs #11 (Status: LEWG)">961</a><sup><a href="https://cplusplus.github.io/LWG/issue961">(i)</a></sup></td>
-<td><a href="lwg-active.html#LEWG">LEWG</a></td>
-<td>32.6.4 [thread.mutex.requirements]</td>
-<td>Various threading bugs #11</td>
-<td><span class="no-pr">No</span></td>
-<td></td>
-<td><a href="lwg-active.html#936" title="Mutex type overspecified (Status: LEWG)">936</a></td>
-</tr>
-<tr>
-<td id="1493"><a href="lwg-active.html#1493" title="Add mutex, recursive_mutex, is_locked function (Status: LEWG)">1493</a><sup><a href="https://cplusplus.github.io/LWG/issue1493">(i)</a></sup></td>
-<td><a href="lwg-active.html#LEWG">LEWG</a></td>
-<td>32.6.4 [thread.mutex.requirements]</td>
-<td>Add <code>mutex</code>, <code>recursive_mutex</code>, <code>is_locked</code> function</td>
 <td><span class="no-pr">No</span></td>
 <td></td>
 <td></td>
@@ -6593,15 +6602,6 @@ co_await expression instead of same_as&lt;void&gt; (Status: New)">4357</a><sup><
 <td><a href="lwg-active.html#New">New</a></td>
 <td>33.13.6.5 [task.promise]</td>
 <td><code class='backtick'>task::promise_type::uncaught_exception</code> seems to be misnamed</td>
-<td>Yes</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td id="3114"><a href="lwg-active.html#3114" title="[networking.ts] Permit efficient composition when using DynamicBuffer (Status: LEWG)">3114</a><sup><a href="https://cplusplus.github.io/LWG/issue3114">(i)</a></sup></td>
-<td><a href="lwg-active.html#LEWG">LEWG</a></td>
-<td>16 [networking.ts::buffer]</td>
-<td>[networking.ts] Permit efficient composition when using <code>DynamicBuffer</code></td>
 <td>Yes</td>
 <td></td>
 <td></td>
