@@ -6,7 +6,7 @@
 <section><sref ref="[flat.map]"/><sref ref="[flat.multimap]"/></section>
 <submitter>Jiang An</submitter>
 <date>23 Jul 2023</date>
-<priority>99</priority>
+<priority>3</priority>
 
 <discussion>
 <p>
@@ -24,6 +24,16 @@ Likewise, <tt>std::flat_map::value_comp</tt> and <tt>std::flat_multimap::value_c
 required to copy the comparator twice due to the exposition-only constructor of <tt>value_compare</tt>. 
 <p/>
 Should we make the constructor take a <tt>const</tt> reference?
+</p>
+
+<note>2025-10-21; Reflector poll.</note>
+<p>
+Set priority to 3 after reflector poll.
+</p>
+<p>
+We should provide blanket wording to specify that comparators,
+hashers, allocators, etc. can be copied as often or as little as
+needed. Consider generalizing <iref ref="3049"/>.
 </p>
 </discussion>
 
