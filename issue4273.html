@@ -64,8 +64,8 @@
 <p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#New">New</a> status.</em></p>
 <h3 id="4273"><a href="lwg-active.html#4273">4273</a>. Standard execution policy types should be conventional tag class types</h3>
 <p><b>Section:</b> 26.3.6 <a href="https://wg21.link/execpol">[execpol]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Jiang An <b>Opened:</b> 2025-06-03 <b>Last modified:</b> 2025-06-10</p>
-<p><b>Priority: </b>Not Prioritized
+ <b>Submitter:</b> Jiang An <b>Opened:</b> 2025-06-03 <b>Last modified:</b> 2025-10-21</p>
+<p><b>Priority: </b>3
 </p>
 <p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
 <p><b>Discussion:</b></p>
@@ -76,6 +76,23 @@ which possibly enables more desired usages.
 <p/>
 Currently, libc++ makes these types non-movable, which is arguable undesired per the decision made in 
 <a href="https://wg21.link/P3136R1" title=" Retiring niebloids">P3136R1</a>.
+</p>
+
+<p><i>[2025-10-21; Reflector poll.]</i></p>
+
+<p>
+Set priority to 3 after reflector poll.
+</p>
+<p>
+"Not seeing the point of this change. For code dealing with generic policies,
+it shouldn't be constructing new objects of the policy type (there could be
+implementation-defined policies, or ones added in future standards, which
+are not default-constructible). For code using a specific policy, just using
+the named variable is strictly less typing than constructing the type.
+Maybe NAD or LEWG."
+"Making them tag types helps e.g. <a href="https://wg21.link/P3481" title=" std::execution::bulk() issues">P3481</a> where we have to
+store execution policies, and in <a href="https://wg21.link/P2500" title=" C++ parallel algorithms and P2300">P2500</a>."
+"Don't you want copy constructible, not default constructible?"
 </p>
 
 

@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <title>Issue 4284: Integer-class types should be formattable</title>
 <meta property="og:title" content="Issue 4284: Integer-class types should be formattable">
-<meta property="og:description" content="C++ library issue. Status: New">
+<meta property="og:description" content="C++ library issue. Status: LEWG">
 <meta property="og:url" content="https://cplusplus.github.io/LWG/issue4284.html">
 <meta property="og:type" content="website">
 <meta property="og:image" content="http://cplusplus.github.io/LWG/images/cpp_logo.png">
@@ -61,15 +61,15 @@
 </head>
 <body>
 <hr>
-<p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#New">New</a> status.</em></p>
+<p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#LEWG">LEWG</a> status.</em></p>
 <h3 id="4284"><a href="lwg-active.html#4284">4284</a>. Integer-class types should be formattable</h3>
-<p><b>Section:</b> 28.5.6.4 <a href="https://wg21.link/format.formatter.spec">[format.formatter.spec]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Jiang An <b>Opened:</b> 2025-06-27 <b>Last modified:</b> 2025-09-21</p>
-<p><b>Priority: </b>Not Prioritized
+<p><b>Section:</b> 28.5.6.4 <a href="https://wg21.link/format.formatter.spec">[format.formatter.spec]</a> <b>Status:</b> <a href="lwg-active.html#LEWG">LEWG</a>
+ <b>Submitter:</b> Jiang An <b>Opened:</b> 2025-06-27 <b>Last modified:</b> 2025-10-21</p>
+<p><b>Priority: </b>3
 </p>
 <p><b>View other</b> <a href="lwg-index-open.html#format.formatter.spec">active issues</a> in [format.formatter.spec].</p>
 <p><b>View all other</b> <a href="lwg-index.html#format.formatter.spec">issues</a> in [format.formatter.spec].</p>
-<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#LEWG">LEWG</a> status.</p>
 <p><b>Discussion:</b></p>
 <p>
 The following program doesn't compile with MSVC STL (<a href="https://godbolt.org/z/aazK6bhqM">Godbolt link</a>).
@@ -129,6 +129,20 @@ This wording is relative to <a href="https://wg21.link/N5008" title=" Working Dr
 
 <p><i>[2025-09-18; Jiang An improves wording]</i></p>
 
+
+<p><i>[2025-10-21; Reflector poll. Status changed: NEW &rarr; LEWG.]</i></p>
+
+<p>
+Set priority to 3 after reflector poll. Send to LEWG.
+</p>
+<p>
+"Which additional operations integer-class types should be required to support
+is a design question.
+Why <code class='backtick'>format</code> but not iostreams? What about <code class='backtick'>to_chars</code>/<code class='backtick'>from_chars</code>?
+All the stuff in <code>&lt;bit&gt;</code>? <code>&lt;utility&gt;</code>?
+<code>&lt;cmath&gt;</code>?
+You can show examples using any of these and claim 'uncertainty and inconsistency'."
+</p>
 
 
 <p id="res-4284"><b>Proposed resolution:</b></p>

@@ -66,7 +66,7 @@
 <p>This document is the Index by Section for the <a href="lwg-active.html">Library Active Issues List</a>.</p>
 <h2>Index by Section (non-Ready active issues only)</h2>
 <p><a href="lwg-index.html">(view all issues)</a></p>
-<p>Revised 2025-10-21 at 13:39:07 UTC
+<p>Revised 2025-10-21 at 14:09:30 UTC
 </p><h2 id="Section_3">Section 3 (2 issues)</h2>
 <p><a href="lwg-index.html#Section_3">(view all issues)</a></p>
 <table class="issues-index">
@@ -2817,15 +2817,6 @@ should conditionally require <i>Cpp17CopyInsertable</i> in their preconditions</
 <td></td>
 </tr>
 <tr>
-<td id="4350"><a href="lwg-active.html#4350" title="Should flat adaptors use insert_range when available? (Status: New)">4350</a><sup><a href="https://cplusplus.github.io/LWG/issue4350">(i)</a></sup></td>
-<td><a href="lwg-active.html#New">New</a></td>
-<td>23.6.8 [flat.map]</td>
-<td>Should flat adaptors use <code class='backtick'>insert_range</code> when available?</td>
-<td><span class="no-pr">No</span></td>
-<td>2</td>
-<td></td>
-</tr>
-<tr>
 <td id="3802"><a href="lwg-active.html#3802" title="flat_foo allocator-extended constructors lack move semantics (Status: New)">3802</a><sup><a href="https://cplusplus.github.io/LWG/issue3802">(i)</a></sup></td>
 <td><a href="lwg-active.html#New">New</a></td>
 <td>23.6.8 [flat.map]</td>
@@ -2839,6 +2830,15 @@ should conditionally require <i>Cpp17CopyInsertable</i> in their preconditions</
 <td><a href="lwg-active.html#New">New</a></td>
 <td>23.6.8 [flat.map]</td>
 <td><code>flat_<i>foo</i></code> missing some allocator-extended deduction guides</td>
+<td><span class="no-pr">No</span></td>
+<td>2</td>
+<td></td>
+</tr>
+<tr>
+<td id="4350"><a href="lwg-active.html#4350" title="Should flat adaptors use insert_range when available? (Status: LEWG)">4350</a><sup><a href="https://cplusplus.github.io/LWG/issue4350">(i)</a></sup></td>
+<td><a href="lwg-active.html#LEWG">LEWG</a></td>
+<td>23.6.8 [flat.map]</td>
+<td>Should flat adaptors use <code class='backtick'>insert_range</code> when available?</td>
 <td><span class="no-pr">No</span></td>
 <td>2</td>
 <td></td>
@@ -4255,7 +4255,7 @@ inner-iterator with std::default_sentinel results in null pointer dereference (S
 <td>26.2 [algorithms.requirements]<a id="algorithms.requirements"></a></td>
 <td>&sect;[algorithms.requirements] It is unclear what an algorithm is</td>
 <td>Yes</td>
-<td></td>
+<td>4</td>
 <td></td>
 </tr>
 <tr>
@@ -4273,7 +4273,7 @@ inner-iterator with std::default_sentinel results in null pointer dereference (S
 <td>26.3.6 [execpol]<a id="execpol"></a></td>
 <td>Standard execution policy types should be conventional tag class types</td>
 <td>Yes</td>
-<td></td>
+<td>3</td>
 <td></td>
 </tr>
 <tr>
@@ -5087,15 +5087,6 @@ not copy) their predicate object</td>
 <td></td>
 </tr>
 <tr>
-<td id="4284"><a href="lwg-active.html#4284" title="Integer-class types should be formattable (Status: New)">4284</a><sup><a href="https://cplusplus.github.io/LWG/issue4284">(i)</a></sup></td>
-<td><a href="lwg-active.html#New">New</a></td>
-<td>28.5.6.4 [format.formatter.spec]</td>
-<td>Integer-class types should be formattable</td>
-<td>Yes</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
 <td id="3706"><a href="lwg-active.html#3706" title="How does std::format work with character arrays of unknown bound? (Status: New)">3706</a><sup><a href="https://cplusplus.github.io/LWG/issue3706">(i)</a></sup></td>
 <td><a href="lwg-active.html#New">New</a></td>
 <td>28.5.6.4 [format.formatter.spec]</td>
@@ -5105,12 +5096,21 @@ not copy) their predicate object</td>
 <td></td>
 </tr>
 <tr>
+<td id="4284"><a href="lwg-active.html#4284" title="Integer-class types should be formattable (Status: LEWG)">4284</a><sup><a href="https://cplusplus.github.io/LWG/issue4284">(i)</a></sup></td>
+<td><a href="lwg-active.html#LEWG">LEWG</a></td>
+<td>28.5.6.4 [format.formatter.spec]</td>
+<td>Integer-class types should be formattable</td>
+<td>Yes</td>
+<td>3</td>
+<td></td>
+</tr>
+<tr>
 <td id="4221"><a href="lwg-active.html#4221" title="Cannot format const-iterable only ranges (Status: New)">4221</a><sup><a href="https://cplusplus.github.io/LWG/issue4221">(i)</a></sup></td>
 <td><a href="lwg-active.html#New">New</a></td>
 <td>28.5.7 [format.range]<a id="format.range"></a></td>
 <td>Cannot format const-iterable only ranges</td>
 <td><span class="no-pr">No</span></td>
-<td></td>
+<td>2</td>
 <td></td>
 </tr>
 <tr>
@@ -5397,7 +5397,7 @@ regards to <code>ClassAtomCollatingElement</code></td>
 <td>29.5.3.1 [rand.req.genl]<a id="rand.req.genl"></a></td>
 <td>Instantiating templates in &sect;[rand] with <code>int8_t</code>/<code>uint8_t</code> is undefined behavior</td>
 <td>Yes</td>
-<td></td>
+<td>3</td>
 <td></td>
 </tr>
 <tr>

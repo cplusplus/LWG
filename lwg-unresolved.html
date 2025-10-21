@@ -54,7 +54,7 @@
 </style>
 </head>
 <body>
-<p>Revised 2025-10-21 at 13:39:07 UTC
+<p>Revised 2025-10-21 at 14:09:30 UTC
 </p><h2>Unresolved Issues</h2>
 <hr>
 <h3 id="423"><a href="#423">423</a><sup><a href="https://cplusplus.github.io/LWG/issue423">(i)</a></sup>. Effects of negative <code>streamsize</code> in iostreams</h3>
@@ -59148,8 +59148,8 @@ namespace std::ranges {
 <hr>
 <h3 id="4109"><a href="#4109">4109</a><sup><a href="https://cplusplus.github.io/LWG/issue4109">(i)</a></sup>. Instantiating templates in &sect;[rand] with <code>int8_t</code>/<code>uint8_t</code> is undefined behavior</h3>
 <p><b>Section:</b> 29.5.3.1 <a href="https://wg21.link/rand.req.genl">[rand.req.genl]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Peter Dimov <b>Opened:</b> 2024-05-25 <b>Last modified:</b> 2024-05-26</p>
-<p><b>Priority: </b>Not Prioritized
+ <b>Submitter:</b> Peter Dimov <b>Opened:</b> 2024-05-25 <b>Last modified:</b> 2025-10-21</p>
+<p><b>Priority: </b>3
 </p>
 <p><b>View all other</b> <a href="lwg-index.html#rand.req.genl">issues</a> in [rand.req.genl].</p>
 <p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
@@ -59205,6 +59205,32 @@ Given that I also think that we should consider to either normatively extend all
 and (1.6) to corresponding <i>extended floating point</i> types and <i>extended (unsigned) integer types</i>, 
 or to the minimum make these extended types conditionally-supported with implementation-defined 
 semantics (A word of power that is used at several places).
+</p>
+
+<p><i>[2025-10-21; Reflector poll.]</i></p>
+
+<p>
+Set priority to 3 after reflector poll.
+</p>
+<p>
+"The only benefit of making it UB is allowing it as an extension."
+</p>
+<p>
+"Does anybody actually want to support a BigInt as an extension?
+If not, non-integral types should be ill-formed and integral types
+not in the list should be conditionally-supported."
+</p>
+<p>
+"I'd like extended arithmetic types to work in general,
+it's useful for writing generic math libraries to be able to
+generate random numbers of any arithmetic type that the implementation
+provides, including short integers and all floating-point types."
+</p>
+<p>
+"Can have overflows here, differences between whether <code class='backtick'>char</code> is signed or
+unsigned lead to subtle bugs. Most users are better off picking <code class='backtick'>int</code> or
+<code class='backtick'>unsigned int</code> (which is what they get from integral promotions anyway)
+and just using values that are in range for their intended destination type."
 </p>
 
 
@@ -66804,8 +66830,8 @@ namespace std::ranges {
 <hr>
 <h3 id="4221"><a href="#4221">4221</a><sup><a href="https://cplusplus.github.io/LWG/issue4221">(i)</a></sup>. Cannot format const-iterable only ranges</h3>
 <p><b>Section:</b> 28.5.7 <a href="https://wg21.link/format.range">[format.range]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Hewill Kang <b>Opened:</b> 2025-03-06 <b>Last modified:</b> 2025-03-09</p>
-<p><b>Priority: </b>Not Prioritized
+ <b>Submitter:</b> Hewill Kang <b>Opened:</b> 2025-03-06 <b>Last modified:</b> 2025-10-21</p>
+<p><b>Priority: </b>2
 </p>
 <p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
 <p><b>Discussion:</b></p>
@@ -66847,6 +66873,16 @@ int main() {
 <p>
 Although such type might be relatively rare, it does reflect an inconsistency in the general usage of formatting
 ranges, which do not support all valid ranges.
+</p>
+
+<p><i>[2025-10-21; Reflector poll.]</i></p>
+
+<p>
+Set priority to 2 after reflector poll.
+</p>
+<p>
+The majority voted NAD, because the range shown in the issue is nonsensical.
+But enough people voted P2 that we should not close it without more discussion.
 </p>
 
 
@@ -70926,8 +70962,8 @@ LayoutRightPaddedMapping::padding_value == dynamic_extent)
 <hr>
 <h3 id="4273"><a href="#4273">4273</a><sup><a href="https://cplusplus.github.io/LWG/issue4273">(i)</a></sup>. Standard execution policy types should be conventional tag class types</h3>
 <p><b>Section:</b> 26.3.6 <a href="https://wg21.link/execpol">[execpol]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Jiang An <b>Opened:</b> 2025-06-03 <b>Last modified:</b> 2025-06-10</p>
-<p><b>Priority: </b>Not Prioritized
+ <b>Submitter:</b> Jiang An <b>Opened:</b> 2025-06-03 <b>Last modified:</b> 2025-10-21</p>
+<p><b>Priority: </b>3
 </p>
 <p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
 <p><b>Discussion:</b></p>
@@ -70938,6 +70974,23 @@ which possibly enables more desired usages.
 <p/>
 Currently, libc++ makes these types non-movable, which is arguable undesired per the decision made in 
 <a href="https://wg21.link/P3136R1" title=" Retiring niebloids">P3136R1</a>.
+</p>
+
+<p><i>[2025-10-21; Reflector poll.]</i></p>
+
+<p>
+Set priority to 3 after reflector poll.
+</p>
+<p>
+"Not seeing the point of this change. For code dealing with generic policies,
+it shouldn't be constructing new objects of the policy type (there could be
+implementation-defined policies, or ones added in future standards, which
+are not default-constructible). For code using a specific policy, just using
+the named variable is strictly less typing than constructing the type.
+Maybe NAD or LEWG."
+"Making them tag types helps e.g. <a href="https://wg21.link/P3481" title=" std::execution::bulk() issues">P3481</a> where we have to
+store execution policies, and in <a href="https://wg21.link/P2500" title=" C++ parallel algorithms and P2300">P2500</a>."
+"Don't you want copy constructible, not default constructible?"
 </p>
 
 
@@ -71016,8 +71069,8 @@ inline constexpr execution::unsequenced_policy execution::unseq{ <del><i>unspeci
 <hr>
 <h3 id="4277"><a href="#4277">4277</a><sup><a href="https://cplusplus.github.io/LWG/issue4277">(i)</a></sup>. &sect;[algorithms.requirements] It is unclear what an algorithm is</h3>
 <p><b>Section:</b> 26.2 <a href="https://wg21.link/algorithms.requirements">[algorithms.requirements]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Jan Schultke <b>Opened:</b> 2025-06-08 <b>Last modified:</b> 2025-06-14</p>
-<p><b>Priority: </b>Not Prioritized
+ <b>Submitter:</b> Jan Schultke <b>Opened:</b> 2025-06-08 <b>Last modified:</b> 2025-10-21</p>
+<p><b>Priority: </b>4
 </p>
 <p><b>View other</b> <a href="lwg-index-open.html#algorithms.requirements">active issues</a> in [algorithms.requirements].</p>
 <p><b>View all other</b> <a href="lwg-index.html#algorithms.requirements">issues</a> in [algorithms.requirements].</p>
@@ -71040,6 +71093,19 @@ function templates such as <code class='backtick'>std::gcd</code> which do not a
 The <i>Remarks</i> specifications in 26.8.9 <a href="https://wg21.link/alg.min.max">[alg.min.max]</a> providing exemptions from 
 26.2 <a href="https://wg21.link/algorithms.requirements">[algorithms.requirements]</a> paragraph 15 suggest that even function templates not 
 accepting iterators are considered algorithms.
+</p>
+
+<p><i>[2025-10-21; Reflector poll.]</i></p>
+
+<p>
+Set priority to 4 after reflector poll.
+</p>
+<p>
+"NAD, I don't think people are confused about what an algorithm is."
+</p>
+<p>
+"I'd rather the fix would define 'algorithm', as even the Note below
+the change uses that term."
 </p>
 
 
@@ -71513,13 +71579,13 @@ No constructors or destructors are invoked.
 
 <hr>
 <h3 id="4284"><a href="#4284">4284</a><sup><a href="https://cplusplus.github.io/LWG/issue4284">(i)</a></sup>. Integer-class types should be formattable</h3>
-<p><b>Section:</b> 28.5.6.4 <a href="https://wg21.link/format.formatter.spec">[format.formatter.spec]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Jiang An <b>Opened:</b> 2025-06-27 <b>Last modified:</b> 2025-09-21</p>
-<p><b>Priority: </b>Not Prioritized
+<p><b>Section:</b> 28.5.6.4 <a href="https://wg21.link/format.formatter.spec">[format.formatter.spec]</a> <b>Status:</b> <a href="lwg-active.html#LEWG">LEWG</a>
+ <b>Submitter:</b> Jiang An <b>Opened:</b> 2025-06-27 <b>Last modified:</b> 2025-10-21</p>
+<p><b>Priority: </b>3
 </p>
 <p><b>View other</b> <a href="lwg-index-open.html#format.formatter.spec">active issues</a> in [format.formatter.spec].</p>
 <p><b>View all other</b> <a href="lwg-index.html#format.formatter.spec">issues</a> in [format.formatter.spec].</p>
-<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#LEWG">LEWG</a> status.</p>
 <p><b>Discussion:</b></p>
 <p>
 The following program doesn't compile with MSVC STL (<a href="https://godbolt.org/z/aazK6bhqM">Godbolt link</a>).
@@ -71579,6 +71645,20 @@ This wording is relative to <a href="https://wg21.link/N5008" title=" Working Dr
 
 <p><i>[2025-09-18; Jiang An improves wording]</i></p>
 
+
+<p><i>[2025-10-21; Reflector poll. Status changed: NEW &rarr; LEWG.]</i></p>
+
+<p>
+Set priority to 3 after reflector poll. Send to LEWG.
+</p>
+<p>
+"Which additional operations integer-class types should be required to support
+is a design question.
+Why <code class='backtick'>format</code> but not iostreams? What about <code class='backtick'>to_chars</code>/<code class='backtick'>from_chars</code>?
+All the stuff in <code>&lt;bit&gt;</code>? <code>&lt;utility&gt;</code>?
+<code>&lt;cmath&gt;</code>?
+You can show examples using any of these and claim 'uncertainty and inconsistency'."
+</p>
 
 
 <p id="res-4284"><b>Proposed resolution:</b></p>
@@ -76725,13 +76805,13 @@ Set priority to 2 after reflector poll. Send to LEWG.
 
 <hr>
 <h3 id="4350"><a href="#4350">4350</a><sup><a href="https://cplusplus.github.io/LWG/issue4350">(i)</a></sup>. Should flat adaptors use <code class='backtick'>insert_range</code> when available?</h3>
-<p><b>Section:</b> 23.6.8 <a href="https://wg21.link/flat.map">[flat.map]</a>, 23.6.9 <a href="https://wg21.link/flat.multimap">[flat.multimap]</a>, 23.6.11 <a href="https://wg21.link/flat.set">[flat.set]</a>, 23.6.12 <a href="https://wg21.link/flat.multiset">[flat.multiset]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
+<p><b>Section:</b> 23.6.8 <a href="https://wg21.link/flat.map">[flat.map]</a>, 23.6.9 <a href="https://wg21.link/flat.multimap">[flat.multimap]</a>, 23.6.11 <a href="https://wg21.link/flat.set">[flat.set]</a>, 23.6.12 <a href="https://wg21.link/flat.multiset">[flat.multiset]</a> <b>Status:</b> <a href="lwg-active.html#LEWG">LEWG</a>
  <b>Submitter:</b> Jonathan Wakely <b>Opened:</b> 2025-09-05 <b>Last modified:</b> 2025-10-21</p>
 <p><b>Priority: </b>2
 </p>
 <p><b>View other</b> <a href="lwg-index-open.html#flat.map">active issues</a> in [flat.map].</p>
 <p><b>View all other</b> <a href="lwg-index.html#flat.map">issues</a> in [flat.map].</p>
-<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#LEWG">LEWG</a> status.</p>
 <p><b>Discussion:</b></p>
 <p>
 As specified in 23.6.3.4 <a href="https://wg21.link/queue.mod">[queue.mod]</a>,
@@ -76748,13 +76828,13 @@ with those names must behave as expected, but we already require that for
 <code class='backtick'>std::queue</code>.
 </p>
 
-<p><i>[2025-10-21; Reflector poll.]</i></p>
+<p><i>[2025-10-21; Reflector poll. Status changed: New &rarr; LEWG.]</i></p>
 
 <p>
 Set priority to 2 after reflector poll.
 </p>
 <p>
-Use <code>append_range</code> to be consitient with other adapters.
+Use <code>append_range</code> to be consistent with other adapters.
 Send to LEWG for confirmation.
 </p>
 
