@@ -6,7 +6,7 @@
 <section><sref ref="[flat.multimap.overview]"/></section>
 <submitter>Jonathan Wakely</submitter>
 <date>05 Sep 2025</date>
-<priority>99</priority>
+<priority>3</priority>
 
 <discussion>
 <p>
@@ -32,6 +32,15 @@ It's a bit of a stretch to say they're equivalent when they don't even have
 the same parameters, so we need some weasel words here.
 </p>
 
+
+<note>2025-10-21; Reflector poll.</note>
+<p>
+Set priority to 3 after reflector poll.
+</p>
+<p>
+Define them in terms of <tt>insert_range(std::forward&lt;R&gt;(rg))</tt>
+with updated <i>Complexity</i>.
+</p>
 </discussion>
 
 <resolution>
