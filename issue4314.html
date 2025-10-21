@@ -64,8 +64,8 @@
 <p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#New">New</a> status.</em></p>
 <h3 id="4314"><a href="lwg-active.html#4314">4314</a>. Missing move in <code class='backtick'>mdspan</code> layout <code class='backtick'>mapping::operator()</code></h3>
 <p><b>Section:</b> 23.7.3.4 <a href="https://wg21.link/mdspan.layout">[mdspan.layout]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Luc Grosheintz <b>Opened:</b> 2025-08-13 <b>Last modified:</b> 2025-08-16</p>
-<p><b>Priority: </b>Not Prioritized
+ <b>Submitter:</b> Luc Grosheintz <b>Opened:</b> 2025-08-13 <b>Last modified:</b> 2025-10-21</p>
+<p><b>Priority: </b>2
 </p>
 <p><b>View other</b> <a href="lwg-index-open.html#mdspan.layout">active issues</a> in [mdspan.layout].</p>
 <p><b>View all other</b> <a href="lwg-index.html#mdspan.layout">issues</a> in [mdspan.layout].</p>
@@ -130,6 +130,20 @@ in the Proposed Resolution.
 This inconsistency was noticed while fixing 
 <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=121061">PR121061</a> 
 and these changes have been applied to all layout mappings implemented in libstdc++.
+</p>
+
+<p><i>[2025-10-21; Reflector poll.]</i></p>
+
+<p>
+Set priority to 2 after reflector poll.
+</p>
+<p>
+The resolution bypasses <code>extents_type::<i>index-cast</i></code> that would
+validate if input value is representable.
+</p>
+<p>
+We should require convertibility without regard to const and
+value category.
 </p>
 
 

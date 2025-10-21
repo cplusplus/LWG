@@ -54,7 +54,7 @@
 </style>
 </head>
 <body>
-<p>Revised 2025-10-21 at 08:44:01 UTC
+<p>Revised 2025-10-21 at 09:47:21 UTC
 </p><h2>Unresolved Issues</h2>
 <hr>
 <h3 id="423"><a href="#423">423</a><sup><a href="https://cplusplus.github.io/LWG/issue423">(i)</a></sup>. Effects of negative <code>streamsize</code> in iostreams</h3>
@@ -53338,8 +53338,8 @@ fewer sharp edges here, and we encourage a paper exploring options.
 <hr>
 <h3 id="4021"><a href="#4021">4021</a><sup><a href="https://cplusplus.github.io/LWG/issue4021">(i)</a></sup>. <code>mdspan::is_always_<i>meow</i>()</code> should be <code>noexcept</code></h3>
 <p><b>Section:</b> 23.7.3.6.1 <a href="https://wg21.link/mdspan.mdspan.overview">[mdspan.mdspan.overview]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Stephan T. Lavavej <b>Opened:</b> 2023-12-07 <b>Last modified:</b> 2023-12-10</p>
-<p><b>Priority: </b>Not Prioritized
+ <b>Submitter:</b> Stephan T. Lavavej <b>Opened:</b> 2023-12-07 <b>Last modified:</b> 2025-10-21</p>
+<p><b>Priority: </b>3
 </p>
 <p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
 <p><b>Discussion:</b></p>
@@ -53405,6 +53405,25 @@ A type <code>M</code> meets the <i>layout mapping</i> requirements if
 </ul>
 <p>
 Constant expressions can surely be obtained without throwing exceptions.
+</p>
+
+<p><i>[2025-10-21; Reflector poll.]</i></p>
+
+<p>
+Set priority to 3 after reflector poll.
+</p>
+<p>
+Use <code>if consteval</code> may lead to exception thrown from invocation
+of <code>is_always_<i>meow</i></code>, when evaluated at runtime.
+</p>
+<p>
+Design intent was for <code>is_always_<i>meow</i></code> functions to always
+produce value at compile time. Layout requirements may need to be updated.
+</p>
+<p>
+Separately, 16.3.2.4 <a href="https://wg21.link/structure.specifications">[structure.specifications]</a> says that
+<i>Result:</i> is just the type and value category; not "constant expression"
+- this matters because we need to require a prvalue constant expression here.
 </p>
 
 
@@ -74171,8 +74190,8 @@ overload behaved the same as the first actual overload without <i>Constraints</i
 <hr>
 <h3 id="4314"><a href="#4314">4314</a><sup><a href="https://cplusplus.github.io/LWG/issue4314">(i)</a></sup>. Missing move in <code class='backtick'>mdspan</code> layout <code class='backtick'>mapping::operator()</code></h3>
 <p><b>Section:</b> 23.7.3.4 <a href="https://wg21.link/mdspan.layout">[mdspan.layout]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Luc Grosheintz <b>Opened:</b> 2025-08-13 <b>Last modified:</b> 2025-08-16</p>
-<p><b>Priority: </b>Not Prioritized
+ <b>Submitter:</b> Luc Grosheintz <b>Opened:</b> 2025-08-13 <b>Last modified:</b> 2025-10-21</p>
+<p><b>Priority: </b>2
 </p>
 <p><b>View other</b> <a href="lwg-index-open.html#mdspan.layout">active issues</a> in [mdspan.layout].</p>
 <p><b>View all other</b> <a href="lwg-index.html#mdspan.layout">issues</a> in [mdspan.layout].</p>
@@ -74237,6 +74256,20 @@ in the Proposed Resolution.
 This inconsistency was noticed while fixing 
 <a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=121061">PR121061</a> 
 and these changes have been applied to all layout mappings implemented in libstdc++.
+</p>
+
+<p><i>[2025-10-21; Reflector poll.]</i></p>
+
+<p>
+Set priority to 2 after reflector poll.
+</p>
+<p>
+The resolution bypasses <code>extents_type::<i>index-cast</i></code> that would
+validate if input value is representable.
+</p>
+<p>
+We should require convertibility without regard to const and
+value category.
 </p>
 
 

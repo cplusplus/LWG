@@ -64,8 +64,8 @@
 <p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#New">New</a> status.</em></p>
 <h3 id="4021"><a href="lwg-active.html#4021">4021</a>. <code>mdspan::is_always_<i>meow</i>()</code> should be <code>noexcept</code></h3>
 <p><b>Section:</b> 23.7.3.6.1 <a href="https://wg21.link/mdspan.mdspan.overview">[mdspan.mdspan.overview]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Stephan T. Lavavej <b>Opened:</b> 2023-12-07 <b>Last modified:</b> 2023-12-10</p>
-<p><b>Priority: </b>Not Prioritized
+ <b>Submitter:</b> Stephan T. Lavavej <b>Opened:</b> 2023-12-07 <b>Last modified:</b> 2025-10-21</p>
+<p><b>Priority: </b>3
 </p>
 <p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
 <p><b>Discussion:</b></p>
@@ -131,6 +131,25 @@ A type <code>M</code> meets the <i>layout mapping</i> requirements if
 </ul>
 <p>
 Constant expressions can surely be obtained without throwing exceptions.
+</p>
+
+<p><i>[2025-10-21; Reflector poll.]</i></p>
+
+<p>
+Set priority to 3 after reflector poll.
+</p>
+<p>
+Use <code>if consteval</code> may lead to exception thrown from invocation
+of <code>is_always_<i>meow</i></code>, when evaluated at runtime.
+</p>
+<p>
+Design intent was for <code>is_always_<i>meow</i></code> functions to always
+produce value at compile time. Layout requirements may need to be updated.
+</p>
+<p>
+Separately, 16.3.2.4 <a href="https://wg21.link/structure.specifications">[structure.specifications]</a> says that
+<i>Result:</i> is just the type and value category; not "constant expression"
+- this matters because we need to require a prvalue constant expression here.
 </p>
 
 
