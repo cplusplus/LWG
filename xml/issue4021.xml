@@ -6,7 +6,7 @@
 <section><sref ref="[mdspan.mdspan.overview]"/></section>
 <submitter>Stephan T. Lavavej</submitter>
 <date>07 Dec 2023</date>
-<priority>99</priority>
+<priority>3</priority>
 
 <discussion>
 <p>
@@ -71,6 +71,24 @@ A type <tt>M</tt> meets the <i>layout mapping</i> requirements if
 </ul>
 <p>
 Constant expressions can surely be obtained without throwing exceptions.
+</p>
+
+<note>2025-10-21; Reflector poll.</note>
+<p>
+Set priority to 3 after reflector poll.
+</p>
+<p>
+Use <tt>if consteval</tt> may lead to exception thrown from invocation
+of <tt>is_always_<i>meow</i></tt>, when evaluated at runtime.
+</p>
+<p>
+Design intent was for <tt>is_always_<i>meow</i></tt> functions to always
+produce value at compile time. Layout requirements may need to be updated.
+</p>
+<p>
+Separately, <sref ref="[structure.specifications]"/> says that
+<i>Result:</i> is just the type and value category; not "constant expression"
+- this matters because we need to require a prvalue constant expression here.
 </p>
 </discussion>
 
