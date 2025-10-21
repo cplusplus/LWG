@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="4256" status="New">
+<issue num="4256" status="Tentatively Ready">
 <title>Incorrect constrains for <code>function_ref</code> constructors from <code>nontype_t</code></title>
 <section><sref ref="[func.wrap.ref.ctor]"/></section>
 <submitter>Tomasz Kami&nacute;ski</submitter>
@@ -33,6 +33,11 @@ where <code>F</code> is <code>decltype(f)</code> i.e. <code>M</code> for the exa
 We should use <code>const F&amp;</code> or <code>decltype((f))</code>.
 </p>
 
+
+<note>2025-10-21; Reflector poll.</note>
+<p>
+Set status to Tentatively Ready after six votes in favour during reflector poll.
+</p>
 </discussion>
 
 <resolution>
