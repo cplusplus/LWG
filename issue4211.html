@@ -64,8 +64,8 @@
 <p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#New">New</a> status.</em></p>
 <h3 id="4211"><a href="lwg-active.html#4211">4211</a>. IANA time zone database allows links to refer to links</h3>
 <p><b>Section:</b> 30.11.2.1 <a href="https://wg21.link/time.zone.db.tzdb">[time.zone.db.tzdb]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Jonathan Wakely <b>Opened:</b> 2025-02-22 <b>Last modified:</b> 2025-02-24</p>
-<p><b>Priority: </b>Not Prioritized
+ <b>Submitter:</b> Jonathan Wakely <b>Opened:</b> 2025-02-22 <b>Last modified:</b> 2025-10-21</p>
+<p><b>Priority: </b>2
 </p>
 <p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
 <p><b>Discussion:</b></p>
@@ -102,6 +102,29 @@ The standard could be adjusted to support chains of links by allowing
 <code class='backtick'>time_zone_link::target()</code> to refer to another link, and then altering the
 algorithm used by <code class='backtick'>tzdb::locate_zone(string_view)</code> to find a <code class='backtick'>time_zone</code> from
 a name that might be a zone or a link.
+</p>
+
+<p><i>[2025-10-21; Reflector poll.]</i></p>
+
+<p>
+Set priority to 2 after reflector poll.
+Add Jonathan's comments on the resolution:
+</p>
+<p>
+The goal of the resolution is to permit <code class='backtick'>time_zone_link::target</code> to name
+another link, and not overspecify <code class='backtick'>tzdb::locate_zone</code> to require that
+<code class='backtick'>tz_l.target()</code> names a valid zone <code class='backtick'>tz</code>. Considered normatively saying what
+happens if a link chain doesn't terminate in a zone (like the zic(8) man page
+does), but that seemed like overspecification. We don't currently say what
+happens if a non-chained link has an invalid target, it's just covered by
+<code class='backtick'>locate_zone</code> failing to find anything.
+So just added a note saying bad chains are bad.
+</p>
+<p>
+Not urgent, as Libstdc++ and libc++ already handle this in some form.
+Links that use the same name as zones are unlikely to be a problem with the
+official IANA database, probably only relevant for manually edited data.
+Likewise for cycles in link chains. Maybe just leave to QoI.
 </p>
 
 

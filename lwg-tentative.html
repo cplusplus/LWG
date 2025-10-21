@@ -54,7 +54,7 @@
 </style>
 </head>
 <body>
-<p>Revised 2025-10-21 at 14:27:22 UTC
+<p>Revised 2025-10-21 at 15:18:15 UTC
 </p><h2>Tentative Issues</h2>
 <hr>
 <h3 id="3627"><a href="#3627">3627</a><sup><a href="https://cplusplus.github.io/LWG/issue3627">(i)</a></sup>. Inconsistent specifications for <code>std::make_optional</code> overloads</h3>
@@ -1734,6 +1734,96 @@ specialization are standard-layout structs. They each have a trivial destructor.
 </li>
 
 </ol>
+
+
+
+
+
+<hr>
+<h3 id="4219"><a href="#4219">4219</a><sup><a href="https://cplusplus.github.io/LWG/issue4219">(i)</a></sup>. <code>std::vector::erase[_if]</code> should be based on ranges <code class='backtick'>remove</code></h3>
+<p><b>Section:</b> 23.3.13.6 <a href="https://wg21.link/vector.erasure">[vector.erasure]</a> <b>Status:</b> <a href="lwg-active.html#NAD">Tentatively NAD</a>
+ <b>Submitter:</b> Peter Kasting <b>Opened:</b> 2025-03-05 <b>Last modified:</b> 2025-10-21</p>
+<p><b>Priority: </b>Not Prioritized
+</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#Tentatively NAD">Tentatively NAD</a> status.</p>
+<p><b>Discussion:</b></p>
+<p>
+C++20 added <code>std::vector::erase[_if]</code>. Per 23.3.13.6 <a href="https://wg21.link/vector.erasure">[vector.erasure]</a>, these are equivalent 
+to a call to <code>std::remove[_if]</code> followed by an appropriate <code>erase</code>.
+<p/>
+This is unfortunate, because <code class='backtick'>std::remove_if</code> is specified (by 26.7.8 <a href="https://wg21.link/alg.remove">[alg.remove]</a>) as invoking 
+its predicate as <code class='backtick'>pred(*i)</code>, while <code class='backtick'>std::ranges::remove_if</code> uses the more flexible 
+<code class='backtick'>invoke(pred, invoke(proj, *i))</code>. Disregarding the projection, the latter allows the use of member function 
+pointers as predicates, while the former does not.
+<p/>
+I assume the committee intentionally did not change the non-ranges version to use <code class='backtick'>invoke</code> because it 
+caused a backwards-compatibility risk. (If I am mistaken and this was an oversight, perhaps this and 
+other non-ranges algorithms that take predicates should be updated to use invoke() to invoke them.)
+<p/>
+If that's true, though, it's perplexing why a new-to-c++20 function like <code class='backtick'>std::vector::erase_if</code> 
+should suffer the same drawback.
+</p>
+
+<p><i>[2025-10-21; Reflector poll. Status changed: New &rarr; Tentatively NAD.]</i></p>
+
+<p>
+"This is a design change and needs a paper."
+</p>
+
+<p><i>[2025-10-21; .]</i></p>
+
+<p>
+"Paper should discuss whether <code>std::erase_if(c, &amp;T::mf)</code> works on paper,
+currently works on STL implementations in the field, and whether it <i>should</i> work."
+</p>
+
+
+<p id="res-4219"><b>Proposed resolution:</b></p>
+<p>
+This wording is relative to <a href="https://wg21.link/N5001" title=" Working Draft, Programming Languages — C++">N5001</a>.
+</p>
+
+<ol>
+
+<li><p>Modify 23.3.13.6 <a href="https://wg21.link/vector.erasure">[vector.erasure]</a> as indicated:</p>
+
+<blockquote>
+<pre>
+template&lt;class T, class Allocator, class U = T&gt;
+  constexpr typename vector&lt;T, Allocator&gt;::size_type
+    erase(vector&lt;T, Allocator&gt;&amp; c, const U&amp; value);
+</pre>
+<blockquote>
+<p>
+-1- <i>Effects</i>: Equivalent to:
+</p>
+<blockquote><pre>
+auto <ins>r</ins><del>it</del> = <ins>ranges::</ins>remove(c<del>.begin(), c.end()</del>, value);
+<del>auto r = distance(it, c.end());</del>
+c.erase(<ins>r.begin()</ins><del>it</del>, <ins>r</ins><del>c</del>.end());
+return r<ins>.size()</ins>;
+</pre></blockquote>
+</blockquote>
+<pre>
+template&lt;class T, class Allocator, class Predicate&gt;
+  constexpr typename vector&lt;T, Allocator&gt;::size_type
+    erase_if(vector&lt;T, Allocator&gt;&amp; c, Predicate pred);
+</pre>
+<blockquote>
+<p>
+-2- <i>Effects</i>: Equivalent to:
+</p>
+<blockquote><pre>
+auto <ins>r</ins><del>it</del> = <ins>ranges::</ins>remove_if(c<del>.begin(), c.end()</del>, pred);
+<del>auto r = distance(it, c.end());</del>
+c.erase(<ins>r.begin()</ins><del>it</del>, <ins>r</ins><del>c</del>.end());
+return r<ins>.size()</ins>;
+</pre></blockquote>
+</blockquote>
+</blockquote>
+</li>
+</ol>
+
 
 
 

@@ -64,8 +64,8 @@
 <p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#New">New</a> status.</em></p>
 <h3 id="4364"><a href="lwg-active.html#4364">4364</a>. SFINAE-friendliness on <code>operator&lt;&lt;</code> and <code>operator&gt;&gt;</code> for unspecified I/O manipulators</h3>
 <p><b>Section:</b> 31.7.7 <a href="https://wg21.link/std.manip">[std.manip]</a>, 31.7.8 <a href="https://wg21.link/ext.manip">[ext.manip]</a>, 31.7.9 <a href="https://wg21.link/quoted.manip">[quoted.manip]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Jiang An <b>Opened:</b> 2025-09-05 <b>Last modified:</b> 2025-09-15</p>
-<p><b>Priority: </b>Not Prioritized
+ <b>Submitter:</b> Jiang An <b>Opened:</b> 2025-09-05 <b>Last modified:</b> 2025-10-21</p>
+<p><b>Priority: </b>4
 </p>
 <p><b>View other</b> <a href="lwg-index-open.html#std.manip">active issues</a> in [std.manip].</p>
 <p><b>View all other</b> <a href="lwg-index.html#std.manip">issues</a> in [std.manip].</p>
@@ -94,6 +94,22 @@ It seems better to eliminate such implementation divergence. Perhaps it's also b
 require them to be SFINAE-friendly to reduce potential conflicts with user-provided operators.
 <p/>
 If it's intended to allow implementation divergence, perhaps we should clarify the intent.
+</p>
+
+<p><i>[2025-10-21; Reflector poll.]</i></p>
+
+<p>
+Set priority to 4 after reflector poll.
+</p>
+<p>
+"Does it matter in practice? If the type is unspecified, it's fine for misuse to be non-portable."
+</p>
+<p>
+"Would like a diagnostic, don't care about SFINAE. Not clear to me that the current
+<code class='backtick'>setfill</code> wording disallows the mixed-character-type case at all ..."
+</p>
+<p>
+"NAD, not been a problem for a quarter of a century."
 </p>
 
 

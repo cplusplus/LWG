@@ -62,7 +62,7 @@ This document is the Index by Status and Section for the <a href="lwg-active.htm
 <a href="lwg-defects.html">Library Defect Reports and Accepted Issues</a>, and <a href="lwg-closed.html">Library Closed Issues List</a>.
 </p>
 
-<p>Revised 2025-10-21 at 14:27:22 UTC
+<p>Revised 2025-10-21 at 15:18:15 UTC
 </p><h2 id="Ready">Ready (3 issues)</h2>
 <table class="issues-index">
 <tr>
@@ -489,7 +489,7 @@ constructor</td>
 <td></td>
 </tr>
 </table>
-<h2 id="Tentatively_NAD">Tentatively NAD (20 issues)</h2>
+<h2 id="Tentatively_NAD">Tentatively NAD (21 issues)</h2>
 <table class="issues-index">
 <tr>
   <th><a href="lwg-toc.html">Issue</a></th>
@@ -499,6 +499,15 @@ constructor</td>
   <th>Proposed Resolution</th>
   <th><a href="unresolved-prioritized.html">Priority</a></th>
   <th>Duplicates</th>
+</tr>
+<tr>
+<td id="4219"><a href="lwg-active.html#4219" title="std::vector::erase[_if] should be based on ranges remove (Status: Tentatively NAD)">4219</a><sup><a href="https://cplusplus.github.io/LWG/issue4219">(i)</a></sup></td>
+<td><a href="lwg-active.html#NAD">Tentatively NAD</a></td>
+<td>23.3.13.6 [vector.erasure]</td>
+<td><code>std::vector::erase[_if]</code> should be based on ranges <code class='backtick'>remove</code></td>
+<td>Yes</td>
+<td></td>
+<td></td>
 </tr>
 <tr>
 <td id="4228"><a href="lwg-active.html#4228" title="Does vector&lt;bool, Allocator&gt; mandate that Allocator::value_type is bool? (Status: Tentatively NAD)">4228</a><sup><a href="https://cplusplus.github.io/LWG/issue4228">(i)</a></sup></td>
@@ -681,7 +690,7 @@ constructor</td>
 <td></td>
 </tr>
 </table>
-<h2 id="New">New (584 issues)</h2>
+<h2 id="New">New (583 issues)</h2>
 <table class="issues-index">
 <tr>
   <th><a href="lwg-toc.html">Issue</a></th>
@@ -2578,15 +2587,6 @@ should conditionally require <i>Cpp17CopyInsertable</i> in their preconditions</
 <td></td>
 </tr>
 <tr>
-<td id="4219"><a href="lwg-active.html#4219" title="std::vector::erase[_if] should be based on ranges remove (Status: New)">4219</a><sup><a href="https://cplusplus.github.io/LWG/issue4219">(i)</a></sup></td>
-<td><a href="lwg-active.html#New">New</a></td>
-<td>23.3.13.6 [vector.erasure]</td>
-<td><code>std::vector::erase[_if]</code> should be based on ranges <code class='backtick'>remove</code></td>
-<td>Yes</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
 <td id="3638"><a href="lwg-active.html#3638" title="vector&lt;bool&gt;::swap(reference, reference) is useless (Status: New)">3638</a><sup><a href="https://cplusplus.github.io/LWG/issue3638">(i)</a></sup></td>
 <td><a href="lwg-active.html#New">New</a></td>
 <td>23.3.14 [vector.bool]</td>
@@ -3438,7 +3438,7 @@ difference_type is not an integer-class type? (Status: New)">3763</a><sup><a hre
 <td>25.7.10.1 [range.take.overview]</td>
 <td>Missing <i>Preconditions</i> for <code>take</code>/<code>drop</code> adaptor</td>
 <td>Yes</td>
-<td></td>
+<td>3</td>
 <td></td>
 </tr>
 <tr>
@@ -3555,7 +3555,7 @@ difference_type is not an integer-class type? (Status: New)">3763</a><sup><a hre
 <td>25.7.16.3 [range.lazy.split.outer]</td>
 <td>The past end issue for <code class='backtick'>lazy_split_view</code></td>
 <td>Yes</td>
-<td></td>
+<td>2</td>
 <td></td>
 </tr>
 <tr>
@@ -3667,7 +3667,7 @@ inner-iterator with std::default_sentinel results in null pointer dereference (S
 <td><code>enumerate_view::<i>iterator</i></code> and <code>cartesian_product_view::<i>iterator</i></code> should not
     always provide <code>iterator_category</code></td>
 <td>Yes</td>
-<td></td>
+<td>3</td>
 <td></td>
 </tr>
 <tr>
@@ -3694,7 +3694,7 @@ inner-iterator with std::default_sentinel results in null pointer dereference (S
 <td>25.7.32.3 [range.stride.iterator]</td>
 <td><code>stride_view::<i>iterator</i></code> should provide <code>operator-&gt;</code></td>
 <td>Yes</td>
-<td></td>
+<td>3</td>
 <td></td>
 </tr>
 <tr>
@@ -4954,7 +4954,7 @@ should require the arguments to have the same length</td>
 <td>30.11.2.1 [time.zone.db.tzdb]</td>
 <td>IANA time zone database allows links to refer to links</td>
 <td>Yes</td>
-<td></td>
+<td>2</td>
 <td></td>
 </tr>
 <tr>
@@ -5183,7 +5183,7 @@ vprint_unicode/vprint_nonunicode (Status: New)">4039</a><sup><a href="https://cp
 <td>31.7.7 [std.manip]</td>
 <td>SFINAE-friendliness on <code>operator&lt;&lt;</code> and <code>operator&gt;&gt;</code> for unspecified I/O manipulators</td>
 <td><span class="no-pr">No</span></td>
-<td></td>
+<td>4</td>
 <td></td>
 </tr>
 <tr>

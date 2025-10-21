@@ -67,8 +67,8 @@
 <h3 id="4116"><a href="lwg-active.html#4116">4116</a>. <code>enumerate_view::<i>iterator</i></code> and <code>cartesian_product_view::<i>iterator</i></code> should not
     always provide <code>iterator_category</code></h3>
 <p><b>Section:</b> 25.7.24.3 <a href="https://wg21.link/range.enumerate.iterator">[range.enumerate.iterator]</a>, 25.7.33.3 <a href="https://wg21.link/range.cartesian.iterator">[range.cartesian.iterator]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Hewill Kang <b>Opened:</b> 2024-07-07 <b>Last modified:</b> 2024-07-07</p>
-<p><b>Priority: </b>Not Prioritized
+ <b>Submitter:</b> Hewill Kang <b>Opened:</b> 2024-07-07 <b>Last modified:</b> 2025-10-21</p>
+<p><b>Priority: </b>3
 </p>
 <p><b>View other</b> <a href="lwg-index-open.html#range.enumerate.iterator">active issues</a> in [range.enumerate.iterator].</p>
 <p><b>View all other</b> <a href="lwg-index.html#range.enumerate.iterator">issues</a> in [range.enumerate.iterator].</p>
@@ -77,6 +77,15 @@
 <p>
 These two iterators do not support <code>*r++</code> for non-forward iterators,
 so we should not provide <code>iterator_category</code> as they are not C++17 iterators.
+</p>
+
+<p><i>[2025-10-21; Reflector poll.]</i></p>
+
+<p>
+Set priority to 3 after reflector poll.
+</p>
+<p>
+Six votes for Tentatively Ready, but not unanimous.
 </p>
 
 

@@ -67,7 +67,7 @@
 This document is the Index by Status and Date for the <a href="lwg-active.html">Library Active Issues List</a>,
 <a href="lwg-defects.html">Library Defect Reports and Accepted Issues</a>, and <a href="lwg-closed.html">Library Closed Issues List</a>.
 </p>
-<p>Revised 2025-10-21 at 14:27:22 UTC
+<p>Revised 2025-10-21 at 15:18:15 UTC
 </p><h2 id="Ready">Ready (3 issues)</h2>
 <table class="issues-index">
 <tr>
@@ -494,7 +494,7 @@ of uses-allocator construction</td>
 <td></td>
 </tr>
 </table>
-<h2 id="Tentatively_NAD">Tentatively NAD (20 issues)</h2>
+<h2 id="Tentatively_NAD">Tentatively NAD (21 issues)</h2>
 <table class="issues-index">
 <tr>
   <th><a href="lwg-toc.html">Issue</a></th>
@@ -504,6 +504,15 @@ of uses-allocator construction</td>
   <th>Proposed Resolution</th>
   <th><a href="unresolved-prioritized.html">Priority</a></th>
   <th>Duplicates</th>
+</tr>
+<tr>
+<td id="4219"><a href="lwg-active.html#4219" title="std::vector::erase[_if] should be based on ranges remove (Status: Tentatively NAD)">4219</a><sup><a href="https://cplusplus.github.io/LWG/issue4219">(i)</a></sup></td>
+<td><a href="lwg-active.html#NAD">Tentatively NAD</a></td>
+<td>23.3.13.6 [vector.erasure]</td>
+<td><code>std::vector::erase[_if]</code> should be based on ranges <code class='backtick'>remove</code></td>
+<td>Yes</td>
+<td></td>
+<td></td>
 </tr>
 <tr>
 <td id="4404"><a href="lwg-active.html#4404" title="Should span(R&amp;&amp;) CTAD apply P2280? (Status: Tentatively NAD)">4404</a><sup><a href="https://cplusplus.github.io/LWG/issue4404">(i)</a></sup></td>
@@ -686,7 +695,7 @@ of uses-allocator construction</td>
 <td></td>
 </tr>
 </table>
-<h2 id="New">New (584 issues)</h2>
+<h2 id="New">New (583 issues)</h2>
 <table class="issues-index">
 <tr>
   <th><a href="lwg-toc.html">Issue</a></th>
@@ -747,6 +756,44 @@ of uses-allocator construction</td>
 <td><a href="lwg-active.html#New">New</a></td>
 <td>23.7.3.6.1 [mdspan.mdspan.overview]</td>
 <td><code>mdspan::is_always_<i>meow</i>()</code> should be <code>noexcept</code></td>
+<td>Yes</td>
+<td>3</td>
+<td></td>
+</tr>
+<tr>
+<td id="4214"><a href="lwg-active.html#4214" title="Missing Preconditions for take/drop adaptor (Status: New)">4214</a><sup><a href="https://cplusplus.github.io/LWG/issue4214">(i)</a></sup></td>
+<td><a href="lwg-active.html#New">New</a></td>
+<td>25.7.10.1 [range.take.overview]</td>
+<td>Missing <i>Preconditions</i> for <code>take</code>/<code>drop</code> adaptor</td>
+<td>Yes</td>
+<td>3</td>
+<td></td>
+</tr>
+<tr>
+<td id="4249"><a href="lwg-active.html#4249" title="The past end issue for lazy_split_view (Status: New)">4249</a><sup><a href="https://cplusplus.github.io/LWG/issue4249">(i)</a></sup></td>
+<td><a href="lwg-active.html#New">New</a></td>
+<td>25.7.16.3 [range.lazy.split.outer]</td>
+<td>The past end issue for <code class='backtick'>lazy_split_view</code></td>
+<td>Yes</td>
+<td>2</td>
+<td></td>
+</tr>
+<tr>
+<td id="4116"><a href="lwg-active.html#4116" title="enumerate_view::iterator and cartesian_product_view::iterator should not
+    always provide iterator_category (Status: New)">4116</a><sup><a href="https://cplusplus.github.io/LWG/issue4116">(i)</a></sup></td>
+<td><a href="lwg-active.html#New">New</a></td>
+<td>25.7.24.3 [range.enumerate.iterator]</td>
+<td><code>enumerate_view::<i>iterator</i></code> and <code>cartesian_product_view::<i>iterator</i></code> should not
+    always provide <code>iterator_category</code></td>
+<td>Yes</td>
+<td>3</td>
+<td></td>
+</tr>
+<tr>
+<td id="4254"><a href="lwg-active.html#4254" title="stride_view::iterator should provide operator-&gt; (Status: New)">4254</a><sup><a href="https://cplusplus.github.io/LWG/issue4254">(i)</a></sup></td>
+<td><a href="lwg-active.html#New">New</a></td>
+<td>25.7.32.3 [range.stride.iterator]</td>
+<td><code>stride_view::<i>iterator</i></code> should provide <code>operator-&gt;</code></td>
 <td>Yes</td>
 <td>3</td>
 <td></td>
@@ -824,12 +871,30 @@ of uses-allocator construction</td>
 <td></td>
 </tr>
 <tr>
+<td id="4211"><a href="lwg-active.html#4211" title="IANA time zone database allows links to refer to links (Status: New)">4211</a><sup><a href="https://cplusplus.github.io/LWG/issue4211">(i)</a></sup></td>
+<td><a href="lwg-active.html#New">New</a></td>
+<td>30.11.2.1 [time.zone.db.tzdb]</td>
+<td>IANA time zone database allows links to refer to links</td>
+<td>Yes</td>
+<td>2</td>
+<td></td>
+</tr>
+<tr>
 <td id="3696"><a href="lwg-active.html#3696" title="&quot;Basic integral types&quot; should not be used (Status: New)">3696</a><sup><a href="https://cplusplus.github.io/LWG/issue3696">(i)</a></sup></td>
 <td><a href="lwg-active.html#New">New</a></td>
 <td>31.2.2 [stream.types]</td>
 <td>"Basic integral types" should not be used</td>
 <td>Yes</td>
 <td>3</td>
+<td></td>
+</tr>
+<tr>
+<td id="4364"><a href="lwg-active.html#4364" title="SFINAE-friendliness on operator&lt;&lt; and operator&gt;&gt; for unspecified I/O manipulators (Status: New)">4364</a><sup><a href="https://cplusplus.github.io/LWG/issue4364">(i)</a></sup></td>
+<td><a href="lwg-active.html#New">New</a></td>
+<td>31.7.7 [std.manip]</td>
+<td>SFINAE-friendliness on <code>operator&lt;&lt;</code> and <code>operator&gt;&gt;</code> for unspecified I/O manipulators</td>
+<td><span class="no-pr">No</span></td>
+<td>4</td>
 <td></td>
 </tr>
 <tr>
@@ -1585,15 +1650,6 @@ vprint_unicode/vprint_nonunicode (Status: New)">4039</a><sup><a href="https://cp
 <td></td>
 </tr>
 <tr>
-<td id="4364"><a href="lwg-active.html#4364" title="SFINAE-friendliness on operator&lt;&lt; and operator&gt;&gt; for unspecified I/O manipulators (Status: New)">4364</a><sup><a href="https://cplusplus.github.io/LWG/issue4364">(i)</a></sup></td>
-<td><a href="lwg-active.html#New">New</a></td>
-<td>31.7.7 [std.manip]</td>
-<td>SFINAE-friendliness on <code>operator&lt;&lt;</code> and <code>operator&gt;&gt;</code> for unspecified I/O manipulators</td>
-<td><span class="no-pr">No</span></td>
-<td></td>
-<td></td>
-</tr>
-<tr>
 <td id="4368"><a href="lwg-active.html#4368" title="Potential dangling reference returned from transform_sender (Status: New)">4368</a><sup><a href="https://cplusplus.github.io/LWG/issue4368">(i)</a></sup></td>
 <td><a href="lwg-active.html#New">New</a></td>
 <td>33.9.5 [exec.domain.default]</td>
@@ -2146,30 +2202,12 @@ complexity for algorithms that are in fact &#x1d4aa;(n)</td>
 <td></td>
 </tr>
 <tr>
-<td id="4254"><a href="lwg-active.html#4254" title="stride_view::iterator should provide operator-&gt; (Status: New)">4254</a><sup><a href="https://cplusplus.github.io/LWG/issue4254">(i)</a></sup></td>
-<td><a href="lwg-active.html#New">New</a></td>
-<td>25.7.32.3 [range.stride.iterator]</td>
-<td><code>stride_view::<i>iterator</i></code> should provide <code>operator-&gt;</code></td>
-<td>Yes</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
 <td id="3855"><a href="lwg-active.html#3855" title="tiny-range is not quite right (Status: New)">3855</a><sup><a href="https://cplusplus.github.io/LWG/issue3855">(i)</a></sup></td>
 <td><a href="lwg-active.html#New">New</a></td>
 <td>25.7.16.2 [range.lazy.split.view]</td>
 <td><code><i>tiny-range</i></code> is not quite right</td>
 <td>Yes</td>
 <td>4</td>
-<td></td>
-</tr>
-<tr>
-<td id="4249"><a href="lwg-active.html#4249" title="The past end issue for lazy_split_view (Status: New)">4249</a><sup><a href="https://cplusplus.github.io/LWG/issue4249">(i)</a></sup></td>
-<td><a href="lwg-active.html#New">New</a></td>
-<td>25.7.16.3 [range.lazy.split.outer]</td>
-<td>The past end issue for <code class='backtick'>lazy_split_view</code></td>
-<td>Yes</td>
-<td></td>
 <td></td>
 </tr>
 <tr>
@@ -2218,15 +2256,6 @@ complexity for algorithms that are in fact &#x1d4aa;(n)</td>
 <td></td>
 </tr>
 <tr>
-<td id="4219"><a href="lwg-active.html#4219" title="std::vector::erase[_if] should be based on ranges remove (Status: New)">4219</a><sup><a href="https://cplusplus.github.io/LWG/issue4219">(i)</a></sup></td>
-<td><a href="lwg-active.html#New">New</a></td>
-<td>23.3.13.6 [vector.erasure]</td>
-<td><code>std::vector::erase[_if]</code> should be based on ranges <code class='backtick'>remove</code></td>
-<td>Yes</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
 <td id="4220"><a href="lwg-active.html#4220" title="join_view incorrectly stores inner range (Status: New)">4220</a><sup><a href="https://cplusplus.github.io/LWG/issue4220">(i)</a></sup></td>
 <td><a href="lwg-active.html#New">New</a></td>
 <td>25.7.14.2 [range.join.view]</td>
@@ -2258,24 +2287,6 @@ complexity for algorithms that are in fact &#x1d4aa;(n)</td>
 <td><a href="lwg-active.html#New">New</a></td>
 <td>17.8.2.2 [support.srcloc.cons]</td>
 <td>Point of reference for <code class='backtick'>source_location</code> is not specified when used in an default template argument</td>
-<td>Yes</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td id="4214"><a href="lwg-active.html#4214" title="Missing Preconditions for take/drop adaptor (Status: New)">4214</a><sup><a href="https://cplusplus.github.io/LWG/issue4214">(i)</a></sup></td>
-<td><a href="lwg-active.html#New">New</a></td>
-<td>25.7.10.1 [range.take.overview]</td>
-<td>Missing <i>Preconditions</i> for <code>take</code>/<code>drop</code> adaptor</td>
-<td>Yes</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td id="4211"><a href="lwg-active.html#4211" title="IANA time zone database allows links to refer to links (Status: New)">4211</a><sup><a href="https://cplusplus.github.io/LWG/issue4211">(i)</a></sup></td>
-<td><a href="lwg-active.html#New">New</a></td>
-<td>30.11.2.1 [time.zone.db.tzdb]</td>
-<td>IANA time zone database allows links to refer to links</td>
 <td>Yes</td>
 <td></td>
 <td></td>
@@ -2876,17 +2887,6 @@ forward_iterator (Status: New)">4120</a><sup><a href="https://cplusplus.github.i
 <td>Missing change for <code>element_view::<i>iterator</i></code> in LWG 3798</td>
 <td>Yes</td>
 <td>3</td>
-<td></td>
-</tr>
-<tr>
-<td id="4116"><a href="lwg-active.html#4116" title="enumerate_view::iterator and cartesian_product_view::iterator should not
-    always provide iterator_category (Status: New)">4116</a><sup><a href="https://cplusplus.github.io/LWG/issue4116">(i)</a></sup></td>
-<td><a href="lwg-active.html#New">New</a></td>
-<td>25.7.24.3 [range.enumerate.iterator]</td>
-<td><code>enumerate_view::<i>iterator</i></code> and <code>cartesian_product_view::<i>iterator</i></code> should not
-    always provide <code>iterator_category</code></td>
-<td>Yes</td>
-<td></td>
 <td></td>
 </tr>
 <tr>

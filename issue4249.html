@@ -64,8 +64,8 @@
 <p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#New">New</a> status.</em></p>
 <h3 id="4249"><a href="lwg-active.html#4249">4249</a>. The past end issue for <code class='backtick'>lazy_split_view</code></h3>
 <p><b>Section:</b> 25.7.16.3 <a href="https://wg21.link/range.lazy.split.outer">[range.lazy.split.outer]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Hewill Kang <b>Opened:</b> 2025-04-26 <b>Last modified:</b> 2025-04-27</p>
-<p><b>Priority: </b>Not Prioritized
+ <b>Submitter:</b> Hewill Kang <b>Opened:</b> 2025-04-26 <b>Last modified:</b> 2025-10-21</p>
+<p><b>Priority: </b>2
 </p>
 <p><b>View other</b> <a href="lwg-index-open.html#range.lazy.split.outer">active issues</a> in [range.lazy.split.outer].</p>
 <p><b>View all other</b> <a href="lwg-index.html#range.lazy.split.outer">issues</a> in [range.lazy.split.outer].</p>
@@ -129,8 +129,25 @@ It seems that extra flags are needed to fix this issue because <code class='back
 be considered to reach the end when we back to the outer loop.
 </p>
 
+<p><i>[2025-10-21; Reflector poll.]</i></p>
 
-<p id="res-4249"><b>Proposed resolution:</b></p>
+<p>
+Set priority to 2 after reflector poll.
+</p>
+<p>
+"This is unfortunate. <code class='backtick'>lazy_split</code> is probably not very commonly used,
+but handling input ranges was half the reason why we kept it around.
+Can we reuse <code class='backtick'>trailing_empty_</code> for this instead of adding a new flag?
+Both flags have the same meaning, and the two cases where they are true
+are disjoint: we need <code class='backtick'>has_next_</code> when iterating through the inner range
+exhausted the source range; we need <code class='backtick'>trailing_empty_</code> when we find a delimiter
+at the end of the source range when incrementing the outer iterator,
+which by definition means that iterating through the inner range
+<i>didn't</i> exhaust it."
+</p>
+<p><strong>Previous resolution [SUPERSEDED]:</strong></p>
+<blockquote class="note">
+
 <p>
 This wording is relative to <a href="https://wg21.link/N5008" title=" Working Draft, Programming Languages — C++">N5008</a>.
 </p>
@@ -240,6 +257,69 @@ else</ins>
 </li>
 
 </ol>
+</blockquote>
+
+<p><i>[2025-10-21; Hewill Kang provides simpler wording]</i></p>
+
+
+
+
+<p id="res-4249"><b>Proposed resolution:</b></p>
+<p>
+This wording is relative to <a href="https://wg21.link/N5014">N5014</a>.
+</p>
+
+<ol>
+
+<li><p>Modify 25.7.16.3 <a href="https://wg21.link/range.lazy.split.outer">[range.lazy.split.outer]</a> as indicated:</p>
+
+<blockquote>
+<pre>
+constexpr <i>outer-iterator</i>&amp; operator++();
+</pre>
+<blockquote>
+<p>
+-6- <i>Effects:</i> Equivalent to:
+</p>
+<blockquote><pre>
+const auto end = ranges::end(<i>parent_</i>-&gt;<i>base_</i>);
+if (<i>current</i> == end) {
+  <i>trailing_empty_</i> = false;
+  return <code>*this</code>;
+}
+const auto [pbegin, pend] = subrange{<i>parent_</i>-&gt;<i>pattern_</i>};
+if (pbegin == pend) ++<i>current</i>;
+else if constexpr (<i>tiny-range</i>&lt;Pattern&gt;) {
+  <i>current</i> = ranges::find(std::move(<i>current</i>), end, *pbegin);
+  if (<i>current</i> != end) {
+    ++<i>current</i>;
+    if (<i>current</i> == end)
+      <i>trailing_empty_</i> = true;
+    <ins>else if constexpr (!forward_range&lt;V&gt;)
+      <i>trailing_empty_</i> = true;</ins>
+  }
+}
+else {
+  do {
+    auto [b, p] = ranges::mismatch(<i>current</i>, end, pbegin, pend);
+    if (p == pend) {
+      <i>current</i> = b;
+      if (<i>current</i> == end)
+        <i>trailing_empty_</i> = true;
+      break;            <i>// The pattern matched; skip it</i>
+    }
+  } while (++<i>current</i> != end);
+}
+return *this;
+</pre></blockquote>
+</blockquote>
+</blockquote>
+
+</li>
+
+</ol>
+
+
 
 
 

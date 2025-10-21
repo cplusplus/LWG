@@ -54,7 +54,7 @@
 </style>
 </head>
 <body>
-<p>Revised 2025-10-21 at 14:27:22 UTC
+<p>Revised 2025-10-21 at 15:18:15 UTC
 </p><h2>Unresolved Issues</h2>
 <hr>
 <h3 id="423"><a href="#423">423</a><sup><a href="https://cplusplus.github.io/LWG/issue423">(i)</a></sup>. Effects of negative <code>streamsize</code> in iostreams</h3>
@@ -59639,8 +59639,8 @@ constexpr reference operator*() const <ins>noexcept(noexcept(ranges::iter_move(c
 <h3 id="4116"><a href="#4116">4116</a><sup><a href="https://cplusplus.github.io/LWG/issue4116">(i)</a></sup>. <code>enumerate_view::<i>iterator</i></code> and <code>cartesian_product_view::<i>iterator</i></code> should not
     always provide <code>iterator_category</code></h3>
 <p><b>Section:</b> 25.7.24.3 <a href="https://wg21.link/range.enumerate.iterator">[range.enumerate.iterator]</a>, 25.7.33.3 <a href="https://wg21.link/range.cartesian.iterator">[range.cartesian.iterator]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Hewill Kang <b>Opened:</b> 2024-07-07 <b>Last modified:</b> 2024-07-07</p>
-<p><b>Priority: </b>Not Prioritized
+ <b>Submitter:</b> Hewill Kang <b>Opened:</b> 2024-07-07 <b>Last modified:</b> 2025-10-21</p>
+<p><b>Priority: </b>3
 </p>
 <p><b>View other</b> <a href="lwg-index-open.html#range.enumerate.iterator">active issues</a> in [range.enumerate.iterator].</p>
 <p><b>View all other</b> <a href="lwg-index.html#range.enumerate.iterator">issues</a> in [range.enumerate.iterator].</p>
@@ -59649,6 +59649,15 @@ constexpr reference operator*() const <ins>noexcept(noexcept(ranges::iter_move(c
 <p>
 These two iterators do not support <code>*r++</code> for non-forward iterators,
 so we should not provide <code>iterator_category</code> as they are not C++17 iterators.
+</p>
+
+<p><i>[2025-10-21; Reflector poll.]</i></p>
+
+<p>
+Set priority to 3 after reflector poll.
+</p>
+<p>
+Six votes for Tentatively Ready, but not unanimous.
 </p>
 
 
@@ -65700,8 +65709,8 @@ Set priority to 3 after reflector poll.
 <hr>
 <h3 id="4211"><a href="#4211">4211</a><sup><a href="https://cplusplus.github.io/LWG/issue4211">(i)</a></sup>. IANA time zone database allows links to refer to links</h3>
 <p><b>Section:</b> 30.11.2.1 <a href="https://wg21.link/time.zone.db.tzdb">[time.zone.db.tzdb]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Jonathan Wakely <b>Opened:</b> 2025-02-22 <b>Last modified:</b> 2025-02-24</p>
-<p><b>Priority: </b>Not Prioritized
+ <b>Submitter:</b> Jonathan Wakely <b>Opened:</b> 2025-02-22 <b>Last modified:</b> 2025-10-21</p>
+<p><b>Priority: </b>2
 </p>
 <p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
 <p><b>Discussion:</b></p>
@@ -65738,6 +65747,29 @@ The standard could be adjusted to support chains of links by allowing
 <code class='backtick'>time_zone_link::target()</code> to refer to another link, and then altering the
 algorithm used by <code class='backtick'>tzdb::locate_zone(string_view)</code> to find a <code class='backtick'>time_zone</code> from
 a name that might be a zone or a link.
+</p>
+
+<p><i>[2025-10-21; Reflector poll.]</i></p>
+
+<p>
+Set priority to 2 after reflector poll.
+Add Jonathan's comments on the resolution:
+</p>
+<p>
+The goal of the resolution is to permit <code class='backtick'>time_zone_link::target</code> to name
+another link, and not overspecify <code class='backtick'>tzdb::locate_zone</code> to require that
+<code class='backtick'>tz_l.target()</code> names a valid zone <code class='backtick'>tz</code>. Considered normatively saying what
+happens if a link chain doesn't terminate in a zone (like the zic(8) man page
+does), but that seemed like overspecification. We don't currently say what
+happens if a non-chained link has an invalid target, it's just covered by
+<code class='backtick'>locate_zone</code> failing to find anything.
+So just added a note saying bad chains are bad.
+</p>
+<p>
+Not urgent, as Libstdc++ and libc++ already handle this in some form.
+Links that use the same name as zones are unlikely to be a problem with the
+official IANA database, probably only relevant for manually edited data.
+Likewise for cycles in link chains. Maybe just leave to QoI.
 </p>
 
 
@@ -66141,8 +66173,8 @@ Repetitions are at least in:
 <hr>
 <h3 id="4214"><a href="#4214">4214</a><sup><a href="https://cplusplus.github.io/LWG/issue4214">(i)</a></sup>. Missing <i>Preconditions</i> for <code>take</code>/<code>drop</code> adaptor</h3>
 <p><b>Section:</b> 25.7.10.1 <a href="https://wg21.link/range.take.overview">[range.take.overview]</a>, 25.7.12.1 <a href="https://wg21.link/range.drop.overview">[range.drop.overview]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Hewill Kang <b>Opened:</b> 2025-02-15 <b>Last modified:</b> 2025-02-24</p>
-<p><b>Priority: </b>Not Prioritized
+ <b>Submitter:</b> Hewill Kang <b>Opened:</b> 2025-02-15 <b>Last modified:</b> 2025-10-21</p>
+<p><b>Priority: </b>3
 </p>
 <p><b>View other</b> <a href="lwg-index-open.html#range.take.overview">active issues</a> in [range.take.overview].</p>
 <p><b>View all other</b> <a href="lwg-index.html#range.take.overview">issues</a> in [range.take.overview].</p>
@@ -66227,6 +66259,17 @@ and <code>F</code> are indeterminately sequenced.
 <p>
 Upon reflector discussion many preferred to use instead the new <i>Hardened preconditions:</i> element which 
 have been introduced by the recently voted in <a href="https://wg21.link/P3471R4" title=" Standard Library Hardening">P3471R4</a>.
+</p>
+
+<p><i>[2025-10-21; Reflector poll.]</i></p>
+
+<p>
+Set priority to 3 after reflector poll.
+</p>
+<p>
+"Disagreement on whether to introduce <i>Hardened preconditions</i> in this Clause.
+Some discomfort with adding the element as a bullet point inside a list,
+no better suggestions though.
 </p>
 
 
@@ -66660,83 +66703,6 @@ template&lt;<i>not-a-const-iterator</i> I<ins>, same_as&lt;Iterator&gt; J</ins>&
 <p/>
 -24- <i>Effects</i>: Equivalent to: <code>return x <i>op</i> y.<i>current_</i>;</code>
 </p>
-</blockquote>
-</blockquote>
-</li>
-</ol>
-
-
-
-
-
-
-<hr>
-<h3 id="4219"><a href="#4219">4219</a><sup><a href="https://cplusplus.github.io/LWG/issue4219">(i)</a></sup>. <code>std::vector::erase[_if]</code> should be based on ranges <code class='backtick'>remove</code></h3>
-<p><b>Section:</b> 23.3.13.6 <a href="https://wg21.link/vector.erasure">[vector.erasure]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Peter Kasting <b>Opened:</b> 2025-03-05 <b>Last modified:</b> 2025-03-09</p>
-<p><b>Priority: </b>Not Prioritized
-</p>
-<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
-<p><b>Discussion:</b></p>
-<p>
-C++20 added <code>std::vector::erase[_if]</code>. Per 23.3.13.6 <a href="https://wg21.link/vector.erasure">[vector.erasure]</a>, these are equivalent 
-to a call to <code>std::remove[_if]</code> followed by an appropriate <code>erase</code>.
-<p/>
-This is unfortunate, because <code class='backtick'>std::remove_if</code> is specified (by 26.7.8 <a href="https://wg21.link/alg.remove">[alg.remove]</a>) as invoking 
-its predicate as <code class='backtick'>pred(*i)</code>, while <code class='backtick'>std::ranges::remove_if</code> uses the more flexible 
-<code class='backtick'>invoke(pred, invoke(proj, *i))</code>. Disregarding the projection, the latter allows the use of member function 
-pointers as predicates, while the former does not.
-<p/>
-I assume the committee intentionally did not change the non-ranges version to use <code class='backtick'>invoke</code> because it 
-caused a backwards-compatibility risk. (If I am mistaken and this was an oversight, perhaps this and 
-other non-ranges algorithms that take predicates should be updated to use invoke() to invoke them.)
-<p/>
-If that's true, though, it's perplexing why a new-to-c++20 function like <code class='backtick'>std::vector::erase_if</code> 
-should suffer the same drawback.
-</p>
-
-
-<p id="res-4219"><b>Proposed resolution:</b></p>
-<p>
-This wording is relative to <a href="https://wg21.link/N5001" title=" Working Draft, Programming Languages — C++">N5001</a>.
-</p>
-
-<ol>
-
-<li><p>Modify 23.3.13.6 <a href="https://wg21.link/vector.erasure">[vector.erasure]</a> as indicated:</p>
-
-<blockquote>
-<pre>
-template&lt;class T, class Allocator, class U = T&gt;
-  constexpr typename vector&lt;T, Allocator&gt;::size_type
-    erase(vector&lt;T, Allocator&gt;&amp; c, const U&amp; value);
-</pre>
-<blockquote>
-<p>
--1- <i>Effects</i>: Equivalent to:
-</p>
-<blockquote><pre>
-auto <ins>r</ins><del>it</del> = <ins>ranges::</ins>remove(c<del>.begin(), c.end()</del>, value);
-<del>auto r = distance(it, c.end());</del>
-c.erase(<ins>r.begin()</ins><del>it</del>, <ins>r</ins><del>c</del>.end());
-return r<ins>.size()</ins>;
-</pre></blockquote>
-</blockquote>
-<pre>
-template&lt;class T, class Allocator, class Predicate&gt;
-  constexpr typename vector&lt;T, Allocator&gt;::size_type
-    erase_if(vector&lt;T, Allocator&gt;&amp; c, Predicate pred);
-</pre>
-<blockquote>
-<p>
--2- <i>Effects</i>: Equivalent to:
-</p>
-<blockquote><pre>
-auto <ins>r</ins><del>it</del> = <ins>ranges::</ins>remove_if(c<del>.begin(), c.end()</del>, pred);
-<del>auto r = distance(it, c.end());</del>
-c.erase(<ins>r.begin()</ins><del>it</del>, <ins>r</ins><del>c</del>.end());
-return r<ins>.size()</ins>;
-</pre></blockquote>
 </blockquote>
 </blockquote>
 </li>
@@ -68320,8 +68286,8 @@ That is why it is given special treatment here. &mdash; <i>end note</i>]
 <hr>
 <h3 id="4249"><a href="#4249">4249</a><sup><a href="https://cplusplus.github.io/LWG/issue4249">(i)</a></sup>. The past end issue for <code class='backtick'>lazy_split_view</code></h3>
 <p><b>Section:</b> 25.7.16.3 <a href="https://wg21.link/range.lazy.split.outer">[range.lazy.split.outer]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Hewill Kang <b>Opened:</b> 2025-04-26 <b>Last modified:</b> 2025-04-27</p>
-<p><b>Priority: </b>Not Prioritized
+ <b>Submitter:</b> Hewill Kang <b>Opened:</b> 2025-04-26 <b>Last modified:</b> 2025-10-21</p>
+<p><b>Priority: </b>2
 </p>
 <p><b>View other</b> <a href="lwg-index-open.html#range.lazy.split.outer">active issues</a> in [range.lazy.split.outer].</p>
 <p><b>View all other</b> <a href="lwg-index.html#range.lazy.split.outer">issues</a> in [range.lazy.split.outer].</p>
@@ -68385,8 +68351,25 @@ It seems that extra flags are needed to fix this issue because <code class='back
 be considered to reach the end when we back to the outer loop.
 </p>
 
+<p><i>[2025-10-21; Reflector poll.]</i></p>
 
-<p id="res-4249"><b>Proposed resolution:</b></p>
+<p>
+Set priority to 2 after reflector poll.
+</p>
+<p>
+"This is unfortunate. <code class='backtick'>lazy_split</code> is probably not very commonly used,
+but handling input ranges was half the reason why we kept it around.
+Can we reuse <code class='backtick'>trailing_empty_</code> for this instead of adding a new flag?
+Both flags have the same meaning, and the two cases where they are true
+are disjoint: we need <code class='backtick'>has_next_</code> when iterating through the inner range
+exhausted the source range; we need <code class='backtick'>trailing_empty_</code> when we find a delimiter
+at the end of the source range when incrementing the outer iterator,
+which by definition means that iterating through the inner range
+<i>didn't</i> exhaust it."
+</p>
+<p><strong>Previous resolution [SUPERSEDED]:</strong></p>
+<blockquote class="note">
+
 <p>
 This wording is relative to <a href="https://wg21.link/N5008" title=" Working Draft, Programming Languages — C++">N5008</a>.
 </p>
@@ -68496,6 +68479,69 @@ else</ins>
 </li>
 
 </ol>
+</blockquote>
+
+<p><i>[2025-10-21; Hewill Kang provides simpler wording]</i></p>
+
+
+
+
+<p id="res-4249"><b>Proposed resolution:</b></p>
+<p>
+This wording is relative to <a href="https://wg21.link/N5014">N5014</a>.
+</p>
+
+<ol>
+
+<li><p>Modify 25.7.16.3 <a href="https://wg21.link/range.lazy.split.outer">[range.lazy.split.outer]</a> as indicated:</p>
+
+<blockquote>
+<pre>
+constexpr <i>outer-iterator</i>&amp; operator++();
+</pre>
+<blockquote>
+<p>
+-6- <i>Effects:</i> Equivalent to:
+</p>
+<blockquote><pre>
+const auto end = ranges::end(<i>parent_</i>-&gt;<i>base_</i>);
+if (<i>current</i> == end) {
+  <i>trailing_empty_</i> = false;
+  return <code>*this</code>;
+}
+const auto [pbegin, pend] = subrange{<i>parent_</i>-&gt;<i>pattern_</i>};
+if (pbegin == pend) ++<i>current</i>;
+else if constexpr (<i>tiny-range</i>&lt;Pattern&gt;) {
+  <i>current</i> = ranges::find(std::move(<i>current</i>), end, *pbegin);
+  if (<i>current</i> != end) {
+    ++<i>current</i>;
+    if (<i>current</i> == end)
+      <i>trailing_empty_</i> = true;
+    <ins>else if constexpr (!forward_range&lt;V&gt;)
+      <i>trailing_empty_</i> = true;</ins>
+  }
+}
+else {
+  do {
+    auto [b, p] = ranges::mismatch(<i>current</i>, end, pbegin, pend);
+    if (p == pend) {
+      <i>current</i> = b;
+      if (<i>current</i> == end)
+        <i>trailing_empty_</i> = true;
+      break;            <i>// The pattern matched; skip it</i>
+    }
+  } while (++<i>current</i> != end);
+}
+return *this;
+</pre></blockquote>
+</blockquote>
+</blockquote>
+
+</li>
+
+</ol>
+
+
 
 
 
@@ -68795,8 +68841,8 @@ of <code class='backtick'>final</code>.</ins>
 <hr>
 <h3 id="4254"><a href="#4254">4254</a><sup><a href="https://cplusplus.github.io/LWG/issue4254">(i)</a></sup>. <code>stride_view::<i>iterator</i></code> should provide <code>operator-&gt;</code></h3>
 <p><b>Section:</b> 25.7.32.3 <a href="https://wg21.link/range.stride.iterator">[range.stride.iterator]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Hewill Kang <b>Opened:</b> 2025-05-01 <b>Last modified:</b> 2025-05-04</p>
-<p><b>Priority: </b>Not Prioritized
+ <b>Submitter:</b> Hewill Kang <b>Opened:</b> 2025-05-01 <b>Last modified:</b> 2025-10-21</p>
+<p><b>Priority: </b>3
 </p>
 <p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
 <p><b>Discussion:</b></p>
@@ -68811,6 +68857,12 @@ It turns out this is also true for <code>stride_view::<i>iterator</i></code>, su
 <p/>
 There is no reason to give up this convenience because <code>stride_view::<i>iterator</i></code> is intended 
 to preserve the nature of the underlying iterator.
+</p>
+
+<p><i>[2025-10-21; Reflector poll.]</i></p>
+
+<p>
+Set priority to 3 after reflector poll.
 </p>
 
 
@@ -77839,8 +77891,8 @@ type <del>ignoring cv-qualifiers</del>; otherwise, it is the expression
 <hr>
 <h3 id="4364"><a href="#4364">4364</a><sup><a href="https://cplusplus.github.io/LWG/issue4364">(i)</a></sup>. SFINAE-friendliness on <code>operator&lt;&lt;</code> and <code>operator&gt;&gt;</code> for unspecified I/O manipulators</h3>
 <p><b>Section:</b> 31.7.7 <a href="https://wg21.link/std.manip">[std.manip]</a>, 31.7.8 <a href="https://wg21.link/ext.manip">[ext.manip]</a>, 31.7.9 <a href="https://wg21.link/quoted.manip">[quoted.manip]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Jiang An <b>Opened:</b> 2025-09-05 <b>Last modified:</b> 2025-09-15</p>
-<p><b>Priority: </b>Not Prioritized
+ <b>Submitter:</b> Jiang An <b>Opened:</b> 2025-09-05 <b>Last modified:</b> 2025-10-21</p>
+<p><b>Priority: </b>4
 </p>
 <p><b>View other</b> <a href="lwg-index-open.html#std.manip">active issues</a> in [std.manip].</p>
 <p><b>View all other</b> <a href="lwg-index.html#std.manip">issues</a> in [std.manip].</p>
@@ -77869,6 +77921,22 @@ It seems better to eliminate such implementation divergence. Perhaps it's also b
 require them to be SFINAE-friendly to reduce potential conflicts with user-provided operators.
 <p/>
 If it's intended to allow implementation divergence, perhaps we should clarify the intent.
+</p>
+
+<p><i>[2025-10-21; Reflector poll.]</i></p>
+
+<p>
+Set priority to 4 after reflector poll.
+</p>
+<p>
+"Does it matter in practice? If the type is unspecified, it's fine for misuse to be non-portable."
+</p>
+<p>
+"Would like a diagnostic, don't care about SFINAE. Not clear to me that the current
+<code class='backtick'>setfill</code> wording disallows the mixed-character-type case at all ..."
+</p>
+<p>
+"NAD, not been a problem for a quarter of a century."
 </p>
 
 
