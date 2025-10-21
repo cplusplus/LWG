@@ -6,7 +6,7 @@
 <section><sref ref="[func.wrap.general]"/></section>
 <submitter>Tomasz Kami&nacute;ski</submitter>
 <date>15 May 2025</date>
-<priority>99</priority>
+<priority>2</priority>
 
 <discussion>
 <p>
@@ -163,6 +163,15 @@ The updated resolution allows indirection but making it unspecified if
 will refer to source object or its target.
 </p>
 
+
+<note>2025-10-21; Reflector poll.</note>
+<p>
+Set priority to 2 after reflector poll.
+</p>
+<p>
+Strong oposition to making it unspecified whether <tt>function_ref</tt> constructed from
+other <tt>function_ref</tt> will reference source object or its target directly.
+</p>
 </discussion>
 
 <resolution>
