@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="4384" status="New">
+<issue num="4384" status="Tentatively Ready">
 <title>`flat_set::erase(iterator)` is underconstrained
 </title>
 <section>
@@ -15,6 +15,11 @@
 <discussion>
 <p>
 This is a follow-up of LWG <iref ref="3704"/> since we now have `flat_set` and `flat_multiset`.
+</p>
+
+<note>2025-10-21; Reflector poll.</note>
+<p>
+Set status to Tentatively Ready after seven votes in favour during reflector poll.
 </p>
 </discussion>
 
