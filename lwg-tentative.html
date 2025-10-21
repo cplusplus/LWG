@@ -54,7 +54,7 @@
 </style>
 </head>
 <body>
-<p>Revised 2025-10-20 at 17:47:43 UTC
+<p>Revised 2025-10-21 at 08:44:01 UTC
 </p><h2>Tentative Issues</h2>
 <hr>
 <h3 id="3627"><a href="#3627">3627</a><sup><a href="https://cplusplus.github.io/LWG/issue3627">(i)</a></sup>. Inconsistent specifications for <code>std::make_optional</code> overloads</h3>
@@ -1002,6 +1002,247 @@ call sites are constrained on convertibility of <code>OtherIndexType</code> to <
 can use the <code>static_cast</code> branch without loss of precision. &mdash; <i>end note</i>]
 </p>
 </blockquote>
+</blockquote>
+</li>
+</ol>
+
+
+
+
+
+<hr>
+<h3 id="4050"><a href="#4050">4050</a><sup><a href="https://cplusplus.github.io/LWG/issue4050">(i)</a></sup>. Should <code>views::iota(0) | views::take(5)</code> be <code>views::iota(0, 5)</code>?</h3>
+<p><b>Section:</b> 25.7.10.1 <a href="https://wg21.link/range.take.overview">[range.take.overview]</a>, 25.7.10.1 <a href="https://wg21.link/range.take.overview">[range.take.overview]</a> <b>Status:</b> <a href="lwg-active.html#NAD">Tentatively NAD</a>
+ <b>Submitter:</b> Hewill Kang <b>Opened:</b> 2024-01-28 <b>Last modified:</b> 2025-10-20</p>
+<p><b>Priority: </b>Not Prioritized
+</p>
+<p><b>View other</b> <a href="lwg-index-open.html#range.take.overview">active issues</a> in [range.take.overview].</p>
+<p><b>View all other</b> <a href="lwg-index.html#range.take.overview">issues</a> in [range.take.overview].</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#Tentatively NAD">Tentatively NAD</a> status.</p>
+<p><b>Discussion:</b></p>
+<p>
+Given that C++20 ranges does not introduce the <i>infinite range</i> notification present in range/v3, 
+this means that <code>views::iota(0) | views::take(5)</code> will currently return a <code>take_view</code> object 
+that does not model <code>sized_range</code>.
+</p>
+<p>
+However, with the introduction of C++23 <code>repeat_view</code>, its interaction with <code>views::take</code>/<code>drop</code> 
+does have special handling depending on whether it is an infinite range, which causes 
+<code>views::repeat(0) | views::take(5)</code> to return a <code>repeat_view</code> objects that satisfy <code>sized_range</code>.
+</p>
+<p>
+This inconsistency leads to very different behavior of these two range factories in the case of infinite ranges 
+(<a href="https://godbolt.org/z/4bvToE96x">demo</a>):
+</p>
+<blockquote>
+<pre>
+#include &lt;ranges&gt;
+
+auto take_and_drop = std::views::drop(5)
+                   | std::views::take(4)
+                   | std::views::drop(3)
+                   | std::views::take(2)
+                   | std::views::drop(1);
+
+// The type of iota is drop_view&lt;take_view&lt;drop_view&lt;take_view&lt;drop_view&lt;iota_view&lt;int, unreachable_sentinel_t&gt;&gt;&gt;&gt;&gt;&gt;, which is indeed a template bloat.
+auto iota = std::views::iota(0) | take_and_drop;
+static_assert(std::ranges::sized_range&lt;decltype(iota)&gt;); // <span style="color:red;font-weight:bolder">failed</span>
+
+// The type of repeat is simply std::ranges::repeat_view&lt;int, long&gt;
+std::ranges::sized_range auto repeat = std::views::repeat(0) | take_and_drop; // ok
+</pre>
+</blockquote>
+<p>
+If we do account for the infinity of <code>repeat_view</code>, then I see no reason not to do it for <code>iota_view</code>, 
+as this is obviously intuitive and can indeed be considered an enhancement.
+</p>
+
+<p><i>[2025-10-20; Reflector poll; Status changed: New &rarr; Tentatively NAD.]</i></p>
+
+<p>
+"This changes meaning of existing C++20 for unclear benefit.
+This would need a paper."
+</p>
+<p>
+"Why does <code class='backtick'>iota(0, 10) | take(5)</code> give you <code class='backtick'>iota(0, 5)</code> but <code class='backtick'>iota(0) | take(5)</code> doesn't?"
+</p>
+<p>
+"IIRC there was opposition to <a href="https://wg21.link/P1739" title=" Avoid template bloat for safe_ranges in combination with 'subrange-y' view adaptors.">P1739</a> introducing any kind of
+special cases in the adaptor objects. What got consensus was only the
+'specialisations' that preserve the exact type of the underlying range.
+Thus <code class='backtick'>iota(0, 10)</code> &rarr; <code class='backtick'>iota(0, 5)</code> was fine, but <code class='backtick'>iota(0)</code> &rarr; <code class='backtick'>iota(0, 5)</code>
+would not have been.
+I still think that all changes that simplify the return types are helpful,
+but it would certainly be a breaking change now."
+</p>
+
+
+<p id="res-4050"><b>Proposed resolution:</b></p>
+<p>
+This wording is relative to <a href="https://wg21.link/N4971" title=" Working Draft, Programming Languages — C++">N4971</a>.
+</p>
+
+<ol>
+<li><p>Modify 25.7.10.1 <a href="https://wg21.link/range.take.overview">[range.take.overview]</a> as indicated:</p>
+
+<blockquote>
+<p>
+  -2- The name <code>views::take</code> denotes a range adaptor object (25.7.2 <a href="https://wg21.link/range.adaptor.object">[range.adaptor.object]</a>).
+  Let <code>E</code> and <code>F</code> be expressions, let <code>T</code> be <code>remove_cvref_t&lt;decltype((E))&gt;</code>,
+  and let <code>D</code> be <code>range_difference_t&lt;decltype((E))&gt;</code>.
+  If <code>decltype((F))</code> does not model <code>convertible_to&lt;D&gt;</code>, <code>views::take(E, F)</code>
+  is ill-formed. Otherwise, the expression <code>views::take(E, F)</code> is expression-equivalent to:
+</p>
+<ol style="list-style-type: none">
+  <li>
+    <p>(2.1) &mdash; if <code>T</code> is a specialization of <code>empty_view</code> (25.6.2.2 <a href="https://wg21.link/range.empty.view">[range.empty.view]</a>),
+      then <code>((void)F, <i>decay-copy</i>(E))</code>, except that the evaluations of <code>E</code>
+      and <code>F</code> are indeterminately sequenced.
+    </p>
+  </li>
+  <li>
+    <p>(2.2) &mdash; Otherwise, if <code>T</code> models <code>random_access_range</code> and <code>sized_range</code>
+      and is a specialization of <code>span</code> (23.7.2.2 <a href="https://wg21.link/views.span">[views.span]</a>),
+      <code>basic_string_view</code> (27.3 <a href="https://wg21.link/string.view">[string.view]</a>), or <code>ranges::subrange</code> 
+      (25.5.4 <a href="https://wg21.link/range.subrange">[range.subrange]</a>), then <code>U(ranges::begin(E), ranges::begin(E) + 
+      std::min&lt;D&gt;(ranges::distance(E), F))</code>, except that <code>E</code> is evaluated only once, 
+      where <code>U</code> is a type determined as follows:
+    </p>
+    <ol style="list-style-type: none">
+      <li>
+        <p>(2.2.1) &mdash; if <code>T</code> is a specialization of <code>span</code>, then <code>U</code> is
+          <code>span&lt;typename T::element_type&gt;</code>;
+        </p>
+      </li>
+      <li>
+        <p>(2.2.2) &mdash; otherwise, if <code>T</code> is a specialization of <code>basic_string_view</code>, then
+          <code>U</code> is <code>T</code>;
+        </p>
+      </li>
+      <li>
+        <p>(2.2.3) &mdash; otherwise, <code>T</code> is a specialization of <code>subrange</code>,
+          and <code>U</code> is <code>subrange&lt;iterator_t&lt;T&gt;&gt;</code>;</p>
+      </li>
+    </ol>
+  </li>
+  <li>
+    <p>(2.3) &mdash; otherwise, if <code>T</code> is a specialization of <code>iota_view</code> 
+      (25.6.4.2 <a href="https://wg21.link/range.iota.view">[range.iota.view]</a>) that models <code>random_access_range</code> and <code>sized_range</code>, then
+      <code>iota_view(*ranges::begin(E), *(ranges::begin(E) + std::min&lt;D&gt;(ranges::distance(E), F)))</code>,
+      except that <code>E</code> is evaluated only once.
+    </p>
+  </li>
+  <li>
+    <p>(2.?) &mdash; <ins>Otherwise, if <code>T</code> is a specialization of <code>iota_view</code>
+        that models <code>random_access_range</code> and <code>same_as&lt;sentinel_t&lt;T&gt;,
+          unreachable_sentinel_t&gt;</code> is <code>true</code>, then
+        <code>views::iota(*ranges::begin(E), *(ranges::begin(E) + static_cast&lt;D&gt;(F)))</code>,
+        except that <code>E</code> is evaluated only once.</ins></p>
+  </li>
+
+  <li>
+    <p>(2.4) &mdash; Otherwise, if <code>T</code> is a specialization of <code>repeat_view</code> 
+       (25.6.5.2 <a href="https://wg21.link/range.repeat.view">[range.repeat.view]</a>):
+    </p>
+    <ol style="list-style-type: none">
+      <li>
+        <p>(2.4.1) &mdash; if <code>T</code> models <code>sized_range</code>, then
+        <pre>  views::repeat(*E.<i>value_</i>, std::min&lt;D&gt;(ranges::distance(E), F))</pre>
+        except that <code>E</code> is evaluated only once;</p>
+      </li>
+      <li>
+        <p>(2.4.2) &mdash; otherwise, <code>views::repeat(*E.<i>value_</i>, static_cast&lt;D&gt;(F))</code>.
+        </p>
+      </li>
+    </ol>
+  </li>
+  <li>
+    <p>(2.5) &mdash; Otherwise, <code>take_view(E, F)</code>.</p>
+  </li>
+</ol>
+</blockquote>
+</li>
+
+<li><p>Modify 25.7.12.1 <a href="https://wg21.link/range.drop.overview">[range.drop.overview]</a> as indicated:</p>
+
+<blockquote>
+<p>
+  -2- The name <code>views::drop</code> denotes a range adaptor object (25.7.2 <a href="https://wg21.link/range.adaptor.object">[range.adaptor.object]</a>).
+  Let <code>E</code> and <code>F</code> be expressions, let <code>T</code> be <code>remove_cvref_t&lt;decltype((E))&gt;</code>,
+  and let <code>D</code> be <code>range_difference_t&lt;decltype((E))&gt;</code>.
+  If <code>decltype((F))</code> does not model <code>convertible_to&lt;D&gt;</code>, <code>views::drop(E, F)</code>
+  is ill-formed. Otherwise, the expression <code>views::drop(E, F)</code> is expression-equivalent to:
+</p>
+<ol style="list-style-type: none">
+  <li>
+    <p>(2.1) &mdash; if <code>T</code> is a specialization of <code>empty_view</code> (25.6.2.2 <a href="https://wg21.link/range.empty.view">[range.empty.view]</a>),
+      then <code>((void)F, <i>decay-copy</i>(E))</code>, except that the evaluations of <code>E</code>
+      and <code>F</code> are indeterminately sequenced.
+    </p>
+  </li>
+  <li>
+    <p>(2.2) &mdash; Otherwise, if <code>T</code> models <code>random_access_range</code> and <code>sized_range</code>
+      and is
+    </p>
+    <ol style="list-style-type: none">
+      <li>
+        <p>(2.2.1) &mdash; a specialization of <code>span</code> (23.7.2.2 <a href="https://wg21.link/views.span">[views.span]</a>),</p>
+      </li>
+      <li>
+        <p>(2.2.2) &mdash; a specialization of <code>basic_string_view</code> (27.3 <a href="https://wg21.link/string.view">[string.view]</a>), </p>
+      </li>
+      <li>
+        <p>(2.2.3) &mdash; a specialization of <code>iota_view</code> (25.6.4.2 <a href="https://wg21.link/range.iota.view">[range.iota.view]</a>), or</p>
+      </li>
+      <li>
+        <p>(2.2.4) &mdash; a specialization of <code>subrange</code> (25.5.4 <a href="https://wg21.link/range.subrange">[range.subrange]</a>)
+          where <code>T::<i>StoreSize</i></code> is <code>false</code>,</p>
+      </li>
+    </ol>
+    <p>then <code>U(ranges::begin(E) + std::min&lt;D&gt;(ranges::distance(E), F), ranges::end(E))</code>,
+      except that <code>E</code> is evaluated only once, where <code>U</code> is <code>span&lt;typename
+        T::element_type&gt;</code>
+      if <code>T</code> is a specialization of <code>span</code> and <code>T</code> otherwise.
+    </p>
+  </li>
+  <li>
+    <p>(2.?) &mdash; <ins>Otherwise, if <code>T</code> is a specialization of <code>iota_view</code>
+        that models
+        <code>random_access_range</code> and <code>same_as&lt;sentinel_t&lt;T&gt;,
+          unreachable_sentinel_t&gt;</code> is <code>true</code>, then
+        <code>views::iota(*(ranges::begin(E) + static_cast&lt;D&gt;(F)))</code>.</ins>
+    </p>
+  </li>
+  <li>
+    <p>(2.3) &mdash; Otherwise, if <code>T</code> is a specialization of <code>subrange</code>
+      (25.5.4 <a href="https://wg21.link/range.subrange">[range.subrange]</a>) that models
+      <code>random_access_range</code> and <code>sized_range</code>, then
+      <code>T(ranges::begin(E) + std::min&lt;D&gt;(ranges::distance(E), F), ranges::end(E),
+        <i>to-unsigned-like</i>(ranges::distance(E) - std::min&lt;D&gt;(ranges::distance(E), F)))</code>,
+      except that <code>E</code> and <code>F</code> are each evaluated only once.
+    </p>
+  </li>
+  <li>
+    <p>(2.4) &mdash; Otherwise, if <code>T</code> is a specialization of <code>repeat_view</code> (25.6.5.2 <a href="https://wg21.link/range.repeat.view">[range.repeat.view]</a>):
+    </p>
+    <ol style="list-style-type: none">
+      <li>
+        <p>(2.4.1) &mdash; if <code>T</code> models <code>sized_range</code>, then
+        <pre>  views::repeat(*E.<i>value_</i>, ranges::distance(E) - std::min&lt;D&gt;(ranges::distance(E), F))</pre>
+        except that <code>E</code> is evaluated only once;</p>
+      </li>
+      <li>
+        <p>(2.4.2) &mdash; otherwise, <code>((void)F, <i>decay-copy</i>(E))</code>, except that the evaluations of
+          <code>E</code> and <code>F</code> are indeterminately sequenced.</p>
+      </li>
+    </ol>
+  </li>
+  <li>
+    <p>(2.5) &mdash; Otherwise, <code>drop_view(E, F)</code>.
+    </p>
+  </li>
+
+</ol>
 </blockquote>
 </li>
 </ol>

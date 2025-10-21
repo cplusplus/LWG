@@ -62,7 +62,7 @@ This document is the Index by Status and Section for the <a href="lwg-active.htm
 <a href="lwg-defects.html">Library Defect Reports and Accepted Issues</a>, and <a href="lwg-closed.html">Library Closed Issues List</a>.
 </p>
 
-<p>Revised 2025-10-20 at 17:47:43 UTC
+<p>Revised 2025-10-21 at 08:44:01 UTC
 </p><h2 id="Ready">Ready (3 issues)</h2>
 <table class="issues-index">
 <tr>
@@ -460,7 +460,7 @@ constructor</td>
 <td></td>
 </tr>
 </table>
-<h2 id="Tentatively_NAD">Tentatively NAD (19 issues)</h2>
+<h2 id="Tentatively_NAD">Tentatively NAD (20 issues)</h2>
 <table class="issues-index">
 <tr>
   <th><a href="lwg-toc.html">Issue</a></th>
@@ -539,6 +539,15 @@ constructor</td>
 <td><a href="lwg-active.html#NAD">Tentatively NAD</a></td>
 <td>25.7.2 [range.adaptor.object]</td>
 <td>Range adaptor closure object is underspecified for its return type</td>
+<td>Yes</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td id="4050"><a href="lwg-active.html#4050" title="Should views::iota(0) | views::take(5) be views::iota(0, 5)? (Status: Tentatively NAD)">4050</a><sup><a href="https://cplusplus.github.io/LWG/issue4050">(i)</a></sup></td>
+<td><a href="lwg-active.html#NAD">Tentatively NAD</a></td>
+<td>25.7.10.1 [range.take.overview]</td>
+<td>Should <code>views::iota(0) | views::take(5)</code> be <code>views::iota(0, 5)</code>?</td>
 <td>Yes</td>
 <td></td>
 <td></td>
@@ -643,7 +652,7 @@ constructor</td>
 <td></td>
 </tr>
 </table>
-<h2 id="New">New (589 issues)</h2>
+<h2 id="New">New (588 issues)</h2>
 <table class="issues-index">
 <tr>
   <th><a href="lwg-toc.html">Issue</a></th>
@@ -3415,15 +3424,6 @@ difference_type is not an integer-class type? (Status: New)">3763</a><sup><a hre
 <td></td>
 </tr>
 <tr>
-<td id="4050"><a href="lwg-active.html#4050" title="Should views::iota(0) | views::take(5) be views::iota(0, 5)? (Status: New)">4050</a><sup><a href="https://cplusplus.github.io/LWG/issue4050">(i)</a></sup></td>
-<td><a href="lwg-active.html#New">New</a></td>
-<td>25.7.10.1 [range.take.overview]</td>
-<td>Should <code>views::iota(0) | views::take(5)</code> be <code>views::iota(0, 5)</code>?</td>
-<td>Yes</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
 <td id="4009"><a href="lwg-active.html#4009" title="drop_view::begin const may have &#x1d4aa;(n) complexity (Status: New)">4009</a><sup><a href="https://cplusplus.github.io/LWG/issue4009">(i)</a></sup></td>
 <td><a href="lwg-active.html#New">New</a></td>
 <td>25.7.12.2 [range.drop.view]</td>
@@ -6139,7 +6139,7 @@ don't support <code>DynamicBuffer</code> lvalues</td>
 <td>20.2.3 [pointer.traits]</td>
 <td><code>pointer_traits::pointer_to</code> should be <code>constexpr</code></td>
 <td>Yes</td>
-<td></td>
+<td>4</td>
 <td></td>
 </tr>
 <tr>
