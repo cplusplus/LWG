@@ -64,8 +64,8 @@
 <p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#New">New</a> status.</em></p>
 <h3 id="4374"><a href="lwg-active.html#4374">4374</a>. <code>flat_<i>meow</i></code> range insertion behavior is unclear if in-place merge cannot allocate additional memory</h3>
 <p><b>Section:</b> 23.6.8.7 <a href="https://wg21.link/flat.map.modifiers">[flat.map.modifiers]</a>, 23.6.11.5 <a href="https://wg21.link/flat.set.modifiers">[flat.set.modifiers]</a>, 23.6.12.5 <a href="https://wg21.link/flat.multiset.modifiers">[flat.multiset.modifiers]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Tim Song <b>Opened:</b> 2025-09-09 <b>Last modified:</b> 2025-09-19</p>
-<p><b>Priority: </b>Not Prioritized
+ <b>Submitter:</b> Tim Song <b>Opened:</b> 2025-09-09 <b>Last modified:</b> 2025-10-21</p>
+<p><b>Priority: </b>3
 </p>
 <p><b>View other</b> <a href="lwg-index-open.html#flat.map.modifiers">active issues</a> in [flat.map.modifiers].</p>
 <p><b>View all other</b> <a href="lwg-index.html#flat.map.modifiers">issues</a> in [flat.map.modifiers].</p>
@@ -82,6 +82,12 @@ It is not clear what happens if that allocation fails. If the <code class='backt
 it will fall back to a less efficient <code>&#x1d4aa;(N log N)</code> algorithm, but this is not reflected 
 in the <i>Complexity</i>: element. Alternatively, if the allocation failure is reported by an exception, 
 that should be called out in the spec.
+</p>
+
+<p><i>[2025-10-21; Reflector poll.]</i></p>
+
+<p>
+Set priority to 3 after reflector poll.
 </p>
 
 

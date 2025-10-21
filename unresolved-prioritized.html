@@ -60,7 +60,7 @@
 <p>This document is the Table of Contents for the <a href="lwg-active.html">Library Active Issues List</a>,
 <a href="lwg-defects.html">Library Defect Reports and Accepted Issues</a>, and <a href="lwg-closed.html">Library Closed Issues List</a>,
 sorted by priority.</p>
-<p>Revised 2025-10-21 at 13:14:14 UTC
+<p>Revised 2025-10-21 at 13:39:07 UTC
 </p><h2 id="Priority_1">Priority 1 (14 issues)</h2>
 <table class="issues-index">
 <tr>
@@ -201,7 +201,7 @@ sorted by priority.</p>
 <td></td>
 </tr>
 </table>
-<h2 id="Priority_2">Priority 2 (70 issues)</h2>
+<h2 id="Priority_2">Priority 2 (71 issues)</h2>
 <table class="issues-index">
 <tr>
   <th><a href="lwg-toc.html">Issue</a></th>
@@ -451,6 +451,15 @@ sorted by priority.</p>
 <td><a href="lwg-active.html#New">New</a></td>
 <td>23.6.8 [flat.map]</td>
 <td><code>flat_<i>foo</i></code> missing some allocator-extended deduction guides</td>
+<td><span class="no-pr">No</span></td>
+<td>2</td>
+<td></td>
+</tr>
+<tr>
+<td id="4350"><a href="lwg-active.html#4350" title="Should flat adaptors use insert_range when available? (Status: New)">4350</a><sup><a href="https://cplusplus.github.io/LWG/issue4350">(i)</a></sup></td>
+<td><a href="lwg-active.html#New">New</a></td>
+<td>23.6.8 [flat.map]</td>
+<td>Should flat adaptors use <code class='backtick'>insert_range</code> when available?</td>
 <td><span class="no-pr">No</span></td>
 <td>2</td>
 <td></td>
@@ -847,7 +856,7 @@ specified to make <code><i>N</i></code> copies of <code>T</code> into the destin
 <td></td>
 </tr>
 </table>
-<h2 id="Priority_3">Priority 3 (423 issues)</h2>
+<h2 id="Priority_3">Priority 3 (426 issues)</h2>
 <table class="issues-index">
 <tr>
   <th><a href="lwg-toc.html">Issue</a></th>
@@ -2533,6 +2542,15 @@ should conditionally require <i>Cpp17CopyInsertable</i> in their preconditions</
 <td></td>
 </tr>
 <tr>
+<td id="3959"><a href="lwg-active.html#3959" title="Should the comparator of std::flat_map/std::flat_multimap be copied twice in some operations? (Status: New)">3959</a><sup><a href="https://cplusplus.github.io/LWG/issue3959">(i)</a></sup></td>
+<td><a href="lwg-active.html#New">New</a></td>
+<td>23.6.8 [flat.map]</td>
+<td>Should the comparator of <code>std::flat_map</code>/<code>std::flat_multimap</code> be copied twice in some operations?</td>
+<td><span class="no-pr">No</span></td>
+<td>3</td>
+<td></td>
+</tr>
+<tr>
 <td id="3966"><a href="lwg-active.html#3966" title="The value_type and reference members of std::flat_(multi)map::(const_)iterator are unclear (Status: New)">3966</a><sup><a href="https://cplusplus.github.io/LWG/issue3966">(i)</a></sup></td>
 <td><a href="lwg-active.html#New">New</a></td>
 <td>23.6.8.1 [flat.map.overview]</td>
@@ -2556,6 +2574,24 @@ should conditionally require <i>Cpp17CopyInsertable</i> in their preconditions</
 <td>23.6.8.7 [flat.map.modifiers]</td>
 <td><code>flat_map::insert_range</code>'s <i>Effects</i> is not quite right</td>
 <td>Yes</td>
+<td>3</td>
+<td></td>
+</tr>
+<tr>
+<td id="4374"><a href="lwg-active.html#4374" title="flat_meow range insertion behavior is unclear if in-place merge cannot allocate additional memory (Status: New)">4374</a><sup><a href="https://cplusplus.github.io/LWG/issue4374">(i)</a></sup></td>
+<td><a href="lwg-active.html#New">New</a></td>
+<td>23.6.8.7 [flat.map.modifiers]</td>
+<td><code>flat_<i>meow</i></code> range insertion behavior is unclear if in-place merge cannot allocate additional memory</td>
+<td><span class="no-pr">No</span></td>
+<td>3</td>
+<td></td>
+</tr>
+<tr>
+<td id="4352"><a href="lwg-active.html#4352" title="&quot;operations on flat_multimap are equivalent to those of flat_map&quot; (Status: New)">4352</a><sup><a href="https://cplusplus.github.io/LWG/issue4352">(i)</a></sup></td>
+<td><a href="lwg-active.html#New">New</a></td>
+<td>23.6.9.1 [flat.multimap.overview]</td>
+<td>"operations on flat_multimap are equivalent to those of flat_map"</td>
+<td><span class="no-pr">No</span></td>
 <td>3</td>
 <td></td>
 </tr>
@@ -5580,7 +5616,7 @@ vprint_unicode/vprint_nonunicode (Status: New)">4039</a><sup><a href="https://cp
 <td></td>
 </tr>
 </table>
-<h2 id="Priority_99">Not Prioritized (112 issues)</h2>
+<h2 id="Priority_99">Not Prioritized (107 issues)</h2>
 <table class="issues-index">
 <tr>
   <th><a href="lwg-toc.html">Issue</a></th>
@@ -5877,53 +5913,6 @@ vprint_unicode/vprint_nonunicode (Status: New)">4039</a><sup><a href="https://cp
 <td><a href="lwg-active.html#New">New</a></td>
 <td>23.6.3.1 [queue.defn]</td>
 <td>Container adaptor's <code class='backtick'>empty</code>/<code class='backtick'>size</code> should be <code class='backtick'>noexcept</code></td>
-<td>Yes</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td id="3959"><a href="lwg-active.html#3959" title="Should the comparator of std::flat_map/std::flat_multimap be copied twice in some operations? (Status: New)">3959</a><sup><a href="https://cplusplus.github.io/LWG/issue3959">(i)</a></sup></td>
-<td><a href="lwg-active.html#New">New</a></td>
-<td>23.6.8 [flat.map]</td>
-<td>Should the comparator of <code>std::flat_map</code>/<code>std::flat_multimap</code> be copied twice in some operations?</td>
-<td><span class="no-pr">No</span></td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td id="4350"><a href="lwg-active.html#4350" title="Should flat adaptors use insert_range when available? (Status: New)">4350</a><sup><a href="https://cplusplus.github.io/LWG/issue4350">(i)</a></sup></td>
-<td><a href="lwg-active.html#New">New</a></td>
-<td>23.6.8 [flat.map]</td>
-<td>Should flat adaptors use <code class='backtick'>insert_range</code> when available?</td>
-<td><span class="no-pr">No</span></td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td id="4374"><a href="lwg-active.html#4374" title="flat_meow range insertion behavior is unclear if in-place merge cannot allocate additional memory (Status: New)">4374</a><sup><a href="https://cplusplus.github.io/LWG/issue4374">(i)</a></sup></td>
-<td><a href="lwg-active.html#New">New</a></td>
-<td>23.6.8.7 [flat.map.modifiers]</td>
-<td><code>flat_<i>meow</i></code> range insertion behavior is unclear if in-place merge cannot allocate additional memory</td>
-<td><span class="no-pr">No</span></td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td id="4352"><a href="lwg-active.html#4352" title="&quot;operations on flat_multimap are equivalent to those of flat_map&quot; (Status: New)">4352</a><sup><a href="https://cplusplus.github.io/LWG/issue4352">(i)</a></sup></td>
-<td><a href="lwg-active.html#New">New</a></td>
-<td>23.6.9.1 [flat.multimap.overview]</td>
-<td>"operations on flat_multimap are equivalent to those of flat_map"</td>
-<td><span class="no-pr">No</span></td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td id="4384"><a href="lwg-active.html#4384" title="flat_set::erase(iterator) is underconstrained
- (Status: New)">4384</a><sup><a href="https://cplusplus.github.io/LWG/issue4384">(i)</a></sup></td>
-<td><a href="lwg-active.html#New">New</a></td>
-<td>23.6.11.2 [flat.set.defn]</td>
-<td><code class='backtick'>flat_set::erase(iterator)</code> is underconstrained
-</td>
 <td>Yes</td>
 <td></td>
 <td></td>

@@ -64,8 +64,8 @@
 <p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#New">New</a> status.</em></p>
 <h3 id="4350"><a href="lwg-active.html#4350">4350</a>. Should flat adaptors use <code class='backtick'>insert_range</code> when available?</h3>
 <p><b>Section:</b> 23.6.8 <a href="https://wg21.link/flat.map">[flat.map]</a>, 23.6.9 <a href="https://wg21.link/flat.multimap">[flat.multimap]</a>, 23.6.11 <a href="https://wg21.link/flat.set">[flat.set]</a>, 23.6.12 <a href="https://wg21.link/flat.multiset">[flat.multiset]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Jonathan Wakely <b>Opened:</b> 2025-09-05 <b>Last modified:</b> 2025-09-05</p>
-<p><b>Priority: </b>Not Prioritized
+ <b>Submitter:</b> Jonathan Wakely <b>Opened:</b> 2025-09-05 <b>Last modified:</b> 2025-10-21</p>
+<p><b>Priority: </b>2
 </p>
 <p><b>View other</b> <a href="lwg-index-open.html#flat.map">active issues</a> in [flat.map].</p>
 <p><b>View all other</b> <a href="lwg-index.html#flat.map">issues</a> in [flat.map].</p>
@@ -84,6 +84,16 @@ the <code class='backtick'>xxx_range</code> member if they exist?
 That would mean that user containers need to ensure that any member functions
 with those names must behave as expected, but we already require that for
 <code class='backtick'>std::queue</code>.
+</p>
+
+<p><i>[2025-10-21; Reflector poll.]</i></p>
+
+<p>
+Set priority to 2 after reflector poll.
+</p>
+<p>
+Use <code>append_range</code> to be consitient with other adapters.
+Send to LEWG for confirmation.
 </p>
 
 

@@ -64,8 +64,8 @@
 <p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#New">New</a> status.</em></p>
 <h3 id="3959"><a href="lwg-active.html#3959">3959</a>. Should the comparator of <code>std::flat_map</code>/<code>std::flat_multimap</code> be copied twice in some operations?</h3>
 <p><b>Section:</b> 23.6.8 <a href="https://wg21.link/flat.map">[flat.map]</a>, 23.6.9 <a href="https://wg21.link/flat.multimap">[flat.multimap]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Jiang An <b>Opened:</b> 2023-07-23 <b>Last modified:</b> 2023-07-23</p>
-<p><b>Priority: </b>Not Prioritized
+ <b>Submitter:</b> Jiang An <b>Opened:</b> 2023-07-23 <b>Last modified:</b> 2025-10-21</p>
+<p><b>Priority: </b>3
 </p>
 <p><b>View other</b> <a href="lwg-index-open.html#flat.map">active issues</a> in [flat.map].</p>
 <p><b>View all other</b> <a href="lwg-index.html#flat.map">issues</a> in [flat.map].</p>
@@ -86,6 +86,17 @@ Likewise, <code>std::flat_map::value_comp</code> and <code>std::flat_multimap::v
 required to copy the comparator twice due to the exposition-only constructor of <code>value_compare</code>. 
 <p/>
 Should we make the constructor take a <code>const</code> reference?
+</p>
+
+<p><i>[2025-10-21; Reflector poll.]</i></p>
+
+<p>
+Set priority to 3 after reflector poll.
+</p>
+<p>
+We should provide blanket wording to specify that comparators,
+hashers, allocators, etc. can be copied as often or as little as
+needed. Consider generalizing <a href="lwg-active.html#3049" title="Missing wording allowing algorithms to use copies of function objects as substitutes for their parameters (Status: Open)">3049</a><sup><a href="https://cplusplus.github.io/LWG/issue3049" title="Latest snapshot">(i)</a></sup>.
 </p>
 
 

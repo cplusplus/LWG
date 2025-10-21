@@ -54,7 +54,7 @@
 </style>
 </head>
 <body>
-<p>Revised 2025-10-21 at 13:14:14 UTC
+<p>Revised 2025-10-21 at 13:39:07 UTC
 </p><h2>Unresolved Issues</h2>
 <hr>
 <h3 id="423"><a href="#423">423</a><sup><a href="https://cplusplus.github.io/LWG/issue423">(i)</a></sup>. Effects of negative <code>streamsize</code> in iostreams</h3>
@@ -48583,8 +48583,8 @@ return static_cast&lt;difference_type&gt;(x.<i>current_</i>) - static_cast&lt;di
 <hr>
 <h3 id="3959"><a href="#3959">3959</a><sup><a href="https://cplusplus.github.io/LWG/issue3959">(i)</a></sup>. Should the comparator of <code>std::flat_map</code>/<code>std::flat_multimap</code> be copied twice in some operations?</h3>
 <p><b>Section:</b> 23.6.8 <a href="https://wg21.link/flat.map">[flat.map]</a>, 23.6.9 <a href="https://wg21.link/flat.multimap">[flat.multimap]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Jiang An <b>Opened:</b> 2023-07-23 <b>Last modified:</b> 2023-07-23</p>
-<p><b>Priority: </b>Not Prioritized
+ <b>Submitter:</b> Jiang An <b>Opened:</b> 2023-07-23 <b>Last modified:</b> 2025-10-21</p>
+<p><b>Priority: </b>3
 </p>
 <p><b>View other</b> <a href="lwg-index-open.html#flat.map">active issues</a> in [flat.map].</p>
 <p><b>View all other</b> <a href="lwg-index.html#flat.map">issues</a> in [flat.map].</p>
@@ -48605,6 +48605,17 @@ Likewise, <code>std::flat_map::value_comp</code> and <code>std::flat_multimap::v
 required to copy the comparator twice due to the exposition-only constructor of <code>value_compare</code>. 
 <p/>
 Should we make the constructor take a <code>const</code> reference?
+</p>
+
+<p><i>[2025-10-21; Reflector poll.]</i></p>
+
+<p>
+Set priority to 3 after reflector poll.
+</p>
+<p>
+We should provide blanket wording to specify that comparators,
+hashers, allocators, etc. can be copied as often or as little as
+needed. Consider generalizing <a href="lwg-active.html#3049" title="Missing wording allowing algorithms to use copies of function objects as substitutes for their parameters (Status: Open)">3049</a><sup><a href="https://cplusplus.github.io/LWG/issue3049" title="Latest snapshot">(i)</a></sup>.
 </p>
 
 
@@ -71768,35 +71779,32 @@ possibly part of a valid date.
 
 <p>Table 102 &mdash; <code class='backtick'>do_get_date</code> effects [tab:locale.time.get.dogetdate]</p>
 
-<style>
-table { border-collapse: separate; border-spacing: 0 6px; width: auto; }
-thead, tbody { box-shadow: 0 0 0 1px black; border-spacing: 1em; }
-th, td { padding-left: 0.5em; padding-right: 0.5em; }
-</style>
-
-<table>
-<thead>
-<tr> <th><code class='backtick'>date_order()</code></th><th>Format</th> </tr>
+<table style="border-collapse: separate; border-spacing: 0 6px">
+<thead style="box-shadow: 0 0 0 1px black; border-spacing: 1em">
+<tr>
+<th style="padding-left: 1em; padding-right: 1em"><code class='backtick'>date_order()</code></th>
+<th style="padding-left: 1em; padding-right: 1em">Format</th>
+</tr>
 </thead>
-<tbody>
+<tbody style="box-shadow: 0 0 0 1px black; border-spacing: 1em">
 <tr>
-<td><code class='backtick'>no_order</code></td>
-<td><code>"%m<ins>/</ins>%d<ins>/</ins>%y"</code></td></tr>
+<td style="padding-left: 1em; padding-right: 1em"><code class='backtick'>no_order</code></td>
+<td style="padding-left: 1em; padding-right: 1em"><code>"%m<ins>/</ins>%d<ins>/</ins>%y"</code></td></tr>
 <tr>
-<td><code class='backtick'>dmy</code></td>
-<td><code>"%d<ins>/</ins>%m<ins>/</ins>%y"</code></td>
+<td style="padding-left: 1em; padding-right: 1em"><code class='backtick'>dmy</code></td>
+<td style="padding-left: 1em; padding-right: 1em"><code>"%d<ins>/</ins>%m<ins>/</ins>%y"</code></td>
 </tr>
 <tr>
-<td><code class='backtick'>mdy</code></td>
-<td><code>"%m<ins>/</ins>%d<ins>/</ins>%y"</code></td>
+<td style="padding-left: 1em; padding-right: 1em"><code class='backtick'>mdy</code></td>
+<td style="padding-left: 1em; padding-right: 1em"><code>"%m<ins>/</ins>%d<ins>/</ins>%y"</code></td>
 </tr>
 <tr>
-<td><code class='backtick'>ymd</code></td>
-<td><code>"%y<ins>/</ins>%m<ins>/</ins>%d"</code></td>
+<td style="padding-left: 1em; padding-right: 1em"><code class='backtick'>ymd</code></td>
+<td style="padding-left: 1em; padding-right: 1em"><code>"%y<ins>/</ins>%m<ins>/</ins>%d"</code></td>
 </tr>
 <tr>
-<td><code class='backtick'>ydm</code></td>
-<td><code>"%y<ins>/</ins>%d<ins>/</ins>%m"</code></td>
+<td style="padding-left: 1em; padding-right: 1em"><code class='backtick'>ydm</code></td>
+<td style="padding-left: 1em; padding-right: 1em"><code>"%y<ins>/</ins>%d<ins>/</ins>%m"</code></td>
 </tr>
 </tbody>
 </table>
@@ -76718,8 +76726,8 @@ Set priority to 2 after reflector poll. Send to LEWG.
 <hr>
 <h3 id="4350"><a href="#4350">4350</a><sup><a href="https://cplusplus.github.io/LWG/issue4350">(i)</a></sup>. Should flat adaptors use <code class='backtick'>insert_range</code> when available?</h3>
 <p><b>Section:</b> 23.6.8 <a href="https://wg21.link/flat.map">[flat.map]</a>, 23.6.9 <a href="https://wg21.link/flat.multimap">[flat.multimap]</a>, 23.6.11 <a href="https://wg21.link/flat.set">[flat.set]</a>, 23.6.12 <a href="https://wg21.link/flat.multiset">[flat.multiset]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Jonathan Wakely <b>Opened:</b> 2025-09-05 <b>Last modified:</b> 2025-09-05</p>
-<p><b>Priority: </b>Not Prioritized
+ <b>Submitter:</b> Jonathan Wakely <b>Opened:</b> 2025-09-05 <b>Last modified:</b> 2025-10-21</p>
+<p><b>Priority: </b>2
 </p>
 <p><b>View other</b> <a href="lwg-index-open.html#flat.map">active issues</a> in [flat.map].</p>
 <p><b>View all other</b> <a href="lwg-index.html#flat.map">issues</a> in [flat.map].</p>
@@ -76740,6 +76748,16 @@ with those names must behave as expected, but we already require that for
 <code class='backtick'>std::queue</code>.
 </p>
 
+<p><i>[2025-10-21; Reflector poll.]</i></p>
+
+<p>
+Set priority to 2 after reflector poll.
+</p>
+<p>
+Use <code>append_range</code> to be consitient with other adapters.
+Send to LEWG for confirmation.
+</p>
+
 
 <p id="res-4350"><b>Proposed resolution:</b></p>
 <p>
@@ -76752,8 +76770,8 @@ with those names must behave as expected, but we already require that for
 <hr>
 <h3 id="4352"><a href="#4352">4352</a><sup><a href="https://cplusplus.github.io/LWG/issue4352">(i)</a></sup>. "operations on flat_multimap are equivalent to those of flat_map"</h3>
 <p><b>Section:</b> 23.6.9.1 <a href="https://wg21.link/flat.multimap.overview">[flat.multimap.overview]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Jonathan Wakely <b>Opened:</b> 2025-09-05 <b>Last modified:</b> 2025-09-05</p>
-<p><b>Priority: </b>Not Prioritized
+ <b>Submitter:</b> Jonathan Wakely <b>Opened:</b> 2025-09-05 <b>Last modified:</b> 2025-10-21</p>
+<p><b>Priority: </b>3
 </p>
 <p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
 <p><b>Discussion:</b></p>
@@ -76780,6 +76798,16 @@ It's a bit of a stretch to say they're equivalent when they don't even have
 the same parameters, so we need some weasel words here.
 </p>
 
+
+<p><i>[2025-10-21; Reflector poll.]</i></p>
+
+<p>
+Set priority to 3 after reflector poll.
+</p>
+<p>
+Define them in terms of <code>insert_range(std::forward&lt;R&gt;(rg))</code>
+with updated <i>Complexity</i>.
+</p>
 
 
 <p id="res-4352"><b>Proposed resolution:</b></p>
@@ -78337,8 +78365,8 @@ namespace std {
 <hr>
 <h3 id="4374"><a href="#4374">4374</a><sup><a href="https://cplusplus.github.io/LWG/issue4374">(i)</a></sup>. <code>flat_<i>meow</i></code> range insertion behavior is unclear if in-place merge cannot allocate additional memory</h3>
 <p><b>Section:</b> 23.6.8.7 <a href="https://wg21.link/flat.map.modifiers">[flat.map.modifiers]</a>, 23.6.11.5 <a href="https://wg21.link/flat.set.modifiers">[flat.set.modifiers]</a>, 23.6.12.5 <a href="https://wg21.link/flat.multiset.modifiers">[flat.multiset.modifiers]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Tim Song <b>Opened:</b> 2025-09-09 <b>Last modified:</b> 2025-09-19</p>
-<p><b>Priority: </b>Not Prioritized
+ <b>Submitter:</b> Tim Song <b>Opened:</b> 2025-09-09 <b>Last modified:</b> 2025-10-21</p>
+<p><b>Priority: </b>3
 </p>
 <p><b>View other</b> <a href="lwg-index-open.html#flat.map.modifiers">active issues</a> in [flat.map.modifiers].</p>
 <p><b>View all other</b> <a href="lwg-index.html#flat.map.modifiers">issues</a> in [flat.map.modifiers].</p>
@@ -78355,6 +78383,12 @@ It is not clear what happens if that allocation fails. If the <code class='backt
 it will fall back to a less efficient <code>&#x1d4aa;(N log N)</code> algorithm, but this is not reflected 
 in the <i>Complexity</i>: element. Alternatively, if the allocation failure is reported by an exception, 
 that should be called out in the spec.
+</p>
+
+<p><i>[2025-10-21; Reflector poll.]</i></p>
+
+<p>
+Set priority to 3 after reflector poll.
 </p>
 
 
@@ -79277,55 +79311,6 @@ struct <i>cw-operators</i> {                                                    
       requires requires(T::value_type x) { <ins>constant_wrapper&lt;</ins>x &gt;&gt;= R::value<ins>&gt;()</ins>; }
         { return constant_wrapper&lt;[] { auto v = T::value; return v &gt;&gt;= R::value; }()&gt;{}; }
 };
-</pre>
-</blockquote>
-
-</li>
-
-</ol>
-
-
-
-
-
-<hr>
-<h3 id="4384"><a href="#4384">4384</a><sup><a href="https://cplusplus.github.io/LWG/issue4384">(i)</a></sup>. <code class='backtick'>flat_set::erase(iterator)</code> is underconstrained
-</h3>
-<p><b>Section:</b> 23.6.11.2 <a href="https://wg21.link/flat.set.defn">[flat.set.defn]</a>, 23.6.12.2 <a href="https://wg21.link/flat.multiset.defn">[flat.multiset.defn]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Hewill Kang <b>Opened:</b> 2025-09-25 <b>Last modified:</b> 2025-09-27</p>
-<p><b>Priority: </b>Not Prioritized
-</p>
-<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
-<p><b>Discussion:</b></p>
-<p>
-This is a follow-up of LWG <a href="lwg-defects.html#3704" title="LWG 2059 added overloads that might be ill-formed for sets (Status: C++23)">3704</a><sup><a href="https://cplusplus.github.io/LWG/issue3704" title="Latest snapshot">(i)</a></sup> since we now have <code class='backtick'>flat_set</code> and <code class='backtick'>flat_multiset</code>.
-</p>
-
-
-<p id="res-4384"><b>Proposed resolution:</b></p>
-<p>
-This wording is relative to <a href="https://wg21.link/N5014">N5014</a>.
-</p>
-
-<ol>
-
-<li><p>Modify 23.6.11.2 <a href="https://wg21.link/flat.set.defn">[flat.set.defn]</a> as indicated:</p>
-
-<blockquote>
-<pre>
-iterator erase(iterator position) <ins>requires (!same_as&lt;iterator, const_iterator&gt;)</ins>;
-iterator erase(const_iterator position);
-</pre>
-</blockquote>
-
-</li>
-
-<li><p>Modify 23.6.12.2 <a href="https://wg21.link/flat.multiset.defn">[flat.multiset.defn]</a> as indicated:</p>
-
-<blockquote>
-<pre>
-iterator erase(iterator position) <ins>requires (!same_as&lt;iterator, const_iterator&gt;)</ins>;
-iterator erase(const_iterator position);
 </pre>
 </blockquote>
 

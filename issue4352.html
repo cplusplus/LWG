@@ -64,8 +64,8 @@
 <p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#New">New</a> status.</em></p>
 <h3 id="4352"><a href="lwg-active.html#4352">4352</a>. "operations on flat_multimap are equivalent to those of flat_map"</h3>
 <p><b>Section:</b> 23.6.9.1 <a href="https://wg21.link/flat.multimap.overview">[flat.multimap.overview]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Jonathan Wakely <b>Opened:</b> 2025-09-05 <b>Last modified:</b> 2025-09-05</p>
-<p><b>Priority: </b>Not Prioritized
+ <b>Submitter:</b> Jonathan Wakely <b>Opened:</b> 2025-09-05 <b>Last modified:</b> 2025-10-21</p>
+<p><b>Priority: </b>3
 </p>
 <p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
 <p><b>Discussion:</b></p>
@@ -92,6 +92,16 @@ It's a bit of a stretch to say they're equivalent when they don't even have
 the same parameters, so we need some weasel words here.
 </p>
 
+
+<p><i>[2025-10-21; Reflector poll.]</i></p>
+
+<p>
+Set priority to 3 after reflector poll.
+</p>
+<p>
+Define them in terms of <code>insert_range(std::forward&lt;R&gt;(rg))</code>
+with updated <i>Complexity</i>.
+</p>
 
 
 <p id="res-4352"><b>Proposed resolution:</b></p>
