@@ -10,7 +10,7 @@
 </section>
 <submitter>Tim Song</submitter>
 <date>09 Sep 2025</date>
-<priority>99</priority>
+<priority>3</priority>
 
 <discussion>
 <p>
@@ -24,6 +24,11 @@ It is not clear what happens if that allocation fails. If the `inplace_merge` al
 it will fall back to a less efficient <tt>&#x1d4aa;(N log N)</tt> algorithm, but this is not reflected 
 in the <i>Complexity</i>: element. Alternatively, if the allocation failure is reported by an exception, 
 that should be called out in the spec.
+</p>
+
+<note>2025-10-21; Reflector poll.</note>
+<p>
+Set priority to 3 after reflector poll.
 </p>
 </discussion>
 
