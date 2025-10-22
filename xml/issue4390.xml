@@ -1,12 +1,12 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="4390" status="New">
+<issue num="4390" status="LEWG">
 <title><code>simd::basic_vec(U&amp;&amp;)</code> default template parameter</title>
 <section><sref ref="[simd.ctor]"/></section>
 <submitter>Hewill Kang</submitter>
 <date>29 Sep 2025</date>
-<priority>99</priority>
+<priority>4</priority>
 
 <discussion>
 <p>
@@ -17,6 +17,17 @@ intuitive spelling:
 <pre>
 simd::vec&lt;complex&lt;double&gt;&gt; sc1   ({-1.0, 0.5}); // <span style="color:#C80000;font-weight:bold">current ill-formed</span>
 simd::vec&lt;complex&lt;double&gt;&gt; sc2 = {{-1.0, 0.5}}; // <span style="color:#C80000;font-weight:bold">current ill-formed</span></pre>
+
+<note>2025-10-22; Reflector poll. Status changed: New &rarr; LEWG with priority 4.</note>
+
+<p>
+This narrows design space wrt using braces for initialization
+of <tt>basic_vec</tt>, especially if we allow user-defined types.
+</p>
+<p>
+LWG <iref ref="4230"/> would address this by allowing
+<tt>vec&lt;complex&lt;double&gt;&gt;(1., 1.);</tt>
+</p>
 </discussion>
 
 <resolution>
