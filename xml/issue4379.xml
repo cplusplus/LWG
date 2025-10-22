@@ -8,7 +8,7 @@
 </section>
 <submitter>Matt Bentley</submitter>
 <date>17 Sep 2025</date>
-<priority>99</priority>
+<priority>3</priority>
 
 <discussion>
 <p>
@@ -31,6 +31,15 @@ being <tt>&gt; max_size</tt>.
 <p/>
 This is currently not stated in the <i>Throws:</i> element. I've implemented the requested additional 
 throws and they are easily achievable.
+</p>
+
+<note>2025-10-22; Reflector poll.</note>
+<p>
+Set priority to 3 after reflector poll.
+</p>
+<p>
+There was discussion if `reserve()` is allowed to deallocate unused blocks,
+that materialized into LWG <iref ref="4380"/>.
 </p>
 </discussion>
 
