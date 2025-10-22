@@ -9,7 +9,7 @@
 </section>
 <submitter>Matt Bentley</submitter>
 <date>23 Sep 2025</date>
-<priority>99</priority>
+<priority>3</priority>
 
 <discussion>
 <p>
@@ -27,6 +27,15 @@ The implicit assumption in this issue is that we want `reserve()` to be able to 
 No-one has objected to this before, but if you want to, please speak up.
 <p/>
 Anyway, the <i>Complexity</i> of `reserve()` does not presently reflect this ability.
+</p>
+
+<note>2025-10-22; Reflector poll.</note>
+<p>
+Set priority to 3 after reflector poll.
+</p>
+<p>
+An explicit objection was raised that the <i>Effects:</i> should state
+whether `reserve()` is allowed, or even required, to deallocate blocks.
 </p>
 </discussion>
 
