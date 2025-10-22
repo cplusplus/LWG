@@ -54,7 +54,7 @@
 </style>
 </head>
 <body>
-<p>Revised 2025-10-21 at 16:46:52 UTC
+<p>Revised 2025-10-22 at 10:05:10 UTC
 </p><h2>Unresolved Issues</h2>
 <hr>
 <h3 id="423"><a href="#423">423</a><sup><a href="https://cplusplus.github.io/LWG/issue423">(i)</a></sup>. Effects of negative <code>streamsize</code> in iostreams</h3>
@@ -78413,8 +78413,8 @@ namespace std {
 <hr>
 <h3 id="4373"><a href="#4373">4373</a><sup><a href="https://cplusplus.github.io/LWG/issue4373">(i)</a></sup>. <code class='backtick'>function_ref</code> should provide <code class='backtick'>result_type</code></h3>
 <p><b>Section:</b> 22.10.17.6.2 <a href="https://wg21.link/func.wrap.ref.class">[func.wrap.ref.class]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Hewill Kang <b>Opened:</b> 2025-09-12 <b>Last modified:</b> 2025-10-04</p>
-<p><b>Priority: </b>Not Prioritized
+ <b>Submitter:</b> Hewill Kang <b>Opened:</b> 2025-09-12 <b>Last modified:</b> 2025-10-22</p>
+<p><b>Priority: </b>3
 </p>
 <p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
 <p><b>Discussion:</b></p>
@@ -78448,6 +78448,16 @@ type alias
    href="https://github.com/llvm/llvm-project/blob/cd32b9b6c3b2fda3a781d9ce0a0cf8e21c9d0137/llvm/include/llvm/ADT/STLExtras.h#L67">
 <code>llvm::function_traits</code></a> to obtain the return type, providing such a member
 type alias for <code class='backtick'>std::function_ref</code> meets user potential demands.
+</p>
+
+<p><i>[2025-10-22; Reflector poll.]</i></p>
+
+<p>
+Set priority to 3 after reflector poll.
+</p>
+<p>
+Alternative (with incoming paper targeting LEWG) of deprecating
+<code>result_type</code> in existing wrappers was suggested.
 </p>
 
 
