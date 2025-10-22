@@ -8,7 +8,7 @@
 </section>
 <submitter>Matt Bentley</submitter>
 <date>24 Aug 2025</date>
-<priority>99</priority>
+<priority>3</priority>
 
 <discussion>
 <p>
@@ -39,6 +39,12 @@ This is a separate but related issue to LWG <iref ref="4320"/>, but it would
 affect the outcome wording of that issue for `unique`.
 </p>
 </blockquote>
+
+<note>2025-10-22; Reflector poll.</note>
+<p>
+Set priority to 3 after reflector poll.
+</p>
+
 </discussion>
 
 <resolution>
