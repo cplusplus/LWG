@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="4255" status="New">
+<issue num="4255" status="Tentatively Ready">
 <title>`move_only_function` constructor should recognize empty `copyable_function`s</title>
 <section><sref ref="[func.wrap.move.ctor]"/></section>
 <submitter>Tomasz Kami&nacute;ski</submitter>
@@ -37,6 +37,11 @@ The <code>copyable_function</code> cannot be constructed from <code>move_only_fu
 as it requires functor to be copyable. Invoking an empty <code>std::function</code> has well
 defined behavior (throws <code>bad_function_call</code>), and wrapping such object into
 other functors should reproduce that behavior.
+</p>
+
+<note>2025-10-22; Reflector poll.</note>
+<p>
+Set status to Tentatively Ready after six votes in favour during reflector poll.
 </p>
 </discussion>
 
