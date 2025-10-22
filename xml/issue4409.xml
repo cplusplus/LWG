@@ -8,7 +8,7 @@
 </section>
 <submitter>Lénárd Szolnoki</submitter>
 <date>10 Oct 2025</date>
-<priority>99</priority>
+<priority>3</priority>
 
 <discussion>
 <p>
@@ -81,6 +81,15 @@ down in the preconditions).
 </li>
 </ol>
 
+
+<note>2025-10-22; Reflector poll.</note>
+<p>
+Set priority to P3 after reflector poll.
+</p>
+<p>
+General preference on considering this NAD, and instead clarifying that
+operations on integer-class should produce constant expressions.
+</p>
 </discussion>
 
 <resolution>
