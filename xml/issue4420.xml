@@ -7,7 +7,7 @@ incorrectly constrained for <tt>&lt;stdfloat&gt;</tt> types</title>
 <section><sref ref="[simd]"/></section>
 <submitter>Matthias Kretz</submitter>
 <date>15 Oct 2025</date>
-<priority>99</priority>
+<priority>1</priority>
 
 <discussion>
 <p>
@@ -59,6 +59,21 @@ to `float` should do, so it needs to be added (again without breaking <tt>float 
 <sref ref="[simd.permute.memory]"/> is analogous to <sref ref="[simd.loadstore]"/> and needs 
 equivalent constraints.
 </p>
+
+<note>2025-10-22; Reflector poll.</note>
+<p>
+Set priority to 1 after reflector poll.
+</p>
+<p>
+We also need to update <i>Effects</i>. There are more places in <sref ref="[simd]"/>
+where <tt>float</tt> to <tt>float16_t</tt> and similar conversion are not supported.
+</p>
+<p>
+It was pointed out that similar issues happen for <tt>complex&lt;float16_t&gt;</tt>.
+There seem to be mismatch between language initialization rules and they intended
+usage based on library API.
+</p>
+</discussion>
 
 <superseded>
 <p>
