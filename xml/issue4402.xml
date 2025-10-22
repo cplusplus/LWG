@@ -8,7 +8,7 @@
 </section>
 <submitter>Arthur O'Dwyer</submitter>
 <date>02 Oct 2025</date>
-<priority>99</priority>
+<priority>3</priority>
 
 <discussion>
 <p>
@@ -61,6 +61,21 @@ At the very least, we should say that this list-initialization is intentional, a
 class <tt><i>simd-iterator</i></tt> and/or remove the "exposition only" from <tt><i>simd-iterator</i></tt>'s 
 constructor. That makes it clear that the above program is indeed intended to be ambiguous. But IMO 
 we should instead simply make the above program valid.
+</p>
+
+<note>2025-10-22; Reflector poll.</note>
+<p>
+Set priority to 3 after reflector poll.
+</p>
+<p>
+<tt><i>simd-iterator</i></tt> can only be constructed only by <tt>basic_vec</tt>,
+and <tt>basic_mask</tt> objects.
+</p>
+<p>
+This is NAD as user cannot rely on standard types not being constructible per
+<sref ref="[member.functions]"/> p2. The example would not be fixed by adding
+the <tt>explicit</tt> in a conforming implementation, and changes in <tt>return</tt>
+specification are editorial.
 </p>
 </discussion>
 
