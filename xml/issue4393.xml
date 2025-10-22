@@ -6,7 +6,7 @@
 <section><sref ref="[simd.permute.memory]"/></section>
 <submitter>Hewill Kang</submitter>
 <date>29 Sep 2025</date>
-<priority>99</priority>
+<priority>2</priority>
 
 <discussion>
 <p>
@@ -16,6 +16,16 @@ Both `simd::unchecked_scatter_to` and `simd::partial_scatter_to` are used to wri
 However, they only require `R` to be `contiguous_range` and `sized_range`.
 Requiring `R` to be `output_range` is also necessary; otherwise, the 
 `constant_range` cannot be written.
+</p>
+
+<note>2025-10-22; Reflector poll.</note>
+<p>
+Set priority to 2 after reflector poll.
+</p>
+<p>
+This issue is related to LWG <iref ref="4420"/>.
+The <i>Constrains</i> needs to be updated to handle conversions between <tt>float</tt>
+and <tt>float16_t</tt> and similar cases.  
 </p>
 </discussion>
 
