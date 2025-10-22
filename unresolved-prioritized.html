@@ -60,8 +60,8 @@
 <p>This document is the Table of Contents for the <a href="lwg-active.html">Library Active Issues List</a>,
 <a href="lwg-defects.html">Library Defect Reports and Accepted Issues</a>, and <a href="lwg-closed.html">Library Closed Issues List</a>,
 sorted by priority.</p>
-<p>Revised 2025-10-22 at 12:33:47 UTC
-</p><h2 id="Priority_1">Priority 1 (14 issues)</h2>
+<p>Revised 2025-10-22 at 13:01:51 UTC
+</p><h2 id="Priority_1">Priority 1 (15 issues)</h2>
 <table class="issues-index">
 <tr>
   <th><a href="lwg-toc.html">Issue</a></th>
@@ -89,6 +89,15 @@ sorted by priority.</p>
 <td><code class='backtick'>constant_wrapper</code>'s pseudo-mutators are underconstrained
 </td>
 <td>Yes</td>
+<td>1</td>
+<td></td>
+</tr>
+<tr>
+<td id="4316"><a href="lwg-active.html#4316" title="{can_}substitute specification is ill-formed (Status: New)">4316</a><sup><a href="https://cplusplus.github.io/LWG/issue4316">(i)</a></sup></td>
+<td><a href="lwg-active.html#New">New</a></td>
+<td>21.4.13 [meta.reflection.substitute]</td>
+<td><code>{can_}substitute</code> specification is ill-formed</td>
+<td><span class="no-pr">No</span></td>
 <td>1</td>
 <td></td>
 </tr>
@@ -201,7 +210,7 @@ sorted by priority.</p>
 <td></td>
 </tr>
 </table>
-<h2 id="Priority_2">Priority 2 (76 issues)</h2>
+<h2 id="Priority_2">Priority 2 (78 issues)</h2>
 <table class="issues-index">
 <tr>
   <th><a href="lwg-toc.html">Issue</a></th>
@@ -231,6 +240,15 @@ sorted by priority.</p>
 <td></td>
 </tr>
 <tr>
+<td id="4411"><a href="lwg-active.html#4411" title="Even more feature-test macros for fully freestanding features are not marked freestanding (Status: New)">4411</a><sup><a href="https://cplusplus.github.io/LWG/issue4411">(i)</a></sup></td>
+<td><a href="lwg-active.html#New">New</a></td>
+<td>17.3.2 [version.syn]</td>
+<td>Even more feature-test macros for fully freestanding features are not marked freestanding</td>
+<td><span class="no-pr">No</span></td>
+<td>2</td>
+<td></td>
+</tr>
+<tr>
 <td id="3011"><a href="lwg-active.html#3011" title="Requirements for assert(E) inconsistent with C (Status: Open)">3011</a><sup><a href="https://cplusplus.github.io/LWG/issue3011">(i)</a></sup></td>
 <td><a href="lwg-active.html#Open">Open</a></td>
 <td>19.3 [assertions]</td>
@@ -245,6 +263,15 @@ sorted by priority.</p>
 <td>19.6.3.4 [stacktrace.entry.query]</td>
 <td>P0881R7 ("stacktrace") does not define "actual file name", "actual line number"</td>
 <td><span class="no-pr">No</span></td>
+<td>2</td>
+<td></td>
+</tr>
+<tr>
+<td id="4282"><a href="lwg-active.html#4282" title="Imprecise Throws: clause in std::relocate (Status: New)">4282</a><sup><a href="https://cplusplus.github.io/LWG/issue4282">(i)</a></sup></td>
+<td><a href="lwg-active.html#New">New</a></td>
+<td>20.2.6 [obj.lifetime]</td>
+<td>Imprecise <i>Throws</i>: clause in <code class='backtick'>std::relocate</code></td>
+<td>Yes</td>
 <td>2</td>
 <td></td>
 </tr>
@@ -901,7 +928,7 @@ specified to make <code><i>N</i></code> copies of <code>T</code> into the destin
 <td></td>
 </tr>
 </table>
-<h2 id="Priority_3">Priority 3 (439 issues)</h2>
+<h2 id="Priority_3">Priority 3 (441 issues)</h2>
 <table class="issues-index">
 <tr>
   <th><a href="lwg-toc.html">Issue</a></th>
@@ -1648,6 +1675,15 @@ and user requirements</td>
 <td></td>
 </tr>
 <tr>
+<td id="4168"><a href="lwg-active.html#4168" title="std::start_lifetime_as inadvertently has undefined behavior due to use of std::bit_cast (Status: New)">4168</a><sup><a href="https://cplusplus.github.io/LWG/issue4168">(i)</a></sup></td>
+<td><a href="lwg-active.html#New">New</a></td>
+<td>20.2.6 [obj.lifetime]</td>
+<td><code class='backtick'>std::start_lifetime_as</code> inadvertently has undefined behavior due to use of <code class='backtick'>std::bit_cast</code></td>
+<td>Yes</td>
+<td>3</td>
+<td></td>
+</tr>
+<tr>
 <td id="3192"><a href="lwg-active.html#3192" title="&sect;[allocator.uses.construction] functions misbehave for const types (Status: New)">3192</a><sup><a href="https://cplusplus.github.io/LWG/issue3192">(i)</a></sup></td>
 <td><a href="lwg-active.html#New">New</a></td>
 <td>20.2.8.2 [allocator.uses.construction]</td>
@@ -1715,6 +1751,15 @@ and user requirements</td>
 <td><a href="lwg-active.html#New">New</a></td>
 <td>20.3.1.3.5 [unique.ptr.single.observers]</td>
 <td><code>unique_ptr</code>'s <code>operator*</code> is missing a mandate</td>
+<td>Yes</td>
+<td>3</td>
+<td></td>
+</tr>
+<tr>
+<td id="4324"><a href="lwg-active.html#4324" title="unique_ptr&lt;void&gt;::operator* is not SFINAE-friendly (Status: New)">4324</a><sup><a href="https://cplusplus.github.io/LWG/issue4324">(i)</a></sup></td>
+<td><a href="lwg-active.html#New">New</a></td>
+<td>20.3.1.3.5 [unique.ptr.single.observers]</td>
+<td><code>unique_ptr&lt;void&gt;::operator*</code> is not SFINAE-friendly</td>
 <td>Yes</td>
 <td>3</td>
 <td></td>
@@ -5899,7 +5944,7 @@ vprint_unicode/vprint_nonunicode (Status: New)">4039</a><sup><a href="https://cp
 <td></td>
 </tr>
 </table>
-<h2 id="Priority_99">Not Prioritized (69 issues)</h2>
+<h2 id="Priority_99">Not Prioritized (64 issues)</h2>
 <table class="issues-index">
 <tr>
   <th><a href="lwg-toc.html">Issue</a></th>
@@ -5909,15 +5954,6 @@ vprint_unicode/vprint_nonunicode (Status: New)">4039</a><sup><a href="https://cp
   <th>Proposed Resolution</th>
   <th><a href="unresolved-prioritized.html">Priority</a></th>
   <th>Duplicates</th>
-</tr>
-<tr>
-<td id="4411"><a href="lwg-active.html#4411" title="Even more feature-test macros for fully freestanding features are not marked freestanding (Status: New)">4411</a><sup><a href="https://cplusplus.github.io/LWG/issue4411">(i)</a></sup></td>
-<td><a href="lwg-active.html#New">New</a></td>
-<td>17.3.2 [version.syn]</td>
-<td>Even more feature-test macros for fully freestanding features are not marked freestanding</td>
-<td><span class="no-pr">No</span></td>
-<td></td>
-<td></td>
 </tr>
 <tr>
 <td id="4207"><a href="lwg-active.html#4207" title="Point of reference for source_location is not specified when used in an default template argument (Status: New)">4207</a><sup><a href="https://cplusplus.github.io/LWG/issue4207">(i)</a></sup></td>
@@ -5956,37 +5992,10 @@ vprint_unicode/vprint_nonunicode (Status: New)">4039</a><sup><a href="https://cp
 <td></td>
 </tr>
 <tr>
-<td id="4168"><a href="lwg-active.html#4168" title="std::start_lifetime_as inadvertently has undefined behavior due to use of std::bit_cast (Status: New)">4168</a><sup><a href="https://cplusplus.github.io/LWG/issue4168">(i)</a></sup></td>
-<td><a href="lwg-active.html#New">New</a></td>
-<td>20.2.6 [obj.lifetime]</td>
-<td><code class='backtick'>std::start_lifetime_as</code> inadvertently has undefined behavior due to use of <code class='backtick'>std::bit_cast</code></td>
-<td>Yes</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td id="4282"><a href="lwg-active.html#4282" title="Imprecise Throws: clause in std::relocate (Status: New)">4282</a><sup><a href="https://cplusplus.github.io/LWG/issue4282">(i)</a></sup></td>
-<td><a href="lwg-active.html#New">New</a></td>
-<td>20.2.6 [obj.lifetime]</td>
-<td>Imprecise <i>Throws</i>: clause in <code class='backtick'>std::relocate</code></td>
-<td>Yes</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
 <td id="4283"><a href="lwg-active.html#4283" title="std::trivially_relocate needs stronger preconditions on &quot;nested&quot; objects with dynamic lifetime (Status: New)">4283</a><sup><a href="https://cplusplus.github.io/LWG/issue4283">(i)</a></sup></td>
 <td><a href="lwg-active.html#New">New</a></td>
 <td>20.2.6 [obj.lifetime]</td>
 <td><code class='backtick'>std::trivially_relocate</code> needs stronger preconditions on "nested" objects with dynamic lifetime</td>
-<td>Yes</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td id="4324"><a href="lwg-active.html#4324" title="unique_ptr&lt;void&gt;::operator* is not SFINAE-friendly (Status: New)">4324</a><sup><a href="https://cplusplus.github.io/LWG/issue4324">(i)</a></sup></td>
-<td><a href="lwg-active.html#New">New</a></td>
-<td>20.3.1.3.5 [unique.ptr.single.observers]</td>
-<td><code>unique_ptr&lt;void&gt;::operator*</code> is not SFINAE-friendly</td>
 <td>Yes</td>
 <td></td>
 <td></td>
@@ -6006,15 +6015,6 @@ vprint_unicode/vprint_nonunicode (Status: New)">4039</a><sup><a href="https://cp
 <td>21.4.8 [meta.reflection.access.context]</td>
 <td><code class='backtick'>meta::access_context</code> should be a consteval-only type</td>
 <td>Yes</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td id="4316"><a href="lwg-active.html#4316" title="{can_}substitute specification is ill-formed (Status: New)">4316</a><sup><a href="https://cplusplus.github.io/LWG/issue4316">(i)</a></sup></td>
-<td><a href="lwg-active.html#New">New</a></td>
-<td>21.4.13 [meta.reflection.substitute]</td>
-<td><code>{can_}substitute</code> specification is ill-formed</td>
-<td><span class="no-pr">No</span></td>
 <td></td>
 <td></td>
 </tr>

@@ -67,7 +67,7 @@
 This document is the Index by Status and Date for the <a href="lwg-active.html">Library Active Issues List</a>,
 <a href="lwg-defects.html">Library Defect Reports and Accepted Issues</a>, and <a href="lwg-closed.html">Library Closed Issues List</a>.
 </p>
-<p>Revised 2025-10-22 at 12:33:47 UTC
+<p>Revised 2025-10-22 at 13:01:51 UTC
 </p><h2 id="New">New (574 issues)</h2>
 <table class="issues-index">
 <tr>
@@ -78,6 +78,51 @@ This document is the Index by Status and Date for the <a href="lwg-active.html">
   <th>Proposed Resolution</th>
   <th><a href="unresolved-prioritized.html">Priority</a></th>
   <th>Duplicates</th>
+</tr>
+<tr>
+<td id="4411"><a href="lwg-active.html#4411" title="Even more feature-test macros for fully freestanding features are not marked freestanding (Status: New)">4411</a><sup><a href="https://cplusplus.github.io/LWG/issue4411">(i)</a></sup></td>
+<td><a href="lwg-active.html#New">New</a></td>
+<td>17.3.2 [version.syn]</td>
+<td>Even more feature-test macros for fully freestanding features are not marked freestanding</td>
+<td><span class="no-pr">No</span></td>
+<td>2</td>
+<td></td>
+</tr>
+<tr>
+<td id="4168"><a href="lwg-active.html#4168" title="std::start_lifetime_as inadvertently has undefined behavior due to use of std::bit_cast (Status: New)">4168</a><sup><a href="https://cplusplus.github.io/LWG/issue4168">(i)</a></sup></td>
+<td><a href="lwg-active.html#New">New</a></td>
+<td>20.2.6 [obj.lifetime]</td>
+<td><code class='backtick'>std::start_lifetime_as</code> inadvertently has undefined behavior due to use of <code class='backtick'>std::bit_cast</code></td>
+<td>Yes</td>
+<td>3</td>
+<td></td>
+</tr>
+<tr>
+<td id="4282"><a href="lwg-active.html#4282" title="Imprecise Throws: clause in std::relocate (Status: New)">4282</a><sup><a href="https://cplusplus.github.io/LWG/issue4282">(i)</a></sup></td>
+<td><a href="lwg-active.html#New">New</a></td>
+<td>20.2.6 [obj.lifetime]</td>
+<td>Imprecise <i>Throws</i>: clause in <code class='backtick'>std::relocate</code></td>
+<td>Yes</td>
+<td>2</td>
+<td></td>
+</tr>
+<tr>
+<td id="4324"><a href="lwg-active.html#4324" title="unique_ptr&lt;void&gt;::operator* is not SFINAE-friendly (Status: New)">4324</a><sup><a href="https://cplusplus.github.io/LWG/issue4324">(i)</a></sup></td>
+<td><a href="lwg-active.html#New">New</a></td>
+<td>20.3.1.3.5 [unique.ptr.single.observers]</td>
+<td><code>unique_ptr&lt;void&gt;::operator*</code> is not SFINAE-friendly</td>
+<td>Yes</td>
+<td>3</td>
+<td></td>
+</tr>
+<tr>
+<td id="4316"><a href="lwg-active.html#4316" title="{can_}substitute specification is ill-formed (Status: New)">4316</a><sup><a href="https://cplusplus.github.io/LWG/issue4316">(i)</a></sup></td>
+<td><a href="lwg-active.html#New">New</a></td>
+<td>21.4.13 [meta.reflection.substitute]</td>
+<td><code>{can_}substitute</code> specification is ill-formed</td>
+<td><span class="no-pr">No</span></td>
+<td>1</td>
+<td></td>
 </tr>
 <tr>
 <td id="4373"><a href="lwg-active.html#4373" title="function_ref should provide result_type (Status: New)">4373</a><sup><a href="https://cplusplus.github.io/LWG/issue4373">(i)</a></sup></td>
@@ -479,15 +524,6 @@ This document is the Index by Status and Date for the <a href="lwg-active.html">
 <td>Strange specification of <code>max_size()</code> for an allocator</td>
 <td>Yes</td>
 <td>3</td>
-<td></td>
-</tr>
-<tr>
-<td id="4411"><a href="lwg-active.html#4411" title="Even more feature-test macros for fully freestanding features are not marked freestanding (Status: New)">4411</a><sup><a href="https://cplusplus.github.io/LWG/issue4411">(i)</a></sup></td>
-<td><a href="lwg-active.html#New">New</a></td>
-<td>17.3.2 [version.syn]</td>
-<td>Even more feature-test macros for fully freestanding features are not marked freestanding</td>
-<td><span class="no-pr">No</span></td>
-<td></td>
 <td></td>
 </tr>
 <tr>
@@ -1225,15 +1261,6 @@ co_await expression instead of same_as&lt;void&gt; (Status: New)">4357</a><sup><
 <td></td>
 </tr>
 <tr>
-<td id="4324"><a href="lwg-active.html#4324" title="unique_ptr&lt;void&gt;::operator* is not SFINAE-friendly (Status: New)">4324</a><sup><a href="https://cplusplus.github.io/LWG/issue4324">(i)</a></sup></td>
-<td><a href="lwg-active.html#New">New</a></td>
-<td>20.3.1.3.5 [unique.ptr.single.observers]</td>
-<td><code>unique_ptr&lt;void&gt;::operator*</code> is not SFINAE-friendly</td>
-<td>Yes</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
 <td id="4288"><a href="lwg-active.html#4288" title="The Constraints: element in [time.clock.system.members] is probably wrong (Status: New)">4288</a><sup><a href="https://cplusplus.github.io/LWG/issue4288">(i)</a></sup></td>
 <td><a href="lwg-active.html#New">New</a></td>
 <td>30.7.2.2 [time.clock.system.members]</td>
@@ -1276,15 +1303,6 @@ co_await expression instead of same_as&lt;void&gt; (Status: New)">4357</a><sup><
 <td>Make the round states in [rand.eng.philox] explicit</td>
 <td>Yes</td>
 <td>3</td>
-<td></td>
-</tr>
-<tr>
-<td id="4316"><a href="lwg-active.html#4316" title="{can_}substitute specification is ill-formed (Status: New)">4316</a><sup><a href="https://cplusplus.github.io/LWG/issue4316">(i)</a></sup></td>
-<td><a href="lwg-active.html#New">New</a></td>
-<td>21.4.13 [meta.reflection.substitute]</td>
-<td><code>{can_}substitute</code> specification is ill-formed</td>
-<td><span class="no-pr">No</span></td>
-<td></td>
 <td></td>
 </tr>
 <tr>
@@ -1352,15 +1370,6 @@ initializer_list (Status: New)">3537</a><sup><a href="https://cplusplus.github.i
 <code>initializer_list</code></td>
 <td><span class="no-pr">No</span></td>
 <td>3</td>
-<td></td>
-</tr>
-<tr>
-<td id="4282"><a href="lwg-active.html#4282" title="Imprecise Throws: clause in std::relocate (Status: New)">4282</a><sup><a href="https://cplusplus.github.io/LWG/issue4282">(i)</a></sup></td>
-<td><a href="lwg-active.html#New">New</a></td>
-<td>20.2.6 [obj.lifetime]</td>
-<td>Imprecise <i>Throws</i>: clause in <code class='backtick'>std::relocate</code></td>
-<td>Yes</td>
-<td></td>
 <td></td>
 </tr>
 <tr>
@@ -1805,15 +1814,6 @@ complexity for algorithms that are in fact &#x1d4aa;(n)</td>
 <td>24.3.6.3 [indirectcallable.indirectinvocable]</td>
 <td>P2609R3 breaks code that uses <code class='backtick'>views::zip</code> and <code>get&lt;T&gt;</code></td>
 <td><span class="no-pr">No</span></td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td id="4168"><a href="lwg-active.html#4168" title="std::start_lifetime_as inadvertently has undefined behavior due to use of std::bit_cast (Status: New)">4168</a><sup><a href="https://cplusplus.github.io/LWG/issue4168">(i)</a></sup></td>
-<td><a href="lwg-active.html#New">New</a></td>
-<td>20.2.6 [obj.lifetime]</td>
-<td><code class='backtick'>std::start_lifetime_as</code> inadvertently has undefined behavior due to use of <code class='backtick'>std::bit_cast</code></td>
-<td>Yes</td>
 <td></td>
 <td></td>
 </tr>

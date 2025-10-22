@@ -64,8 +64,8 @@
 <p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#New">New</a> status.</em></p>
 <h3 id="4282"><a href="lwg-active.html#4282">4282</a>. Imprecise <i>Throws</i>: clause in <code class='backtick'>std::relocate</code></h3>
 <p><b>Section:</b> 20.2.6 <a href="https://wg21.link/obj.lifetime">[obj.lifetime]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Giuseppe D'Angelo <b>Opened:</b> 2025-06-23 <b>Last modified:</b> 2025-06-28</p>
-<p><b>Priority: </b>Not Prioritized
+ <b>Submitter:</b> Giuseppe D'Angelo <b>Opened:</b> 2025-06-23 <b>Last modified:</b> 2025-10-22</p>
+<p><b>Priority: </b>2
 </p>
 <p><b>View other</b> <a href="lwg-index-open.html#obj.lifetime">active issues</a> in [obj.lifetime].</p>
 <p><b>View all other</b> <a href="lwg-index.html#obj.lifetime">issues</a> in [obj.lifetime].</p>
@@ -101,6 +101,18 @@ construction we end up in this possibility during constant evaluation).
 Given the rationale brought forward for <code class='backtick'>std::relocate</code> in <a href="https://wg21.link/P2786" title=" Trivial Relocatability For C++26">P2786</a> 
 is to be always a nofail operation, I'm proposing a resolution that goes in
 that direction.
+</p>
+
+<p><i>[2025-10-22; Reflector poll.]</i></p>
+
+<p>
+Set priority to 2 after reflector poll.
+</p>
+<p>
+"PR is incomplete, needs to be 'and <ins>either <code>is_move_constructible_v&lt;T&gt;</code> is false or</ins> an exception is thrown...'"
+</p>
+<p>
+"I think we should use <i>Constant when</i>:."
 </p>
 
 

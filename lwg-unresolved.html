@@ -54,7 +54,7 @@
 </style>
 </head>
 <body>
-<p>Revised 2025-10-22 at 12:33:47 UTC
+<p>Revised 2025-10-22 at 13:01:51 UTC
 </p><h2>Unresolved Issues</h2>
 <hr>
 <h3 id="423"><a href="#423">423</a><sup><a href="https://cplusplus.github.io/LWG/issue423">(i)</a></sup>. Effects of negative <code>streamsize</code> in iostreams</h3>
@@ -63979,8 +63979,8 @@ of the overloads in namespace <code>std</code>.</p>
 <hr>
 <h3 id="4168"><a href="#4168">4168</a><sup><a href="https://cplusplus.github.io/LWG/issue4168">(i)</a></sup>. <code class='backtick'>std::start_lifetime_as</code> inadvertently has undefined behavior due to use of <code class='backtick'>std::bit_cast</code></h3>
 <p><b>Section:</b> 20.2.6 <a href="https://wg21.link/obj.lifetime">[obj.lifetime]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Jan Schultke <b>Opened:</b> 2024-10-23 <b>Last modified:</b> 2024-10-31</p>
-<p><b>Priority: </b>Not Prioritized
+ <b>Submitter:</b> Jan Schultke <b>Opened:</b> 2024-10-23 <b>Last modified:</b> 2025-10-22</p>
+<p><b>Priority: </b>3
 </p>
 <p><b>View other</b> <a href="lwg-index-open.html#obj.lifetime">active issues</a> in [obj.lifetime].</p>
 <p><b>View all other</b> <a href="lwg-index.html#obj.lifetime">issues</a> in [obj.lifetime].</p>
@@ -64011,6 +64011,21 @@ obtained from <code class='backtick'>myMalloc</code>. Such a call to <code class
 does not tolerate the creation of an <code class='backtick'>int</code> where bits in the value representation are indeterminate 
 (22.11.3 <a href="https://wg21.link/bit.cast">[bit.cast]</a> paragraph 2), and such an <code class='backtick'>int</code> is the smallest enclosing object of some of the 
 indeterminate bits.
+</p>
+
+<p><i>[2025-10-22; Reflector poll.]</i></p>
+
+<p>
+Set priority to 3 after reflector poll.
+</p>
+<p>
+"NAD, it says the storage is not accessed, so no UB from reading indeterminate bits."
+</p>
+<p>
+"The UB comes from <code class='backtick'>bit_cast</code>'s <i>Preconditions</i>, not from reading an indeterminate value."
+</p>
+<p>
+Core should review any change here.
 </p>
 
 
@@ -71230,8 +71245,8 @@ Set priority to 3 after reflector poll.
 <hr>
 <h3 id="4282"><a href="#4282">4282</a><sup><a href="https://cplusplus.github.io/LWG/issue4282">(i)</a></sup>. Imprecise <i>Throws</i>: clause in <code class='backtick'>std::relocate</code></h3>
 <p><b>Section:</b> 20.2.6 <a href="https://wg21.link/obj.lifetime">[obj.lifetime]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Giuseppe D'Angelo <b>Opened:</b> 2025-06-23 <b>Last modified:</b> 2025-06-28</p>
-<p><b>Priority: </b>Not Prioritized
+ <b>Submitter:</b> Giuseppe D'Angelo <b>Opened:</b> 2025-06-23 <b>Last modified:</b> 2025-10-22</p>
+<p><b>Priority: </b>2
 </p>
 <p><b>View other</b> <a href="lwg-index-open.html#obj.lifetime">active issues</a> in [obj.lifetime].</p>
 <p><b>View all other</b> <a href="lwg-index.html#obj.lifetime">issues</a> in [obj.lifetime].</p>
@@ -71267,6 +71282,18 @@ construction we end up in this possibility during constant evaluation).
 Given the rationale brought forward for <code class='backtick'>std::relocate</code> in <a href="https://wg21.link/P2786" title=" Trivial Relocatability For C++26">P2786</a> 
 is to be always a nofail operation, I'm proposing a resolution that goes in
 that direction.
+</p>
+
+<p><i>[2025-10-22; Reflector poll.]</i></p>
+
+<p>
+Set priority to 2 after reflector poll.
+</p>
+<p>
+"PR is incomplete, needs to be 'and <ins>either <code>is_move_constructible_v&lt;T&gt;</code> is false or</ins> an exception is thrown...'"
+</p>
+<p>
+"I think we should use <i>Constant when</i>:."
 </p>
 
 
@@ -74490,8 +74517,8 @@ constexpr mapping(const extents_type&amp; ext, OtherIndexType pad<ins>ding</ins>
 <hr>
 <h3 id="4316"><a href="#4316">4316</a><sup><a href="https://cplusplus.github.io/LWG/issue4316">(i)</a></sup>. <code>{can_}substitute</code> specification is ill-formed</h3>
 <p><b>Section:</b> 21.4.13 <a href="https://wg21.link/meta.reflection.substitute">[meta.reflection.substitute]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Matthias Wippich <b>Opened:</b> 2025-08-15 <b>Last modified:</b> 2025-08-17</p>
-<p><b>Priority: </b>Not Prioritized
+ <b>Submitter:</b> Matthias Wippich <b>Opened:</b> 2025-08-15 <b>Last modified:</b> 2025-10-22</p>
+<p><b>Priority: </b>1
 </p>
 <p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
 <p><b>Discussion:</b></p>
@@ -74518,6 +74545,12 @@ currently ill-formed. We cannot use the given syntax to splice an arbitrary choi
 types and templates anymore.
 <p/>
 While the intent seems clear, this should be rephrased to be more technically correct.
+</p>
+
+<p><i>[2025-10-22; Reflector poll.]</i></p>
+
+<p>
+Set priority to 1 after reflector poll.
 </p>
 
 
@@ -75496,8 +75529,8 @@ function call, at worst linear in the number of element blocks.</ins>
 <hr>
 <h3 id="4324"><a href="#4324">4324</a><sup><a href="https://cplusplus.github.io/LWG/issue4324">(i)</a></sup>. <code>unique_ptr&lt;void&gt;::operator*</code> is not SFINAE-friendly</h3>
 <p><b>Section:</b> 20.3.1.3.5 <a href="https://wg21.link/unique.ptr.single.observers">[unique.ptr.single.observers]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Hewill Kang <b>Opened:</b> 2025-08-24 <b>Last modified:</b> 2025-08-26</p>
-<p><b>Priority: </b>Not Prioritized
+ <b>Submitter:</b> Hewill Kang <b>Opened:</b> 2025-08-24 <b>Last modified:</b> 2025-10-22</p>
+<p><b>Priority: </b>3
 </p>
 <p><b>View other</b> <a href="lwg-index-open.html#unique.ptr.single.observers">active issues</a> in [unique.ptr.single.observers].</p>
 <p><b>View all other</b> <a href="lwg-index.html#unique.ptr.single.observers">issues</a> in [unique.ptr.single.observers].</p>
@@ -75576,6 +75609,12 @@ decltype(*declval&lt;pointer&gt;())&gt;</code> is <code class='backtick'>false</
 <p>
 During reflector triaging it had been pointed out that a better solution would be to constrain the 
 <code class='backtick'>operator*</code> directly. The proposed wording has been updated to that effect.
+</p>
+
+<p><i>[2025-10-22; Reflector poll.]</i></p>
+
+<p>
+Set priority to 3 after reflector poll.
 </p>
 
 
@@ -81430,8 +81469,8 @@ valid expression.
 <hr>
 <h3 id="4411"><a href="#4411">4411</a><sup><a href="https://cplusplus.github.io/LWG/issue4411">(i)</a></sup>. Even more feature-test macros for fully freestanding features are not marked freestanding</h3>
 <p><b>Section:</b> 17.3.2 <a href="https://wg21.link/version.syn">[version.syn]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Jonathan Wakely <b>Opened:</b> 2025-10-14 <b>Last modified:</b> 2025-10-18</p>
-<p><b>Priority: </b>Not Prioritized
+ <b>Submitter:</b> Jonathan Wakely <b>Opened:</b> 2025-10-14 <b>Last modified:</b> 2025-10-22</p>
+<p><b>Priority: </b>2
 </p>
 <p><b>View other</b> <a href="lwg-index-open.html#version.syn">active issues</a> in [version.syn].</p>
 <p><b>View all other</b> <a href="lwg-index.html#version.syn">issues</a> in [version.syn].</p>
@@ -81453,6 +81492,12 @@ are obviously available in a freestanding implementation,
 but the changes in
 <code>&lt;map&gt;</code> and <code>&lt;unordered_map&gt;</code>
 are not.
+</p>
+
+<p><i>[2025-10-22; Reflector poll.]</i></p>
+
+<p>
+Set priority to 2 after reflector poll.
 </p>
 
 

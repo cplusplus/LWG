@@ -64,8 +64,8 @@
 <p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#New">New</a> status.</em></p>
 <h3 id="4168"><a href="lwg-active.html#4168">4168</a>. <code class='backtick'>std::start_lifetime_as</code> inadvertently has undefined behavior due to use of <code class='backtick'>std::bit_cast</code></h3>
 <p><b>Section:</b> 20.2.6 <a href="https://wg21.link/obj.lifetime">[obj.lifetime]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Jan Schultke <b>Opened:</b> 2024-10-23 <b>Last modified:</b> 2024-10-31</p>
-<p><b>Priority: </b>Not Prioritized
+ <b>Submitter:</b> Jan Schultke <b>Opened:</b> 2024-10-23 <b>Last modified:</b> 2025-10-22</p>
+<p><b>Priority: </b>3
 </p>
 <p><b>View other</b> <a href="lwg-index-open.html#obj.lifetime">active issues</a> in [obj.lifetime].</p>
 <p><b>View all other</b> <a href="lwg-index.html#obj.lifetime">issues</a> in [obj.lifetime].</p>
@@ -96,6 +96,21 @@ obtained from <code class='backtick'>myMalloc</code>. Such a call to <code class
 does not tolerate the creation of an <code class='backtick'>int</code> where bits in the value representation are indeterminate 
 (22.11.3 <a href="https://wg21.link/bit.cast">[bit.cast]</a> paragraph 2), and such an <code class='backtick'>int</code> is the smallest enclosing object of some of the 
 indeterminate bits.
+</p>
+
+<p><i>[2025-10-22; Reflector poll.]</i></p>
+
+<p>
+Set priority to 3 after reflector poll.
+</p>
+<p>
+"NAD, it says the storage is not accessed, so no UB from reading indeterminate bits."
+</p>
+<p>
+"The UB comes from <code class='backtick'>bit_cast</code>'s <i>Preconditions</i>, not from reading an indeterminate value."
+</p>
+<p>
+Core should review any change here.
 </p>
 
 
