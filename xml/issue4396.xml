@@ -1,12 +1,12 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="4396" status="New">
+<issue num="4396" status="LEWG">
 <title>Improve <code>inplace_vector(from_range_t, R&amp;&amp; rg)</code></title>
 <section><sref ref="[sequence.reqmts]"/><sref ref="[inplace.vector.cons]"/></section>
 <submitter>Hewill Kang</submitter>
 <date>01 Oct 2025</date>
-<priority>99</priority>
+<priority>3</priority>
 
 <discussion>
 <p>
@@ -23,6 +23,16 @@ capacity of `inplace_vector`. However, we should reject it at compile time since
 <p/>
 Given that we do a lot of compile-time size checking in <code>&lt;simd&gt;</code>,
 it's worth applying that here as well. Compile-time errors are better than runtime ones.
+</p>
+
+<note>2025-10-22; Reflector poll. Status changed: New &rarr; LEWG and P3.</note>
+<p>
+General support for change, after LEWG approval.
+</p>
+<p>
+Suggestion was made that this could be extended to all containers,
+but is unlikely to be triggred in real word, as it requires ranges
+with static size greater than `size_t(-1)`.
 </p>
 </discussion>
 

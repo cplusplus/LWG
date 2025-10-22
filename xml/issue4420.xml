@@ -70,7 +70,7 @@ where <tt>float</tt> to <tt>float16_t</tt> and similar conversion are not suppor
 </p>
 <p>
 It was pointed out that similar issues happen for <tt>complex&lt;float16_t&gt;</tt>.
-There seem to be mismatch between language initialization rules and they intended
+There seem to be mismatch between language initialization rules and the intended
 usage based on library API.
 </p>
 </discussion>
