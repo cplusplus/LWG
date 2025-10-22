@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="4412" status="New">
+<issue num="4412" status="Tentatively Ready">
 <title>Fix declaration of `zero_element` and `uninit_element`</title>
 <section><sref ref="[simd.syn]"/></section>
 <submitter>Jonathan Wakely</submitter>
@@ -13,6 +13,11 @@
 
 <p>
 `zero_element` and `uninit_element` should be inline and not static
+</p>
+
+<note>2025-10-22; Reflector poll.</note>
+<p>
+Set status to Tentatively Ready after seven votes in favour during reflector poll.
 </p>
 </discussion>
 
