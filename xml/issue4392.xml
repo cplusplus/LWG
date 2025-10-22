@@ -6,7 +6,7 @@
 <section><sref ref="[simd.loadstore]"/></section>
 <submitter>Hewill Kang</submitter>
 <date>29 Sep 2025</date>
-<priority>99</priority>
+<priority>3</priority>
 
 <discussion>
 <p>
@@ -15,6 +15,15 @@ Currently, `simd::unchecked_load`/`partial_load`/`unchecked_store`/`partial_stor
 <p/>
 However, the construction is ill-formed when the difference type is an integer-class type; we should perform
 an explicit casting here.
+</p>
+
+<note>2025-10-22; Reflector poll.</note>
+<p>
+Set priority to 3 after reflector poll.
+</p>
+<p>
+Question was raised if we should use <tt>size_t</tt> instead of
+<tt>iter_difference_t</tt> for consistency with <tt>span</tt>.
 </p>
 </discussion>
 
