@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="4371" status="New">
+<issue num="4371" status="Tentatively NAD">
 <title>Container adaptor's `empty`/`size` should be `noexcept`</title>
 <section>
 <sref ref="[queue.defn]"/>
@@ -24,6 +24,13 @@ It makes sense to make them `noexcept` as well for consistency. Although the sta
 explicitly say those two members of the container must not throw, the fact that all standard 
 containers and common third-party containers mark them as unconditionally `noexcept` implies 
 that it's perfectly reasonable to assume that they never will.
+</p>
+
+<note>2025-10-22 Reflector poll. Status changed: New &rarr; Tentatively NAD.</note>
+<p>
+General disagrement with the proposed change.
+Implicitly changing container requirements.
+We should fix `flat_` adaptors instead.
 </p>
 </discussion>
 
