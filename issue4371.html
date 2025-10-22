@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <title>Issue 4371: Container adaptor's empty/size should be noexcept</title>
 <meta property="og:title" content="Issue 4371: Container adaptor's empty/size should be noexcept">
-<meta property="og:description" content="C++ library issue. Status: New">
+<meta property="og:description" content="C++ library issue. Status: Tentatively NAD">
 <meta property="og:url" content="https://cplusplus.github.io/LWG/issue4371.html">
 <meta property="og:type" content="website">
 <meta property="og:image" content="http://cplusplus.github.io/LWG/images/cpp_logo.png">
@@ -61,14 +61,14 @@
 </head>
 <body>
 <hr>
-<p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#New">New</a> status.</em></p>
+<p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#NAD">Tentatively NAD</a> status.</em></p>
 <h3 id="4371"><a href="lwg-active.html#4371">4371</a>. Container adaptor's <code class='backtick'>empty</code>/<code class='backtick'>size</code> should be <code class='backtick'>noexcept</code></h3>
-<p><b>Section:</b> 23.6.3.1 <a href="https://wg21.link/queue.defn">[queue.defn]</a>, 23.6.4.1 <a href="https://wg21.link/priqueue.overview">[priqueue.overview]</a>, 23.6.6.2 <a href="https://wg21.link/stack.defn">[stack.defn]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Hewill Kang <b>Opened:</b> 2025-09-09 <b>Last modified:</b> 2025-09-16</p>
+<p><b>Section:</b> 23.6.3.1 <a href="https://wg21.link/queue.defn">[queue.defn]</a>, 23.6.4.1 <a href="https://wg21.link/priqueue.overview">[priqueue.overview]</a>, 23.6.6.2 <a href="https://wg21.link/stack.defn">[stack.defn]</a> <b>Status:</b> <a href="lwg-active.html#NAD">Tentatively NAD</a>
+ <b>Submitter:</b> Hewill Kang <b>Opened:</b> 2025-09-09 <b>Last modified:</b> 2025-10-22</p>
 <p><b>Priority: </b>Not Prioritized
 </p>
 <p><b>View all other</b> <a href="lwg-index.html#queue.defn">issues</a> in [queue.defn].</p>
-<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#Tentatively NAD">Tentatively NAD</a> status.</p>
 <p><b>Discussion:</b></p>
 <p>
 C++23 container adaptors <code>flat_<i>meow</i></code> all have <code class='backtick'>noexcept</code> <code class='backtick'>size</code>/<code class='backtick'>empty</code> members.
@@ -81,6 +81,14 @@ It makes sense to make them <code class='backtick'>noexcept</code> as well for c
 explicitly say those two members of the container must not throw, the fact that all standard 
 containers and common third-party containers mark them as unconditionally <code class='backtick'>noexcept</code> implies 
 that it's perfectly reasonable to assume that they never will.
+</p>
+
+<p><i>[2025-10-22 Reflector poll. Status changed: New &rarr; Tentatively NAD.]</i></p>
+
+<p>
+General disagrement with the proposed change.
+Implicitly changing container requirements.
+We should fix <code class='backtick'>flat_</code> adaptors instead.
 </p>
 
 

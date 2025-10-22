@@ -60,8 +60,8 @@
 <p>This document is the Table of Contents for the <a href="lwg-active.html">Library Active Issues List</a>,
 <a href="lwg-defects.html">Library Defect Reports and Accepted Issues</a>, and <a href="lwg-closed.html">Library Closed Issues List</a>,
 sorted by priority.</p>
-<p>Revised 2025-10-22 at 17:05:50 UTC
-</p><h2 id="Priority_1">Priority 1 (15 issues)</h2>
+<p>Revised 2025-10-22 at 17:51:59 UTC
+</p><h2 id="Priority_1">Priority 1 (16 issues)</h2>
 <table class="issues-index">
 <tr>
   <th><a href="lwg-toc.html">Issue</a></th>
@@ -133,6 +133,17 @@ sorted by priority.</p>
 <td><a href="lwg-active.html#LEWG">LEWG</a></td>
 <td>29.9.13.8 [linalg.algs.blas1.ssq]</td>
 <td>Problematic <code class='backtick'>vector_sum_of_squares</code> wording</td>
+<td>Yes</td>
+<td>1</td>
+<td></td>
+</tr>
+<tr>
+<td id="4420"><a href="lwg-active.html#4420" title="&sect;[simd] conversions (constructor, load, stores, gather, and scatter) are
+incorrectly constrained for &lt;stdfloat&gt; types (Status: New)">4420</a><sup><a href="https://cplusplus.github.io/LWG/issue4420">(i)</a></sup></td>
+<td><a href="lwg-active.html#New">New</a></td>
+<td>29.10 [simd]</td>
+<td>&sect;[simd] conversions (constructor, load, stores, gather, and scatter) are
+incorrectly constrained for <code>&lt;stdfloat&gt;</code> types</td>
 <td>Yes</td>
 <td>1</td>
 <td></td>
@@ -928,7 +939,7 @@ specified to make <code><i>N</i></code> copies of <code>T</code> into the destin
 <td></td>
 </tr>
 </table>
-<h2 id="Priority_3">Priority 3 (441 issues)</h2>
+<h2 id="Priority_3">Priority 3 (446 issues)</h2>
 <table class="issues-index">
 <tr>
   <th><a href="lwg-toc.html">Issue</a></th>
@@ -1785,6 +1796,15 @@ unique_ptr (Status: New)">2906</a><sup><a href="https://cplusplus.github.io/LWG/
 <td></td>
 </tr>
 <tr>
+<td id="4110"><a href="lwg-active.html#4110" title="shared_ptr(nullptr_t, Deleter) is overconstrained, breaking some sensible deleters (Status: New)">4110</a><sup><a href="https://cplusplus.github.io/LWG/issue4110">(i)</a></sup></td>
+<td><a href="lwg-active.html#New">New</a></td>
+<td>20.3.2.2.2 [util.smartptr.shared.const]</td>
+<td><code class='backtick'>shared_ptr(nullptr_t, Deleter)</code> is overconstrained, breaking some sensible deleters</td>
+<td>Yes</td>
+<td>3</td>
+<td></td>
+</tr>
+<tr>
 <td id="3210"><a href="lwg-active.html#3210" title="allocate_shared is inconsistent about removing const from the pointer
 passed to allocator construct and destroy (Status: New)">3210</a><sup><a href="https://cplusplus.github.io/LWG/issue3210">(i)</a></sup></td>
 <td><a href="lwg-active.html#New">New</a></td>
@@ -2376,6 +2396,15 @@ the evaluation of type traits</td>
 <td></td>
 </tr>
 <tr>
+<td id="4396"><a href="lwg-active.html#4396" title="Improve inplace_vector(from_range_t, R&amp;&amp; rg) (Status: LEWG)">4396</a><sup><a href="https://cplusplus.github.io/LWG/issue4396">(i)</a></sup></td>
+<td><a href="lwg-active.html#LEWG">LEWG</a></td>
+<td>23.2.4 [sequence.reqmts]</td>
+<td>Improve <code>inplace_vector(from_range_t, R&amp;&amp; rg)</code></td>
+<td>Yes</td>
+<td>3</td>
+<td></td>
+</tr>
+<tr>
 <td id="4159"><a href="lwg-active.html#4159" title="Uses-allocator construction mechanisms should be opted out for node handles (Status: New)">4159</a><sup><a href="https://cplusplus.github.io/LWG/issue4159">(i)</a></sup></td>
 <td><a href="lwg-active.html#New">New</a></td>
 <td>23.2.5 [container.node]</td>
@@ -2562,6 +2591,35 @@ arguments when no insertion happens</td>
 <td><a href="lwg-active.html#New">New</a></td>
 <td>23.3.5.4 [deque.modifiers]</td>
 <td>Container effects use "the assignment operator or move assignment operator"</td>
+<td>Yes</td>
+<td>3</td>
+<td></td>
+</tr>
+<tr>
+<td id="4379"><a href="lwg-active.html#4379" title="hive::reserve() needs Throws: element adjusted to match block min/max considerations (Status: New)">4379</a><sup><a href="https://cplusplus.github.io/LWG/issue4379">(i)</a></sup></td>
+<td><a href="lwg-active.html#New">New</a></td>
+<td>23.3.9.3 [hive.capacity]</td>
+<td><code class='backtick'>hive::reserve()</code> needs <i>Throws:</i> element adjusted to match block min/max considerations</td>
+<td>Yes</td>
+<td>3</td>
+<td></td>
+</tr>
+<tr>
+<td id="4380"><a href="lwg-active.html#4380" title="hive::reserve() complexity does not reflect potential deallocation of blocks
+ (Status: New)">4380</a><sup><a href="https://cplusplus.github.io/LWG/issue4380">(i)</a></sup></td>
+<td><a href="lwg-active.html#New">New</a></td>
+<td>23.3.9.3 [hive.capacity]</td>
+<td><code class='backtick'>hive::reserve()</code> complexity does not reflect potential deallocation of blocks
+</td>
+<td>Yes</td>
+<td>3</td>
+<td></td>
+</tr>
+<tr>
+<td id="4323"><a href="lwg-active.html#4323" title="hive::unique time complexity should incorporate potential block removal complexity (Status: New)">4323</a><sup><a href="https://cplusplus.github.io/LWG/issue4323">(i)</a></sup></td>
+<td><a href="lwg-active.html#New">New</a></td>
+<td>23.3.9.5 [hive.operations]</td>
+<td><code class='backtick'>hive::unique</code> time complexity should incorporate potential block removal complexity</td>
 <td>Yes</td>
 <td>3</td>
 <td></td>
@@ -5083,10 +5141,10 @@ don't support <code>DynamicBuffer</code> lvalues</td>
 <td></td>
 </tr>
 <tr>
-<td id="3681"><a href="lwg-active.html#3681" title="Further considerations on LWG 3679 (Status: New)">3681</a><sup><a href="https://cplusplus.github.io/LWG/issue3681">(i)</a></sup></td>
+<td id="3681"><a href="lwg-active.html#3681" title="Further considerations on LWG 3679 (using pmr::vector without including &lt;memory_resource&gt;) (Status: New)">3681</a><sup><a href="https://cplusplus.github.io/LWG/issue3681">(i)</a></sup></td>
 <td><a href="lwg-active.html#New">New</a></td>
 <td>20.5.1 [mem.res.syn]</td>
-<td>Further considerations on LWG 3679</td>
+<td>Further considerations on LWG 3679 (using <code class='backtick'>pmr::vector</code> without including <code>&lt;memory_resource&gt;</code>)</td>
 <td><span class="no-pr">No</span></td>
 <td>4</td>
 <td></td>
@@ -5944,7 +6002,7 @@ vprint_unicode/vprint_nonunicode (Status: New)">4039</a><sup><a href="https://cp
 <td></td>
 </tr>
 </table>
-<h2 id="Priority_99">Not Prioritized (64 issues)</h2>
+<h2 id="Priority_99">Not Prioritized (56 issues)</h2>
 <table class="issues-index">
 <tr>
   <th><a href="lwg-toc.html">Issue</a></th>
@@ -6001,15 +6059,6 @@ vprint_unicode/vprint_nonunicode (Status: New)">4039</a><sup><a href="https://cp
 <td></td>
 </tr>
 <tr>
-<td id="4110"><a href="lwg-active.html#4110" title="shared_ptr(nullptr_t, Deleter) is overconstrained, breaking some sensible deleters (Status: New)">4110</a><sup><a href="https://cplusplus.github.io/LWG/issue4110">(i)</a></sup></td>
-<td><a href="lwg-active.html#New">New</a></td>
-<td>20.3.2.2.2 [util.smartptr.shared.const]</td>
-<td><code class='backtick'>shared_ptr(nullptr_t, Deleter)</code> is overconstrained, breaking some sensible deleters</td>
-<td>Yes</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
 <td id="4422"><a href="lwg-active.html#4422" title="meta::access_context should be a consteval-only type (Status: New)">4422</a><sup><a href="https://cplusplus.github.io/LWG/issue4422">(i)</a></sup></td>
 <td><a href="lwg-active.html#New">New</a></td>
 <td>21.4.8 [meta.reflection.access.context]</td>
@@ -6055,57 +6104,10 @@ vprint_unicode/vprint_nonunicode (Status: New)">4039</a><sup><a href="https://cp
 <td></td>
 </tr>
 <tr>
-<td id="4396"><a href="lwg-active.html#4396" title="Improve inplace_vector(from_range_t, R&amp;&amp; rg) (Status: New)">4396</a><sup><a href="https://cplusplus.github.io/LWG/issue4396">(i)</a></sup></td>
-<td><a href="lwg-active.html#New">New</a></td>
-<td>23.2.4 [sequence.reqmts]</td>
-<td>Improve <code>inplace_vector(from_range_t, R&amp;&amp; rg)</code></td>
-<td>Yes</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
 <td id="4320"><a href="lwg-active.html#4320" title="hive operations involving insertion/erasure should have &#x1d4aa;(log n) time complexity (Status: New)">4320</a><sup><a href="https://cplusplus.github.io/LWG/issue4320">(i)</a></sup></td>
 <td><a href="lwg-active.html#New">New</a></td>
 <td>23.3.9 [hive]</td>
 <td><code class='backtick'>hive</code> operations involving insertion/erasure should have <code>&#x1d4aa;(log n)</code> time complexity</td>
-<td>Yes</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td id="4379"><a href="lwg-active.html#4379" title="hive::reserve() needs Throws: element adjusted to match block min/max considerations (Status: New)">4379</a><sup><a href="https://cplusplus.github.io/LWG/issue4379">(i)</a></sup></td>
-<td><a href="lwg-active.html#New">New</a></td>
-<td>23.3.9.3 [hive.capacity]</td>
-<td><code class='backtick'>hive::reserve()</code> needs <i>Throws:</i> element adjusted to match block min/max considerations</td>
-<td>Yes</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td id="4380"><a href="lwg-active.html#4380" title="hive::reserve() complexity does not reflect potential deallocation of blocks
- (Status: New)">4380</a><sup><a href="https://cplusplus.github.io/LWG/issue4380">(i)</a></sup></td>
-<td><a href="lwg-active.html#New">New</a></td>
-<td>23.3.9.3 [hive.capacity]</td>
-<td><code class='backtick'>hive::reserve()</code> complexity does not reflect potential deallocation of blocks
-</td>
-<td>Yes</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td id="4323"><a href="lwg-active.html#4323" title="hive::unique time complexity should incorporate potential block removal complexity (Status: New)">4323</a><sup><a href="https://cplusplus.github.io/LWG/issue4323">(i)</a></sup></td>
-<td><a href="lwg-active.html#New">New</a></td>
-<td>23.3.9.5 [hive.operations]</td>
-<td><code class='backtick'>hive::unique</code> time complexity should incorporate potential block removal complexity</td>
-<td>Yes</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td id="4371"><a href="lwg-active.html#4371" title="Container adaptor's empty/size should be noexcept (Status: New)">4371</a><sup><a href="https://cplusplus.github.io/LWG/issue4371">(i)</a></sup></td>
-<td><a href="lwg-active.html#New">New</a></td>
-<td>23.6.3.1 [queue.defn]</td>
-<td>Container adaptor's <code class='backtick'>empty</code>/<code class='backtick'>size</code> should be <code class='backtick'>noexcept</code></td>
 <td>Yes</td>
 <td></td>
 <td></td>
@@ -6169,15 +6171,6 @@ in <code>&lt;ranges&gt;</code></td>
 <td></td>
 </tr>
 <tr>
-<td id="4009"><a href="lwg-active.html#4009" title="drop_view::begin const may have &#x1d4aa;(n) complexity (Status: New)">4009</a><sup><a href="https://cplusplus.github.io/LWG/issue4009">(i)</a></sup></td>
-<td><a href="lwg-active.html#New">New</a></td>
-<td>25.7.12.2 [range.drop.view]</td>
-<td><code>drop_view::begin const</code> may have &#x1d4aa;(n) complexity</td>
-<td>Yes</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
 <td id="4220"><a href="lwg-active.html#4220" title="join_view incorrectly stores inner range (Status: New)">4220</a><sup><a href="https://cplusplus.github.io/LWG/issue4220">(i)</a></sup></td>
 <td><a href="lwg-active.html#New">New</a></td>
 <td>25.7.14.2 [range.join.view]</td>
@@ -6236,17 +6229,6 @@ in <code>&lt;ranges&gt;</code></td>
 <td><a href="lwg-active.html#New">New</a></td>
 <td>29.9.3 [linalg.general]</td>
 <td>Specify behavior of [linalg] Hermitian algorithms on diagonal with nonzero imaginary part</td>
-<td>Yes</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td id="4420"><a href="lwg-active.html#4420" title="&sect;[simd] conversions (constructor, load, stores, gather, and scatter) are
-incorrectly constrained for &lt;stdfloat&gt; types (Status: New)">4420</a><sup><a href="https://cplusplus.github.io/LWG/issue4420">(i)</a></sup></td>
-<td><a href="lwg-active.html#New">New</a></td>
-<td>29.10 [simd]</td>
-<td>&sect;[simd] conversions (constructor, load, stores, gather, and scatter) are
-incorrectly constrained for <code>&lt;stdfloat&gt;</code> types</td>
 <td>Yes</td>
 <td></td>
 <td></td>

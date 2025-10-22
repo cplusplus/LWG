@@ -67,8 +67,8 @@
 <h3 id="4380"><a href="lwg-active.html#4380">4380</a>. <code class='backtick'>hive::reserve()</code> complexity does not reflect potential deallocation of blocks
 </h3>
 <p><b>Section:</b> 23.3.9.3 <a href="https://wg21.link/hive.capacity">[hive.capacity]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Matt Bentley <b>Opened:</b> 2025-09-23 <b>Last modified:</b> 2025-09-26</p>
-<p><b>Priority: </b>Not Prioritized
+ <b>Submitter:</b> Matt Bentley <b>Opened:</b> 2025-09-23 <b>Last modified:</b> 2025-10-22</p>
+<p><b>Priority: </b>3
 </p>
 <p><b>View other</b> <a href="lwg-index-open.html#hive.capacity">active issues</a> in [hive.capacity].</p>
 <p><b>View all other</b> <a href="lwg-index.html#hive.capacity">issues</a> in [hive.capacity].</p>
@@ -89,6 +89,16 @@ The implicit assumption in this issue is that we want <code class='backtick'>res
 No-one has objected to this before, but if you want to, please speak up.
 <p/>
 Anyway, the <i>Complexity</i> of <code class='backtick'>reserve()</code> does not presently reflect this ability.
+</p>
+
+<p><i>[2025-10-22; Reflector poll.]</i></p>
+
+<p>
+Set priority to 3 after reflector poll.
+</p>
+<p>
+An explicit objection was raised that the <i>Effects:</i> should state
+whether <code class='backtick'>reserve()</code> is allowed, or even required, to deallocate blocks.
 </p>
 
 

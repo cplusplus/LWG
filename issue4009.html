@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <title>Issue 4009: drop_view::begin const may have &#x1d4aa;(n) complexity</title>
 <meta property="og:title" content="Issue 4009: drop_view::begin const may have &#x1d4aa;(n) complexity">
-<meta property="og:description" content="C++ library issue. Status: New">
+<meta property="og:description" content="C++ library issue. Status: Tentatively NAD">
 <meta property="og:url" content="https://cplusplus.github.io/LWG/issue4009.html">
 <meta property="og:type" content="website">
 <meta property="og:image" content="http://cplusplus.github.io/LWG/images/cpp_logo.png">
@@ -61,15 +61,15 @@
 </head>
 <body>
 <hr>
-<p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#New">New</a> status.</em></p>
+<p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#NAD">Tentatively NAD</a> status.</em></p>
 <h3 id="4009"><a href="lwg-active.html#4009">4009</a>. <code>drop_view::begin const</code> may have &#x1d4aa;(n) complexity</h3>
-<p><b>Section:</b> 25.7.12.2 <a href="https://wg21.link/range.drop.view">[range.drop.view]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Hewill Kang <b>Opened:</b> 2023-11-08 <b>Last modified:</b> 2023-11-18</p>
-<p><b>Priority: </b>Not Prioritized
+<p><b>Section:</b> 25.7.12.2 <a href="https://wg21.link/range.drop.view">[range.drop.view]</a> <b>Status:</b> <a href="lwg-active.html#NAD">Tentatively NAD</a>
+ <b>Submitter:</b> Hewill Kang <b>Opened:</b> 2023-11-08 <b>Last modified:</b> 2025-10-22</p>
+<p><b>Priority: </b>3
 </p>
 <p><b>View other</b> <a href="lwg-index-open.html#range.drop.view">active issues</a> in [range.drop.view].</p>
 <p><b>View all other</b> <a href="lwg-index.html#range.drop.view">issues</a> in [range.drop.view].</p>
-<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#Tentatively NAD">Tentatively NAD</a> status.</p>
 <p><b>Discussion:</b></p>
 <p>
 <code>drop_view::begin const</code> is specified to return <code>ranges::next(ranges::begin(<i>base_</i>), 
@@ -86,6 +86,17 @@ int main() {
 }
 </pre></blockquote>
 
+
+<p><i>[2025-10-22; Reflector poll. Status changed: New &rarr; Tentatively NAD]</i></p>
+
+<p>
+Set priority to 3 after reflector poll, status to Tentatively NAD.
+</p>
+<p>
+"NAD, it's <i>Returns</i>: not '<i>Effects</i>: Equivalent to ...',
+implementations need to implement it to return that while meeting the
+amortized &#x1d4aa;(1) guarantee."
+</p>
 
 
 <p id="res-4009"><b>Proposed resolution:</b></p>

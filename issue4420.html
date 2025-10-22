@@ -68,7 +68,7 @@ incorrectly constrained for &lt;stdfloat&gt; types">
 incorrectly constrained for <code>&lt;stdfloat&gt;</code> types</h3>
 <p><b>Section:</b> 29.10 <a href="https://wg21.link/simd">[simd]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
  <b>Submitter:</b> Matthias Kretz <b>Opened:</b> 2025-10-15 <b>Last modified:</b> 2025-10-22</p>
-<p><b>Priority: </b>Not Prioritized
+<p><b>Priority: </b>1
 </p>
 <p><b>View other</b> <a href="lwg-index-open.html#simd">active issues</a> in [simd].</p>
 <p><b>View all other</b> <a href="lwg-index.html#simd">issues</a> in [simd].</p>
@@ -122,6 +122,21 @@ to <code class='backtick'>float</code> should do, so it needs to be added (again
 <p/>
 29.10.8.11 <a href="https://wg21.link/simd.permute.memory">[simd.permute.memory]</a> is analogous to 29.10.8.7 <a href="https://wg21.link/simd.loadstore">[simd.loadstore]</a> and needs 
 equivalent constraints.
+</p>
+
+<p><i>[2025-10-22; Reflector poll.]</i></p>
+
+<p>
+Set priority to 1 after reflector poll.
+</p>
+<p>
+We also need to update <i>Effects</i>. There are more places in 29.10 <a href="https://wg21.link/simd">[simd]</a>
+where <code>float</code> to <code>float16_t</code> and similar conversion are not supported.
+</p>
+<p>
+It was pointed out that similar issues happen for <code>complex&lt;float16_t&gt;</code>.
+There seem to be mismatch between language initialization rules and the intended
+usage based on library API.
 </p>
 
 <p><strong>Previous resolution [SUPERSEDED]:</strong></p>

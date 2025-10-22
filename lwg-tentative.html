@@ -54,7 +54,7 @@
 </style>
 </head>
 <body>
-<p>Revised 2025-10-22 at 17:05:50 UTC
+<p>Revised 2025-10-22 at 17:51:59 UTC
 </p><h2>Tentative Issues</h2>
 <hr>
 <h3 id="3627"><a href="#3627">3627</a><sup><a href="https://cplusplus.github.io/LWG/issue3627">(i)</a></sup>. Inconsistent specifications for <code>std::make_optional</code> overloads</h3>
@@ -913,6 +913,101 @@ constexpr default_sentinel_t end() const noexcept;
 <ins>-?- <i>Effects</i>: Equivalent to: <code>return <i>parent_</i>-&gt;<i>remainder_</i> == 0;</code></ins>
 </p>
 </blockquote>
+</blockquote>
+
+</li>
+
+</ol>
+
+
+
+
+
+<hr>
+<h3 id="4009"><a href="#4009">4009</a><sup><a href="https://cplusplus.github.io/LWG/issue4009">(i)</a></sup>. <code>drop_view::begin const</code> may have &#x1d4aa;(n) complexity</h3>
+<p><b>Section:</b> 25.7.12.2 <a href="https://wg21.link/range.drop.view">[range.drop.view]</a> <b>Status:</b> <a href="lwg-active.html#NAD">Tentatively NAD</a>
+ <b>Submitter:</b> Hewill Kang <b>Opened:</b> 2023-11-08 <b>Last modified:</b> 2025-10-22</p>
+<p><b>Priority: </b>3
+</p>
+<p><b>View other</b> <a href="lwg-index-open.html#range.drop.view">active issues</a> in [range.drop.view].</p>
+<p><b>View all other</b> <a href="lwg-index.html#range.drop.view">issues</a> in [range.drop.view].</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#Tentatively NAD">Tentatively NAD</a> status.</p>
+<p><b>Discussion:</b></p>
+<p>
+<code>drop_view::begin const</code> is specified to return <code>ranges::next(ranges::begin(<i>base_</i>), 
+<i>count_</i>, ranges::end(<i>base_</i>))</code>, which has &#x1d4aa;(n) complexity when <i>base_</i> 
+is a random-access-sized but non-common range (<a href="https://godbolt.org/z/jYdo9K6jn">demo</a>):
+</p>
+<blockquote><pre>
+#include &lt;ranges&gt;
+
+int main() {
+  const auto s = std::ranges::subrange(std::views::iota(0uz), size_t(-1));
+  const auto r = std::ranges::drop_view(s, s.size() - 1);
+  const auto b = r.begin(); // <span style="color:red;font-weight:bolder">time out</span>
+}
+</pre></blockquote>
+
+
+<p><i>[2025-10-22; Reflector poll. Status changed: New &rarr; Tentatively NAD]</i></p>
+
+<p>
+Set priority to 3 after reflector poll, status to Tentatively NAD.
+</p>
+<p>
+"NAD, it's <i>Returns</i>: not '<i>Effects</i>: Equivalent to ...',
+implementations need to implement it to return that while meeting the
+amortized &#x1d4aa;(1) guarantee."
+</p>
+
+
+<p id="res-4009"><b>Proposed resolution:</b></p>
+<p>
+This wording is relative to <a href="https://wg21.link/N4964" title=" Working Draft, Programming Languages — C++">N4964</a>.
+</p>
+
+<ol>
+
+<li><p>Modify 25.7.12.2 <a href="https://wg21.link/range.drop.view">[range.drop.view]</a> as indicated:</p>
+
+<pre>
+constexpr auto begin()
+  requires (!(<i>simple-view</i>&lt;V&gt; &amp;&amp;
+              random_access_range&lt;const V&gt; &amp;&amp; sized_range&lt;const V&gt;));
+<del>constexpr auto begin() const
+  requires random_access_range&lt;const V&gt; &amp;&amp; sized_range&lt;const V&gt;;</del>
+</pre>
+<blockquote>
+<p>
+-3- <i>Returns</i>: 
+</p>
+<ol style="list-style-type: none">
+<li><p><ins>(?.?) &mdash; If <code>V</code> models <code>random_access_range</code> and <code>sized_range</code>,</ins></p>
+<blockquote><pre>
+<ins><code>ranges::begin(<i>base_</i>) + (ranges::distance(<i>base_</i>) - range_difference_t&lt;V&gt;(size()))</code></ins>
+</pre></blockquote>
+</li>
+<li><p><ins>(?.?) &mdash; Otherwise,</ins> <code>ranges::next(ranges::begin(<i>base_</i>), <i>count_</i>, 
+ranges::end(<i>base_</i>))</code>.</p></li>
+</ol>
+<p>
+-4- <i>Remarks</i>: In order to provide the amortized constant-time complexity required by the <code>range</code> 
+concept when <ins><code>V</code></ins><del><code>drop_view</code></del> <ins>does not</ins> model<del>s</del> 
+<ins><code>random_access_range</code> and <code>sized_range</code></ins><del><code>forward_range</code></del>, 
+<ins>this function</ins><del>the first overload</del> caches the result within the <code>drop_view</code> for 
+use on subsequent calls.
+<p/>
+[<i>Note 1</i>: Without this, applying a <code>reverse_view</code> over a <code>drop_view</code> would have quadratic 
+iteration complexity. &mdash; <i>end note</i>]
+</p>
+</blockquote>
+<pre><ins>
+constexpr auto begin() const
+  requires random_access_range&lt;const V&gt; &amp;&amp; sized_range&lt;const V&gt;;</ins>
+</pre>
+<blockquote>
+<p><ins>-?- <i>Returns</i>: <code>ranges::begin(<i>base_</i>) + (ranges::distance(<i>base_</i>) - 
+range_difference_t&lt;const V&gt;(size()))</code>.</ins></p>
 </blockquote>
 
 </li>
@@ -5447,6 +5542,110 @@ return true;</ins>
 </pre></blockquote>
 </blockquote>
 
+</blockquote>
+
+</li>
+
+</ol>
+
+
+
+
+<hr>
+<h3 id="4371"><a href="#4371">4371</a><sup><a href="https://cplusplus.github.io/LWG/issue4371">(i)</a></sup>. Container adaptor's <code class='backtick'>empty</code>/<code class='backtick'>size</code> should be <code class='backtick'>noexcept</code></h3>
+<p><b>Section:</b> 23.6.3.1 <a href="https://wg21.link/queue.defn">[queue.defn]</a>, 23.6.4.1 <a href="https://wg21.link/priqueue.overview">[priqueue.overview]</a>, 23.6.6.2 <a href="https://wg21.link/stack.defn">[stack.defn]</a> <b>Status:</b> <a href="lwg-active.html#NAD">Tentatively NAD</a>
+ <b>Submitter:</b> Hewill Kang <b>Opened:</b> 2025-09-09 <b>Last modified:</b> 2025-10-22</p>
+<p><b>Priority: </b>Not Prioritized
+</p>
+<p><b>View all other</b> <a href="lwg-index.html#queue.defn">issues</a> in [queue.defn].</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#Tentatively NAD">Tentatively NAD</a> status.</p>
+<p><b>Discussion:</b></p>
+<p>
+C++23 container adaptors <code>flat_<i>meow</i></code> all have <code class='backtick'>noexcept</code> <code class='backtick'>size</code>/<code class='backtick'>empty</code> members.
+<p/>
+However, the <code class='backtick'>size</code>/<code class='backtick'>empty</code> members of other container adaptors are not mark <code class='backtick'>noexcept</code>, 
+even though they behave the same as <code>flat_<i>meow</i></code> that returning the <code class='backtick'>size</code>/<code class='backtick'>empty</code> 
+of the underlying container.
+<p/>
+It makes sense to make them <code class='backtick'>noexcept</code> as well for consistency. Although the standard doesn't
+explicitly say those two members of the container must not throw, the fact that all standard 
+containers and common third-party containers mark them as unconditionally <code class='backtick'>noexcept</code> implies 
+that it's perfectly reasonable to assume that they never will.
+</p>
+
+<p><i>[2025-10-22 Reflector poll. Status changed: New &rarr; Tentatively NAD.]</i></p>
+
+<p>
+General disagrement with the proposed change.
+Implicitly changing container requirements.
+We should fix <code class='backtick'>flat_</code> adaptors instead.
+</p>
+
+
+<p id="res-4371"><b>Proposed resolution:</b></p>
+<p>
+This wording is relative to <a href="https://wg21.link/N5014">N5014</a>.
+</p>
+
+<ol>
+
+<li><p>Modify 23.6.3.1 <a href="https://wg21.link/queue.defn">[queue.defn]</a> as indicated:</p>
+
+<blockquote>
+<pre>
+namespace std {
+  template&lt;class T, class Container = deque&lt;T&gt;&gt;
+  class queue {
+  public:
+    [&hellip;]
+    constexpr bool              empty() const <ins>noexcept</ins> { return c.empty(); }
+    constexpr size_type         size()  const <ins>noexcept</ins> { return c.size(); }
+    [&hellip;]
+  };
+  [&hellip;]
+}
+</pre>
+</blockquote>
+
+</li>
+
+<li><p>Modify 23.6.4.1 <a href="https://wg21.link/priqueue.overview">[priqueue.overview]</a> as indicated:</p>
+
+<blockquote>
+<pre>
+namespace std {
+  template&lt;class T, class Container = vector&lt;T&gt;,
+           class Compare = less&lt;typename Container::value_type&gt;&gt;
+  class priority_queue {
+  public:
+    [&hellip;]
+    constexpr bool            empty() const <ins>noexcept</ins> { return c.empty(); }
+    constexpr size_type       size()  const <ins>noexcept</ins> { return c.size(); }
+    [&hellip;]
+  };
+  [&hellip;]
+}
+</pre>
+</blockquote>
+
+</li>
+
+<li><p>Modify 23.6.6.2 <a href="https://wg21.link/stack.defn">[stack.defn]</a> as indicated:</p>
+
+<blockquote>
+<pre>
+namespace std {
+  template&lt;class T, class Container = deque&lt;T&gt;&gt;
+  class stack {
+  public:
+    [&hellip;]
+    constexpr bool              empty() const <ins>noexcept</ins> { return c.empty(); }
+    constexpr size_type         size()  const <ins>noexcept</ins> { return c.size(); }
+    [&hellip;]
+  };
+  [&hellip;]
+}
+</pre>
 </blockquote>
 
 </li>

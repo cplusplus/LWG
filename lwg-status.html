@@ -62,7 +62,7 @@ This document is the Index by Status and Section for the <a href="lwg-active.htm
 <a href="lwg-defects.html">Library Defect Reports and Accepted Issues</a>, and <a href="lwg-closed.html">Library Closed Issues List</a>.
 </p>
 
-<p>Revised 2025-10-22 at 17:05:50 UTC
+<p>Revised 2025-10-22 at 17:51:59 UTC
 </p><h2 id="Ready">Ready (3 issues)</h2>
 <table class="issues-index">
 <tr>
@@ -543,7 +543,7 @@ constructor</td>
 <td></td>
 </tr>
 </table>
-<h2 id="Tentatively_NAD">Tentatively NAD (21 issues)</h2>
+<h2 id="Tentatively_NAD">Tentatively NAD (23 issues)</h2>
 <table class="issues-index">
 <tr>
   <th><a href="lwg-toc.html">Issue</a></th>
@@ -569,6 +569,15 @@ constructor</td>
 <td>23.3.14.1 [vector.bool.pspc]</td>
 <td>Does <code>vector&lt;bool, Allocator&gt;</code> mandate that <code class='backtick'>Allocator::value_type</code> is <code class='backtick'>bool</code>?</td>
 <td><span class="no-pr">No</span></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td id="4371"><a href="lwg-active.html#4371" title="Container adaptor's empty/size should be noexcept (Status: Tentatively NAD)">4371</a><sup><a href="https://cplusplus.github.io/LWG/issue4371">(i)</a></sup></td>
+<td><a href="lwg-active.html#NAD">Tentatively NAD</a></td>
+<td>23.6.3.1 [queue.defn]</td>
+<td>Container adaptor's <code class='backtick'>empty</code>/<code class='backtick'>size</code> should be <code class='backtick'>noexcept</code></td>
+<td>Yes</td>
 <td></td>
 <td></td>
 </tr>
@@ -642,6 +651,15 @@ constructor</td>
 <td>Should <code>views::iota(0) | views::take(5)</code> be <code>views::iota(0, 5)</code>?</td>
 <td>Yes</td>
 <td></td>
+<td></td>
+</tr>
+<tr>
+<td id="4009"><a href="lwg-active.html#4009" title="drop_view::begin const may have &#x1d4aa;(n) complexity (Status: Tentatively NAD)">4009</a><sup><a href="https://cplusplus.github.io/LWG/issue4009">(i)</a></sup></td>
+<td><a href="lwg-active.html#NAD">Tentatively NAD</a></td>
+<td>25.7.12.2 [range.drop.view]</td>
+<td><code>drop_view::begin const</code> may have &#x1d4aa;(n) complexity</td>
+<td>Yes</td>
+<td>3</td>
 <td></td>
 </tr>
 <tr>
@@ -744,7 +762,7 @@ constructor</td>
 <td></td>
 </tr>
 </table>
-<h2 id="New">New (574 issues)</h2>
+<h2 id="New">New (571 issues)</h2>
 <table class="issues-index">
 <tr>
   <th><a href="lwg-toc.html">Issue</a></th>
@@ -1640,7 +1658,7 @@ and user requirements</td>
 <td>20.3.2.2.2 [util.smartptr.shared.const]</td>
 <td><code class='backtick'>shared_ptr(nullptr_t, Deleter)</code> is overconstrained, breaking some sensible deleters</td>
 <td>Yes</td>
-<td></td>
+<td>3</td>
 <td></td>
 </tr>
 <tr>
@@ -1702,10 +1720,10 @@ passed to allocator <code>construct</code> and <code>destroy</code></td>
 <td></td>
 </tr>
 <tr>
-<td id="3681"><a href="lwg-active.html#3681" title="Further considerations on LWG 3679 (Status: New)">3681</a><sup><a href="https://cplusplus.github.io/LWG/issue3681">(i)</a></sup></td>
+<td id="3681"><a href="lwg-active.html#3681" title="Further considerations on LWG 3679 (using pmr::vector without including &lt;memory_resource&gt;) (Status: New)">3681</a><sup><a href="https://cplusplus.github.io/LWG/issue3681">(i)</a></sup></td>
 <td><a href="lwg-active.html#New">New</a></td>
 <td>20.5.1 [mem.res.syn]</td>
-<td>Further considerations on LWG 3679</td>
+<td>Further considerations on LWG 3679 (using <code class='backtick'>pmr::vector</code> without including <code>&lt;memory_resource&gt;</code>)</td>
 <td><span class="no-pr">No</span></td>
 <td>4</td>
 <td></td>
@@ -2419,15 +2437,6 @@ the evaluation of type traits</td>
 <td></td>
 </tr>
 <tr>
-<td id="4396"><a href="lwg-active.html#4396" title="Improve inplace_vector(from_range_t, R&amp;&amp; rg) (Status: New)">4396</a><sup><a href="https://cplusplus.github.io/LWG/issue4396">(i)</a></sup></td>
-<td><a href="lwg-active.html#New">New</a></td>
-<td>23.2.4 [sequence.reqmts]</td>
-<td>Improve <code>inplace_vector(from_range_t, R&amp;&amp; rg)</code></td>
-<td>Yes</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
 <td id="3297"><a href="lwg-active.html#3297" title="Useless sequence container requirement (Status: New)">3297</a><sup><a href="https://cplusplus.github.io/LWG/issue3297">(i)</a></sup></td>
 <td><a href="lwg-active.html#New">New</a></td>
 <td>23.2.4 [sequence.reqmts]</td>
@@ -2565,6 +2574,15 @@ arguments when no insertion happens</td>
 <td></td>
 </tr>
 <tr>
+<td id="4379"><a href="lwg-active.html#4379" title="hive::reserve() needs Throws: element adjusted to match block min/max considerations (Status: New)">4379</a><sup><a href="https://cplusplus.github.io/LWG/issue4379">(i)</a></sup></td>
+<td><a href="lwg-active.html#New">New</a></td>
+<td>23.3.9.3 [hive.capacity]</td>
+<td><code class='backtick'>hive::reserve()</code> needs <i>Throws:</i> element adjusted to match block min/max considerations</td>
+<td>Yes</td>
+<td>3</td>
+<td></td>
+</tr>
+<tr>
 <td id="4380"><a href="lwg-active.html#4380" title="hive::reserve() complexity does not reflect potential deallocation of blocks
  (Status: New)">4380</a><sup><a href="https://cplusplus.github.io/LWG/issue4380">(i)</a></sup></td>
 <td><a href="lwg-active.html#New">New</a></td>
@@ -2572,16 +2590,7 @@ arguments when no insertion happens</td>
 <td><code class='backtick'>hive::reserve()</code> complexity does not reflect potential deallocation of blocks
 </td>
 <td>Yes</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td id="4379"><a href="lwg-active.html#4379" title="hive::reserve() needs Throws: element adjusted to match block min/max considerations (Status: New)">4379</a><sup><a href="https://cplusplus.github.io/LWG/issue4379">(i)</a></sup></td>
-<td><a href="lwg-active.html#New">New</a></td>
-<td>23.3.9.3 [hive.capacity]</td>
-<td><code class='backtick'>hive::reserve()</code> needs <i>Throws:</i> element adjusted to match block min/max considerations</td>
-<td>Yes</td>
-<td></td>
+<td>3</td>
 <td></td>
 </tr>
 <tr>
@@ -2590,7 +2599,7 @@ arguments when no insertion happens</td>
 <td>23.3.9.5 [hive.operations]</td>
 <td><code class='backtick'>hive::unique</code> time complexity should incorporate potential block removal complexity</td>
 <td>Yes</td>
-<td></td>
+<td>3</td>
 <td></td>
 </tr>
 <tr>
@@ -2656,15 +2665,6 @@ should conditionally require <i>Cpp17CopyInsertable</i> in their preconditions</
 <td>More missing allocator-extended constructors for unordered containers</td>
 <td>Yes</td>
 <td>3</td>
-<td></td>
-</tr>
-<tr>
-<td id="4371"><a href="lwg-active.html#4371" title="Container adaptor's empty/size should be noexcept (Status: New)">4371</a><sup><a href="https://cplusplus.github.io/LWG/issue4371">(i)</a></sup></td>
-<td><a href="lwg-active.html#New">New</a></td>
-<td>23.6.3.1 [queue.defn]</td>
-<td>Container adaptor's <code class='backtick'>empty</code>/<code class='backtick'>size</code> should be <code class='backtick'>noexcept</code></td>
-<td>Yes</td>
-<td></td>
 <td></td>
 </tr>
 <tr>
@@ -3457,15 +3457,6 @@ difference_type is not an integer-class type? (Status: New)">3763</a><sup><a hre
 <td>Missing <i>Preconditions</i> for <code>take</code>/<code>drop</code> adaptor</td>
 <td>Yes</td>
 <td>3</td>
-<td></td>
-</tr>
-<tr>
-<td id="4009"><a href="lwg-active.html#4009" title="drop_view::begin const may have &#x1d4aa;(n) complexity (Status: New)">4009</a><sup><a href="https://cplusplus.github.io/LWG/issue4009">(i)</a></sup></td>
-<td><a href="lwg-active.html#New">New</a></td>
-<td>25.7.12.2 [range.drop.view]</td>
-<td><code>drop_view::begin const</code> may have &#x1d4aa;(n) complexity</td>
-<td>Yes</td>
-<td></td>
 <td></td>
 </tr>
 <tr>
@@ -4781,7 +4772,7 @@ incorrectly constrained for &lt;stdfloat&gt; types (Status: New)">4420</a><sup><
 <td>&sect;[simd] conversions (constructor, load, stores, gather, and scatter) are
 incorrectly constrained for <code>&lt;stdfloat&gt;</code> types</td>
 <td>Yes</td>
-<td></td>
+<td>1</td>
 <td></td>
 </tr>
 <tr>
@@ -6777,7 +6768,7 @@ don't support <code>DynamicBuffer</code> lvalues</td>
 <td></td>
 </tr>
 </table>
-<h2 id="LEWG">LEWG (32 issues)</h2>
+<h2 id="LEWG">LEWG (33 issues)</h2>
 <table class="issues-index">
 <tr>
   <th><a href="lwg-toc.html">Issue</a></th>
@@ -6849,6 +6840,15 @@ don't support <code>DynamicBuffer</code> lvalues</td>
 <td>Should the Standard Library use <code>explicit</code> only when necessary?</td>
 <td><span class="no-pr">No</span></td>
 <td>2</td>
+<td></td>
+</tr>
+<tr>
+<td id="4396"><a href="lwg-active.html#4396" title="Improve inplace_vector(from_range_t, R&amp;&amp; rg) (Status: LEWG)">4396</a><sup><a href="https://cplusplus.github.io/LWG/issue4396">(i)</a></sup></td>
+<td><a href="lwg-active.html#LEWG">LEWG</a></td>
+<td>23.2.4 [sequence.reqmts]</td>
+<td>Improve <code>inplace_vector(from_range_t, R&amp;&amp; rg)</code></td>
+<td>Yes</td>
+<td>3</td>
 <td></td>
 </tr>
 <tr>

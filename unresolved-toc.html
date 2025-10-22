@@ -59,7 +59,7 @@
 <p>Reference ISO/IEC IS 14882:2024(E)</p>
 <p>This document is the Table of Contents for the <a href="lwg-active.html">Library Active Issues List</a>,
 <a href="lwg-defects.html">Library Defect Reports and Accepted Issues</a>, and <a href="lwg-closed.html">Library Closed Issues List</a>.</p>
-<p>Revised 2025-10-22 at 17:05:50 UTC
+<p>Revised 2025-10-22 at 17:51:59 UTC
 </p><table class="issues-index">
 <tr>
   <th><a href="lwg-toc.html">Issue</a></th>
@@ -2954,10 +2954,10 @@ sentinel types (Status: New)">3609</a><sup><a href="https://cplusplus.github.io/
 <td></td>
 </tr>
 <tr>
-<td id="3681"><a href="lwg-active.html#3681" title="Further considerations on LWG 3679 (Status: New)">3681</a><sup><a href="https://cplusplus.github.io/LWG/issue3681">(i)</a></sup></td>
+<td id="3681"><a href="lwg-active.html#3681" title="Further considerations on LWG 3679 (using pmr::vector without including &lt;memory_resource&gt;) (Status: New)">3681</a><sup><a href="https://cplusplus.github.io/LWG/issue3681">(i)</a></sup></td>
 <td><a href="lwg-active.html#New">New</a></td>
 <td>20.5.1 [mem.res.syn]</td>
-<td>Further considerations on LWG 3679</td>
+<td>Further considerations on LWG 3679 (using <code class='backtick'>pmr::vector</code> without including <code>&lt;memory_resource&gt;</code>)</td>
 <td><span class="no-pr">No</span></td>
 <td>4</td>
 <td></td>
@@ -4104,15 +4104,6 @@ is a non-move-constructible range</td>
 <td></td>
 </tr>
 <tr>
-<td id="4009"><a href="lwg-active.html#4009" title="drop_view::begin const may have &#x1d4aa;(n) complexity (Status: New)">4009</a><sup><a href="https://cplusplus.github.io/LWG/issue4009">(i)</a></sup></td>
-<td><a href="lwg-active.html#New">New</a></td>
-<td>25.7.12.2 [range.drop.view]</td>
-<td><code>drop_view::begin const</code> may have &#x1d4aa;(n) complexity</td>
-<td>Yes</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
 <td id="4010"><a href="lwg-active.html#4010" title="subrange::advance should be improved (Status: New)">4010</a><sup><a href="https://cplusplus.github.io/LWG/issue4010">(i)</a></sup></td>
 <td><a href="lwg-active.html#New">New</a></td>
 <td>25.5.4.3 [range.subrange.access]</td>
@@ -4626,7 +4617,7 @@ vprint_unicode/vprint_nonunicode (Status: New)">4039</a><sup><a href="https://cp
 <td>20.3.2.2.2 [util.smartptr.shared.const]</td>
 <td><code class='backtick'>shared_ptr(nullptr_t, Deleter)</code> is overconstrained, breaking some sensible deleters</td>
 <td>Yes</td>
-<td></td>
+<td>3</td>
 <td></td>
 </tr>
 <tr>
@@ -5761,7 +5752,7 @@ in <code>&lt;ranges&gt;</code></td>
 <td>23.3.9.5 [hive.operations]</td>
 <td><code class='backtick'>hive::unique</code> time complexity should incorporate potential block removal complexity</td>
 <td>Yes</td>
-<td></td>
+<td>3</td>
 <td></td>
 </tr>
 <tr>
@@ -6102,15 +6093,6 @@ co_await expression instead of same_as&lt;void&gt; (Status: New)">4357</a><sup><
 <td></td>
 </tr>
 <tr>
-<td id="4371"><a href="lwg-active.html#4371" title="Container adaptor's empty/size should be noexcept (Status: New)">4371</a><sup><a href="https://cplusplus.github.io/LWG/issue4371">(i)</a></sup></td>
-<td><a href="lwg-active.html#New">New</a></td>
-<td>23.6.3.1 [queue.defn]</td>
-<td>Container adaptor's <code class='backtick'>empty</code>/<code class='backtick'>size</code> should be <code class='backtick'>noexcept</code></td>
-<td>Yes</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
 <td id="4373"><a href="lwg-active.html#4373" title="function_ref should provide result_type (Status: New)">4373</a><sup><a href="https://cplusplus.github.io/LWG/issue4373">(i)</a></sup></td>
 <td><a href="lwg-active.html#New">New</a></td>
 <td>22.10.17.6.2 [func.wrap.ref.class]</td>
@@ -6152,7 +6134,7 @@ co_await expression instead of same_as&lt;void&gt; (Status: New)">4357</a><sup><
 <td>23.3.9.3 [hive.capacity]</td>
 <td><code class='backtick'>hive::reserve()</code> needs <i>Throws:</i> element adjusted to match block min/max considerations</td>
 <td>Yes</td>
-<td></td>
+<td>3</td>
 <td></td>
 </tr>
 <tr>
@@ -6163,7 +6145,7 @@ co_await expression instead of same_as&lt;void&gt; (Status: New)">4357</a><sup><
 <td><code class='backtick'>hive::reserve()</code> complexity does not reflect potential deallocation of blocks
 </td>
 <td>Yes</td>
-<td></td>
+<td>3</td>
 <td></td>
 </tr>
 <tr>
@@ -6296,12 +6278,12 @@ co_await expression instead of same_as&lt;void&gt; (Status: New)">4357</a><sup><
 <td></td>
 </tr>
 <tr>
-<td id="4396"><a href="lwg-active.html#4396" title="Improve inplace_vector(from_range_t, R&amp;&amp; rg) (Status: New)">4396</a><sup><a href="https://cplusplus.github.io/LWG/issue4396">(i)</a></sup></td>
-<td><a href="lwg-active.html#New">New</a></td>
+<td id="4396"><a href="lwg-active.html#4396" title="Improve inplace_vector(from_range_t, R&amp;&amp; rg) (Status: LEWG)">4396</a><sup><a href="https://cplusplus.github.io/LWG/issue4396">(i)</a></sup></td>
+<td><a href="lwg-active.html#LEWG">LEWG</a></td>
 <td>23.2.4 [sequence.reqmts]</td>
 <td>Improve <code>inplace_vector(from_range_t, R&amp;&amp; rg)</code></td>
 <td>Yes</td>
-<td></td>
+<td>3</td>
 <td></td>
 </tr>
 <tr>
@@ -6447,7 +6429,7 @@ incorrectly constrained for &lt;stdfloat&gt; types (Status: New)">4420</a><sup><
 <td>&sect;[simd] conversions (constructor, load, stores, gather, and scatter) are
 incorrectly constrained for <code>&lt;stdfloat&gt;</code> types</td>
 <td>Yes</td>
-<td></td>
+<td>1</td>
 <td></td>
 </tr>
 <tr>

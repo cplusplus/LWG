@@ -2,8 +2,8 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<title>Issue 3681: Further considerations on LWG 3679</title>
-<meta property="og:title" content="Issue 3681: Further considerations on LWG 3679">
+<title>Issue 3681: Further considerations on LWG 3679 (using pmr::vector without including &lt;memory_resource&gt;)</title>
+<meta property="og:title" content="Issue 3681: Further considerations on LWG 3679 (using pmr::vector without including &lt;memory_resource&gt;)">
 <meta property="og:description" content="C++ library issue. Status: New">
 <meta property="og:url" content="https://cplusplus.github.io/LWG/issue3681.html">
 <meta property="og:type" content="website">
@@ -62,9 +62,9 @@
 <body>
 <hr>
 <p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#New">New</a> status.</em></p>
-<h3 id="3681"><a href="lwg-active.html#3681">3681</a>. Further considerations on LWG 3679</h3>
+<h3 id="3681"><a href="lwg-active.html#3681">3681</a>. Further considerations on LWG 3679 (using <code class='backtick'>pmr::vector</code> without including <code>&lt;memory_resource&gt;</code>)</h3>
 <p><b>Section:</b> 20.5.1 <a href="https://wg21.link/mem.res.syn">[mem.res.syn]</a>, 20.2.2 <a href="https://wg21.link/memory.syn">[memory.syn]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Jiang An <b>Opened:</b> 2022-02-28 <b>Last modified:</b> 2022-05-17</p>
+ <b>Submitter:</b> Jiang An <b>Opened:</b> 2022-02-28 <b>Last modified:</b> 2025-10-22</p>
 <p><b>Priority: </b>4
 </p>
 <p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
@@ -111,6 +111,12 @@ using their own allocators.
 Set priority to 4 after reflector poll.
 </p>
 
+<p><i>[2025-10-22; Jonathan comments after reflector discussion.]</i></p>
+
+<p>
+"We could use the 'In addition to being available via inclusion of ...' form,
+see also LWG <a href="lwg-active.html#3623" title="Uses of std::reverse_iterator with containers should not require manually including &lt;iterator&gt; (Status: New)">3623</a><sup><a href="https://cplusplus.github.io/LWG/issue3623" title="Latest snapshot">(i)</a></sup>."
+</p>
 
 
 <p id="res-3681"><b>Proposed resolution:</b></p>

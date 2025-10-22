@@ -64,8 +64,8 @@
 <p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#New">New</a> status.</em></p>
 <h3 id="4110"><a href="lwg-active.html#4110">4110</a>. <code class='backtick'>shared_ptr(nullptr_t, Deleter)</code> is overconstrained, breaking some sensible deleters</h3>
 <p><b>Section:</b> 20.3.2.2.2 <a href="https://wg21.link/util.smartptr.shared.const">[util.smartptr.shared.const]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Louis Dionne <b>Opened:</b> 2024-06-11 <b>Last modified:</b> 2024-06-11</p>
-<p><b>Priority: </b>Not Prioritized
+ <b>Submitter:</b> Louis Dionne <b>Opened:</b> 2024-06-11 <b>Last modified:</b> 2025-10-22</p>
+<p><b>Priority: </b>3
 </p>
 <p><b>View other</b> <a href="lwg-index-open.html#util.smartptr.shared.const">active issues</a> in [util.smartptr.shared.const].</p>
 <p><b>View all other</b> <a href="lwg-index.html#util.smartptr.shared.const">issues</a> in [util.smartptr.shared.const].</p>
@@ -88,6 +88,39 @@ which leads to a hard error inside the lambda since it is called with a
 <code class='backtick'>nullptr_t</code>. This seems unintended.
 </p><p>
 See <a href="https://github.com/llvm/llvm-project/pull/93071#issuecomment-2158494851">LLVM issue 93071 comment</a> for additional context.
+</p>
+
+<p><i>[2025-10-22; Reflector poll.]</i></p>
+
+<p>
+Set priority to 3 after reflector poll.
+</p>
+<p>
+"I don't agree with the proposed resolution. As a general principle,
+<code>shared_ptr&lt;T&gt;(p, d)</code> always calls <code class='backtick'>d(p)</code> and never
+<code>d(static_cast&lt;T*&gt;(p))</code>.
+<br/>
+If we really want to make this work, which is not unreasonable, even though
+the fix on the user side is trivial, we should make the <code class='backtick'>nullptr_t</code> constructor
+templated on <code>same_as&lt;nullptr_t&gt;</code>
+(or <code>convertible_to&lt;nullptr_t&gt;</code>?)."
+</p>
+<p>
+"That would break passing <code class='backtick'>NULL</code>, only <code class='backtick'>nullptr</code> would work.
+It can be made to work by checking that <code class='backtick'>d(p)</code> is well-formed in a
+function parameter with a default argument,
+instead of as a template parameter:"
+<pre>struct shared_ptr {
+  template&lt;class Y, class D&gt;
+  shared_ptr(Y* p, D d, std::void_t&lt;decltype(d(p))&gt;* = nullptr) {}
+  template&lt;class D&gt;
+  shared_ptr(std::nullptr_t p, D d, std::void_t&lt;decltype(d(p))&gt;* = nullptr) {}
+};
+shared_ptr s(new int, [](auto p) {delete p;});
+</pre>
+</p>
+<p>
+"Ugh. We don't have to use it everywhere, only these two specific constructors."
 </p>
 
 

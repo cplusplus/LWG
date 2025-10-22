@@ -54,7 +54,7 @@
 </style>
 </head>
 <body>
-<p>Revised 2025-10-22 at 17:05:50 UTC
+<p>Revised 2025-10-22 at 17:51:59 UTC
 </p><h2>Unresolved Issues</h2>
 <hr>
 <h3 id="423"><a href="#423">423</a><sup><a href="https://cplusplus.github.io/LWG/issue423">(i)</a></sup>. Effects of negative <code>streamsize</code> in iostreams</h3>
@@ -38289,9 +38289,9 @@ is_invocable_r_v&lt;R, VT <i>inv-quals</i>, ArgTypes...&gt;
 
 
 <hr>
-<h3 id="3681"><a href="#3681">3681</a><sup><a href="https://cplusplus.github.io/LWG/issue3681">(i)</a></sup>. Further considerations on LWG 3679</h3>
+<h3 id="3681"><a href="#3681">3681</a><sup><a href="https://cplusplus.github.io/LWG/issue3681">(i)</a></sup>. Further considerations on LWG 3679 (using <code class='backtick'>pmr::vector</code> without including <code>&lt;memory_resource&gt;</code>)</h3>
 <p><b>Section:</b> 20.5.1 <a href="https://wg21.link/mem.res.syn">[mem.res.syn]</a>, 20.2.2 <a href="https://wg21.link/memory.syn">[memory.syn]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Jiang An <b>Opened:</b> 2022-02-28 <b>Last modified:</b> 2022-05-17</p>
+ <b>Submitter:</b> Jiang An <b>Opened:</b> 2022-02-28 <b>Last modified:</b> 2025-10-22</p>
 <p><b>Priority: </b>4
 </p>
 <p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
@@ -38338,6 +38338,12 @@ using their own allocators.
 Set priority to 4 after reflector poll.
 </p>
 
+<p><i>[2025-10-22; Jonathan comments after reflector discussion.]</i></p>
+
+<p>
+"We could use the 'In addition to being available via inclusion of ...' form,
+see also LWG <a href="lwg-active.html#3623" title="Uses of std::reverse_iterator with containers should not require manually including &lt;iterator&gt; (Status: New)">3623</a><sup><a href="https://cplusplus.github.io/LWG/issue3623" title="Latest snapshot">(i)</a></sup>."
+</p>
 
 
 <p id="res-3681"><b>Proposed resolution:</b></p>
@@ -51350,90 +51356,6 @@ to&lt;C&gt;(r | views::transform([](auto&amp;&amp; elem) {
 
 
 <hr>
-<h3 id="4009"><a href="#4009">4009</a><sup><a href="https://cplusplus.github.io/LWG/issue4009">(i)</a></sup>. <code>drop_view::begin const</code> may have &#x1d4aa;(n) complexity</h3>
-<p><b>Section:</b> 25.7.12.2 <a href="https://wg21.link/range.drop.view">[range.drop.view]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Hewill Kang <b>Opened:</b> 2023-11-08 <b>Last modified:</b> 2023-11-18</p>
-<p><b>Priority: </b>Not Prioritized
-</p>
-<p><b>View other</b> <a href="lwg-index-open.html#range.drop.view">active issues</a> in [range.drop.view].</p>
-<p><b>View all other</b> <a href="lwg-index.html#range.drop.view">issues</a> in [range.drop.view].</p>
-<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
-<p><b>Discussion:</b></p>
-<p>
-<code>drop_view::begin const</code> is specified to return <code>ranges::next(ranges::begin(<i>base_</i>), 
-<i>count_</i>, ranges::end(<i>base_</i>))</code>, which has &#x1d4aa;(n) complexity when <i>base_</i> 
-is a random-access-sized but non-common range (<a href="https://godbolt.org/z/jYdo9K6jn">demo</a>):
-</p>
-<blockquote><pre>
-#include &lt;ranges&gt;
-
-int main() {
-  const auto s = std::ranges::subrange(std::views::iota(0uz), size_t(-1));
-  const auto r = std::ranges::drop_view(s, s.size() - 1);
-  const auto b = r.begin(); // <span style="color:red;font-weight:bolder">time out</span>
-}
-</pre></blockquote>
-
-
-
-<p id="res-4009"><b>Proposed resolution:</b></p>
-<p>
-This wording is relative to <a href="https://wg21.link/N4964" title=" Working Draft, Programming Languages — C++">N4964</a>.
-</p>
-
-<ol>
-
-<li><p>Modify 25.7.12.2 <a href="https://wg21.link/range.drop.view">[range.drop.view]</a> as indicated:</p>
-
-<pre>
-constexpr auto begin()
-  requires (!(<i>simple-view</i>&lt;V&gt; &amp;&amp;
-              random_access_range&lt;const V&gt; &amp;&amp; sized_range&lt;const V&gt;));
-<del>constexpr auto begin() const
-  requires random_access_range&lt;const V&gt; &amp;&amp; sized_range&lt;const V&gt;;</del>
-</pre>
-<blockquote>
-<p>
--3- <i>Returns</i>: 
-</p>
-<ol style="list-style-type: none">
-<li><p><ins>(?.?) &mdash; If <code>V</code> models <code>random_access_range</code> and <code>sized_range</code>,</ins></p>
-<blockquote><pre>
-<ins><code>ranges::begin(<i>base_</i>) + (ranges::distance(<i>base_</i>) - range_difference_t&lt;V&gt;(size()))</code></ins>
-</pre></blockquote>
-</li>
-<li><p><ins>(?.?) &mdash; Otherwise,</ins> <code>ranges::next(ranges::begin(<i>base_</i>), <i>count_</i>, 
-ranges::end(<i>base_</i>))</code>.</p></li>
-</ol>
-<p>
--4- <i>Remarks</i>: In order to provide the amortized constant-time complexity required by the <code>range</code> 
-concept when <ins><code>V</code></ins><del><code>drop_view</code></del> <ins>does not</ins> model<del>s</del> 
-<ins><code>random_access_range</code> and <code>sized_range</code></ins><del><code>forward_range</code></del>, 
-<ins>this function</ins><del>the first overload</del> caches the result within the <code>drop_view</code> for 
-use on subsequent calls.
-<p/>
-[<i>Note 1</i>: Without this, applying a <code>reverse_view</code> over a <code>drop_view</code> would have quadratic 
-iteration complexity. &mdash; <i>end note</i>]
-</p>
-</blockquote>
-<pre><ins>
-constexpr auto begin() const
-  requires random_access_range&lt;const V&gt; &amp;&amp; sized_range&lt;const V&gt;;</ins>
-</pre>
-<blockquote>
-<p><ins>-?- <i>Returns</i>: <code>ranges::begin(<i>base_</i>) + (ranges::distance(<i>base_</i>) - 
-range_difference_t&lt;const V&gt;(size()))</code>.</ins></p>
-</blockquote>
-
-</li>
-
-</ol>
-
-
-
-
-
-<hr>
 <h3 id="4010"><a href="#4010">4010</a><sup><a href="https://cplusplus.github.io/LWG/issue4010">(i)</a></sup>. <code>subrange::advance</code> should be improved</h3>
 <p><b>Section:</b> 25.5.4.3 <a href="https://wg21.link/range.subrange.access">[range.subrange.access]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
  <b>Submitter:</b> Hewill Kang <b>Opened:</b> 2023-11-09 <b>Last modified:</b> 2024-03-11</p>
@@ -59347,8 +59269,8 @@ or <code>unsigned long long</code>.</p></li>
 <hr>
 <h3 id="4110"><a href="#4110">4110</a><sup><a href="https://cplusplus.github.io/LWG/issue4110">(i)</a></sup>. <code class='backtick'>shared_ptr(nullptr_t, Deleter)</code> is overconstrained, breaking some sensible deleters</h3>
 <p><b>Section:</b> 20.3.2.2.2 <a href="https://wg21.link/util.smartptr.shared.const">[util.smartptr.shared.const]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Louis Dionne <b>Opened:</b> 2024-06-11 <b>Last modified:</b> 2024-06-11</p>
-<p><b>Priority: </b>Not Prioritized
+ <b>Submitter:</b> Louis Dionne <b>Opened:</b> 2024-06-11 <b>Last modified:</b> 2025-10-22</p>
+<p><b>Priority: </b>3
 </p>
 <p><b>View other</b> <a href="lwg-index-open.html#util.smartptr.shared.const">active issues</a> in [util.smartptr.shared.const].</p>
 <p><b>View all other</b> <a href="lwg-index.html#util.smartptr.shared.const">issues</a> in [util.smartptr.shared.const].</p>
@@ -59371,6 +59293,39 @@ which leads to a hard error inside the lambda since it is called with a
 <code class='backtick'>nullptr_t</code>. This seems unintended.
 </p><p>
 See <a href="https://github.com/llvm/llvm-project/pull/93071#issuecomment-2158494851">LLVM issue 93071 comment</a> for additional context.
+</p>
+
+<p><i>[2025-10-22; Reflector poll.]</i></p>
+
+<p>
+Set priority to 3 after reflector poll.
+</p>
+<p>
+"I don't agree with the proposed resolution. As a general principle,
+<code>shared_ptr&lt;T&gt;(p, d)</code> always calls <code class='backtick'>d(p)</code> and never
+<code>d(static_cast&lt;T*&gt;(p))</code>.
+<br/>
+If we really want to make this work, which is not unreasonable, even though
+the fix on the user side is trivial, we should make the <code class='backtick'>nullptr_t</code> constructor
+templated on <code>same_as&lt;nullptr_t&gt;</code>
+(or <code>convertible_to&lt;nullptr_t&gt;</code>?)."
+</p>
+<p>
+"That would break passing <code class='backtick'>NULL</code>, only <code class='backtick'>nullptr</code> would work.
+It can be made to work by checking that <code class='backtick'>d(p)</code> is well-formed in a
+function parameter with a default argument,
+instead of as a template parameter:"
+<pre>struct shared_ptr {
+  template&lt;class Y, class D&gt;
+  shared_ptr(Y* p, D d, std::void_t&lt;decltype(d(p))&gt;* = nullptr) {}
+  template&lt;class D&gt;
+  shared_ptr(std::nullptr_t p, D d, std::void_t&lt;decltype(d(p))&gt;* = nullptr) {}
+};
+shared_ptr s(new int, [](auto p) {delete p;});
+</pre>
+</p>
+<p>
+"Ugh. We don't have to use it everywhere, only these two specific constructors."
 </p>
 
 
@@ -75430,8 +75385,8 @@ template&lt;class U, class I, class... Us&gt;
 <hr>
 <h3 id="4323"><a href="#4323">4323</a><sup><a href="https://cplusplus.github.io/LWG/issue4323">(i)</a></sup>. <code class='backtick'>hive::unique</code> time complexity should incorporate potential block removal complexity</h3>
 <p><b>Section:</b> 23.3.9.5 <a href="https://wg21.link/hive.operations">[hive.operations]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Matt Bentley <b>Opened:</b> 2025-08-24 <b>Last modified:</b> 2025-08-25</p>
-<p><b>Priority: </b>Not Prioritized
+ <b>Submitter:</b> Matt Bentley <b>Opened:</b> 2025-08-24 <b>Last modified:</b> 2025-10-22</p>
+<p><b>Priority: </b>3
 </p>
 <p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
 <p><b>Discussion:</b></p>
@@ -75463,6 +75418,13 @@ This is a separate but related issue to LWG <a href="lwg-active.html#4320" title
 affect the outcome wording of that issue for <code class='backtick'>unique</code>.
 </p>
 </blockquote>
+
+<p><i>[2025-10-22; Reflector poll.]</i></p>
+
+<p>
+Set priority to 3 after reflector poll.
+</p>
+
 
 
 <p id="res-4323"><b>Proposed resolution:</b></p>
@@ -78279,102 +78241,6 @@ where <code><i>unspecified-exception</i></code> is a type derived from <code cla
 
 
 <hr>
-<h3 id="4371"><a href="#4371">4371</a><sup><a href="https://cplusplus.github.io/LWG/issue4371">(i)</a></sup>. Container adaptor's <code class='backtick'>empty</code>/<code class='backtick'>size</code> should be <code class='backtick'>noexcept</code></h3>
-<p><b>Section:</b> 23.6.3.1 <a href="https://wg21.link/queue.defn">[queue.defn]</a>, 23.6.4.1 <a href="https://wg21.link/priqueue.overview">[priqueue.overview]</a>, 23.6.6.2 <a href="https://wg21.link/stack.defn">[stack.defn]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Hewill Kang <b>Opened:</b> 2025-09-09 <b>Last modified:</b> 2025-09-16</p>
-<p><b>Priority: </b>Not Prioritized
-</p>
-<p><b>View all other</b> <a href="lwg-index.html#queue.defn">issues</a> in [queue.defn].</p>
-<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
-<p><b>Discussion:</b></p>
-<p>
-C++23 container adaptors <code>flat_<i>meow</i></code> all have <code class='backtick'>noexcept</code> <code class='backtick'>size</code>/<code class='backtick'>empty</code> members.
-<p/>
-However, the <code class='backtick'>size</code>/<code class='backtick'>empty</code> members of other container adaptors are not mark <code class='backtick'>noexcept</code>, 
-even though they behave the same as <code>flat_<i>meow</i></code> that returning the <code class='backtick'>size</code>/<code class='backtick'>empty</code> 
-of the underlying container.
-<p/>
-It makes sense to make them <code class='backtick'>noexcept</code> as well for consistency. Although the standard doesn't
-explicitly say those two members of the container must not throw, the fact that all standard 
-containers and common third-party containers mark them as unconditionally <code class='backtick'>noexcept</code> implies 
-that it's perfectly reasonable to assume that they never will.
-</p>
-
-
-<p id="res-4371"><b>Proposed resolution:</b></p>
-<p>
-This wording is relative to <a href="https://wg21.link/N5014">N5014</a>.
-</p>
-
-<ol>
-
-<li><p>Modify 23.6.3.1 <a href="https://wg21.link/queue.defn">[queue.defn]</a> as indicated:</p>
-
-<blockquote>
-<pre>
-namespace std {
-  template&lt;class T, class Container = deque&lt;T&gt;&gt;
-  class queue {
-  public:
-    [&hellip;]
-    constexpr bool              empty() const <ins>noexcept</ins> { return c.empty(); }
-    constexpr size_type         size()  const <ins>noexcept</ins> { return c.size(); }
-    [&hellip;]
-  };
-  [&hellip;]
-}
-</pre>
-</blockquote>
-
-</li>
-
-<li><p>Modify 23.6.4.1 <a href="https://wg21.link/priqueue.overview">[priqueue.overview]</a> as indicated:</p>
-
-<blockquote>
-<pre>
-namespace std {
-  template&lt;class T, class Container = vector&lt;T&gt;,
-           class Compare = less&lt;typename Container::value_type&gt;&gt;
-  class priority_queue {
-  public:
-    [&hellip;]
-    constexpr bool            empty() const <ins>noexcept</ins> { return c.empty(); }
-    constexpr size_type       size()  const <ins>noexcept</ins> { return c.size(); }
-    [&hellip;]
-  };
-  [&hellip;]
-}
-</pre>
-</blockquote>
-
-</li>
-
-<li><p>Modify 23.6.6.2 <a href="https://wg21.link/stack.defn">[stack.defn]</a> as indicated:</p>
-
-<blockquote>
-<pre>
-namespace std {
-  template&lt;class T, class Container = deque&lt;T&gt;&gt;
-  class stack {
-  public:
-    [&hellip;]
-    constexpr bool              empty() const <ins>noexcept</ins> { return c.empty(); }
-    constexpr size_type         size()  const <ins>noexcept</ins> { return c.size(); }
-    [&hellip;]
-  };
-  [&hellip;]
-}
-</pre>
-</blockquote>
-
-</li>
-
-</ol>
-
-
-
-
-<hr>
 <h3 id="4373"><a href="#4373">4373</a><sup><a href="https://cplusplus.github.io/LWG/issue4373">(i)</a></sup>. <code class='backtick'>function_ref</code> should provide <code class='backtick'>result_type</code></h3>
 <p><b>Section:</b> 22.10.17.6.2 <a href="https://wg21.link/func.wrap.ref.class">[func.wrap.ref.class]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
  <b>Submitter:</b> Hewill Kang <b>Opened:</b> 2025-09-12 <b>Last modified:</b> 2025-10-22</p>
@@ -78780,8 +78646,8 @@ otherwise, the behavior is undefined</ins>
 <hr>
 <h3 id="4379"><a href="#4379">4379</a><sup><a href="https://cplusplus.github.io/LWG/issue4379">(i)</a></sup>. <code class='backtick'>hive::reserve()</code> needs <i>Throws:</i> element adjusted to match block min/max considerations</h3>
 <p><b>Section:</b> 23.3.9.3 <a href="https://wg21.link/hive.capacity">[hive.capacity]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Matt Bentley <b>Opened:</b> 2025-09-17 <b>Last modified:</b> 2025-09-23</p>
-<p><b>Priority: </b>Not Prioritized
+ <b>Submitter:</b> Matt Bentley <b>Opened:</b> 2025-09-17 <b>Last modified:</b> 2025-10-22</p>
+<p><b>Priority: </b>3
 </p>
 <p><b>View other</b> <a href="lwg-index-open.html#hive.capacity">active issues</a> in [hive.capacity].</p>
 <p><b>View all other</b> <a href="lwg-index.html#hive.capacity">issues</a> in [hive.capacity].</p>
@@ -78807,6 +78673,17 @@ being <code>&gt; max_size</code>.
 <p/>
 This is currently not stated in the <i>Throws:</i> element. I've implemented the requested additional 
 throws and they are easily achievable.
+</p>
+
+<p><i>[2025-10-22; Reflector poll.]</i></p>
+
+<p>
+Set priority to 3 after reflector poll.
+</p>
+<p>
+There was discussion if <code class='backtick'>reserve()</code> is allowed to deallocate unused blocks,
+that materialized into LWG <a href="lwg-active.html#4380" title="hive::reserve() complexity does not reflect potential deallocation of blocks
+ (Status: New)">4380</a><sup><a href="https://cplusplus.github.io/LWG/issue4380" title="Latest snapshot">(i)</a></sup>.
 </p>
 
 
@@ -78851,8 +78728,8 @@ being</ins> <code>&gt; max_size()</code>, as well as any exceptions thrown by th
 <h3 id="4380"><a href="#4380">4380</a><sup><a href="https://cplusplus.github.io/LWG/issue4380">(i)</a></sup>. <code class='backtick'>hive::reserve()</code> complexity does not reflect potential deallocation of blocks
 </h3>
 <p><b>Section:</b> 23.3.9.3 <a href="https://wg21.link/hive.capacity">[hive.capacity]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Matt Bentley <b>Opened:</b> 2025-09-23 <b>Last modified:</b> 2025-09-26</p>
-<p><b>Priority: </b>Not Prioritized
+ <b>Submitter:</b> Matt Bentley <b>Opened:</b> 2025-09-23 <b>Last modified:</b> 2025-10-22</p>
+<p><b>Priority: </b>3
 </p>
 <p><b>View other</b> <a href="lwg-index-open.html#hive.capacity">active issues</a> in [hive.capacity].</p>
 <p><b>View all other</b> <a href="lwg-index.html#hive.capacity">issues</a> in [hive.capacity].</p>
@@ -78873,6 +78750,16 @@ The implicit assumption in this issue is that we want <code class='backtick'>res
 No-one has objected to this before, but if you want to, please speak up.
 <p/>
 Anyway, the <i>Complexity</i> of <code class='backtick'>reserve()</code> does not presently reflect this ability.
+</p>
+
+<p><i>[2025-10-22; Reflector poll.]</i></p>
+
+<p>
+Set priority to 3 after reflector poll.
+</p>
+<p>
+An explicit objection was raised that the <i>Effects:</i> should state
+whether <code class='backtick'>reserve()</code> is allowed, or even required, to deallocate blocks.
 </p>
 
 
@@ -80201,13 +80088,13 @@ sender algorithms more generally ought to be reconsidered/-examined.
 
 <hr>
 <h3 id="4396"><a href="#4396">4396</a><sup><a href="https://cplusplus.github.io/LWG/issue4396">(i)</a></sup>. Improve <code>inplace_vector(from_range_t, R&amp;&amp; rg)</code></h3>
-<p><b>Section:</b> 23.2.4 <a href="https://wg21.link/sequence.reqmts">[sequence.reqmts]</a>, 23.3.16.2 <a href="https://wg21.link/inplace.vector.cons">[inplace.vector.cons]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Hewill Kang <b>Opened:</b> 2025-10-01 <b>Last modified:</b> 2025-10-04</p>
-<p><b>Priority: </b>Not Prioritized
+<p><b>Section:</b> 23.2.4 <a href="https://wg21.link/sequence.reqmts">[sequence.reqmts]</a>, 23.3.16.2 <a href="https://wg21.link/inplace.vector.cons">[inplace.vector.cons]</a> <b>Status:</b> <a href="lwg-active.html#LEWG">LEWG</a>
+ <b>Submitter:</b> Hewill Kang <b>Opened:</b> 2025-10-01 <b>Last modified:</b> 2025-10-22</p>
+<p><b>Priority: </b>3
 </p>
 <p><b>View other</b> <a href="lwg-index-open.html#sequence.reqmts">active issues</a> in [sequence.reqmts].</p>
 <p><b>View all other</b> <a href="lwg-index.html#sequence.reqmts">issues</a> in [sequence.reqmts].</p>
-<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#LEWG">LEWG</a> status.</p>
 <p><b>Discussion:</b></p>
 <p>
 Consider:
@@ -80223,6 +80110,17 @@ capacity of <code class='backtick'>inplace_vector</code>. However, we should rej
 <p/>
 Given that we do a lot of compile-time size checking in <code>&lt;simd&gt;</code>,
 it's worth applying that here as well. Compile-time errors are better than runtime ones.
+</p>
+
+<p><i>[2025-10-22; Reflector poll. Status changed: New &rarr; LEWG and P3.]</i></p>
+
+<p>
+General support for change, after LEWG approval.
+</p>
+<p>
+Suggestion was made that this could be extended to all containers,
+but is unlikely to be triggred in real word, as it requires ranges
+with static size greater than <code class='backtick'>size_t(-1)</code>.
 </p>
 
 
@@ -81865,7 +81763,7 @@ schedulers or domains.
 incorrectly constrained for <code>&lt;stdfloat&gt;</code> types</h3>
 <p><b>Section:</b> 29.10 <a href="https://wg21.link/simd">[simd]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
  <b>Submitter:</b> Matthias Kretz <b>Opened:</b> 2025-10-15 <b>Last modified:</b> 2025-10-22</p>
-<p><b>Priority: </b>Not Prioritized
+<p><b>Priority: </b>1
 </p>
 <p><b>View other</b> <a href="lwg-index-open.html#simd">active issues</a> in [simd].</p>
 <p><b>View all other</b> <a href="lwg-index.html#simd">issues</a> in [simd].</p>
@@ -81919,6 +81817,21 @@ to <code class='backtick'>float</code> should do, so it needs to be added (again
 <p/>
 29.10.8.11 <a href="https://wg21.link/simd.permute.memory">[simd.permute.memory]</a> is analogous to 29.10.8.7 <a href="https://wg21.link/simd.loadstore">[simd.loadstore]</a> and needs 
 equivalent constraints.
+</p>
+
+<p><i>[2025-10-22; Reflector poll.]</i></p>
+
+<p>
+Set priority to 1 after reflector poll.
+</p>
+<p>
+We also need to update <i>Effects</i>. There are more places in 29.10 <a href="https://wg21.link/simd">[simd]</a>
+where <code>float</code> to <code>float16_t</code> and similar conversion are not supported.
+</p>
+<p>
+It was pointed out that similar issues happen for <code>complex&lt;float16_t&gt;</code>.
+There seem to be mismatch between language initialization rules and the intended
+usage based on library API.
 </p>
 
 <p><strong>Previous resolution [SUPERSEDED]:</strong></p>
