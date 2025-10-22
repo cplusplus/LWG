@@ -8,7 +8,7 @@
 </section>
 <submitter>Hewill Kang</submitter>
 <date>12 Sep 2025</date>
-<priority>99</priority>
+<priority>3</priority>
 
 <discussion>
 <p>
@@ -40,6 +40,15 @@ type alias
    href="https://github.com/llvm/llvm-project/blob/cd32b9b6c3b2fda3a781d9ce0a0cf8e21c9d0137/llvm/include/llvm/ADT/STLExtras.h#L67">
 <code>llvm::function_traits</code></a> to obtain the return type, providing such a member
 type alias for `std::function_ref` meets user potential demands.
+</p>
+
+<note>2025-10-22; Reflector poll.</note>
+<p>
+Set priority to 3 after reflector poll.
+</p>
+<p>
+Alternative (with incoming paper targeting LEWG) of deprecating
+<tt>result_type</tt> in existing wrappers was suggested.
 </p>
 </discussion>
 
