@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="4413" status="New">
+<issue num="4413" status="Tentatively Ready">
 <title>Unused/left-over `simd::alignment` specialization for `basic_mask`</title>
 <section><sref ref="[simd.traits]"/></section>
 <submitter>Matthias Kretz</submitter>
@@ -15,6 +15,11 @@
 This was used for loads and stores for masks from/to arrays of `bool`. 
 However, these load/store functions were removed after `bitset`/`unsigned_integral` 
 conversions were introduced. This left-over TS wording should be removed.
+</p>
+
+<note>2025-10-22; Reflector poll.</note>
+<p>
+Set status to Tentatively Ready after seven votes in favour during reflector poll.
 </p>
 </discussion>
 
