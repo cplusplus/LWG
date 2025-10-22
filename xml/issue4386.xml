@@ -9,7 +9,7 @@
 </section>
 <submitter>Hewill Kang</submitter>
 <date>27 Sep 2025</date>
-<priority>99</priority>
+<priority>3</priority>
 
 <discussion>
 <p>
@@ -19,6 +19,16 @@ returns `c ? a : b`.
 Given that it seems intended to work with `basic_vec`, `basic_mask`, or vectorizable type,
 requiring `T` and `U` to be copyable seems reasonable since they are trivially copyable. 
 It shouldn't take non-copyable objects and produce hard errors in the function body.
+</p>
+
+<note>2025-10-22; Reflector poll.</note>
+<p>
+Set priority to 3 after reflector poll.
+</p>
+<p>
+Split opinion between further pinning down exact condition (<tt>is_constructible_v</tt>,
+<tt>decltype(auto(c ? a : b))</tt>), and accepting the PR (<tt>copyable</tt>) as this is
+not meant to be generic facility.
 </p>
 </discussion>
 
