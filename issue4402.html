@@ -64,8 +64,8 @@
 <p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#New">New</a> status.</em></p>
 <h3 id="4402"><a href="lwg-active.html#4402">4402</a>. List-initialization of iterators in [simd.mask.overview]</h3>
 <p><b>Section:</b> 29.10.9.1 <a href="https://wg21.link/simd.mask.overview">[simd.mask.overview]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Arthur O'Dwyer <b>Opened:</b> 2025-10-02 <b>Last modified:</b> 2025-10-04</p>
-<p><b>Priority: </b>Not Prioritized
+ <b>Submitter:</b> Arthur O'Dwyer <b>Opened:</b> 2025-10-02 <b>Last modified:</b> 2025-10-22</p>
+<p><b>Priority: </b>3
 </p>
 <p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
 <p><b>Discussion:</b></p>
@@ -119,6 +119,22 @@ At the very least, we should say that this list-initialization is intentional, a
 class <code><i>simd-iterator</i></code> and/or remove the "exposition only" from <code><i>simd-iterator</i></code>'s 
 constructor. That makes it clear that the above program is indeed intended to be ambiguous. But IMO 
 we should instead simply make the above program valid.
+</p>
+
+<p><i>[2025-10-22; Reflector poll.]</i></p>
+
+<p>
+Set priority to 3 after reflector poll.
+</p>
+<p>
+<code><i>simd-iterator</i></code> can only be constructed only by <code>basic_vec</code>,
+and <code>basic_mask</code> objects.
+</p>
+<p>
+This is NAD as user cannot rely on standard types not being constructible per
+16.4.6.5 <a href="https://wg21.link/member.functions">[member.functions]</a> p2. The example would not be fixed by adding
+the <code>explicit</code> in a conforming implementation, and changes in <code>return</code>
+specification are editorial.
 </p>
 
 

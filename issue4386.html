@@ -67,8 +67,8 @@
 <h3 id="4386"><a href="lwg-active.html#4386">4386</a>. <code>std::simd::select(bool c, const T&amp; a, const U&amp; b)</code> is underconstrained
 </h3>
 <p><b>Section:</b> 29.10.8.13 <a href="https://wg21.link/simd.alg">[simd.alg]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Hewill Kang <b>Opened:</b> 2025-09-27 <b>Last modified:</b> 2025-09-27</p>
-<p><b>Priority: </b>Not Prioritized
+ <b>Submitter:</b> Hewill Kang <b>Opened:</b> 2025-09-27 <b>Last modified:</b> 2025-10-22</p>
+<p><b>Priority: </b>3
 </p>
 <p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
 <p><b>Discussion:</b></p>
@@ -79,6 +79,17 @@ returns <code class='backtick'>c ? a : b</code>.
 Given that it seems intended to work with <code class='backtick'>basic_vec</code>, <code class='backtick'>basic_mask</code>, or vectorizable type,
 requiring <code class='backtick'>T</code> and <code class='backtick'>U</code> to be copyable seems reasonable since they are trivially copyable. 
 It shouldn't take non-copyable objects and produce hard errors in the function body.
+</p>
+
+<p><i>[2025-10-22; Reflector poll.]</i></p>
+
+<p>
+Set priority to 3 after reflector poll.
+</p>
+<p>
+Split opinion between further pinning down exact condition (<code>is_constructible_v</code>,
+<code>decltype(auto(c ? a : b))</code>), and accepting the PR (<code>copyable</code>) as this is
+not meant to be generic facility.
 </p>
 
 

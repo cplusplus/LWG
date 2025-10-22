@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <title>Issue 4408: Hardening simd::vec::operator[]</title>
 <meta property="og:title" content="Issue 4408: Hardening simd::vec::operator[]">
-<meta property="og:description" content="C++ library issue. Status: New">
+<meta property="og:description" content="C++ library issue. Status: LEWG">
 <meta property="og:url" content="https://cplusplus.github.io/LWG/issue4408.html">
 <meta property="og:type" content="website">
 <meta property="og:image" content="http://cplusplus.github.io/LWG/images/cpp_logo.png">
@@ -61,18 +61,21 @@
 </head>
 <body>
 <hr>
-<p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#New">New</a> status.</em></p>
+<p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#LEWG">LEWG</a> status.</em></p>
 <h3 id="4408"><a href="lwg-active.html#4408">4408</a>. Hardening <code class='backtick'>simd::vec::operator[]</code></h3>
-<p><b>Section:</b> 29.10.7.3 <a href="https://wg21.link/simd.subscr">[simd.subscr]</a>, 29.10.9.3 <a href="https://wg21.link/simd.mask.subscr">[simd.mask.subscr]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Hewill Kang <b>Opened:</b> 2025-10-07 <b>Last modified:</b> 2025-10-11</p>
-<p><b>Priority: </b>Not Prioritized
+<p><b>Section:</b> 29.10.7.3 <a href="https://wg21.link/simd.subscr">[simd.subscr]</a>, 29.10.9.3 <a href="https://wg21.link/simd.mask.subscr">[simd.mask.subscr]</a> <b>Status:</b> <a href="lwg-active.html#LEWG">LEWG</a>
+ <b>Submitter:</b> Hewill Kang <b>Opened:</b> 2025-10-07 <b>Last modified:</b> 2025-10-22</p>
+<p><b>Priority: </b>3
 </p>
-<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#LEWG">LEWG</a> status.</p>
 <p><b>Discussion:</b></p>
 <p>
 <code class='backtick'>simd::vec::operator[]</code> satisfies the criteria in <a href="https://wg21.link/P3471R4" title=" Standard Library Hardening">P3471R4</a> and <a href="https://wg21.link/P3697R1" title=" Minor additions to C++26 standard library hardening">P3697R1</a> : 
 "violating the precondition results in a memory safety issue", which means that hardening is reasonable.
 </p>
+
+<p><i>[2025-10-22; Reflector poll. Status changed: New &rarr; LEWG and P3.]</i></p>
+
 
 
 <p id="res-4408"><b>Proposed resolution:</b></p>

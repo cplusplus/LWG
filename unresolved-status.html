@@ -62,8 +62,8 @@ This document is the Index by Status and Section for the <a href="lwg-active.htm
 <a href="lwg-defects.html">Library Defect Reports and Accepted Issues</a>, and <a href="lwg-closed.html">Library Closed Issues List</a>.
 </p>
 
-<p>Revised 2025-10-22 at 11:29:35 UTC
-</p><h2 id="New">New (579 issues)</h2>
+<p>Revised 2025-10-22 at 12:33:47 UTC
+</p><h2 id="New">New (574 issues)</h2>
 <table class="issues-index">
 <tr>
   <th><a href="lwg-toc.html">Issue</a></th>
@@ -4089,16 +4089,7 @@ should require the arguments to have the same length</td>
 <td>29.10 [simd]</td>
 <td>Constant expression <code class='backtick'>ranges::size(r)</code> <i>Constraints</i> and <i>Mandates</i> in [simd]</td>
 <td>Yes</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td id="4412"><a href="lwg-active.html#4412" title="Fix declaration of zero_element and uninit_element (Status: New)">4412</a><sup><a href="https://cplusplus.github.io/LWG/issue4412">(i)</a></sup></td>
-<td><a href="lwg-active.html#New">New</a></td>
-<td>29.10.3 [simd.syn]</td>
-<td>Fix declaration of <code class='backtick'>zero_element</code> and <code class='backtick'>uninit_element</code></td>
-<td>Yes</td>
-<td></td>
+<td>3</td>
 <td></td>
 </tr>
 <tr>
@@ -4111,39 +4102,21 @@ should require the arguments to have the same length</td>
 <td></td>
 </tr>
 <tr>
-<td id="4413"><a href="lwg-active.html#4413" title="Unused/left-over simd::alignment specialization for basic_mask (Status: New)">4413</a><sup><a href="https://cplusplus.github.io/LWG/issue4413">(i)</a></sup></td>
-<td><a href="lwg-active.html#New">New</a></td>
-<td>29.10.4 [simd.traits]</td>
-<td>Unused/left-over <code class='backtick'>simd::alignment</code> specialization for <code class='backtick'>basic_mask</code></td>
-<td>Yes</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td id="4390"><a href="lwg-active.html#4390" title="simd::basic_vec(U&amp;&amp;) default template parameter (Status: New)">4390</a><sup><a href="https://cplusplus.github.io/LWG/issue4390">(i)</a></sup></td>
-<td><a href="lwg-active.html#New">New</a></td>
-<td>29.10.7.2 [simd.ctor]</td>
-<td><code>simd::basic_vec(U&amp;&amp;)</code> default template parameter</td>
-<td>Yes</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td id="4408"><a href="lwg-active.html#4408" title="Hardening simd::vec::operator[] (Status: New)">4408</a><sup><a href="https://cplusplus.github.io/LWG/issue4408">(i)</a></sup></td>
-<td><a href="lwg-active.html#New">New</a></td>
-<td>29.10.7.3 [simd.subscr]</td>
-<td>Hardening <code class='backtick'>simd::vec::operator[]</code></td>
-<td>Yes</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
 <td id="4230"><a href="lwg-active.html#4230" title="simd&lt;complex&gt;::real/imag is overconstrained (Status: New)">4230</a><sup><a href="https://cplusplus.github.io/LWG/issue4230">(i)</a></sup></td>
 <td><a href="lwg-active.html#New">New</a></td>
 <td>29.10.8.4 [simd.complex.access]</td>
 <td><code>simd&lt;complex&gt;::real/imag</code> is overconstrained</td>
 <td>Yes</td>
 <td>2</td>
+<td></td>
+</tr>
+<tr>
+<td id="4392"><a href="lwg-active.html#4392" title="simd::unchecked_load misses difference type casting (Status: New)">4392</a><sup><a href="https://cplusplus.github.io/LWG/issue4392">(i)</a></sup></td>
+<td><a href="lwg-active.html#New">New</a></td>
+<td>29.10.8.7 [simd.loadstore]</td>
+<td><code class='backtick'>simd::unchecked_load</code> misses difference type casting</td>
+<td>Yes</td>
+<td>3</td>
 <td></td>
 </tr>
 <tr>
@@ -4165,21 +4138,12 @@ should require the arguments to have the same length</td>
 <td></td>
 </tr>
 <tr>
-<td id="4392"><a href="lwg-active.html#4392" title="simd::unchecked_load misses difference type casting (Status: New)">4392</a><sup><a href="https://cplusplus.github.io/LWG/issue4392">(i)</a></sup></td>
-<td><a href="lwg-active.html#New">New</a></td>
-<td>29.10.8.7 [simd.loadstore]</td>
-<td><code class='backtick'>simd::unchecked_load</code> misses difference type casting</td>
-<td>Yes</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
 <td id="4393"><a href="lwg-active.html#4393" title="simd::unchecked_scatter_to is underconstrained (Status: New)">4393</a><sup><a href="https://cplusplus.github.io/LWG/issue4393">(i)</a></sup></td>
 <td><a href="lwg-active.html#New">New</a></td>
 <td>29.10.8.11 [simd.permute.memory]</td>
 <td><code class='backtick'>simd::unchecked_scatter_to</code> is underconstrained</td>
 <td>Yes</td>
-<td></td>
+<td>2</td>
 <td></td>
 </tr>
 <tr>
@@ -4190,16 +4154,7 @@ should require the arguments to have the same length</td>
 <td><code>std::simd::select(bool c, const T&amp; a, const U&amp; b)</code> is underconstrained
 </td>
 <td>Yes</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td id="4375"><a href="lwg-active.html#4375" title="std::simd::bit_ceil should not be noexcept (Status: New)">4375</a><sup><a href="https://cplusplus.github.io/LWG/issue4375">(i)</a></sup></td>
-<td><a href="lwg-active.html#New">New</a></td>
-<td>29.10.8.15 [simd.bit]</td>
-<td><code class='backtick'>std::simd::bit_ceil</code> should not be <code class='backtick'>noexcept</code></td>
-<td>Yes</td>
-<td></td>
+<td>3</td>
 <td></td>
 </tr>
 <tr>
@@ -4208,7 +4163,7 @@ should require the arguments to have the same length</td>
 <td>29.10.9.1 [simd.mask.overview]</td>
 <td>List-initialization of iterators in [simd.mask.overview]</td>
 <td>Yes</td>
-<td></td>
+<td>3</td>
 <td></td>
 </tr>
 <tr>
@@ -6139,7 +6094,7 @@ don't support <code>DynamicBuffer</code> lvalues</td>
 <td></td>
 </tr>
 </table>
-<h2 id="LEWG">LEWG (30 issues)</h2>
+<h2 id="LEWG">LEWG (32 issues)</h2>
 <table class="issues-index">
 <tr>
   <th><a href="lwg-toc.html">Issue</a></th>
@@ -6303,6 +6258,24 @@ don't support <code>DynamicBuffer</code> lvalues</td>
 <td>Problematic <code class='backtick'>vector_sum_of_squares</code> wording</td>
 <td>Yes</td>
 <td>1</td>
+<td></td>
+</tr>
+<tr>
+<td id="4390"><a href="lwg-active.html#4390" title="simd::basic_vec(U&amp;&amp;) default template parameter (Status: LEWG)">4390</a><sup><a href="https://cplusplus.github.io/LWG/issue4390">(i)</a></sup></td>
+<td><a href="lwg-active.html#LEWG">LEWG</a></td>
+<td>29.10.7.2 [simd.ctor]</td>
+<td><code>simd::basic_vec(U&amp;&amp;)</code> default template parameter</td>
+<td>Yes</td>
+<td>4</td>
+<td></td>
+</tr>
+<tr>
+<td id="4408"><a href="lwg-active.html#4408" title="Hardening simd::vec::operator[] (Status: LEWG)">4408</a><sup><a href="https://cplusplus.github.io/LWG/issue4408">(i)</a></sup></td>
+<td><a href="lwg-active.html#LEWG">LEWG</a></td>
+<td>29.10.7.3 [simd.subscr]</td>
+<td>Hardening <code class='backtick'>simd::vec::operator[]</code></td>
+<td>Yes</td>
+<td>3</td>
 <td></td>
 </tr>
 <tr>

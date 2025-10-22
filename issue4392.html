@@ -64,8 +64,8 @@
 <p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#New">New</a> status.</em></p>
 <h3 id="4392"><a href="lwg-active.html#4392">4392</a>. <code class='backtick'>simd::unchecked_load</code> misses difference type casting</h3>
 <p><b>Section:</b> 29.10.8.7 <a href="https://wg21.link/simd.loadstore">[simd.loadstore]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Hewill Kang <b>Opened:</b> 2025-09-29 <b>Last modified:</b> 2025-10-03</p>
-<p><b>Priority: </b>Not Prioritized
+ <b>Submitter:</b> Hewill Kang <b>Opened:</b> 2025-09-29 <b>Last modified:</b> 2025-10-22</p>
+<p><b>Priority: </b>3
 </p>
 <p><b>View other</b> <a href="lwg-index-open.html#simd.loadstore">active issues</a> in [simd.loadstore].</p>
 <p><b>View all other</b> <a href="lwg-index.html#simd.loadstore">issues</a> in [simd.loadstore].</p>
@@ -77,6 +77,16 @@ Currently, <code class='backtick'>simd::unchecked_load</code>/<code class='backt
 <p/>
 However, the construction is ill-formed when the difference type is an integer-class type; we should perform
 an explicit casting here.
+</p>
+
+<p><i>[2025-10-22; Reflector poll.]</i></p>
+
+<p>
+Set priority to 3 after reflector poll.
+</p>
+<p>
+Question was raised if we should use <code>size_t</code> instead of
+<code>iter_difference_t</code> for consistency with <code>span</code>.
 </p>
 
 

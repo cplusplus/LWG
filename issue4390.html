@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <title>Issue 4390: simd::basic_vec(U&amp;&amp;) default template parameter</title>
 <meta property="og:title" content="Issue 4390: simd::basic_vec(U&amp;&amp;) default template parameter">
-<meta property="og:description" content="C++ library issue. Status: New">
+<meta property="og:description" content="C++ library issue. Status: LEWG">
 <meta property="og:url" content="https://cplusplus.github.io/LWG/issue4390.html">
 <meta property="og:type" content="website">
 <meta property="og:image" content="http://cplusplus.github.io/LWG/images/cpp_logo.png">
@@ -61,15 +61,15 @@
 </head>
 <body>
 <hr>
-<p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#New">New</a> status.</em></p>
+<p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#LEWG">LEWG</a> status.</em></p>
 <h3 id="4390"><a href="lwg-active.html#4390">4390</a>. <code>simd::basic_vec(U&amp;&amp;)</code> default template parameter</h3>
-<p><b>Section:</b> 29.10.7.2 <a href="https://wg21.link/simd.ctor">[simd.ctor]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Hewill Kang <b>Opened:</b> 2025-09-29 <b>Last modified:</b> 2025-10-03</p>
-<p><b>Priority: </b>Not Prioritized
+<p><b>Section:</b> 29.10.7.2 <a href="https://wg21.link/simd.ctor">[simd.ctor]</a> <b>Status:</b> <a href="lwg-active.html#LEWG">LEWG</a>
+ <b>Submitter:</b> Hewill Kang <b>Opened:</b> 2025-09-29 <b>Last modified:</b> 2025-10-22</p>
+<p><b>Priority: </b>4
 </p>
 <p><b>View other</b> <a href="lwg-index-open.html#simd.ctor">active issues</a> in [simd.ctor].</p>
 <p><b>View all other</b> <a href="lwg-index.html#simd.ctor">issues</a> in [simd.ctor].</p>
-<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#LEWG">LEWG</a> status.</p>
 <p><b>Discussion:</b></p>
 <p>
 <code>simd::basic_vec</code> supports <code>complex</code> after <a href="https://wg21.link/P2663R7" title=" Proposal to support interleaved complex values in std::simd">P2663R7</a>, defaulting
@@ -79,6 +79,18 @@ intuitive spelling:
 <pre>
 simd::vec&lt;complex&lt;double&gt;&gt; sc1   ({-1.0, 0.5}); // <span style="color:#C80000;font-weight:bold">current ill-formed</span>
 simd::vec&lt;complex&lt;double&gt;&gt; sc2 = {{-1.0, 0.5}}; // <span style="color:#C80000;font-weight:bold">current ill-formed</span></pre>
+
+<p><i>[2025-10-22; Reflector poll. Status changed: New &rarr; LEWG with priority 4.]</i></p>
+
+
+<p>
+This narrows design space wrt using braces for initialization
+of <code>basic_vec</code>, especially if we allow user-defined types.
+</p>
+<p>
+LWG <a href="lwg-active.html#4230" title="simd&lt;complex&gt;::real/imag is overconstrained (Status: New)">4230</a><sup><a href="https://cplusplus.github.io/LWG/issue4230" title="Latest snapshot">(i)</a></sup> would address this by allowing
+<code>vec&lt;complex&lt;double&gt;&gt;(1., 1.);</code>
+</p>
 
 
 <p id="res-4390"><b>Proposed resolution:</b></p>

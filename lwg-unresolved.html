@@ -54,7 +54,7 @@
 </style>
 </head>
 <body>
-<p>Revised 2025-10-22 at 11:29:35 UTC
+<p>Revised 2025-10-22 at 12:33:47 UTC
 </p><h2>Unresolved Issues</h2>
 <hr>
 <h3 id="423"><a href="#423">423</a><sup><a href="https://cplusplus.github.io/LWG/issue423">(i)</a></sup>. Effects of negative <code>streamsize</code> in iostreams</h3>
@@ -78456,72 +78456,6 @@ Set priority to 3 after reflector poll.
 
 
 <hr>
-<h3 id="4375"><a href="#4375">4375</a><sup><a href="https://cplusplus.github.io/LWG/issue4375">(i)</a></sup>. <code class='backtick'>std::simd::bit_ceil</code> should not be <code class='backtick'>noexcept</code></h3>
-<p><b>Section:</b> 29.10.8.15 <a href="https://wg21.link/simd.bit">[simd.bit]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Matthias Kretz <b>Opened:</b> 2025-08-29 <b>Last modified:</b> 2025-09-19</p>
-<p><b>Priority: </b>Not Prioritized
-</p>
-<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
-<p><b>Discussion:</b></p>
-<p>
-<code class='backtick'>std::simd::bit_ceil</code> is declared 'noexcept' in 29.10.3 <a href="https://wg21.link/simd.syn">[simd.syn]</a> and 
-29.10.8.15 <a href="https://wg21.link/simd.bit">[simd.bit]</a>. But
-</p>
-<ol>
-<li><p><code class='backtick'>std::bit_ceil</code> is not 'noexcept' (22.11.2 <a href="https://wg21.link/bit.syn">[bit.syn]</a> and 22.11.5 <a href="https://wg21.link/bit.pow.two">[bit.pow.two]</a>) and</p></li>
-<li><p><code class='backtick'>std::simd::bit_ceil</code> has a precondition.</p></li>
-</ol>
-
-
-<p id="res-4375"><b>Proposed resolution:</b></p>
-<p>
-This wording is relative to <a href="https://wg21.link/N5014">N5014</a>.
-</p>
-
-<ol>
-
-<li><p>Modify 29.10.3 <a href="https://wg21.link/simd.syn">[simd.syn]</a>, header <code>&lt;simd&gt;</code> synopsis, as indicated:</p>
-
-<blockquote>
-<pre>
-namespace std {
-  [&hellip;]
-  // <i>29.10.8.15 <a href="https://wg21.link/simd.bit">[simd.bit]</a>, bit manipulation</i>
-  template&lt;<i>simd-vec-type</i> V&gt; constexpr V byteswap(const V&amp; v) noexcept;
-  template&lt;<i>simd-vec-type</i> V&gt; constexpr V bit_ceil(const V&amp; v) <del>noexcept</del>;
-  template&lt;<i>simd-vec-type</i> V&gt; constexpr V bit_floor(const V&amp; v) noexcept;  
-  [&hellip;]
-}
-</pre>
-</blockquote>
-
-</li>
-
-<li><p>Modify 29.10.8.15 <a href="https://wg21.link/simd.bit">[simd.bit]</a> as indicated:</p>
-
-<blockquote>
-<pre>
-template&lt;<i>simd-vec-type</i> V&gt; constexpr V bit_ceil(const V&amp; v) <del>noexcept</del>;
-</pre>
-<blockquote>
-<p>
--3- <i>Constraints</i>: The type <code class='backtick'>V::value_type</code> is an unsigned integer type (6.9.2 <a href="https://wg21.link/basic.fundamental">[basic.fundamental]</a>).
-<p/>
--4- <i>Preconditions</i>: [&hellip;]
-<p/>
-[&hellip;]
-</p>
-</blockquote>
-</blockquote>
-
-</li>
-
-</ol>
-
-
-
-
-<hr>
 <h3 id="4376"><a href="#4376">4376</a><sup><a href="https://cplusplus.github.io/LWG/issue4376">(i)</a></sup>. ABI tag in return type of [simd.mask.unary] is overconstrained</h3>
 <p><b>Section:</b> 29.10.9.4 <a href="https://wg21.link/simd.mask.unary">[simd.mask.unary]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
  <b>Submitter:</b> Matthias Kretz <b>Opened:</b> 2025-09-15 <b>Last modified:</b> 2025-10-17</p>
@@ -79446,8 +79380,8 @@ templates in 24.7 <a href="https://wg21.link/iterator.range">[iterator.range]</a
 <h3 id="4386"><a href="#4386">4386</a><sup><a href="https://cplusplus.github.io/LWG/issue4386">(i)</a></sup>. <code>std::simd::select(bool c, const T&amp; a, const U&amp; b)</code> is underconstrained
 </h3>
 <p><b>Section:</b> 29.10.8.13 <a href="https://wg21.link/simd.alg">[simd.alg]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Hewill Kang <b>Opened:</b> 2025-09-27 <b>Last modified:</b> 2025-09-27</p>
-<p><b>Priority: </b>Not Prioritized
+ <b>Submitter:</b> Hewill Kang <b>Opened:</b> 2025-09-27 <b>Last modified:</b> 2025-10-22</p>
+<p><b>Priority: </b>3
 </p>
 <p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
 <p><b>Discussion:</b></p>
@@ -79458,6 +79392,17 @@ returns <code class='backtick'>c ? a : b</code>.
 Given that it seems intended to work with <code class='backtick'>basic_vec</code>, <code class='backtick'>basic_mask</code>, or vectorizable type,
 requiring <code class='backtick'>T</code> and <code class='backtick'>U</code> to be copyable seems reasonable since they are trivially copyable. 
 It shouldn't take non-copyable objects and produce hard errors in the function body.
+</p>
+
+<p><i>[2025-10-22; Reflector poll.]</i></p>
+
+<p>
+Set priority to 3 after reflector poll.
+</p>
+<p>
+Split opinion between further pinning down exact condition (<code>is_constructible_v</code>,
+<code>decltype(auto(c ? a : b))</code>), and accepting the PR (<code>copyable</code>) as this is
+not meant to be generic facility.
 </p>
 
 
@@ -79827,13 +79772,13 @@ in the equivalent form (8.6.5 <a href="https://wg21.link/stmt.ranged">[stmt.rang
 
 <hr>
 <h3 id="4390"><a href="#4390">4390</a><sup><a href="https://cplusplus.github.io/LWG/issue4390">(i)</a></sup>. <code>simd::basic_vec(U&amp;&amp;)</code> default template parameter</h3>
-<p><b>Section:</b> 29.10.7.2 <a href="https://wg21.link/simd.ctor">[simd.ctor]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Hewill Kang <b>Opened:</b> 2025-09-29 <b>Last modified:</b> 2025-10-03</p>
-<p><b>Priority: </b>Not Prioritized
+<p><b>Section:</b> 29.10.7.2 <a href="https://wg21.link/simd.ctor">[simd.ctor]</a> <b>Status:</b> <a href="lwg-active.html#LEWG">LEWG</a>
+ <b>Submitter:</b> Hewill Kang <b>Opened:</b> 2025-09-29 <b>Last modified:</b> 2025-10-22</p>
+<p><b>Priority: </b>4
 </p>
 <p><b>View other</b> <a href="lwg-index-open.html#simd.ctor">active issues</a> in [simd.ctor].</p>
 <p><b>View all other</b> <a href="lwg-index.html#simd.ctor">issues</a> in [simd.ctor].</p>
-<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#LEWG">LEWG</a> status.</p>
 <p><b>Discussion:</b></p>
 <p>
 <code>simd::basic_vec</code> supports <code>complex</code> after <a href="https://wg21.link/P2663R7" title=" Proposal to support interleaved complex values in std::simd">P2663R7</a>, defaulting
@@ -79843,6 +79788,18 @@ intuitive spelling:
 <pre>
 simd::vec&lt;complex&lt;double&gt;&gt; sc1   ({-1.0, 0.5}); // <span style="color:#C80000;font-weight:bold">current ill-formed</span>
 simd::vec&lt;complex&lt;double&gt;&gt; sc2 = {{-1.0, 0.5}}; // <span style="color:#C80000;font-weight:bold">current ill-formed</span></pre>
+
+<p><i>[2025-10-22; Reflector poll. Status changed: New &rarr; LEWG with priority 4.]</i></p>
+
+
+<p>
+This narrows design space wrt using braces for initialization
+of <code>basic_vec</code>, especially if we allow user-defined types.
+</p>
+<p>
+LWG <a href="lwg-active.html#4230" title="simd&lt;complex&gt;::real/imag is overconstrained (Status: New)">4230</a><sup><a href="https://cplusplus.github.io/LWG/issue4230" title="Latest snapshot">(i)</a></sup> would address this by allowing
+<code>vec&lt;complex&lt;double&gt;&gt;(1., 1.);</code>
+</p>
 
 
 <p id="res-4390"><b>Proposed resolution:</b></p>
@@ -79892,8 +79849,8 @@ template&lt;class U <ins>= T</ins>&gt; constexpr explicit(<i>see below</i>) basi
 <hr>
 <h3 id="4392"><a href="#4392">4392</a><sup><a href="https://cplusplus.github.io/LWG/issue4392">(i)</a></sup>. <code class='backtick'>simd::unchecked_load</code> misses difference type casting</h3>
 <p><b>Section:</b> 29.10.8.7 <a href="https://wg21.link/simd.loadstore">[simd.loadstore]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Hewill Kang <b>Opened:</b> 2025-09-29 <b>Last modified:</b> 2025-10-03</p>
-<p><b>Priority: </b>Not Prioritized
+ <b>Submitter:</b> Hewill Kang <b>Opened:</b> 2025-09-29 <b>Last modified:</b> 2025-10-22</p>
+<p><b>Priority: </b>3
 </p>
 <p><b>View other</b> <a href="lwg-index-open.html#simd.loadstore">active issues</a> in [simd.loadstore].</p>
 <p><b>View all other</b> <a href="lwg-index.html#simd.loadstore">issues</a> in [simd.loadstore].</p>
@@ -79905,6 +79862,16 @@ Currently, <code class='backtick'>simd::unchecked_load</code>/<code class='backt
 <p/>
 However, the construction is ill-formed when the difference type is an integer-class type; we should perform
 an explicit casting here.
+</p>
+
+<p><i>[2025-10-22; Reflector poll.]</i></p>
+
+<p>
+Set priority to 3 after reflector poll.
+</p>
+<p>
+Question was raised if we should use <code>size_t</code> instead of
+<code>iter_difference_t</code> for consistency with <code>span</code>.
 </p>
 
 
@@ -79938,8 +79905,8 @@ R(first, <ins>static_cast&lt;size_t&gt;(</ins>n<ins>)</ins>)
 <hr>
 <h3 id="4393"><a href="#4393">4393</a><sup><a href="https://cplusplus.github.io/LWG/issue4393">(i)</a></sup>. <code class='backtick'>simd::unchecked_scatter_to</code> is underconstrained</h3>
 <p><b>Section:</b> 29.10.8.11 <a href="https://wg21.link/simd.permute.memory">[simd.permute.memory]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Hewill Kang <b>Opened:</b> 2025-09-29 <b>Last modified:</b> 2025-10-03</p>
-<p><b>Priority: </b>Not Prioritized
+ <b>Submitter:</b> Hewill Kang <b>Opened:</b> 2025-09-29 <b>Last modified:</b> 2025-10-22</p>
+<p><b>Priority: </b>2
 </p>
 <p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
 <p><b>Discussion:</b></p>
@@ -79950,6 +79917,17 @@ Both <code class='backtick'>simd::unchecked_scatter_to</code> and <code class='b
 However, they only require <code class='backtick'>R</code> to be <code class='backtick'>contiguous_range</code> and <code class='backtick'>sized_range</code>.
 Requiring <code class='backtick'>R</code> to be <code class='backtick'>output_range</code> is also necessary; otherwise, the 
 <code class='backtick'>constant_range</code> cannot be written.
+</p>
+
+<p><i>[2025-10-22; Reflector poll.]</i></p>
+
+<p>
+Set priority to 2 after reflector poll.
+</p>
+<p>
+This issue is related to LWG <a href="lwg-active.html#4420" title="Stores in [simd.loadstore] are overconstrained (Status: New)">4420</a><sup><a href="https://cplusplus.github.io/LWG/issue4420" title="Latest snapshot">(i)</a></sup>.
+The <i>Constrains</i> needs to be updated to handle conversions between <code>float</code>
+and <code>float16_t</code> and similar cases.  
 </p>
 
 
@@ -80611,8 +80589,8 @@ namespace std::ranges {
 <hr>
 <h3 id="4402"><a href="#4402">4402</a><sup><a href="https://cplusplus.github.io/LWG/issue4402">(i)</a></sup>. List-initialization of iterators in [simd.mask.overview]</h3>
 <p><b>Section:</b> 29.10.9.1 <a href="https://wg21.link/simd.mask.overview">[simd.mask.overview]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Arthur O'Dwyer <b>Opened:</b> 2025-10-02 <b>Last modified:</b> 2025-10-04</p>
-<p><b>Priority: </b>Not Prioritized
+ <b>Submitter:</b> Arthur O'Dwyer <b>Opened:</b> 2025-10-02 <b>Last modified:</b> 2025-10-22</p>
+<p><b>Priority: </b>3
 </p>
 <p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
 <p><b>Discussion:</b></p>
@@ -80666,6 +80644,22 @@ At the very least, we should say that this list-initialization is intentional, a
 class <code><i>simd-iterator</i></code> and/or remove the "exposition only" from <code><i>simd-iterator</i></code>'s 
 constructor. That makes it clear that the above program is indeed intended to be ambiguous. But IMO 
 we should instead simply make the above program valid.
+</p>
+
+<p><i>[2025-10-22; Reflector poll.]</i></p>
+
+<p>
+Set priority to 3 after reflector poll.
+</p>
+<p>
+<code><i>simd-iterator</i></code> can only be constructed only by <code>basic_vec</code>,
+and <code>basic_mask</code> objects.
+</p>
+<p>
+This is NAD as user cannot rely on standard types not being constructible per
+16.4.6.5 <a href="https://wg21.link/member.functions">[member.functions]</a> p2. The example would not be fixed by adding
+the <code>explicit</code> in a conforming implementation, and changes in <code>return</code>
+specification are editorial.
 </p>
 
 
@@ -81080,16 +81074,19 @@ return std::forward&lt;U&gt;(v);</ins>
 
 <hr>
 <h3 id="4408"><a href="#4408">4408</a><sup><a href="https://cplusplus.github.io/LWG/issue4408">(i)</a></sup>. Hardening <code class='backtick'>simd::vec::operator[]</code></h3>
-<p><b>Section:</b> 29.10.7.3 <a href="https://wg21.link/simd.subscr">[simd.subscr]</a>, 29.10.9.3 <a href="https://wg21.link/simd.mask.subscr">[simd.mask.subscr]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Hewill Kang <b>Opened:</b> 2025-10-07 <b>Last modified:</b> 2025-10-11</p>
-<p><b>Priority: </b>Not Prioritized
+<p><b>Section:</b> 29.10.7.3 <a href="https://wg21.link/simd.subscr">[simd.subscr]</a>, 29.10.9.3 <a href="https://wg21.link/simd.mask.subscr">[simd.mask.subscr]</a> <b>Status:</b> <a href="lwg-active.html#LEWG">LEWG</a>
+ <b>Submitter:</b> Hewill Kang <b>Opened:</b> 2025-10-07 <b>Last modified:</b> 2025-10-22</p>
+<p><b>Priority: </b>3
 </p>
-<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#LEWG">LEWG</a> status.</p>
 <p><b>Discussion:</b></p>
 <p>
 <code class='backtick'>simd::vec::operator[]</code> satisfies the criteria in <a href="https://wg21.link/P3471R4" title=" Standard Library Hardening">P3471R4</a> and <a href="https://wg21.link/P3697R1" title=" Minor additions to C++26 standard library hardening">P3697R1</a> : 
 "violating the precondition results in a memory safety issue", which means that hardening is reasonable.
 </p>
+
+<p><i>[2025-10-22; Reflector poll. Status changed: New &rarr; LEWG and P3.]</i></p>
+
 
 
 <p id="res-4408"><b>Proposed resolution:</b></p>
@@ -81136,8 +81133,8 @@ constexpr value_type operator[](<i>simd-size-type</i> i) const;
 <hr>
 <h3 id="4409"><a href="#4409">4409</a><sup><a href="https://cplusplus.github.io/LWG/issue4409">(i)</a></sup>. Constant expression <code class='backtick'>ranges::size(r)</code> <i>Constraints</i> and <i>Mandates</i> in [simd]</h3>
 <p><b>Section:</b> 29.10 <a href="https://wg21.link/simd">[simd]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Lénárd Szolnoki <b>Opened:</b> 2025-10-10 <b>Last modified:</b> 2025-10-12</p>
-<p><b>Priority: </b>Not Prioritized
+ <b>Submitter:</b> Lénárd Szolnoki <b>Opened:</b> 2025-10-10 <b>Last modified:</b> 2025-10-22</p>
+<p><b>Priority: </b>3
 </p>
 <p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
 <p><b>Discussion:</b></p>
@@ -81211,6 +81208,16 @@ down in the preconditions).
 </li>
 </ol>
 
+
+<p><i>[2025-10-22; Reflector poll.]</i></p>
+
+<p>
+Set priority to P3 after reflector poll.
+</p>
+<p>
+General preference on considering this NAD, and instead clarifying that
+operations on integer-class should produce constant expressions.
+</p>
 
 
 <p id="res-4409"><b>Proposed resolution:</b></p>
@@ -81452,98 +81459,6 @@ are not.
 <p id="res-4411"><b>Proposed resolution:</b></p>
 <p>
 </p>
-
-
-
-
-
-<hr>
-<h3 id="4412"><a href="#4412">4412</a><sup><a href="https://cplusplus.github.io/LWG/issue4412">(i)</a></sup>. Fix declaration of <code class='backtick'>zero_element</code> and <code class='backtick'>uninit_element</code></h3>
-<p><b>Section:</b> 29.10.3 <a href="https://wg21.link/simd.syn">[simd.syn]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Jonathan Wakely <b>Opened:</b> 2025-10-17 <b>Last modified:</b> 2025-10-17</p>
-<p><b>Priority: </b>Not Prioritized
-</p>
-<p><b>View all other</b> <a href="lwg-index.html#simd.syn">issues</a> in [simd.syn].</p>
-<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
-<p><b>Discussion:</b></p>
-<b>Addresses US-174-282</b>
-
-<p>
-<code class='backtick'>zero_element</code> and <code class='backtick'>uninit_element</code> should be inline and not static
-</p>
-
-
-<p id="res-4412"><b>Proposed resolution:</b></p>
-<p>
-This wording is relative to <a href="https://wg21.link/N5014">N5014</a>.
-</p>
-
-<ol>
-<li><p>Modify 29.10.3 <a href="https://wg21.link/simd.syn">[simd.syn]</a> as indicated:</p>
-
-<blockquote>
-<pre>
-<i>// 29.10.8.7, permute by static index generator</i>
-<ins>inline</ins> <del>static</del> constexpr <i>simd-size-type</i> zero_element = <i>implementation-defined</i>;
-<ins>inline</ins> <del>static</del> constexpr <i>simd-size-type</i> uninit_element = <i>implementation-defined</i>;
-</pre>
-</blockquote>
-</li>
-</ol>
-
-
-
-
-
-
-<hr>
-<h3 id="4413"><a href="#4413">4413</a><sup><a href="https://cplusplus.github.io/LWG/issue4413">(i)</a></sup>. Unused/left-over <code class='backtick'>simd::alignment</code> specialization for <code class='backtick'>basic_mask</code></h3>
-<p><b>Section:</b> 29.10.4 <a href="https://wg21.link/simd.traits">[simd.traits]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Matthias Kretz <b>Opened:</b> 2025-10-15 <b>Last modified:</b> 2025-10-18</p>
-<p><b>Priority: </b>Not Prioritized
-</p>
-<p><b>View other</b> <a href="lwg-index-open.html#simd.traits">active issues</a> in [simd.traits].</p>
-<p><b>View all other</b> <a href="lwg-index.html#simd.traits">issues</a> in [simd.traits].</p>
-<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
-<p><b>Discussion:</b></p>
-<p>
-29.10.4 <a href="https://wg21.link/simd.traits">[simd.traits]</a> describes a <code class='backtick'>value</code> member for 
-<code>simd::alignment&lt;basic_mask&lt;&hellip;&gt;, bool&gt;</code>. 
-This was used for loads and stores for masks from/to arrays of <code class='backtick'>bool</code>. 
-However, these load/store functions were removed after <code class='backtick'>bitset</code>/<code class='backtick'>unsigned_integral</code> 
-conversions were introduced. This left-over TS wording should be removed.
-</p>
-
-
-<p id="res-4413"><b>Proposed resolution:</b></p>
-<p>
-This wording is relative to <a href="https://wg21.link/N5014">N5014</a>.
-</p>
-
-<ol>
-<li><p>Modify 29.10.3 <a href="https://wg21.link/simd.syn">[simd.syn]</a> as indicated:</p>
-
-<blockquote>
-<pre>
-template&lt;class T, class U = typename T::value_type&gt; struct alignment { <i>see below</i> };
-</pre>
-<blockquote>
-<p>
--1- <code>alignment&lt;T, U&gt;</code> has a member <code class='backtick'>value</code> if and only if
-</p>
-<ol style="list-style-type: none">
-<li><p>
-<del>(1.1) &mdash; <code class='backtick'>T</code> is a specialization of <code class='backtick'>basic_mask</code> and <code class='backtick'>U</code> is <code class='backtick'>bool</code>, or</del>
-</p></li>
-<li><p>
-<del>(1.2) &mdash;</del> <code class='backtick'>T</code> is a specialization of <code class='backtick'>basic_vec</code> and <code class='backtick'>U</code> is a vectorizable type.
-</p></li>
-</ol>
-</blockquote>
-</blockquote>
-</li>
-</ol>
-
 
 
 

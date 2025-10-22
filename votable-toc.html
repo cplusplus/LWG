@@ -59,7 +59,7 @@
 <p>Reference ISO/IEC IS 14882:2024(E)</p>
 <p>This document is the Table of Contents for the <a href="lwg-active.html">Library Active Issues List</a>,
 <a href="lwg-defects.html">Library Defect Reports and Accepted Issues</a>, and <a href="lwg-closed.html">Library Closed Issues List</a>.</p>
-<p>Revised 2025-10-22 at 11:29:35 UTC
+<p>Revised 2025-10-22 at 12:33:47 UTC
 </p><table class="issues-index">
 <tr>
   <th><a href="lwg-toc.html">Issue</a></th>
@@ -424,6 +424,15 @@ of uses-allocator construction</td>
 <td></td>
 </tr>
 <tr>
+<td id="4375"><a href="lwg-active.html#4375" title="std::simd::bit_ceil should not be noexcept (Status: Tentatively Ready)">4375</a><sup><a href="https://cplusplus.github.io/LWG/issue4375">(i)</a></sup></td>
+<td><a href="lwg-active.html#Ready">Tentatively Ready</a></td>
+<td>29.10.8.15 [simd.bit]</td>
+<td><code class='backtick'>std::simd::bit_ceil</code> should not be <code class='backtick'>noexcept</code></td>
+<td>Yes</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
 <td id="4377"><a href="lwg-active.html#4377" title="Misleading note about lock-free property of std::atomic_ref (Status: Tentatively Ready)">4377</a><sup><a href="https://cplusplus.github.io/LWG/issue4377">(i)</a></sup></td>
 <td><a href="lwg-active.html#Ready">Tentatively Ready</a></td>
 <td>32.5.7.2 [atomics.ref.ops]</td>
@@ -477,6 +486,24 @@ constructor (Status: Tentatively Ready)">4407</a><sup><a href="https://cplusplus
 <td>29.10.7.2 [simd.ctor]</td>
 <td><code><i>constexpr-wrapper-like</i></code> needs <code class='backtick'>remove_cvref_t</code> in <code class='backtick'>simd::basic_vec</code>
 constructor</td>
+<td>Yes</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td id="4412"><a href="lwg-active.html#4412" title="Fix declaration of zero_element and uninit_element (Status: Tentatively Ready)">4412</a><sup><a href="https://cplusplus.github.io/LWG/issue4412">(i)</a></sup></td>
+<td><a href="lwg-active.html#Ready">Tentatively Ready</a></td>
+<td>29.10.3 [simd.syn]</td>
+<td>Fix declaration of <code class='backtick'>zero_element</code> and <code class='backtick'>uninit_element</code></td>
+<td>Yes</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td id="4413"><a href="lwg-active.html#4413" title="Unused/left-over simd::alignment specialization for basic_mask (Status: Tentatively Ready)">4413</a><sup><a href="https://cplusplus.github.io/LWG/issue4413">(i)</a></sup></td>
+<td><a href="lwg-active.html#Ready">Tentatively Ready</a></td>
+<td>29.10.4 [simd.traits]</td>
+<td>Unused/left-over <code class='backtick'>simd::alignment</code> specialization for <code class='backtick'>basic_mask</code></td>
 <td>Yes</td>
 <td></td>
 <td></td>

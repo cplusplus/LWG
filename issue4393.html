@@ -64,8 +64,8 @@
 <p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#New">New</a> status.</em></p>
 <h3 id="4393"><a href="lwg-active.html#4393">4393</a>. <code class='backtick'>simd::unchecked_scatter_to</code> is underconstrained</h3>
 <p><b>Section:</b> 29.10.8.11 <a href="https://wg21.link/simd.permute.memory">[simd.permute.memory]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Hewill Kang <b>Opened:</b> 2025-09-29 <b>Last modified:</b> 2025-10-03</p>
-<p><b>Priority: </b>Not Prioritized
+ <b>Submitter:</b> Hewill Kang <b>Opened:</b> 2025-09-29 <b>Last modified:</b> 2025-10-22</p>
+<p><b>Priority: </b>2
 </p>
 <p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
 <p><b>Discussion:</b></p>
@@ -76,6 +76,17 @@ Both <code class='backtick'>simd::unchecked_scatter_to</code> and <code class='b
 However, they only require <code class='backtick'>R</code> to be <code class='backtick'>contiguous_range</code> and <code class='backtick'>sized_range</code>.
 Requiring <code class='backtick'>R</code> to be <code class='backtick'>output_range</code> is also necessary; otherwise, the 
 <code class='backtick'>constant_range</code> cannot be written.
+</p>
+
+<p><i>[2025-10-22; Reflector poll.]</i></p>
+
+<p>
+Set priority to 2 after reflector poll.
+</p>
+<p>
+This issue is related to LWG <a href="lwg-active.html#4420" title="Stores in [simd.loadstore] are overconstrained (Status: New)">4420</a><sup><a href="https://cplusplus.github.io/LWG/issue4420" title="Latest snapshot">(i)</a></sup>.
+The <i>Constrains</i> needs to be updated to handle conversions between <code>float</code>
+and <code>float16_t</code> and similar cases.  
 </p>
 
 

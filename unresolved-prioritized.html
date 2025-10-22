@@ -60,7 +60,7 @@
 <p>This document is the Table of Contents for the <a href="lwg-active.html">Library Active Issues List</a>,
 <a href="lwg-defects.html">Library Defect Reports and Accepted Issues</a>, and <a href="lwg-closed.html">Library Closed Issues List</a>,
 sorted by priority.</p>
-<p>Revised 2025-10-22 at 11:29:35 UTC
+<p>Revised 2025-10-22 at 12:33:47 UTC
 </p><h2 id="Priority_1">Priority 1 (14 issues)</h2>
 <table class="issues-index">
 <tr>
@@ -201,7 +201,7 @@ sorted by priority.</p>
 <td></td>
 </tr>
 </table>
-<h2 id="Priority_2">Priority 2 (75 issues)</h2>
+<h2 id="Priority_2">Priority 2 (76 issues)</h2>
 <table class="issues-index">
 <tr>
   <th><a href="lwg-toc.html">Issue</a></th>
@@ -739,6 +739,15 @@ specified to make <code><i>N</i></code> copies of <code>T</code> into the destin
 <td></td>
 </tr>
 <tr>
+<td id="4393"><a href="lwg-active.html#4393" title="simd::unchecked_scatter_to is underconstrained (Status: New)">4393</a><sup><a href="https://cplusplus.github.io/LWG/issue4393">(i)</a></sup></td>
+<td><a href="lwg-active.html#New">New</a></td>
+<td>29.10.8.11 [simd.permute.memory]</td>
+<td><code class='backtick'>simd::unchecked_scatter_to</code> is underconstrained</td>
+<td>Yes</td>
+<td>2</td>
+<td></td>
+</tr>
+<tr>
 <td id="4211"><a href="lwg-active.html#4211" title="IANA time zone database allows links to refer to links (Status: New)">4211</a><sup><a href="https://cplusplus.github.io/LWG/issue4211">(i)</a></sup></td>
 <td><a href="lwg-active.html#New">New</a></td>
 <td>30.11.2.1 [time.zone.db.tzdb]</td>
@@ -892,7 +901,7 @@ specified to make <code><i>N</i></code> copies of <code>T</code> into the destin
 <td></td>
 </tr>
 </table>
-<h2 id="Priority_3">Priority 3 (434 issues)</h2>
+<h2 id="Priority_3">Priority 3 (439 issues)</h2>
 <table class="issues-index">
 <tr>
   <th><a href="lwg-toc.html">Issue</a></th>
@@ -4172,10 +4181,57 @@ regards to <code>ClassAtomCollatingElement</code></td>
 <td></td>
 </tr>
 <tr>
+<td id="4409"><a href="lwg-active.html#4409" title="Constant expression ranges::size(r) Constraints and Mandates in [simd] (Status: New)">4409</a><sup><a href="https://cplusplus.github.io/LWG/issue4409">(i)</a></sup></td>
+<td><a href="lwg-active.html#New">New</a></td>
+<td>29.10 [simd]</td>
+<td>Constant expression <code class='backtick'>ranges::size(r)</code> <i>Constraints</i> and <i>Mandates</i> in [simd]</td>
+<td>Yes</td>
+<td>3</td>
+<td></td>
+</tr>
+<tr>
+<td id="4408"><a href="lwg-active.html#4408" title="Hardening simd::vec::operator[] (Status: LEWG)">4408</a><sup><a href="https://cplusplus.github.io/LWG/issue4408">(i)</a></sup></td>
+<td><a href="lwg-active.html#LEWG">LEWG</a></td>
+<td>29.10.7.3 [simd.subscr]</td>
+<td>Hardening <code class='backtick'>simd::vec::operator[]</code></td>
+<td>Yes</td>
+<td>3</td>
+<td></td>
+</tr>
+<tr>
+<td id="4392"><a href="lwg-active.html#4392" title="simd::unchecked_load misses difference type casting (Status: New)">4392</a><sup><a href="https://cplusplus.github.io/LWG/issue4392">(i)</a></sup></td>
+<td><a href="lwg-active.html#New">New</a></td>
+<td>29.10.8.7 [simd.loadstore]</td>
+<td><code class='backtick'>simd::unchecked_load</code> misses difference type casting</td>
+<td>Yes</td>
+<td>3</td>
+<td></td>
+</tr>
+<tr>
 <td id="4394"><a href="lwg-active.html#4394" title="simd::unchecked_load(I first, S last) construct span maybe ill-formed (Status: New)">4394</a><sup><a href="https://cplusplus.github.io/LWG/issue4394">(i)</a></sup></td>
 <td><a href="lwg-active.html#New">New</a></td>
 <td>29.10.8.7 [simd.loadstore]</td>
 <td><code class='backtick'>simd::unchecked_load(I first, S last)</code> construct <code class='backtick'>span</code> maybe ill-formed</td>
+<td>Yes</td>
+<td>3</td>
+<td></td>
+</tr>
+<tr>
+<td id="4386"><a href="lwg-active.html#4386" title="std::simd::select(bool c, const T&amp; a, const U&amp; b) is underconstrained
+ (Status: New)">4386</a><sup><a href="https://cplusplus.github.io/LWG/issue4386">(i)</a></sup></td>
+<td><a href="lwg-active.html#New">New</a></td>
+<td>29.10.8.13 [simd.alg]</td>
+<td><code>std::simd::select(bool c, const T&amp; a, const U&amp; b)</code> is underconstrained
+</td>
+<td>Yes</td>
+<td>3</td>
+<td></td>
+</tr>
+<tr>
+<td id="4402"><a href="lwg-active.html#4402" title="List-initialization of iterators in [simd.mask.overview] (Status: New)">4402</a><sup><a href="https://cplusplus.github.io/LWG/issue4402">(i)</a></sup></td>
+<td><a href="lwg-active.html#New">New</a></td>
+<td>29.10.9.1 [simd.mask.overview]</td>
+<td>List-initialization of iterators in [simd.mask.overview]</td>
 <td>Yes</td>
 <td>3</td>
 <td></td>
@@ -4862,7 +4918,7 @@ don't support <code>DynamicBuffer</code> lvalues</td>
 <td></td>
 </tr>
 </table>
-<h2 id="Priority_4">Priority 4 (106 issues)</h2>
+<h2 id="Priority_4">Priority 4 (107 issues)</h2>
 <table class="issues-index">
 <tr>
   <th><a href="lwg-toc.html">Issue</a></th>
@@ -5544,6 +5600,15 @@ should require the arguments to have the same length</td>
 <td></td>
 </tr>
 <tr>
+<td id="4390"><a href="lwg-active.html#4390" title="simd::basic_vec(U&amp;&amp;) default template parameter (Status: LEWG)">4390</a><sup><a href="https://cplusplus.github.io/LWG/issue4390">(i)</a></sup></td>
+<td><a href="lwg-active.html#LEWG">LEWG</a></td>
+<td>29.10.7.2 [simd.ctor]</td>
+<td><code>simd::basic_vec(U&amp;&amp;)</code> default template parameter</td>
+<td>Yes</td>
+<td>4</td>
+<td></td>
+</tr>
+<tr>
 <td id="2592"><a href="lwg-active.html#2592" title="Require that chrono::duration_casts from smaller durations to larger durations do not overflow (Status: New)">2592</a><sup><a href="https://cplusplus.github.io/LWG/issue2592">(i)</a></sup></td>
 <td><a href="lwg-active.html#New">New</a></td>
 <td>30.2 [time.syn]</td>
@@ -5834,7 +5899,7 @@ vprint_unicode/vprint_nonunicode (Status: New)">4039</a><sup><a href="https://cp
 <td></td>
 </tr>
 </table>
-<h2 id="Priority_99">Not Prioritized (79 issues)</h2>
+<h2 id="Priority_99">Not Prioritized (69 issues)</h2>
 <table class="issues-index">
 <tr>
   <th><a href="lwg-toc.html">Issue</a></th>
@@ -6176,33 +6241,6 @@ in <code>&lt;ranges&gt;</code></td>
 <td></td>
 </tr>
 <tr>
-<td id="4409"><a href="lwg-active.html#4409" title="Constant expression ranges::size(r) Constraints and Mandates in [simd] (Status: New)">4409</a><sup><a href="https://cplusplus.github.io/LWG/issue4409">(i)</a></sup></td>
-<td><a href="lwg-active.html#New">New</a></td>
-<td>29.10 [simd]</td>
-<td>Constant expression <code class='backtick'>ranges::size(r)</code> <i>Constraints</i> and <i>Mandates</i> in [simd]</td>
-<td>Yes</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td id="4412"><a href="lwg-active.html#4412" title="Fix declaration of zero_element and uninit_element (Status: New)">4412</a><sup><a href="https://cplusplus.github.io/LWG/issue4412">(i)</a></sup></td>
-<td><a href="lwg-active.html#New">New</a></td>
-<td>29.10.3 [simd.syn]</td>
-<td>Fix declaration of <code class='backtick'>zero_element</code> and <code class='backtick'>uninit_element</code></td>
-<td>Yes</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td id="4413"><a href="lwg-active.html#4413" title="Unused/left-over simd::alignment specialization for basic_mask (Status: New)">4413</a><sup><a href="https://cplusplus.github.io/LWG/issue4413">(i)</a></sup></td>
-<td><a href="lwg-active.html#New">New</a></td>
-<td>29.10.4 [simd.traits]</td>
-<td>Unused/left-over <code class='backtick'>simd::alignment</code> specialization for <code class='backtick'>basic_mask</code></td>
-<td>Yes</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
 <td id="4414"><a href="lwg-active.html#4414" title="&sect;[simd.traits] rebind and resize reference a type member that doesn't exist (Status: New)">4414</a><sup><a href="https://cplusplus.github.io/LWG/issue4414">(i)</a></sup></td>
 <td><a href="lwg-active.html#New">New</a></td>
 <td>29.10.4 [simd.traits]</td>
@@ -6212,75 +6250,10 @@ in <code>&lt;ranges&gt;</code></td>
 <td></td>
 </tr>
 <tr>
-<td id="4390"><a href="lwg-active.html#4390" title="simd::basic_vec(U&amp;&amp;) default template parameter (Status: New)">4390</a><sup><a href="https://cplusplus.github.io/LWG/issue4390">(i)</a></sup></td>
-<td><a href="lwg-active.html#New">New</a></td>
-<td>29.10.7.2 [simd.ctor]</td>
-<td><code>simd::basic_vec(U&amp;&amp;)</code> default template parameter</td>
-<td>Yes</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td id="4408"><a href="lwg-active.html#4408" title="Hardening simd::vec::operator[] (Status: New)">4408</a><sup><a href="https://cplusplus.github.io/LWG/issue4408">(i)</a></sup></td>
-<td><a href="lwg-active.html#New">New</a></td>
-<td>29.10.7.3 [simd.subscr]</td>
-<td>Hardening <code class='backtick'>simd::vec::operator[]</code></td>
-<td>Yes</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td id="4392"><a href="lwg-active.html#4392" title="simd::unchecked_load misses difference type casting (Status: New)">4392</a><sup><a href="https://cplusplus.github.io/LWG/issue4392">(i)</a></sup></td>
-<td><a href="lwg-active.html#New">New</a></td>
-<td>29.10.8.7 [simd.loadstore]</td>
-<td><code class='backtick'>simd::unchecked_load</code> misses difference type casting</td>
-<td>Yes</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
 <td id="4420"><a href="lwg-active.html#4420" title="Stores in [simd.loadstore] are overconstrained (Status: New)">4420</a><sup><a href="https://cplusplus.github.io/LWG/issue4420">(i)</a></sup></td>
 <td><a href="lwg-active.html#New">New</a></td>
 <td>29.10.8.7 [simd.loadstore]</td>
 <td>Stores in [simd.loadstore] are overconstrained</td>
-<td>Yes</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td id="4393"><a href="lwg-active.html#4393" title="simd::unchecked_scatter_to is underconstrained (Status: New)">4393</a><sup><a href="https://cplusplus.github.io/LWG/issue4393">(i)</a></sup></td>
-<td><a href="lwg-active.html#New">New</a></td>
-<td>29.10.8.11 [simd.permute.memory]</td>
-<td><code class='backtick'>simd::unchecked_scatter_to</code> is underconstrained</td>
-<td>Yes</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td id="4386"><a href="lwg-active.html#4386" title="std::simd::select(bool c, const T&amp; a, const U&amp; b) is underconstrained
- (Status: New)">4386</a><sup><a href="https://cplusplus.github.io/LWG/issue4386">(i)</a></sup></td>
-<td><a href="lwg-active.html#New">New</a></td>
-<td>29.10.8.13 [simd.alg]</td>
-<td><code>std::simd::select(bool c, const T&amp; a, const U&amp; b)</code> is underconstrained
-</td>
-<td>Yes</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td id="4375"><a href="lwg-active.html#4375" title="std::simd::bit_ceil should not be noexcept (Status: New)">4375</a><sup><a href="https://cplusplus.github.io/LWG/issue4375">(i)</a></sup></td>
-<td><a href="lwg-active.html#New">New</a></td>
-<td>29.10.8.15 [simd.bit]</td>
-<td><code class='backtick'>std::simd::bit_ceil</code> should not be <code class='backtick'>noexcept</code></td>
-<td>Yes</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td id="4402"><a href="lwg-active.html#4402" title="List-initialization of iterators in [simd.mask.overview] (Status: New)">4402</a><sup><a href="https://cplusplus.github.io/LWG/issue4402">(i)</a></sup></td>
-<td><a href="lwg-active.html#New">New</a></td>
-<td>29.10.9.1 [simd.mask.overview]</td>
-<td>List-initialization of iterators in [simd.mask.overview]</td>
 <td>Yes</td>
 <td></td>
 <td></td>
