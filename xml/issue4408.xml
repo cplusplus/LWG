@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="4408" status="New">
+<issue num="4408" status="LEWG">
 <title>Hardening `simd::vec::operator[]`</title>
 <section>
 <sref ref="[simd.subscr]"/>
@@ -9,13 +9,15 @@
 </section>
 <submitter>Hewill Kang</submitter>
 <date>07 Oct 2025</date>
-<priority>99</priority>
+<priority>3</priority>
 
 <discussion>
 <p>
 `simd::vec::operator[]` satisfies the criteria in <paper num="P3471R4"/> and <paper num="P3697R1"/> : 
 "violating the precondition results in a memory safety issue", which means that hardening is reasonable.
 </p>
+
+<note>2025-10-22; Reflector poll. Status changed: New &rarr; LEWG and P3.</note>
 </discussion>
 
 <resolution>
