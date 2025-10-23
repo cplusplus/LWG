@@ -6,7 +6,7 @@
 <section><sref ref="[meta.reflection.define.aggregate]"/></section>
 <submitter>Jakub Jelinek</submitter>
 <date>20 Oct 2025</date>
-<priority>99</priority>
+<priority>1</priority>
 
 <discussion>
 <p>
@@ -22,7 +22,14 @@ And what happens if you try to define a cv-qualified type:
 <pre>struct S; meta::define_aggregate(^^const S, {});</pre>
 Should this be an error, or inject a definition of the unqualified type?
 </p>
+
+<note>2025-10-23; Reflector poll.</note>
+<p>
+Set priority to 1 after reflector poll.
+</p>
+
 <superseded>
+	
 <p>
 This wording is relative to <paper num="N5014"/>.
 </p>
