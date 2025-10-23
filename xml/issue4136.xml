@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="4136" status="New">
+<issue num="4136" status="Tentatively Ready">
 <title>Specify behavior of [linalg] Hermitian algorithms on diagonal with nonzero imaginary part</title>
 <section><sref ref="[linalg.general]"/></section>
 <submitter>Mark Hoemmen</submitter>
@@ -65,6 +65,12 @@ symmetric or triangular matrix does not affect the behavior of
 will ensure that any imaginary parts of diagonal elements will not
 affect the behavior of [linalg] Hermitian algorithms.
 </p>
+
+<note>2025-10-23; Reflector poll.</note>
+<p>
+Set status to Tentatively Ready after six votes in favour during reflector poll.
+</p>
+
 </discussion>
 
 <resolution>
