@@ -64,8 +64,8 @@
 <p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#New">New</a> status.</em></p>
 <h3 id="4422"><a href="lwg-active.html#4422">4422</a>. <code class='backtick'>meta::access_context</code> should be a consteval-only type</h3>
 <p><b>Section:</b> 21.4.8 <a href="https://wg21.link/meta.reflection.access.context">[meta.reflection.access.context]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Jakub Jelinek <b>Opened:</b> 2025-10-20 <b>Last modified:</b> 2025-10-20</p>
-<p><b>Priority: </b>Not Prioritized
+ <b>Submitter:</b> Jakub Jelinek <b>Opened:</b> 2025-10-20 <b>Last modified:</b> 2025-10-23</p>
+<p><b>Priority: </b>2
 </p>
 <p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
 <p><b>Discussion:</b></p>
@@ -75,6 +75,18 @@ objects, which would make it a consteval-only type. But we don't actually
 specify any members, so nothing in the current specification says you can't
 persist one until runtime.
 </p>
+
+<p><i>[2025-10-23; Reflector poll. Adjust proposed wording.]</i></p>
+
+<p>
+Set priority to 2 after reflector poll.
+</p>
+<p>
+Reflector discussion requested that 'non-aggregate' and 'consteval-only' both
+be put in paragraph 3, adjacent to 'structural'.
+Also added a drive-by editorial change to paragraph 1.
+</p>
+
 
 
 <p id="res-4422"><b>Proposed resolution:</b></p>
@@ -88,10 +100,37 @@ This wording is relative to <a href="https://wg21.link/N5014">N5014</a>.
 
 <blockquote>
 <p>-1-
-The access_context class is a non-aggregate<ins>, consteval-only</ins> type
-that represents a namespace, class, or function from which queries pertaining
+The <ins>class</ins> <code class='backtick'>access_context</code>
+<del>class is a non-aggregate type that</del>
+represents a namespace, class, or function from which queries pertaining
 to access rules may be performed, as well as the designating class
 (11.8.3 <a href="https://wg21.link/class.access.base">[class.access.base]</a>), if any.
+</p>
+<p>-2-
+An <code class='backtick'>access_context</code> has an associated scope and designating class.
+<blockquote>
+<pre>namespace std::meta {
+  struct access_context {
+    access_context() = delete;
+
+    consteval info scope() const;
+    consteval info designating_class() const;
+
+    static consteval access_context current() noexcept;
+    static consteval access_context unprivileged() noexcept;
+    static consteval access_context unchecked() noexcept;
+    consteval access_context via(info cls) const;
+  };
+}</pre>
+</blockquote>
+</p>
+<p>-3-
+<code class='backtick'>access_context</code> is a structural<ins>, consteval-only, non-aggregate</ins> type.
+Two values <code class='backtick'>ac1</code> and <code class='backtick'>ac2</code> of type <code class='backtick'>access_context</code> are
+template-argument-equivalent (13.6 <a href="https://wg21.link/temp.type">[temp.type]</a>) if
+<code class='backtick'>ac1.scope()</code> and <code class='backtick'>ac2.scope()</code> are template-argument-equivalent
+and <code class='backtick'>ac1.designating_class()</code> and <code class='backtick'>ac2.designating_class()</code> are
+template-argument-equivalent.
 </p>
 </blockquote>
 </li>
