@@ -6,7 +6,7 @@
 <section><sref ref="[charconv.to.chars]"/></section>
 <submitter>Jan Schultke</submitter>
 <date>17 Oct 2025</date>
-<priority>99</priority>
+<priority>3</priority>
 
 <discussion>
 <p>
@@ -14,6 +14,16 @@ The integer overload of `to_chars` is specified "manually" rather than in terms 
 and it is not clearly stated what encoding the output characters have. Given the existing 
 use of the character literal `'-'` in the <i>Effects</i> element, the intent is presumably 
 to output in the ordinary literal encoding.
+</p>
+
+<note>2025-10-23; Reflector poll.</note>
+<p>
+Set priority to 3 after reflector poll.
+</p>
+<p>
+Concerns with meaning of  `'a'..'z'` for EBCDIC.
+Suggetion to use `U+0061..U+007A` like in <sref ref="[tab:lex.charset.basic]"/>,
+as alternative.
 </p>
 </discussion>
 
