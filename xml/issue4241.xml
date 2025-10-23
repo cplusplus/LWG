@@ -1,14 +1,14 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="4241" status="New">
+<issue num="4241" status="LEWG">
 <title>`ranges::for_each(_n)` should be less constrained</title>
 <section>
 <sref ref="[alg.foreach]"/>
 </section>
 <submitter>Jiang An</submitter>
 <date>08 Apr 2025</date>
-<priority>99</priority>
+<priority>3</priority>
 
 <discussion>
 <p>
@@ -26,6 +26,25 @@ algorithms potentially use the intermediate element values copied as
 even required not to do this, P2609R3 can bring unexpected impacts. It seems that 
 constraints around `iter_value_t` should be avoided for such an algorithm.
 </p>
+
+<note>2025-10-23; Reflector poll; Status changed: New &rarr; LEWG and P3.</note>
+<p>
+This is design change.	
+More algorithms (like `count_if`, `any_of`, etc.) that never produce
+`iter_value_t` are affected.
+<p>
+</p>
+Example of affected code:
+</p>
+<blockquote><pre>
+std::vector&lt;std::string&gt; v;
+// the following not working, constraints not satisfied
+std::ranges::for_each(
+  v | std::views::as_rvalue,
+  [](std::string&amp;&amp; s) { }
+);
+</pre></blockquote>
+
 </discussion>
 
 <resolution>
