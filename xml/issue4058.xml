@@ -1,12 +1,12 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="4058" status="New">
+<issue num="4058" status="LEWG">
 <title><code>std::to_address()</code> should be SFINAE-friendly</title>
 <section><sref ref="[pointer.conversion]"/></section>
 <submitter>Peter Kasting</submitter>
 <date>13 Mar 2024</date>
-<priority>99</priority>
+<priority>3</priority>
 
 <discussion>
 <p>
@@ -32,6 +32,14 @@ Thus any fix should not regress that unless LWG explicitly decides to do so.
 Also note that libc++'s current implementation of `to_address`,
 which is SFINAE-friendly,
 <a href="https://godbolt.org/z/e681Ynhf1">does not produce such a hard error</a>.
+</p>
+
+<note>2025-10-23; Reflector poll; Status changed: New &rarr; LEWG and P3.</note>
+<p>
+There is support for both having `std::to_address` SFINAE friendly,
+and producing hard error early, for iterators that define `iterator_concept`
+as contiguous but fail to satisfy the concept due to not providing `operator->()`.
+LEWG should decide on which direction is prefered.
 </p>
 </discussion>
 
