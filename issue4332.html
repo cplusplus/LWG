@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <title>Issue 4332: affine_on shouldn't forward the stop token to the scheduling operation</title>
 <meta property="og:title" content="Issue 4332: affine_on shouldn't forward the stop token to the scheduling operation">
-<meta property="og:description" content="C++ library issue. Status: New">
+<meta property="og:description" content="C++ library issue. Status: LEWG">
 <meta property="og:url" content="https://cplusplus.github.io/LWG/issue4332.html">
 <meta property="og:type" content="website">
 <meta property="og:image" content="http://cplusplus.github.io/LWG/images/cpp_logo.png">
@@ -61,15 +61,15 @@
 </head>
 <body>
 <hr>
-<p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#New">New</a> status.</em></p>
+<p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#LEWG">LEWG</a> status.</em></p>
 <h3 id="4332"><a href="lwg-active.html#4332">4332</a>. <code>affine_on</code> shouldn't forward the stop token to the scheduling operation</h3>
-<p><b>Section:</b> 33.13.3 <a href="https://wg21.link/exec.affine.on">[exec.affine.on]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Dietmar Kühl <b>Opened:</b> 2025-08-31 <b>Last modified:</b> 2025-09-01</p>
-<p><b>Priority: </b>Not Prioritized
+<p><b>Section:</b> 33.13.3 <a href="https://wg21.link/exec.affine.on">[exec.affine.on]</a> <b>Status:</b> <a href="lwg-active.html#LEWG">LEWG</a>
+ <b>Submitter:</b> Dietmar Kühl <b>Opened:</b> 2025-08-31 <b>Last modified:</b> 2025-10-23</p>
+<p><b>Priority: </b>2
 </p>
 <p><b>View other</b> <a href="lwg-index-open.html#exec.affine.on">active issues</a> in [exec.affine.on].</p>
 <p><b>View all other</b> <a href="lwg-index.html#exec.affine.on">issues</a> in [exec.affine.on].</p>
-<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#LEWG">LEWG</a> status.</p>
 <p><b>Discussion:</b></p>
 <p>
 The main purpose of <code>affine_on</code> is to make sure work
@@ -80,6 +80,15 @@ up after the cancellation would be executed on the wrong execution
 context. Thus, the stop token from the receiver's environment should
 only be forwarded when <code>connect</code>ing the sender but not
 to the scheduling operation.
+</p>
+
+<p><i>[2025-10-23; Reflector poll. Status changed: New &rarr; LEWG]</i></p>
+
+<p>
+Set priority to 2 after reflector poll. Send to LEWG.
+</p>
+<p>
+"This affects the cancelation behaviour so should also be seen by SG1."
 </p>
 
 

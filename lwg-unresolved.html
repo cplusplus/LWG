@@ -54,7 +54,7 @@
 </style>
 </head>
 <body>
-<p>Revised 2025-10-23 at 10:50:53 UTC
+<p>Revised 2025-10-23 at 11:06:25 UTC
 </p><h2>Unresolved Issues</h2>
 <hr>
 <h3 id="423"><a href="#423">423</a><sup><a href="https://cplusplus.github.io/LWG/issue423">(i)</a></sup>. Effects of negative <code>streamsize</code> in iostreams</h3>
@@ -75518,19 +75518,28 @@ the associated execution resource of the scheduler. &mdash; <i>end note</i>]</de
 
 <hr>
 <h3 id="4329"><a href="#4329">4329</a><sup><a href="https://cplusplus.github.io/LWG/issue4329">(i)</a></sup>. Customising affine_on for other algorithms</h3>
-<p><b>Section:</b> 33.13.3 <a href="https://wg21.link/exec.affine.on">[exec.affine.on]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Dietmar Kühl <b>Opened:</b> 2025-08-31 <b>Last modified:</b> 2025-08-31</p>
-<p><b>Priority: </b>Not Prioritized
+<p><b>Section:</b> 33.13.3 <a href="https://wg21.link/exec.affine.on">[exec.affine.on]</a> <b>Status:</b> <a href="lwg-active.html#LEWG">LEWG</a>
+ <b>Submitter:</b> Dietmar Kühl <b>Opened:</b> 2025-08-31 <b>Last modified:</b> 2025-10-23</p>
+<p><b>Priority: </b>3
 </p>
 <p><b>View other</b> <a href="lwg-index-open.html#exec.affine.on">active issues</a> in [exec.affine.on].</p>
 <p><b>View all other</b> <a href="lwg-index.html#exec.affine.on">issues</a> in [exec.affine.on].</p>
-<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#LEWG">LEWG</a> status.</p>
 <p><b>Discussion:</b></p>
 <p>
 There are no customisations of <code>affine_on</code> for other
 algorithms specified. For example, <code>affine_on(just(), sched)</code>
 can be equivalent to <code>just()</code> because <code>just()</code>
 completes inline and, thus, on the correct execution context.
+</p>
+
+<p><i>[2025-10-23; Reflector poll. Status changed: New &rarr; LEWG]</i></p>
+
+<p>
+Set priority to 3 after reflector poll. Send to LEWG.
+</p>
+<p>
+"Becomes moot if we remove customization entirely."
 </p>
 
 
@@ -75544,13 +75553,13 @@ completes inline and, thus, on the correct execution context.
 
 <hr>
 <h3 id="4330"><a href="#4330">4330</a><sup><a href="https://cplusplus.github.io/LWG/issue4330">(i)</a></sup>. <code>affine_on</code> semantics</h3>
-<p><b>Section:</b> 33.13.3 <a href="https://wg21.link/exec.affine.on">[exec.affine.on]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Dietmar Kühl <b>Opened:</b> 2025-08-31 <b>Last modified:</b> 2025-09-01</p>
-<p><b>Priority: </b>Not Prioritized
+<p><b>Section:</b> 33.13.3 <a href="https://wg21.link/exec.affine.on">[exec.affine.on]</a> <b>Status:</b> <a href="lwg-active.html#LEWG">LEWG</a>
+ <b>Submitter:</b> Dietmar Kühl <b>Opened:</b> 2025-08-31 <b>Last modified:</b> 2025-10-23</p>
+<p><b>Priority: </b>2
 </p>
 <p><b>View other</b> <a href="lwg-index-open.html#exec.affine.on">active issues</a> in [exec.affine.on].</p>
 <p><b>View all other</b> <a href="lwg-index.html#exec.affine.on">issues</a> in [exec.affine.on].</p>
-<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#LEWG">LEWG</a> status.</p>
 <p><b>Discussion:</b></p>
 <p>
 The specification of <code>affine_on</code> uses "current execution
@@ -75568,6 +75577,12 @@ it will complete asynchronously on the specified execution context.
 With this formulation <code>affine_on</code> may complete on one
 of two different execution context if it is started on an execution
 context that is different from the one specified by the scheduler.
+</p>
+
+<p><i>[2025-10-23; Reflector poll. Status changed: New &rarr; LEWG]</i></p>
+
+<p>
+Set priority to 2 after reflector poll. Send to LEWG.
 </p>
 
 
@@ -75616,13 +75631,13 @@ Set priority to 2 after reflector poll. Send to LEWG.
 
 <hr>
 <h3 id="4332"><a href="#4332">4332</a><sup><a href="https://cplusplus.github.io/LWG/issue4332">(i)</a></sup>. <code>affine_on</code> shouldn't forward the stop token to the scheduling operation</h3>
-<p><b>Section:</b> 33.13.3 <a href="https://wg21.link/exec.affine.on">[exec.affine.on]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Dietmar Kühl <b>Opened:</b> 2025-08-31 <b>Last modified:</b> 2025-09-01</p>
-<p><b>Priority: </b>Not Prioritized
+<p><b>Section:</b> 33.13.3 <a href="https://wg21.link/exec.affine.on">[exec.affine.on]</a> <b>Status:</b> <a href="lwg-active.html#LEWG">LEWG</a>
+ <b>Submitter:</b> Dietmar Kühl <b>Opened:</b> 2025-08-31 <b>Last modified:</b> 2025-10-23</p>
+<p><b>Priority: </b>2
 </p>
 <p><b>View other</b> <a href="lwg-index-open.html#exec.affine.on">active issues</a> in [exec.affine.on].</p>
 <p><b>View all other</b> <a href="lwg-index.html#exec.affine.on">issues</a> in [exec.affine.on].</p>
-<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#LEWG">LEWG</a> status.</p>
 <p><b>Discussion:</b></p>
 <p>
 The main purpose of <code>affine_on</code> is to make sure work
@@ -75633,6 +75648,15 @@ up after the cancellation would be executed on the wrong execution
 context. Thus, the stop token from the receiver's environment should
 only be forwarded when <code>connect</code>ing the sender but not
 to the scheduling operation.
+</p>
+
+<p><i>[2025-10-23; Reflector poll. Status changed: New &rarr; LEWG]</i></p>
+
+<p>
+Set priority to 2 after reflector poll. Send to LEWG.
+</p>
+<p>
+"This affects the cancelation behaviour so should also be seen by SG1."
 </p>
 
 
@@ -75783,13 +75807,13 @@ Set priority to 2 after reflector poll. Send to LEWG.
 
 <hr>
 <h3 id="4336"><a href="#4336">4336</a><sup><a href="https://cplusplus.github.io/LWG/issue4336">(i)</a></sup>. <code>bulk</code> vs. <code>task_scheduler</code></h3>
-<p><b>Section:</b> 33.13.5 <a href="https://wg21.link/exec.task.scheduler">[exec.task.scheduler]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Dietmar Kühl <b>Opened:</b> 2025-08-31 <b>Last modified:</b> 2025-09-01</p>
-<p><b>Priority: </b>Not Prioritized
+<p><b>Section:</b> 33.13.5 <a href="https://wg21.link/exec.task.scheduler">[exec.task.scheduler]</a> <b>Status:</b> <a href="lwg-active.html#LEWG">LEWG</a>
+ <b>Submitter:</b> Dietmar Kühl <b>Opened:</b> 2025-08-31 <b>Last modified:</b> 2025-10-23</p>
+<p><b>Priority: </b>2
 </p>
 <p><b>View other</b> <a href="lwg-index-open.html#exec.task.scheduler">active issues</a> in [exec.task.scheduler].</p>
 <p><b>View all other</b> <a href="lwg-index.html#exec.task.scheduler">issues</a> in [exec.task.scheduler].</p>
-<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#LEWG">LEWG</a> status.</p>
 <p><b>Discussion:</b></p>
 <p>
 Normally, the scheduler type used by an operation can be deduced
@@ -75875,6 +75899,17 @@ of an algorithm are not used for algorithms we are currently unaware
 of.
 </p>
 
+<p><i>[2025-10-23; Reflector poll. Status changed: New &rarr; LEWG]</i></p>
+
+<p>
+Set priority to 2 after reflector poll. Send to LEWG.
+</p>
+<p>
+"It seems like there are several kinds of problems with
+sender algorithm customization that have related causes
+and might have a single solution."
+</p>
+
 
 <p id="res-4336"><b>Proposed resolution:</b></p>
 <p>
@@ -75886,13 +75921,13 @@ of.
 
 <hr>
 <h3 id="4338"><a href="#4338">4338</a><sup><a href="https://cplusplus.github.io/LWG/issue4338">(i)</a></sup>. sender unaware coroutines should be able to <code>co_await</code> a <code>task</code></h3>
-<p><b>Section:</b> 33.13.6.2 <a href="https://wg21.link/task.class">[task.class]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Dietmar Kühl <b>Opened:</b> 2025-08-31 <b>Last modified:</b> 2025-09-01</p>
-<p><b>Priority: </b>Not Prioritized
+<p><b>Section:</b> 33.13.6.2 <a href="https://wg21.link/task.class">[task.class]</a> <b>Status:</b> <a href="lwg-active.html#LEWG">LEWG</a>
+ <b>Submitter:</b> Dietmar Kühl <b>Opened:</b> 2025-08-31 <b>Last modified:</b> 2025-10-23</p>
+<p><b>Priority: </b>2
 </p>
 <p><b>View other</b> <a href="lwg-index-open.html#task.class">active issues</a> in [task.class].</p>
 <p><b>View all other</b> <a href="lwg-index.html#task.class">issues</a> in [task.class].</p>
-<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#LEWG">LEWG</a> status.</p>
 <p><b>Discussion:</b></p>
 <p>
 The <code>task</code> type doesn't have an <code>operator
@@ -75929,6 +75964,12 @@ It is worth noting that senders in general do not support an
 awaitable directly. On the other hand, <code>task</code> could
 become the generic adapater to make senders awaitable from
 coroutines.
+</p>
+
+<p><i>[2025-10-23; Reflector poll. Status changed: New &rarr; LEWG]</i></p>
+
+<p>
+Set priority to 2 after reflector poll. Send to LEWG.
 </p>
 
 

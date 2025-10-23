@@ -60,7 +60,7 @@
 <p>This document is the Table of Contents for the <a href="lwg-active.html">Library Active Issues List</a>,
 <a href="lwg-defects.html">Library Defect Reports and Accepted Issues</a>, and <a href="lwg-closed.html">Library Closed Issues List</a>,
 sorted by priority.</p>
-<p>Revised 2025-10-23 at 10:50:53 UTC
+<p>Revised 2025-10-23 at 11:06:25 UTC
 </p><h2 id="Priority_1">Priority 1 (16 issues)</h2>
 <table class="issues-index">
 <tr>
@@ -221,7 +221,7 @@ incorrectly constrained for <code>&lt;stdfloat&gt;</code> types</td>
 <td></td>
 </tr>
 </table>
-<h2 id="Priority_2">Priority 2 (80 issues)</h2>
+<h2 id="Priority_2">Priority 2 (84 issues)</h2>
 <table class="issues-index">
 <tr>
   <th><a href="lwg-toc.html">Issue</a></th>
@@ -876,10 +876,28 @@ specified to make <code><i>N</i></code> copies of <code>T</code> into the destin
 <td></td>
 </tr>
 <tr>
+<td id="4330"><a href="lwg-active.html#4330" title="affine_on semantics (Status: LEWG)">4330</a><sup><a href="https://cplusplus.github.io/LWG/issue4330">(i)</a></sup></td>
+<td><a href="lwg-active.html#LEWG">LEWG</a></td>
+<td>33.13.3 [exec.affine.on]</td>
+<td><code>affine_on</code> semantics</td>
+<td><span class="no-pr">No</span></td>
+<td>2</td>
+<td></td>
+</tr>
+<tr>
 <td id="4331"><a href="lwg-active.html#4331" title="affine_on shape may be wrong (Status: LEWG)">4331</a><sup><a href="https://cplusplus.github.io/LWG/issue4331">(i)</a></sup></td>
 <td><a href="lwg-active.html#LEWG">LEWG</a></td>
 <td>33.13.3 [exec.affine.on]</td>
 <td><code>affine_on</code> shape may be wrong</td>
+<td><span class="no-pr">No</span></td>
+<td>2</td>
+<td></td>
+</tr>
+<tr>
+<td id="4332"><a href="lwg-active.html#4332" title="affine_on shouldn't forward the stop token to the scheduling operation (Status: LEWG)">4332</a><sup><a href="https://cplusplus.github.io/LWG/issue4332">(i)</a></sup></td>
+<td><a href="lwg-active.html#LEWG">LEWG</a></td>
+<td>33.13.3 [exec.affine.on]</td>
+<td><code>affine_on</code> shouldn't forward the stop token to the scheduling operation</td>
 <td><span class="no-pr">No</span></td>
 <td>2</td>
 <td></td>
@@ -894,11 +912,29 @@ specified to make <code><i>N</i></code> copies of <code>T</code> into the destin
 <td></td>
 </tr>
 <tr>
+<td id="4336"><a href="lwg-active.html#4336" title="bulk vs. task_scheduler (Status: LEWG)">4336</a><sup><a href="https://cplusplus.github.io/LWG/issue4336">(i)</a></sup></td>
+<td><a href="lwg-active.html#LEWG">LEWG</a></td>
+<td>33.13.5 [exec.task.scheduler]</td>
+<td><code>bulk</code> vs. <code>task_scheduler</code></td>
+<td><span class="no-pr">No</span></td>
+<td>2</td>
+<td></td>
+</tr>
+<tr>
 <td id="4339"><a href="lwg-active.html#4339" title="task's coroutine frame may be released late (Status: New)">4339</a><sup><a href="https://cplusplus.github.io/LWG/issue4339">(i)</a></sup></td>
 <td><a href="lwg-active.html#New">New</a></td>
 <td>33.13.6 [exec.task]</td>
 <td><code>task</code>'s coroutine frame may be released late</td>
 <td>Yes</td>
+<td>2</td>
+<td></td>
+</tr>
+<tr>
+<td id="4338"><a href="lwg-active.html#4338" title="sender unaware coroutines should be able to co_await a task (Status: LEWG)">4338</a><sup><a href="https://cplusplus.github.io/LWG/issue4338">(i)</a></sup></td>
+<td><a href="lwg-active.html#LEWG">LEWG</a></td>
+<td>33.13.6.2 [task.class]</td>
+<td>sender unaware coroutines should be able to <code>co_await</code> a <code>task</code></td>
+<td><span class="no-pr">No</span></td>
 <td>2</td>
 <td></td>
 </tr>
@@ -957,7 +993,7 @@ specified to make <code><i>N</i></code> copies of <code>T</code> into the destin
 <td></td>
 </tr>
 </table>
-<h2 id="Priority_3">Priority 3 (449 issues)</h2>
+<h2 id="Priority_3">Priority 3 (450 issues)</h2>
 <table class="issues-index">
 <tr>
   <th><a href="lwg-toc.html">Issue</a></th>
@@ -4965,6 +5001,15 @@ fetch_meow members don't (Status: New)">3047</a><sup><a href="https://cplusplus.
 <td></td>
 </tr>
 <tr>
+<td id="4329"><a href="lwg-active.html#4329" title="Customising affine_on for other algorithms (Status: LEWG)">4329</a><sup><a href="https://cplusplus.github.io/LWG/issue4329">(i)</a></sup></td>
+<td><a href="lwg-active.html#LEWG">LEWG</a></td>
+<td>33.13.3 [exec.affine.on]</td>
+<td>Customising affine_on for other algorithms</td>
+<td><span class="no-pr">No</span></td>
+<td>3</td>
+<td></td>
+</tr>
+<tr>
 <td id="2507"><a href="lwg-active.html#2507" title="codecvt_mode should be a bitmask type (Status: New)">2507</a><sup><a href="https://cplusplus.github.io/LWG/issue2507">(i)</a></sup></td>
 <td><a href="lwg-active.html#New">New</a></td>
 <td>99 [depr.locale.stdcvt]</td>
@@ -6058,7 +6103,7 @@ vprint_unicode/vprint_nonunicode (Status: New)">4039</a><sup><a href="https://cp
 <td></td>
 </tr>
 </table>
-<h2 id="Priority_99">Not Prioritized (45 issues)</h2>
+<h2 id="Priority_99">Not Prioritized (40 issues)</h2>
 <table class="issues-index">
 <tr>
   <th><a href="lwg-toc.html">Issue</a></th>
@@ -6423,51 +6468,6 @@ co_await expression instead of same_as&lt;void&gt; (Status: New)">4357</a><sup><
 <td>33.13.1 [exec.as.awaitable]</td>
 <td><code><i>awaitable-receiver</i>::set_value</code> should use <i>Mandates</i> instead of constraints</td>
 <td>Yes</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td id="4329"><a href="lwg-active.html#4329" title="Customising affine_on for other algorithms (Status: New)">4329</a><sup><a href="https://cplusplus.github.io/LWG/issue4329">(i)</a></sup></td>
-<td><a href="lwg-active.html#New">New</a></td>
-<td>33.13.3 [exec.affine.on]</td>
-<td>Customising affine_on for other algorithms</td>
-<td><span class="no-pr">No</span></td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td id="4330"><a href="lwg-active.html#4330" title="affine_on semantics (Status: New)">4330</a><sup><a href="https://cplusplus.github.io/LWG/issue4330">(i)</a></sup></td>
-<td><a href="lwg-active.html#New">New</a></td>
-<td>33.13.3 [exec.affine.on]</td>
-<td><code>affine_on</code> semantics</td>
-<td><span class="no-pr">No</span></td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td id="4332"><a href="lwg-active.html#4332" title="affine_on shouldn't forward the stop token to the scheduling operation (Status: New)">4332</a><sup><a href="https://cplusplus.github.io/LWG/issue4332">(i)</a></sup></td>
-<td><a href="lwg-active.html#New">New</a></td>
-<td>33.13.3 [exec.affine.on]</td>
-<td><code>affine_on</code> shouldn't forward the stop token to the scheduling operation</td>
-<td><span class="no-pr">No</span></td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td id="4336"><a href="lwg-active.html#4336" title="bulk vs. task_scheduler (Status: New)">4336</a><sup><a href="https://cplusplus.github.io/LWG/issue4336">(i)</a></sup></td>
-<td><a href="lwg-active.html#New">New</a></td>
-<td>33.13.5 [exec.task.scheduler]</td>
-<td><code>bulk</code> vs. <code>task_scheduler</code></td>
-<td><span class="no-pr">No</span></td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td id="4338"><a href="lwg-active.html#4338" title="sender unaware coroutines should be able to co_await a task (Status: New)">4338</a><sup><a href="https://cplusplus.github.io/LWG/issue4338">(i)</a></sup></td>
-<td><a href="lwg-active.html#New">New</a></td>
-<td>33.13.6.2 [task.class]</td>
-<td>sender unaware coroutines should be able to <code>co_await</code> a <code>task</code></td>
-<td><span class="no-pr">No</span></td>
 <td></td>
 <td></td>
 </tr>
