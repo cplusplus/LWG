@@ -64,8 +64,8 @@
 <p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#New">New</a> status.</em></p>
 <h3 id="4207"><a href="lwg-active.html#4207">4207</a>. Point of reference for <code class='backtick'>source_location</code> is not specified when used in an default template argument</h3>
 <p><b>Section:</b> 17.8.2.2 <a href="https://wg21.link/support.srcloc.cons">[support.srcloc.cons]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Cassio Neri <b>Opened:</b> 2025-02-07 <b>Last modified:</b> 2025-02-24</p>
-<p><b>Priority: </b>Not Prioritized
+ <b>Submitter:</b> Cassio Neri <b>Opened:</b> 2025-02-07 <b>Last modified:</b> 2025-10-23</p>
+<p><b>Priority: </b>3
 </p>
 <p><b>View all other</b> <a href="lwg-index.html#support.srcloc.cons">issues</a> in [support.srcloc.cons].</p>
 <p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
@@ -106,6 +106,31 @@ and matches existing practice. Arguably, this doesn't need to be stated
 because it's just "exactly where the <code class='backtick'>current()</code> call appear in the source".
 The other cases in the Remarks paragraph are situations where the preferred
 location is different, because we want to know where it's used, not defined.
+</p>
+
+<p><i>[2025-10-23; Reflector poll.]</i></p>
+
+<p>
+Set priority to 3 after reflector poll.
+</p>
+<p>
+CWG <a href="https://cplusplus.github.io/CWG/issues/2631.html">2631</a>
+clarified the rules for immediate invocation for default function arguments
+and member initializers. We should consider rewriting <i>Remarks</i>
+to rely on that, and change most of the existing paragraph into normative
+note. Also use <i>Recommended practice</i> element, as this is normative
+recommendation.
+</p>
+<p>
+The cross reference to 11.4 <a href="https://wg21.link/class.mem">[class.mem]</a> should be changed to
+11.4.1 <a href="https://wg21.link/class.mem.general">[class.mem.general]</a>.
+</p>
+<p>
+The treatment of default template arguments is the subject of CWG
+<a href="https://cplusplus.github.io/CWG/issues/1635.html">1635</a>.
+An alternative design could be that <code class='backtick'>source_location</code> inside default template argument
+refers to point of use. It was noted that this does not reflect current behavior
+of compilers.
 </p>
 
 

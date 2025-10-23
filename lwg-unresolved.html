@@ -54,7 +54,7 @@
 </style>
 </head>
 <body>
-<p>Revised 2025-10-23 at 14:59:01 UTC
+<p>Revised 2025-10-23 at 15:49:53 UTC
 </p><h2>Unresolved Issues</h2>
 <hr>
 <h3 id="423"><a href="#423">423</a><sup><a href="https://cplusplus.github.io/LWG/issue423">(i)</a></sup>. Effects of negative <code>streamsize</code> in iostreams</h3>
@@ -54950,8 +54950,8 @@ C++ headers for C library facilities (Table 25) included in Table 27</ins>.
 <hr>
 <h3 id="4051"><a href="#4051">4051</a><sup><a href="https://cplusplus.github.io/LWG/issue4051">(i)</a></sup>. A less hacky and more useful way to compare comparison category types</h3>
 <p><b>Section:</b> 17.12.2 <a href="https://wg21.link/cmp.categories">[cmp.categories]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Corentin Jabot <b>Opened:</b> 2024-01-31 <b>Last modified:</b> 2024-02-04</p>
-<p><b>Priority: </b>Not Prioritized
+ <b>Submitter:</b> Corentin Jabot <b>Opened:</b> 2024-01-31 <b>Last modified:</b> 2025-10-23</p>
+<p><b>Priority: </b>3
 </p>
 <p><b>View all other</b> <a href="lwg-index.html#cmp.categories">issues</a> in [cmp.categories].</p>
 <p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
@@ -55007,6 +55007,32 @@ Related vendor issues:
 <p/>
 <a href="https://github.com/snitch-org/snitch/issues/140">snitch issue 140</a>
 </p>
+
+<p><i>[2025-10-23; Reflector poll.]</i></p>
+
+<p>
+Set priority to 3 after reflector poll.
+</p>
+<p>
+We should prefer rejecting the undefined expression at compile time,
+rather than leading to UB at runtime.
+</p>
+<p>
+There is implementation divergence for SFINAE checks between the standard
+library implementations. The <code class='backtick'>has_a_value(std::strong_ordering::equal)</code>
+is <code class='backtick'>false</code> for libstdc++, and <code class='backtick'>true</code> for libc++, MSVC:
+</p>
+<blockquote><pre>
+auto has_a_value(const auto&amp; t) {
+  if constexpr (requires { t.has_value(); }) {
+    return t.has_value();
+  } else if (constexpr (requires { t != nullptr; }) {
+    return t != nullptr;
+  } else {
+    return true;
+  }
+}
+</pre></blockquote>
 
 
 <p id="res-4051"><b>Proposed resolution:</b></p>
@@ -55527,12 +55553,12 @@ namespace std {
 
 <hr>
 <h3 id="4058"><a href="#4058">4058</a><sup><a href="https://cplusplus.github.io/LWG/issue4058">(i)</a></sup>. <code>std::to_address()</code> should be SFINAE-friendly</h3>
-<p><b>Section:</b> 20.2.4 <a href="https://wg21.link/pointer.conversion">[pointer.conversion]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Peter Kasting <b>Opened:</b> 2024-03-13 <b>Last modified:</b> 2024-03-15</p>
-<p><b>Priority: </b>Not Prioritized
+<p><b>Section:</b> 20.2.4 <a href="https://wg21.link/pointer.conversion">[pointer.conversion]</a> <b>Status:</b> <a href="lwg-active.html#LEWG">LEWG</a>
+ <b>Submitter:</b> Peter Kasting <b>Opened:</b> 2024-03-13 <b>Last modified:</b> 2025-10-23</p>
+<p><b>Priority: </b>3
 </p>
 <p><b>View all other</b> <a href="lwg-index.html#pointer.conversion">issues</a> in [pointer.conversion].</p>
-<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#LEWG">LEWG</a> status.</p>
 <p><b>Discussion:</b></p>
 <p>
 LWG <a href="lwg-defects.html#3545" title="std::pointer_traits should be SFINAE-friendly (Status: C++23)">3545</a><sup><a href="https://cplusplus.github.io/LWG/issue3545" title="Latest snapshot">(i)</a></sup> made <code>std::pointer_traits</code> SFINAE-friendly.
@@ -55557,6 +55583,15 @@ Thus any fix should not regress that unless LWG explicitly decides to do so.
 Also note that libc++'s current implementation of <code class='backtick'>to_address</code>,
 which is SFINAE-friendly,
 <a href="https://godbolt.org/z/e681Ynhf1">does not produce such a hard error</a>.
+</p>
+
+<p><i>[2025-10-23; Reflector poll; Status changed: New &rarr; LEWG and P3.]</i></p>
+
+<p>
+There is support for both having <code class='backtick'>std::to_address</code> SFINAE friendly,
+and producing hard error early, for iterators that define <code class='backtick'>iterator_concept</code>
+as contiguous but fail to satisfy the concept due to not providing <code class='backtick'>operator-&gt;()</code>.
+LEWG should decide on which direction is prefered.
 </p>
 
 
@@ -65065,8 +65100,8 @@ Modify 99 [exec.syn] as indicated:
 <hr>
 <h3 id="4207"><a href="#4207">4207</a><sup><a href="https://cplusplus.github.io/LWG/issue4207">(i)</a></sup>. Point of reference for <code class='backtick'>source_location</code> is not specified when used in an default template argument</h3>
 <p><b>Section:</b> 17.8.2.2 <a href="https://wg21.link/support.srcloc.cons">[support.srcloc.cons]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Cassio Neri <b>Opened:</b> 2025-02-07 <b>Last modified:</b> 2025-02-24</p>
-<p><b>Priority: </b>Not Prioritized
+ <b>Submitter:</b> Cassio Neri <b>Opened:</b> 2025-02-07 <b>Last modified:</b> 2025-10-23</p>
+<p><b>Priority: </b>3
 </p>
 <p><b>View all other</b> <a href="lwg-index.html#support.srcloc.cons">issues</a> in [support.srcloc.cons].</p>
 <p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
@@ -65107,6 +65142,31 @@ and matches existing practice. Arguably, this doesn't need to be stated
 because it's just "exactly where the <code class='backtick'>current()</code> call appear in the source".
 The other cases in the Remarks paragraph are situations where the preferred
 location is different, because we want to know where it's used, not defined.
+</p>
+
+<p><i>[2025-10-23; Reflector poll.]</i></p>
+
+<p>
+Set priority to 3 after reflector poll.
+</p>
+<p>
+CWG <a href="https://cplusplus.github.io/CWG/issues/2631.html">2631</a>
+clarified the rules for immediate invocation for default function arguments
+and member initializers. We should consider rewriting <i>Remarks</i>
+to rely on that, and change most of the existing paragraph into normative
+note. Also use <i>Recommended practice</i> element, as this is normative
+recommendation.
+</p>
+<p>
+The cross reference to 11.4 <a href="https://wg21.link/class.mem">[class.mem]</a> should be changed to
+11.4.1 <a href="https://wg21.link/class.mem.general">[class.mem.general]</a>.
+</p>
+<p>
+The treatment of default template arguments is the subject of CWG
+<a href="https://cplusplus.github.io/CWG/issues/1635.html">1635</a>.
+An alternative design could be that <code class='backtick'>source_location</code> inside default template argument
+refers to point of use. It was noted that this does not reflect current behavior
+of compilers.
 </p>
 
 
@@ -70603,8 +70663,8 @@ is not a core constant expression (7.7 <a href="https://wg21.link/expr.const">[e
 <hr>
 <h3 id="4283"><a href="#4283">4283</a><sup><a href="https://cplusplus.github.io/LWG/issue4283">(i)</a></sup>. <code class='backtick'>std::trivially_relocate</code> needs stronger preconditions on "nested" objects with dynamic lifetime</h3>
 <p><b>Section:</b> 20.2.6 <a href="https://wg21.link/obj.lifetime">[obj.lifetime]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Giuseppe D'Angelo <b>Opened:</b> 2025-06-23 <b>Last modified:</b> 2025-07-06</p>
-<p><b>Priority: </b>Not Prioritized
+ <b>Submitter:</b> Giuseppe D'Angelo <b>Opened:</b> 2025-06-23 <b>Last modified:</b> 2025-10-23</p>
+<p><b>Priority: </b>2
 </p>
 <p><b>View other</b> <a href="lwg-index-open.html#obj.lifetime">active issues</a> in [obj.lifetime].</p>
 <p><b>View all other</b> <a href="lwg-index.html#obj.lifetime">issues</a> in [obj.lifetime].</p>
@@ -70750,6 +70810,18 @@ it is implementation-defined whether the behavior is undefined.</ins>
 
 <p><i>[2025-07-01; Pablo and Giuseppe improve wording]</i></p>
 
+
+<p><i>[2025-10-23; Reflector poll.]</i></p>
+
+<p>
+Set priority to 2 after reflector poll.
+</p>
+<p>
+It is unclear if the wording covers objects that are nested
+within (but not subobjects) of relocated objects.
+For trivially-copyable objectes nested within char array
+members, they are recreated by-implicit object creation.
+</p>
 
 
 <p id="res-4283"><b>Proposed resolution:</b></p>
@@ -71600,8 +71672,8 @@ quantities <del>that depend on the</del><br/>
 <hr>
 <h3 id="4290"><a href="#4290">4290</a><sup><a href="https://cplusplus.github.io/LWG/issue4290">(i)</a></sup>. Missing <i>Mandates</i> clauses on <code class='backtick'>is_sufficiently_aligned</code></h3>
 <p><b>Section:</b> 20.2.5 <a href="https://wg21.link/ptr.align">[ptr.align]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Damien Lebrun-Grandie <b>Opened:</b> 2025-07-03 <b>Last modified:</b> 2025-07-06</p>
-<p><b>Priority: </b>Not Prioritized
+ <b>Submitter:</b> Damien Lebrun-Grandie <b>Opened:</b> 2025-07-03 <b>Last modified:</b> 2025-10-23</p>
+<p><b>Priority: </b>2
 </p>
 <p><b>View other</b> <a href="lwg-index-open.html#ptr.align">active issues</a> in [ptr.align].</p>
 <p><b>View all other</b> <a href="lwg-index.html#ptr.align">issues</a> in [ptr.align].</p>
@@ -71622,6 +71694,16 @@ class template which has these two <i>Mandates</i> clauses and therefore applied
 <p/>
 We propose to correct that oversight and reintroduce the following <i>Mandates</i> clauses right above 
 20.2.5 <a href="https://wg21.link/ptr.align">[ptr.align]</a> p10.
+</p>
+
+<p><i>[2025-10-23; Reflector poll.]</i></p>
+
+<p>
+Set priority to 2 after reflector poll.
+</p>
+<p>
+The <i>Mandates</i> of <code>Alignment &gt;= alignof(T)</code> was put into
+question, as being too restrictive for general purpose free function.
 </p>
 
 

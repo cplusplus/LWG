@@ -67,7 +67,7 @@
 This document is the Index by Status and Date for the <a href="lwg-active.html">Library Active Issues List</a>,
 <a href="lwg-defects.html">Library Defect Reports and Accepted Issues</a>, and <a href="lwg-closed.html">Library Closed Issues List</a>.
 </p>
-<p>Revised 2025-10-23 at 14:59:01 UTC
+<p>Revised 2025-10-23 at 15:49:53 UTC
 </p><h2 id="Ready">Ready (3 issues)</h2>
 <table class="issues-index">
 <tr>
@@ -886,7 +886,7 @@ complexity for algorithms that are in fact &#x1d4aa;(n)</td>
 <td></td>
 </tr>
 </table>
-<h2 id="New">New (548 issues)</h2>
+<h2 id="New">New (547 issues)</h2>
 <table class="issues-index">
 <tr>
   <th><a href="lwg-toc.html">Issue</a></th>
@@ -896,6 +896,42 @@ complexity for algorithms that are in fact &#x1d4aa;(n)</td>
   <th>Proposed Resolution</th>
   <th><a href="unresolved-prioritized.html">Priority</a></th>
   <th>Duplicates</th>
+</tr>
+<tr>
+<td id="4207"><a href="lwg-active.html#4207" title="Point of reference for source_location is not specified when used in an default template argument (Status: New)">4207</a><sup><a href="https://cplusplus.github.io/LWG/issue4207">(i)</a></sup></td>
+<td><a href="lwg-active.html#New">New</a></td>
+<td>17.8.2.2 [support.srcloc.cons]</td>
+<td>Point of reference for <code class='backtick'>source_location</code> is not specified when used in an default template argument</td>
+<td>Yes</td>
+<td>3</td>
+<td></td>
+</tr>
+<tr>
+<td id="4051"><a href="lwg-active.html#4051" title="A less hacky and more useful way to compare comparison category types (Status: New)">4051</a><sup><a href="https://cplusplus.github.io/LWG/issue4051">(i)</a></sup></td>
+<td><a href="lwg-active.html#New">New</a></td>
+<td>17.12.2 [cmp.categories]</td>
+<td>A less hacky and more useful way to compare comparison category types</td>
+<td>Yes</td>
+<td>3</td>
+<td></td>
+</tr>
+<tr>
+<td id="4290"><a href="lwg-active.html#4290" title="Missing Mandates clauses on is_sufficiently_aligned (Status: New)">4290</a><sup><a href="https://cplusplus.github.io/LWG/issue4290">(i)</a></sup></td>
+<td><a href="lwg-active.html#New">New</a></td>
+<td>20.2.5 [ptr.align]</td>
+<td>Missing <i>Mandates</i> clauses on <code class='backtick'>is_sufficiently_aligned</code></td>
+<td>Yes</td>
+<td>2</td>
+<td></td>
+</tr>
+<tr>
+<td id="4283"><a href="lwg-active.html#4283" title="std::trivially_relocate needs stronger preconditions on &quot;nested&quot; objects with dynamic lifetime (Status: New)">4283</a><sup><a href="https://cplusplus.github.io/LWG/issue4283">(i)</a></sup></td>
+<td><a href="lwg-active.html#New">New</a></td>
+<td>20.2.6 [obj.lifetime]</td>
+<td><code class='backtick'>std::trivially_relocate</code> needs stronger preconditions on "nested" objects with dynamic lifetime</td>
+<td>Yes</td>
+<td>2</td>
+<td></td>
 </tr>
 <tr>
 <td id="4422"><a href="lwg-active.html#4422" title="meta::access_context should be a consteval-only type (Status: New)">4422</a><sup><a href="https://cplusplus.github.io/LWG/issue4422">(i)</a></sup></td>
@@ -2058,24 +2094,6 @@ vprint_unicode/vprint_nonunicode (Status: New)">4039</a><sup><a href="https://cp
 <td></td>
 </tr>
 <tr>
-<td id="4290"><a href="lwg-active.html#4290" title="Missing Mandates clauses on is_sufficiently_aligned (Status: New)">4290</a><sup><a href="https://cplusplus.github.io/LWG/issue4290">(i)</a></sup></td>
-<td><a href="lwg-active.html#New">New</a></td>
-<td>20.2.5 [ptr.align]</td>
-<td>Missing <i>Mandates</i> clauses on <code class='backtick'>is_sufficiently_aligned</code></td>
-<td>Yes</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td id="4283"><a href="lwg-active.html#4283" title="std::trivially_relocate needs stronger preconditions on &quot;nested&quot; objects with dynamic lifetime (Status: New)">4283</a><sup><a href="https://cplusplus.github.io/LWG/issue4283">(i)</a></sup></td>
-<td><a href="lwg-active.html#New">New</a></td>
-<td>20.2.6 [obj.lifetime]</td>
-<td><code class='backtick'>std::trivially_relocate</code> needs stronger preconditions on "nested" objects with dynamic lifetime</td>
-<td>Yes</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
 <td id="3537"><a href="lwg-active.html#3537" title="&sect;[iterator.range] Missing noexcept for std::rbegin/rend for arrays and 
 initializer_list (Status: New)">3537</a><sup><a href="https://cplusplus.github.io/LWG/issue3537">(i)</a></sup></td>
 <td><a href="lwg-active.html#New">New</a></td>
@@ -2248,15 +2266,6 @@ max, and minmax is unclear (Status: New)">4167</a><sup><a href="https://cplusplu
 <td><code>ranges::to</code> <code>reserve</code>s the wrong size</td>
 <td>Yes</td>
 <td>4</td>
-<td></td>
-</tr>
-<tr>
-<td id="4207"><a href="lwg-active.html#4207" title="Point of reference for source_location is not specified when used in an default template argument (Status: New)">4207</a><sup><a href="https://cplusplus.github.io/LWG/issue4207">(i)</a></sup></td>
-<td><a href="lwg-active.html#New">New</a></td>
-<td>17.8.2.2 [support.srcloc.cons]</td>
-<td>Point of reference for <code class='backtick'>source_location</code> is not specified when used in an default template argument</td>
-<td>Yes</td>
-<td></td>
 <td></td>
 </tr>
 <tr>
@@ -3013,15 +3022,6 @@ forward_iterator (Status: New)">4120</a><sup><a href="https://cplusplus.github.i
 <td></td>
 </tr>
 <tr>
-<td id="4058"><a href="lwg-active.html#4058" title="std::to_address() should be SFINAE-friendly (Status: New)">4058</a><sup><a href="https://cplusplus.github.io/LWG/issue4058">(i)</a></sup></td>
-<td><a href="lwg-active.html#New">New</a></td>
-<td>20.2.4 [pointer.conversion]</td>
-<td><code>std::to_address()</code> should be SFINAE-friendly</td>
-<td>Yes</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
 <td id="4032"><a href="lwg-active.html#4032" title="Possibly invalid types in the constraints of constructors of std::shared_ptr (Status: New)">4032</a><sup><a href="https://cplusplus.github.io/LWG/issue4032">(i)</a></sup></td>
 <td><a href="lwg-active.html#New">New</a></td>
 <td>20.3.2.2.2 [util.smartptr.shared.const]</td>
@@ -3165,15 +3165,6 @@ is a non-move-constructible range</td>
 <td>Constants in <code>std::regex_constants</code> should be allowed to be enumerators</td>
 <td><span class="no-pr">No</span></td>
 <td>3</td>
-<td></td>
-</tr>
-<tr>
-<td id="4051"><a href="lwg-active.html#4051" title="A less hacky and more useful way to compare comparison category types (Status: New)">4051</a><sup><a href="https://cplusplus.github.io/LWG/issue4051">(i)</a></sup></td>
-<td><a href="lwg-active.html#New">New</a></td>
-<td>17.12.2 [cmp.categories]</td>
-<td>A less hacky and more useful way to compare comparison category types</td>
-<td>Yes</td>
-<td></td>
 <td></td>
 </tr>
 <tr>
@@ -6683,7 +6674,7 @@ the evaluation of type traits</td>
 <td></td>
 </tr>
 </table>
-<h2 id="LEWG">LEWG (41 issues)</h2>
+<h2 id="LEWG">LEWG (42 issues)</h2>
 <table class="issues-index">
 <tr>
   <th><a href="lwg-toc.html">Issue</a></th>
@@ -6693,6 +6684,15 @@ the evaluation of type traits</td>
   <th>Proposed Resolution</th>
   <th><a href="unresolved-prioritized.html">Priority</a></th>
   <th>Duplicates</th>
+</tr>
+<tr>
+<td id="4058"><a href="lwg-active.html#4058" title="std::to_address() should be SFINAE-friendly (Status: LEWG)">4058</a><sup><a href="https://cplusplus.github.io/LWG/issue4058">(i)</a></sup></td>
+<td><a href="lwg-active.html#LEWG">LEWG</a></td>
+<td>20.2.4 [pointer.conversion]</td>
+<td><code>std::to_address()</code> should be SFINAE-friendly</td>
+<td>Yes</td>
+<td>3</td>
+<td></td>
 </tr>
 <tr>
 <td id="4401"><a href="lwg-active.html#4401" title="join_view should be sized_range when applied to ranges of simd::vec (Status: LEWG)">4401</a><sup><a href="https://cplusplus.github.io/LWG/issue4401">(i)</a></sup></td>

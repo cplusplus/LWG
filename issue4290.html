@@ -64,8 +64,8 @@
 <p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#New">New</a> status.</em></p>
 <h3 id="4290"><a href="lwg-active.html#4290">4290</a>. Missing <i>Mandates</i> clauses on <code class='backtick'>is_sufficiently_aligned</code></h3>
 <p><b>Section:</b> 20.2.5 <a href="https://wg21.link/ptr.align">[ptr.align]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Damien Lebrun-Grandie <b>Opened:</b> 2025-07-03 <b>Last modified:</b> 2025-07-06</p>
-<p><b>Priority: </b>Not Prioritized
+ <b>Submitter:</b> Damien Lebrun-Grandie <b>Opened:</b> 2025-07-03 <b>Last modified:</b> 2025-10-23</p>
+<p><b>Priority: </b>2
 </p>
 <p><b>View other</b> <a href="lwg-index-open.html#ptr.align">active issues</a> in [ptr.align].</p>
 <p><b>View all other</b> <a href="lwg-index.html#ptr.align">issues</a> in [ptr.align].</p>
@@ -86,6 +86,16 @@ class template which has these two <i>Mandates</i> clauses and therefore applied
 <p/>
 We propose to correct that oversight and reintroduce the following <i>Mandates</i> clauses right above 
 20.2.5 <a href="https://wg21.link/ptr.align">[ptr.align]</a> p10.
+</p>
+
+<p><i>[2025-10-23; Reflector poll.]</i></p>
+
+<p>
+Set priority to 2 after reflector poll.
+</p>
+<p>
+The <i>Mandates</i> of <code>Alignment &gt;= alignof(T)</code> was put into
+question, as being too restrictive for general purpose free function.
 </p>
 
 

@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <title>Issue 4058: std::to_address() should be SFINAE-friendly</title>
 <meta property="og:title" content="Issue 4058: std::to_address() should be SFINAE-friendly">
-<meta property="og:description" content="C++ library issue. Status: New">
+<meta property="og:description" content="C++ library issue. Status: LEWG">
 <meta property="og:url" content="https://cplusplus.github.io/LWG/issue4058.html">
 <meta property="og:type" content="website">
 <meta property="og:image" content="http://cplusplus.github.io/LWG/images/cpp_logo.png">
@@ -61,14 +61,14 @@
 </head>
 <body>
 <hr>
-<p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#New">New</a> status.</em></p>
+<p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#LEWG">LEWG</a> status.</em></p>
 <h3 id="4058"><a href="lwg-active.html#4058">4058</a>. <code>std::to_address()</code> should be SFINAE-friendly</h3>
-<p><b>Section:</b> 20.2.4 <a href="https://wg21.link/pointer.conversion">[pointer.conversion]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Peter Kasting <b>Opened:</b> 2024-03-13 <b>Last modified:</b> 2024-03-15</p>
-<p><b>Priority: </b>Not Prioritized
+<p><b>Section:</b> 20.2.4 <a href="https://wg21.link/pointer.conversion">[pointer.conversion]</a> <b>Status:</b> <a href="lwg-active.html#LEWG">LEWG</a>
+ <b>Submitter:</b> Peter Kasting <b>Opened:</b> 2024-03-13 <b>Last modified:</b> 2025-10-23</p>
+<p><b>Priority: </b>3
 </p>
 <p><b>View all other</b> <a href="lwg-index.html#pointer.conversion">issues</a> in [pointer.conversion].</p>
-<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#LEWG">LEWG</a> status.</p>
 <p><b>Discussion:</b></p>
 <p>
 LWG <a href="lwg-defects.html#3545" title="std::pointer_traits should be SFINAE-friendly (Status: C++23)">3545</a><sup><a href="https://cplusplus.github.io/LWG/issue3545" title="Latest snapshot">(i)</a></sup> made <code>std::pointer_traits</code> SFINAE-friendly.
@@ -93,6 +93,15 @@ Thus any fix should not regress that unless LWG explicitly decides to do so.
 Also note that libc++'s current implementation of <code class='backtick'>to_address</code>,
 which is SFINAE-friendly,
 <a href="https://godbolt.org/z/e681Ynhf1">does not produce such a hard error</a>.
+</p>
+
+<p><i>[2025-10-23; Reflector poll; Status changed: New &rarr; LEWG and P3.]</i></p>
+
+<p>
+There is support for both having <code class='backtick'>std::to_address</code> SFINAE friendly,
+and producing hard error early, for iterators that define <code class='backtick'>iterator_concept</code>
+as contiguous but fail to satisfy the concept due to not providing <code class='backtick'>operator-&gt;()</code>.
+LEWG should decide on which direction is prefered.
 </p>
 
 

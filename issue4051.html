@@ -64,8 +64,8 @@
 <p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#New">New</a> status.</em></p>
 <h3 id="4051"><a href="lwg-active.html#4051">4051</a>. A less hacky and more useful way to compare comparison category types</h3>
 <p><b>Section:</b> 17.12.2 <a href="https://wg21.link/cmp.categories">[cmp.categories]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Corentin Jabot <b>Opened:</b> 2024-01-31 <b>Last modified:</b> 2024-02-04</p>
-<p><b>Priority: </b>Not Prioritized
+ <b>Submitter:</b> Corentin Jabot <b>Opened:</b> 2024-01-31 <b>Last modified:</b> 2025-10-23</p>
+<p><b>Priority: </b>3
 </p>
 <p><b>View all other</b> <a href="lwg-index.html#cmp.categories">issues</a> in [cmp.categories].</p>
 <p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
@@ -121,6 +121,32 @@ Related vendor issues:
 <p/>
 <a href="https://github.com/snitch-org/snitch/issues/140">snitch issue 140</a>
 </p>
+
+<p><i>[2025-10-23; Reflector poll.]</i></p>
+
+<p>
+Set priority to 3 after reflector poll.
+</p>
+<p>
+We should prefer rejecting the undefined expression at compile time,
+rather than leading to UB at runtime.
+</p>
+<p>
+There is implementation divergence for SFINAE checks between the standard
+library implementations. The <code class='backtick'>has_a_value(std::strong_ordering::equal)</code>
+is <code class='backtick'>false</code> for libstdc++, and <code class='backtick'>true</code> for libc++, MSVC:
+</p>
+<blockquote><pre>
+auto has_a_value(const auto&amp; t) {
+  if constexpr (requires { t.has_value(); }) {
+    return t.has_value();
+  } else if (constexpr (requires { t != nullptr; }) {
+    return t != nullptr;
+  } else {
+    return true;
+  }
+}
+</pre></blockquote>
 
 
 <p id="res-4051"><b>Proposed resolution:</b></p>
