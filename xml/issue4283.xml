@@ -8,7 +8,7 @@
 </section>
 <submitter>Giuseppe D'Angelo</submitter>
 <date>23 Jun 2025</date>
-<priority>99</priority>
+<priority>2</priority>
 
 <discussion>
 <p>
@@ -148,6 +148,17 @@ it is implementation-defined whether the behavior is undefined.</ins>
 </superseded>
 
 <note>2025-07-01; Pablo and Giuseppe improve wording</note>
+
+<note>2025-10-23; Reflector poll.</note>
+<p>
+Set priority to 2 after reflector poll.
+</p>
+<p>
+It is unclear if the wording covers objects that are nested
+within (but not subobjects) of relocated objects.
+For trivially-copyable objectes nested within char array
+members, they are recreated by-implicit object creation.
+</p>
 </discussion>
 
 <resolution>
