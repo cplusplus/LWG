@@ -67,7 +67,7 @@ incorrectly constrained for &lt;stdfloat&gt; types">
 <h3 id="4420"><a href="lwg-active.html#4420">4420</a>. &sect;[simd] conversions (constructor, load, stores, gather, and scatter) are
 incorrectly constrained for <code>&lt;stdfloat&gt;</code> types</h3>
 <p><b>Section:</b> 29.10 <a href="https://wg21.link/simd">[simd]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Matthias Kretz <b>Opened:</b> 2025-10-15 <b>Last modified:</b> 2025-10-22</p>
+ <b>Submitter:</b> Matthias Kretz <b>Opened:</b> 2025-10-15 <b>Last modified:</b> 2025-10-23</p>
 <p><b>Priority: </b>1
 </p>
 <p><b>View other</b> <a href="lwg-index-open.html#simd">active issues</a> in [simd].</p>
@@ -122,6 +122,10 @@ to <code class='backtick'>float</code> should do, so it needs to be added (again
 <p/>
 29.10.8.11 <a href="https://wg21.link/simd.permute.memory">[simd.permute.memory]</a> is analogous to 29.10.8.7 <a href="https://wg21.link/simd.loadstore">[simd.loadstore]</a> and needs 
 equivalent constraints.
+<p/>
+29.10.7.2 <a href="https://wg21.link/simd.ctor">[simd.ctor]</a> p2 requires <code>constructible_from&lt;U&gt;</code>, which makes explicit
+construction of <code>vec&lt;float16_t&gt;</code> from <code class='backtick'>float</code> ill-formed. For consistency this
+should also be constrained with <code><i>explicitly-convertible-to</i></code>.
 </p>
 
 <p><i>[2025-10-22; Reflector poll.]</i></p>
@@ -320,6 +324,18 @@ template&lt;class T, class Abi, contiguous_iterator I, sized_sentinel_for&lt;I&g
 <li><p>Modify 29.10.7.2 <a href="https://wg21.link/simd.ctor">[simd.ctor]</a> as indicated:</p>
 
 <blockquote>
+<pre>
+template&lt;class U&gt; constexpr explicit(<i>see below</i>) basic_vec(U&amp;&amp; value) noexcept;
+</pre>
+<blockquote>
+<p>
+-1- Let <code class='backtick'>From</code> denote the type <code>remove_cvref_t&lt;U&gt;</code>.
+<p/>
+-2- <i>Constraints</i>: <code><del>value_type</del><ins>U</ins></code> satisfies 
+<code><del>constructible_from&lt;U&gt;</del><ins><i>explicitly-convertible-to</i>&lt;value_type&gt;</ins></code>.
+</p>
+[&hellip;]
+</blockquote>
 <pre>
 template&lt;class U, class UAbi&gt;
   constexpr explicit(<i>see below</i>) basic_vec(const basic_vec&lt;U, UAbi&gt;&amp; x) noexcept;
