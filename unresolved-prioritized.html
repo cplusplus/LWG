@@ -60,7 +60,7 @@
 <p>This document is the Table of Contents for the <a href="lwg-active.html">Library Active Issues List</a>,
 <a href="lwg-defects.html">Library Defect Reports and Accepted Issues</a>, and <a href="lwg-closed.html">Library Closed Issues List</a>,
 sorted by priority.</p>
-<p>Revised 2025-10-23 at 11:09:15 UTC
+<p>Revised 2025-10-23 at 11:15:58 UTC
 </p><h2 id="Priority_1">Priority 1 (16 issues)</h2>
 <table class="issues-index">
 <tr>
@@ -221,7 +221,7 @@ incorrectly constrained for <code>&lt;stdfloat&gt;</code> types</td>
 <td></td>
 </tr>
 </table>
-<h2 id="Priority_2">Priority 2 (84 issues)</h2>
+<h2 id="Priority_2">Priority 2 (85 issues)</h2>
 <table class="issues-index">
 <tr>
   <th><a href="lwg-toc.html">Issue</a></th>
@@ -667,6 +667,15 @@ incorrectly constrained for <code>&lt;stdfloat&gt;</code> types</td>
 <td></td>
 </tr>
 <tr>
+<td id="4418"><a href="lwg-active.html#4418" title="co_yield elements_of(vector&lt;int&gt;()) does not compile (Status: New)">4418</a><sup><a href="https://cplusplus.github.io/LWG/issue4418">(i)</a></sup></td>
+<td><a href="lwg-active.html#New">New</a></td>
+<td>25.8.5 [coro.generator.promise]</td>
+<td><code>co_yield elements_of(vector&lt;int&gt;())</code> does not compile</td>
+<td>Yes</td>
+<td>2</td>
+<td></td>
+</tr>
+<tr>
 <td id="3060"><a href="lwg-active.html#3060" title="XXX_scan algorithms are specified to work with move-only T, but are 
 specified to make N copies of T into the destination range (Status: New)">3060</a><sup><a href="https://cplusplus.github.io/LWG/issue3060">(i)</a></sup></td>
 <td><a href="lwg-active.html#New">New</a></td>
@@ -993,7 +1002,7 @@ specified to make <code><i>N</i></code> copies of <code>T</code> into the destin
 <td></td>
 </tr>
 </table>
-<h2 id="Priority_3">Priority 3 (450 issues)</h2>
+<h2 id="Priority_3">Priority 3 (452 issues)</h2>
 <table class="issues-index">
 <tr>
   <th><a href="lwg-toc.html">Issue</a></th>
@@ -3590,6 +3599,15 @@ inner-iterator with std::default_sentinel results in null pointer dereference (S
 <td></td>
 </tr>
 <tr>
+<td id="4241"><a href="lwg-active.html#4241" title="ranges::for_each(_n) should be less constrained (Status: LEWG)">4241</a><sup><a href="https://cplusplus.github.io/LWG/issue4241">(i)</a></sup></td>
+<td><a href="lwg-active.html#LEWG">LEWG</a></td>
+<td>26.6.5 [alg.foreach]</td>
+<td><code class='backtick'>ranges::for_each(_n)</code> should be less constrained</td>
+<td>Yes</td>
+<td>3</td>
+<td></td>
+</tr>
+<tr>
 <td id="3969"><a href="lwg-active.html#3969" title="std::ranges::fold_left_first_with_iter should be more ADL-proof (Status: New)">3969</a><sup><a href="https://cplusplus.github.io/LWG/issue3969">(i)</a></sup></td>
 <td><a href="lwg-active.html#New">New</a></td>
 <td>26.6.18 [alg.fold]</td>
@@ -3889,6 +3907,15 @@ not copy) their predicate object</td>
 <td>27.5 [c.strings]</td>
 <td>Problematic iterator-pair constructor of containers</td>
 <td><span class="no-pr">No</span></td>
+<td>3</td>
+<td></td>
+</tr>
+<tr>
+<td id="4421"><a href="lwg-active.html#4421" title="Clarify the output encoding of to_chars for integers (Status: New)">4421</a><sup><a href="https://cplusplus.github.io/LWG/issue4421">(i)</a></sup></td>
+<td><a href="lwg-active.html#New">New</a></td>
+<td>28.2.2 [charconv.to.chars]</td>
+<td>Clarify the output encoding of <code class='backtick'>to_chars</code> for integers</td>
+<td>Yes</td>
 <td>3</td>
 <td></td>
 </tr>
@@ -5111,7 +5138,7 @@ don't support <code>DynamicBuffer</code> lvalues</td>
 <td></td>
 </tr>
 </table>
-<h2 id="Priority_4">Priority 4 (108 issues)</h2>
+<h2 id="Priority_4">Priority 4 (109 issues)</h2>
 <table class="issues-index">
 <tr>
   <th><a href="lwg-toc.html">Issue</a></th>
@@ -5914,6 +5941,15 @@ vprint_unicode/vprint_nonunicode (Status: New)">4039</a><sup><a href="https://cp
 <td></td>
 </tr>
 <tr>
+<td id="4310"><a href="lwg-active.html#4310" title="Is &quot;the completion of the invocation of the constructor&quot; considered as an expression? (Status: Core)">4310</a><sup><a href="https://cplusplus.github.io/LWG/issue4310">(i)</a></sup></td>
+<td><a href="lwg-active.html#Core">Core</a></td>
+<td>32.4.3.3 [thread.thread.constr]</td>
+<td>Is "the completion of the invocation of the constructor" considered as an expression?</td>
+<td><span class="no-pr">No</span></td>
+<td>4</td>
+<td></td>
+</tr>
+<tr>
 <td id="2236"><a href="lwg-active.html#2236" title="kill_dependency unconditionally noexcept (Status: SG1)">2236</a><sup><a href="https://cplusplus.github.io/LWG/issue2236">(i)</a></sup></td>
 <td><a href="lwg-active.html#SG1">SG1</a></td>
 <td>32.5.2 [atomics.syn]</td>
@@ -6103,7 +6139,7 @@ vprint_unicode/vprint_nonunicode (Status: New)">4039</a><sup><a href="https://cp
 <td></td>
 </tr>
 </table>
-<h2 id="Priority_99">Not Prioritized (39 issues)</h2>
+<h2 id="Priority_99">Not Prioritized (31 issues)</h2>
 <table class="issues-index">
 <tr>
   <th><a href="lwg-toc.html">Issue</a></th>
@@ -6214,42 +6250,6 @@ vprint_unicode/vprint_nonunicode (Status: New)">4039</a><sup><a href="https://cp
 <td></td>
 </tr>
 <tr>
-<td id="4418"><a href="lwg-active.html#4418" title="co_yield elements_of(vector&lt;int&gt;()) does not compile (Status: New)">4418</a><sup><a href="https://cplusplus.github.io/LWG/issue4418">(i)</a></sup></td>
-<td><a href="lwg-active.html#New">New</a></td>
-<td>25.8.5 [coro.generator.promise]</td>
-<td><code>co_yield elements_of(vector&lt;int&gt;())</code> does not compile</td>
-<td>Yes</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td id="4241"><a href="lwg-active.html#4241" title="ranges::for_each(_n) should be less constrained (Status: New)">4241</a><sup><a href="https://cplusplus.github.io/LWG/issue4241">(i)</a></sup></td>
-<td><a href="lwg-active.html#New">New</a></td>
-<td>26.6.5 [alg.foreach]</td>
-<td><code class='backtick'>ranges::for_each(_n)</code> should be less constrained</td>
-<td>Yes</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td id="4421"><a href="lwg-active.html#4421" title="Clarify the output encoding of to_chars for integers (Status: New)">4421</a><sup><a href="https://cplusplus.github.io/LWG/issue4421">(i)</a></sup></td>
-<td><a href="lwg-active.html#New">New</a></td>
-<td>28.2.2 [charconv.to.chars]</td>
-<td>Clarify the output encoding of <code class='backtick'>to_chars</code> for integers</td>
-<td>Yes</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td id="4136"><a href="lwg-active.html#4136" title="Specify behavior of [linalg] Hermitian algorithms on diagonal with nonzero imaginary part (Status: New)">4136</a><sup><a href="https://cplusplus.github.io/LWG/issue4136">(i)</a></sup></td>
-<td><a href="lwg-active.html#New">New</a></td>
-<td>29.9.3 [linalg.general]</td>
-<td>Specify behavior of [linalg] Hermitian algorithms on diagonal with nonzero imaginary part</td>
-<td>Yes</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
 <td id="4414"><a href="lwg-active.html#4414" title="&sect;[simd.traits] rebind and resize reference a type member that doesn't exist (Status: New)">4414</a><sup><a href="https://cplusplus.github.io/LWG/issue4414">(i)</a></sup></td>
 <td><a href="lwg-active.html#New">New</a></td>
 <td>29.10.4 [simd.traits]</td>
@@ -6266,42 +6266,6 @@ vprint_unicode/vprint_nonunicode (Status: New)">4039</a><sup><a href="https://cp
 <td>The <code>simd::basic_mask(bool)</code> overload needs to be more constrained
 </td>
 <td>Yes</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td id="3992"><a href="lwg-active.html#3992" title="basic_stringbuf::str()&amp;&amp; should enforce &#x1d4aa;(1) (Status: New)">3992</a><sup><a href="https://cplusplus.github.io/LWG/issue3992">(i)</a></sup></td>
-<td><a href="lwg-active.html#New">New</a></td>
-<td>31.8.2.4 [stringbuf.members]</td>
-<td><code>basic_stringbuf::str()&amp;&amp;</code> should enforce &#x1d4aa;(1)</td>
-<td>Yes</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td id="4310"><a href="lwg-active.html#4310" title="Is &quot;the completion of the invocation of the constructor&quot; considered as an expression? (Status: New)">4310</a><sup><a href="https://cplusplus.github.io/LWG/issue4310">(i)</a></sup></td>
-<td><a href="lwg-active.html#New">New</a></td>
-<td>32.4.3.3 [thread.thread.constr]</td>
-<td>Is "the completion of the invocation of the constructor" considered as an expression?</td>
-<td><span class="no-pr">No</span></td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td id="4309"><a href="lwg-active.html#4309" title="How are two seq_cst operations ordered in the single total order if these two operations are unsequenced? (Status: New)">4309</a><sup><a href="https://cplusplus.github.io/LWG/issue4309">(i)</a></sup></td>
-<td><a href="lwg-active.html#New">New</a></td>
-<td>32.5.4 [atomics.order]</td>
-<td>How are two <code class='backtick'>seq_cst</code> operations ordered in the single total order if these two operations are unsequenced?</td>
-<td><span class="no-pr">No</span></td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td id="4321"><a href="lwg-active.html#4321" title="How are evaluations occurring within a store and a load operation ordered where the store synchronized with the load (Status: New)">4321</a><sup><a href="https://cplusplus.github.io/LWG/issue4321">(i)</a></sup></td>
-<td><a href="lwg-active.html#New">New</a></td>
-<td>32.5.8.2 [atomics.types.operations]</td>
-<td>How are evaluations occurring within a store and a load operation ordered where the store synchronized with the load</td>
-<td><span class="no-pr">No</span></td>
 <td></td>
 <td></td>
 </tr>

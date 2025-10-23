@@ -64,8 +64,8 @@
 <p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#New">New</a> status.</em></p>
 <h3 id="4418"><a href="lwg-active.html#4418">4418</a>. <code>co_yield elements_of(vector&lt;int&gt;())</code> does not compile</h3>
 <p><b>Section:</b> 25.8.5 <a href="https://wg21.link/coro.generator.promise">[coro.generator.promise]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Mathias Stearn <b>Opened:</b> 2025-10-16 <b>Last modified:</b> 2025-10-19</p>
-<p><b>Priority: </b>Not Prioritized
+ <b>Submitter:</b> Mathias Stearn <b>Opened:</b> 2025-10-16 <b>Last modified:</b> 2025-10-23</p>
+<p><b>Priority: </b>2
 </p>
 <p><b>View all other</b> <a href="lwg-index.html#coro.generator.promise">issues</a> in [coro.generator.promise].</p>
 <p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
@@ -114,6 +114,31 @@ reference type to <code>T&amp;&amp;</code>. However, when making the change, I a
 it had on the <code class='backtick'>elements_of</code>-non-generator overload of <code class='backtick'>yield_value</code> was not considered, so it was 
 unmodified. 
 </p>
+
+<p><i>[2025-10-23; Reflector poll.]</i></p>
+
+<p>
+Set priority to 2 after reflector poll.
+</p>
+<p>
+The current resolution is incorrect, and breaks following example:
+</p>
+<blockquote><pre>
+std::generator&lt;std::vector&lt;int&gt;&gt; g()
+{
+  std::vector&lt;int&gt; v = {1, 2, 3};
+  co_yield std::ranges::elements_of(v);
+} 	
+</pre></blockquote>
+<p>
+The constraints are equivalent to checking if <code class='backtick'>yield_value(*it)</code> is well-formed,
+and maybe we could express is directly as:
+</p>
+<blockquote><pre>
+requires requires (promise_type p, ranges::iterator_t&lt;R&gt; it) {
+    p.yield_value(*it);
+}
+</pre></blockquote>
 
 
 <p id="res-4418"><b>Proposed resolution:</b></p>

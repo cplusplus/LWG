@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <title>Issue 4310: Is "the completion of the invocation of the constructor" considered as an expression?</title>
 <meta property="og:title" content="Issue 4310: Is &quot;the completion of the invocation of the constructor&quot; considered as an expression?">
-<meta property="og:description" content="C++ library issue. Status: New">
+<meta property="og:description" content="C++ library issue. Status: Core">
 <meta property="og:url" content="https://cplusplus.github.io/LWG/issue4310.html">
 <meta property="og:type" content="website">
 <meta property="og:image" content="http://cplusplus.github.io/LWG/images/cpp_logo.png">
@@ -61,15 +61,15 @@
 </head>
 <body>
 <hr>
-<p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#New">New</a> status.</em></p>
+<p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#Core">Core</a> status.</em></p>
 <h3 id="4310"><a href="lwg-active.html#4310">4310</a>. Is "the completion of the invocation of the constructor" considered as an expression?</h3>
-<p><b>Section:</b> 32.4.3.3 <a href="https://wg21.link/thread.thread.constr">[thread.thread.constr]</a>, 32.4.3.6 <a href="https://wg21.link/thread.thread.member">[thread.thread.member]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> jim x <b>Opened:</b> 2025-08-06 <b>Last modified:</b> 2025-08-09</p>
-<p><b>Priority: </b>Not Prioritized
+<p><b>Section:</b> 32.4.3.3 <a href="https://wg21.link/thread.thread.constr">[thread.thread.constr]</a>, 32.4.3.6 <a href="https://wg21.link/thread.thread.member">[thread.thread.member]</a> <b>Status:</b> <a href="lwg-active.html#Core">Core</a>
+ <b>Submitter:</b> jim x <b>Opened:</b> 2025-08-06 <b>Last modified:</b> 2025-10-23</p>
+<p><b>Priority: </b>4
 </p>
 <p><b>View other</b> <a href="lwg-index-open.html#thread.thread.constr">active issues</a> in [thread.thread.constr].</p>
 <p><b>View all other</b> <a href="lwg-index.html#thread.thread.constr">issues</a> in [thread.thread.constr].</p>
-<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#Core">Core</a> status.</p>
 <p><b>Discussion:</b></p>
 <p>
 32.4.3.3 <a href="https://wg21.link/thread.thread.constr">[thread.thread.constr]</a> p6 says
@@ -110,6 +110,12 @@ The similar issue is 32.4.3.6 <a href="https://wg21.link/thread.thread.member">[
 The completion of the thread represented by <code class='backtick'>*this</code> synchronizes with (6.10.2 <a href="https://wg21.link/intro.multithread">[intro.multithread]</a>) 
 the corresponding successful <code class='backtick'>join()</code> return.
 </p></blockquote>
+
+<p><i>[2025-10-23; Reflector poll; Status changed: New &rarr; Core and P4.]</i></p>
+
+<p>
+P4 at best. Sentiment towards NAD.
+</p>
 
 
 <p id="res-4310"><b>Proposed resolution:</b></p>

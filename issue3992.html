@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <title>Issue 3992: basic_stringbuf::str()&amp;&amp; should enforce &#x1d4aa;(1)</title>
 <meta property="og:title" content="Issue 3992: basic_stringbuf::str()&amp;&amp; should enforce &#x1d4aa;(1)">
-<meta property="og:description" content="C++ library issue. Status: New">
+<meta property="og:description" content="C++ library issue. Status: Tentatively NAD">
 <meta property="og:url" content="https://cplusplus.github.io/LWG/issue3992.html">
 <meta property="og:type" content="website">
 <meta property="og:image" content="http://cplusplus.github.io/LWG/images/cpp_logo.png">
@@ -61,14 +61,14 @@
 </head>
 <body>
 <hr>
-<p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#New">New</a> status.</em></p>
+<p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#NAD">Tentatively NAD</a> status.</em></p>
 <h3 id="3992"><a href="lwg-active.html#3992">3992</a>. <code>basic_stringbuf::str()&amp;&amp;</code> should enforce &#x1d4aa;(1)</h3>
-<p><b>Section:</b> 31.8.2.4 <a href="https://wg21.link/stringbuf.members">[stringbuf.members]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Peter Sommerlad <b>Opened:</b> 2023-10-05 <b>Last modified:</b> 2023-10-14</p>
-<p><b>Priority: </b>Not Prioritized
+<p><b>Section:</b> 31.8.2.4 <a href="https://wg21.link/stringbuf.members">[stringbuf.members]</a> <b>Status:</b> <a href="lwg-active.html#NAD">Tentatively NAD</a>
+ <b>Submitter:</b> Peter Sommerlad <b>Opened:</b> 2023-10-05 <b>Last modified:</b> 2025-10-23</p>
+<p><b>Priority: </b>4
 </p>
 <p><b>View all other</b> <a href="lwg-index.html#stringbuf.members">issues</a> in [stringbuf.members].</p>
-<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#Tentatively NAD">Tentatively NAD</a> status.</p>
 <p><b>Discussion:</b></p>
 <p>
 Recent discussions on <a href="https://github.com/llvm/llvm-project/issues/64644">llvm-64644</a>
@@ -90,6 +90,12 @@ Unfortunately, we cannot say
 </p></blockquote>
 <p>
 as a postcondition due to SSO. Maybe a note could be added to eliminate the confusion.
+</p>
+
+<p><i>[2025-10-23; Reflector poll; Status changed: New &rarr; LEWG and P3.]</i></p>
+
+<p>
+The requirements are already implied, and proposed wording has no effect.
 </p>
 
 

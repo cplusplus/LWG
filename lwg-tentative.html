@@ -54,7 +54,7 @@
 </style>
 </head>
 <body>
-<p>Revised 2025-10-23 at 11:09:15 UTC
+<p>Revised 2025-10-23 at 11:15:58 UTC
 </p><h2>Tentative Issues</h2>
 <hr>
 <h3 id="3627"><a href="#3627">3627</a><sup><a href="https://cplusplus.github.io/LWG/issue3627">(i)</a></sup>. Inconsistent specifications for <code>std::make_optional</code> overloads</h3>
@@ -697,6 +697,81 @@ is <code>true</code> if and only if <code>T</code> has exactly one public base c
 <code>T</code> has no base classes of type <code>view_interface&lt;<ins>U</ins><del>V</del>&gt;</code> for any
 other type <code><ins>U</ins><del>V</del></code>.
 <p/>
+</p>
+</blockquote>
+</blockquote>
+
+</li>
+
+</ol>
+
+
+
+
+
+<hr>
+<h3 id="3992"><a href="#3992">3992</a><sup><a href="https://cplusplus.github.io/LWG/issue3992">(i)</a></sup>. <code>basic_stringbuf::str()&amp;&amp;</code> should enforce &#x1d4aa;(1)</h3>
+<p><b>Section:</b> 31.8.2.4 <a href="https://wg21.link/stringbuf.members">[stringbuf.members]</a> <b>Status:</b> <a href="lwg-active.html#NAD">Tentatively NAD</a>
+ <b>Submitter:</b> Peter Sommerlad <b>Opened:</b> 2023-10-05 <b>Last modified:</b> 2025-10-23</p>
+<p><b>Priority: </b>4
+</p>
+<p><b>View all other</b> <a href="lwg-index.html#stringbuf.members">issues</a> in [stringbuf.members].</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#Tentatively NAD">Tentatively NAD</a> status.</p>
+<p><b>Discussion:</b></p>
+<p>
+Recent discussions on <a href="https://github.com/llvm/llvm-project/issues/64644">llvm-64644</a>
+came to the conclusion that <code>basic_stringbuf() &amp;&amp;</code> introduced by <a href="https://wg21.link/P0408" title=" Efficient Access to basic_stringbuf’s Buffer">P0408</a>
+might just copy the underlying buffer into a string object and not actually move the allocated space. 
+While the wording tried to encourage that, especially with the postcondition that the buffer must 
+be empty afterwards, it failed to specify that the move is never a copy.
+<p/>
+I suggest to amend the specification to enforce implementors to do the <code>&#x1d4aa;(1)</code> thing. 
+There might be ABI issues for those who still copy.
+<p/>
+Some investigation into 23.2.2.2 <a href="https://wg21.link/container.reqmts">[container.reqmts]</a> p.16 and 27.4.3.1 <a href="https://wg21.link/basic.string.general">[basic.string.general]</a> 
+shows that a <code>basic_string</code> as a standard container should move with <code>&#x1d4aa;(1)</code>.
+<p/>
+Unfortunately, we cannot say
+</p>
+<blockquote><p>
+<ins><code>str().data() == buf.data()</code> before calling <code>str()</code></ins>
+</p></blockquote>
+<p>
+as a postcondition due to SSO. Maybe a note could be added to eliminate the confusion.
+</p>
+
+<p><i>[2025-10-23; Reflector poll; Status changed: New &rarr; LEWG and P3.]</i></p>
+
+<p>
+The requirements are already implied, and proposed wording has no effect.
+</p>
+
+
+<p id="res-3992"><b>Proposed resolution:</b></p>
+<p>
+This wording is relative to <a href="https://wg21.link/N4958" title=" Working Draft, Programming Languages — C++">N4958</a>.
+</p>
+
+<ol>
+
+<li><p>Modify 31.8.2.4 <a href="https://wg21.link/stringbuf.members">[stringbuf.members]</a> as indicated:</p>
+
+<blockquote>
+<pre>
+basic_string&lt;charT, traits, Allocator&gt; str() &amp;&amp;;
+</pre>
+<blockquote>
+<p>
+-9- <i>Postconditions</i>: The underlying character sequence <code>buf</code> is empty and <code>pbase()</code>, <code>pptr()</code>, 
+<code>epptr()</code>, <code>eback()</code>, <code>gptr()</code>, and <code>egptr()</code> are initialized as if by calling 
+<code>init_buf_ptrs()</code> with an empty <code>buf</code>.
+<p/>
+-10- <i>Returns</i>: A <code>basic_string&lt;charT, traits, Allocator&gt;</code> object move constructed from the 
+<code>basic_stringbuf</code>'s underlying character sequence in <code>buf</code>. This can be achieved by first adjusting <code>buf</code> 
+to have the same content as <code>view()</code>.
+<p/>
+<ins>[<i>Note:</i> &mdash; 23.2.2.2 <a href="https://wg21.link/container.reqmts">[container.reqmts]</a> require the move construction of the return
+value to be <code>&#x1d4aa;(1)</code> <i>end note</i>]</ins>
 </p>
 </blockquote>
 </blockquote>
@@ -1651,6 +1726,109 @@ for the first overload and <code>fold_left_first_with_iter_result&lt;borrowed_it
 </li>
 </ol>
 
+
+
+
+
+
+<hr>
+<h3 id="4136"><a href="#4136">4136</a><sup><a href="https://cplusplus.github.io/LWG/issue4136">(i)</a></sup>. Specify behavior of [linalg] Hermitian algorithms on diagonal with nonzero imaginary part</h3>
+<p><b>Section:</b> 29.9.3 <a href="https://wg21.link/linalg.general">[linalg.general]</a> <b>Status:</b> <a href="lwg-active.html#Ready">Tentatively Ready</a>
+ <b>Submitter:</b> Mark Hoemmen <b>Opened:</b> 2024-08-09 <b>Last modified:</b> 2025-10-23</p>
+<p><b>Priority: </b>Not Prioritized
+</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#Tentatively Ready">Tentatively Ready</a> status.</p>
+<p><b>Discussion:</b></p>
+<p>
+Mathematically, the diagonal elements of a Hermitian matrix must all
+have zero imaginary part (if they are complex numbers). 29.9.3 <a href="https://wg21.link/linalg.general">[linalg.general]</a> 
+paragraphs 3 and 4 govern the behavior of [linalg]
+functions that operate on "symmetric," "Hermitian," or "triangular"
+matrices. All such functions only access the specified triangle
+(lower or upper) of the matrix. Whatever is in the other triangle of
+the matrix doesn't matter; it's not even accessed. That gives
+well-defined behavior for "symmetric" and "triangular" matrices.
+However, both triangles include the diagonal. What should the
+"Hermitian" functions do if they encounter a diagonal element with
+nonzero imaginary part?
+<p/>
+The current wording says that both the operation performed and the
+matrix itself are Hermitian, but does not clarify what happens if the
+latter is not true. For example, 29.9.14.3 <a href="https://wg21.link/linalg.algs.blas2.hemv">[linalg.algs.blas2.hemv]</a> 
+says that <code>hermitian_matrix_vector_product</code> performs a 
+</p>
+<blockquote style="border-left: 3px solid #ccc;padding-left: 15px;">
+<p>
+Hermitian matrix-vector product, taking into account the <code>Triangle</code> 
+parameter that applies to the Hermitian matrix <code>A</code> (29.9.3 <a href="https://wg21.link/linalg.general">[linalg.general]</a>).
+</p>
+</blockquote>
+<p>
+Language like this appears in the specifications of all the functions 
+whose names start with <code>hermitian</code>. The implication is that if 
+the diagonal has an element with nonzero imaginary part, then the matrix 
+is not Hermitian and therefore a precondition of the function has been violated.  
+The result is undefined behavior.
+<p/>
+We can get rid of this undefined behavior by defining what happens in
+this case. It turns out that Chapter 2 of the BLAS Standard already
+does this: It says that the Hermitian algorithms do not access the
+imaginary parts of diagonal elements. The reference Fortran BLAS
+implementations of <code>CHEMV</code> (single-precision Complex HErmitian
+Matrix-Vector product) and <code>ZHEMV</code> (double-precision complex 
+HErmitian Matrix-Vector product) follow the BLAS Standard. <code>CHEMV</code> 
+uses <code>real(A(j,j))</code> and <code>ZHEMV</code> uses <code>dble(A(j,j))</code>, 
+which means that the BLAS routines only access the real part of each diagonal 
+element.
+<p/>
+The clear design intent of <a href="https://wg21.link/P1673R13" title=" A free function linear algebra interface based on the BLAS">P1673R13</a> was to imitate the 
+behavior of the BLAS Standard and reference BLAS unless otherwise specified.  
+Thus, we propose to specify this behavior in the wording; we do not think 
+this requires LEWG re-review.
+<p/>
+In my view, it's fine to retain the existing wording like that in
+29.9.14.3 <a href="https://wg21.link/linalg.algs.blas2.hemv">[linalg.algs.blas2.hemv]</a>, that refers to a "Hermitian matrix".  
+The matrix defined by the revised [linalg.general] instructions is
+unambiguously a Hermitian matrix. Just like the "other triangle" of a
+symmetric or triangular matrix does not affect the behavior of
+[linalg] symmetric resp. triangular algorithms, the wording fix here
+will ensure that any imaginary parts of diagonal elements will not
+affect the behavior of [linalg] Hermitian algorithms.
+</p>
+
+<p><i>[2025-10-23; Reflector poll.]</i></p>
+
+<p>
+Set status to Tentatively Ready after six votes in favour during reflector poll.
+</p>
+
+
+
+<p id="res-4136"><b>Proposed resolution:</b></p>
+<p>
+This wording is relative to <a href="https://wg21.link/N4988" title=" Working Draft, Programming Languages — C++">N4988</a>.
+</p>
+
+<ol>
+
+<li><p>Modify 29.9.3 <a href="https://wg21.link/linalg.general">[linalg.general]</a> as indicated:</p>
+
+<blockquote>
+<p>
+-4- For any function <code>F</code> that takes a parameter named <code>t</code>, <code>t</code> 
+applies to accesses done through the parameter preceding <code>t</code> in the parameter 
+list of <code>F</code>. Let <code>m</code> be such an access-modified function parameter. 
+<code>F</code> will only access the triangle of <code>m</code> specified by <code>t</code>. 
+<ins>For accesses of diagonal elements <code>m[i, i]</code>, <code>F</code> will use the value
+<code><i>real-if-needed</i>(m[i, i])</code> if the name of <code>F</code> starts with 
+<code>hermitian</code>.</ins>
+For accesses <code>m[i, j]</code> outside the triangle specified by <code>t</code>, <code>F</code> 
+will use the value [&hellip;]
+</p>
+</blockquote>
+</li>
+
+</ol>
 
 
 
@@ -4881,6 +5059,75 @@ argument lists.
 
 
 <hr>
+<h3 id="4309"><a href="#4309">4309</a><sup><a href="https://cplusplus.github.io/LWG/issue4309">(i)</a></sup>. How are two <code class='backtick'>seq_cst</code> operations ordered in the single total order if these two operations are unsequenced?</h3>
+<p><b>Section:</b> 32.5.4 <a href="https://wg21.link/atomics.order">[atomics.order]</a> <b>Status:</b> <a href="lwg-active.html#NAD">Tentatively NAD</a>
+ <b>Submitter:</b> jim x <b>Opened:</b> 2025-08-06 <b>Last modified:</b> 2025-10-23</p>
+<p><b>Priority: </b>Not Prioritized
+</p>
+<p><b>View other</b> <a href="lwg-index-open.html#atomics.order">active issues</a> in [atomics.order].</p>
+<p><b>View all other</b> <a href="lwg-index.html#atomics.order">issues</a> in [atomics.order].</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#Tentatively NAD">Tentatively NAD</a> status.</p>
+<p><b>Discussion:</b></p>
+<p>
+Consider this snippet code:
+</p>
+<blockquote><pre>
+std::atomic&lt;int&gt; flag = {0};
+std::atomic&lt;int&gt; turn = {0};
+
+if(flag + turn){}
+</pre></blockquote>
+<p>
+The loads of <code class='backtick'>flag</code> and <code class='backtick'>turn</code> as the operands of <code class='backtick'>+</code> are unsequenced according to [intro.execution] p10.
+</p>
+<blockquote style="border-left: 3px solid #ccc;padding-left: 15px;">
+<p>
+Except where noted, evaluations of operands of individual operators and of subexpressions of individual expressions are unsequenced.
+</p>
+</blockquote>
+<p>
+However, 32.5.4 <a href="https://wg21.link/atomics.order">[atomics.order]</a> p4 says:
+</p>
+<blockquote style="border-left: 3px solid #ccc;padding-left: 15px;">
+<p>
+There is a single total order <i>S</i> on all <code class='backtick'>memory_order::seq_cst</code> operations, including fences, 
+that satisfies the following constraints.
+</p></blockquote>
+<p>
+Then, it says that:
+</p>
+<blockquote style="border-left: 3px solid #ccc;padding-left: 15px;">
+<p>
+First, if <i>A</i> and <i>B</i> are <code class='backtick'>memory_order::seq_cst</code> operations and <i>A</i> strongly happens 
+before <i>B</i>, then <i>A</i> precedes <i>B</i> in <i>S</i>.
+</p></blockquote>
+<p>
+According to the first sentence, the load of <code class='backtick'>flag</code> and the load of <code class='backtick'>turn</code> do have an order in the single 
+total order <i>S</i> since they are both <code class='backtick'>memory_order::seq_cst</code> operations. However, since they are unsequenced, 
+the second sentence does not apply to them. So, what's the order of them in <i>S</i>? Is the order of them in 
+<i>S</i> unspecified?
+<p/>
+<b>Suggested Resolution:</b>
+<p/>
+We may want to say the order of such operations is indeterminate in the single total order. That is,  
+either <i>A</i> precedes <i>B</i> or <i>B</i> precedes <i>A</i>, but it is unspecified which.
+</p>
+
+<p><i>[2025-10-23; Reflector poll; Status changed: New &rarr; Tentatively NAD.]</i></p>
+
+<p>
+The loads are both done within functions calls, so are at worst indeterminately sequenced.
+So we already say what the suggested resolution wants.
+</p>
+
+
+<p id="res-4309"><b>Proposed resolution:</b></p>
+
+
+
+
+
+<hr>
 <h3 id="4312"><a href="#4312">4312</a><sup><a href="https://cplusplus.github.io/LWG/issue4312">(i)</a></sup>. Const and value category mismatch for <code class='backtick'>allocator_arg_t</code>/<code class='backtick'>allocator_arg</code> in the description 
 of uses-allocator construction</h3>
 <p><b>Section:</b> 20.2.8.2 <a href="https://wg21.link/allocator.uses.construction">[allocator.uses.construction]</a> <b>Status:</b> <a href="lwg-active.html#Ready">Tentatively Ready</a>
@@ -5090,6 +5337,91 @@ return original_size - c.size();
 </li>
 
 </ol>
+
+
+
+
+
+<hr>
+<h3 id="4321"><a href="#4321">4321</a><sup><a href="https://cplusplus.github.io/LWG/issue4321">(i)</a></sup>. How are evaluations occurring within a store and a load operation ordered where the store synchronized with the load</h3>
+<p><b>Section:</b> 32.5.8.2 <a href="https://wg21.link/atomics.types.operations">[atomics.types.operations]</a> <b>Status:</b> <a href="lwg-active.html#NAD">Tentatively NAD</a>
+ <b>Submitter:</b> jim x <b>Opened:</b> 2025-08-20 <b>Last modified:</b> 2025-10-23</p>
+<p><b>Priority: </b>Not Prioritized
+</p>
+<p><b>View other</b> <a href="lwg-index-open.html#atomics.types.operations">active issues</a> in [atomics.types.operations].</p>
+<p><b>View all other</b> <a href="lwg-index.html#atomics.types.operations">issues</a> in [atomics.types.operations].</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#Tentatively NAD">Tentatively NAD</a> status.</p>
+<p><b>Discussion:</b></p>
+<p>
+Consider this example:
+</p>
+<blockquote><pre>
+std::atomic&lt;int&gt; v = 0;
+// thread 1:
+v.store(1, memory_order::release); // #1
+// thread 2:
+v.load(memory_order::acquire); // #2
+</pre></blockquote>
+<p>
+Say, <code class='backtick'>#2</code> reads the value written by <code class='backtick'>#1</code>, <code class='backtick'>#1</code> synchronizes with <code class='backtick'>#2</code>. According to 6.10.2.2 <a href="https://wg21.link/intro.races">[intro.races]</a> p7:
+</p>
+<blockquote>
+<p>
+ An evaluation <i>A</i> <i>happens before an evaluation</i> <i>B</i> (or, equivalently, <i>B</i> 
+ happens after <i>A</i>) if either
+</p>
+<ol style="list-style-type: none">
+<li><p>(7.1) &mdash; [&hellip;]</p></li>
+<li><p>(7.2) &mdash; <i>A</i> synchronizes with <i>B</i>, or</p></li>
+<li><p>(7.3) &mdash; [&hellip;]</p></li>
+</ol>
+</blockquote>
+<p>
+So, <code class='backtick'>#1</code> happens before <i>B</i>. However, 6.10.1 <a href="https://wg21.link/intro.execution">[intro.execution]</a> p12 says:
+</p>
+<blockquote>
+<p>
+For each
+</p>
+<ol style="list-style-type: none">
+<li><p>(12.1) &mdash; function invocation,</p></li>
+<li><p>(12.2) &mdash; [&hellip;]</p></li>
+<li><p>(12.3) &mdash; [&hellip;]</p></li>
+</ol>
+<p>
+<i>F</i>, each evaluation that does not occur within <i>F</i> but is evaluated 
+on the same thread and as part of the same signal handler (if any) is either 
+sequenced before all evaluations that occur within <i>F</i> or sequenced after 
+all evaluations that occur within <i>F</i>;
+</p>
+</blockquote>
+<p>
+Because both <code class='backtick'>v.store(...)</code> and <code class='backtick'>v.load(...)</code> are function invocations, and we can think that the member 
+functions comprise some evaluations to form the operation, therefore, how are these evaluations that 
+occur within the <code class='backtick'>store</code> ordered with those within the <code class='backtick'>load</code>?
+<p/>
+The rule only says the <code class='backtick'>store</code> synchronizes with the <code class='backtick'>load</code>, hence, the evaluation of the function 
+call expression <code class='backtick'>v.store(...)</code> happens before the evaluation of the function call expression <code class='backtick'>v.load(...)</code>, 
+but how about these evaluations occurring within these functions?
+<p/>
+A possible resolution might be: The order between all evaluations occurring within a function invocation 
+and another evaluation <i>B</i> is determined by how the evaluation of the function call expression is 
+ordered in relation to the expression <i>B</i>.
+<p/>
+For example, if <code class='backtick'>v.store()</code> happens-before <i>E</i>, then all evaluations occurring within the <code class='backtick'>store</code> 
+happen-before <i>E</i>. As well, <code class='backtick'>v.store(...)</code> synchronizes with <code class='backtick'>v.load(...)</code>, then all evaluations 
+occurring within <code class='backtick'>v.store(...)</code> synchronize with all evaluations occurring within <code class='backtick'>v.load(...)</code>.
+</p>
+
+<p><i>[2025-10-23; Reflector poll; Status changed: New &rarr; Tentatively NAD.]</i></p>
+
+<p>
+The load/store functions invocations participate in happens-before as
+atomic (indivisible) units.
+</p>
+
+
+<p id="res-4321"><b>Proposed resolution:</b></p>
 
 
 

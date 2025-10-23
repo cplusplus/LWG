@@ -54,7 +54,7 @@
 </style>
 </head>
 <body>
-<p>Revised 2025-10-23 at 11:09:15 UTC
+<p>Revised 2025-10-23 at 11:15:58 UTC
 </p><h2>Unresolved Issues</h2>
 <hr>
 <h3 id="423"><a href="#423">423</a><sup><a href="https://cplusplus.github.io/LWG/issue423">(i)</a></sup>. Effects of negative <code>streamsize</code> in iostreams</h3>
@@ -10310,6 +10310,7 @@ default constructible.
 </p>
 <p><b>View other</b> <a href="lwg-index-open.html#meta">active issues</a> in [meta].</p>
 <p><b>View all other</b> <a href="lwg-index.html#meta">issues</a> in [meta].</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#Core">Core</a> status.</p>
 <p><b>Discussion:</b></p>
 <p>
 The <code>BaseCharacteristic</code> for <code>is_constructible</code> is defined in terms of the well-formedness 
@@ -50330,75 +50331,6 @@ assignment; <code>index()</code> will be <code><i>j</i></code>.</p></li>
 
 
 <hr>
-<h3 id="3992"><a href="#3992">3992</a><sup><a href="https://cplusplus.github.io/LWG/issue3992">(i)</a></sup>. <code>basic_stringbuf::str()&amp;&amp;</code> should enforce &#x1d4aa;(1)</h3>
-<p><b>Section:</b> 31.8.2.4 <a href="https://wg21.link/stringbuf.members">[stringbuf.members]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Peter Sommerlad <b>Opened:</b> 2023-10-05 <b>Last modified:</b> 2023-10-14</p>
-<p><b>Priority: </b>Not Prioritized
-</p>
-<p><b>View all other</b> <a href="lwg-index.html#stringbuf.members">issues</a> in [stringbuf.members].</p>
-<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
-<p><b>Discussion:</b></p>
-<p>
-Recent discussions on <a href="https://github.com/llvm/llvm-project/issues/64644">llvm-64644</a>
-came to the conclusion that <code>basic_stringbuf() &amp;&amp;</code> introduced by <a href="https://wg21.link/P0408" title=" Efficient Access to basic_stringbuf’s Buffer">P0408</a>
-might just copy the underlying buffer into a string object and not actually move the allocated space. 
-While the wording tried to encourage that, especially with the postcondition that the buffer must 
-be empty afterwards, it failed to specify that the move is never a copy.
-<p/>
-I suggest to amend the specification to enforce implementors to do the <code>&#x1d4aa;(1)</code> thing. 
-There might be ABI issues for those who still copy.
-<p/>
-Some investigation into 23.2.2.2 <a href="https://wg21.link/container.reqmts">[container.reqmts]</a> p.16 and 27.4.3.1 <a href="https://wg21.link/basic.string.general">[basic.string.general]</a> 
-shows that a <code>basic_string</code> as a standard container should move with <code>&#x1d4aa;(1)</code>.
-<p/>
-Unfortunately, we cannot say
-</p>
-<blockquote><p>
-<ins><code>str().data() == buf.data()</code> before calling <code>str()</code></ins>
-</p></blockquote>
-<p>
-as a postcondition due to SSO. Maybe a note could be added to eliminate the confusion.
-</p>
-
-
-<p id="res-3992"><b>Proposed resolution:</b></p>
-<p>
-This wording is relative to <a href="https://wg21.link/N4958" title=" Working Draft, Programming Languages — C++">N4958</a>.
-</p>
-
-<ol>
-
-<li><p>Modify 31.8.2.4 <a href="https://wg21.link/stringbuf.members">[stringbuf.members]</a> as indicated:</p>
-
-<blockquote>
-<pre>
-basic_string&lt;charT, traits, Allocator&gt; str() &amp;&amp;;
-</pre>
-<blockquote>
-<p>
--9- <i>Postconditions</i>: The underlying character sequence <code>buf</code> is empty and <code>pbase()</code>, <code>pptr()</code>, 
-<code>epptr()</code>, <code>eback()</code>, <code>gptr()</code>, and <code>egptr()</code> are initialized as if by calling 
-<code>init_buf_ptrs()</code> with an empty <code>buf</code>.
-<p/>
--10- <i>Returns</i>: A <code>basic_string&lt;charT, traits, Allocator&gt;</code> object move constructed from the 
-<code>basic_stringbuf</code>'s underlying character sequence in <code>buf</code>. This can be achieved by first adjusting <code>buf</code> 
-to have the same content as <code>view()</code>.
-<p/>
-<ins>[<i>Note:</i> &mdash; 23.2.2.2 <a href="https://wg21.link/container.reqmts">[container.reqmts]</a> require the move construction of the return
-value to be <code>&#x1d4aa;(1)</code> <i>end note</i>]</ins>
-</p>
-</blockquote>
-</blockquote>
-
-</li>
-
-</ol>
-
-
-
-
-
-<hr>
 <h3 id="3993"><a href="#3993">3993</a><sup><a href="https://cplusplus.github.io/LWG/issue3993">(i)</a></sup>. The <code>parse</code> function of a <i>BasicFormatter</i> type needs to be <code>constexpr</code></h3>
 <p><b>Section:</b> 28.5.6.1 <a href="https://wg21.link/formatter.requirements">[formatter.requirements]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
  <b>Submitter:</b> Jiang An <b>Opened:</b> 2023-10-10 <b>Last modified:</b> 2023-10-30</p>
@@ -62144,102 +62076,6 @@ Also AS-EXCEPT-PTR can throw for the <code class='backtick'>error_code</code> ca
 
 
 <hr>
-<h3 id="4136"><a href="#4136">4136</a><sup><a href="https://cplusplus.github.io/LWG/issue4136">(i)</a></sup>. Specify behavior of [linalg] Hermitian algorithms on diagonal with nonzero imaginary part</h3>
-<p><b>Section:</b> 29.9.3 <a href="https://wg21.link/linalg.general">[linalg.general]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Mark Hoemmen <b>Opened:</b> 2024-08-09 <b>Last modified:</b> 2024-08-10</p>
-<p><b>Priority: </b>Not Prioritized
-</p>
-<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
-<p><b>Discussion:</b></p>
-<p>
-Mathematically, the diagonal elements of a Hermitian matrix must all
-have zero imaginary part (if they are complex numbers). 29.9.3 <a href="https://wg21.link/linalg.general">[linalg.general]</a> 
-paragraphs 3 and 4 govern the behavior of [linalg]
-functions that operate on "symmetric," "Hermitian," or "triangular"
-matrices. All such functions only access the specified triangle
-(lower or upper) of the matrix. Whatever is in the other triangle of
-the matrix doesn't matter; it's not even accessed. That gives
-well-defined behavior for "symmetric" and "triangular" matrices.
-However, both triangles include the diagonal. What should the
-"Hermitian" functions do if they encounter a diagonal element with
-nonzero imaginary part?
-<p/>
-The current wording says that both the operation performed and the
-matrix itself are Hermitian, but does not clarify what happens if the
-latter is not true. For example, 29.9.14.3 <a href="https://wg21.link/linalg.algs.blas2.hemv">[linalg.algs.blas2.hemv]</a> 
-says that <code>hermitian_matrix_vector_product</code> performs a 
-</p>
-<blockquote style="border-left: 3px solid #ccc;padding-left: 15px;">
-<p>
-Hermitian matrix-vector product, taking into account the <code>Triangle</code> 
-parameter that applies to the Hermitian matrix <code>A</code> (29.9.3 <a href="https://wg21.link/linalg.general">[linalg.general]</a>).
-</p>
-</blockquote>
-<p>
-Language like this appears in the specifications of all the functions 
-whose names start with <code>hermitian</code>. The implication is that if 
-the diagonal has an element with nonzero imaginary part, then the matrix 
-is not Hermitian and therefore a precondition of the function has been violated.  
-The result is undefined behavior.
-<p/>
-We can get rid of this undefined behavior by defining what happens in
-this case. It turns out that Chapter 2 of the BLAS Standard already
-does this: It says that the Hermitian algorithms do not access the
-imaginary parts of diagonal elements. The reference Fortran BLAS
-implementations of <code>CHEMV</code> (single-precision Complex HErmitian
-Matrix-Vector product) and <code>ZHEMV</code> (double-precision complex 
-HErmitian Matrix-Vector product) follow the BLAS Standard. <code>CHEMV</code> 
-uses <code>real(A(j,j))</code> and <code>ZHEMV</code> uses <code>dble(A(j,j))</code>, 
-which means that the BLAS routines only access the real part of each diagonal 
-element.
-<p/>
-The clear design intent of <a href="https://wg21.link/P1673R13" title=" A free function linear algebra interface based on the BLAS">P1673R13</a> was to imitate the 
-behavior of the BLAS Standard and reference BLAS unless otherwise specified.  
-Thus, we propose to specify this behavior in the wording; we do not think 
-this requires LEWG re-review.
-<p/>
-In my view, it's fine to retain the existing wording like that in
-29.9.14.3 <a href="https://wg21.link/linalg.algs.blas2.hemv">[linalg.algs.blas2.hemv]</a>, that refers to a "Hermitian matrix".  
-The matrix defined by the revised [linalg.general] instructions is
-unambiguously a Hermitian matrix. Just like the "other triangle" of a
-symmetric or triangular matrix does not affect the behavior of
-[linalg] symmetric resp. triangular algorithms, the wording fix here
-will ensure that any imaginary parts of diagonal elements will not
-affect the behavior of [linalg] Hermitian algorithms.
-</p>
-
-
-<p id="res-4136"><b>Proposed resolution:</b></p>
-<p>
-This wording is relative to <a href="https://wg21.link/N4988" title=" Working Draft, Programming Languages — C++">N4988</a>.
-</p>
-
-<ol>
-
-<li><p>Modify 29.9.3 <a href="https://wg21.link/linalg.general">[linalg.general]</a> as indicated:</p>
-
-<blockquote>
-<p>
--4- For any function <code>F</code> that takes a parameter named <code>t</code>, <code>t</code> 
-applies to accesses done through the parameter preceding <code>t</code> in the parameter 
-list of <code>F</code>. Let <code>m</code> be such an access-modified function parameter. 
-<code>F</code> will only access the triangle of <code>m</code> specified by <code>t</code>. 
-<ins>For accesses of diagonal elements <code>m[i, i]</code>, <code>F</code> will use the value
-<code><i>real-if-needed</i>(m[i, i])</code> if the name of <code>F</code> starts with 
-<code>hermitian</code>.</ins>
-For accesses <code>m[i, j]</code> outside the triangle specified by <code>t</code>, <code>F</code> 
-will use the value [&hellip;]
-</p>
-</blockquote>
-</li>
-
-</ol>
-
-
-
-
-
-<hr>
 <h3 id="4138"><a href="#4138">4138</a><sup><a href="https://cplusplus.github.io/LWG/issue4138">(i)</a></sup>. <code>is_within_lifetime</code> should mandate <code>is_object</code></h3>
 <p><b>Section:</b> 21.3.12 <a href="https://wg21.link/meta.const.eval">[meta.const.eval]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
  <b>Submitter:</b> Corentin <b>Opened:</b> 2024-08-09 <b>Last modified:</b> 2025-10-14</p>
@@ -67844,13 +67680,13 @@ template&lt;class T, class charT&gt;
 
 <hr>
 <h3 id="4241"><a href="#4241">4241</a><sup><a href="https://cplusplus.github.io/LWG/issue4241">(i)</a></sup>. <code class='backtick'>ranges::for_each(_n)</code> should be less constrained</h3>
-<p><b>Section:</b> 26.6.5 <a href="https://wg21.link/alg.foreach">[alg.foreach]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Jiang An <b>Opened:</b> 2025-04-08 <b>Last modified:</b> 2025-04-13</p>
-<p><b>Priority: </b>Not Prioritized
+<p><b>Section:</b> 26.6.5 <a href="https://wg21.link/alg.foreach">[alg.foreach]</a> <b>Status:</b> <a href="lwg-active.html#LEWG">LEWG</a>
+ <b>Submitter:</b> Jiang An <b>Opened:</b> 2025-04-08 <b>Last modified:</b> 2025-10-23</p>
+<p><b>Priority: </b>3
 </p>
 <p><b>View other</b> <a href="lwg-index-open.html#alg.foreach">active issues</a> in [alg.foreach].</p>
 <p><b>View all other</b> <a href="lwg-index.html#alg.foreach">issues</a> in [alg.foreach].</p>
-<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#LEWG">LEWG</a> status.</p>
 <p><b>Discussion:</b></p>
 <p>
 Currently, <code class='backtick'>ranges::for_each(_n)</code> are constrained with <code class='backtick'>indirectly_unary_invocable</code>, 
@@ -67867,6 +67703,26 @@ algorithms potentially use the intermediate element values copied as
 even required not to do this, P2609R3 can bring unexpected impacts. It seems that 
 constraints around <code class='backtick'>iter_value_t</code> should be avoided for such an algorithm.
 </p>
+
+<p><i>[2025-10-23; Reflector poll; Status changed: New &rarr; LEWG and P3.]</i></p>
+
+<p>
+This is design change.	
+More algorithms (like <code class='backtick'>count_if</code>, <code class='backtick'>any_of</code>, etc.) that never produce
+<code class='backtick'>iter_value_t</code> are affected.
+<p>
+</p>
+Example of affected code:
+</p>
+<blockquote><pre>
+std::vector&lt;std::string&gt; v;
+// the following not working, constraints not satisfied
+std::ranges::for_each(
+  v | std::views::as_rvalue,
+  [](std::string&amp;&amp; s) { }
+);
+</pre></blockquote>
+
 
 
 <p id="res-4241"><b>Proposed resolution:</b></p>
@@ -73357,76 +73213,14 @@ type because it is not an actual iterator type. &mdash; <i>end note</i>]</ins>
 
 
 <hr>
-<h3 id="4309"><a href="#4309">4309</a><sup><a href="https://cplusplus.github.io/LWG/issue4309">(i)</a></sup>. How are two <code class='backtick'>seq_cst</code> operations ordered in the single total order if these two operations are unsequenced?</h3>
-<p><b>Section:</b> 32.5.4 <a href="https://wg21.link/atomics.order">[atomics.order]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> jim x <b>Opened:</b> 2025-08-06 <b>Last modified:</b> 2025-08-09</p>
-<p><b>Priority: </b>Not Prioritized
-</p>
-<p><b>View other</b> <a href="lwg-index-open.html#atomics.order">active issues</a> in [atomics.order].</p>
-<p><b>View all other</b> <a href="lwg-index.html#atomics.order">issues</a> in [atomics.order].</p>
-<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
-<p><b>Discussion:</b></p>
-<p>
-Consider this snippet code:
-</p>
-<blockquote><pre>
-std::atomic&lt;int&gt; flag = {0};
-std::atomic&lt;int&gt; turn = {0};
-
-if(flag + turn){}
-</pre></blockquote>
-<p>
-The loads of <code class='backtick'>flag</code> and <code class='backtick'>turn</code> as the operands of <code class='backtick'>+</code> are unsequenced according to [intro.execution] p10.
-</p>
-<blockquote style="border-left: 3px solid #ccc;padding-left: 15px;">
-<p>
-Except where noted, evaluations of operands of individual operators and of subexpressions of individual expressions are unsequenced.
-</p>
-</blockquote>
-<p>
-However, 32.5.4 <a href="https://wg21.link/atomics.order">[atomics.order]</a> p4 says:
-</p>
-<blockquote style="border-left: 3px solid #ccc;padding-left: 15px;">
-<p>
-There is a single total order <i>S</i> on all <code class='backtick'>memory_order::seq_cst</code> operations, including fences, 
-that satisfies the following constraints.
-</p></blockquote>
-<p>
-Then, it says that:
-</p>
-<blockquote style="border-left: 3px solid #ccc;padding-left: 15px;">
-<p>
-First, if <i>A</i> and <i>B</i> are <code class='backtick'>memory_order::seq_cst</code> operations and <i>A</i> strongly happens 
-before <i>B</i>, then <i>A</i> precedes <i>B</i> in <i>S</i>.
-</p></blockquote>
-<p>
-According to the first sentence, the load of <code class='backtick'>flag</code> and the load of <code class='backtick'>turn</code> do have an order in the single 
-total order <i>S</i> since they are both <code class='backtick'>memory_order::seq_cst</code> operations. However, since they are unsequenced, 
-the second sentence does not apply to them. So, what's the order of them in <i>S</i>? Is the order of them in 
-<i>S</i> unspecified?
-<p/>
-<b>Suggested Resolution:</b>
-<p/>
-We may want to say the order of such operations is indeterminate in the single total order. That is,  
-either <i>A</i> precedes <i>B</i> or <i>B</i> precedes <i>A</i>, but it is unspecified which.
-</p>
-
-
-<p id="res-4309"><b>Proposed resolution:</b></p>
-
-
-
-
-
-<hr>
 <h3 id="4310"><a href="#4310">4310</a><sup><a href="https://cplusplus.github.io/LWG/issue4310">(i)</a></sup>. Is "the completion of the invocation of the constructor" considered as an expression?</h3>
-<p><b>Section:</b> 32.4.3.3 <a href="https://wg21.link/thread.thread.constr">[thread.thread.constr]</a>, 32.4.3.6 <a href="https://wg21.link/thread.thread.member">[thread.thread.member]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> jim x <b>Opened:</b> 2025-08-06 <b>Last modified:</b> 2025-08-09</p>
-<p><b>Priority: </b>Not Prioritized
+<p><b>Section:</b> 32.4.3.3 <a href="https://wg21.link/thread.thread.constr">[thread.thread.constr]</a>, 32.4.3.6 <a href="https://wg21.link/thread.thread.member">[thread.thread.member]</a> <b>Status:</b> <a href="lwg-active.html#Core">Core</a>
+ <b>Submitter:</b> jim x <b>Opened:</b> 2025-08-06 <b>Last modified:</b> 2025-10-23</p>
+<p><b>Priority: </b>4
 </p>
 <p><b>View other</b> <a href="lwg-index-open.html#thread.thread.constr">active issues</a> in [thread.thread.constr].</p>
 <p><b>View all other</b> <a href="lwg-index.html#thread.thread.constr">issues</a> in [thread.thread.constr].</p>
-<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#Core">Core</a> status.</p>
 <p><b>Discussion:</b></p>
 <p>
 32.4.3.3 <a href="https://wg21.link/thread.thread.constr">[thread.thread.constr]</a> p6 says
@@ -73467,6 +73261,12 @@ The similar issue is 32.4.3.6 <a href="https://wg21.link/thread.thread.member">[
 The completion of the thread represented by <code class='backtick'>*this</code> synchronizes with (6.10.2 <a href="https://wg21.link/intro.multithread">[intro.multithread]</a>) 
 the corresponding successful <code class='backtick'>join()</code> return.
 </p></blockquote>
+
+<p><i>[2025-10-23; Reflector poll; Status changed: New &rarr; Core and P4.]</i></p>
+
+<p>
+P4 at best. Sentiment towards NAD.
+</p>
 
 
 <p id="res-4310"><b>Proposed resolution:</b></p>
@@ -74541,84 +74341,6 @@ latitude for implementation-specific optimizations. &mdash; <i>end note</i>]</in
 </li>
 
 </ol>
-
-
-
-
-
-<hr>
-<h3 id="4321"><a href="#4321">4321</a><sup><a href="https://cplusplus.github.io/LWG/issue4321">(i)</a></sup>. How are evaluations occurring within a store and a load operation ordered where the store synchronized with the load</h3>
-<p><b>Section:</b> 32.5.8.2 <a href="https://wg21.link/atomics.types.operations">[atomics.types.operations]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> jim x <b>Opened:</b> 2025-08-20 <b>Last modified:</b> 2025-08-25</p>
-<p><b>Priority: </b>Not Prioritized
-</p>
-<p><b>View other</b> <a href="lwg-index-open.html#atomics.types.operations">active issues</a> in [atomics.types.operations].</p>
-<p><b>View all other</b> <a href="lwg-index.html#atomics.types.operations">issues</a> in [atomics.types.operations].</p>
-<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
-<p><b>Discussion:</b></p>
-<p>
-Consider this example:
-</p>
-<blockquote><pre>
-std::atomic&lt;int&gt; v = 0;
-// thread 1:
-v.store(1, memory_order::release); // #1
-// thread 2:
-v.load(memory_order::acquire); // #2
-</pre></blockquote>
-<p>
-Say, <code class='backtick'>#2</code> reads the value written by <code class='backtick'>#1</code>, <code class='backtick'>#1</code> synchronizes with <code class='backtick'>#2</code>. According to 6.10.2.2 <a href="https://wg21.link/intro.races">[intro.races]</a> p7:
-</p>
-<blockquote>
-<p>
- An evaluation <i>A</i> <i>happens before an evaluation</i> <i>B</i> (or, equivalently, <i>B</i> 
- happens after <i>A</i>) if either
-</p>
-<ol style="list-style-type: none">
-<li><p>(7.1) &mdash; [&hellip;]</p></li>
-<li><p>(7.2) &mdash; <i>A</i> synchronizes with <i>B</i>, or</p></li>
-<li><p>(7.3) &mdash; [&hellip;]</p></li>
-</ol>
-</blockquote>
-<p>
-So, <code class='backtick'>#1</code> happens before <i>B</i>. However, 6.10.1 <a href="https://wg21.link/intro.execution">[intro.execution]</a> p12 says:
-</p>
-<blockquote>
-<p>
-For each
-</p>
-<ol style="list-style-type: none">
-<li><p>(12.1) &mdash; function invocation,</p></li>
-<li><p>(12.2) &mdash; [&hellip;]</p></li>
-<li><p>(12.3) &mdash; [&hellip;]</p></li>
-</ol>
-<p>
-<i>F</i>, each evaluation that does not occur within <i>F</i> but is evaluated 
-on the same thread and as part of the same signal handler (if any) is either 
-sequenced before all evaluations that occur within <i>F</i> or sequenced after 
-all evaluations that occur within <i>F</i>;
-</p>
-</blockquote>
-<p>
-Because both <code class='backtick'>v.store(...)</code> and <code class='backtick'>v.load(...)</code> are function invocations, and we can think that the member 
-functions comprise some evaluations to form the operation, therefore, how are these evaluations that 
-occur within the <code class='backtick'>store</code> ordered with those within the <code class='backtick'>load</code>?
-<p/>
-The rule only says the <code class='backtick'>store</code> synchronizes with the <code class='backtick'>load</code>, hence, the evaluation of the function 
-call expression <code class='backtick'>v.store(...)</code> happens before the evaluation of the function call expression <code class='backtick'>v.load(...)</code>, 
-but how about these evaluations occurring within these functions?
-<p/>
-A possible resolution might be: The order between all evaluations occurring within a function invocation 
-and another evaluation <i>B</i> is determined by how the evaluation of the function call expression is 
-ordered in relation to the expression <i>B</i>.
-<p/>
-For example, if <code class='backtick'>v.store()</code> happens-before <i>E</i>, then all evaluations occurring within the <code class='backtick'>store</code> 
-happen-before <i>E</i>. As well, <code class='backtick'>v.store(...)</code> synchronizes with <code class='backtick'>v.load(...)</code>, then all evaluations 
-occurring within <code class='backtick'>v.store(...)</code> synchronize with all evaluations occurring within <code class='backtick'>v.load(...)</code>.
-</p>
-
-
-<p id="res-4321"><b>Proposed resolution:</b></p>
 
 
 
@@ -81068,8 +80790,8 @@ and ill-formed otherwise.
 <hr>
 <h3 id="4418"><a href="#4418">4418</a><sup><a href="https://cplusplus.github.io/LWG/issue4418">(i)</a></sup>. <code>co_yield elements_of(vector&lt;int&gt;())</code> does not compile</h3>
 <p><b>Section:</b> 25.8.5 <a href="https://wg21.link/coro.generator.promise">[coro.generator.promise]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Mathias Stearn <b>Opened:</b> 2025-10-16 <b>Last modified:</b> 2025-10-19</p>
-<p><b>Priority: </b>Not Prioritized
+ <b>Submitter:</b> Mathias Stearn <b>Opened:</b> 2025-10-16 <b>Last modified:</b> 2025-10-23</p>
+<p><b>Priority: </b>2
 </p>
 <p><b>View all other</b> <a href="lwg-index.html#coro.generator.promise">issues</a> in [coro.generator.promise].</p>
 <p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
@@ -81118,6 +80840,31 @@ reference type to <code>T&amp;&amp;</code>. However, when making the change, I a
 it had on the <code class='backtick'>elements_of</code>-non-generator overload of <code class='backtick'>yield_value</code> was not considered, so it was 
 unmodified. 
 </p>
+
+<p><i>[2025-10-23; Reflector poll.]</i></p>
+
+<p>
+Set priority to 2 after reflector poll.
+</p>
+<p>
+The current resolution is incorrect, and breaks following example:
+</p>
+<blockquote><pre>
+std::generator&lt;std::vector&lt;int&gt;&gt; g()
+{
+  std::vector&lt;int&gt; v = {1, 2, 3};
+  co_yield std::ranges::elements_of(v);
+} 	
+</pre></blockquote>
+<p>
+The constraints are equivalent to checking if <code class='backtick'>yield_value(*it)</code> is well-formed,
+and maybe we could express is directly as:
+</p>
+<blockquote><pre>
+requires requires (promise_type p, ranges::iterator_t&lt;R&gt; it) {
+    p.yield_value(*it);
+}
+</pre></blockquote>
 
 
 <p id="res-4418"><b>Proposed resolution:</b></p>
@@ -81746,8 +81493,8 @@ template&lt;<i>simd-vec-type</i> V, ranges::contiguous_range R, <i>simd-integral
 <hr>
 <h3 id="4421"><a href="#4421">4421</a><sup><a href="https://cplusplus.github.io/LWG/issue4421">(i)</a></sup>. Clarify the output encoding of <code class='backtick'>to_chars</code> for integers</h3>
 <p><b>Section:</b> 28.2.2 <a href="https://wg21.link/charconv.to.chars">[charconv.to.chars]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Jan Schultke <b>Opened:</b> 2025-10-17 <b>Last modified:</b> 2025-10-19</p>
-<p><b>Priority: </b>Not Prioritized
+ <b>Submitter:</b> Jan Schultke <b>Opened:</b> 2025-10-17 <b>Last modified:</b> 2025-10-23</p>
+<p><b>Priority: </b>3
 </p>
 <p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
 <p><b>Discussion:</b></p>
@@ -81756,6 +81503,17 @@ The integer overload of <code class='backtick'>to_chars</code> is specified "man
 and it is not clearly stated what encoding the output characters have. Given the existing 
 use of the character literal <code class='backtick'>'-'</code> in the <i>Effects</i> element, the intent is presumably 
 to output in the ordinary literal encoding.
+</p>
+
+<p><i>[2025-10-23; Reflector poll.]</i></p>
+
+<p>
+Set priority to 3 after reflector poll.
+</p>
+<p>
+Concerns with meaning of  <code class='backtick'>'a'..'z'</code> for EBCDIC.
+Suggestion to use <code class='backtick'>U+0061..U+007A</code> like in  [tab:lex.charset.basic],
+as alternative.
 </p>
 
 

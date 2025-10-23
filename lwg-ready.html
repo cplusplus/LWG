@@ -62,7 +62,7 @@
 </tr>
 <tr>
 <td align="left">Date:</td>
-<td align="left">Revised 2025-10-23 at 11:09:15 UTC
+<td align="left">Revised 2025-10-23 at 11:15:58 UTC
 </td>
 </tr>
 <tr>
@@ -214,6 +214,109 @@ can use the <code>static_cast</code> branch without loss of precision. &mdash; <
 </blockquote>
 </blockquote>
 </li>
+</ol>
+
+
+
+
+
+<hr>
+<h3 id="4136"><a href="#4136">4136</a><sup><a href="https://cplusplus.github.io/LWG/issue4136">(i)</a></sup>. Specify behavior of [linalg] Hermitian algorithms on diagonal with nonzero imaginary part</h3>
+<p><b>Section:</b> 29.9.3 <a href="https://wg21.link/linalg.general">[linalg.general]</a> <b>Status:</b> <a href="lwg-active.html#Ready">Tentatively Ready</a>
+ <b>Submitter:</b> Mark Hoemmen <b>Opened:</b> 2024-08-09 <b>Last modified:</b> 2025-10-23</p>
+<p><b>Priority: </b>Not Prioritized
+</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#Tentatively Ready">Tentatively Ready</a> status.</p>
+<p><b>Discussion:</b></p>
+<p>
+Mathematically, the diagonal elements of a Hermitian matrix must all
+have zero imaginary part (if they are complex numbers). 29.9.3 <a href="https://wg21.link/linalg.general">[linalg.general]</a> 
+paragraphs 3 and 4 govern the behavior of [linalg]
+functions that operate on "symmetric," "Hermitian," or "triangular"
+matrices. All such functions only access the specified triangle
+(lower or upper) of the matrix. Whatever is in the other triangle of
+the matrix doesn't matter; it's not even accessed. That gives
+well-defined behavior for "symmetric" and "triangular" matrices.
+However, both triangles include the diagonal. What should the
+"Hermitian" functions do if they encounter a diagonal element with
+nonzero imaginary part?
+<p/>
+The current wording says that both the operation performed and the
+matrix itself are Hermitian, but does not clarify what happens if the
+latter is not true. For example, 29.9.14.3 <a href="https://wg21.link/linalg.algs.blas2.hemv">[linalg.algs.blas2.hemv]</a> 
+says that <code>hermitian_matrix_vector_product</code> performs a 
+</p>
+<blockquote style="border-left: 3px solid #ccc;padding-left: 15px;">
+<p>
+Hermitian matrix-vector product, taking into account the <code>Triangle</code> 
+parameter that applies to the Hermitian matrix <code>A</code> (29.9.3 <a href="https://wg21.link/linalg.general">[linalg.general]</a>).
+</p>
+</blockquote>
+<p>
+Language like this appears in the specifications of all the functions 
+whose names start with <code>hermitian</code>. The implication is that if 
+the diagonal has an element with nonzero imaginary part, then the matrix 
+is not Hermitian and therefore a precondition of the function has been violated.  
+The result is undefined behavior.
+<p/>
+We can get rid of this undefined behavior by defining what happens in
+this case. It turns out that Chapter 2 of the BLAS Standard already
+does this: It says that the Hermitian algorithms do not access the
+imaginary parts of diagonal elements. The reference Fortran BLAS
+implementations of <code>CHEMV</code> (single-precision Complex HErmitian
+Matrix-Vector product) and <code>ZHEMV</code> (double-precision complex 
+HErmitian Matrix-Vector product) follow the BLAS Standard. <code>CHEMV</code> 
+uses <code>real(A(j,j))</code> and <code>ZHEMV</code> uses <code>dble(A(j,j))</code>, 
+which means that the BLAS routines only access the real part of each diagonal 
+element.
+<p/>
+The clear design intent of <a href="https://wg21.link/P1673R13" title=" A free function linear algebra interface based on the BLAS">P1673R13</a> was to imitate the 
+behavior of the BLAS Standard and reference BLAS unless otherwise specified.  
+Thus, we propose to specify this behavior in the wording; we do not think 
+this requires LEWG re-review.
+<p/>
+In my view, it's fine to retain the existing wording like that in
+29.9.14.3 <a href="https://wg21.link/linalg.algs.blas2.hemv">[linalg.algs.blas2.hemv]</a>, that refers to a "Hermitian matrix".  
+The matrix defined by the revised [linalg.general] instructions is
+unambiguously a Hermitian matrix. Just like the "other triangle" of a
+symmetric or triangular matrix does not affect the behavior of
+[linalg] symmetric resp. triangular algorithms, the wording fix here
+will ensure that any imaginary parts of diagonal elements will not
+affect the behavior of [linalg] Hermitian algorithms.
+</p>
+
+<p><i>[2025-10-23; Reflector poll.]</i></p>
+
+<p>
+Set status to Tentatively Ready after six votes in favour during reflector poll.
+</p>
+
+
+
+<p id="res-4136"><b>Proposed resolution:</b></p>
+<p>
+This wording is relative to <a href="https://wg21.link/N4988" title=" Working Draft, Programming Languages — C++">N4988</a>.
+</p>
+
+<ol>
+
+<li><p>Modify 29.9.3 <a href="https://wg21.link/linalg.general">[linalg.general]</a> as indicated:</p>
+
+<blockquote>
+<p>
+-4- For any function <code>F</code> that takes a parameter named <code>t</code>, <code>t</code> 
+applies to accesses done through the parameter preceding <code>t</code> in the parameter 
+list of <code>F</code>. Let <code>m</code> be such an access-modified function parameter. 
+<code>F</code> will only access the triangle of <code>m</code> specified by <code>t</code>. 
+<ins>For accesses of diagonal elements <code>m[i, i]</code>, <code>F</code> will use the value
+<code><i>real-if-needed</i>(m[i, i])</code> if the name of <code>F</code> starts with 
+<code>hermitian</code>.</ins>
+For accesses <code>m[i, j]</code> outside the triangle specified by <code>t</code>, <code>F</code> 
+will use the value [&hellip;]
+</p>
+</blockquote>
+</li>
+
 </ol>
 
 

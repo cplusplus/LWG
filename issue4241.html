@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <title>Issue 4241: ranges::for_each(_n) should be less constrained</title>
 <meta property="og:title" content="Issue 4241: ranges::for_each(_n) should be less constrained">
-<meta property="og:description" content="C++ library issue. Status: New">
+<meta property="og:description" content="C++ library issue. Status: LEWG">
 <meta property="og:url" content="https://cplusplus.github.io/LWG/issue4241.html">
 <meta property="og:type" content="website">
 <meta property="og:image" content="http://cplusplus.github.io/LWG/images/cpp_logo.png">
@@ -61,15 +61,15 @@
 </head>
 <body>
 <hr>
-<p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#New">New</a> status.</em></p>
+<p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#LEWG">LEWG</a> status.</em></p>
 <h3 id="4241"><a href="lwg-active.html#4241">4241</a>. <code class='backtick'>ranges::for_each(_n)</code> should be less constrained</h3>
-<p><b>Section:</b> 26.6.5 <a href="https://wg21.link/alg.foreach">[alg.foreach]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Jiang An <b>Opened:</b> 2025-04-08 <b>Last modified:</b> 2025-04-13</p>
-<p><b>Priority: </b>Not Prioritized
+<p><b>Section:</b> 26.6.5 <a href="https://wg21.link/alg.foreach">[alg.foreach]</a> <b>Status:</b> <a href="lwg-active.html#LEWG">LEWG</a>
+ <b>Submitter:</b> Jiang An <b>Opened:</b> 2025-04-08 <b>Last modified:</b> 2025-10-23</p>
+<p><b>Priority: </b>3
 </p>
 <p><b>View other</b> <a href="lwg-index-open.html#alg.foreach">active issues</a> in [alg.foreach].</p>
 <p><b>View all other</b> <a href="lwg-index.html#alg.foreach">issues</a> in [alg.foreach].</p>
-<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#LEWG">LEWG</a> status.</p>
 <p><b>Discussion:</b></p>
 <p>
 Currently, <code class='backtick'>ranges::for_each(_n)</code> are constrained with <code class='backtick'>indirectly_unary_invocable</code>, 
@@ -86,6 +86,26 @@ algorithms potentially use the intermediate element values copied as
 even required not to do this, P2609R3 can bring unexpected impacts. It seems that 
 constraints around <code class='backtick'>iter_value_t</code> should be avoided for such an algorithm.
 </p>
+
+<p><i>[2025-10-23; Reflector poll; Status changed: New &rarr; LEWG and P3.]</i></p>
+
+<p>
+This is design change.	
+More algorithms (like <code class='backtick'>count_if</code>, <code class='backtick'>any_of</code>, etc.) that never produce
+<code class='backtick'>iter_value_t</code> are affected.
+<p>
+</p>
+Example of affected code:
+</p>
+<blockquote><pre>
+std::vector&lt;std::string&gt; v;
+// the following not working, constraints not satisfied
+std::ranges::for_each(
+  v | std::views::as_rvalue,
+  [](std::string&amp;&amp; s) { }
+);
+</pre></blockquote>
+
 
 
 <p id="res-4241"><b>Proposed resolution:</b></p>

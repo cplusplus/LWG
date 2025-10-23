@@ -62,7 +62,7 @@ This document is the Index by Status and Section for the <a href="lwg-active.htm
 <a href="lwg-defects.html">Library Defect Reports and Accepted Issues</a>, and <a href="lwg-closed.html">Library Closed Issues List</a>.
 </p>
 
-<p>Revised 2025-10-23 at 11:09:15 UTC
+<p>Revised 2025-10-23 at 11:15:58 UTC
 </p><h2 id="Ready">Ready (3 issues)</h2>
 <table class="issues-index">
 <tr>
@@ -102,7 +102,7 @@ This document is the Index by Status and Section for the <a href="lwg-active.htm
 <td></td>
 </tr>
 </table>
-<h2 id="Tentatively_Ready">Tentatively Ready (50 issues)</h2>
+<h2 id="Tentatively_Ready">Tentatively Ready (51 issues)</h2>
 <table class="issues-index">
 <tr>
   <th><a href="lwg-toc.html">Issue</a></th>
@@ -406,6 +406,15 @@ of uses-allocator construction</td>
 <td></td>
 </tr>
 <tr>
+<td id="4136"><a href="lwg-active.html#4136" title="Specify behavior of [linalg] Hermitian algorithms on diagonal with nonzero imaginary part (Status: Tentatively Ready)">4136</a><sup><a href="https://cplusplus.github.io/LWG/issue4136">(i)</a></sup></td>
+<td><a href="lwg-active.html#Ready">Tentatively Ready</a></td>
+<td>29.9.3 [linalg.general]</td>
+<td>Specify behavior of [linalg] Hermitian algorithms on diagonal with nonzero imaginary part</td>
+<td>Yes</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
 <td id="4412"><a href="lwg-active.html#4412" title="Fix declaration of zero_element and uninit_element (Status: Tentatively Ready)">4412</a><sup><a href="https://cplusplus.github.io/LWG/issue4412">(i)</a></sup></td>
 <td><a href="lwg-active.html#Ready">Tentatively Ready</a></td>
 <td>29.10.3 [simd.syn]</td>
@@ -570,7 +579,7 @@ constructor</td>
 <td></td>
 </tr>
 </table>
-<h2 id="Tentatively_NAD">Tentatively NAD (26 issues)</h2>
+<h2 id="Tentatively_NAD">Tentatively NAD (29 issues)</h2>
 <table class="issues-index">
 <tr>
   <th><a href="lwg-toc.html">Issue</a></th>
@@ -764,11 +773,29 @@ complexity for algorithms that are in fact &#x1d4aa;(n)</td>
 <td></td>
 </tr>
 <tr>
+<td id="3992"><a href="lwg-active.html#3992" title="basic_stringbuf::str()&amp;&amp; should enforce &#x1d4aa;(1) (Status: Tentatively NAD)">3992</a><sup><a href="https://cplusplus.github.io/LWG/issue3992">(i)</a></sup></td>
+<td><a href="lwg-active.html#NAD">Tentatively NAD</a></td>
+<td>31.8.2.4 [stringbuf.members]</td>
+<td><code>basic_stringbuf::str()&amp;&amp;</code> should enforce &#x1d4aa;(1)</td>
+<td>Yes</td>
+<td>4</td>
+<td></td>
+</tr>
+<tr>
 <td id="4362"><a href="lwg-active.html#4362" title="Inconsistent usage of constexpr for inplace_stop_token and inplace_stop_source (Status: Tentatively NAD)">4362</a><sup><a href="https://cplusplus.github.io/LWG/issue4362">(i)</a></sup></td>
 <td><a href="lwg-active.html#NAD">Tentatively NAD</a></td>
 <td>32.3.8 [stoptoken.inplace]</td>
 <td>Inconsistent usage of <code class='backtick'>constexpr</code> for <code class='backtick'>inplace_stop_token</code> and <code class='backtick'>inplace_stop_source</code></td>
 <td>Yes</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td id="4309"><a href="lwg-active.html#4309" title="How are two seq_cst operations ordered in the single total order if these two operations are unsequenced? (Status: Tentatively NAD)">4309</a><sup><a href="https://cplusplus.github.io/LWG/issue4309">(i)</a></sup></td>
+<td><a href="lwg-active.html#NAD">Tentatively NAD</a></td>
+<td>32.5.4 [atomics.order]</td>
+<td>How are two <code class='backtick'>seq_cst</code> operations ordered in the single total order if these two operations are unsequenced?</td>
+<td><span class="no-pr">No</span></td>
 <td></td>
 <td></td>
 </tr>
@@ -786,6 +813,15 @@ complexity for algorithms that are in fact &#x1d4aa;(n)</td>
 <td><a href="lwg-active.html#NAD">Tentatively NAD</a></td>
 <td>32.5.7.2 [atomics.ref.ops]</td>
 <td>Whether the spuriously failed comparison applies to <code class='backtick'>compare_exchange_strong</code> is unclear</td>
+<td><span class="no-pr">No</span></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td id="4321"><a href="lwg-active.html#4321" title="How are evaluations occurring within a store and a load operation ordered where the store synchronized with the load (Status: Tentatively NAD)">4321</a><sup><a href="https://cplusplus.github.io/LWG/issue4321">(i)</a></sup></td>
+<td><a href="lwg-active.html#NAD">Tentatively NAD</a></td>
+<td>32.5.8.2 [atomics.types.operations]</td>
+<td>How are evaluations occurring within a store and a load operation ordered where the store synchronized with the load</td>
 <td><span class="no-pr">No</span></td>
 <td></td>
 <td></td>
@@ -818,7 +854,7 @@ complexity for algorithms that are in fact &#x1d4aa;(n)</td>
 <td></td>
 </tr>
 </table>
-<h2 id="New">New (558 issues)</h2>
+<h2 id="New">New (552 issues)</h2>
 <table class="issues-index">
 <tr>
   <th><a href="lwg-toc.html">Issue</a></th>
@@ -3739,7 +3775,7 @@ inner-iterator with std::default_sentinel results in null pointer dereference (S
 <td>25.8.5 [coro.generator.promise]</td>
 <td><code>co_yield elements_of(vector&lt;int&gt;())</code> does not compile</td>
 <td>Yes</td>
-<td></td>
+<td>2</td>
 <td></td>
 </tr>
 <tr>
@@ -3785,15 +3821,6 @@ inner-iterator with std::default_sentinel results in null pointer dereference (S
 <td>Standard execution policy types should be conventional tag class types</td>
 <td>Yes</td>
 <td>3</td>
-<td></td>
-</tr>
-<tr>
-<td id="4241"><a href="lwg-active.html#4241" title="ranges::for_each(_n) should be less constrained (Status: New)">4241</a><sup><a href="https://cplusplus.github.io/LWG/issue4241">(i)</a></sup></td>
-<td><a href="lwg-active.html#New">New</a></td>
-<td>26.6.5 [alg.foreach]</td>
-<td><code class='backtick'>ranges::for_each(_n)</code> should be less constrained</td>
-<td>Yes</td>
-<td></td>
 <td></td>
 </tr>
 <tr>
@@ -4179,7 +4206,7 @@ not copy) their predicate object</td>
 <td>28.2.2 [charconv.to.chars]</td>
 <td>Clarify the output encoding of <code class='backtick'>to_chars</code> for integers</td>
 <td>Yes</td>
-<td></td>
+<td>3</td>
 <td></td>
 </tr>
 <tr>
@@ -4747,15 +4774,6 @@ should require the arguments to have the same length</td>
 <td></td>
 </tr>
 <tr>
-<td id="4136"><a href="lwg-active.html#4136" title="Specify behavior of [linalg] Hermitian algorithms on diagonal with nonzero imaginary part (Status: New)">4136</a><sup><a href="https://cplusplus.github.io/LWG/issue4136">(i)</a></sup></td>
-<td><a href="lwg-active.html#New">New</a></td>
-<td>29.9.3 [linalg.general]</td>
-<td>Specify behavior of [linalg] Hermitian algorithms on diagonal with nonzero imaginary part</td>
-<td>Yes</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
 <td id="4185"><a href="lwg-active.html#4185" title="Ill-formed, no diagnostic required on runtime behavior (Status: New)">4185</a><sup><a href="https://cplusplus.github.io/LWG/issue4185">(i)</a></sup></td>
 <td><a href="lwg-active.html#New">New</a></td>
 <td>29.9.7 [linalg.helpers]</td>
@@ -5189,15 +5207,6 @@ vprint_unicode/vprint_nonunicode (Status: New)">4039</a><sup><a href="https://cp
 <td></td>
 </tr>
 <tr>
-<td id="3992"><a href="lwg-active.html#3992" title="basic_stringbuf::str()&amp;&amp; should enforce &#x1d4aa;(1) (Status: New)">3992</a><sup><a href="https://cplusplus.github.io/LWG/issue3992">(i)</a></sup></td>
-<td><a href="lwg-active.html#New">New</a></td>
-<td>31.8.2.4 [stringbuf.members]</td>
-<td><code>basic_stringbuf::str()&amp;&amp;</code> should enforce &#x1d4aa;(1)</td>
-<td>Yes</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
 <td id="3097"><a href="lwg-active.html#3097" title="basic_stringbuf seekoff effects trigger undefined behavior and have contradictory returns (Status: New)">3097</a><sup><a href="https://cplusplus.github.io/LWG/issue3097">(i)</a></sup></td>
 <td><a href="lwg-active.html#New">New</a></td>
 <td>31.8.2.5 [stringbuf.virtuals]</td>
@@ -5342,15 +5351,6 @@ vprint_unicode/vprint_nonunicode (Status: New)">4039</a><sup><a href="https://cp
 <td></td>
 </tr>
 <tr>
-<td id="4310"><a href="lwg-active.html#4310" title="Is &quot;the completion of the invocation of the constructor&quot; considered as an expression? (Status: New)">4310</a><sup><a href="https://cplusplus.github.io/LWG/issue4310">(i)</a></sup></td>
-<td><a href="lwg-active.html#New">New</a></td>
-<td>32.4.3.3 [thread.thread.constr]</td>
-<td>Is "the completion of the invocation of the constructor" considered as an expression?</td>
-<td><span class="no-pr">No</span></td>
-<td></td>
-<td></td>
-</tr>
-<tr>
 <td id="3475"><a href="lwg-active.html#3475" title="std::thread's constructor needs to be able to report general memory allocation failures (Status: New)">3475</a><sup><a href="https://cplusplus.github.io/LWG/issue3475">(i)</a></sup></td>
 <td><a href="lwg-active.html#New">New</a></td>
 <td>32.4.3.3 [thread.thread.constr]</td>
@@ -5375,15 +5375,6 @@ vprint_unicode/vprint_nonunicode (Status: New)">4039</a><sup><a href="https://cp
 <td>P0558 broke conforming C++14 uses of atomic <code>shared_ptr</code></td>
 <td>Yes</td>
 <td>3</td>
-<td></td>
-</tr>
-<tr>
-<td id="4309"><a href="lwg-active.html#4309" title="How are two seq_cst operations ordered in the single total order if these two operations are unsequenced? (Status: New)">4309</a><sup><a href="https://cplusplus.github.io/LWG/issue4309">(i)</a></sup></td>
-<td><a href="lwg-active.html#New">New</a></td>
-<td>32.5.4 [atomics.order]</td>
-<td>How are two <code class='backtick'>seq_cst</code> operations ordered in the single total order if these two operations are unsequenced?</td>
-<td><span class="no-pr">No</span></td>
-<td></td>
 <td></td>
 </tr>
 <tr>
@@ -5429,15 +5420,6 @@ vprint_unicode/vprint_nonunicode (Status: New)">4039</a><sup><a href="https://cp
 <td>Too lax description of <code>atomic_ref&lt;T&gt;::required_alignment</code></td>
 <td>Yes</td>
 <td>3</td>
-<td></td>
-</tr>
-<tr>
-<td id="4321"><a href="lwg-active.html#4321" title="How are evaluations occurring within a store and a load operation ordered where the store synchronized with the load (Status: New)">4321</a><sup><a href="https://cplusplus.github.io/LWG/issue4321">(i)</a></sup></td>
-<td><a href="lwg-active.html#New">New</a></td>
-<td>32.5.8.2 [atomics.types.operations]</td>
-<td>How are evaluations occurring within a store and a load operation ordered where the store synchronized with the load</td>
-<td><span class="no-pr">No</span></td>
-<td></td>
 <td></td>
 </tr>
 <tr>
@@ -6705,7 +6687,7 @@ don't support <code>DynamicBuffer</code> lvalues</td>
 <td></td>
 </tr>
 </table>
-<h2 id="LEWG">LEWG (39 issues)</h2>
+<h2 id="LEWG">LEWG (40 issues)</h2>
 <table class="issues-index">
 <tr>
   <th><a href="lwg-toc.html">Issue</a></th>
@@ -6820,6 +6802,15 @@ don't support <code>DynamicBuffer</code> lvalues</td>
 <td><a href="lwg-active.html#LEWG">LEWG</a></td>
 <td>25.7.21.1 [range.reverse.overview]</td>
 <td><code>views::reverse</code> should be specialized for some view types</td>
+<td>Yes</td>
+<td>3</td>
+<td></td>
+</tr>
+<tr>
+<td id="4241"><a href="lwg-active.html#4241" title="ranges::for_each(_n) should be less constrained (Status: LEWG)">4241</a><sup><a href="https://cplusplus.github.io/LWG/issue4241">(i)</a></sup></td>
+<td><a href="lwg-active.html#LEWG">LEWG</a></td>
+<td>26.6.5 [alg.foreach]</td>
+<td><code class='backtick'>ranges::for_each(_n)</code> should be less constrained</td>
 <td>Yes</td>
 <td>3</td>
 <td></td>
@@ -7070,7 +7061,7 @@ don't support <code>DynamicBuffer</code> lvalues</td>
 <td></td>
 </tr>
 </table>
-<h2 id="Core">Core (1 issues)</h2>
+<h2 id="Core">Core (2 issues)</h2>
 <table class="issues-index">
 <tr>
   <th><a href="lwg-toc.html">Issue</a></th>
@@ -7088,6 +7079,15 @@ don't support <code>DynamicBuffer</code> lvalues</td>
 <td><code>is_constructible</code>, etc. and default arguments</td>
 <td><span class="no-pr">No</span></td>
 <td>3</td>
+<td></td>
+</tr>
+<tr>
+<td id="4310"><a href="lwg-active.html#4310" title="Is &quot;the completion of the invocation of the constructor&quot; considered as an expression? (Status: Core)">4310</a><sup><a href="https://cplusplus.github.io/LWG/issue4310">(i)</a></sup></td>
+<td><a href="lwg-active.html#Core">Core</a></td>
+<td>32.4.3.3 [thread.thread.constr]</td>
+<td>Is "the completion of the invocation of the constructor" considered as an expression?</td>
+<td><span class="no-pr">No</span></td>
+<td>4</td>
 <td></td>
 </tr>
 </table>
