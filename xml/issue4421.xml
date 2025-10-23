@@ -22,7 +22,7 @@ Set priority to 3 after reflector poll.
 </p>
 <p>
 Concerns with meaning of  `'a'..'z'` for EBCDIC.
-Suggetion to use `U+0061..U+007A` like in <sref ref="[tab:lex.charset.basic]"/>,
+Suggestion to use `U+0061..U+007A` like in <sref ref="[tab:lex.charset.basic]"/>,
 as alternative.
 </p>
 </discussion>
