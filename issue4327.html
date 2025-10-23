@@ -64,8 +64,8 @@
 <p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#New">New</a> status.</em></p>
 <h3 id="4327"><a href="lwg-active.html#4327">4327</a>. Equal schedulers should be required to have same behaviour</h3>
 <p><b>Section:</b> 33.6 <a href="https://wg21.link/exec.sched">[exec.sched]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Lewis Baker <b>Opened:</b> 2025-08-25 <b>Last modified:</b> 2025-08-27</p>
-<p><b>Priority: </b>Not Prioritized
+ <b>Submitter:</b> Lewis Baker <b>Opened:</b> 2025-08-25 <b>Last modified:</b> 2025-10-23</p>
+<p><b>Priority: </b>3
 </p>
 <p><b>View other</b> <a href="lwg-index-open.html#exec.sched">active issues</a> in [exec.sched].</p>
 <p><b>View all other</b> <a href="lwg-index.html#exec.sched">issues</a> in [exec.sched].</p>
@@ -118,6 +118,30 @@ of the <code class='backtick'>bulk()</code> algorithm?
 <p/>
 Alternatively, we could talk about two schedulers being equal if and only if they can be used 
 interchangeably throughout the program.
+</p>
+
+<p><i>[2025-10-23; Reflector poll.]</i></p>
+
+<p>
+Set priority to 3 after reflector poll.
+</p>
+
+<p><i>[2025-10-23; .]</i></p>
+
+<p>
+"Would prefer if 'the same scheduling behavior' was added,
+instead of replacing existing wording."
+</p>
+<p>
+"<code class='backtick'>scheduler</code> requires <code class='backtick'>equality_comparable</code>, so equality of schedulers must be
+equality preserving, so equality already implies scheduler interchangeability.
+Any additional specification is redundant and should be struck."
+</p>
+<p>
+"I think <code class='backtick'>task_scheduler(parallel_scheduler) == parallel_scheduler</code> currently
+(and possibly incorrectly) says true, because they share the same execution
+resource. But the behaviour is dramatically different: when using <code class='backtick'>bulk</code>
+the first will execute sequentially and the second will execute in parallel."
 </p>
 
 

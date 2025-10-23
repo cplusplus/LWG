@@ -54,7 +54,7 @@
 </style>
 </head>
 <body>
-<p>Revised 2025-10-23 at 11:15:58 UTC
+<p>Revised 2025-10-23 at 12:40:27 UTC
 </p><h2>Unresolved Issues</h2>
 <hr>
 <h3 id="423"><a href="#423">423</a><sup><a href="https://cplusplus.github.io/LWG/issue423">(i)</a></sup>. Effects of negative <code>streamsize</code> in iostreams</h3>
@@ -22317,137 +22317,6 @@ template&lt;input_iterator I, weakly_incrementable O&gt;
 </p>
 </blockquote>
 </blockquote>
-</li>
-</ol>
-
-
-
-
-
-<hr>
-<h3 id="3090"><a href="#3090">3090</a><sup><a href="https://cplusplus.github.io/LWG/issue3090">(i)</a></sup>. What is &sect;[time.duration.cons]p4's "no overflow is induced in the conversion" intended to mean?</h3>
-<p><b>Section:</b> 30.5.2 <a href="https://wg21.link/time.duration.cons">[time.duration.cons]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Richard Smith <b>Opened:</b> 2018-03-22 <b>Last modified:</b> 2020-09-12</p>
-<p><b>Priority: </b>3
-</p>
-<p><b>View all other</b> <a href="lwg-index.html#time.duration.cons">issues</a> in [time.duration.cons].</p>
-<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
-<p><b>Discussion:</b></p>
-<p>
-30.5.2 <a href="https://wg21.link/time.duration.cons">[time.duration.cons]</a> p4 says:
-</p>
-<blockquote>
-<pre>
-template&lt;class Rep2, class Period2&gt;
-  constexpr duration(const duration&lt;Rep2, Period2&gt;&amp; d);
-</pre>
-<blockquote>
-<p>
-<i>Remarks:</i> This constructor shall not participate in overload resolution unless no overflow is induced in the 
-conversion and <code>treat_as_floating_point_v&lt;rep&gt;</code> is <code>true</code> or both 
-<code>ratio_divide&lt;Period2, period&gt;::den</code> is 1 and <code>treat_as_floating_point_v&lt;Rep2&gt;</code> is <code>false</code>.
-</p>
-</blockquote>
-</blockquote>
-<p>
-with this example:
-</p>
-<blockquote><pre>
-duration&lt;int, milli&gt; ms(3);
-duration&lt;int, micro&gt; us = ms;  <i>// OK</i>
-duration&lt;int, milli&gt; ms2 = us; <i>// error</i>
-</pre></blockquote>
-<p>
-It's unclear to me what "no overflow is induced in the conversion" means in the above. What happens here:
-</p>
-<blockquote><pre>
-duration&lt;int, milli&gt; ms(INT_MAX);
-duration&lt;int, micro&gt; us = ms;  <i>// ???</i>
-</pre></blockquote>
-<p>
-An overflow is clearly induced in the conversion here: internally, we'll multiply <code>INT_MAX</code> by 1000. But that 
-cannot be determined statically (in general), and so can't affect the result of overload resolution.
-<p/>
-So what's actually supposed to happen? Are we actually just supposed to check that <code>Rep2</code> is no larger than <code>Rep</code>? 
-(If so, what happens on overflow? Undefined behavior?)
-<p/>
-It has been pointed out by Howard Hinnant:
-</p>
-<blockquote style="border-left: 3px solid #ccc;padding-left: 15px;">
-This refers to the compile-time conversion factor to convert <code>Period2</code> to <code>Period</code>. If that conversion factor 
-is not representable as a (reduced) <code>ratio&lt;N, D&gt;</code>, then the constructor is SFINAE'd out. This might happen 
-(for example) converting years to picoseconds.
-</blockquote>
-<p>
-I would not have guessed that from the wording. Maybe replacing "no overflow is induced in the conversion" with "the result 
-of <code>ratio_divide&lt;Period2, Period&gt;</code> is representable as a <code>ratio</code>" or similar would help? 
-</p>
-
-<p><i>[2018-06-18 after reflector discussion]</i></p>
-
-<p>Priority set to 3</p>
-
-<p><i>[2020-09-12 Jonathan adds a proposed resolution]</i></p>
-
-<p>
-Since the result of the <code>ratio_divide</code> has to be a <code>ratio</code>,
-if it's not representable then the result simply isn't a valid type.
-Implementations are not required to make <code>ratio_divide</code> SFINAE-friendly
-to implement this constraint. They can perform the equivalent calculations
-to check if they would overflow, without actually using <code>ratio_divide</code>.
-</p>
-
-
-
-<p id="res-3090"><b>Proposed resolution:</b></p>
-<p>
-This wording is relative to <a href="http://wg21.link/n4861">N4861</a>.
-</p>
-
-<ol>
-<li><p>Modify 30.5.2 <a href="https://wg21.link/time.duration.cons">[time.duration.cons]</a> as indicated:</p>
-
-<blockquote>
-<pre>
-template&lt;class Rep2, class Period2&gt;
-  constexpr duration(const duration&lt;Rep2, Period2&gt;&amp; d);
-</pre>
-</blockquote>
-<p>
--3- <i>Constraints:</i>
-<ins>
-<code>is_convertible_v&lt;const Rep2&amp;, rep&gt;</code> is <code>true</code>.
-<code>ratio_divide&lt;typename Period2::type, period&gt;</code> is
-a valid <code>ratio</code> specialization.
-Either:
-</ins>
-</p>
-<ul>
-<li>
-<ins>
-<code>treat_as_floating_point_v&lt;rep&gt;</code> is <code>true</code>; or
-</ins>
-</li>
-<li>
-<ins>
-<code>ratio_divide&lt;Period2, period&gt;::den</code> is <code>1</code>
-and <code>treat_as_floating_point_v&lt;Rep2&gt;</code> is <code>false</code>.
-</ins>
-</li>
-</ul>
-<p>
-<del>
-No overflow is induced in the conversion and
-<code>treat_as_floating_point_v&lt;rep&gt;</code> is <code>true</code>
-or both <code>ratio_divide&lt;Period2, period&gt;::den</code> is <code>1</code>
-and <code>treat_as_floating_point_v&lt;Rep2&gt;</code> is <code>false</code>.
-</del>
-[<i>Note:</i> This requirement prevents implicit truncation error<ins>s</ins>
-when converting between integral-based <code>duration</code> types.
-Such a construction could easily lead to confusion about the value of the
-<code>duration</code>.
-&mdash; <i>end note</i>]
-</p>
 </li>
 </ol>
 
@@ -65762,8 +65631,8 @@ where<del>:</del>
 <hr>
 <h3 id="4213"><a href="#4213">4213</a><sup><a href="https://cplusplus.github.io/LWG/issue4213">(i)</a></sup>. Sender spec depends on unspecified order of evaluation</h3>
 <p><b>Section:</b> 33.9 <a href="https://wg21.link/exec.snd">[exec.snd]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Frank Birbacher <b>Opened:</b> 2025-02-14 <b>Last modified:</b> 2025-02-23</p>
-<p><b>Priority: </b>Not Prioritized
+ <b>Submitter:</b> Frank Birbacher <b>Opened:</b> 2025-02-14 <b>Last modified:</b> 2025-10-23</p>
+<p><b>Priority: </b>2
 </p>
 <p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
 <p><b>Discussion:</b></p>
@@ -65793,6 +65662,28 @@ Repetitions are at least in:
 <li><p>33.9.12.15 <a href="https://wg21.link/exec.stopped.err">[exec.stopped.err]</a> p2</p></li>
 <li><p>33.9.13.2 <a href="https://wg21.link/exec.sync.wait.var">[exec.sync.wait.var]</a> p1</p></li>
 </ol>
+
+<p><i>[2025-10-23; Reflector poll.]</i></p>
+
+<p>
+Set priority to 2 after reflector poll.
+</p>
+<p>
+"Don't want to have to consider whether you can call <code class='backtick'>get_env</code> on a moved-from sender.
+If the domain is a stateless tag type, then <i>get-domain-early</i>'s return value
+can't depend on the actual value of the sender, just its type.
+If that's correct, we can just spell this <code class='backtick'>decltype(get-domain-early(sndr)){}</code>.
+We already do this for <i>get-domain-late</i>."
+</p>
+<p>
+"The point of all these exposition-only things was to make the wording more compact and readable.
+Adding <code class='backtick'>decltype</code> and parens everywhere wouldn't help that.
+Maybe change <i>get-domain-early</i> and <i>get-domain-late</i> from function templates
+to all-caps wording macros, e.g. <i><code class='backtick'>GET-DOMAIN-EARLY</code></i><code class='backtick'>(sndr)</code>?"
+</p>
+<p>
+"NAD, I think the issue is covered by “except sndr is evaluated just once.”"
+</p>
 
 
 <p id="res-4213"><b>Proposed resolution:</b></p>
@@ -68738,8 +68629,8 @@ else
 <hr>
 <h3 id="4260"><a href="#4260">4260</a><sup><a href="https://cplusplus.github.io/LWG/issue4260">(i)</a></sup>. Query objects must be default constructible</h3>
 <p><b>Section:</b> 33.2.1 <a href="https://wg21.link/exec.queryable.general">[exec.queryable.general]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Eric Niebler <b>Opened:</b> 2025-05-07 <b>Last modified:</b> 2025-05-18</p>
-<p><b>Priority: </b>Not Prioritized
+ <b>Submitter:</b> Eric Niebler <b>Opened:</b> 2025-05-07 <b>Last modified:</b> 2025-10-23</p>
+<p><b>Priority: </b>2
 </p>
 <p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
 <p><b>Discussion:</b></p>
@@ -68752,6 +68643,18 @@ does not require default constructability. Much of <code class='backtick'>std::e
 to be default constructible.
 <p/>
 I propose adding a (nothrow) default-constructibility requirement.
+</p>
+
+<p><i>[2025-10-23; Reflector poll.]</i></p>
+
+<p>
+Set priority to 2 after reflector poll.
+</p>
+<p>
+"The discussion is wrong, <code class='backtick'>semiregular</code> requires <code class='backtick'>default_initializable</code>.
+If we want to mandate nothrow construction
+(a.k.a the implementation isn't out to get you),
+I'd rather we do it for all CPOs."
 </p>
 
 
@@ -75117,8 +75020,8 @@ expression.
 <hr>
 <h3 id="4327"><a href="#4327">4327</a><sup><a href="https://cplusplus.github.io/LWG/issue4327">(i)</a></sup>. Equal schedulers should be required to have same behaviour</h3>
 <p><b>Section:</b> 33.6 <a href="https://wg21.link/exec.sched">[exec.sched]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Lewis Baker <b>Opened:</b> 2025-08-25 <b>Last modified:</b> 2025-08-27</p>
-<p><b>Priority: </b>Not Prioritized
+ <b>Submitter:</b> Lewis Baker <b>Opened:</b> 2025-08-25 <b>Last modified:</b> 2025-10-23</p>
+<p><b>Priority: </b>3
 </p>
 <p><b>View other</b> <a href="lwg-index-open.html#exec.sched">active issues</a> in [exec.sched].</p>
 <p><b>View all other</b> <a href="lwg-index.html#exec.sched">issues</a> in [exec.sched].</p>
@@ -75173,66 +75076,32 @@ Alternatively, we could talk about two schedulers being equal if and only if the
 interchangeably throughout the program.
 </p>
 
+<p><i>[2025-10-23; Reflector poll.]</i></p>
+
+<p>
+Set priority to 3 after reflector poll.
+</p>
+
+<p><i>[2025-10-23; .]</i></p>
+
+<p>
+"Would prefer if 'the same scheduling behavior' was added,
+instead of replacing existing wording."
+</p>
+<p>
+"<code class='backtick'>scheduler</code> requires <code class='backtick'>equality_comparable</code>, so equality of schedulers must be
+equality preserving, so equality already implies scheduler interchangeability.
+Any additional specification is redundant and should be struck."
+</p>
+<p>
+"I think <code class='backtick'>task_scheduler(parallel_scheduler) == parallel_scheduler</code> currently
+(and possibly incorrectly) says true, because they share the same execution
+resource. But the behaviour is dramatically different: when using <code class='backtick'>bulk</code>
+the first will execute sequentially and the second will execute in parallel."
+</p>
+
 
 <p id="res-4327"><b>Proposed resolution:</b></p>
-
-
-
-
-
-<hr>
-<h3 id="4328"><a href="#4328">4328</a><sup><a href="https://cplusplus.github.io/LWG/issue4328">(i)</a></sup>. Remove note in &sect;[exec.sched] regarding waiting for completion of scheduled operations</h3>
-<p><b>Section:</b> 33.6 <a href="https://wg21.link/exec.sched">[exec.sched]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Lewis Baker <b>Opened:</b> 2025-08-25 <b>Last modified:</b> 2025-08-27</p>
-<p><b>Priority: </b>Not Prioritized
-</p>
-<p><b>View other</b> <a href="lwg-index-open.html#exec.sched">active issues</a> in [exec.sched].</p>
-<p><b>View all other</b> <a href="lwg-index.html#exec.sched">issues</a> in [exec.sched].</p>
-<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
-<p><b>Discussion:</b></p>
-<p>
-The note at the end of 33.6 <a href="https://wg21.link/exec.sched">[exec.sched]</a> says:
-</p>
-<blockquote><p>
-[<i>Note</i>: The ability to wait for completion of submitted function objects can be provided by the 
-associated execution resource of the scheduler &mdash; <i>end note</i>]
-</p></blockquote>
-<p>
-The suggestion that the execution resource should be used to join/wait on scheduled work is problematic 
-in situations that may involve more than one execution context, as an execution resource having an empty 
-queue of scheduled work does not necessarily imply that tasks currently running on another execution 
-context will not later schedule additional work on this execution resource.
-<p/>
-With the introduction of <code class='backtick'>counting_scope</code> with <a href="https://wg21.link/P3149" title=" async_scope — Creating scopes for non-sequential concurrency">P3149</a> we now have a better recommended 
-way of waiting for tasks that use a resource (including execution resources) to complete.
-<p/>
-The note as it stands represents bad guidance and should either be removed or updated to refer to 
-<code class='backtick'>counting_scope</code> and <code class='backtick'>simple_counting_scope</code> (33.14.2 <a href="https://wg21.link/exec.counting.scopes">[exec.counting.scopes]</a>).
-</p>
-
-
-<p id="res-4328"><b>Proposed resolution:</b></p>
-<p>
-This wording is relative to <a href="https://wg21.link/N5014">N5014</a>.
-</p>
-
-<ol>
-
-<li><p>Modify 33.6 <a href="https://wg21.link/exec.sched">[exec.sched]</a> as indicated:</p>
-
-<blockquote>
-<p>
--7- A scheduler type's destructor shall not block pending completion of any receivers connected to the sender
-objects returned from schedule.
-<p/>
-<del>[<i>Note 1</i>: The ability to wait for completion of submitted function objects can be provided by 
-the associated execution resource of the scheduler. &mdash; <i>end note</i>]</del>
-</p>
-</blockquote>
-
-</li>
-
-</ol>
 
 
 
@@ -76075,8 +75944,8 @@ with updated <i>Complexity</i>.
 <hr>
 <h3 id="4353"><a href="#4353">4353</a><sup><a href="https://cplusplus.github.io/LWG/issue4353">(i)</a></sup>. Uses of <code><i>MANDATE-NOTHROW</i></code> in CPOs should not enclose CPO argument sub-expressions</h3>
 <p><b>Section:</b> 33 <a href="https://wg21.link/exec">[exec]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Lewis Baker <b>Opened:</b> 2025-08-25 <b>Last modified:</b> 2025-09-14</p>
-<p><b>Priority: </b>Not Prioritized
+ <b>Submitter:</b> Lewis Baker <b>Opened:</b> 2025-08-25 <b>Last modified:</b> 2025-10-23</p>
+<p><b>Priority: </b>3
 </p>
 <p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
 <p><b>Discussion:</b></p>
@@ -76155,6 +76024,12 @@ The following sections all contain problematic uses of <code><i>MANDATE-NOTHROW<
 <li><p>33.7.4 <a href="https://wg21.link/exec.set.stopped">[exec.set.stopped]</a></p></li>
 <li><p>33.8.2 <a href="https://wg21.link/exec.opstate.start">[exec.opstate.start]</a></p></li>
 </ul>
+
+<p><i>[2025-10-23; Reflector poll.]</i></p>
+
+<p>
+Set priority to 3 after reflector poll.
+</p>
 
 
 <p id="res-4353"><b>Proposed resolution:</b></p>
@@ -76278,8 +76153,8 @@ if that expression is well-formed.
 <hr>
 <h3 id="4355"><a href="#4355">4355</a><sup><a href="https://cplusplus.github.io/LWG/issue4355">(i)</a></sup>. <code><i>connect-awaitable()</i></code> should mandate <code class='backtick'>rcvr</code> can receive all completion-signals rather than using constraints</h3>
 <p><b>Section:</b> 33.9.10 <a href="https://wg21.link/exec.connect">[exec.connect]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Lewis Baker <b>Opened:</b> 2025-08-27 <b>Last modified:</b> 2025-09-14</p>
-<p><b>Priority: </b>Not Prioritized
+ <b>Submitter:</b> Lewis Baker <b>Opened:</b> 2025-08-27 <b>Last modified:</b> 2025-10-23</p>
+<p><b>Priority: </b>2
 </p>
 <p><b>View other</b> <a href="lwg-index-open.html#exec.connect">active issues</a> in [exec.connect].</p>
 <p><b>View all other</b> <a href="lwg-index.html#exec.connect">issues</a> in [exec.connect].</p>
@@ -76311,6 +76186,16 @@ The constraint on <code><i>connect-awaitable</i></code> should either be removed
 <i>Mandates</i> element. As <code><i>connect-awaitable</i></code> is only used within the definition of 
 <code>connect()</code> and as <code>connect()</code> already mandates that <code class='backtick'>receiver_of</code> is satisfied, 
 it seems sufficient to just remove this constraint from <code><i>connect-awaitable</i></code>.
+</p>
+
+<p><i>[2025-10-23; Reflector poll.]</i></p>
+
+<p>
+Set priority to 2 after reflector poll.
+</p>
+<p>
+"Is this actually redundant? Where is <code class='backtick'>Sigs</code> required to match (or at least be a subset of)
+<code>completion_signatures_of&lt;Sndr, env_of_t&lt;Recvr&gt;&gt;</code>?"
 </p>
 
 
@@ -76372,8 +76257,8 @@ namespace std::execution {
 <h3 id="4356"><a href="#4356">4356</a><sup><a href="https://cplusplus.github.io/LWG/issue4356">(i)</a></sup>. <code class='backtick'>connect()</code> should use <code class='backtick'>get_allocator(get_env(rcvr))</code> to allocate the coroutine-state for a 
 <code><i>connect-awaitable</i></code> coroutine</h3>
 <p><b>Section:</b> 33.9.10 <a href="https://wg21.link/exec.connect">[exec.connect]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Lewis Baker <b>Opened:</b> 2025-08-27 <b>Last modified:</b> 2025-09-14</p>
-<p><b>Priority: </b>Not Prioritized
+ <b>Submitter:</b> Lewis Baker <b>Opened:</b> 2025-08-27 <b>Last modified:</b> 2025-10-23</p>
+<p><b>Priority: </b>2
 </p>
 <p><b>View other</b> <a href="lwg-index-open.html#exec.connect">active issues</a> in [exec.connect].</p>
 <p><b>View all other</b> <a href="lwg-index.html#exec.connect">issues</a> in [exec.connect].</p>
@@ -76392,6 +76277,16 @@ It seems desirable for this facility to use the allocator obtained from the rece
 <code class='backtick'>get_allocator(get_env(rcvr))</code>, in order to allocate storage for the coroutine-state instead of always 
 using global operator <code class='backtick'>new</code>. This would give the user at least some level of control over how this 
 allocation is performed.
+</p>
+
+<p><i>[2025-10-23; Reflector poll.]</i></p>
+
+<p>
+Set priority to 2 after reflector poll.
+</p>
+<p>
+"The <code class='backtick'>get_allocator</code> query doesn't have a default and I think that isn't
+covered in the proposed resolution."
 </p>
 
 
@@ -76450,8 +76345,8 @@ from <code class='backtick'>get_allocator(get_env(rcvr))</code>.</ins>
 <h3 id="4357"><a href="#4357">4357</a><sup><a href="https://cplusplus.github.io/LWG/issue4357">(i)</a></sup>. <code><i>connect-awaitable</i></code> should use <code class='backtick'>is_void_v</code> to check for result-type of 
 <code class='backtick'>co_await</code> expression instead of <code>same_as&lt;void&gt;</code></h3>
 <p><b>Section:</b> 33.9.10 <a href="https://wg21.link/exec.connect">[exec.connect]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Lewis Baker <b>Opened:</b> 2025-08-27 <b>Last modified:</b> 2025-09-14</p>
-<p><b>Priority: </b>Not Prioritized
+ <b>Submitter:</b> Lewis Baker <b>Opened:</b> 2025-08-27 <b>Last modified:</b> 2025-10-23</p>
+<p><b>Priority: </b>4
 </p>
 <p><b>View other</b> <a href="lwg-index-open.html#exec.connect">active issues</a> in [exec.connect].</p>
 <p><b>View all other</b> <a href="lwg-index.html#exec.connect">issues</a> in [exec.connect].</p>
@@ -76482,6 +76377,19 @@ result of the <code class='backtick'>co_await</code> expression has type <i>cv</
 instead to allow it to match all <code class='backtick'>void</code> types, not just unqualified <code class='backtick'>void</code>.
 </p>
 
+
+<p><i>[2025-10-23; Reflector poll.]</i></p>
+
+<p>
+Set priority to 4 after reflector poll.
+</p>
+<p>
+"NAD, <code class='backtick'>V</code> is <code><i>await-result-type</i>&lt;...&gt;</code> which is <code class='backtick'>decltype(...)</code>
+and you never get <i>cv</i> void from <code class='backtick'>decltype</code> (7.2.2 <a href="https://wg21.link/expr.type">[expr.type]</a> p2)."
+</p>
+<p>
+"But using <code class='backtick'>is_void_v</code> more clearly expresses the intent."
+</p>
 
 
 <p id="res-4357"><b>Proposed resolution:</b></p>
@@ -76539,8 +76447,8 @@ namespace std::execution {
 <hr>
 <h3 id="4358"><a href="#4358">4358</a><sup><a href="https://cplusplus.github.io/LWG/issue4358">(i)</a></sup>. &sect;[exec.as.awaitable] is using "Preconditions:" when it should probably be described in the constraint</h3>
 <p><b>Section:</b> 33.13.1 <a href="https://wg21.link/exec.as.awaitable">[exec.as.awaitable]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Lewis Baker <b>Opened:</b> 2025-08-27 <b>Last modified:</b> 2025-09-14</p>
-<p><b>Priority: </b>Not Prioritized
+ <b>Submitter:</b> Lewis Baker <b>Opened:</b> 2025-08-27 <b>Last modified:</b> 2025-10-23</p>
+<p><b>Priority: </b>2
 </p>
 <p><b>View other</b> <a href="lwg-index-open.html#exec.as.awaitable">active issues</a> in [exec.as.awaitable].</p>
 <p><b>View all other</b> <a href="lwg-index.html#exec.as.awaitable">issues</a> in [exec.as.awaitable].</p>
@@ -76576,6 +76484,18 @@ However, I think there is a more direct way to express the intent here, by inste
 This checks whether <code class='backtick'>expr</code> would be a valid type to return from a <code class='backtick'>Promise::await_transform()</code> function.
 </p>
 
+
+<p><i>[2025-10-23; Reflector poll.]</i></p>
+
+<p>
+Set priority to 2 after reflector poll.
+</p>
+<p>
+"Intent of the original wording seems to be that GET-AWAITER(expr) should
+be the same as GET-AWAITER(expr, p) and this rewording loses that.
+Don't understand the rationale for the new wording either."
+(More details in the reflector thread in Sept. 2025)
+</p>
 
 
 <p id="res-4358"><b>Proposed resolution:</b></p>
@@ -76669,8 +76589,8 @@ except that the evaluations of <code class='backtick'>expr</code> and <code clas
 <hr>
 <h3 id="4360"><a href="#4360">4360</a><sup><a href="https://cplusplus.github.io/LWG/issue4360">(i)</a></sup>. <code><i>awaitable-sender</i></code> concept should qualify use of <code><i>awaitable-receiver</i></code> type</h3>
 <p><b>Section:</b> 33.13.1 <a href="https://wg21.link/exec.as.awaitable">[exec.as.awaitable]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Lewis Baker <b>Opened:</b> 2025-08-27 <b>Last modified:</b> 2025-09-14</p>
-<p><b>Priority: </b>Not Prioritized
+ <b>Submitter:</b> Lewis Baker <b>Opened:</b> 2025-08-27 <b>Last modified:</b> 2025-10-23</p>
+<p><b>Priority: </b>2
 </p>
 <p><b>View other</b> <a href="lwg-index-open.html#exec.as.awaitable">active issues</a> in [exec.as.awaitable].</p>
 <p><b>View all other</b> <a href="lwg-index.html#exec.as.awaitable">issues</a> in [exec.as.awaitable].</p>
@@ -76696,6 +76616,15 @@ The mention of the type <code><i>awaitable-receiver</i></code> here does not ref
 defined at namespace-scope. It seems to, instead, be referring to the nested member-type 
 <code><i>sender-awaitable</i>&lt;Sndr, Promise&gt;::<i>awaitable-receiver</i></code> and so should be 
 qualified as such.
+</p>
+
+<p><i>[2025-10-23; Reflector poll.]</i></p>
+
+<p>
+Set priority to 2 after reflector poll.
+</p>
+<p>
+"We should move the declaration of <i><code class='backtick'>sender-awaitable</code></i> before the concept."
 </p>
 
 
@@ -76737,13 +76666,13 @@ namespace std::execution {
 
 <hr>
 <h3 id="4361"><a href="#4361">4361</a><sup><a href="https://cplusplus.github.io/LWG/issue4361">(i)</a></sup>. <code><i>awaitable-receiver</i>::set_value</code> should use <i>Mandates</i> instead of constraints</h3>
-<p><b>Section:</b> 33.13.1 <a href="https://wg21.link/exec.as.awaitable">[exec.as.awaitable]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Lewis Baker <b>Opened:</b> 2025-08-28 <b>Last modified:</b> 2025-09-14</p>
-<p><b>Priority: </b>Not Prioritized
+<p><b>Section:</b> 33.13.1 <a href="https://wg21.link/exec.as.awaitable">[exec.as.awaitable]</a> <b>Status:</b> <a href="lwg-active.html#LEWG">LEWG</a>
+ <b>Submitter:</b> Lewis Baker <b>Opened:</b> 2025-08-28 <b>Last modified:</b> 2025-10-23</p>
+<p><b>Priority: </b>1
 </p>
 <p><b>View other</b> <a href="lwg-index-open.html#exec.as.awaitable">active issues</a> in [exec.as.awaitable].</p>
 <p><b>View all other</b> <a href="lwg-index.html#exec.as.awaitable">issues</a> in [exec.as.awaitable].</p>
-<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#LEWG">LEWG</a> status.</p>
 <p><b>Discussion:</b></p>
 <p>
 In 33.13.1 <a href="https://wg21.link/exec.as.awaitable">[exec.as.awaitable]</a> bullet 4.1 the <code><i>awaitable-receiver</i>::set_value</code> member function 
@@ -76795,6 +76724,16 @@ just making them all mandates. This would tend to make uses of the <code class='
 less useful as satisfying <code>receiver_of&lt;R, Sig&gt;</code> would not necessarily 
 guarantee that actually trying to call each of <code class='backtick'>R</code>'s corresponding completion functions 
 will result in a well-formed program. It is arguable that this is already the status-quo, however.
+</p>
+
+<p><i>[2025-10-23; Reflector poll. Status changed: New &rarr; LEWG]</i></p>
+
+<p>
+Set priority to 1 after reflector poll.
+</p>
+<p>
+"Send to LEWG if we want to go this way, which makes <code class='backtick'>receiver_of</code> mostly meaningless
+and calls into question why we even have the concept."
 </p>
 
 
@@ -76875,110 +76814,6 @@ struct <i>basic-receiver</i> { // <i>exposition only</i>
 };
 [&hellip;]
 </pre></blockquote>
-
-</li>
-
-</ol>
-
-
-
-
-
-<hr>
-<h3 id="4363"><a href="#4363">4363</a><sup><a href="https://cplusplus.github.io/LWG/issue4363">(i)</a></sup>. <code class='backtick'>transform_sender</code> comparing types ignoring <i>cv</i>-qualifiers doesn't take into account differences in value category</h3>
-<p><b>Section:</b> 33.9.6 <a href="https://wg21.link/exec.snd.transform">[exec.snd.transform]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Lewis Baker <b>Opened:</b> 2025-08-28 <b>Last modified:</b> 2025-09-15</p>
-<p><b>Priority: </b>Not Prioritized
-</p>
-<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
-<p><b>Discussion:</b></p>
-<p>
-In 33.9.6 <a href="https://wg21.link/exec.snd.transform">[exec.snd.transform]</a> p1, the specification for <code class='backtick'>transform_sender()</code> states:
-</p>
-<blockquote>
-<p>
-Let <code><i>transformed-sndr</i></code> be the expression
-</p>
-<blockquote><pre>
-dom.transform_sender(std::forward&lt;Sndr&gt;(sndr), env...)
-</pre></blockquote>
-<p>
-if that expression is well-formed; otherwise,
-</p>
-<blockquote><pre>
-default_domain().transform_sender(std::forward&lt;Sndr&gt;(sndr), env...)
-</pre></blockquote>
-<p>
-Let <code><i>final-sndr</i></code> be the expression <code><i>transformed-sndr</i></code> if 
-<code><i>transformed-sndr</i></code> and <code><i>sndr</i></code> have the same type ignoring 
-cv-qualifiers; otherwise, it is the expression <code>transform_sender(dom, <i>transformed-sndr</i>, env...)</code>.
-</p>
-</blockquote>
-<p>
-However, the use of the phrase "have the same type ignoring cv-qualifiers" asks to compare 
-the types without <code class='backtick'>const</code> or <code class='backtick'>volatile</code> qualifiers, but doesn't take into account differences 
-in value category of the types of these expressions.
-<p/>
-For example <code class='backtick'>sndr</code> might have type <code>T&amp;&amp;</code> and <code><i>transformed-sndr</i></code> 
-might return a new prvalue of type <code class='backtick'>T</code>.
-<p/>
-My interpretation of the current wording is that I should apply the test 
-<code>same_as&lt;remove_cv_t&lt;decltype(sndr)&gt;, remove_cv_t&lt;decltype(<i>transformed-sndr</i>)&gt;&gt;</code>.
-<p/>
-However, <code class='backtick'>remove_cv_t</code> does not remove reference-qualifiers from a type <code>Sndr&amp;&amp;</code> 
-(which in the above example, is the type of <code class='backtick'>sndr</code>), and thus would compare as different to 
-a <code><i>transform-sndr</i></code> type of <code class='backtick'>Sndr</code>.
-<p/>
-I believe the intention is that this should instead use 
-<code>same_as&lt;remove_cvref_t&lt;decltype(sndr)&gt;, remove_cvref_t&lt;decltype(<i>transformed-sndr</i>)&gt;&gt;</code>. 
-For example, the 
-<a href="https://github.com/NVIDIA/stdexec/blob/4669060ad3b70508740449f9c30f06867a9bd890/include/stdexec/__detail/__transform_sender.hpp#L88">
-implementation</a> in NVIDIA's stdexec repository uses <code>same_as&lt;decay_t&lt;T&gt;, decay_t&lt;U&gt;&gt;</code> 
-for this check.
-<p/>
-The wording should be modified to use a phrase that removes both reference and cv-qualifiers when comparing types.
-</p>
-
-
-<p id="res-4363"><b>Proposed resolution:</b></p>
-<p>
-This wording is relative to <a href="https://wg21.link/N5014">N5014</a>.
-</p>
-
-<ol>
-
-<li><p>Modify 33.9.6 <a href="https://wg21.link/exec.snd.transform">[exec.snd.transform]</a> as indicated:</p>
-
-<blockquote>
-<pre>
-namespace std::execution {
-  template&lt;class Domain, sender Sndr, <i>queryable</i>... Env&gt;
-    requires (sizeof...(Env) &lt;= 1)
-  constexpr sender decltype(auto) transform_sender(Domain dom, Sndr&amp;&amp; sndr, const Env&amp;... env)
-    noexcept(<i>see below</i>);
-}
-</pre>
-<blockquote>
-<p>
--1- Let <code><i>transformed-sndr</i></code> be the expression
-</p>
-<blockquote><pre>
-dom.transform_sender(std::forward&lt;Sndr&gt;(sndr), env...)
-</pre></blockquote>
-<p>
-if that expression is well-formed; otherwise,
-</p>
-<blockquote><pre>
-default_domain().transform_sender(std::forward&lt;Sndr&gt;(sndr), env...)
-</pre></blockquote>
-<p>
-Let <code><i>final-sndr</i></code> be the expression <code><i>transformed-sndr</i></code> if 
-<code><i>transformed-sndr</i></code> and <code><i>sndr</i></code> have the same <ins>decayed</ins>
-type <del>ignoring cv-qualifiers</del>; otherwise, it is the expression 
-<code>transform_sender(dom, <i>transformed-sndr</i>, env...)</code>.
-</p>
-</blockquote>
-</blockquote>
 
 </li>
 
@@ -77280,8 +77115,8 @@ if (has_value()) {
 <hr>
 <h3 id="4368"><a href="#4368">4368</a><sup><a href="https://cplusplus.github.io/LWG/issue4368">(i)</a></sup>. Potential dangling reference returned from <code class='backtick'>transform_sender</code></h3>
 <p><b>Section:</b> 33.9.5 <a href="https://wg21.link/exec.domain.default">[exec.domain.default]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Eric Niebler <b>Opened:</b> 2025-08-31 <b>Last modified:</b> 2025-09-15</p>
-<p><b>Priority: </b>Not Prioritized
+ <b>Submitter:</b> Eric Niebler <b>Opened:</b> 2025-08-31 <b>Last modified:</b> 2025-10-23</p>
+<p><b>Priority: </b>1
 </p>
 <p><b>View all other</b> <a href="lwg-index.html#exec.domain.default">issues</a> in [exec.domain.default].</p>
 <p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
@@ -77328,6 +77163,24 @@ it returns an rvalue sender as a prvalue instead of an xvalue as the spec requir
 The fix is for the spec to follow suit and return prvalues when an xvalue would otherwise be returned.
 </p>
 
+<p><i>[2025-10-23; Reflector poll.]</i></p>
+
+<p>
+Set priority to 1 after reflector poll.
+</p>
+<p>
+"There's an NB comment to remove <code class='backtick'>transform_sender</code> entirely."
+"Nothing seems to prevent <code class='backtick'>Sndr</code> from being a reference type, so I would
+expect <code class='backtick'>decay_t</code> or <code class='backtick'>remove_cvref_t</code> (or <i><code class='backtick'>decayed-typeof</code></i>) instead
+of the <code class='backtick'>static_cast</code>."
+</p>
+<p>
+"I think that's intentional. The dangling happens if <code class='backtick'>transform_sender</code> is
+invoked with an xvalue (where <code class='backtick'>Sndr</code> is deduced as a type). When invoked with
+and lvalue (where <code class='backtick'>Sndr</code> is deduced as an lvalue reference) we don't want to
+make a copy. So the <code class='backtick'>static_cast</code> makes a copy of an xvalue and not of an lvalue."
+</p>
+
 
 <p id="res-4368"><b>Proposed resolution:</b></p>
 <p>
@@ -77372,8 +77225,8 @@ if that expression is well-formed; otherwise, <code><ins>static_cast&lt;Sndr&gt;
 <hr>
 <h3 id="4369"><a href="#4369">4369</a><sup><a href="https://cplusplus.github.io/LWG/issue4369">(i)</a></sup>. <code><i>check-types</i></code> function for <code class='backtick'>upon_error</code> and <code class='backtick'>upon_stopped</code> is wrong</h3>
 <p><b>Section:</b> 33.9.12.9 <a href="https://wg21.link/exec.then">[exec.then]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Eric Niebler <b>Opened:</b> 2025-08-31 <b>Last modified:</b> 2025-09-15</p>
-<p><b>Priority: </b>Not Prioritized
+ <b>Submitter:</b> Eric Niebler <b>Opened:</b> 2025-08-31 <b>Last modified:</b> 2025-10-23</p>
+<p><b>Priority: </b>2
 </p>
 <p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
 <p><b>Discussion:</b></p>
@@ -77423,6 +77276,12 @@ auto fn = []&lt;class... Ts&gt;(set_stopped_t(*)(Ts...)) {
 </pre></blockquote>
 <p>
 We can achieve that by replacing <code class='backtick'>set_value_t</code> in the problematic line with <code><i>decayed-typeof</i>&lt;<i>set-cpo</i>&gt;</code>.
+</p>
+
+<p><i>[2025-10-23; Reflector poll.]</i></p>
+
+<p>
+Set priority to 2 after reflector poll.
 </p>
 
 
@@ -79285,8 +79144,8 @@ R(first, <ins>static_cast&lt;size_t&gt;(</ins>last<ins> - first)</ins>)
 <hr>
 <h3 id="4395"><a href="#4395">4395</a><sup><a href="https://cplusplus.github.io/LWG/issue4395">(i)</a></sup>. <code class='backtick'>write_env</code> implementation-detail lambda should have explicit return type</h3>
 <p><b>Section:</b> 33.9.12.3 <a href="https://wg21.link/exec.write.env">[exec.write.env]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Robert A.H. Leahy <b>Opened:</b> 2025-09-29 <b>Last modified:</b> 2025-10-04</p>
-<p><b>Priority: </b>Not Prioritized
+ <b>Submitter:</b> Robert A.H. Leahy <b>Opened:</b> 2025-09-29 <b>Last modified:</b> 2025-10-23</p>
+<p><b>Priority: </b>2
 </p>
 <p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
 <p><b>Discussion:</b></p>
@@ -79310,6 +79169,12 @@ The fix is to explicitly provide a return type for the lambda which computes the
 <p/>
 Note: This issue may indicate that the use of automatic return type deduction in the specification of
 sender algorithms more generally ought to be reconsidered/-examined.
+</p>
+
+<p><i>[2025-10-23; Reflector poll.]</i></p>
+
+<p>
+Set priority to 2 after reflector poll.
 </p>
 
 
@@ -80937,8 +80802,8 @@ return yield_value(ranges::elements_of(nested(
 <hr>
 <h3 id="4419"><a href="#4419">4419</a><sup><a href="https://cplusplus.github.io/LWG/issue4419">(i)</a></sup>. <code class='backtick'>let_value/error/stopped</code> should specify the attributes of their senders</h3>
 <p><b>Section:</b> 33.9.12.10 <a href="https://wg21.link/exec.let">[exec.let]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Eric Niebler <b>Opened:</b> 2025-10-16 <b>Last modified:</b> 2025-10-19</p>
-<p><b>Priority: </b>Not Prioritized
+ <b>Submitter:</b> Eric Niebler <b>Opened:</b> 2025-10-16 <b>Last modified:</b> 2025-10-23</p>
+<p><b>Priority: </b>1
 </p>
 <p><b>View all other</b> <a href="lwg-index.html#exec.let">issues</a> in [exec.let].</p>
 <p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
@@ -80963,6 +80828,15 @@ schedulers or domains.
 <code class='backtick'>let_value/error/stopped</code> must define <code><i>impls-for</i>&lt;let_xxx_t&gt;::<i>get-attrs</i></code> to return 
 <code><i>FWD-ENV</i>(get_env(sndr))</code> except that it handles the <code>get_completion_scheduler_t&lt;Tag&gt;</code> 
 (for any completion tag <code class='backtick'>Tag</code>) and <code class='backtick'>get_domain_t</code> queries specially.</p>
+
+<p><i>[2025-10-23; Reflector poll.]</i></p>
+
+<p>
+Set priority to 1 after reflector poll.
+</p>
+<p>
+"Looks like a special case of the problem that <a href="https://wg21.link/P3826">P3826</a> addresses."
+</p>
 
 
 <p id="res-4419"><b>Proposed resolution:</b></p>

@@ -64,8 +64,8 @@
 <p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#New">New</a> status.</em></p>
 <h3 id="4260"><a href="lwg-active.html#4260">4260</a>. Query objects must be default constructible</h3>
 <p><b>Section:</b> 33.2.1 <a href="https://wg21.link/exec.queryable.general">[exec.queryable.general]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Eric Niebler <b>Opened:</b> 2025-05-07 <b>Last modified:</b> 2025-05-18</p>
-<p><b>Priority: </b>Not Prioritized
+ <b>Submitter:</b> Eric Niebler <b>Opened:</b> 2025-05-07 <b>Last modified:</b> 2025-10-23</p>
+<p><b>Priority: </b>2
 </p>
 <p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
 <p><b>Discussion:</b></p>
@@ -78,6 +78,18 @@ does not require default constructability. Much of <code class='backtick'>std::e
 to be default constructible.
 <p/>
 I propose adding a (nothrow) default-constructibility requirement.
+</p>
+
+<p><i>[2025-10-23; Reflector poll.]</i></p>
+
+<p>
+Set priority to 2 after reflector poll.
+</p>
+<p>
+"The discussion is wrong, <code class='backtick'>semiregular</code> requires <code class='backtick'>default_initializable</code>.
+If we want to mandate nothrow construction
+(a.k.a the implementation isn't out to get you),
+I'd rather we do it for all CPOs."
 </p>
 
 

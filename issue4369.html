@@ -64,8 +64,8 @@
 <p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#New">New</a> status.</em></p>
 <h3 id="4369"><a href="lwg-active.html#4369">4369</a>. <code><i>check-types</i></code> function for <code class='backtick'>upon_error</code> and <code class='backtick'>upon_stopped</code> is wrong</h3>
 <p><b>Section:</b> 33.9.12.9 <a href="https://wg21.link/exec.then">[exec.then]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Eric Niebler <b>Opened:</b> 2025-08-31 <b>Last modified:</b> 2025-09-15</p>
-<p><b>Priority: </b>Not Prioritized
+ <b>Submitter:</b> Eric Niebler <b>Opened:</b> 2025-08-31 <b>Last modified:</b> 2025-10-23</p>
+<p><b>Priority: </b>2
 </p>
 <p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
 <p><b>Discussion:</b></p>
@@ -115,6 +115,12 @@ auto fn = []&lt;class... Ts&gt;(set_stopped_t(*)(Ts...)) {
 </pre></blockquote>
 <p>
 We can achieve that by replacing <code class='backtick'>set_value_t</code> in the problematic line with <code><i>decayed-typeof</i>&lt;<i>set-cpo</i>&gt;</code>.
+</p>
+
+<p><i>[2025-10-23; Reflector poll.]</i></p>
+
+<p>
+Set priority to 2 after reflector poll.
 </p>
 
 

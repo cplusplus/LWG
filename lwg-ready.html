@@ -62,7 +62,7 @@
 </tr>
 <tr>
 <td align="left">Date:</td>
-<td align="left">Revised 2025-10-23 at 11:15:58 UTC
+<td align="left">Revised 2025-10-23 at 12:40:27 UTC
 </td>
 </tr>
 <tr>
@@ -75,6 +75,143 @@
 </tr>
 </table>
 <h2>Ready Issues</h2>
+<hr>
+<h3 id="3090"><a href="#3090">3090</a><sup><a href="https://cplusplus.github.io/LWG/issue3090">(i)</a></sup>. What is &sect;[time.duration.cons]p4's "no overflow is induced in the conversion" intended to mean?</h3>
+<p><b>Section:</b> 30.5.2 <a href="https://wg21.link/time.duration.cons">[time.duration.cons]</a> <b>Status:</b> <a href="lwg-active.html#Ready">Tentatively Ready</a>
+ <b>Submitter:</b> Richard Smith <b>Opened:</b> 2018-03-22 <b>Last modified:</b> 2025-10-23</p>
+<p><b>Priority: </b>3
+</p>
+<p><b>View all other</b> <a href="lwg-index.html#time.duration.cons">issues</a> in [time.duration.cons].</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#Tentatively Ready">Tentatively Ready</a> status.</p>
+<p><b>Discussion:</b></p>
+<p>
+30.5.2 <a href="https://wg21.link/time.duration.cons">[time.duration.cons]</a> p4 says:
+</p>
+<blockquote>
+<pre>
+template&lt;class Rep2, class Period2&gt;
+  constexpr duration(const duration&lt;Rep2, Period2&gt;&amp; d);
+</pre>
+<blockquote>
+<p>
+<i>Remarks:</i> This constructor shall not participate in overload resolution unless no overflow is induced in the 
+conversion and <code>treat_as_floating_point_v&lt;rep&gt;</code> is <code>true</code> or both 
+<code>ratio_divide&lt;Period2, period&gt;::den</code> is 1 and <code>treat_as_floating_point_v&lt;Rep2&gt;</code> is <code>false</code>.
+</p>
+</blockquote>
+</blockquote>
+<p>
+with this example:
+</p>
+<blockquote><pre>
+duration&lt;int, milli&gt; ms(3);
+duration&lt;int, micro&gt; us = ms;  <i>// OK</i>
+duration&lt;int, milli&gt; ms2 = us; <i>// error</i>
+</pre></blockquote>
+<p>
+It's unclear to me what "no overflow is induced in the conversion" means in the above. What happens here:
+</p>
+<blockquote><pre>
+duration&lt;int, milli&gt; ms(INT_MAX);
+duration&lt;int, micro&gt; us = ms;  <i>// ???</i>
+</pre></blockquote>
+<p>
+An overflow is clearly induced in the conversion here: internally, we'll multiply <code>INT_MAX</code> by 1000. But that 
+cannot be determined statically (in general), and so can't affect the result of overload resolution.
+<p/>
+So what's actually supposed to happen? Are we actually just supposed to check that <code>Rep2</code> is no larger than <code>Rep</code>? 
+(If so, what happens on overflow? Undefined behavior?)
+<p/>
+It has been pointed out by Howard Hinnant:
+</p>
+<blockquote style="border-left: 3px solid #ccc;padding-left: 15px;">
+This refers to the compile-time conversion factor to convert <code>Period2</code> to <code>Period</code>. If that conversion factor 
+is not representable as a (reduced) <code>ratio&lt;N, D&gt;</code>, then the constructor is SFINAE'd out. This might happen 
+(for example) converting years to picoseconds.
+</blockquote>
+<p>
+I would not have guessed that from the wording. Maybe replacing "no overflow is induced in the conversion" with "the result 
+of <code>ratio_divide&lt;Period2, Period&gt;</code> is representable as a <code>ratio</code>" or similar would help? 
+</p>
+
+<p><i>[2018-06-18 after reflector discussion]</i></p>
+
+<p>Priority set to 3</p>
+
+<p><i>[2020-09-12 Jonathan adds a proposed resolution]</i></p>
+
+<p>
+Since the result of the <code>ratio_divide</code> has to be a <code>ratio</code>,
+if it's not representable then the result simply isn't a valid type.
+Implementations are not required to make <code>ratio_divide</code> SFINAE-friendly
+to implement this constraint. They can perform the equivalent calculations
+to check if they would overflow, without actually using <code>ratio_divide</code>.
+</p>
+
+
+<p><i>[2025-10-23; Reflector poll.]</i></p>
+
+<p>
+Set status to Tentatively Ready after seven votes in favour during reflector poll.
+</p>
+
+
+<p id="res-3090"><b>Proposed resolution:</b></p>
+<p>
+This wording is relative to <a href="http://wg21.link/n4861">N4861</a>.
+</p>
+
+<ol>
+<li><p>Modify 30.5.2 <a href="https://wg21.link/time.duration.cons">[time.duration.cons]</a> as indicated:</p>
+
+<blockquote>
+<pre>
+template&lt;class Rep2, class Period2&gt;
+  constexpr duration(const duration&lt;Rep2, Period2&gt;&amp; d);
+</pre>
+</blockquote>
+<p>
+-3- <i>Constraints:</i>
+<ins>
+<code>is_convertible_v&lt;const Rep2&amp;, rep&gt;</code> is <code>true</code>.
+<code>ratio_divide&lt;typename Period2::type, period&gt;</code> is
+a valid <code>ratio</code> specialization.
+Either:
+</ins>
+</p>
+<ul>
+<li>
+<ins>
+<code>treat_as_floating_point_v&lt;rep&gt;</code> is <code>true</code>; or
+</ins>
+</li>
+<li>
+<ins>
+<code>ratio_divide&lt;Period2, period&gt;::den</code> is <code>1</code>
+and <code>treat_as_floating_point_v&lt;Rep2&gt;</code> is <code>false</code>.
+</ins>
+</li>
+</ul>
+<p>
+<del>
+No overflow is induced in the conversion and
+<code>treat_as_floating_point_v&lt;rep&gt;</code> is <code>true</code>
+or both <code>ratio_divide&lt;Period2, period&gt;::den</code> is <code>1</code>
+and <code>treat_as_floating_point_v&lt;Rep2&gt;</code> is <code>false</code>.
+</del>
+[<i>Note:</i> This requirement prevents implicit truncation error<ins>s</ins>
+when converting between integral-based <code>duration</code> types.
+Such a construction could easily lead to confusion about the value of the
+<code>duration</code>.
+&mdash; <i>end note</i>]
+</p>
+</li>
+</ol>
+
+
+
+
+
 <hr>
 <h3 id="3627"><a href="#3627">3627</a><sup><a href="https://cplusplus.github.io/LWG/issue3627">(i)</a></sup>. Inconsistent specifications for <code>std::make_optional</code> overloads</h3>
 <p><b>Section:</b> 22.5.10 <a href="https://wg21.link/optional.specalg">[optional.specalg]</a> <b>Status:</b> <a href="lwg-active.html#Ready">Tentatively Ready</a>
@@ -3870,6 +4007,74 @@ for (auto i = c.begin()<del>, last = c.end()</del>; i != <del>last</del><ins>c.e
 return original_size - c.size();
 </pre></blockquote>
 </blockquote>
+</blockquote>
+
+</li>
+
+</ol>
+
+
+
+
+
+<hr>
+<h3 id="4328"><a href="#4328">4328</a><sup><a href="https://cplusplus.github.io/LWG/issue4328">(i)</a></sup>. Remove note in &sect;[exec.sched] regarding waiting for completion of scheduled operations</h3>
+<p><b>Section:</b> 33.6 <a href="https://wg21.link/exec.sched">[exec.sched]</a> <b>Status:</b> <a href="lwg-active.html#Ready">Tentatively Ready</a>
+ <b>Submitter:</b> Lewis Baker <b>Opened:</b> 2025-08-25 <b>Last modified:</b> 2025-10-23</p>
+<p><b>Priority: </b>Not Prioritized
+</p>
+<p><b>View other</b> <a href="lwg-index-open.html#exec.sched">active issues</a> in [exec.sched].</p>
+<p><b>View all other</b> <a href="lwg-index.html#exec.sched">issues</a> in [exec.sched].</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#Tentatively Ready">Tentatively Ready</a> status.</p>
+<p><b>Discussion:</b></p>
+<p>
+The note at the end of 33.6 <a href="https://wg21.link/exec.sched">[exec.sched]</a> says:
+</p>
+<blockquote><p>
+[<i>Note</i>: The ability to wait for completion of submitted function objects can be provided by the 
+associated execution resource of the scheduler &mdash; <i>end note</i>]
+</p></blockquote>
+<p>
+The suggestion that the execution resource should be used to join/wait on scheduled work is problematic 
+in situations that may involve more than one execution context, as an execution resource having an empty 
+queue of scheduled work does not necessarily imply that tasks currently running on another execution 
+context will not later schedule additional work on this execution resource.
+<p/>
+With the introduction of <code class='backtick'>counting_scope</code> with <a href="https://wg21.link/P3149" title=" async_scope — Creating scopes for non-sequential concurrency">P3149</a> we now have a better recommended 
+way of waiting for tasks that use a resource (including execution resources) to complete.
+<p/>
+The note as it stands represents bad guidance and should either be removed or updated to refer to 
+<code class='backtick'>counting_scope</code> and <code class='backtick'>simple_counting_scope</code> (33.14.2 <a href="https://wg21.link/exec.counting.scopes">[exec.counting.scopes]</a>).
+</p>
+
+<p><i>[2025-10-23; Reflector poll.]</i></p>
+
+<p>
+Set status to Tentatively Ready after six votes in favour during reflector poll.
+</p>
+<p>
+"What is this telling me as a user? That a custom execution resource can add
+a non-standard 'wait for completion' facility?"
+</p>
+
+
+<p id="res-4328"><b>Proposed resolution:</b></p>
+<p>
+This wording is relative to <a href="https://wg21.link/N5014">N5014</a>.
+</p>
+
+<ol>
+
+<li><p>Modify 33.6 <a href="https://wg21.link/exec.sched">[exec.sched]</a> as indicated:</p>
+
+<blockquote>
+<p>
+-7- A scheduler type's destructor shall not block pending completion of any receivers connected to the sender
+objects returned from schedule.
+<p/>
+<del>[<i>Note 1</i>: The ability to wait for completion of submitted function objects can be provided by 
+the associated execution resource of the scheduler. &mdash; <i>end note</i>]</del>
+</p>
 </blockquote>
 
 </li>

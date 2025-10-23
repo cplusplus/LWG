@@ -64,8 +64,8 @@
 <p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#New">New</a> status.</em></p>
 <h3 id="4355"><a href="lwg-active.html#4355">4355</a>. <code><i>connect-awaitable()</i></code> should mandate <code class='backtick'>rcvr</code> can receive all completion-signals rather than using constraints</h3>
 <p><b>Section:</b> 33.9.10 <a href="https://wg21.link/exec.connect">[exec.connect]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Lewis Baker <b>Opened:</b> 2025-08-27 <b>Last modified:</b> 2025-09-14</p>
-<p><b>Priority: </b>Not Prioritized
+ <b>Submitter:</b> Lewis Baker <b>Opened:</b> 2025-08-27 <b>Last modified:</b> 2025-10-23</p>
+<p><b>Priority: </b>2
 </p>
 <p><b>View other</b> <a href="lwg-index-open.html#exec.connect">active issues</a> in [exec.connect].</p>
 <p><b>View all other</b> <a href="lwg-index.html#exec.connect">issues</a> in [exec.connect].</p>
@@ -97,6 +97,16 @@ The constraint on <code><i>connect-awaitable</i></code> should either be removed
 <i>Mandates</i> element. As <code><i>connect-awaitable</i></code> is only used within the definition of 
 <code>connect()</code> and as <code>connect()</code> already mandates that <code class='backtick'>receiver_of</code> is satisfied, 
 it seems sufficient to just remove this constraint from <code><i>connect-awaitable</i></code>.
+</p>
+
+<p><i>[2025-10-23; Reflector poll.]</i></p>
+
+<p>
+Set priority to 2 after reflector poll.
+</p>
+<p>
+"Is this actually redundant? Where is <code class='backtick'>Sigs</code> required to match (or at least be a subset of)
+<code>completion_signatures_of&lt;Sndr, env_of_t&lt;Recvr&gt;&gt;</code>?"
 </p>
 
 

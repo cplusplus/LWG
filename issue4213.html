@@ -64,8 +64,8 @@
 <p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#New">New</a> status.</em></p>
 <h3 id="4213"><a href="lwg-active.html#4213">4213</a>. Sender spec depends on unspecified order of evaluation</h3>
 <p><b>Section:</b> 33.9 <a href="https://wg21.link/exec.snd">[exec.snd]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Frank Birbacher <b>Opened:</b> 2025-02-14 <b>Last modified:</b> 2025-02-23</p>
-<p><b>Priority: </b>Not Prioritized
+ <b>Submitter:</b> Frank Birbacher <b>Opened:</b> 2025-02-14 <b>Last modified:</b> 2025-10-23</p>
+<p><b>Priority: </b>2
 </p>
 <p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
 <p><b>Discussion:</b></p>
@@ -95,6 +95,28 @@ Repetitions are at least in:
 <li><p>33.9.12.15 <a href="https://wg21.link/exec.stopped.err">[exec.stopped.err]</a> p2</p></li>
 <li><p>33.9.13.2 <a href="https://wg21.link/exec.sync.wait.var">[exec.sync.wait.var]</a> p1</p></li>
 </ol>
+
+<p><i>[2025-10-23; Reflector poll.]</i></p>
+
+<p>
+Set priority to 2 after reflector poll.
+</p>
+<p>
+"Don't want to have to consider whether you can call <code class='backtick'>get_env</code> on a moved-from sender.
+If the domain is a stateless tag type, then <i>get-domain-early</i>'s return value
+can't depend on the actual value of the sender, just its type.
+If that's correct, we can just spell this <code class='backtick'>decltype(get-domain-early(sndr)){}</code>.
+We already do this for <i>get-domain-late</i>."
+</p>
+<p>
+"The point of all these exposition-only things was to make the wording more compact and readable.
+Adding <code class='backtick'>decltype</code> and parens everywhere wouldn't help that.
+Maybe change <i>get-domain-early</i> and <i>get-domain-late</i> from function templates
+to all-caps wording macros, e.g. <i><code class='backtick'>GET-DOMAIN-EARLY</code></i><code class='backtick'>(sndr)</code>?"
+</p>
+<p>
+"NAD, I think the issue is covered by “except sndr is evaluated just once.”"
+</p>
 
 
 <p id="res-4213"><b>Proposed resolution:</b></p>

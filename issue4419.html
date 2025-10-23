@@ -64,8 +64,8 @@
 <p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#New">New</a> status.</em></p>
 <h3 id="4419"><a href="lwg-active.html#4419">4419</a>. <code class='backtick'>let_value/error/stopped</code> should specify the attributes of their senders</h3>
 <p><b>Section:</b> 33.9.12.10 <a href="https://wg21.link/exec.let">[exec.let]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Eric Niebler <b>Opened:</b> 2025-10-16 <b>Last modified:</b> 2025-10-19</p>
-<p><b>Priority: </b>Not Prioritized
+ <b>Submitter:</b> Eric Niebler <b>Opened:</b> 2025-10-16 <b>Last modified:</b> 2025-10-23</p>
+<p><b>Priority: </b>1
 </p>
 <p><b>View all other</b> <a href="lwg-index.html#exec.let">issues</a> in [exec.let].</p>
 <p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
@@ -90,6 +90,15 @@ schedulers or domains.
 <code class='backtick'>let_value/error/stopped</code> must define <code><i>impls-for</i>&lt;let_xxx_t&gt;::<i>get-attrs</i></code> to return 
 <code><i>FWD-ENV</i>(get_env(sndr))</code> except that it handles the <code>get_completion_scheduler_t&lt;Tag&gt;</code> 
 (for any completion tag <code class='backtick'>Tag</code>) and <code class='backtick'>get_domain_t</code> queries specially.</p>
+
+<p><i>[2025-10-23; Reflector poll.]</i></p>
+
+<p>
+Set priority to 1 after reflector poll.
+</p>
+<p>
+"Looks like a special case of the problem that <a href="https://wg21.link/P3826">P3826</a> addresses."
+</p>
 
 
 <p id="res-4419"><b>Proposed resolution:</b></p>

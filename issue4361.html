@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <title>Issue 4361: awaitable-receiver::set_value should use Mandates instead of constraints</title>
 <meta property="og:title" content="Issue 4361: awaitable-receiver::set_value should use Mandates instead of constraints">
-<meta property="og:description" content="C++ library issue. Status: New">
+<meta property="og:description" content="C++ library issue. Status: LEWG">
 <meta property="og:url" content="https://cplusplus.github.io/LWG/issue4361.html">
 <meta property="og:type" content="website">
 <meta property="og:image" content="http://cplusplus.github.io/LWG/images/cpp_logo.png">
@@ -61,15 +61,15 @@
 </head>
 <body>
 <hr>
-<p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#New">New</a> status.</em></p>
+<p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#LEWG">LEWG</a> status.</em></p>
 <h3 id="4361"><a href="lwg-active.html#4361">4361</a>. <code><i>awaitable-receiver</i>::set_value</code> should use <i>Mandates</i> instead of constraints</h3>
-<p><b>Section:</b> 33.13.1 <a href="https://wg21.link/exec.as.awaitable">[exec.as.awaitable]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Lewis Baker <b>Opened:</b> 2025-08-28 <b>Last modified:</b> 2025-09-14</p>
-<p><b>Priority: </b>Not Prioritized
+<p><b>Section:</b> 33.13.1 <a href="https://wg21.link/exec.as.awaitable">[exec.as.awaitable]</a> <b>Status:</b> <a href="lwg-active.html#LEWG">LEWG</a>
+ <b>Submitter:</b> Lewis Baker <b>Opened:</b> 2025-08-28 <b>Last modified:</b> 2025-10-23</p>
+<p><b>Priority: </b>1
 </p>
 <p><b>View other</b> <a href="lwg-index-open.html#exec.as.awaitable">active issues</a> in [exec.as.awaitable].</p>
 <p><b>View all other</b> <a href="lwg-index.html#exec.as.awaitable">issues</a> in [exec.as.awaitable].</p>
-<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#LEWG">LEWG</a> status.</p>
 <p><b>Discussion:</b></p>
 <p>
 In 33.13.1 <a href="https://wg21.link/exec.as.awaitable">[exec.as.awaitable]</a> bullet 4.1 the <code><i>awaitable-receiver</i>::set_value</code> member function 
@@ -121,6 +121,16 @@ just making them all mandates. This would tend to make uses of the <code class='
 less useful as satisfying <code>receiver_of&lt;R, Sig&gt;</code> would not necessarily 
 guarantee that actually trying to call each of <code class='backtick'>R</code>'s corresponding completion functions 
 will result in a well-formed program. It is arguable that this is already the status-quo, however.
+</p>
+
+<p><i>[2025-10-23; Reflector poll. Status changed: New &rarr; LEWG]</i></p>
+
+<p>
+Set priority to 1 after reflector poll.
+</p>
+<p>
+"Send to LEWG if we want to go this way, which makes <code class='backtick'>receiver_of</code> mostly meaningless
+and calls into question why we even have the concept."
 </p>
 
 

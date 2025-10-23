@@ -64,8 +64,8 @@
 <p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#New">New</a> status.</em></p>
 <h3 id="4360"><a href="lwg-active.html#4360">4360</a>. <code><i>awaitable-sender</i></code> concept should qualify use of <code><i>awaitable-receiver</i></code> type</h3>
 <p><b>Section:</b> 33.13.1 <a href="https://wg21.link/exec.as.awaitable">[exec.as.awaitable]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Lewis Baker <b>Opened:</b> 2025-08-27 <b>Last modified:</b> 2025-09-14</p>
-<p><b>Priority: </b>Not Prioritized
+ <b>Submitter:</b> Lewis Baker <b>Opened:</b> 2025-08-27 <b>Last modified:</b> 2025-10-23</p>
+<p><b>Priority: </b>2
 </p>
 <p><b>View other</b> <a href="lwg-index-open.html#exec.as.awaitable">active issues</a> in [exec.as.awaitable].</p>
 <p><b>View all other</b> <a href="lwg-index.html#exec.as.awaitable">issues</a> in [exec.as.awaitable].</p>
@@ -91,6 +91,15 @@ The mention of the type <code><i>awaitable-receiver</i></code> here does not ref
 defined at namespace-scope. It seems to, instead, be referring to the nested member-type 
 <code><i>sender-awaitable</i>&lt;Sndr, Promise&gt;::<i>awaitable-receiver</i></code> and so should be 
 qualified as such.
+</p>
+
+<p><i>[2025-10-23; Reflector poll.]</i></p>
+
+<p>
+Set priority to 2 after reflector poll.
+</p>
+<p>
+"We should move the declaration of <i><code class='backtick'>sender-awaitable</code></i> before the concept."
 </p>
 
 

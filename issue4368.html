@@ -64,8 +64,8 @@
 <p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#New">New</a> status.</em></p>
 <h3 id="4368"><a href="lwg-active.html#4368">4368</a>. Potential dangling reference returned from <code class='backtick'>transform_sender</code></h3>
 <p><b>Section:</b> 33.9.5 <a href="https://wg21.link/exec.domain.default">[exec.domain.default]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Eric Niebler <b>Opened:</b> 2025-08-31 <b>Last modified:</b> 2025-09-15</p>
-<p><b>Priority: </b>Not Prioritized
+ <b>Submitter:</b> Eric Niebler <b>Opened:</b> 2025-08-31 <b>Last modified:</b> 2025-10-23</p>
+<p><b>Priority: </b>1
 </p>
 <p><b>View all other</b> <a href="lwg-index.html#exec.domain.default">issues</a> in [exec.domain.default].</p>
 <p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
@@ -110,6 +110,24 @@ its implementation of <code class='backtick'>default_domain::transform_sender</c
 it returns an rvalue sender as a prvalue instead of an xvalue as the spec requires.
 <p/>
 The fix is for the spec to follow suit and return prvalues when an xvalue would otherwise be returned.
+</p>
+
+<p><i>[2025-10-23; Reflector poll.]</i></p>
+
+<p>
+Set priority to 1 after reflector poll.
+</p>
+<p>
+"There's an NB comment to remove <code class='backtick'>transform_sender</code> entirely."
+"Nothing seems to prevent <code class='backtick'>Sndr</code> from being a reference type, so I would
+expect <code class='backtick'>decay_t</code> or <code class='backtick'>remove_cvref_t</code> (or <i><code class='backtick'>decayed-typeof</code></i>) instead
+of the <code class='backtick'>static_cast</code>."
+</p>
+<p>
+"I think that's intentional. The dangling happens if <code class='backtick'>transform_sender</code> is
+invoked with an xvalue (where <code class='backtick'>Sndr</code> is deduced as a type). When invoked with
+and lvalue (where <code class='backtick'>Sndr</code> is deduced as an lvalue reference) we don't want to
+make a copy. So the <code class='backtick'>static_cast</code> makes a copy of an xvalue and not of an lvalue."
 </p>
 
 

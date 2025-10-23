@@ -67,8 +67,8 @@ co_await expression instead of same_as&lt;void&gt;">
 <h3 id="4357"><a href="lwg-active.html#4357">4357</a>. <code><i>connect-awaitable</i></code> should use <code class='backtick'>is_void_v</code> to check for result-type of 
 <code class='backtick'>co_await</code> expression instead of <code>same_as&lt;void&gt;</code></h3>
 <p><b>Section:</b> 33.9.10 <a href="https://wg21.link/exec.connect">[exec.connect]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Lewis Baker <b>Opened:</b> 2025-08-27 <b>Last modified:</b> 2025-09-14</p>
-<p><b>Priority: </b>Not Prioritized
+ <b>Submitter:</b> Lewis Baker <b>Opened:</b> 2025-08-27 <b>Last modified:</b> 2025-10-23</p>
+<p><b>Priority: </b>4
 </p>
 <p><b>View other</b> <a href="lwg-index-open.html#exec.connect">active issues</a> in [exec.connect].</p>
 <p><b>View all other</b> <a href="lwg-index.html#exec.connect">issues</a> in [exec.connect].</p>
@@ -99,6 +99,19 @@ result of the <code class='backtick'>co_await</code> expression has type <i>cv</
 instead to allow it to match all <code class='backtick'>void</code> types, not just unqualified <code class='backtick'>void</code>.
 </p>
 
+
+<p><i>[2025-10-23; Reflector poll.]</i></p>
+
+<p>
+Set priority to 4 after reflector poll.
+</p>
+<p>
+"NAD, <code class='backtick'>V</code> is <code><i>await-result-type</i>&lt;...&gt;</code> which is <code class='backtick'>decltype(...)</code>
+and you never get <i>cv</i> void from <code class='backtick'>decltype</code> (7.2.2 <a href="https://wg21.link/expr.type">[expr.type]</a> p2)."
+</p>
+<p>
+"But using <code class='backtick'>is_void_v</code> more clearly expresses the intent."
+</p>
 
 
 <p id="res-4357"><b>Proposed resolution:</b></p>

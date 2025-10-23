@@ -67,8 +67,8 @@ connect-awaitable coroutine">
 <h3 id="4356"><a href="lwg-active.html#4356">4356</a>. <code class='backtick'>connect()</code> should use <code class='backtick'>get_allocator(get_env(rcvr))</code> to allocate the coroutine-state for a 
 <code><i>connect-awaitable</i></code> coroutine</h3>
 <p><b>Section:</b> 33.9.10 <a href="https://wg21.link/exec.connect">[exec.connect]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Lewis Baker <b>Opened:</b> 2025-08-27 <b>Last modified:</b> 2025-09-14</p>
-<p><b>Priority: </b>Not Prioritized
+ <b>Submitter:</b> Lewis Baker <b>Opened:</b> 2025-08-27 <b>Last modified:</b> 2025-10-23</p>
+<p><b>Priority: </b>2
 </p>
 <p><b>View other</b> <a href="lwg-index-open.html#exec.connect">active issues</a> in [exec.connect].</p>
 <p><b>View all other</b> <a href="lwg-index.html#exec.connect">issues</a> in [exec.connect].</p>
@@ -87,6 +87,16 @@ It seems desirable for this facility to use the allocator obtained from the rece
 <code class='backtick'>get_allocator(get_env(rcvr))</code>, in order to allocate storage for the coroutine-state instead of always 
 using global operator <code class='backtick'>new</code>. This would give the user at least some level of control over how this 
 allocation is performed.
+</p>
+
+<p><i>[2025-10-23; Reflector poll.]</i></p>
+
+<p>
+Set priority to 2 after reflector poll.
+</p>
+<p>
+"The <code class='backtick'>get_allocator</code> query doesn't have a default and I think that isn't
+covered in the proposed resolution."
 </p>
 
 

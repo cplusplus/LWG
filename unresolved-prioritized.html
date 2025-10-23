@@ -60,8 +60,8 @@
 <p>This document is the Table of Contents for the <a href="lwg-active.html">Library Active Issues List</a>,
 <a href="lwg-defects.html">Library Defect Reports and Accepted Issues</a>, and <a href="lwg-closed.html">Library Closed Issues List</a>,
 sorted by priority.</p>
-<p>Revised 2025-10-23 at 11:15:58 UTC
-</p><h2 id="Priority_1">Priority 1 (16 issues)</h2>
+<p>Revised 2025-10-23 at 12:40:27 UTC
+</p><h2 id="Priority_1">Priority 1 (19 issues)</h2>
 <table class="issues-index">
 <tr>
   <th><a href="lwg-toc.html">Issue</a></th>
@@ -194,11 +194,38 @@ incorrectly constrained for <code>&lt;stdfloat&gt;</code> types</td>
 <td></td>
 </tr>
 <tr>
+<td id="4368"><a href="lwg-active.html#4368" title="Potential dangling reference returned from transform_sender (Status: New)">4368</a><sup><a href="https://cplusplus.github.io/LWG/issue4368">(i)</a></sup></td>
+<td><a href="lwg-active.html#New">New</a></td>
+<td>33.9.5 [exec.domain.default]</td>
+<td>Potential dangling reference returned from <code class='backtick'>transform_sender</code></td>
+<td>Yes</td>
+<td>1</td>
+<td></td>
+</tr>
+<tr>
+<td id="4419"><a href="lwg-active.html#4419" title="let_value/error/stopped should specify the attributes of their senders (Status: New)">4419</a><sup><a href="https://cplusplus.github.io/LWG/issue4419">(i)</a></sup></td>
+<td><a href="lwg-active.html#New">New</a></td>
+<td>33.9.12.10 [exec.let]</td>
+<td><code class='backtick'>let_value/error/stopped</code> should specify the attributes of their senders</td>
+<td><span class="no-pr">No</span></td>
+<td>1</td>
+<td></td>
+</tr>
+<tr>
 <td id="4133"><a href="lwg-active.html#4133" title="awaitable-receiver's members are potentially throwing (Status: New)">4133</a><sup><a href="https://cplusplus.github.io/LWG/issue4133">(i)</a></sup></td>
 <td><a href="lwg-active.html#New">New</a></td>
 <td>33.13.1 [exec.as.awaitable]</td>
 <td><code><i>awaitable-receiver</i></code>'s members are potentially throwing</td>
 <td><span class="no-pr">No</span></td>
+<td>1</td>
+<td></td>
+</tr>
+<tr>
+<td id="4361"><a href="lwg-active.html#4361" title="awaitable-receiver::set_value should use Mandates instead of constraints (Status: LEWG)">4361</a><sup><a href="https://cplusplus.github.io/LWG/issue4361">(i)</a></sup></td>
+<td><a href="lwg-active.html#LEWG">LEWG</a></td>
+<td>33.13.1 [exec.as.awaitable]</td>
+<td><code><i>awaitable-receiver</i>::set_value</code> should use <i>Mandates</i> instead of constraints</td>
+<td>Yes</td>
 <td>1</td>
 <td></td>
 </tr>
@@ -221,7 +248,7 @@ incorrectly constrained for <code>&lt;stdfloat&gt;</code> types</td>
 <td></td>
 </tr>
 </table>
-<h2 id="Priority_2">Priority 2 (85 issues)</h2>
+<h2 id="Priority_2">Priority 2 (93 issues)</h2>
 <table class="issues-index">
 <tr>
   <th><a href="lwg-toc.html">Issue</a></th>
@@ -858,11 +885,29 @@ specified to make <code><i>N</i></code> copies of <code>T</code> into the destin
 <td></td>
 </tr>
 <tr>
+<td id="4260"><a href="lwg-active.html#4260" title="Query objects must be default constructible (Status: New)">4260</a><sup><a href="https://cplusplus.github.io/LWG/issue4260">(i)</a></sup></td>
+<td><a href="lwg-active.html#New">New</a></td>
+<td>33.2.1 [exec.queryable.general]</td>
+<td>Query objects must be default constructible</td>
+<td>Yes</td>
+<td>2</td>
+<td></td>
+</tr>
+<tr>
 <td id="4143"><a href="lwg-active.html#4143" title="execution::set_value/set_error/set_stopped/start should always return void (Status: New)">4143</a><sup><a href="https://cplusplus.github.io/LWG/issue4143">(i)</a></sup></td>
 <td><a href="lwg-active.html#New">New</a></td>
 <td>33.7.2 [exec.set.value]</td>
 <td><code>execution::set_value/set_error/set_stopped/start</code> should always return <code>void</code></td>
 <td>Yes</td>
+<td>2</td>
+<td></td>
+</tr>
+<tr>
+<td id="4213"><a href="lwg-active.html#4213" title="Sender spec depends on unspecified order of evaluation (Status: New)">4213</a><sup><a href="https://cplusplus.github.io/LWG/issue4213">(i)</a></sup></td>
+<td><a href="lwg-active.html#New">New</a></td>
+<td>33.9 [exec.snd]</td>
+<td>Sender spec depends on unspecified order of evaluation</td>
+<td><span class="no-pr">No</span></td>
 <td>2</td>
 <td></td>
 </tr>
@@ -876,10 +921,66 @@ specified to make <code><i>N</i></code> copies of <code>T</code> into the destin
 <td></td>
 </tr>
 <tr>
+<td id="4355"><a href="lwg-active.html#4355" title="connect-awaitable() should mandate rcvr can receive all completion-signals rather than using constraints (Status: New)">4355</a><sup><a href="https://cplusplus.github.io/LWG/issue4355">(i)</a></sup></td>
+<td><a href="lwg-active.html#New">New</a></td>
+<td>33.9.10 [exec.connect]</td>
+<td><code><i>connect-awaitable()</i></code> should mandate <code class='backtick'>rcvr</code> can receive all completion-signals rather than using constraints</td>
+<td>Yes</td>
+<td>2</td>
+<td></td>
+</tr>
+<tr>
+<td id="4356"><a href="lwg-active.html#4356" title="connect() should use get_allocator(get_env(rcvr)) to allocate the coroutine-state for a 
+connect-awaitable coroutine (Status: New)">4356</a><sup><a href="https://cplusplus.github.io/LWG/issue4356">(i)</a></sup></td>
+<td><a href="lwg-active.html#New">New</a></td>
+<td>33.9.10 [exec.connect]</td>
+<td><code class='backtick'>connect()</code> should use <code class='backtick'>get_allocator(get_env(rcvr))</code> to allocate the coroutine-state for a 
+<code><i>connect-awaitable</i></code> coroutine</td>
+<td>Yes</td>
+<td>2</td>
+<td></td>
+</tr>
+<tr>
+<td id="4395"><a href="lwg-active.html#4395" title="write_env implementation-detail lambda should have explicit return type (Status: New)">4395</a><sup><a href="https://cplusplus.github.io/LWG/issue4395">(i)</a></sup></td>
+<td><a href="lwg-active.html#New">New</a></td>
+<td>33.9.12.3 [exec.write.env]</td>
+<td><code class='backtick'>write_env</code> implementation-detail lambda should have explicit return type</td>
+<td><span class="no-pr">No</span></td>
+<td>2</td>
+<td></td>
+</tr>
+<tr>
+<td id="4369"><a href="lwg-active.html#4369" title="check-types function for upon_error and upon_stopped is wrong (Status: New)">4369</a><sup><a href="https://cplusplus.github.io/LWG/issue4369">(i)</a></sup></td>
+<td><a href="lwg-active.html#New">New</a></td>
+<td>33.9.12.9 [exec.then]</td>
+<td><code><i>check-types</i></code> function for <code class='backtick'>upon_error</code> and <code class='backtick'>upon_stopped</code> is wrong</td>
+<td>Yes</td>
+<td>2</td>
+<td></td>
+</tr>
+<tr>
 <td id="4215"><a href="lwg-active.html#4215" title="run_loop::finish should be noexcept (Status: New)">4215</a><sup><a href="https://cplusplus.github.io/LWG/issue4215">(i)</a></sup></td>
 <td><a href="lwg-active.html#New">New</a></td>
 <td>33.12.1 [exec.run.loop]</td>
 <td><code class='backtick'>run_loop::finish</code> should be <code class='backtick'>noexcept</code></td>
+<td>Yes</td>
+<td>2</td>
+<td></td>
+</tr>
+<tr>
+<td id="4358"><a href="lwg-active.html#4358" title="&sect;[exec.as.awaitable] is using &quot;Preconditions:&quot; when it should probably be described in the constraint (Status: New)">4358</a><sup><a href="https://cplusplus.github.io/LWG/issue4358">(i)</a></sup></td>
+<td><a href="lwg-active.html#New">New</a></td>
+<td>33.13.1 [exec.as.awaitable]</td>
+<td>&sect;[exec.as.awaitable] is using "Preconditions:" when it should probably be described in the constraint</td>
+<td>Yes</td>
+<td>2</td>
+<td></td>
+</tr>
+<tr>
+<td id="4360"><a href="lwg-active.html#4360" title="awaitable-sender concept should qualify use of awaitable-receiver type (Status: New)">4360</a><sup><a href="https://cplusplus.github.io/LWG/issue4360">(i)</a></sup></td>
+<td><a href="lwg-active.html#New">New</a></td>
+<td>33.13.1 [exec.as.awaitable]</td>
+<td><code><i>awaitable-sender</i></code> concept should qualify use of <code><i>awaitable-receiver</i></code> type</td>
 <td>Yes</td>
 <td>2</td>
 <td></td>
@@ -1002,7 +1103,7 @@ specified to make <code><i>N</i></code> copies of <code>T</code> into the destin
 <td></td>
 </tr>
 </table>
-<h2 id="Priority_3">Priority 3 (452 issues)</h2>
+<h2 id="Priority_3">Priority 3 (453 issues)</h2>
 <table class="issues-index">
 <tr>
   <th><a href="lwg-toc.html">Issue</a></th>
@@ -4448,15 +4549,6 @@ regards to <code>ClassAtomCollatingElement</code></td>
 <td></td>
 </tr>
 <tr>
-<td id="3090"><a href="lwg-active.html#3090" title="What is &sect;[time.duration.cons]p4's &quot;no overflow is induced in the conversion&quot; intended to mean? (Status: New)">3090</a><sup><a href="https://cplusplus.github.io/LWG/issue3090">(i)</a></sup></td>
-<td><a href="lwg-active.html#New">New</a></td>
-<td>30.5.2 [time.duration.cons]</td>
-<td>What is &sect;[time.duration.cons]p4's "no overflow is induced in the conversion" intended to mean?</td>
-<td>Yes</td>
-<td>3</td>
-<td></td>
-</tr>
-<tr>
 <td id="3503"><a href="lwg-active.html#3503" title="chrono::ceil has surprising requirement (Status: New)">3503</a><sup><a href="https://cplusplus.github.io/LWG/issue3503">(i)</a></sup></td>
 <td><a href="lwg-active.html#New">New</a></td>
 <td>30.5.8 [time.duration.cast]</td>
@@ -5028,6 +5120,24 @@ fetch_meow members don't (Status: New)">3047</a><sup><a href="https://cplusplus.
 <td></td>
 </tr>
 <tr>
+<td id="4353"><a href="lwg-active.html#4353" title="Uses of MANDATE-NOTHROW in CPOs should not enclose CPO argument sub-expressions (Status: New)">4353</a><sup><a href="https://cplusplus.github.io/LWG/issue4353">(i)</a></sup></td>
+<td><a href="lwg-active.html#New">New</a></td>
+<td>33 [exec]</td>
+<td>Uses of <code><i>MANDATE-NOTHROW</i></code> in CPOs should not enclose CPO argument sub-expressions</td>
+<td><span class="no-pr">No</span></td>
+<td>3</td>
+<td></td>
+</tr>
+<tr>
+<td id="4327"><a href="lwg-active.html#4327" title="Equal schedulers should be required to have same behaviour (Status: New)">4327</a><sup><a href="https://cplusplus.github.io/LWG/issue4327">(i)</a></sup></td>
+<td><a href="lwg-active.html#New">New</a></td>
+<td>33.6 [exec.sched]</td>
+<td>Equal schedulers should be required to have same behaviour</td>
+<td><span class="no-pr">No</span></td>
+<td>3</td>
+<td></td>
+</tr>
+<tr>
 <td id="4329"><a href="lwg-active.html#4329" title="Customising affine_on for other algorithms (Status: LEWG)">4329</a><sup><a href="https://cplusplus.github.io/LWG/issue4329">(i)</a></sup></td>
 <td><a href="lwg-active.html#LEWG">LEWG</a></td>
 <td>33.13.3 [exec.affine.on]</td>
@@ -5138,7 +5248,7 @@ don't support <code>DynamicBuffer</code> lvalues</td>
 <td></td>
 </tr>
 </table>
-<h2 id="Priority_4">Priority 4 (109 issues)</h2>
+<h2 id="Priority_4">Priority 4 (110 issues)</h2>
 <table class="issues-index">
 <tr>
   <th><a href="lwg-toc.html">Issue</a></th>
@@ -6058,6 +6168,17 @@ vprint_unicode/vprint_nonunicode (Status: New)">4039</a><sup><a href="https://cp
 <td></td>
 </tr>
 <tr>
+<td id="4357"><a href="lwg-active.html#4357" title="connect-awaitable should use is_void_v to check for result-type of 
+co_await expression instead of same_as&lt;void&gt; (Status: New)">4357</a><sup><a href="https://cplusplus.github.io/LWG/issue4357">(i)</a></sup></td>
+<td><a href="lwg-active.html#New">New</a></td>
+<td>33.9.10 [exec.connect]</td>
+<td><code><i>connect-awaitable</i></code> should use <code class='backtick'>is_void_v</code> to check for result-type of 
+<code class='backtick'>co_await</code> expression instead of <code>same_as&lt;void&gt;</code></td>
+<td>Yes</td>
+<td>4</td>
+<td></td>
+</tr>
+<tr>
 <td id="2478"><a href="lwg-active.html#2478" title="Unclear how wstring_convert uses cvtstate (Status: New)">2478</a><sup><a href="https://cplusplus.github.io/LWG/issue2478">(i)</a></sup></td>
 <td><a href="lwg-active.html#New">New</a></td>
 <td>99 [depr.conversions.string]</td>
@@ -6139,7 +6260,7 @@ vprint_unicode/vprint_nonunicode (Status: New)">4039</a><sup><a href="https://cp
 <td></td>
 </tr>
 </table>
-<h2 id="Priority_99">Not Prioritized (31 issues)</h2>
+<h2 id="Priority_99">Not Prioritized (15 issues)</h2>
 <table class="issues-index">
 <tr>
   <th><a href="lwg-toc.html">Issue</a></th>
@@ -6270,51 +6391,6 @@ vprint_unicode/vprint_nonunicode (Status: New)">4039</a><sup><a href="https://cp
 <td></td>
 </tr>
 <tr>
-<td id="4353"><a href="lwg-active.html#4353" title="Uses of MANDATE-NOTHROW in CPOs should not enclose CPO argument sub-expressions (Status: New)">4353</a><sup><a href="https://cplusplus.github.io/LWG/issue4353">(i)</a></sup></td>
-<td><a href="lwg-active.html#New">New</a></td>
-<td>33 [exec]</td>
-<td>Uses of <code><i>MANDATE-NOTHROW</i></code> in CPOs should not enclose CPO argument sub-expressions</td>
-<td><span class="no-pr">No</span></td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td id="4260"><a href="lwg-active.html#4260" title="Query objects must be default constructible (Status: New)">4260</a><sup><a href="https://cplusplus.github.io/LWG/issue4260">(i)</a></sup></td>
-<td><a href="lwg-active.html#New">New</a></td>
-<td>33.2.1 [exec.queryable.general]</td>
-<td>Query objects must be default constructible</td>
-<td>Yes</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td id="4327"><a href="lwg-active.html#4327" title="Equal schedulers should be required to have same behaviour (Status: New)">4327</a><sup><a href="https://cplusplus.github.io/LWG/issue4327">(i)</a></sup></td>
-<td><a href="lwg-active.html#New">New</a></td>
-<td>33.6 [exec.sched]</td>
-<td>Equal schedulers should be required to have same behaviour</td>
-<td><span class="no-pr">No</span></td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td id="4328"><a href="lwg-active.html#4328" title="Remove note in &sect;[exec.sched] regarding waiting for completion of scheduled operations (Status: New)">4328</a><sup><a href="https://cplusplus.github.io/LWG/issue4328">(i)</a></sup></td>
-<td><a href="lwg-active.html#New">New</a></td>
-<td>33.6 [exec.sched]</td>
-<td>Remove note in &sect;[exec.sched] regarding waiting for completion of scheduled operations</td>
-<td>Yes</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td id="4213"><a href="lwg-active.html#4213" title="Sender spec depends on unspecified order of evaluation (Status: New)">4213</a><sup><a href="https://cplusplus.github.io/LWG/issue4213">(i)</a></sup></td>
-<td><a href="lwg-active.html#New">New</a></td>
-<td>33.9 [exec.snd]</td>
-<td>Sender spec depends on unspecified order of evaluation</td>
-<td><span class="no-pr">No</span></td>
-<td></td>
-<td></td>
-</tr>
-<tr>
 <td id="4278"><a href="lwg-active.html#4278" title="Consider changing how get-domain-early(sndr) works (Status: New)">4278</a><sup><a href="https://cplusplus.github.io/LWG/issue4278">(i)</a></sup></td>
 <td><a href="lwg-active.html#New">New</a></td>
 <td>33.9.2 [exec.snd.expos]</td>
@@ -6324,113 +6400,10 @@ vprint_unicode/vprint_nonunicode (Status: New)">4039</a><sup><a href="https://cp
 <td></td>
 </tr>
 <tr>
-<td id="4368"><a href="lwg-active.html#4368" title="Potential dangling reference returned from transform_sender (Status: New)">4368</a><sup><a href="https://cplusplus.github.io/LWG/issue4368">(i)</a></sup></td>
-<td><a href="lwg-active.html#New">New</a></td>
-<td>33.9.5 [exec.domain.default]</td>
-<td>Potential dangling reference returned from <code class='backtick'>transform_sender</code></td>
-<td>Yes</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td id="4363"><a href="lwg-active.html#4363" title="transform_sender comparing types ignoring cv-qualifiers doesn't take into account differences in value category (Status: New)">4363</a><sup><a href="https://cplusplus.github.io/LWG/issue4363">(i)</a></sup></td>
-<td><a href="lwg-active.html#New">New</a></td>
-<td>33.9.6 [exec.snd.transform]</td>
-<td><code class='backtick'>transform_sender</code> comparing types ignoring <i>cv</i>-qualifiers doesn't take into account differences in value category</td>
-<td>Yes</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td id="4355"><a href="lwg-active.html#4355" title="connect-awaitable() should mandate rcvr can receive all completion-signals rather than using constraints (Status: New)">4355</a><sup><a href="https://cplusplus.github.io/LWG/issue4355">(i)</a></sup></td>
-<td><a href="lwg-active.html#New">New</a></td>
-<td>33.9.10 [exec.connect]</td>
-<td><code><i>connect-awaitable()</i></code> should mandate <code class='backtick'>rcvr</code> can receive all completion-signals rather than using constraints</td>
-<td>Yes</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td id="4356"><a href="lwg-active.html#4356" title="connect() should use get_allocator(get_env(rcvr)) to allocate the coroutine-state for a 
-connect-awaitable coroutine (Status: New)">4356</a><sup><a href="https://cplusplus.github.io/LWG/issue4356">(i)</a></sup></td>
-<td><a href="lwg-active.html#New">New</a></td>
-<td>33.9.10 [exec.connect]</td>
-<td><code class='backtick'>connect()</code> should use <code class='backtick'>get_allocator(get_env(rcvr))</code> to allocate the coroutine-state for a 
-<code><i>connect-awaitable</i></code> coroutine</td>
-<td>Yes</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td id="4357"><a href="lwg-active.html#4357" title="connect-awaitable should use is_void_v to check for result-type of 
-co_await expression instead of same_as&lt;void&gt; (Status: New)">4357</a><sup><a href="https://cplusplus.github.io/LWG/issue4357">(i)</a></sup></td>
-<td><a href="lwg-active.html#New">New</a></td>
-<td>33.9.10 [exec.connect]</td>
-<td><code><i>connect-awaitable</i></code> should use <code class='backtick'>is_void_v</code> to check for result-type of 
-<code class='backtick'>co_await</code> expression instead of <code>same_as&lt;void&gt;</code></td>
-<td>Yes</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td id="4395"><a href="lwg-active.html#4395" title="write_env implementation-detail lambda should have explicit return type (Status: New)">4395</a><sup><a href="https://cplusplus.github.io/LWG/issue4395">(i)</a></sup></td>
-<td><a href="lwg-active.html#New">New</a></td>
-<td>33.9.12.3 [exec.write.env]</td>
-<td><code class='backtick'>write_env</code> implementation-detail lambda should have explicit return type</td>
-<td><span class="no-pr">No</span></td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td id="4369"><a href="lwg-active.html#4369" title="check-types function for upon_error and upon_stopped is wrong (Status: New)">4369</a><sup><a href="https://cplusplus.github.io/LWG/issue4369">(i)</a></sup></td>
-<td><a href="lwg-active.html#New">New</a></td>
-<td>33.9.12.9 [exec.then]</td>
-<td><code><i>check-types</i></code> function for <code class='backtick'>upon_error</code> and <code class='backtick'>upon_stopped</code> is wrong</td>
-<td>Yes</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td id="4419"><a href="lwg-active.html#4419" title="let_value/error/stopped should specify the attributes of their senders (Status: New)">4419</a><sup><a href="https://cplusplus.github.io/LWG/issue4419">(i)</a></sup></td>
-<td><a href="lwg-active.html#New">New</a></td>
-<td>33.9.12.10 [exec.let]</td>
-<td><code class='backtick'>let_value/error/stopped</code> should specify the attributes of their senders</td>
-<td><span class="no-pr">No</span></td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td id="4358"><a href="lwg-active.html#4358" title="&sect;[exec.as.awaitable] is using &quot;Preconditions:&quot; when it should probably be described in the constraint (Status: New)">4358</a><sup><a href="https://cplusplus.github.io/LWG/issue4358">(i)</a></sup></td>
-<td><a href="lwg-active.html#New">New</a></td>
-<td>33.13.1 [exec.as.awaitable]</td>
-<td>&sect;[exec.as.awaitable] is using "Preconditions:" when it should probably be described in the constraint</td>
-<td>Yes</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
 <td id="4359"><a href="lwg-active.html#4359" title="as_awaitable(expr, p) does not define semantics of call if p is not an lvalue (Status: New)">4359</a><sup><a href="https://cplusplus.github.io/LWG/issue4359">(i)</a></sup></td>
 <td><a href="lwg-active.html#New">New</a></td>
 <td>33.13.1 [exec.as.awaitable]</td>
 <td><code class='backtick'>as_awaitable(expr, p)</code> does not define semantics of call if <code class='backtick'>p</code> is not an lvalue</td>
-<td>Yes</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td id="4360"><a href="lwg-active.html#4360" title="awaitable-sender concept should qualify use of awaitable-receiver type (Status: New)">4360</a><sup><a href="https://cplusplus.github.io/LWG/issue4360">(i)</a></sup></td>
-<td><a href="lwg-active.html#New">New</a></td>
-<td>33.13.1 [exec.as.awaitable]</td>
-<td><code><i>awaitable-sender</i></code> concept should qualify use of <code><i>awaitable-receiver</i></code> type</td>
-<td>Yes</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td id="4361"><a href="lwg-active.html#4361" title="awaitable-receiver::set_value should use Mandates instead of constraints (Status: New)">4361</a><sup><a href="https://cplusplus.github.io/LWG/issue4361">(i)</a></sup></td>
-<td><a href="lwg-active.html#New">New</a></td>
-<td>33.13.1 [exec.as.awaitable]</td>
-<td><code><i>awaitable-receiver</i>::set_value</code> should use <i>Mandates</i> instead of constraints</td>
 <td>Yes</td>
 <td></td>
 <td></td>
