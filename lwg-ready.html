@@ -62,7 +62,7 @@
 </tr>
 <tr>
 <td align="left">Date:</td>
-<td align="left">Revised 2025-10-23 at 09:41:48 UTC
+<td align="left">Revised 2025-10-23 at 10:50:53 UTC
 </td>
 </tr>
 <tr>
@@ -5332,6 +5332,77 @@ template&lt;class T, class U = typename T::value_type&gt; struct alignment { <i>
 <del>(1.2) &mdash;</del> <code class='backtick'>T</code> is a specialization of <code class='backtick'>basic_vec</code> and <code class='backtick'>U</code> is a vectorizable type.
 </p></li>
 </ol>
+</blockquote>
+</blockquote>
+</li>
+</ol>
+
+
+
+
+
+
+<hr>
+<h3 id="4415"><a href="#4415">4415</a><sup><a href="https://cplusplus.github.io/LWG/issue4415">(i)</a></sup>. <code class='backtick'>task::promise_type::uncaught_exception</code> seems to be misnamed</h3>
+<p><b>Section:</b> 33.13.6.5 <a href="https://wg21.link/task.promise">[task.promise]</a> <b>Status:</b> <a href="lwg-active.html#Ready">Tentatively Ready</a>
+ <b>Submitter:</b> Jiang An <b>Opened:</b> 2025-10-17 <b>Last modified:</b> 2025-10-23</p>
+<p><b>Priority: </b>Not Prioritized
+</p>
+<p><b>View other</b> <a href="lwg-index-open.html#task.promise">active issues</a> in [task.promise].</p>
+<p><b>View all other</b> <a href="lwg-index.html#task.promise">issues</a> in [task.promise].</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#Tentatively Ready">Tentatively Ready</a> status.</p>
+<p><b>Discussion:</b></p>
+<p>
+According to 9.6.4 <a href="https://wg21.link/dcl.fct.def.coroutine">[dcl.fct.def.coroutine]</a>, a function of name <code class='backtick'>unhandled_exception</code> 
+may be called by the language mechanisms. However, 
+<code>std::execution::task&lt;T, Environment&gt;::promise_type</code> has an 
+<code class='backtick'>uncaught_exception function</code> instead, which won't be implicitly called.
+<p/>
+In <a href="https://wg21.link/P3552R3" title=" Add a Coroutine Task Type">P3552R3</a>, <code class='backtick'>unhandled_exception</code> was discussed, but the wording specified 
+<code class='backtick'>uncaught_exception</code>, which looks like a mistake. Moreover, the paper didn't talk about 
+the status of <code class='backtick'>uncaught_exception</code> in the zombie name list ([tab:zombie.names.std]). 
+Perhaps <code class='backtick'>unhandled_exception</code> is the correct function name.
+</p>
+
+<p><i>[2025-10-23; Reflector poll.]</i></p>
+
+<p>
+Set status to Tentatively Ready after five votes in favour during reflector poll.
+</p>
+
+
+<p id="res-4415"><b>Proposed resolution:</b></p>
+<p>
+This wording is relative to <a href="https://wg21.link/N5014">N5014</a>.
+</p>
+
+<ol>
+<li><p>Modify 33.13.6.5 <a href="https://wg21.link/task.promise">[task.promise]</a> as indicated:</p>
+
+<blockquote>
+<blockquote>
+<pre>
+namespace std::execution {
+  template&lt;class T, class Environment&gt;
+  class task&lt;T, Environment&gt;::promise_type {
+  public:
+    [&hellip;]
+    void <del>uncaught</del><ins>unhandled</ins>_exception();
+    coroutine_handle&lt;&gt; unhandled_stopped();    
+    [&hellip;]
+  };
+}
+</pre>
+</blockquote>
+[&hellip;]
+<pre>
+void <del>uncaught</del><ins>unhandled</ins>_exception();
+</pre>
+<blockquote>
+<p>
+-12- <i>Effects</i>: If the signature <code class='backtick'>set_error_t(exception_ptr)</code> is not an element of <code class='backtick'>error_types</code>, calls
+<code class='backtick'>terminate()</code> (14.6.2 <a href="https://wg21.link/except.terminate">[except.terminate]</a>). Otherwise, stores <code class='backtick'>current_exception()</code> into <code><i>errors</i></code>.
+</p>
 </blockquote>
 </blockquote>
 </li>
