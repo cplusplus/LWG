@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="4271" status="New">
+<issue num="4271" status="Tentatively NAD">
 <title>Caching range views claim amortized amortized &#x1d4aa;(1) runtime
 complexity for algorithms that are in fact &#x1d4aa;(n)</title>
 <section>
@@ -41,6 +41,17 @@ changes below therefore do not address the issue that other types of
 views (such as hypothetical non-caching variants of the affected views)
 that were previously considered invalid will become valid with these
 changes.
+</p>
+
+<note>2025-10-23; Reflector poll; Status changed: New &rarr; Tentatively NAD.</note>
+<p>
+Relaxing complexity of `ranges::begin`/`ranges::end` is design change,
+and not direction we want to pursue.
+<p>
+</p>
+The "amortized constant" are not quite right words to describe
+intended requirements. A rework preserving the intent of current wording
+would be welcomed.
 </p>
 </discussion>
 

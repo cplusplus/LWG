@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="4415" status="New">
+<issue num="4415" status="Tentatively Ready">
 <title>`task::promise_type::uncaught_exception` seems to be misnamed</title>
 <section><sref ref="[task.promise]"/></section>
 <submitter>Jiang An</submitter>
@@ -19,6 +19,11 @@ In <paper num="P3552R3"/>, `unhandled_exception` was discussed, but the wording 
 `uncaught_exception`, which looks like a mistake. Moreover, the paper didn't talk about 
 the status of `uncaught_exception` in the zombie name list ([tab:zombie.names.std]). 
 Perhaps `unhandled_exception` is the correct function name.
+</p>
+
+<note>2025-10-23; Reflector poll.</note>
+<p>
+Set status to Tentatively Ready after five votes in favour during reflector poll.
 </p>
 </discussion>
 

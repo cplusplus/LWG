@@ -6,7 +6,7 @@
 <section><sref ref="[meta.reflection.access.context]"/></section>
 <submitter>Jakub Jelinek</submitter>
 <date>20 Oct 2025</date>
-<priority>99</priority>
+<priority>2</priority>
 
 <discussion>
 <p>
@@ -15,6 +15,17 @@ objects, which would make it a consteval-only type. But we don't actually
 specify any members, so nothing in the current specification says you can't
 persist one until runtime.
 </p>
+
+<note>2025-10-23; Reflector poll. Adjust proposed wording.</note>
+<p>
+Set priority to 2 after reflector poll.
+</p>
+<p>
+Reflector discussion requested that 'non-aggregate' and 'consteval-only' both
+be put in paragraph 3, adjacent to 'structural'.
+Also added a drive-by editorial change to paragraph 1.
+</p>
+
 </discussion>
 
 <resolution>
@@ -28,10 +39,37 @@ This wording is relative to <paper num="N5014"/>.
 
 <blockquote>
 <p>-1-
-The access_context class is a non-aggregate<ins>, consteval-only</ins> type
-that represents a namespace, class, or function from which queries pertaining
+The <ins>class</ins> `access_context`
+<del>class is a non-aggregate type that</del>
+represents a namespace, class, or function from which queries pertaining
 to access rules may be performed, as well as the designating class
 (<sref ref="[class.access.base]"/>), if any.
+</p>
+<p>-2-
+An `access_context` has an associated scope and designating class.
+<blockquote>
+<pre>namespace std::meta {
+  struct access_context {
+    access_context() = delete;
+
+    consteval info scope() const;
+    consteval info designating_class() const;
+
+    static consteval access_context current() noexcept;
+    static consteval access_context unprivileged() noexcept;
+    static consteval access_context unchecked() noexcept;
+    consteval access_context via(info cls) const;
+  };
+}</pre>
+</blockquote>
+</p>
+<p>-3-
+`access_context` is a structural<ins>, consteval-only, non-aggregate</ins> type.
+Two values `ac1` and `ac2` of type `access_context` are
+template-argument-equivalent (<sref ref="[temp.type]"/>) if
+`ac1.scope()` and `ac2.scope()` are template-argument-equivalent
+and `ac1.designating_class()` and `ac2.designating_class()` are
+template-argument-equivalent.
 </p>
 </blockquote>
 </li>
