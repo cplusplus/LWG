@@ -62,7 +62,7 @@
 </tr>
 <tr>
 <td align="left">Date:</td>
-<td align="left">Revised 2025-10-22 at 20:22:56 UTC
+<td align="left">Revised 2025-10-23 at 09:36:04 UTC
 </td>
 </tr>
 <tr>
@@ -900,6 +900,152 @@ template&lt;class ExecutionPolicy,
 
 </blockquote>
 
+</li>
+</ol>
+
+
+
+
+
+<hr>
+<h3 id="4166"><a href="#4166">4166</a><sup><a href="https://cplusplus.github.io/LWG/issue4166">(i)</a></sup>. <code class='backtick'>concat_view::end()</code> should be more constrained in order to support noncopyable iterators</h3>
+<p><b>Section:</b> 25.7.18.2 <a href="https://wg21.link/range.concat.view">[range.concat.view]</a> <b>Status:</b> <a href="lwg-active.html#Ready">Tentatively Ready</a>
+ <b>Submitter:</b> Yaito Kakeyama &amp; Nana Sakisaka <b>Opened:</b> 2024-10-13 <b>Last modified:</b> 2025-10-23</p>
+<p><b>Priority: </b>Not Prioritized
+</p>
+<p><b>View other</b> <a href="lwg-index-open.html#range.concat.view">active issues</a> in [range.concat.view].</p>
+<p><b>View all other</b> <a href="lwg-index.html#range.concat.view">issues</a> in [range.concat.view].</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#Tentatively Ready">Tentatively Ready</a> status.</p>
+<p><b>Discussion:</b></p>
+<p>
+There is a case that <code class='backtick'>concat(a, b)</code> compiles but <code class='backtick'>concat(b, a)</code> does not.
+</p>
+<blockquote><pre>
+auto range_copyable_it = std::vector&lt;int&gt;{1, 2, 3};
+
+std::stringstream ss{"4 5 6"};
+auto range_noncopyable_it = std::views::istream&lt;int&gt;(ss);
+
+auto view1 = std::views::concat(range_copyable_it, range_noncopyable_it);
+static_assert(std::ranges::range&lt;decltype(view1)&gt;);               // ok
+assert(std::ranges::equal(view1, std::vector{1, 2, 3, 4, 5, 6})); // ok
+
+auto view2 = std::views::concat(range_noncopyable_it, range_copyable_it);
+// static_assert(std::ranges::range&lt;decltype(view2)&gt;);               // <span style="color:#C80000;font-weight:bolder">error</span>
+// assert(std::ranges::equal(view2, std::vector{4, 5, 6, 1, 2, 3})); // <span style="color:#C80000;font-weight:bolder">error</span>
+</pre></blockquote>
+<p>
+The reason behind this is as follows:
+<p/>
+Firstly, if all <code class='backtick'>Views...</code> satisfy the <code class='backtick'>std::ranges::range</code> concept, then <code class='backtick'>concat_view</code> should also satisfy it. 
+However, if any of the <code class='backtick'>Views...</code> have a noncopyable iterator and the last view is <code class='backtick'>common_range</code>, the current 
+<code class='backtick'>concat_view</code> fails to model a range.
+<p/>
+For <code class='backtick'>concat_view</code> to model a range, its sentinel must satisfy <code class='backtick'>std::semiregular</code>, but <code class='backtick'>concat_view::end()</code> 
+returns a <code class='backtick'>concat_view::iterator</code>, which is noncopyable if the underlying iterator is noncopyable. This 
+issue arises from the proposed implementation where the iterator uses <code class='backtick'>std::variant</code>. Although this 
+specification is exposition-only, even if an alternative type-erasure mechanism is used, copying is still 
+required if the user attempts to copy an iterator.
+<p/>
+To resolve the issue, <code class='backtick'>concat_view::end()</code> can and should fallback to returning <code class='backtick'>std::default_sentinel</code> 
+in such cases.
+<p/>
+Unfortunately, as a side effect, this fix would prevent <code class='backtick'>concat_view</code> from being a <code class='backtick'>common_range</code> in certain 
+situations. According to <a href="https://wg21.link/P2542R8" title=" views::concat">P2542R8</a>:
+</p>
+<blockquote style="border-left: 3px solid #ccc;padding-left: 15px;">
+<p>
+<code class='backtick'>concat_view</code> can be <code class='backtick'>common_range</code> if the last underlying range models <code class='backtick'>common_range</code>
+</p>
+</blockquote>
+<p>
+However, this is no longer true after applying our fix. That said, these two issues cannot be resolved 
+simultaneously due to implementability. Therefore, we suggest applying our fix regardless and accepting 
+that <code class='backtick'>concat_view</code> will not always inherit <code class='backtick'>common_range</code>. Note that the current draft (<a href="https://wg21.link/N4988" title=" Working Draft, Programming Languages — C++">N4988</a>) 
+does not explicitly specify when <code class='backtick'>concat_view</code> can model <code class='backtick'>common_range</code>, so no addition is required for 
+mentioning this point.
+<p/>
+A similar issue had been reported as <a href="lwg-defects.html#3385" title="common_iterator is not sufficiently constrained for non-copyable iterators (Status: C++20)">3385</a><sup><a href="https://cplusplus.github.io/LWG/issue3385" title="Latest snapshot">(i)</a></sup>, which was eventually adopted as a C++20 DR. This 
+DR indicates that LWG approved the decision to require <code class='backtick'>copyable</code> in order to model a <code class='backtick'>common_iterator</code>.
+</p>
+
+<p><strong>Previous resolution [SUPERSEDED]:</strong></p>
+<blockquote class="note">
+
+<p>
+This wording is relative to <a href="https://wg21.link/N4993" title=" Working Draft, Programming Languages — C++">N4993</a>.
+</p>
+
+<ol>
+<li><p>Modify 25.7.18.2 <a href="https://wg21.link/range.concat.view">[range.concat.view]</a> as indicated:</p>
+
+<blockquote>
+<pre>
+constexpr auto end() const
+  requires (range&lt;const Views&gt; &amp;&amp; ...) &amp;&amp; <i>concatable</i>&lt;const Views...&gt;;
+</pre>
+<blockquote>
+<p>
+-7- <i>Effects</i>: Let <code><i>is-const</i></code> be <code class='backtick'>true</code> for the const-qualified overload, and <code class='backtick'>false</code> 
+otherwise. Equivalent to:
+</p>
+<blockquote><pre>
+constexpr auto N = sizeof...(Views);
+if constexpr (<ins>(semiregular&lt;iterator_t&lt;<i>maybe-const</i>&lt;<i>is-const</i>, Views&gt;&gt;&gt; &amp;&amp; ...) &amp;&amp;</ins> 
+              common_range&lt;<i>maybe-const</i>&lt;<i>is-const</i>, Views...[N - 1]&gt;&gt;) {
+  return <i>iterator</i>&lt;<i>is-const</i>&gt;(this, in_place_index&lt;N - 1&gt;,
+                            ranges::end(std::get&lt;N - 1&gt;(<i>views_</i>)));
+} else {
+  return default_sentinel;
+}
+</pre></blockquote>
+</blockquote>
+</blockquote>
+</li>
+</ol>
+</blockquote>
+
+<p><i>[2025-03-05; Hewill Kang provides improved wording]</i></p>
+
+
+<p><i>[2025-10-23; Reflector poll.]</i></p>
+
+<p>
+Set status to Tentatively Ready after seven votes in favour during reflector poll.
+</p>
+
+
+
+<p id="res-4166"><b>Proposed resolution:</b></p>
+<p>
+This wording is relative to <a href="https://wg21.link/N5001" title=" Working Draft, Programming Languages — C++">N5001</a>.
+</p>
+
+<ol>
+<li><p>Modify 25.7.18.2 <a href="https://wg21.link/range.concat.view">[range.concat.view]</a> as indicated:</p>
+
+<blockquote>
+<pre>
+constexpr auto end() const
+  requires (range&lt;const Views&gt; &amp;&amp; ...) &amp;&amp; <i>concatable</i>&lt;const Views...&gt;;
+</pre>
+<blockquote>
+<p>
+-7- <i>Effects</i>: Let <code><i>is-const</i></code> be <code class='backtick'>true</code> for the const-qualified overload, and <code class='backtick'>false</code> 
+otherwise. Equivalent to:
+</p>
+<blockquote><pre>
+constexpr auto N = sizeof...(Views);
+if constexpr (<ins><i>all-forward</i>&lt;<i>is-const</i>, Views...&gt; &amp;&amp;</ins> 
+              common_range&lt;<i>maybe-const</i>&lt;<i>is-const</i>, Views...[N - 1]&gt;&gt;) {
+  return <i>iterator</i>&lt;<i>is-const</i>&gt;(this, in_place_index&lt;N - 1&gt;,
+                            ranges::end(std::get&lt;N - 1&gt;(<i>views_</i>)));
+} else {
+  return default_sentinel;
+}
+</pre></blockquote>
+</blockquote>
+</blockquote>
 </li>
 </ol>
 

@@ -54,7 +54,7 @@
 </style>
 </head>
 <body>
-<p>Revised 2025-10-22 at 20:22:56 UTC
+<p>Revised 2025-10-23 at 09:36:04 UTC
 </p><h2>Unresolved Issues</h2>
 <hr>
 <h3 id="423"><a href="#423">423</a><sup><a href="https://cplusplus.github.io/LWG/issue423">(i)</a></sup>. Effects of negative <code>streamsize</code> in iostreams</h3>
@@ -63476,145 +63476,6 @@ Otherwise, equivalent to <code class='backtick'>swap_ranges(begin(a), end(a), be
 
 
 <hr>
-<h3 id="4166"><a href="#4166">4166</a><sup><a href="https://cplusplus.github.io/LWG/issue4166">(i)</a></sup>. <code class='backtick'>concat_view::end()</code> should be more constrained in order to support noncopyable iterators</h3>
-<p><b>Section:</b> 25.7.18.2 <a href="https://wg21.link/range.concat.view">[range.concat.view]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Yaito Kakeyama &amp; Nana Sakisaka <b>Opened:</b> 2024-10-13 <b>Last modified:</b> 2025-03-09</p>
-<p><b>Priority: </b>Not Prioritized
-</p>
-<p><b>View other</b> <a href="lwg-index-open.html#range.concat.view">active issues</a> in [range.concat.view].</p>
-<p><b>View all other</b> <a href="lwg-index.html#range.concat.view">issues</a> in [range.concat.view].</p>
-<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
-<p><b>Discussion:</b></p>
-<p>
-There is a case that <code class='backtick'>concat(a, b)</code> compiles but <code class='backtick'>concat(b, a)</code> does not.
-</p>
-<blockquote><pre>
-auto range_copyable_it = std::vector&lt;int&gt;{1, 2, 3};
-
-std::stringstream ss{"4 5 6"};
-auto range_noncopyable_it = std::views::istream&lt;int&gt;(ss);
-
-auto view1 = std::views::concat(range_copyable_it, range_noncopyable_it);
-static_assert(std::ranges::range&lt;decltype(view1)&gt;);               // ok
-assert(std::ranges::equal(view1, std::vector{1, 2, 3, 4, 5, 6})); // ok
-
-auto view2 = std::views::concat(range_noncopyable_it, range_copyable_it);
-// static_assert(std::ranges::range&lt;decltype(view2)&gt;);               // <span style="color:#C80000;font-weight:bolder">error</span>
-// assert(std::ranges::equal(view2, std::vector{4, 5, 6, 1, 2, 3})); // <span style="color:#C80000;font-weight:bolder">error</span>
-</pre></blockquote>
-<p>
-The reason behind this is as follows:
-<p/>
-Firstly, if all <code class='backtick'>Views...</code> satisfy the <code class='backtick'>std::ranges::range</code> concept, then <code class='backtick'>concat_view</code> should also satisfy it. 
-However, if any of the <code class='backtick'>Views...</code> have a noncopyable iterator and the last view is <code class='backtick'>common_range</code>, the current 
-<code class='backtick'>concat_view</code> fails to model a range.
-<p/>
-For <code class='backtick'>concat_view</code> to model a range, its sentinel must satisfy <code class='backtick'>std::semiregular</code>, but <code class='backtick'>concat_view::end()</code> 
-returns a <code class='backtick'>concat_view::iterator</code>, which is noncopyable if the underlying iterator is noncopyable. This 
-issue arises from the proposed implementation where the iterator uses <code class='backtick'>std::variant</code>. Although this 
-specification is exposition-only, even if an alternative type-erasure mechanism is used, copying is still 
-required if the user attempts to copy an iterator.
-<p/>
-To resolve the issue, <code class='backtick'>concat_view::end()</code> can and should fallback to returning <code class='backtick'>std::default_sentinel</code> 
-in such cases.
-<p/>
-Unfortunately, as a side effect, this fix would prevent <code class='backtick'>concat_view</code> from being a <code class='backtick'>common_range</code> in certain 
-situations. According to <a href="https://wg21.link/P2542R8" title=" views::concat">P2542R8</a>:
-</p>
-<blockquote style="border-left: 3px solid #ccc;padding-left: 15px;">
-<p>
-<code class='backtick'>concat_view</code> can be <code class='backtick'>common_range</code> if the last underlying range models <code class='backtick'>common_range</code>
-</p>
-</blockquote>
-<p>
-However, this is no longer true after applying our fix. That said, these two issues cannot be resolved 
-simultaneously due to implementability. Therefore, we suggest applying our fix regardless and accepting 
-that <code class='backtick'>concat_view</code> will not always inherit <code class='backtick'>common_range</code>. Note that the current draft (<a href="https://wg21.link/N4988" title=" Working Draft, Programming Languages — C++">N4988</a>) 
-does not explicitly specify when <code class='backtick'>concat_view</code> can model <code class='backtick'>common_range</code>, so no addition is required for 
-mentioning this point.
-<p/>
-A similar issue had been reported as <a href="lwg-defects.html#3385" title="common_iterator is not sufficiently constrained for non-copyable iterators (Status: C++20)">3385</a><sup><a href="https://cplusplus.github.io/LWG/issue3385" title="Latest snapshot">(i)</a></sup>, which was eventually adopted as a C++20 DR. This 
-DR indicates that LWG approved the decision to require <code class='backtick'>copyable</code> in order to model a <code class='backtick'>common_iterator</code>.
-</p>
-
-<p><strong>Previous resolution [SUPERSEDED]:</strong></p>
-<blockquote class="note">
-
-<p>
-This wording is relative to <a href="https://wg21.link/N4993" title=" Working Draft, Programming Languages — C++">N4993</a>.
-</p>
-
-<ol>
-<li><p>Modify 25.7.18.2 <a href="https://wg21.link/range.concat.view">[range.concat.view]</a> as indicated:</p>
-
-<blockquote>
-<pre>
-constexpr auto end() const
-  requires (range&lt;const Views&gt; &amp;&amp; ...) &amp;&amp; <i>concatable</i>&lt;const Views...&gt;;
-</pre>
-<blockquote>
-<p>
--7- <i>Effects</i>: Let <code><i>is-const</i></code> be <code class='backtick'>true</code> for the const-qualified overload, and <code class='backtick'>false</code> 
-otherwise. Equivalent to:
-</p>
-<blockquote><pre>
-constexpr auto N = sizeof...(Views);
-if constexpr (<ins>(semiregular&lt;iterator_t&lt;<i>maybe-const</i>&lt;<i>is-const</i>, Views&gt;&gt;&gt; &amp;&amp; ...) &amp;&amp;</ins> 
-              common_range&lt;<i>maybe-const</i>&lt;<i>is-const</i>, Views...[N - 1]&gt;&gt;) {
-  return <i>iterator</i>&lt;<i>is-const</i>&gt;(this, in_place_index&lt;N - 1&gt;,
-                            ranges::end(std::get&lt;N - 1&gt;(<i>views_</i>)));
-} else {
-  return default_sentinel;
-}
-</pre></blockquote>
-</blockquote>
-</blockquote>
-</li>
-</ol>
-</blockquote>
-
-<p><i>[2025-03-05; Hewill Kang provides improved wording]</i></p>
-
-
-
-<p id="res-4166"><b>Proposed resolution:</b></p>
-<p>
-This wording is relative to <a href="https://wg21.link/N5001" title=" Working Draft, Programming Languages — C++">N5001</a>.
-</p>
-
-<ol>
-<li><p>Modify 25.7.18.2 <a href="https://wg21.link/range.concat.view">[range.concat.view]</a> as indicated:</p>
-
-<blockquote>
-<pre>
-constexpr auto end() const
-  requires (range&lt;const Views&gt; &amp;&amp; ...) &amp;&amp; <i>concatable</i>&lt;const Views...&gt;;
-</pre>
-<blockquote>
-<p>
--7- <i>Effects</i>: Let <code><i>is-const</i></code> be <code class='backtick'>true</code> for the const-qualified overload, and <code class='backtick'>false</code> 
-otherwise. Equivalent to:
-</p>
-<blockquote><pre>
-constexpr auto N = sizeof...(Views);
-if constexpr (<ins><i>all-forward</i>&lt;<i>is-const</i>, Views...&gt; &amp;&amp;</ins> 
-              common_range&lt;<i>maybe-const</i>&lt;<i>is-const</i>, Views...[N - 1]&gt;&gt;) {
-  return <i>iterator</i>&lt;<i>is-const</i>&gt;(this, in_place_index&lt;N - 1&gt;,
-                            ranges::end(std::get&lt;N - 1&gt;(<i>views_</i>)));
-} else {
-  return default_sentinel;
-}
-</pre></blockquote>
-</blockquote>
-</blockquote>
-</li>
-</ol>
-
-
-
-
-
-<hr>
 <h3 id="4167"><a href="#4167">4167</a><sup><a href="https://cplusplus.github.io/LWG/issue4167">(i)</a></sup>. Use of "smaller" and "larger" in <code>min</code>,
 <code>max</code>, and <code>minmax</code> is unclear</h3>
 <p><b>Section:</b> 26.8.9 <a href="https://wg21.link/alg.min.max">[alg.min.max]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
@@ -64037,51 +63898,6 @@ be undefined</ins>. The value of any other created object is unspecified.
 
 </li>
 </ol>
-
-
-
-
-<hr>
-<h3 id="4171"><a href="#4171">4171</a><sup><a href="https://cplusplus.github.io/LWG/issue4171">(i)</a></sup>. P2609R3 breaks code that uses <code class='backtick'>views::zip</code> and <code>get&lt;T&gt;</code></h3>
-<p><b>Section:</b> 24.3.6.3 <a href="https://wg21.link/indirectcallable.indirectinvocable">[indirectcallable.indirectinvocable]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> S. B. Tam <b>Opened:</b> 2024-11-01 <b>Last modified:</b> 2024-11-03</p>
-<p><b>Priority: </b>Not Prioritized
-</p>
-<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
-<p><b>Discussion:</b></p>
-<p>
-The following use of <code class='backtick'>std::ranges::for_each</code> is valid before <a href="https://wg21.link/P2609R3" title=" Relaxing Ranges Just A Smidge">P2609R3</a> and invalid after that.
-</p>
-<blockquote><pre>
-#include &lt;algorithm&gt;
-#include &lt;ranges&gt;
-#include &lt;tuple&gt;
-using namespace std::ranges;
-
-void f() {
-  int a[1];
-  auto fun = [](auto t) {
-    [[maybe_unused]] auto x = std::get&lt;int&amp;&gt;(t);
-  };
-  for_each(views::zip(a), fun);
-}
-</pre></blockquote>
-<p>
-The reason is that, <a href="https://wg21.link/P2609R3" title=" Relaxing Ranges Just A Smidge">P2609R3</a> requires <code class='backtick'>fun</code> to be <code class='backtick'>invocable</code> with <code>iter_value_t&lt;I&gt;&amp;</code>, 
-which is <code>tuple&lt;int&gt;&amp;</code> when <code class='backtick'>I</code> is <code class='backtick'>zip_view</code>'s iterator, and <code>tuple&lt;int&gt;&amp;</code> 
-doesn't support <code>std::get&lt;int&amp;&gt;(t)</code> because there isn't a <code>int&amp;</code> member.
-<p/>
-P2609R3 argues that "The actual consequence on user code seems small", but I believe that this code pattern is 
-common enough, and it hurts if we cannot use <code>get&lt;int&amp;&gt;(t)</code> in the lambda body.
-<p/>
-Note that <code class='backtick'>for_each</code> doesn't actually call <code class='backtick'>fun</code> with <code>iter_value_t&lt;I&gt;</code>, as can be seen by adding 
-an explicit return type to <code class='backtick'>fun</code>.
-<p/>
-Did LWG foresee this impact of <a href="https://wg21.link/P2609R3" title=" Relaxing Ranges Just A Smidge">P2609R3</a>? Could P2609R3 be reverted to unbreak this code pattern?
-</p>
-
-
-<p id="res-4171"><b>Proposed resolution:</b></p>
 
 
 
@@ -66695,8 +66511,8 @@ template&lt;<i>not-a-const-iterator</i> I<ins>, same_as&lt;Iterator&gt; J</ins>&
 <hr>
 <h3 id="4220"><a href="#4220">4220</a><sup><a href="https://cplusplus.github.io/LWG/issue4220">(i)</a></sup>. <code>join_view</code> incorrectly stores inner range</h3>
 <p><b>Section:</b> 25.7.14.2 <a href="https://wg21.link/range.join.view">[range.join.view]</a>, 25.7.15.2 <a href="https://wg21.link/range.join.with.view">[range.join.with.view]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Hewill Kang <b>Opened:</b> 2025-03-06 <b>Last modified:</b> 2025-03-09</p>
-<p><b>Priority: </b>Not Prioritized
+ <b>Submitter:</b> Hewill Kang <b>Opened:</b> 2025-03-06 <b>Last modified:</b> 2025-10-23</p>
+<p><b>Priority: </b>3
 </p>
 <p><b>View other</b> <a href="lwg-index-open.html#range.join.view">active issues</a> in [range.join.view].</p>
 <p><b>View all other</b> <a href="lwg-index.html#range.join.view">issues</a> in [range.join.view].</p>
@@ -66728,6 +66544,16 @@ int main() {
 The proposed resolution preserves the inner range's original qualifiers, which is consistent with how
 <code>cache_latest_view</code> stores the reference when it is a prvalue.
 The same goes for <code>join_with_view</code>.
+</p>
+
+<p><i>[2025-10-23; Reflector poll.]</i></p>
+
+<p>
+Set priority to 3 after reflector poll.
+</p>
+<p>
+Lot of NAD votes. This type satisfies, but does not model
+range.
 </p>
 
 
@@ -68034,7 +67860,7 @@ to use any element as the value type. Moreover, <code class='backtick'>indirectl
 the callable object to be copy constructible, which might be undesired because the 
 corresponding <code class='backtick'>std::for_each(_n)</code> only require move constructibilty.
 <p/>
-LWG <a href="lwg-active.html#4171" title="P2609R3 breaks code that uses views::zip and get&lt;T&gt; (Status: New)">4171</a><sup><a href="https://cplusplus.github.io/LWG/issue4171" title="Latest snapshot">(i)</a></sup> talked about the breakage around <code class='backtick'>ranges::for_each</code> introduced 
+LWG <a href="lwg-active.html#4171" title="P2609R3 breaks code that uses views::zip and get&lt;T&gt; (Status: Tentatively NAD)">4171</a><sup><a href="https://cplusplus.github.io/LWG/issue4171" title="Latest snapshot">(i)</a></sup> talked about the breakage around <code class='backtick'>ranges::for_each</code> introduced 
 by <a href="https://wg21.link/P2609R3" title=" Relaxing Ranges Just A Smidge">P2609R3</a>. P2609R3 looks like a reasonable fix as long as the affected 
 algorithms potentially use the intermediate element values copied as 
 <code>std::iter_value_t&lt;I&gt;</code>. However, when the algorithm is not expected to or 
@@ -69837,287 +69663,6 @@ namespace std {
 <blockquote>
 <p>
 <ins>-?- <i>Mandates</i>: This function is not odr-used (6.3 <a href="https://wg21.link/basic.def.odr">[basic.def.odr]</a>).</ins>
-</p>
-</blockquote>
-</blockquote>
-</li>
-</ol>
-
-
-
-
-
-<hr>
-<h3 id="4271"><a href="#4271">4271</a><sup><a href="https://cplusplus.github.io/LWG/issue4271">(i)</a></sup>. Caching range views claim amortized amortized &#x1d4aa;(1) runtime
-complexity for algorithms that are in fact &#x1d4aa;(n)</h3>
-<p><b>Section:</b> 24.3.1 <a href="https://wg21.link/iterator.requirements.general">[iterator.requirements.general]</a>, 25.4.3 <a href="https://wg21.link/range.approximately.sized">[range.approximately.sized]</a>, 25.4.1 <a href="https://wg21.link/range.req.general">[range.req.general]</a>, 25.4.2 <a href="https://wg21.link/range.range">[range.range]</a>, 25.4.4 <a href="https://wg21.link/range.sized">[range.sized]</a>, 25.7.8.2 <a href="https://wg21.link/range.filter.view">[range.filter.view]</a>, 25.7.12.2 <a href="https://wg21.link/range.drop.view">[range.drop.view]</a>, 25.7.13.2 <a href="https://wg21.link/range.drop.while.view">[range.drop.while.view]</a>, 25.7.17.2 <a href="https://wg21.link/range.split.view">[range.split.view]</a>, 25.7.21.2 <a href="https://wg21.link/range.reverse.view">[range.reverse.view]</a>, 25.7.30.2 <a href="https://wg21.link/range.slide.view">[range.slide.view]</a>, 25.7.31.2 <a href="https://wg21.link/range.chunk.by.view">[range.chunk.by.view]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Andreas Weis <b>Opened:</b> 2025-06-02 <b>Last modified:</b> 2025-06-06</p>
-<p><b>Priority: </b>Not Prioritized
-</p>
-<p><b>View all other</b> <a href="lwg-index.html#iterator.requirements.general">issues</a> in [iterator.requirements.general].</p>
-<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
-<p><b>Discussion:</b></p>
-<p>
-Currently range views that cache the result of their operation claim an
-amortized &#x1d4aa;(1) worst-case runtime complexity. This is inconsistent 
-with the established practice in algorithm analysis, where the given
-complexity bound must hold for all possible sequences of operations.
-Caching is not sufficient to lower the complexity bound here, as the
-sequence that contains only a single call to the operation will cause a
-runtime cost linear in the size of the underlying range. Thus all of the
-caching range operations are in fact &#x1d4aa;(n).
-<p/>
-Apart from the caching view operations, this also has secondary impacts
-in other places that rely on the complexity of iterator functions, such
-as the iterator requirements and functions for computing the size of a
-range.
-<p/>
-It is unclear how desirable it is under these circumstances to continue
-disallowing other kinds of &#x1d4aa;(n) behavior for iterator functions. 
-While caching offers clear benefits in the context of lazy evaluation, it
-cannot prevent losing the &#x1d4aa;(1) complexity guarantee. The proposed
-changes below therefore do not address the issue that other types of
-views (such as hypothetical non-caching variants of the affected views)
-that were previously considered invalid will become valid with these
-changes.
-</p>
-
-
-<p id="res-4271"><b>Proposed resolution:</b></p>
-<p>
-This wording is relative to <a href="https://wg21.link/N5008" title=" Working Draft, Programming Languages — C++">N5008</a>.
-</p>
-
-<ol>
-<li><p>Modify 24.3.1 <a href="https://wg21.link/iterator.requirements.general">[iterator.requirements.general]</a> as indicated:</p>
-
-<blockquote>
-<p>
--14- All the categories of iterators require only those functions that are realizable 
-for a given category in <del>constant time (amortized)</del><ins>linear time</ins>. 
-Therefore, requirement tables and concept definitions for the iterators do not specify
-complexity.
-</p>
-</blockquote>
-</li>
-
-<li><p>Modify 25.4.3 <a href="https://wg21.link/range.approximately.sized">[range.approximately.sized]</a> as indicated:</p>
-
-<blockquote>
-<p>
--1- The <code class='backtick'>approximately_sized_range</code> concept refines range with the requirement that 
-an approximation of the number of elements in the range can be determined in 
-<del>amortized constant</del><ins>linear</ins> time using <code class='backtick'>ranges::reserve_hint</code>.
-</p>
-</blockquote>
-</li>
-
-<li><p>Modify 25.4.1 <a href="https://wg21.link/range.req.general">[range.req.general]</a> as indicated:</p>
-
-<blockquote>
-<p>
--2- The <code class='backtick'>range</code> concept requires that <code class='backtick'>ranges::begin</code> and <code class='backtick'>ranges::end</code> return an 
-iterator and a sentinel, respectively. The <code class='backtick'>sized_range</code> concept refines range 
-with the requirement that <code class='backtick'>ranges::size</code> be <del>amortized</del> &#x1d4aa;(<del>1</del><ins>n</ins>).
-The <code class='backtick'>view</code> concept specifies requirements on a <code class='backtick'>range</code> type to provide operations 
-with predictable complexity.
-</p>
-</blockquote>
-</li>
-
-<li><p>Modify 25.4.2 <a href="https://wg21.link/range.range">[range.range]</a> as indicated:</p>
-
-<blockquote>
-<p>
--2- Given an expression <code class='backtick'>t</code> such that <code class='backtick'>decltype((t))</code> is <code>T&amp;</code>, <code class='backtick'>T</code> models <code class='backtick'>range</code> 
-only if
-</p>
-<ol style="list-style-type: none">
-<li><p>(2.1) &mdash; [&hellip;]</p></li>
-<li><p>(2.2) &mdash; both <code class='backtick'>ranges::begin(t)</code> and <code class='backtick'>ranges::end(t)</code> are <del>amortized
-constant</del><ins>linear</ins> time and non-modifying,
-and</p></li>
-<li><p>(2.3) &mdash; [&hellip;]</p></li>
-</ol>
-</blockquote>
-</li>
-
-<li><p>Modify 25.4.4 <a href="https://wg21.link/range.sized">[range.sized]</a> as indicated:</p>
-
-<blockquote>
-<p>
--1- The <code class='backtick'>sized_range</code> concept refines <code class='backtick'>approximately_sized_range</code> with the 
-requirement that the number of elements in the range can be determined in 
-<del>amortized constant</del><ins>linear</ins> time using <code class='backtick'>ranges::size</code>.
-</p>
-<pre>
-template&lt;class T&gt;
-  concept sized_range =
-    approximately_sized_range&lt;T&gt; &amp;&amp; requires(T&amp; t) { ranges::size(t); };
-</pre>
-<blockquote>
-<p>
--2- Given an lvalue <code class='backtick'>t</code> of type <code>remove_reference_t&lt;T&gt;</code>, <code class='backtick'>T</code> models 
-<code class='backtick'>sized_range</code> only if
-</p>
-</blockquote>
-<ol style="list-style-type: none">
-<li><p>(2.1) &mdash; <code class='backtick'>ranges::size(t)</code> is <del>amortized</del> &#x1d4aa;(<del>1</del><ins>n</ins>), 
-does not modify <code class='backtick'>t</code>, and is equal to <code class='backtick'>ranges::distance(ranges::begin(t), ranges::end(t))</code>, 
-and</p></li>
-<li><p>(2.2) &mdash; [&hellip;]</p></li>
-</ol>
-</blockquote>
-</li>
-
-<li><p>Modify 25.7.8.2 <a href="https://wg21.link/range.filter.view">[range.filter.view]</a> as indicated:</p>
-
-<blockquote>
-<pre>
-constexpr <i>iterator</i> begin();
-</pre>
-<blockquote>
-<p>
--3- <i>Preconditions</i>: [&hellip;]
-<p/>
--4- <i>Returns</i>: [&hellip;]
-<p/>
--5- <i>Remarks</i>: <del>In order to provide the amortized constant time complexity required 
-by the <code class='backtick'>range</code> concept when <code class='backtick'>filter_view</code> models <code class='backtick'>forward_range</code>, this</del><ins>This</ins> 
-function caches the result within the <code class='backtick'>filter_view</code> for use on subsequent calls.
-</p>
-</blockquote>
-</blockquote>
-</li>
-
-<li><p>Modify 25.7.12.2 <a href="https://wg21.link/range.drop.view">[range.drop.view]</a> as indicated:</p>
-
-<blockquote>
-<pre>
-constexpr auto begin()
-  requires (!(<i>simple-view</i>&lt;V&gt; &amp;&amp;
-              random_access_range&lt;const V&gt; &amp;&amp; sized_range&lt;const V&gt;));
-constexpr auto begin() const
-  requires random_access_range&lt;const V&gt; &amp;&amp; sized_range&lt;const V&gt;;
-</pre>
-<blockquote>
-<p>
--3- <i>Returns</i>: [&hellip;]
-<p/>
--4- <i>Remarks</i>: <del>In order to provide the amortized constant-time complexity 
-required by the <code class='backtick'>range</code> concept when <code class='backtick'>drop_view</code> models <code class='backtick'>forward_range</code>, the</del><ins>The</ins> 
-first overload caches the result within the <code class='backtick'>drop_view</code> for use on subsequent calls.
-</p>
-</blockquote>
-</blockquote>
-</li>
-
-<li><p>Modify 25.7.13.2 <a href="https://wg21.link/range.drop.while.view">[range.drop.while.view]</a> as indicated:</p>
-
-<blockquote>
-<pre>
-constexpr auto begin();
-</pre>
-<blockquote>
-<p>
--3- <i>Preconditions</i>: [&hellip;]
-<p/>
--4- <i>Returns</i>: [&hellip;]
-<p/>
--5- <i>Remarks</i>: <del>In order to provide the amortized constant-time complexity 
-required by the <code class='backtick'>range</code> concept when <code class='backtick'>drop_while_view</code> models <code class='backtick'>forward_range</code>, the</del><ins>The</ins> 
-first call caches the result within the <code class='backtick'>drop_while_view</code> for use on subsequent calls.
-</p>
-</blockquote>
-</blockquote>
-</li>
-
-<li><p>Modify 25.7.17.2 <a href="https://wg21.link/range.split.view">[range.split.view]</a> as indicated:</p>
-
-<blockquote>
-<pre>
-constexpr <i>iterator</i> begin();
-</pre>
-<blockquote>
-<p>
--3- <i>Returns</i>: [&hellip;]
-<p/>
--4- <i>Remarks</i>: <del>In order to provide the amortized constant time complexity 
-required by the <code class='backtick'>range</code> concept, this</del><ins>This</ins> function caches the result 
-within the <code class='backtick'>split_view</code> for use on subsequent calls.
-</p>
-</blockquote>
-</blockquote>
-</li>
-
-<li><p>Modify 25.7.21.2 <a href="https://wg21.link/range.reverse.view">[range.reverse.view]</a> as indicated:</p>
-
-<blockquote>
-<pre>
-constexpr reverse_iterator&lt;iterator_t&lt;V&gt;&gt; begin();
-</pre>
-<blockquote>
-<p>
--2- <i>Returns</i>: [&hellip;]
-<p/>
--3- <i>Remarks</i>: <del>In order to provide the amortized constant time complexity 
-required by the <code class='backtick'>range</code> concept, this</del><ins>This</ins> function caches the 
-result within the <code class='backtick'>reverse_view</code> for use on subsequent calls.
-</p>
-</blockquote>
-</blockquote>
-</li>
-
-<li><p>Modify 25.7.30.2 <a href="https://wg21.link/range.slide.view">[range.slide.view]</a> as indicated:</p>
-
-<blockquote>
-<pre>
-constexpr auto begin()
-  requires (!(<i>simple-view</i>&lt;V&gt; &amp;&amp; <i>slide-caches-nothing</i>&lt;const V&gt;));
-</pre>
-<blockquote>
-<p>
--3- <i>Returns</i>: [&hellip;]
-<p/>
--4- <i>Remarks</i>: <del>In order to provide the amortized constant-time complexity 
-required by the <code class='backtick'>range</code> concept, this</del><ins>This</ins> function caches the result 
-within the <code class='backtick'>slide_view</code> for use on subsequent calls when <code class='backtick'>V</code> models
-<code><i>slide-caches-first</i></code>.
-</p>
-</blockquote>
-[&hellip;]
-<pre>
-constexpr auto end()
-  requires (!(<i>simple-view</i>&lt;V&gt; &amp;&amp; <i>slide-caches-nothing</i>&lt;const V&gt;));
-</pre>
-<blockquote>
-<p>
--6- <i>Returns</i>: [&hellip;]
-<p/>
--7- <i>Remarks</i>: <del>In order to provide the amortized constant-time complexity 
-required by the <code class='backtick'>range</code> concept, this</del><ins>This</ins> function caches the result 
-within the <code class='backtick'>slide_view</code> for use on subsequent calls when <code class='backtick'>V</code> models
-<code><i>slide-caches-first</i></code>.
-</p>
-</blockquote>
-</blockquote>
-</li>
-
-<li><p>Modify 25.7.31.2 <a href="https://wg21.link/range.chunk.by.view">[range.chunk.by.view]</a> as indicated:</p>
-
-<blockquote>
-<pre>
-constexpr <i>iterator</i> begin();
-</pre>
-<blockquote>
-<p>
--3- <i>Preconditions</i>: [&hellip;]
-<p/>
--4- <i>Returns</i>: [&hellip;]
-<p/>
--5- <i>Remarks</i>: <del>In order to provide the amortized constant-time complexity 
-required by the <code class='backtick'>range</code> concept, this</del><ins>This</ins> function caches the result 
-within the <code class='backtick'>chunk_by_view</code> for use on subsequent calls.
 </p>
 </blockquote>
 </blockquote>
@@ -73219,8 +72764,8 @@ Set priority to 3 after reflector poll.
 <h3 id="4307"><a href="#4307">4307</a><sup><a href="https://cplusplus.github.io/LWG/issue4307">(i)</a></sup>. Make good use of <code><i>sized-random-access-range</i></code> and <code><i>bidirectional-common</i></code>
 in <code>&lt;ranges&gt;</code></h3>
 <p><b>Section:</b> 25.2 <a href="https://wg21.link/ranges.syn">[ranges.syn]</a>, 25.4.6 <a href="https://wg21.link/range.refinements">[range.refinements]</a>, 25.5.3.1 <a href="https://wg21.link/view.interface.general">[view.interface.general]</a>, 25.7.10.1 <a href="https://wg21.link/range.take.overview">[range.take.overview]</a>, 25.7.12.1 <a href="https://wg21.link/range.drop.overview">[range.drop.overview]</a>, 25.7.12.2 <a href="https://wg21.link/range.drop.view">[range.drop.view]</a>, 25.7.14.3 <a href="https://wg21.link/range.join.iterator">[range.join.iterator]</a>, 25.7.15.2 <a href="https://wg21.link/range.join.with.view">[range.join.with.view]</a>, 25.7.15.3 <a href="https://wg21.link/range.join.with.iterator">[range.join.with.iterator]</a>, 25.7.20.2 <a href="https://wg21.link/range.common.view">[range.common.view]</a>, 25.7.25.2 <a href="https://wg21.link/range.zip.view">[range.zip.view]</a>, 25.7.30.2 <a href="https://wg21.link/range.slide.view">[range.slide.view]</a>, 25.7.33.2 <a href="https://wg21.link/range.cartesian.view">[range.cartesian.view]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Hewill Kang <b>Opened:</b> 2025-07-28 <b>Last modified:</b> 2025-08-16</p>
-<p><b>Priority: </b>Not Prioritized
+ <b>Submitter:</b> Hewill Kang <b>Opened:</b> 2025-07-28 <b>Last modified:</b> 2025-10-23</p>
+<p><b>Priority: </b>4
 </p>
 <p><b>View other</b> <a href="lwg-index-open.html#ranges.syn">active issues</a> in [ranges.syn].</p>
 <p><b>View all other</b> <a href="lwg-index.html#ranges.syn">issues</a> in [ranges.syn].</p>
@@ -73243,6 +72788,16 @@ It would be much simpler and more readable if both concepts were available throu
 which would also allow newly introduced adapters or other library features to take advantage of them.
 Note that since some of these simplifications change the order in which the concepts are spelled, they may not be
 purely editorial.
+</p>
+
+<p><i>[2025-10-23; Reflector poll.]</i></p>
+
+<p>
+Set priority to 4 after reflector poll.
+</p>
+<p>
+Use of exposition-only concepts is not necessary improving readability
+or produced error messages.
 </p>
 
 
@@ -79521,12 +79076,12 @@ The preprocessing tokens comprising the second and subsequent arguments to
 
 <hr>
 <h3 id="4389"><a href="#4389">4389</a><sup><a href="https://cplusplus.github.io/LWG/issue4389">(i)</a></sup>. <code class='backtick'>ranges::for_each</code> possibly behaves differently from range-based <code class='backtick'>for</code></h3>
-<p><b>Section:</b> 25.4.2 <a href="https://wg21.link/range.range">[range.range]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Jiang An <b>Opened:</b> 2025-09-28 <b>Last modified:</b> 2025-10-10</p>
-<p><b>Priority: </b>Not Prioritized
+<p><b>Section:</b> 25.4.2 <a href="https://wg21.link/range.range">[range.range]</a> <b>Status:</b> <a href="lwg-active.html#SG9">SG9</a>
+ <b>Submitter:</b> Jiang An <b>Opened:</b> 2025-09-28 <b>Last modified:</b> 2025-10-23</p>
+<p><b>Priority: </b>2
 </p>
 <p><b>View all other</b> <a href="lwg-index.html#range.range">issues</a> in [range.range].</p>
-<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#SG9">SG9</a> status.</p>
 <p><b>Discussion:</b></p>
 <p>
 It was found in the blog post 
@@ -79547,6 +79102,14 @@ as <code class='backtick'>ranges::for_each</code>. However, it seems very diffic
 implementation to tell whether a class has member <code class='backtick'>begin/end</code> but the corresponding member 
 call is ill-formed with C++20 core language rules, and such determination is critical for 
 eliminating the semantic differences between <code class='backtick'>ranges::for_each</code> and range-for.
+</p>
+
+<p><i>[2025-10-23; Reflector poll; Status changed: New &rarr; SG9 and P2.]</i></p>
+
+<p>
+This is certainly evoluationary question and should go to LEWG/SG9.
+It would disallow having unrelated begin/end members, where the range
+interface is provided by hidden friends instead of those members.
 </p>
 
 
@@ -80375,13 +79938,13 @@ template&lt;class Duration&gt;
 
 <hr>
 <h3 id="4401"><a href="#4401">4401</a><sup><a href="https://cplusplus.github.io/LWG/issue4401">(i)</a></sup>. <code class='backtick'>join_view</code> should be <code class='backtick'>sized_range</code> when applied to ranges of <code class='backtick'>simd::vec</code></h3>
-<p><b>Section:</b> 25.7.14.2 <a href="https://wg21.link/range.join.view">[range.join.view]</a>, 25.7.15.2 <a href="https://wg21.link/range.join.with.view">[range.join.with.view]</a>, 25.7.16.2 <a href="https://wg21.link/range.lazy.split.view">[range.lazy.split.view]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Hewill Kang <b>Opened:</b> 2025-10-02 <b>Last modified:</b> 2025-10-04</p>
-<p><b>Priority: </b>Not Prioritized
+<p><b>Section:</b> 25.7.14.2 <a href="https://wg21.link/range.join.view">[range.join.view]</a>, 25.7.15.2 <a href="https://wg21.link/range.join.with.view">[range.join.with.view]</a>, 25.7.16.2 <a href="https://wg21.link/range.lazy.split.view">[range.lazy.split.view]</a> <b>Status:</b> <a href="lwg-active.html#LEWG">LEWG</a>
+ <b>Submitter:</b> Hewill Kang <b>Opened:</b> 2025-10-02 <b>Last modified:</b> 2025-10-23</p>
+<p><b>Priority: </b>3
 </p>
 <p><b>View other</b> <a href="lwg-index-open.html#range.join.view">active issues</a> in [range.join.view].</p>
 <p><b>View all other</b> <a href="lwg-index.html#range.join.view">issues</a> in [range.join.view].</p>
-<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#LEWG">LEWG</a> status.</p>
 <p><b>Discussion:</b></p>
 <p>
 Consider:
@@ -80402,6 +79965,16 @@ result size of the <code class='backtick'>join_view</code>.
 In <code>&lt;ranges&gt;</code>, we use the <code><i>tiny-range</i></code> concept
 to consider types that can obtain static sizes specifically, and <code class='backtick'>simd::vec</code> 
 seems to be a good fit.
+</p>
+
+<p><i>[2025-10-23; Reflector poll; Status changed: New &rarr; LEWG and P3.]</i></p>
+
+<p>
+Introducting statically sized ranges and handling them in views, should be
+handle as a paper.
+</p>
+<p>
+The proposed change is also relevant to fixed-size <code>span</code>.
 </p>
 
 
@@ -80689,8 +80262,8 @@ namespace std::simd {
 <hr>
 <h3 id="4405"><a href="#4405">4405</a><sup><a href="https://cplusplus.github.io/LWG/issue4405">(i)</a></sup>. <code class='backtick'>mdspan</code> constructor should disallow derived to base conversions</h3>
 <p><b>Section:</b> 23.7.3.6.2 <a href="https://wg21.link/mdspan.mdspan.cons">[mdspan.mdspan.cons]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Hewill Kang <b>Opened:</b> 2025-10-05 <b>Last modified:</b> 2025-10-10</p>
-<p><b>Priority: </b>Not Prioritized
+ <b>Submitter:</b> Hewill Kang <b>Opened:</b> 2025-10-05 <b>Last modified:</b> 2025-10-23</p>
+<p><b>Priority: </b>3
 </p>
 <p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
 <p><b>Discussion:</b></p>
@@ -80714,6 +80287,17 @@ std::mdspan&lt;Base, std::dims&lt;1&gt;&gt; msp(arr.data(), arr.size()); // <spa
 Given that we intend to reject object slicing for both <code class='backtick'>default_accessor</code> and
 <code class='backtick'>aligned_accessor</code>, there seems no reason not to reject this invalid pointer 
 arithmetic for <code class='backtick'>mdspan</code>.
+</p>
+
+<p><i>[2025-10-23; Reflector poll.]</i></p>
+
+<p>
+Set priority to 3 after reflector poll.
+</p>
+<p>
+Even if <code class='backtick'>data_handle_type</code> is a pointer to <code class='backtick'>value_type</code>, this does not mean
+that it points to contiguous range of <code class='backtick'>value_type</code> objects. Accessor may
+provide different access parttern.
 </p>
 
 

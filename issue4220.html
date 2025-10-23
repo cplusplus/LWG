@@ -64,8 +64,8 @@
 <p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#New">New</a> status.</em></p>
 <h3 id="4220"><a href="lwg-active.html#4220">4220</a>. <code>join_view</code> incorrectly stores inner range</h3>
 <p><b>Section:</b> 25.7.14.2 <a href="https://wg21.link/range.join.view">[range.join.view]</a>, 25.7.15.2 <a href="https://wg21.link/range.join.with.view">[range.join.with.view]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Hewill Kang <b>Opened:</b> 2025-03-06 <b>Last modified:</b> 2025-03-09</p>
-<p><b>Priority: </b>Not Prioritized
+ <b>Submitter:</b> Hewill Kang <b>Opened:</b> 2025-03-06 <b>Last modified:</b> 2025-10-23</p>
+<p><b>Priority: </b>3
 </p>
 <p><b>View other</b> <a href="lwg-index-open.html#range.join.view">active issues</a> in [range.join.view].</p>
 <p><b>View all other</b> <a href="lwg-index.html#range.join.view">issues</a> in [range.join.view].</p>
@@ -97,6 +97,16 @@ int main() {
 The proposed resolution preserves the inner range's original qualifiers, which is consistent with how
 <code>cache_latest_view</code> stores the reference when it is a prvalue.
 The same goes for <code>join_with_view</code>.
+</p>
+
+<p><i>[2025-10-23; Reflector poll.]</i></p>
+
+<p>
+Set priority to 3 after reflector poll.
+</p>
+<p>
+Lot of NAD votes. This type satisfies, but does not model
+range.
 </p>
 
 

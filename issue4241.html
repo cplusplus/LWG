@@ -79,7 +79,7 @@ to use any element as the value type. Moreover, <code class='backtick'>indirectl
 the callable object to be copy constructible, which might be undesired because the 
 corresponding <code class='backtick'>std::for_each(_n)</code> only require move constructibilty.
 <p/>
-LWG <a href="lwg-active.html#4171" title="P2609R3 breaks code that uses views::zip and get&lt;T&gt; (Status: New)">4171</a><sup><a href="https://cplusplus.github.io/LWG/issue4171" title="Latest snapshot">(i)</a></sup> talked about the breakage around <code class='backtick'>ranges::for_each</code> introduced 
+LWG <a href="lwg-active.html#4171" title="P2609R3 breaks code that uses views::zip and get&lt;T&gt; (Status: Tentatively NAD)">4171</a><sup><a href="https://cplusplus.github.io/LWG/issue4171" title="Latest snapshot">(i)</a></sup> talked about the breakage around <code class='backtick'>ranges::for_each</code> introduced 
 by <a href="https://wg21.link/P2609R3" title=" Relaxing Ranges Just A Smidge">P2609R3</a>. P2609R3 looks like a reasonable fix as long as the affected 
 algorithms potentially use the intermediate element values copied as 
 <code>std::iter_value_t&lt;I&gt;</code>. However, when the algorithm is not expected to or 

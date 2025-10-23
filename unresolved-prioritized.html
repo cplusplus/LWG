@@ -60,7 +60,7 @@
 <p>This document is the Table of Contents for the <a href="lwg-active.html">Library Active Issues List</a>,
 <a href="lwg-defects.html">Library Defect Reports and Accepted Issues</a>, and <a href="lwg-closed.html">Library Closed Issues List</a>,
 sorted by priority.</p>
-<p>Revised 2025-10-22 at 20:22:56 UTC
+<p>Revised 2025-10-23 at 09:36:04 UTC
 </p><h2 id="Priority_1">Priority 1 (16 issues)</h2>
 <table class="issues-index">
 <tr>
@@ -221,7 +221,7 @@ incorrectly constrained for <code>&lt;stdfloat&gt;</code> types</td>
 <td></td>
 </tr>
 </table>
-<h2 id="Priority_2">Priority 2 (78 issues)</h2>
+<h2 id="Priority_2">Priority 2 (79 issues)</h2>
 <table class="issues-index">
 <tr>
   <th><a href="lwg-toc.html">Issue</a></th>
@@ -570,6 +570,15 @@ incorrectly constrained for <code>&lt;stdfloat&gt;</code> types</td>
 <td><a href="lwg-active.html#New">New</a></td>
 <td>24.5.3.5 [const.iterators.ops]</td>
 <td>Constraint recursion in <code class='backtick'>basic_const_iterator</code>'s relational operators due to ADL + CWG 2369</td>
+<td>Yes</td>
+<td>2</td>
+<td></td>
+</tr>
+<tr>
+<td id="4389"><a href="lwg-active.html#4389" title="ranges::for_each possibly behaves differently from range-based for (Status: SG9)">4389</a><sup><a href="https://cplusplus.github.io/LWG/issue4389">(i)</a></sup></td>
+<td><a href="lwg-active.html#SG9">SG9</a></td>
+<td>25.4.2 [range.range]</td>
+<td><code class='backtick'>ranges::for_each</code> possibly behaves differently from range-based <code class='backtick'>for</code></td>
 <td>Yes</td>
 <td>2</td>
 <td></td>
@@ -939,7 +948,7 @@ specified to make <code><i>N</i></code> copies of <code>T</code> into the destin
 <td></td>
 </tr>
 </table>
-<h2 id="Priority_3">Priority 3 (446 issues)</h2>
+<h2 id="Priority_3">Priority 3 (449 issues)</h2>
 <table class="issues-index">
 <tr>
   <th><a href="lwg-toc.html">Issue</a></th>
@@ -2798,6 +2807,15 @@ should conditionally require <i>Cpp17CopyInsertable</i> in their preconditions</
 <td></td>
 </tr>
 <tr>
+<td id="4405"><a href="lwg-active.html#4405" title="mdspan constructor should disallow derived to base conversions (Status: New)">4405</a><sup><a href="https://cplusplus.github.io/LWG/issue4405">(i)</a></sup></td>
+<td><a href="lwg-active.html#New">New</a></td>
+<td>23.7.3.6.2 [mdspan.mdspan.cons]</td>
+<td><code class='backtick'>mdspan</code> constructor should disallow derived to base conversions</td>
+<td>Yes</td>
+<td>3</td>
+<td></td>
+</tr>
+<tr>
 <td id="3952"><a href="lwg-active.html#3952" title="iter_common_reference_t does not conform to the definition of indirectly_readable (Status: New)">3952</a><sup><a href="https://cplusplus.github.io/LWG/issue3952">(i)</a></sup></td>
 <td><a href="lwg-active.html#New">New</a></td>
 <td>24.2 [iterator.synopsis]</td>
@@ -3284,6 +3302,24 @@ difference_type is not an integer-class type? (Status: New)">3763</a><sup><a hre
 <td><a href="lwg-active.html#New">New</a></td>
 <td>25.7.12.2 [range.drop.view]</td>
 <td><code>std::ranges::drop_view</code> may have different size type from its underlying view</td>
+<td>Yes</td>
+<td>3</td>
+<td></td>
+</tr>
+<tr>
+<td id="4220"><a href="lwg-active.html#4220" title="join_view incorrectly stores inner range (Status: New)">4220</a><sup><a href="https://cplusplus.github.io/LWG/issue4220">(i)</a></sup></td>
+<td><a href="lwg-active.html#New">New</a></td>
+<td>25.7.14.2 [range.join.view]</td>
+<td><code>join_view</code> incorrectly stores inner range</td>
+<td>Yes</td>
+<td>3</td>
+<td></td>
+</tr>
+<tr>
+<td id="4401"><a href="lwg-active.html#4401" title="join_view should be sized_range when applied to ranges of simd::vec (Status: LEWG)">4401</a><sup><a href="https://cplusplus.github.io/LWG/issue4401">(i)</a></sup></td>
+<td><a href="lwg-active.html#LEWG">LEWG</a></td>
+<td>25.7.14.2 [range.join.view]</td>
+<td><code class='backtick'>join_view</code> should be <code class='backtick'>sized_range</code> when applied to ranges of <code class='backtick'>simd::vec</code></td>
 <td>Yes</td>
 <td>3</td>
 <td></td>
@@ -5021,7 +5057,7 @@ don't support <code>DynamicBuffer</code> lvalues</td>
 <td></td>
 </tr>
 </table>
-<h2 id="Priority_4">Priority 4 (107 issues)</h2>
+<h2 id="Priority_4">Priority 4 (108 issues)</h2>
 <table class="issues-index">
 <tr>
   <th><a href="lwg-toc.html">Issue</a></th>
@@ -5334,6 +5370,17 @@ don't support <code>DynamicBuffer</code> lvalues</td>
 <td><a href="lwg-active.html#New">New</a></td>
 <td>25.2 [ranges.syn]</td>
 <td><code>std::tuple_element_t&lt;std::ranges::subrange&lt;I, S, K&gt;&gt;</code> should remove top-level <i>cv</i>-qualifiers</td>
+<td>Yes</td>
+<td>4</td>
+<td></td>
+</tr>
+<tr>
+<td id="4307"><a href="lwg-active.html#4307" title="Make good use of sized-random-access-range and bidirectional-common
+in &lt;ranges&gt; (Status: New)">4307</a><sup><a href="https://cplusplus.github.io/LWG/issue4307">(i)</a></sup></td>
+<td><a href="lwg-active.html#New">New</a></td>
+<td>25.2 [ranges.syn]</td>
+<td>Make good use of <code><i>sized-random-access-range</i></code> and <code><i>bidirectional-common</i></code>
+in <code>&lt;ranges&gt;</code></td>
 <td>Yes</td>
 <td>4</td>
 <td></td>
@@ -6002,7 +6049,7 @@ vprint_unicode/vprint_nonunicode (Status: New)">4039</a><sup><a href="https://cp
 <td></td>
 </tr>
 </table>
-<h2 id="Priority_99">Not Prioritized (56 issues)</h2>
+<h2 id="Priority_99">Not Prioritized (48 issues)</h2>
 <table class="issues-index">
 <tr>
   <th><a href="lwg-toc.html">Issue</a></th>
@@ -6113,86 +6160,10 @@ vprint_unicode/vprint_nonunicode (Status: New)">4039</a><sup><a href="https://cp
 <td></td>
 </tr>
 <tr>
-<td id="4405"><a href="lwg-active.html#4405" title="mdspan constructor should disallow derived to base conversions (Status: New)">4405</a><sup><a href="https://cplusplus.github.io/LWG/issue4405">(i)</a></sup></td>
-<td><a href="lwg-active.html#New">New</a></td>
-<td>23.7.3.6.2 [mdspan.mdspan.cons]</td>
-<td><code class='backtick'>mdspan</code> constructor should disallow derived to base conversions</td>
-<td>Yes</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td id="4271"><a href="lwg-active.html#4271" title="Caching range views claim amortized amortized &#x1d4aa;(1) runtime
-complexity for algorithms that are in fact &#x1d4aa;(n) (Status: New)">4271</a><sup><a href="https://cplusplus.github.io/LWG/issue4271">(i)</a></sup></td>
-<td><a href="lwg-active.html#New">New</a></td>
-<td>24.3.1 [iterator.requirements.general]</td>
-<td>Caching range views claim amortized amortized &#x1d4aa;(1) runtime
-complexity for algorithms that are in fact &#x1d4aa;(n)</td>
-<td>Yes</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td id="4171"><a href="lwg-active.html#4171" title="P2609R3 breaks code that uses views::zip and get&lt;T&gt; (Status: New)">4171</a><sup><a href="https://cplusplus.github.io/LWG/issue4171">(i)</a></sup></td>
-<td><a href="lwg-active.html#New">New</a></td>
-<td>24.3.6.3 [indirectcallable.indirectinvocable]</td>
-<td>P2609R3 breaks code that uses <code class='backtick'>views::zip</code> and <code>get&lt;T&gt;</code></td>
-<td><span class="no-pr">No</span></td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td id="4307"><a href="lwg-active.html#4307" title="Make good use of sized-random-access-range and bidirectional-common
-in &lt;ranges&gt; (Status: New)">4307</a><sup><a href="https://cplusplus.github.io/LWG/issue4307">(i)</a></sup></td>
-<td><a href="lwg-active.html#New">New</a></td>
-<td>25.2 [ranges.syn]</td>
-<td>Make good use of <code><i>sized-random-access-range</i></code> and <code><i>bidirectional-common</i></code>
-in <code>&lt;ranges&gt;</code></td>
-<td>Yes</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td id="4389"><a href="lwg-active.html#4389" title="ranges::for_each possibly behaves differently from range-based for (Status: New)">4389</a><sup><a href="https://cplusplus.github.io/LWG/issue4389">(i)</a></sup></td>
-<td><a href="lwg-active.html#New">New</a></td>
-<td>25.4.2 [range.range]</td>
-<td><code class='backtick'>ranges::for_each</code> possibly behaves differently from range-based <code class='backtick'>for</code></td>
-<td>Yes</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
 <td id="4417"><a href="lwg-active.html#4417" title="views::indices is underconstrained (Status: New)">4417</a><sup><a href="https://cplusplus.github.io/LWG/issue4417">(i)</a></sup></td>
 <td><a href="lwg-active.html#New">New</a></td>
 <td>25.6.4.1 [range.iota.overview]</td>
 <td><code class='backtick'>views::indices</code> is underconstrained</td>
-<td>Yes</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td id="4220"><a href="lwg-active.html#4220" title="join_view incorrectly stores inner range (Status: New)">4220</a><sup><a href="https://cplusplus.github.io/LWG/issue4220">(i)</a></sup></td>
-<td><a href="lwg-active.html#New">New</a></td>
-<td>25.7.14.2 [range.join.view]</td>
-<td><code>join_view</code> incorrectly stores inner range</td>
-<td>Yes</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td id="4401"><a href="lwg-active.html#4401" title="join_view should be sized_range when applied to ranges of simd::vec (Status: New)">4401</a><sup><a href="https://cplusplus.github.io/LWG/issue4401">(i)</a></sup></td>
-<td><a href="lwg-active.html#New">New</a></td>
-<td>25.7.14.2 [range.join.view]</td>
-<td><code class='backtick'>join_view</code> should be <code class='backtick'>sized_range</code> when applied to ranges of <code class='backtick'>simd::vec</code></td>
-<td>Yes</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td id="4166"><a href="lwg-active.html#4166" title="concat_view::end() should be more constrained in order to support noncopyable iterators (Status: New)">4166</a><sup><a href="https://cplusplus.github.io/LWG/issue4166">(i)</a></sup></td>
-<td><a href="lwg-active.html#New">New</a></td>
-<td>25.7.18.2 [range.concat.view]</td>
-<td><code class='backtick'>concat_view::end()</code> should be more constrained in order to support noncopyable iterators</td>
 <td>Yes</td>
 <td></td>
 <td></td>

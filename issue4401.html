@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <title>Issue 4401: join_view should be sized_range when applied to ranges of simd::vec</title>
 <meta property="og:title" content="Issue 4401: join_view should be sized_range when applied to ranges of simd::vec">
-<meta property="og:description" content="C++ library issue. Status: New">
+<meta property="og:description" content="C++ library issue. Status: LEWG">
 <meta property="og:url" content="https://cplusplus.github.io/LWG/issue4401.html">
 <meta property="og:type" content="website">
 <meta property="og:image" content="http://cplusplus.github.io/LWG/images/cpp_logo.png">
@@ -61,15 +61,15 @@
 </head>
 <body>
 <hr>
-<p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#New">New</a> status.</em></p>
+<p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#LEWG">LEWG</a> status.</em></p>
 <h3 id="4401"><a href="lwg-active.html#4401">4401</a>. <code class='backtick'>join_view</code> should be <code class='backtick'>sized_range</code> when applied to ranges of <code class='backtick'>simd::vec</code></h3>
-<p><b>Section:</b> 25.7.14.2 <a href="https://wg21.link/range.join.view">[range.join.view]</a>, 25.7.15.2 <a href="https://wg21.link/range.join.with.view">[range.join.with.view]</a>, 25.7.16.2 <a href="https://wg21.link/range.lazy.split.view">[range.lazy.split.view]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Hewill Kang <b>Opened:</b> 2025-10-02 <b>Last modified:</b> 2025-10-04</p>
-<p><b>Priority: </b>Not Prioritized
+<p><b>Section:</b> 25.7.14.2 <a href="https://wg21.link/range.join.view">[range.join.view]</a>, 25.7.15.2 <a href="https://wg21.link/range.join.with.view">[range.join.with.view]</a>, 25.7.16.2 <a href="https://wg21.link/range.lazy.split.view">[range.lazy.split.view]</a> <b>Status:</b> <a href="lwg-active.html#LEWG">LEWG</a>
+ <b>Submitter:</b> Hewill Kang <b>Opened:</b> 2025-10-02 <b>Last modified:</b> 2025-10-23</p>
+<p><b>Priority: </b>3
 </p>
 <p><b>View other</b> <a href="lwg-index-open.html#range.join.view">active issues</a> in [range.join.view].</p>
 <p><b>View all other</b> <a href="lwg-index.html#range.join.view">issues</a> in [range.join.view].</p>
-<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#LEWG">LEWG</a> status.</p>
 <p><b>Discussion:</b></p>
 <p>
 Consider:
@@ -90,6 +90,16 @@ result size of the <code class='backtick'>join_view</code>.
 In <code>&lt;ranges&gt;</code>, we use the <code><i>tiny-range</i></code> concept
 to consider types that can obtain static sizes specifically, and <code class='backtick'>simd::vec</code> 
 seems to be a good fit.
+</p>
+
+<p><i>[2025-10-23; Reflector poll; Status changed: New &rarr; LEWG and P3.]</i></p>
+
+<p>
+Introducting statically sized ranges and handling them in views, should be
+handle as a paper.
+</p>
+<p>
+The proposed change is also relevant to fixed-size <code>span</code>.
 </p>
 
 
