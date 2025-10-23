@@ -6,7 +6,7 @@
 <section><sref ref="[coro.generator.promise]"/></section>
 <submitter>Mathias Stearn</submitter>
 <date>16 Oct 2025</date>
-<priority>99</priority>
+<priority>2</priority>
 
 <discussion>
 <p>
@@ -53,6 +53,30 @@ reference type to <tt>T&amp;&amp;</tt>. However, when making the change, I assum
 it had on the `elements_of`-non-generator overload of `yield_value` was not considered, so it was 
 unmodified. 
 </p>
+
+<note>2025-10-23; Reflector poll.</note>
+<p>
+Set priority to 2 after reflector poll.
+</p>
+<p>
+The current resolution is incorrect, and breaks following example:
+</p>
+<blockquote><pre>
+std::generator&lt;std::vector&lt;int&gt;&gt; g()
+{
+  std::vector&lt;int&gt; v = {1, 2, 3};
+  co_yield std::ranges::elements_of(v);
+} 	
+</pre></blockquote>
+<p>
+The constraints are equivalent to checking if `yield_value(*it)` is well-formed,
+and maybe we could express is directly as:
+</p>
+<blockquote><pre>
+requires requires (promise_type p, ranges::iterator_t&lt;R&gt; it) {
+    p.yield_value(*it);
+}
+</pre></blockquote>
 </discussion>
 
 <resolution>
