@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="4310" status="New">
+<issue num="4310" status="Core">
 <title>Is "the completion of the invocation of the constructor" considered as an expression?</title>
 <section>
 <sref ref="[thread.thread.constr]"/>
@@ -9,7 +9,7 @@
 </section>
 <submitter>jim x</submitter>
 <date>06 Aug 2025</date>
-<priority>99</priority>
+<priority>4</priority>
 
 <discussion>
 <p>
@@ -51,6 +51,11 @@ The similar issue is <sref ref="[thread.thread.member]"/> p4
 The completion of the thread represented by `*this` synchronizes with (<sref ref="[intro.multithread]"/>) 
 the corresponding successful `join()` return.
 </p></blockquote>
+
+<note>2025-10-23; Reflector poll; Status changed: New &rarr; Core and P4.</note>
+<p>
+P4 at best. Sentiment towards NAD.
+</p>
 </discussion>
 
 <resolution>
