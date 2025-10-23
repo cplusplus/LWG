@@ -1,12 +1,12 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="3992" status="New">
+<issue num="3992" status="Tentatively NAD">
 <title><tt>basic_stringbuf::str()&amp;&amp;</tt> should enforce &#x1d4aa;(1)</title>
 <section><sref ref="[stringbuf.members]"/></section>
 <submitter>Peter Sommerlad</submitter>
 <date>05 Oct 2023</date>
-<priority>99</priority>
+<priority>4</priority>
 
 <discussion>
 <p>
@@ -29,6 +29,11 @@ Unfortunately, we cannot say
 </p></blockquote>
 <p>
 as a postcondition due to SSO. Maybe a note could be added to eliminate the confusion.
+</p>
+
+<note>2025-10-23; Reflector poll; Status changed: New &rarr; LEWG and P3.</note>
+<p>
+The requirements are already implied, and proposed wording has no effect.
 </p>
 </discussion>
 
