@@ -8,7 +8,7 @@
 </section>
 <submitter>Damien Lebrun-Grandie</submitter>
 <date>03 Jul 2025</date>
-<priority>99</priority>
+<priority>2</priority>
 
 <discussion>
 <p>
@@ -26,6 +26,15 @@ class template which has these two <i>Mandates</i> clauses and therefore applied
 <p/>
 We propose to correct that oversight and reintroduce the following <i>Mandates</i> clauses right above 
 <sref ref="[ptr.align]"/> p10.
+</p>
+
+<note>2025-10-23; Reflector poll.</note>
+<p>
+Set priority to 2 after reflector poll.
+</p>
+<p>
+The <i>Mandates</i> of <tt>Alignment &gt;= alignof(T)</tt> was put into
+question, as being too restrictive for general purpose free function.
 </p>
 </discussion>
 
