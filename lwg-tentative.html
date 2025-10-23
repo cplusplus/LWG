@@ -54,7 +54,7 @@
 </style>
 </head>
 <body>
-<p>Revised 2025-10-23 at 11:06:25 UTC
+<p>Revised 2025-10-23 at 11:09:15 UTC
 </p><h2>Tentative Issues</h2>
 <hr>
 <h3 id="3627"><a href="#3627">3627</a><sup><a href="https://cplusplus.github.io/LWG/issue3627">(i)</a></sup>. Inconsistent specifications for <code>std::make_optional</code> overloads</h3>
@@ -5437,6 +5437,59 @@ namespace std::execution {
 
 }
 </pre></blockquote>
+</p>
+
+
+
+
+
+<hr>
+<h3 id="4346"><a href="#4346">4346</a><sup><a href="https://cplusplus.github.io/LWG/issue4346">(i)</a></sup>. <code>task::promise_type::return_void</code>/<code>value</code> lack a specification</h3>
+<p><b>Section:</b> 33.13.6.5 <a href="https://wg21.link/task.promise">[task.promise]</a> <b>Status:</b> <a href="lwg-active.html#Ready">Tentatively Ready</a>
+ <b>Submitter:</b> Dietmar Kühl <b>Opened:</b> 2025-09-01 <b>Last modified:</b> 2025-10-23</p>
+<p><b>Priority: </b>Not Prioritized
+</p>
+<p><b>View other</b> <a href="lwg-index-open.html#task.promise">active issues</a> in [task.promise].</p>
+<p><b>View all other</b> <a href="lwg-index.html#task.promise">issues</a> in [task.promise].</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#Tentatively Ready">Tentatively Ready</a> status.</p>
+<p><b>Discussion:</b></p>
+<p>
+The synopsis for <code>std::execution::task&lt;T,
+E&gt;::promise_type</code> declares <code>return_void()</code> or
+<code>return_value(V&amp;&amp;)</code>. However, there is no
+specification of what these functions actually do.
+<code>return_void()</code> doesn’t need to do anything at all.
+<code>return_value(V&amp;&amp; v)</code> needs to store <code>v</code>
+into the <code><i>result</i></code>.
+</p>
+
+<p><i>[2025-10-23; Reflector poll.]</i></p>
+
+<p>
+Set status to Tentatively Ready after five votes in favour during reflector poll.
+</p>
+
+
+<p id="res-4346"><b>Proposed resolution:</b></p>
+<p>
+Insert the following paragraphs in 33.13.6.5 <a href="https://wg21.link/task.promise">[task.promise]</a>
+after the specification of <code>unhandled_stopped</code>:
+</p>
+<p>
+<blockquote>
+<pre>coroutine_handle&lt;&gt; unhandled_stopped();</pre>
+<p>-13- <i>Effects</i>: Completes the asynchronous operation associated with <code><i>STATE</i>(*this)</code> by invoking <code>set_stopped(std::move(<i>RCVR</i>(*this)))</code>.</p>
+<p>-14- <i>Returns</i>: <code>noop_coroutine()</code>.</p>
+<pre><ins>void return_void();</ins></pre>
+<p><ins>-?- <i>Effects</i>: does nothing.</ins></p>
+<pre><ins>
+template&lt;class V&gt;
+  void return_value(V&amp;&amp; v);
+</ins></pre>
+<p><ins>-?- <i>Effects</i>: Equivalent to <code><i>result</i>.emplace(std::forward&lt;V&gt;(v))</code>.</ins></p>
+<pre><i>unspecified</i> get_env() const noexcept;</pre>
+<p>-15- <i>Returns</i>: An object <code>env</code> such that queries are forwarded as follows:</p>
+</blockquote>
 </p>
 
 
