@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="4171" status="New">
+<issue num="4171" status="Tentatively NAD">
 <title>P2609R3 breaks code that uses `views::zip` and <tt>get&lt;T&gt;</tt></title>
 <section><sref ref="[indirectcallable.indirectinvocable]"/></section>
 <submitter>S. B. Tam</submitter>
@@ -38,6 +38,13 @@ Note that `for_each` doesn't actually call `fun` with <tt>iter_value_t&lt;I&gt;<
 an explicit return type to `fun`.
 <p/>
 Did LWG foresee this impact of <paper num="P2609R3"/>? Could P2609R3 be reverted to unbreak this code pattern?
+</p>
+
+<note>2025-10-23; Reflector pool; Status changed: New &rarr; Tentatively NAD.</note>
+<p>
+The range concepts are over-constrained by design, and `indirect_unary_invocable`
+always required invocability with `iter_value_t`. The P2609 changes enforced this 
+requirement properly for iterators returning proxy references, including `zip_iterator`.
 </p>
 </discussion>
 
