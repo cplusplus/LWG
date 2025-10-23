@@ -8,7 +8,7 @@
 </section>
 <submitter>Hewill Kang</submitter>
 <date>05 Oct 2025</date>
-<priority>99</priority>
+<priority>3</priority>
 
 <discussion>
 <p>
@@ -31,6 +31,16 @@ std::mdspan&lt;Base, std::dims&lt;1&gt;&gt; msp(arr.data(), arr.size()); // <spa
 Given that we intend to reject object slicing for both `default_accessor` and
 `aligned_accessor`, there seems no reason not to reject this invalid pointer 
 arithmetic for `mdspan`.
+</p>
+
+<note>2025-10-23; Reflector poll.</note>
+<p>
+Set priority to 3 after reflector poll.
+</p>
+<p>
+Even if `data_handle_type` is a pointer to `value_type`, this does not mean
+that it points to contiguous range of `value_type` objects. Accessor may
+provide different access parttern.
 </p>
 </discussion>
 
