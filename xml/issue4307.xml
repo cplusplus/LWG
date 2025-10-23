@@ -15,7 +15,7 @@ in <code>&lt;ranges&gt;</code></title>
 </section>
 <submitter>Hewill Kang</submitter>
 <date>28 Jul 2025</date>
-<priority>99</priority>
+<priority>4</priority>
 
 <discussion>
 <p>
@@ -35,6 +35,15 @@ It would be much simpler and more readable if both concepts were available throu
 which would also allow newly introduced adapters or other library features to take advantage of them.
 Note that since some of these simplifications change the order in which the concepts are spelled, they may not be
 purely editorial.
+</p>
+
+<note>2025-10-23; Reflector poll.</note>
+<p>
+Set priority to 4 after reflector poll.
+</p>
+<p>
+Use of exposition-only concepts is not necessary improving readability
+or produced error messages.
 </p>
 </discussion>
 
