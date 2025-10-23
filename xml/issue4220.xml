@@ -8,7 +8,7 @@
 </section>
 <submitter>Hewill Kang</submitter>
 <date>06 Mar 2025</date>
-<priority>99</priority>
+<priority>3</priority>
 
 <discussion>
 <p>
@@ -37,6 +37,15 @@ int main() {
 The proposed resolution preserves the inner range's original qualifiers, which is consistent with how
 <code>cache_latest_view</code> stores the reference when it is a prvalue.
 The same goes for <code>join_with_view</code>.
+</p>
+
+<note>2025-10-23; Reflector poll.</note>
+<p>
+Set priority to 3 after reflector poll.
+</p>
+<p>
+Lot of NAD votes. This type satisfies, but does not model
+range.
 </p>
 </discussion>
 
