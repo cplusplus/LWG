@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="4166" status="New">
+<issue num="4166" status="Tentatively Ready">
 <title>`concat_view::end()` should be more constrained in order to support noncopyable iterators</title>
 <section><sref ref="[range.concat.view]"/></section>
 <submitter>Yaito Kakeyama &amp; Nana Sakisaka</submitter>
@@ -96,6 +96,12 @@ if constexpr (<ins>(semiregular&lt;iterator_t&lt;<i>maybe-const</i>&lt;<i>is-con
 </superseded>
 
 <note>2025-03-05; Hewill Kang provides improved wording</note>
+
+<note>2025-10-23; Reflector poll.</note>
+<p>
+Set status to Tentatively Ready after seven votes in favour during reflector poll.
+</p>
+
 </discussion>
 
 <resolution>
