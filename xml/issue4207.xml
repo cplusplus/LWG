@@ -6,7 +6,7 @@
 <section><sref ref="[support.srcloc.cons]"/></section>
 <submitter>Cassio Neri</submitter>
 <date>07 Feb 2025</date>
-<priority>99</priority>
+<priority>3</priority>
 
 <discussion>
 <p>
@@ -44,6 +44,30 @@ and matches existing practice. Arguably, this doesn't need to be stated
 because it's just "exactly where the `current()` call appear in the source".
 The other cases in the Remarks paragraph are situations where the preferred
 location is different, because we want to know where it's used, not defined.
+</p>
+
+<note>2025-10-23; Reflector poll.</note>
+<p>
+Set priority to 3 after reflector poll.
+</p>
+<p>
+CWG <a href="https://cplusplus.github.io/CWG/issues/2631.html">2631</a>
+clarified the rules for immediate invocation for default function arguments
+and member initializers. We should consider rewriting <i>Remarks</i>
+to rely on that, and change most of the existing paragraph into normative
+note. Also use <i>Recommended practice</i> element, as this is normative
+recommendation.
+</p>
+<p>
+The cross reference to <sref ref="[class.mem]"/> should be changed to
+<sref ref="[class.mem.general]"/>.
+</p>
+<p>
+The treatment of default template arguments is the subject of CWG
+<a href="https://cplusplus.github.io/CWG/issues/1635.html">1635</a>.
+An alternative design could be that `source_location` inside default template argument
+refers to point of use. It was noted that this does not reflect current behavior
+of compilers.
 </p>
 </discussion>
 
