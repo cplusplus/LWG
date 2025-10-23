@@ -6,7 +6,7 @@
 <section><sref ref="[cmp.categories]"/></section>
 <submitter>Corentin Jabot</submitter>
 <date>31 Jan 2024</date>
-<priority>99</priority>
+<priority>3</priority>
 
 <discussion>
 <p>
@@ -60,6 +60,31 @@ Related vendor issues:
 <p/>
 <a href="https://github.com/snitch-org/snitch/issues/140">snitch issue 140</a>
 </p>
+
+<note>2025-10-23; Reflector poll.</note>
+<p>
+Set priority to 3 after reflector poll.
+</p>
+<p>
+We should prefer rejecting the undefined expression at compile time,
+rather than leading to UB at runtime.
+</p>
+<p>
+There is implementation divergence for SFINAE checks between the standard
+library implementations. The `has_a_value(std::strong_ordering::equal)`
+is `false` for libstdc++, and `true` for libc++, MSVC:
+</p>
+<blockquote><pre>
+auto has_a_value(const auto&amp; t) {
+  if constexpr (requires { t.has_value(); }) {
+    return t.has_value();
+  } else if (constexpr (requires { t != nullptr; }) {
+    return t != nullptr;
+  } else {
+    return true;
+  }
+}
+</pre></blockquote>
 </discussion>
 
 <resolution>
