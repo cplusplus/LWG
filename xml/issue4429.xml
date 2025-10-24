@@ -1,0 +1,55 @@
+<?xml version='1.0' encoding='utf-8' standalone='no'?>
+<!DOCTYPE issue SYSTEM "lwg-issue.dtd">
+
+<issue num="4429" status="New">
+<title><code>meta::alignment_of</code> should exclude data member description of bit-field</title>
+<section>
+<sref ref="[meta.reflection.layout]"/>
+</section>
+<submitter>Tomasz Kamiński</submitter>
+<date>24 Oct 2025</date>
+<priority>99</priority>
+
+<discussion>
+<b>Addresses US 109-170</b>
+<p>
+<sref ref="[meta.reflection.layout]"/> p#8
+This should similarly disallow data member descriptions of bit-fields.
+</p>
+</discussion>
+
+<resolution>
+<p>
+This wording is relative to <paper num="N5014"/>.
+</p>
+
+<ol>
+
+<li><p>Modify <sref ref="[meta.reflection.layout]"/> as indicated:</p>
+
+<pre>
+consteval size_t alignment_of(info r);	
+</pre>
+<blockquote>
+<p>-7- <i>Returns</i>: [&hellip;]
+</p>
+<p>-8- <i>Throws</i>: `meta::exception` unless all of the following conditions are met:
+<ul>
+<li>(8.1) &mdash;
+`dealias(r)` is a reflection of a type, object, variable of non-reference type,
+non-static data member that is not a bit-field, direct base class relationship,
+or data member description <ins><i>(T,N,A,W,NUA)</i> (<sref ref="[class.mem.general]"/>)
+where <i>W</i> is not ⊥.</ins>.
+</li>
+<li>(8.2) &mdash;
+If `dealias(r)` represents a type, then `is_complete_type(r)` is true.
+</li>
+</ul>
+</p>
+</blockquote>
+</li>
+</ol>
+
+</resolution>
+
+</issue>
