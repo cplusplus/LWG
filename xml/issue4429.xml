@@ -39,7 +39,7 @@ consteval size_t alignment_of(info r);
 `dealias(r)` is a reflection of a type, object, variable of non-reference type,
 non-static data member that is not a bit-field, direct base class relationship,
 or data member description <ins><i>(T,N,A,W,NUA)</i> (<sref ref="[class.mem.general]"/>)
-where <i>W</i> is not ⊥.</ins>.
+where <i>W</i> is ⊥.</ins>.
 </li>
 <li>(8.2) &mdash;
 If `dealias(r)` represents a type, then `is_complete_type(r)` is true.
