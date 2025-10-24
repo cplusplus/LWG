@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Issue 4429: meta::alignment_of should exclude data member description of bit-field</title>
+<meta property="og:title" content="Issue 4429: meta::alignment_of should exclude data member description of bit-field">
+<meta property="og:description" content="C++ library issue. Status: New">
+<meta property="og:url" content="https://cplusplus.github.io/LWG/issue4429.html">
+<meta property="og:type" content="website">
+<meta property="og:image" content="http://cplusplus.github.io/LWG/images/cpp_logo.png">
+<meta property="og:image:alt" content="C++ logo">
+<style>
+  p {text-align:justify}
+  li {text-align:justify}
+  pre code.backtick::before { content: "`" }
+  pre code.backtick::after { content: "`" }
+  blockquote.note
+  {
+    background-color:#E0E0E0;
+    padding-left: 15px;
+    padding-right: 15px;
+    padding-top: 1px;
+    padding-bottom: 1px;
+  }
+  ins {background-color:#A0FFA0}
+  del {background-color:#FFA0A0}
+  table.issues-index { border: 1px solid; border-collapse: collapse; }
+  table.issues-index th { text-align: center; padding: 4px; border: 1px solid; }
+  table.issues-index td { padding: 4px; border: 1px solid; }
+  table.issues-index td:nth-child(1) { text-align: right; }
+  table.issues-index td:nth-child(2) { text-align: left; }
+  table.issues-index td:nth-child(3) { text-align: left; }
+  table.issues-index td:nth-child(4) { text-align: left; }
+  table.issues-index td:nth-child(5) { text-align: center; }
+  table.issues-index td:nth-child(6) { text-align: center; }
+  table.issues-index td:nth-child(7) { text-align: left; }
+  table.issues-index td:nth-child(5) span.no-pr { color: red; }
+  @media (prefers-color-scheme: dark) {
+     html {
+        color: #ddd;
+        background-color: black;
+     }
+     ins {
+        background-color: #225522
+     }
+     del {
+        background-color: #662222
+     }
+     a {
+        color: #6af
+     }
+     a:visited {
+        color: #6af
+     }
+     blockquote.note
+     {
+        background-color: rgba(255, 255, 255, .10)
+     }
+  }
+</style>
+</head>
+<body>
+<hr>
+<p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#New">New</a> status.</em></p>
+<h3 id="4429"><a href="lwg-active.html#4429">4429</a>. <code>meta::alignment_of</code> should exclude data member description of bit-field</h3>
+<p><b>Section:</b> 21.4.11 <a href="https://wg21.link/meta.reflection.layout">[meta.reflection.layout]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
+ <b>Submitter:</b> Tomasz Kamiński <b>Opened:</b> 2025-10-24 <b>Last modified:</b> 2025-10-24</p>
+<p><b>Priority: </b>Not Prioritized
+</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
+<p><b>Discussion:</b></p>
+<b>Addresses US 109-170</b>
+<p>
+21.4.11 <a href="https://wg21.link/meta.reflection.layout">[meta.reflection.layout]</a> p#8
+This should similarly disallow data member descriptions of bit-fields.
+</p>
+
+
+<p id="res-4429"><b>Proposed resolution:</b></p>
+<p>
+This wording is relative to <a href="https://wg21.link/N5014">N5014</a>.
+</p>
+
+<ol>
+
+<li><p>Modify 21.4.11 <a href="https://wg21.link/meta.reflection.layout">[meta.reflection.layout]</a> as indicated:</p>
+
+<pre>
+consteval size_t alignment_of(info r);	
+</pre>
+<blockquote>
+<p>-7- <i>Returns</i>: [&hellip;]
+</p>
+<p>-8- <i>Throws</i>: <code class='backtick'>meta::exception</code> unless all of the following conditions are met:
+<ul>
+<li>(8.1) &mdash;
+<code class='backtick'>dealias(r)</code> is a reflection of a type, object, variable of non-reference type,
+non-static data member that is not a bit-field, direct base class relationship,
+or data member description <ins><i>(T,N,A,W,NUA)</i> (11.4.1 <a href="https://wg21.link/class.mem.general">[class.mem.general]</a>)
+where <i>W</i> is not ⊥.</ins>.
+</li>
+<li>(8.2) &mdash;
+If <code class='backtick'>dealias(r)</code> represents a type, then <code class='backtick'>is_complete_type(r)</code> is true.
+</li>
+</ul>
+</p>
+</blockquote>
+</li>
+</ol>
+
+
+
+
+
+
+</body>
+</html>
