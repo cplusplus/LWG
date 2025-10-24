@@ -62,7 +62,7 @@
 </tr>
 <tr>
 <td align="left">Date:</td>
-<td align="left">Revised 2025-10-24 at 08:06:04 UTC
+<td align="left">Revised 2025-10-24 at 17:31:52 UTC
 </td>
 </tr>
 <tr>
@@ -5817,6 +5817,76 @@ namespace std {
 </li>
 </ol>
 
+
+
+
+
+
+<hr>
+<h3 id="4423"><a href="#4423">4423</a><sup><a href="https://cplusplus.github.io/LWG/issue4423">(i)</a></sup>. <code class='backtick'>meta::data_member_spec</code> allows negative bit-field widths</h3>
+<p><b>Section:</b> 21.4.16 <a href="https://wg21.link/meta.reflection.define.aggregate">[meta.reflection.define.aggregate]</a> <b>Status:</b> <a href="lwg-active.html#Ready">Ready</a>
+ <b>Submitter:</b> Jakub Jelinek <b>Opened:</b> 2025-10-20 <b>Last modified:</b> 2025-10-24</p>
+<p><b>Priority: </b>Not Prioritized
+</p>
+<p><b>View other</b> <a href="lwg-index-open.html#meta.reflection.define.aggregate">active issues</a> in [meta.reflection.define.aggregate].</p>
+<p><b>View all other</b> <a href="lwg-index.html#meta.reflection.define.aggregate">issues</a> in [meta.reflection.define.aggregate].</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#Ready">Ready</a> status.</p>
+<p><b>Discussion:</b></p>
+<p>
+The <code class='backtick'>meta::data_member_spec</code> function doesn't restrict <code class='backtick'>options.bit_width</code>
+to be non-negative.
+</p>
+
+<p><i>[2025-10-24; LWG telecon; Status changed: New &rarr; Ready.]</i></p>
+
+<p>
+Poll to move issue to Ready: 10/0/0
+</p>
+
+
+<p id="res-4423"><b>Proposed resolution:</b></p>
+<p>
+This wording is relative to <a href="https://wg21.link/N5014">N5014</a>.
+</p>
+
+<ol>
+
+<li><p>Modify 21.4.16 <a href="https://wg21.link/meta.reflection.define.aggregate">[meta.reflection.define.aggregate]</a> as indicated:</p>
+
+<blockquote>
+<ul>
+<li>(5.3) &mdash;
+if <code class='backtick'>options.name</code> does not contain a value, then <code class='backtick'>options.bit_width</code>
+contains a value;
+</li>
+<li>(5.4) &mdash;
+if <code class='backtick'>options.bit_width</code> contains a value <i>V</i>, then
+<ul>
+<li>(5.4.1) &mdash;
+<code class='backtick'>is_integral_type(type) || is_enum_type(type)</code> is <code class='backtick'>true</code>,
+</li>
+<li>(5.4.2) &mdash;
+<code class='backtick'>options.alignment</code> does not contain a value,
+</li>
+<li>(5.4.3) &mdash;
+<code class='backtick'>options.no_unique_address</code> is <code class='backtick'>false</code>, <del>and</del>
+</li>
+<li><ins>(5.4.?) &mdash;
+<i>V</i> is not negative, and</ins>
+</li>
+<li>(5.4.4) &mdash;
+if <i>V</i> equals <code class='backtick'>0</code>, then <code class='backtick'>options.name</code> does not contain a value; and
+</li>
+</ul>
+</li>
+<li>(5.5) &mdash;
+if <code class='backtick'>options.alignment</code> contains a value, it is an alignment value
+(6.8.3 <a href="https://wg21.link/basic.align">[basic.align]</a>) not less than <code class='backtick'>alignment_of(type)</code>.
+</li>
+</ul>
+</blockquote>
+</li>
+</ol>
 
 
 

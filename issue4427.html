@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Issue 4427: meta::dealias needs to work with things that aren't entities</title>
+<meta property="og:title" content="Issue 4427: meta::dealias needs to work with things that aren't entities">
+<meta property="og:description" content="C++ library issue. Status: New">
+<meta property="og:url" content="https://cplusplus.github.io/LWG/issue4427.html">
+<meta property="og:type" content="website">
+<meta property="og:image" content="http://cplusplus.github.io/LWG/images/cpp_logo.png">
+<meta property="og:image:alt" content="C++ logo">
+<style>
+  p {text-align:justify}
+  li {text-align:justify}
+  pre code.backtick::before { content: "`" }
+  pre code.backtick::after { content: "`" }
+  blockquote.note
+  {
+    background-color:#E0E0E0;
+    padding-left: 15px;
+    padding-right: 15px;
+    padding-top: 1px;
+    padding-bottom: 1px;
+  }
+  ins {background-color:#A0FFA0}
+  del {background-color:#FFA0A0}
+  table.issues-index { border: 1px solid; border-collapse: collapse; }
+  table.issues-index th { text-align: center; padding: 4px; border: 1px solid; }
+  table.issues-index td { padding: 4px; border: 1px solid; }
+  table.issues-index td:nth-child(1) { text-align: right; }
+  table.issues-index td:nth-child(2) { text-align: left; }
+  table.issues-index td:nth-child(3) { text-align: left; }
+  table.issues-index td:nth-child(4) { text-align: left; }
+  table.issues-index td:nth-child(5) { text-align: center; }
+  table.issues-index td:nth-child(6) { text-align: center; }
+  table.issues-index td:nth-child(7) { text-align: left; }
+  table.issues-index td:nth-child(5) span.no-pr { color: red; }
+  @media (prefers-color-scheme: dark) {
+     html {
+        color: #ddd;
+        background-color: black;
+     }
+     ins {
+        background-color: #225522
+     }
+     del {
+        background-color: #662222
+     }
+     a {
+        color: #6af
+     }
+     a:visited {
+        color: #6af
+     }
+     blockquote.note
+     {
+        background-color: rgba(255, 255, 255, .10)
+     }
+  }
+</style>
+</head>
+<body>
+<hr>
+<p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#New">New</a> status.</em></p>
+<h3 id="4427"><a href="lwg-active.html#4427">4427</a>. <code class='backtick'>meta::dealias</code> needs to work with things that aren't entities</h3>
+<p><b>Section:</b> 21.4.7 <a href="https://wg21.link/meta.reflection.queries">[meta.reflection.queries]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
+ <b>Submitter:</b> Jonathan Wakely <b>Opened:</b> 2025-10-24 <b>Last modified:</b> 2025-10-24</p>
+<p><b>Priority: </b>Not Prioritized
+</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
+<p><b>Discussion:</b></p>
+<b>Addresses US 99-205</b>
+<p>
+Several uses of <code class='backtick'>dealias</code> assume that it can be used with reflections that
+represent direct base class relationships, which are not entities.
+The spec for <code class='backtick'>dealias</code> says that such uses should fail with an exception.
+</p>
+<p>
+In the 2025-10-24 LWG telecon it was agreed that <code class='backtick'>dealias</code> should just
+be the identity function for non-entities.
+</p>
+
+
+<p id="res-4427"><b>Proposed resolution:</b></p>
+<p>
+This wording is relative to <a href="https://wg21.link/N5014">N5014</a>.
+</p>
+
+<ol>
+
+<li><p>Modify 21.4.7 <a href="https://wg21.link/meta.reflection.queries">[meta.reflection.queries]</a> as indicated:</p>
+
+<blockquote>
+<pre>consteval info dealias(info r);</pre>
+<blockquote>
+<p>-49- <i>Returns</i>:
+<ins>If <code class='backtick'>r</code> represents an entity, then a</ins>
+<del>A</del>
+reflection representing the underlying entity of what <code class='backtick'>r</code> represents.
+<ins>Otherwise, <code class='backtick'>r</code>.</ins>
+</p>
+<p>[<i>Example 5</i>: <br/>
+... <br/>
+<i>&mdash; end example</i>]
+</p>
+<p><del>-50- <i>Throws</i>:
+<code class='backtick'>meta::exception</code> unless <code class='backtick'>r</code> represents an entity.
+</del>
+</p>
+</blockquote>
+</blockquote>
+</li>
+</ol>
+
+
+
+
+
+
+</body>
+</html>
