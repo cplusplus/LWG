@@ -27,6 +27,7 @@ allow that.
 <p>
 Set priority to 2 after reflector poll.
 </p>
+<note>2025-10-24; Resolves <a href="https://github.com/cplusplus/nbballot/issues/937">US 236-362</a></note>
 </discussion>
 
 <resolution>

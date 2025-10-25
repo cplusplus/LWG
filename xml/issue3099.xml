@@ -107,6 +107,7 @@ We do not know how to solve this problem, and it's broader than just
 It was suggested to make an incremental improvement to `is_assignable`
 and open a new issue for the broader issue.
 </p>
+<note>2025-10-24; Resolves <a href="https://github.com/cplusplus/nbballot/issues/726">RU-147</a></note>
 </discussion>
 
 <resolution>

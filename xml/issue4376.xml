@@ -59,6 +59,7 @@ Set priority to 1 after reflector poll.
 <p>
 "Should be addressed together with <iref ref="4238"/>."
 </p>
+<note>2025-10-24; Resolves <a href="https://github.com/cplusplus/nbballot/issues/873">DE 298</a></note>
 </discussion>
 
 <resolution>

@@ -27,6 +27,7 @@ Set priority to 2 after reflector poll. Send to LEWG.
 <p>
 "This affects the cancelation behaviour so should also be seen by SG1."
 </p>
+<note>2025-10-24; Resolves <a href="https://github.com/cplusplus/nbballot/issues/938">US 235-363</a></note>
 </discussion>
 
 <resolution>

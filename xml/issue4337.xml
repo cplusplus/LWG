@@ -22,6 +22,7 @@ no requirement for scheduler to be assignable.
 <p>
 "`scheduler` requires `copyable` which requires assignment."
 </p>
+<note>2025-10-24; Resolves <a href="https://github.com/cplusplus/nbballot/issues/958">US 256-383</a></note>
 </discussion>
 
 <resolution>

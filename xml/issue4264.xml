@@ -172,6 +172,7 @@ Set priority to 2 after reflector poll.
 Strong oposition to making it unspecified whether <tt>function_ref</tt> constructed from
 other <tt>function_ref</tt> will reference source object or its target directly.
 </p>
+<note>2025-10-24; Resolves <a href="https://github.com/cplusplus/nbballot/issues/790">RU-220</a></note>
 </discussion>
 
 <resolution>

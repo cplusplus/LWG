@@ -32,6 +32,7 @@ unnecessary scheduling operations for the likely common case when
 <p>
 Set status to Tentatively Ready after five votes in favour during reflector poll.
 </p>
+<note>2025-10-24; Resolves <a href="https://github.com/cplusplus/nbballot/issues/956">US 258-381</a></note>
 </discussion>
 
 <resolution>

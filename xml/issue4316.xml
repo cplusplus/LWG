@@ -40,6 +40,7 @@ While the intent seems clear, this should be rephrased to be more technically co
 <p>
 Set priority to 1 after reflector poll.
 </p>
+<note>2025-10-24; Resolves <a href="https://github.com/cplusplus/nbballot/issues/993">US 114-175</a></note>
 </discussion>
 
 <resolution>

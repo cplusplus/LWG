@@ -62,6 +62,7 @@ be the corresponding data member description represented by
 <note>2025-10-24; LWG telecon. Jonathan updates wording</note>
 <p>Make a minimal change for now, can add support for aliases later.</p>
 
+<note>2025-10-24; Resolves <a href="https://github.com/cplusplus/nbballot/issues/757">US 125-188</a></note>
 </discussion>
 
 <resolution>

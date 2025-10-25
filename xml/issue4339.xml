@@ -48,6 +48,7 @@ Set priority to 2 after reflector poll.
 <p>
 "P/R is incomplete - also needs to update at least `promise_type::uncaught_exception()`."
 </p>
+<note>2025-10-24; Resolves <a href="https://github.com/cplusplus/nbballot/issues/947">US 242-372</a></note>
 </discussion>
 
 <resolution>

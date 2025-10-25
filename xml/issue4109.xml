@@ -85,6 +85,7 @@ unsigned lead to subtle bugs. Most users are better off picking `int` or
 `unsigned int` (which is what they get from integral promotions anyway)
 and just using values that are in range for their intended destination type."
 </p>
+<note>2025-10-24; Resolves <a href="https://github.com/cplusplus/nbballot/issues/847">RU-272</a></note>
 </discussion>
 
 <resolution>
