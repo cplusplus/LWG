@@ -98,7 +98,7 @@ constexpr from_chars_result from_chars(const char* first, const char* last,
 <p/>
 -3- <i>Effects</i>: The pattern is the expected form of the subject sequence in the "C" locale for 
 the given nonzero base, as described for <code class='backtick'>strtol</code>, except that no <ins><code class='backtick'>"0b"</code> or <code class='backtick'>"0B"</code> prefix 
-shall appear if the value is <code class='backtick'>base</code> 2, no</ins> <code class='backtick'>"0x"</code> or <code class='backtick'>"0X"</code> prefix shall appear if the value 
+shall appear if the value of <code class='backtick'>base</code> is 2, no</ins> <code class='backtick'>"0x"</code> or <code class='backtick'>"0X"</code> prefix shall appear if the value 
 of <code class='backtick'>base</code> is 16, and except that <code class='backtick'>'-'</code> is the only sign that may appear, and only if <code class='backtick'>value</code> has 
 a signed type. 
 <p/>
