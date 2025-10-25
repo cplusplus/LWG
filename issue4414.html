@@ -2,8 +2,10 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<title>Issue 4414: &sect;[simd.traits] rebind and resize reference a type member that doesn't exist</title>
-<meta property="og:title" content="Issue 4414: &sect;[simd.traits] rebind and resize reference a type member that doesn't exist">
+<title>Issue 4414: &sect;[simd.expos.abi] deduce-abi-t is underspecified and incorrectly referenced
+from rebind and resize</title>
+<meta property="og:title" content="Issue 4414: &sect;[simd.expos.abi] deduce-abi-t is underspecified and incorrectly referenced
+from rebind and resize">
 <meta property="og:description" content="C++ library issue. Status: New">
 <meta property="og:url" content="https://cplusplus.github.io/LWG/issue4414.html">
 <meta property="og:type" content="website">
@@ -62,23 +64,40 @@
 <body>
 <hr>
 <p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#New">New</a> status.</em></p>
-<h3 id="4414"><a href="lwg-active.html#4414">4414</a>. &sect;[simd.traits] <code class='backtick'>rebind</code> and <code class='backtick'>resize</code> reference a <code class='backtick'>type</code> member that doesn't exist</h3>
-<p><b>Section:</b> 29.10.4 <a href="https://wg21.link/simd.traits">[simd.traits]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Matthias Kretz <b>Opened:</b> 2025-10-15 <b>Last modified:</b> 2025-10-20</p>
+<h3 id="4414"><a href="lwg-active.html#4414">4414</a>. &sect;[simd.expos.abi] <code><i>deduce-abi-t</i></code> is underspecified and incorrectly referenced
+from <code class='backtick'>rebind</code> and <code class='backtick'>resize</code></h3>
+<p><b>Section:</b> 29.10.2.2 <a href="https://wg21.link/simd.expos.abi">[simd.expos.abi]</a>, 29.10.4 <a href="https://wg21.link/simd.traits">[simd.traits]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
+ <b>Submitter:</b> Matthias Kretz <b>Opened:</b> 2025-10-15 <b>Last modified:</b> 2025-10-25</p>
 <p><b>Priority: </b>Not Prioritized
 </p>
-<p><b>View other</b> <a href="lwg-index-open.html#simd.traits">active issues</a> in [simd.traits].</p>
-<p><b>View all other</b> <a href="lwg-index.html#simd.traits">issues</a> in [simd.traits].</p>
 <p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
 <p><b>Discussion:</b></p>
 <p>
-In 29.10.4 <a href="https://wg21.link/simd.traits">[simd.traits]</a> <code class='backtick'>rebind</code> and <code class='backtick'>resize</code> say "<code><i>deduce-abi-t</i>&lt;T, V::size()&gt;</code> 
-has a member type <code class='backtick'>type</code>". But <code><i>deduce-abi-t</i></code> is specified in 
-29.10.2.2 <a href="https://wg21.link/simd.expos.abi">[simd.expos.abi]</a> p4-5 as an alias that is either defined or not.
+In 29.10.2.2 <a href="https://wg21.link/simd.expos.abi">[simd.expos.abi]</a>, <code><i>deduce-abi-t</i></code> is specified to be defined for some
+arguments. For all remaining arguments, nothing is specified. This could be interpreted to make 
+such specializations ill-formed. But that does not match the intent of making
 </p>
+<blockquote><pre>
+simd::vec&lt;std::string&gt;
+</pre></blockquote>
+<p>
+and
+</p>
+<blockquote><pre>
+simd::vec&lt;int, INT_MAX&gt;
+</pre></blockquote>
+<p>
+disabled specializations of <code class='backtick'>basic_vec</code>. (If <code class='backtick'>INT_MAX</code> is not supported by the
+implementation.)
+<p/>
+The wording needs to clarify what happens in those cases.
+<p/>
+In 29.10.4 <a href="https://wg21.link/simd.traits">[simd.traits]</a>, <code class='backtick'>rebind</code> and <code class='backtick'>resize</code> say "<code><i>deduce-abi-t</i>&lt;T, V::size()&gt;</code> 
+has a member type <code class='backtick'>type</code>". But that's not how <code><i>deduce-abi-t</i></code> is specified.
+</p>
+<p><strong>Previous resolution [SUPERSEDED]:</strong></p>
+<blockquote class="note">
 
-
-<p id="res-4414"><b>Proposed resolution:</b></p>
 <p>
 This wording is relative to <a href="https://wg21.link/N5014">N5014</a>.
 </p>
@@ -124,6 +143,120 @@ template&lt;<i>simd-size-type</i> N, class V&gt; struct resize { using type = <i
 <li><p>
 (8.2) &mdash; <code><i>deduce-abi-t</i>&lt;T, N&gt;</code> <del>has a member type <code class='backtick'>type</code></del>
 <ins>is defined</ins>.
+</p></li>
+</ol>
+</blockquote>
+</blockquote>
+</li>
+</ol>
+</blockquote>
+
+<p><i>[2025-10-21; Matthias Kretz improves discussion and proposed wording]</i></p>
+
+
+
+<p id="res-4414"><b>Proposed resolution:</b></p>
+<p>
+This wording is relative to <a href="https://wg21.link/N5014">N5014</a>.
+</p>
+
+<ol>
+<li><p>Modify 29.10.2.2 <a href="https://wg21.link/simd.expos.abi">[simd.expos.abi]</a> as indicated:</p>
+
+<blockquote>
+<pre>
+template&lt;class T&gt; using <i>native-abi</i> = <i>see below</i>;
+template&lt;class T, <i>simd-size-type</i> N&gt; using <i>deduce-abi-t</i> = <i>see below</i>;
+</pre>
+<blockquote>
+<p>
+-1- An <i>ABI tag</i> is a type that indicates a choice of size and binary representation for objects of data-parallel
+type.
+<p/>
+[&hellip;]
+<p/>
+-3- An implementation defines ABI tag types as necessary for the following aliases.
+<p/>
+-4- <code><i>deduce-abi-t</i>&lt;T, N&gt;</code> <del>is defined</del><ins>names an ABI tag type if and
+only</ins> if
+</p>
+<ol style="list-style-type: none">
+<li><p>
+(4.1) &mdash; <code class='backtick'>T</code> is a vectorizable type,
+</p></li>
+<li><p>
+(4.2) &mdash; <code class='backtick'>N</code> is greater than zero, and
+</p></li>
+<li><p>
+(4.3) &mdash; <code class='backtick'>N</code> is not larger than an implementation-defined maximum.
+</p></li>
+</ol>
+<p>
+<ins>Otherwise, <code><i>deduce-abi-t</i>&lt;T, N&gt;</code> names an unspecified type.</ins>
+<p/>
+The implementation-defined maximum for <code class='backtick'>N</code> is not smaller than 64 and can differ depending on <code class='backtick'>T</code>.
+[&hellip;]
+<p/>
+-5- <del>Where present,</del><ins>If</ins> <code><i>deduce-abi-t</i>&lt;T, N&gt;</code> names an ABI 
+tag type <del>such that</del><ins>, the following is <code class='backtick'>true</code>:</ins>
+</p>
+<ol style="list-style-type: none">
+<li><p>
+(5.1) &mdash; <code><i>simd-size-v</i>&lt;T, <i>deduce-abi-t</i>&lt;T, N&gt;&gt;</code> equals <code class='backtick'>N</code>,
+</p></li>
+<li><p>
+(5.2) &mdash; <code>basic_vec&lt;T, <i>deduce-abi-t</i>&lt;T, N&gt;&gt;</code> is enabled 
+(29.10.7.1 <a href="https://wg21.link/simd.overview">[simd.overview]</a>), and
+</p></li>
+<li><p>
+(5.3) &mdash; <code>basic_mask&lt;sizeof(T), <i>deduce-abi-t</i>&lt;<i>integer-from</i>&lt;sizeof(T)&gt;, N&gt;&gt;</code> 
+is enabled.
+</p></li>
+</ol>
+</blockquote>
+</blockquote>
+</li>
+
+<li><p>Modify 29.10.4 <a href="https://wg21.link/simd.traits">[simd.traits]</a> as indicated:</p>
+
+<blockquote>
+<pre>
+template&lt;class T, class V&gt; struct rebind { using type = <i>see below</i>; };
+</pre>
+<blockquote>
+<p>
+-4- The member <code class='backtick'>type</code> is present if and only if
+</p>
+<ol style="list-style-type: none">
+<li><p>
+(4.1) &mdash; <code class='backtick'>V</code> is a data-parallel type,
+</p></li>
+<li><p>
+(4.2) &mdash; <code class='backtick'>T</code> is a vectorizable type, and
+</p></li>
+<li><p>
+(4.3) &mdash; <code><i>deduce-abi-t</i>&lt;T, V::size()&gt;</code> <del>has a member type <code class='backtick'>type</code></del>
+<ins>names an ABI tag type</ins>.
+</p></li>
+</ol>
+[&hellip;]
+</blockquote>
+<pre>
+template&lt;<i>simd-size-type</i> N, class V&gt; struct resize { using type = <i>see below</i>; };
+</pre>
+<blockquote>
+<p>
+-7- Let <code class='backtick'>T</code> denote [&hellip;]
+<p/>
+-8- The member <code class='backtick'>type</code> is present if and only if
+</p>
+<ol style="list-style-type: none">
+<li><p>
+(8.1) &mdash; <code class='backtick'>V</code> is a data-parallel type, and
+</p></li>
+<li><p>
+(8.2) &mdash; <code><i>deduce-abi-t</i>&lt;T, N&gt;</code> <del>has a member type <code class='backtick'>type</code></del>
+<ins>names an ABI tag type</ins>.
 </p></li>
 </ol>
 </blockquote>
