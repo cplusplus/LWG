@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Issue 4431: Parallel std::ranges::destroy should allow exceptions</title>
+<meta property="og:title" content="Issue 4431: Parallel std::ranges::destroy should allow exceptions">
+<meta property="og:description" content="C++ library issue. Status: New">
+<meta property="og:url" content="https://cplusplus.github.io/LWG/issue4431.html">
+<meta property="og:type" content="website">
+<meta property="og:image" content="http://cplusplus.github.io/LWG/images/cpp_logo.png">
+<meta property="og:image:alt" content="C++ logo">
+<style>
+  p {text-align:justify}
+  li {text-align:justify}
+  pre code.backtick::before { content: "`" }
+  pre code.backtick::after { content: "`" }
+  blockquote.note
+  {
+    background-color:#E0E0E0;
+    padding-left: 15px;
+    padding-right: 15px;
+    padding-top: 1px;
+    padding-bottom: 1px;
+  }
+  ins {background-color:#A0FFA0}
+  del {background-color:#FFA0A0}
+  table.issues-index { border: 1px solid; border-collapse: collapse; }
+  table.issues-index th { text-align: center; padding: 4px; border: 1px solid; }
+  table.issues-index td { padding: 4px; border: 1px solid; }
+  table.issues-index td:nth-child(1) { text-align: right; }
+  table.issues-index td:nth-child(2) { text-align: left; }
+  table.issues-index td:nth-child(3) { text-align: left; }
+  table.issues-index td:nth-child(4) { text-align: left; }
+  table.issues-index td:nth-child(5) { text-align: center; }
+  table.issues-index td:nth-child(6) { text-align: center; }
+  table.issues-index td:nth-child(7) { text-align: left; }
+  table.issues-index td:nth-child(5) span.no-pr { color: red; }
+  @media (prefers-color-scheme: dark) {
+     html {
+        color: #ddd;
+        background-color: black;
+     }
+     ins {
+        background-color: #225522
+     }
+     del {
+        background-color: #662222
+     }
+     a {
+        color: #6af
+     }
+     a:visited {
+        color: #6af
+     }
+     blockquote.note
+     {
+        background-color: rgba(255, 255, 255, .10)
+     }
+  }
+</style>
+</head>
+<body>
+<hr>
+<p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#New">New</a> status.</em></p>
+<h3 id="4431"><a href="lwg-active.html#4431">4431</a>. Parallel <code class='backtick'>std::ranges::destroy</code> should allow exceptions</h3>
+<p><b>Section:</b> 20.2.2 <a href="https://wg21.link/memory.syn">[memory.syn]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
+ <b>Submitter:</b> Ruslan Arutyunyan <b>Opened:</b> 2025-10-24 <b>Last modified:</b> 2025-10-25</p>
+<p><b>Priority: </b>Not Prioritized
+</p>
+<p><b>View all other</b> <a href="lwg-index.html#memory.syn">issues</a> in [memory.syn].</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
+<p><b>Discussion:</b></p>
+<p>
+The serial <code class='backtick'>std::ranges::destroy</code> algorithm is marked as <code class='backtick'>noexcept</code>. However, the parallel 
+counterpart should not be marked <code class='backtick'>noexcept</code>.
+<p/>
+While we generally don't expect any exceptions from the <code class='backtick'>destroy</code> algorithm when called 
+with the standard execution policies (<code class='backtick'>seq</code>, <code class='backtick'>unseq</code>, <code class='backtick'>par</code>, <code class='backtick'>par_unseq</code>), the 
+implementation-defined policies for parallel algorithms are allowed by the C++ standard, 
+and it is up to the particular execution policy to decide which exceptions can be thrown 
+from parallel algorithms.
+</p>
+
+
+<p id="res-4431"><b>Proposed resolution:</b></p>
+<p>
+This wording is relative to <a href="https://wg21.link/N5014">N5014</a>.
+</p>
+
+<ol>
+
+<li><p>Modify 20.2.2 <a href="https://wg21.link/memory.syn">[memory.syn]</a>, header <code>&lt;memory&gt;</code> synopsis, as indicated:</p>
+
+<blockquote class="note">
+<p>
+[<i>Drafting note</i>: There are no further prototype definitions for the affected
+<code><i>execution-policy</i></code> overloads in 26.11.9 <a href="https://wg21.link/specialized.destroy">[specialized.destroy]</a>.]
+</p>
+</blockquote>
+
+<blockquote>
+<pre>
+[&hellip;]
+<i>// 26.11.9, 26.11.9 <a href="https://wg21.link/specialized.destroy">[specialized.destroy]</a></i>
+template&lt;class T&gt;
+  constexpr void destroy_at(T* location);                                  <i>// freestanding</i>
+template&lt;class NoThrowForwardIterator&gt;
+  constexpr void destroy(NoThrowForwardIterator first,                     <i>// freestanding</i>
+                         NoThrowForwardIterator last);
+template&lt;class ExecutionPolicy, class NoThrowForwardIterator&gt;
+  void destroy(ExecutionPolicy&amp;&amp; exec,                                     <i>// freestanding-deleted,</i>
+               NoThrowForwardIterator first,                               <i>// see 26.3.5 <a href="https://wg21.link/algorithms.parallel.overloads">[algorithms.parallel.overloads]</a></i>
+               NoThrowForwardIterator last);
+template&lt;class NoThrowForwardIterator, class Size&gt;
+  constexpr NoThrowForwardIterator destroy_n(NoThrowForwardIterator first, <i>// freestanding</i>
+                                             Size n);
+template&lt;class ExecutionPolicy, class NoThrowForwardIterator, class Size&gt;
+  NoThrowForwardIterator destroy_n(ExecutionPolicy&amp;&amp; exec,                 <i>// freestanding-deleted,</i>
+                                   NoThrowForwardIterator first, Size n);  <i>// see 26.3.5 <a href="https://wg21.link/algorithms.parallel.overloads">[algorithms.parallel.overloads]</a></i>
+namespace ranges {
+  template&lt;destructible T&gt;
+    constexpr void destroy_at(T* location) noexcept;                       <i>// freestanding</i>
+    
+  template&lt;<i>nothrow-input-iterator</i> I, <i>nothrow-sentinel-for</i> &lt;I&gt; S&gt;
+    requires destructible&lt;iter_value_t&lt;I&gt;&gt;
+      constexpr I destroy(I first, S last) noexcept;                       <i>// freestanding</i>     
+  template&lt;<i>nothrow-input-range</i> R&gt;
+    requires destructible&lt;range_value_t&lt;R&gt;&gt;
+      constexpr borrowed_iterator_t&lt;R&gt; destroy(R&amp;&amp; r) noexcept;            <i>// freestanding</i>
+      
+  template&lt;<i>nothrow-input-iterator</i> I&gt;
+    requires destructible&lt;iter_value_t&lt;I&gt;&gt;
+    constexpr I destroy_n(I first, iter_difference_t&lt;I&gt; n) noexcept;       <i>// freestanding</i>
+    
+  template&lt;<i>execution-policy</i> Ep, <i>nothrow-random-access-iterator</i> I,
+           <i>nothrow-sized-sentinel-for</i> &lt;I&gt; S&gt;
+    requires destructible&lt;iter_value_t&lt;I&gt;&gt;
+      I destroy(Ep&amp;&amp; exec, I first, S last) <del>noexcept</del>;                       <i>// freestanding-deleted,</i>
+                                                                            <i>// see 26.3.5 <a href="https://wg21.link/algorithms.parallel.overloads">[algorithms.parallel.overloads]</a></i>
+  template&lt;<i>execution-policy</i> Ep, <i>nothrow-sized-random-access-range</i> R&gt;
+    requires destructible&lt;range_value_t&lt;R&gt;&gt;
+      borrowed_iterator_t&lt;R&gt; destroy(Ep&amp;&amp; exec, R&amp;&amp; r) <del>noexcept</del>;            <i>// freestanding-deleted,</i>
+                                                                            <i>// see 26.3.5 <a href="https://wg21.link/algorithms.parallel.overloads">[algorithms.parallel.overloads]</a></i>
+  template&lt;<i>execution-policy</i> Ep, <i>nothrow-random-access-iterator</i> I&gt;
+    requires destructible&lt;iter_value_t&lt;I&gt;&gt;
+      I destroy_n(Ep&amp;&amp; exec, I first, iter_difference_t&lt;I&gt; n) <del>noexcept</del>;     <i>// freestanding-deleted,</i>
+                                                                            <i>// see 26.3.5 <a href="https://wg21.link/algorithms.parallel.overloads">[algorithms.parallel.overloads]</a></i>
+}
+[&hellip;]
+</pre>
+</blockquote>
+</li>
+
+</ol>
+
+
+
+
+
+
+</body>
+</html>
