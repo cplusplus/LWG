@@ -77,6 +77,10 @@
 Language linkage is a property of functions, variables, and function types (6.7 <a href="https://wg21.link/basic.link">[basic.link]</a>),
 not of names.
 </p>
+<p><i>[
+The wording below contains a drive-by fix for a misapplication of <a href="https://wg21.link/P2996R13" title=" Reflection for C++26">P2996R13</a>
+]</i></p>
+
 
 
 <p id="res-4433"><b>Proposed resolution:</b></p>
@@ -97,7 +101,7 @@ consteval bool has_linkage(info r);
 </pre>
 <blockquote>
 <p>-25- <i>Returns</i>: <code class='backtick'>true</code> if <code class='backtick'>r</code> represents a variable, function, type, template, or namespace
-whose name has internal linkage, module linkage, <del>C language linkage, </del>or any linkage,
+whose name has internal linkage, module linkage, <del>C language</del><ins>external</ins> linkage, or any linkage,
 respectively (6.7 <a href="https://wg21.link/basic.link">[basic.link]</a>). Otherwise, <code class='backtick'>false</code>.</p>
 </blockquote>
 
@@ -106,7 +110,7 @@ respectively (6.7 <a href="https://wg21.link/basic.link">[basic.link]</a>). Othe
 </pre>
 <blockquote>
 <p><ins>-??- <i>Returns</i>: <code class='backtick'>true</code> if <code class='backtick'>r</code> represents a variable, function, or function type with C language
-linkage, module linkage. Otherwise, <code class='backtick'>false</code>.</ins></p>
+linkage. Otherwise, <code class='backtick'>false</code>.</ins></p>
 </blockquote>
 
 </li>

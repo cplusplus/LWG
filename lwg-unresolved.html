@@ -54,7 +54,7 @@
 </style>
 </head>
 <body>
-<p>Revised 2025-10-27 at 10:13:47 UTC
+<p>Revised 2025-10-27 at 13:06:59 UTC
 </p><h2>Unresolved Issues</h2>
 <hr>
 <h3 id="423"><a href="#423">423</a><sup><a href="https://cplusplus.github.io/LWG/issue423">(i)</a></sup>. Effects of negative <code>streamsize</code> in iostreams</h3>
@@ -81962,11 +81962,11 @@ template&lt;ranges::input_range R&gt;
   <code>T</code> is a structural type (13.2 <a href="https://wg21.link/temp.param">[temp.param]</a>),
   <code>is_constructible_v&lt;T, ranges::range_reference_t&lt;R&gt;&gt;</code> is <code>true</code>, and
   <del><code>is_copy_constructible_v&lt;T&gt;</code> is <code>true</code></del>
-  <ins><code>T</code> statisfies <code>copy_constructible</code></ins>.</p>
+  <ins><code>T</code> satisfies <code>copy_constructible</code></ins>.</p>
 <p>-10- Let <code>V</code> be the pack of values of type info of the same size as <code>r</code>,
 where the <i>i<sup>th</sup></i> element is
 <code>reflect_constant(<del><i>e<sub>i</sub></i></del><ins>static_cast&lt;T&gt;(*<i>it<sub>i</sub></i>)</ins>)</code>,
-where <i><del>e<sub>i</sub></del><ins>it<sub>i</sub></ins></i> is <ins>an iterator to</ins> the ith element of <code>r</code>.
+where <i><del>e<sub>i</sub></del><ins>it<sub>i</sub></ins></i> is <ins>an iterator to</ins> the <i>i<sup>th</sup></i> element of <code>r</code>.
 </p>
 <p>[&hellip;]</p>
 </blockquote>
@@ -81994,6 +81994,10 @@ where <i><del>e<sub>i</sub></del><ins>it<sub>i</sub></ins></i> is <ins>an iterat
 Language linkage is a property of functions, variables, and function types (6.7 <a href="https://wg21.link/basic.link">[basic.link]</a>),
 not of names.
 </p>
+<p><i>[
+The wording below contains a drive-by fix for a misapplication of <a href="https://wg21.link/P2996R13" title=" Reflection for C++26">P2996R13</a>
+]</i></p>
+
 
 
 <p id="res-4433"><b>Proposed resolution:</b></p>
@@ -82014,7 +82018,7 @@ consteval bool has_linkage(info r);
 </pre>
 <blockquote>
 <p>-25- <i>Returns</i>: <code class='backtick'>true</code> if <code class='backtick'>r</code> represents a variable, function, type, template, or namespace
-whose name has internal linkage, module linkage, <del>C language linkage, </del>or any linkage,
+whose name has internal linkage, module linkage, <del>C language</del><ins>external</ins> linkage, or any linkage,
 respectively (6.7 <a href="https://wg21.link/basic.link">[basic.link]</a>). Otherwise, <code class='backtick'>false</code>.</p>
 </blockquote>
 
@@ -82023,7 +82027,7 @@ respectively (6.7 <a href="https://wg21.link/basic.link">[basic.link]</a>). Othe
 </pre>
 <blockquote>
 <p><ins>-??- <i>Returns</i>: <code class='backtick'>true</code> if <code class='backtick'>r</code> represents a variable, function, or function type with C language
-linkage, module linkage. Otherwise, <code class='backtick'>false</code>.</ins></p>
+linkage. Otherwise, <code class='backtick'>false</code>.</ins></p>
 </blockquote>
 
 </li>

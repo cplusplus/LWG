@@ -101,11 +101,11 @@ template&lt;ranges::input_range R&gt;
   <code>T</code> is a structural type (13.2 <a href="https://wg21.link/temp.param">[temp.param]</a>),
   <code>is_constructible_v&lt;T, ranges::range_reference_t&lt;R&gt;&gt;</code> is <code>true</code>, and
   <del><code>is_copy_constructible_v&lt;T&gt;</code> is <code>true</code></del>
-  <ins><code>T</code> statisfies <code>copy_constructible</code></ins>.</p>
+  <ins><code>T</code> satisfies <code>copy_constructible</code></ins>.</p>
 <p>-10- Let <code>V</code> be the pack of values of type info of the same size as <code>r</code>,
 where the <i>i<sup>th</sup></i> element is
 <code>reflect_constant(<del><i>e<sub>i</sub></i></del><ins>static_cast&lt;T&gt;(*<i>it<sub>i</sub></i>)</ins>)</code>,
-where <i><del>e<sub>i</sub></del><ins>it<sub>i</sub></ins></i> is <ins>an iterator to</ins> the ith element of <code>r</code>.
+where <i><del>e<sub>i</sub></del><ins>it<sub>i</sub></ins></i> is <ins>an iterator to</ins> the <i>i<sup>th</sup></i> element of <code>r</code>.
 </p>
 <p>[&hellip;]</p>
 </blockquote>
