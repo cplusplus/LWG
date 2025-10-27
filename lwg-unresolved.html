@@ -54,7 +54,7 @@
 </style>
 </head>
 <body>
-<p>Revised 2025-10-25 at 17:27:51 UTC
+<p>Revised 2025-10-27 at 09:59:19 UTC
 </p><h2>Unresolved Issues</h2>
 <hr>
 <h3 id="423"><a href="#423">423</a><sup><a href="https://cplusplus.github.io/LWG/issue423">(i)</a></sup>. Effects of negative <code>streamsize</code> in iostreams</h3>
@@ -22651,7 +22651,7 @@ path("..").filename();           <i>// yields</i> ".."
 <hr>
 <h3 id="3099"><a href="#3099">3099</a><sup><a href="https://cplusplus.github.io/LWG/issue3099">(i)</a></sup>. <code>is_assignable&lt;Incomplete&amp;, Incomplete&amp;&gt;</code></h3>
 <p><b>Section:</b> 21.3.3 <a href="https://wg21.link/meta.type.synop">[meta.type.synop]</a> <b>Status:</b> <a href="lwg-active.html#Open">Open</a>
- <b>Submitter:</b> Casey Carter <b>Opened:</b> 2018-04-10 <b>Last modified:</b> 2024-08-21</p>
+ <b>Submitter:</b> Casey Carter <b>Opened:</b> 2018-04-10 <b>Last modified:</b> 2025-10-27</p>
 <p><b>Priority: </b>2
 </p>
 <p><b>View other</b> <a href="lwg-index-open.html#meta.type.synop">active issues</a> in [meta.type.synop].</p>
@@ -22762,6 +22762,8 @@ We do not know how to solve this problem, and it's broader than just
 It was suggested to make an incremental improvement to <code class='backtick'>is_assignable</code>
 and open a new issue for the broader issue.
 </p>
+<p><i>[2025-10-24; Resolves <a href="https://github.com/cplusplus/nbballot/issues/726">RU-147</a>]</i></p>
+
 
 
 <p id="res-3099"><b>Proposed resolution:</b></p>
@@ -37036,7 +37038,7 @@ are written directly to the output sequence without calling <code>xsputn</code>.
 <hr>
 <h3 id="3662"><a href="#3662">3662</a><sup><a href="https://cplusplus.github.io/LWG/issue3662">(i)</a></sup>. <code>basic_string::append/assign(NTBS, pos, n)</code> suboptimal</h3>
 <p><b>Section:</b> 27.4.3.7.2 <a href="https://wg21.link/string.append">[string.append]</a>, 27.4.3.7.3 <a href="https://wg21.link/string.assign">[string.assign]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Jonathan Wakely <b>Opened:</b> 2022-01-21 <b>Last modified:</b> 2022-01-30</p>
+ <b>Submitter:</b> Jonathan Wakely <b>Opened:</b> 2022-01-21 <b>Last modified:</b> 2025-10-27</p>
 <p><b>Priority: </b>3
 </p>
 <p><b>View all other</b> <a href="lwg-index.html#string.append">issues</a> in [string.append].</p>
@@ -37089,6 +37091,7 @@ The same problem applies to <code>assign("...", pos, n)</code>.
 <p>
 Set priority to 3 after reflector poll.
 </p>
+<p><i>[2025-10-24; Resolves <a href="https://github.com/cplusplus/nbballot/issues/843">RU-268</a>]</i></p>
 
 
 
@@ -58937,7 +58940,7 @@ namespace std::ranges {
 <hr>
 <h3 id="4109"><a href="#4109">4109</a><sup><a href="https://cplusplus.github.io/LWG/issue4109">(i)</a></sup>. Instantiating templates in &sect;[rand] with <code>int8_t</code>/<code>uint8_t</code> is undefined behavior</h3>
 <p><b>Section:</b> 29.5.3.1 <a href="https://wg21.link/rand.req.genl">[rand.req.genl]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Peter Dimov <b>Opened:</b> 2024-05-25 <b>Last modified:</b> 2025-10-21</p>
+ <b>Submitter:</b> Peter Dimov <b>Opened:</b> 2024-05-25 <b>Last modified:</b> 2025-10-27</p>
 <p><b>Priority: </b>3
 </p>
 <p><b>View all other</b> <a href="lwg-index.html#rand.req.genl">issues</a> in [rand.req.genl].</p>
@@ -59021,6 +59024,8 @@ unsigned lead to subtle bugs. Most users are better off picking <code class='bac
 <code class='backtick'>unsigned int</code> (which is what they get from integral promotions anyway)
 and just using values that are in range for their intended destination type."
 </p>
+<p><i>[2025-10-24; Resolves <a href="https://github.com/cplusplus/nbballot/issues/847">RU-272</a>]</i></p>
+
 
 
 <p id="res-4109"><b>Proposed resolution:</b></p>
@@ -67379,7 +67384,7 @@ Set priority to 3 after reflector poll.
 <hr>
 <h3 id="4238"><a href="#4238">4238</a><sup><a href="https://cplusplus.github.io/LWG/issue4238">(i)</a></sup>. <code>simd_mask&lt;complex&lt;double&gt;&gt;::operator+/-/~</code> return a disabled <code class='backtick'>simd</code> specialization</h3>
 <p><b>Section:</b> 29.10.9.4 <a href="https://wg21.link/simd.mask.unary">[simd.mask.unary]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Matthias Kretz <b>Opened:</b> 2025-03-27 <b>Last modified:</b> 2025-10-17</p>
+ <b>Submitter:</b> Matthias Kretz <b>Opened:</b> 2025-03-27 <b>Last modified:</b> 2025-10-27</p>
 <p><b>Priority: </b>1
 </p>
 <p><b>View other</b> <a href="lwg-index-open.html#simd.mask.unary">active issues</a> in [simd.mask.unary].</p>
@@ -67430,6 +67435,8 @@ Set priority to 1 after reflector poll.
 
 
 <p><i>[2025-10-17; related to <a href="lwg-active.html#4376" title="ABI tag in return type of [simd.mask.unary] is overconstrained (Status: New)">4376</a><sup><a href="https://cplusplus.github.io/LWG/issue4376" title="Latest snapshot">(i)</a></sup>.]</i></p>
+
+<p><i>[2025-10-24; Resolves <a href="https://github.com/cplusplus/nbballot/issues/872">DE 297</a>]</i></p>
 
 
 
@@ -68989,7 +68996,7 @@ Victor thinks it should be an exception.
 <hr>
 <h3 id="4264"><a href="#4264">4264</a><sup><a href="https://cplusplus.github.io/LWG/issue4264">(i)</a></sup>. Skipping indirection is not allowed for <code>function_ref</code></h3>
 <p><b>Section:</b> 22.10.17.1 <a href="https://wg21.link/func.wrap.general">[func.wrap.general]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Tomasz Kami&nacute;ski <b>Opened:</b> 2025-05-15 <b>Last modified:</b> 2025-10-21</p>
+ <b>Submitter:</b> Tomasz Kami&nacute;ski <b>Opened:</b> 2025-05-15 <b>Last modified:</b> 2025-10-27</p>
 <p><b>Priority: </b>2
 </p>
 <p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
@@ -69161,6 +69168,8 @@ Set priority to 2 after reflector poll.
 Strong oposition to making it unspecified whether <code>function_ref</code> constructed from
 other <code>function_ref</code> will reference source object or its target directly.
 </p>
+<p><i>[2025-10-24; Resolves <a href="https://github.com/cplusplus/nbballot/issues/790">RU-220</a>]</i></p>
+
 
 
 <p id="res-4264"><b>Proposed resolution:</b></p>
@@ -72125,7 +72134,7 @@ member function of function type <code class='backtick'>F</code> or <code class=
 <hr>
 <h3 id="4302"><a href="#4302">4302</a><sup><a href="https://cplusplus.github.io/LWG/issue4302">(i)</a></sup>. Problematic <code class='backtick'>vector_sum_of_squares</code> wording</h3>
 <p><b>Section:</b> 29.9.13.8 <a href="https://wg21.link/linalg.algs.blas1.ssq">[linalg.algs.blas1.ssq]</a> <b>Status:</b> <a href="lwg-active.html#LEWG">LEWG</a>
- <b>Submitter:</b> Mark Hoemmen <b>Opened:</b> 2025-07-23 <b>Last modified:</b> 2025-10-17</p>
+ <b>Submitter:</b> Mark Hoemmen <b>Opened:</b> 2025-07-23 <b>Last modified:</b> 2025-10-27</p>
 <p><b>Priority: </b>1
 </p>
 <p><b>View all issues with</b> <a href="lwg-status.html#LEWG">LEWG</a> status.</p>
@@ -72193,6 +72202,7 @@ This is the subject of NB comment 169-276.
 LWG took a poll in the 2025-10-10 telecon and recommends that LEWG confirms
 this resolution.
 </p>
+<p><i>[2025-10-24; Resolves <a href="https://github.com/cplusplus/nbballot/issues/851">US 169-276</a>]</i></p>
 
 
 
@@ -73815,7 +73825,7 @@ constexpr mapping(const extents_type&amp; ext, OtherIndexType pad<ins>ding</ins>
 <hr>
 <h3 id="4316"><a href="#4316">4316</a><sup><a href="https://cplusplus.github.io/LWG/issue4316">(i)</a></sup>. <code>{can_}substitute</code> specification is ill-formed</h3>
 <p><b>Section:</b> 21.4.13 <a href="https://wg21.link/meta.reflection.substitute">[meta.reflection.substitute]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Matthias Wippich <b>Opened:</b> 2025-08-15 <b>Last modified:</b> 2025-10-22</p>
+ <b>Submitter:</b> Matthias Wippich <b>Opened:</b> 2025-08-15 <b>Last modified:</b> 2025-10-27</p>
 <p><b>Priority: </b>1
 </p>
 <p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
@@ -73850,6 +73860,8 @@ While the intent seems clear, this should be rephrased to be more technically co
 <p>
 Set priority to 1 after reflector poll.
 </p>
+<p><i>[2025-10-24; Resolves <a href="https://github.com/cplusplus/nbballot/issues/993">US 114-175</a>]</i></p>
+
 
 
 <p id="res-4316"><b>Proposed resolution:</b></p>
@@ -75192,7 +75204,7 @@ the first will execute sequentially and the second will execute in parallel."
 <hr>
 <h3 id="4329"><a href="#4329">4329</a><sup><a href="https://cplusplus.github.io/LWG/issue4329">(i)</a></sup>. Customising affine_on for other algorithms</h3>
 <p><b>Section:</b> 33.13.3 <a href="https://wg21.link/exec.affine.on">[exec.affine.on]</a> <b>Status:</b> <a href="lwg-active.html#LEWG">LEWG</a>
- <b>Submitter:</b> Dietmar Kühl <b>Opened:</b> 2025-08-31 <b>Last modified:</b> 2025-10-23</p>
+ <b>Submitter:</b> Dietmar Kühl <b>Opened:</b> 2025-08-31 <b>Last modified:</b> 2025-10-27</p>
 <p><b>Priority: </b>3
 </p>
 <p><b>View other</b> <a href="lwg-index-open.html#exec.affine.on">active issues</a> in [exec.affine.on].</p>
@@ -75214,6 +75226,8 @@ Set priority to 3 after reflector poll. Send to LEWG.
 <p>
 "Becomes moot if we remove customization entirely."
 </p>
+<p><i>[2025-10-24; Resolves <a href="https://github.com/cplusplus/nbballot/issues/941">US 232-366</a>]</i></p>
+
 
 
 <p id="res-4329"><b>Proposed resolution:</b></p>
@@ -75227,7 +75241,7 @@ Set priority to 3 after reflector poll. Send to LEWG.
 <hr>
 <h3 id="4330"><a href="#4330">4330</a><sup><a href="https://cplusplus.github.io/LWG/issue4330">(i)</a></sup>. <code>affine_on</code> semantics</h3>
 <p><b>Section:</b> 33.13.3 <a href="https://wg21.link/exec.affine.on">[exec.affine.on]</a> <b>Status:</b> <a href="lwg-active.html#LEWG">LEWG</a>
- <b>Submitter:</b> Dietmar Kühl <b>Opened:</b> 2025-08-31 <b>Last modified:</b> 2025-10-23</p>
+ <b>Submitter:</b> Dietmar Kühl <b>Opened:</b> 2025-08-31 <b>Last modified:</b> 2025-10-27</p>
 <p><b>Priority: </b>2
 </p>
 <p><b>View other</b> <a href="lwg-index-open.html#exec.affine.on">active issues</a> in [exec.affine.on].</p>
@@ -75257,6 +75271,8 @@ context that is different from the one specified by the scheduler.
 <p>
 Set priority to 2 after reflector poll. Send to LEWG.
 </p>
+<p><i>[2025-10-24; Resolves <a href="https://github.com/cplusplus/nbballot/issues/940">US 233-365</a>]</i></p>
+
 
 
 <p id="res-4330"><b>Proposed resolution:</b></p>
@@ -75270,7 +75286,7 @@ Set priority to 2 after reflector poll. Send to LEWG.
 <hr>
 <h3 id="4331"><a href="#4331">4331</a><sup><a href="https://cplusplus.github.io/LWG/issue4331">(i)</a></sup>. <code>affine_on</code> shape may be wrong</h3>
 <p><b>Section:</b> 33.13.3 <a href="https://wg21.link/exec.affine.on">[exec.affine.on]</a> <b>Status:</b> <a href="lwg-active.html#LEWG">LEWG</a>
- <b>Submitter:</b> Dietmar Kühl <b>Opened:</b> 2025-08-31 <b>Last modified:</b> 2025-10-17</p>
+ <b>Submitter:</b> Dietmar Kühl <b>Opened:</b> 2025-08-31 <b>Last modified:</b> 2025-10-27</p>
 <p><b>Priority: </b>2
 </p>
 <p><b>View other</b> <a href="lwg-index-open.html#exec.affine.on">active issues</a> in [exec.affine.on].</p>
@@ -75292,6 +75308,8 @@ argument.
 <p>
 Set priority to 2 after reflector poll. Send to LEWG.
 </p>
+<p><i>[2025-10-24; Resolves <a href="https://github.com/cplusplus/nbballot/issues/939">US 234-364</a>]</i></p>
+
 
 
 <p id="res-4331"><b>Proposed resolution:</b></p>
@@ -75305,7 +75323,7 @@ Set priority to 2 after reflector poll. Send to LEWG.
 <hr>
 <h3 id="4332"><a href="#4332">4332</a><sup><a href="https://cplusplus.github.io/LWG/issue4332">(i)</a></sup>. <code>affine_on</code> shouldn't forward the stop token to the scheduling operation</h3>
 <p><b>Section:</b> 33.13.3 <a href="https://wg21.link/exec.affine.on">[exec.affine.on]</a> <b>Status:</b> <a href="lwg-active.html#LEWG">LEWG</a>
- <b>Submitter:</b> Dietmar Kühl <b>Opened:</b> 2025-08-31 <b>Last modified:</b> 2025-10-23</p>
+ <b>Submitter:</b> Dietmar Kühl <b>Opened:</b> 2025-08-31 <b>Last modified:</b> 2025-10-27</p>
 <p><b>Priority: </b>2
 </p>
 <p><b>View other</b> <a href="lwg-index-open.html#exec.affine.on">active issues</a> in [exec.affine.on].</p>
@@ -75331,6 +75349,8 @@ Set priority to 2 after reflector poll. Send to LEWG.
 <p>
 "This affects the cancelation behaviour so should also be seen by SG1."
 </p>
+<p><i>[2025-10-24; Resolves <a href="https://github.com/cplusplus/nbballot/issues/938">US 235-363</a>]</i></p>
+
 
 
 <p id="res-4332"><b>Proposed resolution:</b></p>
@@ -75437,7 +75457,7 @@ Set priority to 2 after reflector poll.
 <hr>
 <h3 id="4335"><a href="#4335">4335</a><sup><a href="https://cplusplus.github.io/LWG/issue4335">(i)</a></sup>. <code>task</code> shadows the environment's allocator</h3>
 <p><b>Section:</b> 33.13.6.5 <a href="https://wg21.link/task.promise">[task.promise]</a> <b>Status:</b> <a href="lwg-active.html#LEWG">LEWG</a>
- <b>Submitter:</b> Dietmar Kühl <b>Opened:</b> 2025-08-31 <b>Last modified:</b> 2025-10-17</p>
+ <b>Submitter:</b> Dietmar Kühl <b>Opened:</b> 2025-08-31 <b>Last modified:</b> 2025-10-27</p>
 <p><b>Priority: </b>2
 </p>
 <p><b>View other</b> <a href="lwg-index-open.html#task.promise">active issues</a> in [task.promise].</p>
@@ -75468,6 +75488,8 @@ used by the coroutine and to produce a compile-time error otherwise.
 <p>
 Set priority to 2 after reflector poll. Send to LEWG.
 </p>
+<p><i>[2025-10-24; Resolves <a href="https://github.com/cplusplus/nbballot/issues/959">US 255-384</a>]</i></p>
+
 
 
 <p id="res-4335"><b>Proposed resolution:</b></p>
@@ -75657,7 +75679,7 @@ Set priority to 2 after reflector poll. Send to LEWG.
 <hr>
 <h3 id="4339"><a href="#4339">4339</a><sup><a href="https://cplusplus.github.io/LWG/issue4339">(i)</a></sup>. <code>task</code>'s coroutine frame may be released late</h3>
 <p><b>Section:</b> 33.13.6 <a href="https://wg21.link/exec.task">[exec.task]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Dietmar Kühl <b>Opened:</b> 2025-08-31 <b>Last modified:</b> 2025-10-17</p>
+ <b>Submitter:</b> Dietmar Kühl <b>Opened:</b> 2025-08-31 <b>Last modified:</b> 2025-10-27</p>
 <p><b>Priority: </b>2
 </p>
 <p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
@@ -75702,6 +75724,8 @@ Set priority to 2 after reflector poll.
 <p>
 "P/R is incomplete - also needs to update at least <code class='backtick'>promise_type::uncaught_exception()</code>."
 </p>
+<p><i>[2025-10-24; Resolves <a href="https://github.com/cplusplus/nbballot/issues/947">US 242-372</a>]</i></p>
+
 
 
 <p id="res-4339"><b>Proposed resolution:</b></p>
@@ -75787,7 +75811,7 @@ Change the specification of <code>unhandled_stopped</code> to destroy the corout
 <hr>
 <h3 id="4344"><a href="#4344">4344</a><sup><a href="https://cplusplus.github.io/LWG/issue4344">(i)</a></sup>. <code>affine_on</code> has no specification for the default</h3>
 <p><b>Section:</b> 33.13.3 <a href="https://wg21.link/exec.affine.on">[exec.affine.on]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Dietmar Kühl <b>Opened:</b> 2025-09-01 <b>Last modified:</b> 2025-10-17</p>
+ <b>Submitter:</b> Dietmar Kühl <b>Opened:</b> 2025-09-01 <b>Last modified:</b> 2025-10-27</p>
 <p><b>Priority: </b>2
 </p>
 <p><b>View other</b> <a href="lwg-index-open.html#exec.affine.on">active issues</a> in [exec.affine.on].</p>
@@ -75813,6 +75837,8 @@ allow that.
 <p>
 Set priority to 2 after reflector poll.
 </p>
+<p><i>[2025-10-24; Resolves <a href="https://github.com/cplusplus/nbballot/issues/937">US 236-362</a>]</i></p>
+
 
 
 <p id="res-4344"><b>Proposed resolution:</b></p>
@@ -75850,7 +75876,7 @@ return transform_sender(
 <hr>
 <h3 id="4347"><a href="#4347">4347</a><sup><a href="https://cplusplus.github.io/LWG/issue4347">(i)</a></sup>. <code>task</code>'s stop source is always created</h3>
 <p><b>Section:</b> 33.13.6.5 <a href="https://wg21.link/task.promise">[task.promise]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Dietmar Kühl <b>Opened:</b> 2025-09-01 <b>Last modified:</b> 2025-10-17</p>
+ <b>Submitter:</b> Dietmar Kühl <b>Opened:</b> 2025-09-01 <b>Last modified:</b> 2025-10-27</p>
 <p><b>Priority: </b>2
 </p>
 <p><b>View other</b> <a href="lwg-index-open.html#task.promise">active issues</a> in [task.promise].</p>
@@ -75884,6 +75910,8 @@ it is only created when accessed.
 <p>
 Set priority to 2 after reflector poll.
 </p>
+<p><i>[2025-10-24; Resolves <a href="https://github.com/cplusplus/nbballot/issues/957">US 257-382</a>]</i></p>
+
 
 
 <p id="res-4347"><b>Proposed resolution:</b></p>
@@ -77529,7 +77557,7 @@ Set priority to 3 after reflector poll.
 <hr>
 <h3 id="4376"><a href="#4376">4376</a><sup><a href="https://cplusplus.github.io/LWG/issue4376">(i)</a></sup>. ABI tag in return type of [simd.mask.unary] is overconstrained</h3>
 <p><b>Section:</b> 29.10.9.4 <a href="https://wg21.link/simd.mask.unary">[simd.mask.unary]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Matthias Kretz <b>Opened:</b> 2025-09-15 <b>Last modified:</b> 2025-10-17</p>
+ <b>Submitter:</b> Matthias Kretz <b>Opened:</b> 2025-09-15 <b>Last modified:</b> 2025-10-27</p>
 <p><b>Priority: </b>1
 </p>
 <p><b>View other</b> <a href="lwg-index-open.html#simd.mask.unary">active issues</a> in [simd.mask.unary].</p>
@@ -77585,6 +77613,8 @@ Set priority to 1 after reflector poll.
 <p>
 "Should be addressed together with <a href="lwg-active.html#4238" title="simd_mask&lt;complex&lt;double&gt;&gt;::operator+/-/~ return a disabled simd specialization (Status: New)">4238</a><sup><a href="https://cplusplus.github.io/LWG/issue4238" title="Latest snapshot">(i)</a></sup>."
 </p>
+<p><i>[2025-10-24; Resolves <a href="https://github.com/cplusplus/nbballot/issues/873">DE 298</a>]</i></p>
+
 
 
 <p id="res-4376"><b>Proposed resolution:</b></p>
@@ -81734,7 +81764,7 @@ template-argument-equivalent.
 <hr>
 <h3 id="4424"><a href="#4424">4424</a><sup><a href="https://cplusplus.github.io/LWG/issue4424">(i)</a></sup>. <code class='backtick'>meta::define_aggregate</code> should require a class type</h3>
 <p><b>Section:</b> 21.4.16 <a href="https://wg21.link/meta.reflection.define.aggregate">[meta.reflection.define.aggregate]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Jakub Jelinek <b>Opened:</b> 2025-10-20 <b>Last modified:</b> 2025-10-24</p>
+ <b>Submitter:</b> Jakub Jelinek <b>Opened:</b> 2025-10-20 <b>Last modified:</b> 2025-10-27</p>
 <p><b>Priority: </b>Not Prioritized
 </p>
 <p><b>View other</b> <a href="lwg-index-open.html#meta.reflection.define.aggregate">active issues</a> in [meta.reflection.define.aggregate].</p>
@@ -81796,6 +81826,8 @@ be the corresponding data member description represented by
 <p><i>[2025-10-24; LWG telecon. Jonathan updates wording]</i></p>
 
 <p>Make a minimal change for now, can add support for aliases later.</p>
+
+<p><i>[2025-10-24; Resolves <a href="https://github.com/cplusplus/nbballot/issues/757">US 125-188</a>]</i></p>
 
 
 
@@ -82136,7 +82168,7 @@ for every element <code class='backtick'>e</code> of <code class='backtick'>r</c
 <hr>
 <h3 id="4429"><a href="#4429">4429</a><sup><a href="https://cplusplus.github.io/LWG/issue4429">(i)</a></sup>. <code>meta::alignment_of</code> should exclude data member description of bit-field</h3>
 <p><b>Section:</b> 21.4.11 <a href="https://wg21.link/meta.reflection.layout">[meta.reflection.layout]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Tomasz Kamiński <b>Opened:</b> 2025-10-24 <b>Last modified:</b> 2025-10-24</p>
+ <b>Submitter:</b> Tomasz Kamiński <b>Opened:</b> 2025-10-24 <b>Last modified:</b> 2025-10-27</p>
 <p><b>Priority: </b>Not Prioritized
 </p>
 <p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
@@ -82146,6 +82178,8 @@ for every element <code class='backtick'>e</code> of <code class='backtick'>r</c
 21.4.11 <a href="https://wg21.link/meta.reflection.layout">[meta.reflection.layout]</a> p#8
 This should similarly disallow data member descriptions of bit-fields.
 </p>
+<p><i>[2025-10-24; Resolves <a href="https://github.com/cplusplus/nbballot/issues/988">US 109-170</a>]</i></p>
+
 
 
 <p id="res-4429"><b>Proposed resolution:</b></p>

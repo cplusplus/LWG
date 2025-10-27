@@ -67,7 +67,7 @@
 This document is the Index by Status and Date for the <a href="lwg-active.html">Library Active Issues List</a>,
 <a href="lwg-defects.html">Library Defect Reports and Accepted Issues</a>, and <a href="lwg-closed.html">Library Closed Issues List</a>.
 </p>
-<p>Revised 2025-10-25 at 17:27:51 UTC
+<p>Revised 2025-10-27 at 09:59:19 UTC
 </p><h2 id="Ready">Ready (4 issues)</h2>
 <table class="issues-index">
 <tr>
@@ -78,15 +78,6 @@ This document is the Index by Status and Date for the <a href="lwg-active.html">
   <th>Proposed Resolution</th>
   <th><a href="unresolved-prioritized.html">Priority</a></th>
   <th>Duplicates</th>
-</tr>
-<tr>
-<td id="4423"><a href="lwg-active.html#4423" title="meta::data_member_spec allows negative bit-field widths (Status: Ready)">4423</a><sup><a href="https://cplusplus.github.io/LWG/issue4423">(i)</a></sup></td>
-<td><a href="lwg-active.html#Ready">Ready</a></td>
-<td>21.4.16 [meta.reflection.define.aggregate]</td>
-<td><code class='backtick'>meta::data_member_spec</code> allows negative bit-field widths</td>
-<td>Yes</td>
-<td></td>
-<td></td>
 </tr>
 <tr>
 <td id="4315"><a href="lwg-active.html#4315" title="Insufficient specification of vector_two_norm and matrix_frob_norm (Status: Ready)">4315</a><sup><a href="https://cplusplus.github.io/LWG/issue4315">(i)</a></sup></td>
@@ -102,6 +93,15 @@ This document is the Index by Status and Date for the <a href="lwg-active.html">
 <td><a href="lwg-active.html#Ready">Ready</a></td>
 <td>29.9.14 [linalg.algs.blas2]</td>
 <td>Fix <i>Mandates</i>, <i>Preconditions</i>, and <i>Complexity</i> elements of [linalg] algorithms</td>
+<td>Yes</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td id="4423"><a href="lwg-active.html#4423" title="meta::data_member_spec allows negative bit-field widths (Status: Ready)">4423</a><sup><a href="https://cplusplus.github.io/LWG/issue4423">(i)</a></sup></td>
+<td><a href="lwg-active.html#Ready">Ready</a></td>
+<td>21.4.16 [meta.reflection.define.aggregate]</td>
+<td><code class='backtick'>meta::data_member_spec</code> allows negative bit-field widths</td>
 <td>Yes</td>
 <td></td>
 <td></td>
@@ -128,19 +128,82 @@ This document is the Index by Status and Date for the <a href="lwg-active.html">
   <th>Duplicates</th>
 </tr>
 <tr>
-<td id="4166"><a href="lwg-active.html#4166" title="concat_view::end() should be more constrained in order to support noncopyable iterators (Status: Tentatively Ready)">4166</a><sup><a href="https://cplusplus.github.io/LWG/issue4166">(i)</a></sup></td>
+<td id="4136"><a href="lwg-active.html#4136" title="Specify behavior of [linalg] Hermitian algorithms on diagonal with nonzero imaginary part (Status: Tentatively Ready)">4136</a><sup><a href="https://cplusplus.github.io/LWG/issue4136">(i)</a></sup></td>
 <td><a href="lwg-active.html#Ready">Tentatively Ready</a></td>
-<td>25.7.18.2 [range.concat.view]</td>
-<td><code class='backtick'>concat_view::end()</code> should be more constrained in order to support noncopyable iterators</td>
+<td>29.9.3 [linalg.general]</td>
+<td>Specify behavior of [linalg] Hermitian algorithms on diagonal with nonzero imaginary part</td>
 <td>Yes</td>
 <td></td>
 <td></td>
 </tr>
 <tr>
-<td id="4136"><a href="lwg-active.html#4136" title="Specify behavior of [linalg] Hermitian algorithms on diagonal with nonzero imaginary part (Status: Tentatively Ready)">4136</a><sup><a href="https://cplusplus.github.io/LWG/issue4136">(i)</a></sup></td>
+<td id="4342"><a href="lwg-active.html#4342" title="Missing rvalue reference qualification for task_scheduler::ts-sender::connect() (Status: Tentatively Ready)">4342</a><sup><a href="https://cplusplus.github.io/LWG/issue4342">(i)</a></sup></td>
 <td><a href="lwg-active.html#Ready">Tentatively Ready</a></td>
-<td>29.9.3 [linalg.general]</td>
-<td>Specify behavior of [linalg] Hermitian algorithms on diagonal with nonzero imaginary part</td>
+<td>33.13.5 [exec.task.scheduler]</td>
+<td>Missing rvalue reference qualification for <code>task_scheduler::ts-sender::connect()</code></td>
+<td>Yes</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td id="4341"><a href="lwg-active.html#4341" title="Missing rvalue reference qualification for task::connect() (Status: Tentatively Ready)">4341</a><sup><a href="https://cplusplus.github.io/LWG/issue4341">(i)</a></sup></td>
+<td><a href="lwg-active.html#Ready">Tentatively Ready</a></td>
+<td>33.13.6.2 [task.class]</td>
+<td>Missing rvalue reference qualification for <code>task::connect()</code></td>
+<td>Yes</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td id="4343"><a href="lwg-active.html#4343" title="Missing default template arguments for task (Status: Tentatively Ready)">4343</a><sup><a href="https://cplusplus.github.io/LWG/issue4343">(i)</a></sup></td>
+<td><a href="lwg-active.html#Ready">Tentatively Ready</a></td>
+<td>33.13.6.2 [task.class]</td>
+<td>Missing default template arguments for <code>task</code></td>
+<td>Yes</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td id="4340"><a href="lwg-active.html#4340" title="task::promise_type::unhandled_stopped() should be noexcept (Status: Tentatively Ready)">4340</a><sup><a href="https://cplusplus.github.io/LWG/issue4340">(i)</a></sup></td>
+<td><a href="lwg-active.html#Ready">Tentatively Ready</a></td>
+<td>33.13.6.5 [task.promise]</td>
+<td><code>task::promise_type::unhandled_stopped()</code> should be <code>noexcept</code></td>
+<td>Yes</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td id="4345"><a href="lwg-active.html#4345" title="task::promise_type::return_value default template parameter (Status: Tentatively Ready)">4345</a><sup><a href="https://cplusplus.github.io/LWG/issue4345">(i)</a></sup></td>
+<td><a href="lwg-active.html#Ready">Tentatively Ready</a></td>
+<td>33.13.6.5 [task.promise]</td>
+<td><code>task::promise_type::return_value</code> default template parameter</td>
+<td>Yes</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td id="4346"><a href="lwg-active.html#4346" title="task::promise_type::return_void/value lack a specification (Status: Tentatively Ready)">4346</a><sup><a href="https://cplusplus.github.io/LWG/issue4346">(i)</a></sup></td>
+<td><a href="lwg-active.html#Ready">Tentatively Ready</a></td>
+<td>33.13.6.5 [task.promise]</td>
+<td><code>task::promise_type::return_void</code>/<code>value</code> lack a specification</td>
+<td>Yes</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td id="4349"><a href="lwg-active.html#4349" title="task is not actually started lazily (Status: Tentatively Ready)">4349</a><sup><a href="https://cplusplus.github.io/LWG/issue4349">(i)</a></sup></td>
+<td><a href="lwg-active.html#Ready">Tentatively Ready</a></td>
+<td>33.13.6.5 [task.promise]</td>
+<td><code>task</code> is not actually started lazily</td>
+<td>Yes</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td id="4166"><a href="lwg-active.html#4166" title="concat_view::end() should be more constrained in order to support noncopyable iterators (Status: Tentatively Ready)">4166</a><sup><a href="https://cplusplus.github.io/LWG/issue4166">(i)</a></sup></td>
+<td><a href="lwg-active.html#Ready">Tentatively Ready</a></td>
+<td>25.7.18.2 [range.concat.view]</td>
+<td><code class='backtick'>concat_view::end()</code> should be more constrained in order to support noncopyable iterators</td>
 <td>Yes</td>
 <td></td>
 <td></td>
@@ -159,15 +222,6 @@ This document is the Index by Status and Date for the <a href="lwg-active.html">
 <td><a href="lwg-active.html#Ready">Tentatively Ready</a></td>
 <td>33.6 [exec.sched]</td>
 <td>Remove note in &sect;[exec.sched] regarding waiting for completion of scheduled operations</td>
-<td>Yes</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td id="4346"><a href="lwg-active.html#4346" title="task::promise_type::return_void/value lack a specification (Status: Tentatively Ready)">4346</a><sup><a href="https://cplusplus.github.io/LWG/issue4346">(i)</a></sup></td>
-<td><a href="lwg-active.html#Ready">Tentatively Ready</a></td>
-<td>33.13.6.5 [task.promise]</td>
-<td><code>task::promise_type::return_void</code>/<code>value</code> lack a specification</td>
 <td>Yes</td>
 <td></td>
 <td></td>
@@ -283,15 +337,6 @@ This document is the Index by Status and Date for the <a href="lwg-active.html">
 <td></td>
 </tr>
 <tr>
-<td id="4349"><a href="lwg-active.html#4349" title="task is not actually started lazily (Status: Tentatively Ready)">4349</a><sup><a href="https://cplusplus.github.io/LWG/issue4349">(i)</a></sup></td>
-<td><a href="lwg-active.html#Ready">Tentatively Ready</a></td>
-<td>33.13.6.5 [task.promise]</td>
-<td><code>task</code> is not actually started lazily</td>
-<td>Yes</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
 <td id="4398"><a href="lwg-active.html#4398" title="enable_nonlocking_formatter_optimization should be disabled for container adaptors (Status: Tentatively Ready)">4398</a><sup><a href="https://cplusplus.github.io/LWG/issue4398">(i)</a></sup></td>
 <td><a href="lwg-active.html#Ready">Tentatively Ready</a></td>
 <td>23.6.2 [queue.syn]</td>
@@ -370,51 +415,6 @@ constructor (Status: Tentatively Ready)">4407</a><sup><a href="https://cplusplus
 <td>29.10.7.2 [simd.ctor]</td>
 <td><code><i>constexpr-wrapper-like</i></code> needs <code class='backtick'>remove_cvref_t</code> in <code class='backtick'>simd::basic_vec</code>
 constructor</td>
-<td>Yes</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td id="4342"><a href="lwg-active.html#4342" title="Missing rvalue reference qualification for task_scheduler::ts-sender::connect() (Status: Tentatively Ready)">4342</a><sup><a href="https://cplusplus.github.io/LWG/issue4342">(i)</a></sup></td>
-<td><a href="lwg-active.html#Ready">Tentatively Ready</a></td>
-<td>33.13.5 [exec.task.scheduler]</td>
-<td>Missing rvalue reference qualification for <code>task_scheduler::ts-sender::connect()</code></td>
-<td>Yes</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td id="4341"><a href="lwg-active.html#4341" title="Missing rvalue reference qualification for task::connect() (Status: Tentatively Ready)">4341</a><sup><a href="https://cplusplus.github.io/LWG/issue4341">(i)</a></sup></td>
-<td><a href="lwg-active.html#Ready">Tentatively Ready</a></td>
-<td>33.13.6.2 [task.class]</td>
-<td>Missing rvalue reference qualification for <code>task::connect()</code></td>
-<td>Yes</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td id="4343"><a href="lwg-active.html#4343" title="Missing default template arguments for task (Status: Tentatively Ready)">4343</a><sup><a href="https://cplusplus.github.io/LWG/issue4343">(i)</a></sup></td>
-<td><a href="lwg-active.html#Ready">Tentatively Ready</a></td>
-<td>33.13.6.2 [task.class]</td>
-<td>Missing default template arguments for <code>task</code></td>
-<td>Yes</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td id="4340"><a href="lwg-active.html#4340" title="task::promise_type::unhandled_stopped() should be noexcept (Status: Tentatively Ready)">4340</a><sup><a href="https://cplusplus.github.io/LWG/issue4340">(i)</a></sup></td>
-<td><a href="lwg-active.html#Ready">Tentatively Ready</a></td>
-<td>33.13.6.5 [task.promise]</td>
-<td><code>task::promise_type::unhandled_stopped()</code> should be <code>noexcept</code></td>
-<td>Yes</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td id="4345"><a href="lwg-active.html#4345" title="task::promise_type::return_value default template parameter (Status: Tentatively Ready)">4345</a><sup><a href="https://cplusplus.github.io/LWG/issue4345">(i)</a></sup></td>
-<td><a href="lwg-active.html#Ready">Tentatively Ready</a></td>
-<td>33.13.6.5 [task.promise]</td>
-<td><code>task::promise_type::return_value</code> default template parameter</td>
 <td>Yes</td>
 <td></td>
 <td></td>
@@ -623,6 +623,15 @@ of uses-allocator construction</td>
   <th>Duplicates</th>
 </tr>
 <tr>
+<td id="4337"><a href="lwg-active.html#4337" title="co_await change_coroutine_scheduler(s) requires assignable (Status: Tentatively NAD)">4337</a><sup><a href="https://cplusplus.github.io/LWG/issue4337">(i)</a></sup></td>
+<td><a href="lwg-active.html#NAD">Tentatively NAD</a></td>
+<td>33.13.6.5 [task.promise]</td>
+<td><code>co_await change_coroutine_scheduler(s)</code> requires assignable</td>
+<td>Yes</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
 <td id="3992"><a href="lwg-active.html#3992" title="basic_stringbuf::str()&amp;&amp; should enforce &#x1d4aa;(1) (Status: Tentatively NAD)">3992</a><sup><a href="https://cplusplus.github.io/LWG/issue3992">(i)</a></sup></td>
 <td><a href="lwg-active.html#NAD">Tentatively NAD</a></td>
 <td>31.8.2.4 [stringbuf.members]</td>
@@ -674,15 +683,6 @@ complexity for algorithms that are in fact &#x1d4aa;(n)</td>
 <td><a href="lwg-active.html#NAD">Tentatively NAD</a></td>
 <td>33.9.6 [exec.snd.transform]</td>
 <td><code class='backtick'>transform_sender</code> comparing types ignoring <i>cv</i>-qualifiers doesn't take into account differences in value category</td>
-<td>Yes</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td id="4337"><a href="lwg-active.html#4337" title="co_await change_coroutine_scheduler(s) requires assignable (Status: Tentatively NAD)">4337</a><sup><a href="https://cplusplus.github.io/LWG/issue4337">(i)</a></sup></td>
-<td><a href="lwg-active.html#NAD">Tentatively NAD</a></td>
-<td>33.13.6.5 [task.promise]</td>
-<td><code>co_await change_coroutine_scheduler(s)</code> requires assignable</td>
 <td>Yes</td>
 <td></td>
 <td></td>
@@ -907,6 +907,105 @@ complexity for algorithms that are in fact &#x1d4aa;(n)</td>
   <th>Duplicates</th>
 </tr>
 <tr>
+<td id="4429"><a href="lwg-active.html#4429" title="meta::alignment_of should exclude data member description of bit-field (Status: New)">4429</a><sup><a href="https://cplusplus.github.io/LWG/issue4429">(i)</a></sup></td>
+<td><a href="lwg-active.html#New">New</a></td>
+<td>21.4.11 [meta.reflection.layout]</td>
+<td><code>meta::alignment_of</code> should exclude data member description of bit-field</td>
+<td>Yes</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td id="4316"><a href="lwg-active.html#4316" title="{can_}substitute specification is ill-formed (Status: New)">4316</a><sup><a href="https://cplusplus.github.io/LWG/issue4316">(i)</a></sup></td>
+<td><a href="lwg-active.html#New">New</a></td>
+<td>21.4.13 [meta.reflection.substitute]</td>
+<td><code>{can_}substitute</code> specification is ill-formed</td>
+<td><span class="no-pr">No</span></td>
+<td>1</td>
+<td></td>
+</tr>
+<tr>
+<td id="4424"><a href="lwg-active.html#4424" title="meta::define_aggregate should require a class type (Status: New)">4424</a><sup><a href="https://cplusplus.github.io/LWG/issue4424">(i)</a></sup></td>
+<td><a href="lwg-active.html#New">New</a></td>
+<td>21.4.16 [meta.reflection.define.aggregate]</td>
+<td><code class='backtick'>meta::define_aggregate</code> should require a class type</td>
+<td>Yes</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td id="4264"><a href="lwg-active.html#4264" title="Skipping indirection is not allowed for function_ref (Status: New)">4264</a><sup><a href="https://cplusplus.github.io/LWG/issue4264">(i)</a></sup></td>
+<td><a href="lwg-active.html#New">New</a></td>
+<td>22.10.17.1 [func.wrap.general]</td>
+<td>Skipping indirection is not allowed for <code>function_ref</code></td>
+<td>Yes</td>
+<td>2</td>
+<td></td>
+</tr>
+<tr>
+<td id="3662"><a href="lwg-active.html#3662" title="basic_string::append/assign(NTBS, pos, n) suboptimal (Status: New)">3662</a><sup><a href="https://cplusplus.github.io/LWG/issue3662">(i)</a></sup></td>
+<td><a href="lwg-active.html#New">New</a></td>
+<td>27.4.3.7.2 [string.append]</td>
+<td><code>basic_string::append/assign(NTBS, pos, n)</code> suboptimal</td>
+<td>Yes</td>
+<td>3</td>
+<td></td>
+</tr>
+<tr>
+<td id="4109"><a href="lwg-active.html#4109" title="Instantiating templates in &sect;[rand] with int8_t/uint8_t is undefined behavior (Status: New)">4109</a><sup><a href="https://cplusplus.github.io/LWG/issue4109">(i)</a></sup></td>
+<td><a href="lwg-active.html#New">New</a></td>
+<td>29.5.3.1 [rand.req.genl]</td>
+<td>Instantiating templates in &sect;[rand] with <code>int8_t</code>/<code>uint8_t</code> is undefined behavior</td>
+<td>Yes</td>
+<td>3</td>
+<td></td>
+</tr>
+<tr>
+<td id="4238"><a href="lwg-active.html#4238" title="simd_mask&lt;complex&lt;double&gt;&gt;::operator+/-/~ return a disabled simd specialization (Status: New)">4238</a><sup><a href="https://cplusplus.github.io/LWG/issue4238">(i)</a></sup></td>
+<td><a href="lwg-active.html#New">New</a></td>
+<td>29.10.9.4 [simd.mask.unary]</td>
+<td><code>simd_mask&lt;complex&lt;double&gt;&gt;::operator+/-/~</code> return a disabled <code class='backtick'>simd</code> specialization</td>
+<td>Yes</td>
+<td>1</td>
+<td></td>
+</tr>
+<tr>
+<td id="4376"><a href="lwg-active.html#4376" title="ABI tag in return type of [simd.mask.unary] is overconstrained (Status: New)">4376</a><sup><a href="https://cplusplus.github.io/LWG/issue4376">(i)</a></sup></td>
+<td><a href="lwg-active.html#New">New</a></td>
+<td>29.10.9.4 [simd.mask.unary]</td>
+<td>ABI tag in return type of [simd.mask.unary] is overconstrained</td>
+<td>Yes</td>
+<td>1</td>
+<td></td>
+</tr>
+<tr>
+<td id="4344"><a href="lwg-active.html#4344" title="affine_on has no specification for the default (Status: New)">4344</a><sup><a href="https://cplusplus.github.io/LWG/issue4344">(i)</a></sup></td>
+<td><a href="lwg-active.html#New">New</a></td>
+<td>33.13.3 [exec.affine.on]</td>
+<td><code>affine_on</code> has no specification for the default</td>
+<td>Yes</td>
+<td>2</td>
+<td></td>
+</tr>
+<tr>
+<td id="4339"><a href="lwg-active.html#4339" title="task's coroutine frame may be released late (Status: New)">4339</a><sup><a href="https://cplusplus.github.io/LWG/issue4339">(i)</a></sup></td>
+<td><a href="lwg-active.html#New">New</a></td>
+<td>33.13.6 [exec.task]</td>
+<td><code>task</code>'s coroutine frame may be released late</td>
+<td>Yes</td>
+<td>2</td>
+<td></td>
+</tr>
+<tr>
+<td id="4347"><a href="lwg-active.html#4347" title="task's stop source is always created (Status: New)">4347</a><sup><a href="https://cplusplus.github.io/LWG/issue4347">(i)</a></sup></td>
+<td><a href="lwg-active.html#New">New</a></td>
+<td>33.13.6.5 [task.promise]</td>
+<td><code>task</code>'s stop source is always created</td>
+<td><span class="no-pr">No</span></td>
+<td>2</td>
+<td></td>
+</tr>
+<tr>
 <td id="4431"><a href="lwg-active.html#4431" title="Parallel std::ranges::destroy should allow exceptions (Status: New)">4431</a><sup><a href="https://cplusplus.github.io/LWG/issue4431">(i)</a></sup></td>
 <td><a href="lwg-active.html#New">New</a></td>
 <td>20.2.2 [memory.syn]</td>
@@ -949,24 +1048,6 @@ from <code class='backtick'>rebind</code> and <code class='backtick'>resize</cod
 <td><a href="lwg-active.html#New">New</a></td>
 <td>21.4.9 [meta.reflection.access.queries]</td>
 <td>Metafunctions should not be defined in terms of constant subexpressions</td>
-<td>Yes</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td id="4429"><a href="lwg-active.html#4429" title="meta::alignment_of should exclude data member description of bit-field (Status: New)">4429</a><sup><a href="https://cplusplus.github.io/LWG/issue4429">(i)</a></sup></td>
-<td><a href="lwg-active.html#New">New</a></td>
-<td>21.4.11 [meta.reflection.layout]</td>
-<td><code>meta::alignment_of</code> should exclude data member description of bit-field</td>
-<td>Yes</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td id="4424"><a href="lwg-active.html#4424" title="meta::define_aggregate should require a class type (Status: New)">4424</a><sup><a href="https://cplusplus.github.io/LWG/issue4424">(i)</a></sup></td>
-<td><a href="lwg-active.html#New">New</a></td>
-<td>21.4.16 [meta.reflection.define.aggregate]</td>
-<td><code class='backtick'>meta::define_aggregate</code> should require a class type</td>
 <td>Yes</td>
 <td></td>
 <td></td>
@@ -1261,15 +1342,6 @@ co_await expression instead of same_as&lt;void&gt; (Status: New)">4357</a><sup><
 <td></td>
 </tr>
 <tr>
-<td id="4316"><a href="lwg-active.html#4316" title="{can_}substitute specification is ill-formed (Status: New)">4316</a><sup><a href="https://cplusplus.github.io/LWG/issue4316">(i)</a></sup></td>
-<td><a href="lwg-active.html#New">New</a></td>
-<td>21.4.13 [meta.reflection.substitute]</td>
-<td><code>{can_}substitute</code> specification is ill-formed</td>
-<td><span class="no-pr">No</span></td>
-<td>1</td>
-<td></td>
-</tr>
-<tr>
 <td id="4373"><a href="lwg-active.html#4373" title="function_ref should provide result_type (Status: New)">4373</a><sup><a href="https://cplusplus.github.io/LWG/issue4373">(i)</a></sup></td>
 <td><a href="lwg-active.html#New">New</a></td>
 <td>22.10.17.6.2 [func.wrap.ref.class]</td>
@@ -1370,15 +1442,6 @@ co_await expression instead of same_as&lt;void&gt; (Status: New)">4357</a><sup><
 <td><code>function&lt;void()&gt;</code> suppresses <code class='backtick'>nodiscard</code> warnings</td>
 <td><span class="no-pr">No</span></td>
 <td>3</td>
-<td></td>
-</tr>
-<tr>
-<td id="4264"><a href="lwg-active.html#4264" title="Skipping indirection is not allowed for function_ref (Status: New)">4264</a><sup><a href="https://cplusplus.github.io/LWG/issue4264">(i)</a></sup></td>
-<td><a href="lwg-active.html#New">New</a></td>
-<td>22.10.17.1 [func.wrap.general]</td>
-<td>Skipping indirection is not allowed for <code>function_ref</code></td>
-<td>Yes</td>
-<td>2</td>
 <td></td>
 </tr>
 <tr>
@@ -1525,15 +1588,6 @@ co_await expression instead of same_as&lt;void&gt; (Status: New)">4357</a><sup><
 <td>Cannot format const-iterable only ranges</td>
 <td><span class="no-pr">No</span></td>
 <td>2</td>
-<td></td>
-</tr>
-<tr>
-<td id="4109"><a href="lwg-active.html#4109" title="Instantiating templates in &sect;[rand] with int8_t/uint8_t is undefined behavior (Status: New)">4109</a><sup><a href="https://cplusplus.github.io/LWG/issue4109">(i)</a></sup></td>
-<td><a href="lwg-active.html#New">New</a></td>
-<td>29.5.3.1 [rand.req.genl]</td>
-<td>Instantiating templates in &sect;[rand] with <code>int8_t</code>/<code>uint8_t</code> is undefined behavior</td>
-<td>Yes</td>
-<td>3</td>
 <td></td>
 </tr>
 <tr>
@@ -1732,24 +1786,6 @@ co_await expression instead of same_as&lt;void&gt; (Status: New)">4357</a><sup><
 <td></td>
 </tr>
 <tr>
-<td id="4238"><a href="lwg-active.html#4238" title="simd_mask&lt;complex&lt;double&gt;&gt;::operator+/-/~ return a disabled simd specialization (Status: New)">4238</a><sup><a href="https://cplusplus.github.io/LWG/issue4238">(i)</a></sup></td>
-<td><a href="lwg-active.html#New">New</a></td>
-<td>29.10.9.4 [simd.mask.unary]</td>
-<td><code>simd_mask&lt;complex&lt;double&gt;&gt;::operator+/-/~</code> return a disabled <code class='backtick'>simd</code> specialization</td>
-<td>Yes</td>
-<td>1</td>
-<td></td>
-</tr>
-<tr>
-<td id="4376"><a href="lwg-active.html#4376" title="ABI tag in return type of [simd.mask.unary] is overconstrained (Status: New)">4376</a><sup><a href="https://cplusplus.github.io/LWG/issue4376">(i)</a></sup></td>
-<td><a href="lwg-active.html#New">New</a></td>
-<td>29.10.9.4 [simd.mask.unary]</td>
-<td>ABI tag in return type of [simd.mask.unary] is overconstrained</td>
-<td>Yes</td>
-<td>1</td>
-<td></td>
-</tr>
-<tr>
 <td id="3831"><a href="lwg-active.html#3831" title="Two-digit formatting of negative year is ambiguous (Status: New)">3831</a><sup><a href="https://cplusplus.github.io/LWG/issue3831">(i)</a></sup></td>
 <td><a href="lwg-active.html#New">New</a></td>
 <td>30.12 [time.format]</td>
@@ -1774,33 +1810,6 @@ co_await expression instead of same_as&lt;void&gt; (Status: New)">4357</a><sup><
 <td>Standard defined queries can't customize <code class='backtick'>forwarding_query_t</code> by inheriting from it</td>
 <td>Yes</td>
 <td>4</td>
-<td></td>
-</tr>
-<tr>
-<td id="4344"><a href="lwg-active.html#4344" title="affine_on has no specification for the default (Status: New)">4344</a><sup><a href="https://cplusplus.github.io/LWG/issue4344">(i)</a></sup></td>
-<td><a href="lwg-active.html#New">New</a></td>
-<td>33.13.3 [exec.affine.on]</td>
-<td><code>affine_on</code> has no specification for the default</td>
-<td>Yes</td>
-<td>2</td>
-<td></td>
-</tr>
-<tr>
-<td id="4339"><a href="lwg-active.html#4339" title="task's coroutine frame may be released late (Status: New)">4339</a><sup><a href="https://cplusplus.github.io/LWG/issue4339">(i)</a></sup></td>
-<td><a href="lwg-active.html#New">New</a></td>
-<td>33.13.6 [exec.task]</td>
-<td><code>task</code>'s coroutine frame may be released late</td>
-<td>Yes</td>
-<td>2</td>
-<td></td>
-</tr>
-<tr>
-<td id="4347"><a href="lwg-active.html#4347" title="task's stop source is always created (Status: New)">4347</a><sup><a href="https://cplusplus.github.io/LWG/issue4347">(i)</a></sup></td>
-<td><a href="lwg-active.html#New">New</a></td>
-<td>33.13.6.5 [task.promise]</td>
-<td><code>task</code>'s stop source is always created</td>
-<td><span class="no-pr">No</span></td>
-<td>2</td>
 <td></td>
 </tr>
 <tr>
@@ -4390,15 +4399,6 @@ inner-iterator with std::default_sentinel results in null pointer dereference (S
 <td></td>
 </tr>
 <tr>
-<td id="3662"><a href="lwg-active.html#3662" title="basic_string::append/assign(NTBS, pos, n) suboptimal (Status: New)">3662</a><sup><a href="https://cplusplus.github.io/LWG/issue3662">(i)</a></sup></td>
-<td><a href="lwg-active.html#New">New</a></td>
-<td>27.4.3.7.2 [string.append]</td>
-<td><code>basic_string::append/assign(NTBS, pos, n)</code> suboptimal</td>
-<td>Yes</td>
-<td>3</td>
-<td></td>
-</tr>
-<tr>
 <td id="3651"><a href="lwg-active.html#3651" title="Unspecified lifetime guarantees for the format string (Status: New)">3651</a><sup><a href="https://cplusplus.github.io/LWG/issue3651">(i)</a></sup></td>
 <td><a href="lwg-active.html#New">New</a></td>
 <td>28.5 [format]</td>
@@ -5954,6 +5954,15 @@ the evaluation of type traits</td>
   <th>Duplicates</th>
 </tr>
 <tr>
+<td id="3099"><a href="lwg-active.html#3099" title="is_assignable&lt;Incomplete&amp;, Incomplete&amp;&gt; (Status: Open)">3099</a><sup><a href="https://cplusplus.github.io/LWG/issue3099">(i)</a></sup></td>
+<td><a href="lwg-active.html#Open">Open</a></td>
+<td>21.3.3 [meta.type.synop]</td>
+<td><code>is_assignable&lt;Incomplete&amp;, Incomplete&amp;&gt;</code></td>
+<td>Yes</td>
+<td>2</td>
+<td></td>
+</tr>
+<tr>
 <td id="3454"><a href="lwg-active.html#3454" title="pointer_traits::pointer_to should be constexpr (Status: Open)">3454</a><sup><a href="https://cplusplus.github.io/LWG/issue3454">(i)</a></sup></td>
 <td><a href="lwg-active.html#Open">Open</a></td>
 <td>20.2.3 [pointer.traits]</td>
@@ -6140,15 +6149,6 @@ the evaluation of type traits</td>
 <td><a href="lwg-active.html#Open">Open</a></td>
 <td>21.3.3 [meta.type.synop]</td>
 <td>Some type-completeness constraints of traits are overspecified</td>
-<td>Yes</td>
-<td>2</td>
-<td></td>
-</tr>
-<tr>
-<td id="3099"><a href="lwg-active.html#3099" title="is_assignable&lt;Incomplete&amp;, Incomplete&amp;&gt; (Status: Open)">3099</a><sup><a href="https://cplusplus.github.io/LWG/issue3099">(i)</a></sup></td>
-<td><a href="lwg-active.html#Open">Open</a></td>
-<td>21.3.3 [meta.type.synop]</td>
-<td><code>is_assignable&lt;Incomplete&amp;, Incomplete&amp;&gt;</code></td>
 <td>Yes</td>
 <td>2</td>
 <td></td>
@@ -6733,6 +6733,60 @@ the evaluation of type traits</td>
   <th>Duplicates</th>
 </tr>
 <tr>
+<td id="4302"><a href="lwg-active.html#4302" title="Problematic vector_sum_of_squares wording (Status: LEWG)">4302</a><sup><a href="https://cplusplus.github.io/LWG/issue4302">(i)</a></sup></td>
+<td><a href="lwg-active.html#LEWG">LEWG</a></td>
+<td>29.9.13.8 [linalg.algs.blas1.ssq]</td>
+<td>Problematic <code class='backtick'>vector_sum_of_squares</code> wording</td>
+<td>Yes</td>
+<td>1</td>
+<td></td>
+</tr>
+<tr>
+<td id="4329"><a href="lwg-active.html#4329" title="Customising affine_on for other algorithms (Status: LEWG)">4329</a><sup><a href="https://cplusplus.github.io/LWG/issue4329">(i)</a></sup></td>
+<td><a href="lwg-active.html#LEWG">LEWG</a></td>
+<td>33.13.3 [exec.affine.on]</td>
+<td>Customising affine_on for other algorithms</td>
+<td><span class="no-pr">No</span></td>
+<td>3</td>
+<td></td>
+</tr>
+<tr>
+<td id="4330"><a href="lwg-active.html#4330" title="affine_on semantics (Status: LEWG)">4330</a><sup><a href="https://cplusplus.github.io/LWG/issue4330">(i)</a></sup></td>
+<td><a href="lwg-active.html#LEWG">LEWG</a></td>
+<td>33.13.3 [exec.affine.on]</td>
+<td><code>affine_on</code> semantics</td>
+<td><span class="no-pr">No</span></td>
+<td>2</td>
+<td></td>
+</tr>
+<tr>
+<td id="4331"><a href="lwg-active.html#4331" title="affine_on shape may be wrong (Status: LEWG)">4331</a><sup><a href="https://cplusplus.github.io/LWG/issue4331">(i)</a></sup></td>
+<td><a href="lwg-active.html#LEWG">LEWG</a></td>
+<td>33.13.3 [exec.affine.on]</td>
+<td><code>affine_on</code> shape may be wrong</td>
+<td><span class="no-pr">No</span></td>
+<td>2</td>
+<td></td>
+</tr>
+<tr>
+<td id="4332"><a href="lwg-active.html#4332" title="affine_on shouldn't forward the stop token to the scheduling operation (Status: LEWG)">4332</a><sup><a href="https://cplusplus.github.io/LWG/issue4332">(i)</a></sup></td>
+<td><a href="lwg-active.html#LEWG">LEWG</a></td>
+<td>33.13.3 [exec.affine.on]</td>
+<td><code>affine_on</code> shouldn't forward the stop token to the scheduling operation</td>
+<td><span class="no-pr">No</span></td>
+<td>2</td>
+<td></td>
+</tr>
+<tr>
+<td id="4335"><a href="lwg-active.html#4335" title="task shadows the environment's allocator (Status: LEWG)">4335</a><sup><a href="https://cplusplus.github.io/LWG/issue4335">(i)</a></sup></td>
+<td><a href="lwg-active.html#LEWG">LEWG</a></td>
+<td>33.13.6.5 [task.promise]</td>
+<td><code>task</code> shadows the environment's allocator</td>
+<td><span class="no-pr">No</span></td>
+<td>2</td>
+<td></td>
+</tr>
+<tr>
 <td id="4058"><a href="lwg-active.html#4058" title="std::to_address() should be SFINAE-friendly (Status: LEWG)">4058</a><sup><a href="https://cplusplus.github.io/LWG/issue4058">(i)</a></sup></td>
 <td><a href="lwg-active.html#LEWG">LEWG</a></td>
 <td>20.2.4 [pointer.conversion]</td>
@@ -6766,33 +6820,6 @@ the evaluation of type traits</td>
 <td><code><i>awaitable-receiver</i>::set_value</code> should use <i>Mandates</i> instead of constraints</td>
 <td>Yes</td>
 <td>1</td>
-<td></td>
-</tr>
-<tr>
-<td id="4329"><a href="lwg-active.html#4329" title="Customising affine_on for other algorithms (Status: LEWG)">4329</a><sup><a href="https://cplusplus.github.io/LWG/issue4329">(i)</a></sup></td>
-<td><a href="lwg-active.html#LEWG">LEWG</a></td>
-<td>33.13.3 [exec.affine.on]</td>
-<td>Customising affine_on for other algorithms</td>
-<td><span class="no-pr">No</span></td>
-<td>3</td>
-<td></td>
-</tr>
-<tr>
-<td id="4330"><a href="lwg-active.html#4330" title="affine_on semantics (Status: LEWG)">4330</a><sup><a href="https://cplusplus.github.io/LWG/issue4330">(i)</a></sup></td>
-<td><a href="lwg-active.html#LEWG">LEWG</a></td>
-<td>33.13.3 [exec.affine.on]</td>
-<td><code>affine_on</code> semantics</td>
-<td><span class="no-pr">No</span></td>
-<td>2</td>
-<td></td>
-</tr>
-<tr>
-<td id="4332"><a href="lwg-active.html#4332" title="affine_on shouldn't forward the stop token to the scheduling operation (Status: LEWG)">4332</a><sup><a href="https://cplusplus.github.io/LWG/issue4332">(i)</a></sup></td>
-<td><a href="lwg-active.html#LEWG">LEWG</a></td>
-<td>33.13.3 [exec.affine.on]</td>
-<td><code>affine_on</code> shouldn't forward the stop token to the scheduling operation</td>
-<td><span class="no-pr">No</span></td>
-<td>2</td>
 <td></td>
 </tr>
 <tr>
@@ -6969,24 +6996,6 @@ the evaluation of type traits</td>
 <td></td>
 </tr>
 <tr>
-<td id="4302"><a href="lwg-active.html#4302" title="Problematic vector_sum_of_squares wording (Status: LEWG)">4302</a><sup><a href="https://cplusplus.github.io/LWG/issue4302">(i)</a></sup></td>
-<td><a href="lwg-active.html#LEWG">LEWG</a></td>
-<td>29.9.13.8 [linalg.algs.blas1.ssq]</td>
-<td>Problematic <code class='backtick'>vector_sum_of_squares</code> wording</td>
-<td>Yes</td>
-<td>1</td>
-<td></td>
-</tr>
-<tr>
-<td id="4331"><a href="lwg-active.html#4331" title="affine_on shape may be wrong (Status: LEWG)">4331</a><sup><a href="https://cplusplus.github.io/LWG/issue4331">(i)</a></sup></td>
-<td><a href="lwg-active.html#LEWG">LEWG</a></td>
-<td>33.13.3 [exec.affine.on]</td>
-<td><code>affine_on</code> shape may be wrong</td>
-<td><span class="no-pr">No</span></td>
-<td>2</td>
-<td></td>
-</tr>
-<tr>
 <td id="4348"><a href="lwg-active.html#4348" title="task doesn't support symmetric transfer (Status: LEWG)">4348</a><sup><a href="https://cplusplus.github.io/LWG/issue4348">(i)</a></sup></td>
 <td><a href="lwg-active.html#LEWG">LEWG</a></td>
 <td>33.13.6.2 [task.class]</td>
@@ -7009,15 +7018,6 @@ the evaluation of type traits</td>
 <td><a href="lwg-active.html#LEWG">LEWG</a></td>
 <td>33.13.6.5 [task.promise]</td>
 <td><code>task&lt;...&gt;::promise_type</code> supports arbitrary <code>allocator_arg</code> position</td>
-<td><span class="no-pr">No</span></td>
-<td>2</td>
-<td></td>
-</tr>
-<tr>
-<td id="4335"><a href="lwg-active.html#4335" title="task shadows the environment's allocator (Status: LEWG)">4335</a><sup><a href="https://cplusplus.github.io/LWG/issue4335">(i)</a></sup></td>
-<td><a href="lwg-active.html#LEWG">LEWG</a></td>
-<td>33.13.6.5 [task.promise]</td>
-<td><code>task</code> shadows the environment's allocator</td>
 <td><span class="no-pr">No</span></td>
 <td>2</td>
 <td></td>
