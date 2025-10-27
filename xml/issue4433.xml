@@ -11,7 +11,7 @@
 <priority>99</priority>
 
 <discussion>
-<b>Addresses US 97-203</b>
+<b>Addresses US <a href="https://github.com/cplusplus/nbballot/issues/772">97-203</a></b>
 <p>
 <sref ref="[meta.reflection.queries]"/>
 Language linkage is a property of functions, variables, and function types (<sref ref="[basic.link]"/>),

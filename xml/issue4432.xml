@@ -11,7 +11,7 @@
 <priority>99</priority>
 
 <discussion>
-<b>Addresses US 120-181 and US 121-182</b>
+<b>Addresses <a href="https://github.com/cplusplus/nbballot/issues/750">US 120-181</a> and <a href="https://github.com/cplusplus/nbballot/issues/751">US 121-182</a></b>
 <p>
 <sref ref="[meta.reflection.array]"/> p10 Clarify <i>e<sub>i</sub></i> type.
 It is not clear what <i>e<sub>i</sub></i> is when proxy references are involved.
