@@ -1,0 +1,57 @@
+<?xml version='1.0' encoding='utf-8' standalone='no'?>
+<!DOCTYPE issue SYSTEM "lwg-issue.dtd">
+
+<issue num="4432" status="New">
+<title>Clarify element initialization for <tt>meta::reflect_constant_array</tt></title>
+<section>
+<sref ref="[meta.reflection.array]"/>
+</section>
+<submitter>Tomasz Kamiński</submitter>
+<date>27 Oct 2025</date>
+<priority>99</priority>
+
+<discussion>
+<b>Addresses US 120-181 and US 121-182</b>
+<p>
+<sref ref="[meta.reflection.array]"/> p10 Clarify <i>e<sub>i</sub></i> type.
+It is not clear what <i>e<sub>i</sub></i> is when proxy references are involved.
+</p>
+<p>
+<sref ref="[meta.reflection.array]"/> Clarify copy-initialization vs. direct-initialization use
+The initialization of <tt>P</tt> uses copy-initialization but the Mandates clause uses direct-initialization.
+</p>
+</discussion>
+
+<resolution>
+<p>
+This wording is relative to <paper num="N5014"/>.
+</p>
+
+<ol>
+
+<li><p>Modify <sref ref="[meta.reflection.array]"/> as indicated:</p>
+
+<pre>
+template&lt;ranges::input_range R&gt;
+  consteval info reflect_constant_array(R&amp;&amp; r);
+</pre>
+<blockquote>
+<p>-8- Let <tt>T</tt> be <tt>ranges::range_value_t&lt;R&gt;</tt>.</p>
+<p>-9- <i>Mandates</i>:
+  <tt>T</tt> is a structural type (<sref ref="[temp.param]"/>),
+  <tt>is_constructible_v&lt;T, ranges::range_reference_t&lt;R&gt;&gt;</tt> is <tt>true</tt>, and
+  <del><tt>is_copy_constructible_v&lt;T&gt;</tt> is <tt>true</tt></del>
+  <ins><tt>T</tt> statisfies <tt>copy_constructible</tt></ins>.</p>
+<p>-10- Let <tt>V</tt> be the pack of values of type info of the same size as <tt>r</tt>,
+where the <i>i<sup>th</sup></i> element is
+<tt>reflect_constant(<del><i>e<sub>i</sub></i></del><ins>static_cast&lt;T&gt;(*<i>it<sub>i</sub></i>)</ins>)</tt>,
+where <i><del>e<sub>i</sub></del><ins>it<sub>i</sub></ins></i> is <ins>an iterator to</ins> the ith element of <tt>r</tt>.
+</p>
+<p>[&hellip;]</p>
+</blockquote>
+</li>
+</ol>
+
+</resolution>
+
+</issue>
