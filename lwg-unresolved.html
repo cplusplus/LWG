@@ -54,7 +54,7 @@
 </style>
 </head>
 <body>
-<p>Revised 2025-10-27 at 16:18:31 UTC
+<p>Revised 2025-10-27 at 16:29:22 UTC
 </p><h2>Unresolved Issues</h2>
 <hr>
 <h3 id="423"><a href="#423">423</a><sup><a href="https://cplusplus.github.io/LWG/issue423">(i)</a></sup>. Effects of negative <code>streamsize</code> in iostreams</h3>
@@ -81537,6 +81537,8 @@ reflection representing the underlying entity of what <code class='backtick'>r</
  <b>Submitter:</b> Jonathan Wakely <b>Opened:</b> 2025-10-24 <b>Last modified:</b> 2025-10-24</p>
 <p><b>Priority: </b>Not Prioritized
 </p>
+<p><b>View other</b> <a href="lwg-index-open.html#meta.reflection.access.queries">active issues</a> in [meta.reflection.access.queries].</p>
+<p><b>View all other</b> <a href="lwg-index.html#meta.reflection.access.queries">issues</a> in [meta.reflection.access.queries].</p>
 <p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
 <p><b>Discussion:</b></p>
 <b>Addresses US 102-209</b>
@@ -82012,6 +82014,173 @@ respectively (6.7 <a href="https://wg21.link/basic.link">[basic.link]</a>). Othe
 linkage. Otherwise, <code class='backtick'>false</code>.</ins></p>
 </blockquote>
 
+</li>
+</ol>
+
+
+
+
+
+
+<hr>
+<h3 id="4434"><a href="#4434">4434</a><sup><a href="https://cplusplus.github.io/LWG/issue4434">(i)</a></sup>. <code class='backtick'>meta::is_accessible</code> does not need to consider incomplete <i>D</i></h3>
+<p><b>Section:</b> 21.4.9 <a href="https://wg21.link/meta.reflection.access.queries">[meta.reflection.access.queries]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
+ <b>Submitter:</b> Jakub Jelinek <b>Opened:</b> 2025-10-27 <b>Last modified:</b> 2025-10-27</p>
+<p><b>Priority: </b>Not Prioritized
+</p>
+<p><b>View other</b> <a href="lwg-index-open.html#meta.reflection.access.queries">active issues</a> in [meta.reflection.access.queries].</p>
+<p><b>View all other</b> <a href="lwg-index.html#meta.reflection.access.queries">issues</a> in [meta.reflection.access.queries].</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
+<p><b>Discussion:</b></p>
+<p>
+21.4.9 <a href="https://wg21.link/meta.reflection.access.queries">[meta.reflection.access.queries]</a> says that
+<code class='backtick'>is_accessible(r, ctx)</code> throws if:
+<blockquote>
+<code class='backtick'>r</code> represents a direct base class relationship (<i>D</i>,<i>B</i>)
+for which <i>D</i> is incomplete.
+</blockquote>
+However, the only way to get access to a direct base relationship is
+through <code class='backtick'>bases_of</code>/<code class='backtick'>subobjects_of</code> and those throw if the class is incomplete,
+so I don't see how an <code class='backtick'>is_base</code> reflection could have ever incomplete <i>D</i>.
+</p>
+
+
+<p id="res-4434"><b>Proposed resolution:</b></p>
+<p>
+This wording is relative to <a href="https://wg21.link/N5014">N5014</a>.
+</p>
+
+<ol>
+
+<li><p>Modify 21.4.9 <a href="https://wg21.link/meta.reflection.access.queries">[meta.reflection.access.queries]</a> as indicated:</p>
+
+<blockquote>
+<p>-4- <i>Throws</i>: <code class='backtick'>meta::exception</code> if:
+<ul>
+<li>(4.1) &mdash;
+<code class='backtick'>r</code> represents a class member for which <code><i>PARENT-CLS</i>(r)</code>
+is an incomplete class <del>or</del><ins>.</ins>
+</li>
+<li><del>(4.2) &mdash;
+<code class='backtick'>r</code> represents a direct base class relationship (<i>D</i>,<i>B</i>)
+for which <i>D</i> is incomplete.</del>
+</li>
+</ul>
+</p>
+</blockquote>
+</li>
+</ol>
+
+
+
+
+
+<hr>
+<h3 id="4435"><a href="#4435">4435</a><sup><a href="https://cplusplus.github.io/LWG/issue4435">(i)</a></sup>. <code class='backtick'>meta::has_identifier</code> doesn't handle all types</h3>
+<p><b>Section:</b> 21.4.9 <a href="https://wg21.link/meta.reflection.access.queries">[meta.reflection.access.queries]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
+ <b>Submitter:</b> Jakub Jelinek <b>Opened:</b> 2025-10-27 <b>Last modified:</b> 2025-10-27</p>
+<p><b>Priority: </b>Not Prioritized
+</p>
+<p><b>View other</b> <a href="lwg-index-open.html#meta.reflection.access.queries">active issues</a> in [meta.reflection.access.queries].</p>
+<p><b>View all other</b> <a href="lwg-index.html#meta.reflection.access.queries">issues</a> in [meta.reflection.access.queries].</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
+<p><b>Discussion:</b></p>
+<p>
+The wording for <code class='backtick'>meta::has_identifier</code> doesn't specify what it returns for
+<code class='backtick'>^^int</code> or <code class='backtick'>^^void</code> or <code class='backtick'>^^Enum</code>.
+</p>
+
+
+<p id="res-4435"><b>Proposed resolution:</b></p>
+<p>
+This wording is relative to <a href="https://wg21.link/N5014">N5014</a>.
+</p>
+
+<ol>
+
+<li><p>Modify 21.4.9 <a href="https://wg21.link/meta.reflection.access.queries">[meta.reflection.access.queries]</a> as indicated:</p>
+
+<blockquote>
+<pre>consteval bool has_identifier(info r);</pre>
+<blockquote>
+<p>-1- <i>Returns</i>:
+<ul>
+<li>(1.1) &mdash;
+If <code class='backtick'>r</code> represents an entity that has a typedef name for linkage purposes
+(9.2.4 <a href="https://wg21.link/dcl.typedef">[dcl.typedef]</a>), then <code class='backtick'>true</code>.
+</li>
+<li>(1.2) &mdash;
+Otherwise, if <code class='backtick'>r</code> represents an unnamed entity, then <code class='backtick'>false</code>.
+</li>
+<li>(1.3) &mdash;
+Otherwise, if <code class='backtick'>r</code> represents a <ins>type, then <code class='backtick'>true</code> if</ins>
+<del>class type, then <code class='backtick'>!has_template_arguments(r)</code>.</del>
+<ul>
+<li><ins>(1.3.1) &mdash;
+<code class='backtick'>r</code> represents a class type and <code class='backtick'>!has_template_arguments(r)</code> is <code class='backtick'>true</code>, or
+</ins>
+</li>
+<li><ins>(1.3.2) &mdash;
+<code class='backtick'>r</code> represents an enumeration type.
+</ins>
+</li>
+</ul>
+<ins>Otherwise, <code class='backtick'>false</code>.</ins>
+</li>
+<li>(1.4) &mdash;
+Otherwise, if <code class='backtick'>r</code> represents a function, then <code class='backtick'>true</code> if <code class='backtick'>has_template_arguments(r)</code> is false and the function is not a constructor, destructor, operator function, or conversion function.
+Otherwise, <code class='backtick'>false</code>.
+</li>
+<li>(1.5) &mdash;
+Otherwise, if <code class='backtick'>r</code> represents a template, then <code class='backtick'>true</code> if <code class='backtick'>r</code> does not represent a constructor template, operator function template, or conversion function template.
+Otherwise, <code class='backtick'>false</code>.
+</li>
+<li>(1.6) &mdash;
+Otherwise, if <code class='backtick'>r</code> represents the <i>i</i><sup>th</sup> parameter of a function <i>F</i> that is an (implicit or explicit) specialization of a templated function <i>T</i> and the <i>i</i><sup>th</sup> parameter of the instantiated declaration of <i>T</i> whose template arguments are those of <i>F</i> would be instantiated from a pack, then <code class='backtick'>false</code>.
+</li>
+<li>(1.7) &mdash;
+Otherwise, if <code class='backtick'>r</code> represents the parameter <i>P</i> of a function <i>F</i>, then let <i>S</i> be the set of declarations, ignoring any explicit instantiations, that precede some point in the evaluation context and that declare either <i>F</i> or a templated function of which <i>F</i> is a specialization; <code class='backtick'>true</code> if
+<ul>
+<li>(1.7.1) &mdash;
+there is a declaration <i>D</i> in <i>S</i> that introduces a name <i>N</i> for either <i>P</i> or the parameter corresponding to <i>P</i> in the templated function that <i>D</i> declares and
+</li>
+<li>(1.7.2) &mdash;
+no declaration in <i>S</i> does so using any name other than <i>N</i>.
+</li>
+</ul>
+Otherwise, <code class='backtick'>false</code>.
+</li>
+<li>(1.8) &mdash;
+Otherwise, if <code class='backtick'>r</code> represents a variable, then <code class='backtick'>false</code> if the declaration
+of that variable was instantiated from a function parameter pack.
+Otherwise, <code class='backtick'>!has_template_arguments(r)</code>.
+</li>
+<li>(1.9) &mdash;
+Otherwise, if <code class='backtick'>r</code> represents a structured binding,
+then <code class='backtick'>false</code> if the declaration of that structured binding was instantiated
+from a structured binding pack.
+Otherwise, <code class='backtick'>true</code>.
+</li>
+<li>(1.10) &mdash;
+Otherwise, if <code class='backtick'>r</code> represents a type alias, then <code class='backtick'>!has_template_arguments(r)</code>.
+</li>
+<li>(1.11) &mdash;
+Otherwise, if <code class='backtick'>r</code> represents an enumerator, non-static-data member,
+namespace, or namespace alias, then <code class='backtick'>true</code>.
+</li>
+<li>(1.12) &mdash;
+Otherwise, if <code class='backtick'>r</code> represents a direct base class relationship,
+then <code class='backtick'>has_identifier(type_of(r))</code>.
+</li>
+<li>(1.13) &mdash;
+Otherwise, <code class='backtick'>r</code> represents a data member description (T,N,A,W,NUA)
+(11.4.1 <a href="https://wg21.link/class.mem.general">[class.mem.general]</a>); <code class='backtick'>true</code> if N is not ⊥.
+Otherwise, <code class='backtick'>false</code>.
+</li>
+</ul>
+</p>
+</blockquote>
+</blockquote>
 </li>
 </ol>
 
