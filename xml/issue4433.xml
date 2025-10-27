@@ -1,0 +1,57 @@
+<?xml version='1.0' encoding='utf-8' standalone='no'?>
+<!DOCTYPE issue SYSTEM "lwg-issue.dtd">
+
+<issue num="4433" status="New">
+<title>Incorrect query for C language linkage</title>
+<section>
+<sref ref="[meta.reflection.queries]"/>
+</section>
+<submitter>Tomasz Kamiński</submitter>
+<date>27 Oct 2025</date>
+<priority>99</priority>
+
+<discussion>
+<b>Addresses US 97-203</b>
+<p>
+<sref ref="[meta.reflection.queries]"/>
+Language linkage is a property of functions, variables, and function types (<sref ref="[basic.link]"/>),
+not of names.
+</p>
+</discussion>
+
+<resolution>
+<p>
+This wording is relative to <paper num="N5014"/>.
+</p>
+
+<ol>
+
+<li><p>Modify <sref ref="[meta.reflection.queries]"/> as indicated:</p>
+
+<pre>
+consteval bool has_internal_linkage(info r);
+consteval bool has_module_linkage(info r);
+consteval bool has_external_linkage(info r);
+<del>consteval bool has_c_language_linkage(info r);</del>
+consteval bool has_linkage(info r);
+</pre>
+<blockquote>
+<p>-25- <i>Returns</i>: `true` if `r` represents a variable, function, type, template, or namespace
+whose name has internal linkage, module linkage, <del>C language linkage, </del>or any linkage,
+respectively (<sref ref="[basic.link]"/>). Otherwise, `false`.</p>
+</blockquote>
+
+<pre>
+<ins>consteval bool has_c_language_linkage(info r);</ins>
+</pre>
+<blockquote>
+<p><ins>-??- <i>Returns</i>: `true` if `r` represents a variable, function, or function type with C language
+linkage, module linkage. Otherwise, `false`.</ins></p>
+</blockquote>
+
+</li>
+</ol>
+
+</resolution>
+
+</issue>
