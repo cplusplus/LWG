@@ -9,6 +9,7 @@
 <priority>99</priority>
 
 <discussion>
+<b>Addresses <a href="https://github.com/cplusplus/nbballot/issues/944">US 237-369</a></b>
 <p>
 The result of <code>schedule(sched)</code> for a scheduler
 <code>sched</code> is only required to be movable. An object of
@@ -21,7 +22,6 @@ this function should be qualified with an rvalue reference.
 <p>
 Set status to Tentatively Ready after six votes in favour during reflector poll.
 </p>
-<note>2025-10-24; Resolves <a href="https://github.com/cplusplus/nbballot/issues/944">US 237-369</a></note>
 </discussion>
 
 <resolution>

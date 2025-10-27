@@ -9,6 +9,7 @@
 <priority>99</priority>
 
 <discussion>
+<b>Addresses <a href="https://github.com/cplusplus/nbballot/issues/964">US 250-389</a></b>
 <p>
 The synopsis for <code>std::execution::task&lt;T,
 E&gt;::promise_type</code> declares <code>return_void()</code> or
@@ -23,7 +24,6 @@ into the <code><i>result</i></code>.
 <p>
 Set status to Tentatively Ready after five votes in favour during reflector poll.
 </p>
-<note>2025-10-24; Resolves <a href="https://github.com/cplusplus/nbballot/issues/964">US 250-389</a></note>
 </discussion>
 
 <resolution>

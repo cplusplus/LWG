@@ -11,6 +11,7 @@
 <priority>1</priority>
 
 <discussion>
+<b>Addresses <a href="https://github.com/cplusplus/nbballot/issues/873">DE 298</a></b>
 <p>
 <sref ref="[simd.mask.unary]"/> spells out the return type with the ABI tag of 
 the `basic_mask` specialization. That's problematic / overconstrained.
@@ -59,7 +60,6 @@ Set priority to 1 after reflector poll.
 <p>
 "Should be addressed together with <iref ref="4238"/>."
 </p>
-<note>2025-10-24; Resolves <a href="https://github.com/cplusplus/nbballot/issues/873">DE 298</a></note>
 </discussion>
 
 <resolution>

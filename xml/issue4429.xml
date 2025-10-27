@@ -11,12 +11,12 @@
 <priority>99</priority>
 
 <discussion>
+<b>Addresses <a href="https://github.com/cplusplus/nbballot/issues/988">US 109-170</a></b>
 <b>Addresses US 109-170</b>
 <p>
 <sref ref="[meta.reflection.layout]"/> p#8
 This should similarly disallow data member descriptions of bit-fields.
 </p>
-<note>2025-10-24; Resolves <a href="https://github.com/cplusplus/nbballot/issues/988">US 109-170</a></note>
 </discussion>
 
 <resolution>

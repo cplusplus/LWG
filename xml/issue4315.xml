@@ -12,6 +12,7 @@
 <priority>99</priority>
 
 <discussion>
+<b>Addresses <a href="https://github.com/cplusplus/nbballot/issues/849">US 171-274</a></b>
 <p>
 The Returns clauses of `vector_two_norm` <sref ref="[linalg.algs.blas1.nrm2]"/> and
 `matrix_frob_norm` <sref ref="[linalg.algs.blas1.matfrobnorm]"/> say that the
@@ -132,7 +133,6 @@ checkable as part of the API.
 </p>
 
 <note>LWG telecon 2025-10-10; Status updated New &rarr; Ready</note>
-<note>2025-10-24; Resolves <a href="https://github.com/cplusplus/nbballot/issues/849">US 171-274</a></note>
 </discussion>
 
 <resolution>

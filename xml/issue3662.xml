@@ -9,6 +9,7 @@
 <priority>3</priority>
 
 <discussion>
+<b>Addresses <a href="https://github.com/cplusplus/nbballot/issues/843">RU-268</a></b>
 <p>
 This will allocate temporary string, then copy one byte from it:
 </p>
@@ -55,7 +56,6 @@ The same problem applies to <tt>assign("...", pos, n)</tt>.
 <p>
 Set priority to 3 after reflector poll.
 </p>
-<note>2025-10-24; Resolves <a href="https://github.com/cplusplus/nbballot/issues/843">RU-268</a></note>
 </discussion>
 
 <resolution>

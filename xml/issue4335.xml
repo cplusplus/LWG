@@ -9,6 +9,7 @@
 <priority>2</priority>
 
 <discussion>
+<b>Addresses <a href="https://github.com/cplusplus/nbballot/issues/959">US 255-384</a></b>
 <p>
 Normally, the <code>get_allocator</code> query forwards the allocator
 from the receiver's environment. For <code>task</code> the
@@ -32,7 +33,6 @@ used by the coroutine and to produce a compile-time error otherwise.
 <p>
 Set priority to 2 after reflector poll. Send to LEWG.
 </p>
-<note>2025-10-24; Resolves <a href="https://github.com/cplusplus/nbballot/issues/959">US 255-384</a></note>
 </discussion>
 
 <resolution>

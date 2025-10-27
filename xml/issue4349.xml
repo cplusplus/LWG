@@ -9,6 +9,7 @@
 <priority>99</priority>
 
 <discussion>
+<b>Addresses <a href="https://github.com/cplusplus/nbballot/issues/956">US 258-381</a></b>
 <p>
 The wording for <code>task&lt;...&gt;::promise_type::initial_suspend</code>
 in <sref ref="[task.promise]"/> paragraph 6
@@ -32,7 +33,6 @@ unnecessary scheduling operations for the likely common case when
 <p>
 Set status to Tentatively Ready after five votes in favour during reflector poll.
 </p>
-<note>2025-10-24; Resolves <a href="https://github.com/cplusplus/nbballot/issues/956">US 258-381</a></note>
 </discussion>
 
 <resolution>

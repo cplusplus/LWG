@@ -9,6 +9,7 @@
 <priority>99</priority>
 
 <discussion>
+<b>Addresses <a href="https://github.com/cplusplus/nbballot/issues/958">US 256-383</a></b>
 <p>
 The specification of <code>change_coroutine_scheduler(sched)</code> uses
 <code>std::exchange</code> to put the scheduler into place
@@ -22,7 +23,6 @@ no requirement for scheduler to be assignable.
 <p>
 "`scheduler` requires `copyable` which requires assignment."
 </p>
-<note>2025-10-24; Resolves <a href="https://github.com/cplusplus/nbballot/issues/958">US 256-383</a></note>
 </discussion>
 
 <resolution>

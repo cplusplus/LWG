@@ -9,6 +9,7 @@
 <priority>1</priority>
 
 <discussion>
+<b>Addresses <a href="https://github.com/cplusplus/nbballot/issues/757">US 125-188</a></b>
 <p>
 The `meta::define_aggregate` function doesn't say what happens if <i>C</i>
 does not represent a class type.
@@ -69,7 +70,6 @@ be the corresponding data member description represented by
 <note>2025-10-24; LWG telecon. Jonathan updates wording</note>
 <p>Make a minimal change for now, can add support for aliases later.</p>
 
-<note>2025-10-24; Resolves <a href="https://github.com/cplusplus/nbballot/issues/757">US 125-188</a></note>
 </discussion>
 
 <resolution>

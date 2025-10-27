@@ -9,6 +9,7 @@
 <priority>3</priority>
 
 <discussion>
+<b>Addresses <a href="https://github.com/cplusplus/nbballot/issues/847">RU-272</a></b>
 <p>
 As pointed out in LWG issue <iref ref="2326"/> (closed as NAD) and 
 <a href="https://www.reddit.com/r/cpp/comments/1czwa5h/is_instantiating_stduniform_int_distributionuint8/">on reddit</a>, 
@@ -85,7 +86,6 @@ unsigned lead to subtle bugs. Most users are better off picking `int` or
 `unsigned int` (which is what they get from integral promotions anyway)
 and just using values that are in range for their intended destination type."
 </p>
-<note>2025-10-24; Resolves <a href="https://github.com/cplusplus/nbballot/issues/847">RU-272</a></note>
 </discussion>
 
 <resolution>

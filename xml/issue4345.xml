@@ -9,6 +9,7 @@
 <priority>99</priority>
 
 <discussion>
+<b>Addresses <a href="https://github.com/cplusplus/nbballot/issues/963">US 251-388</a></b>
 <p>
 The template parameter <code>V</code> of
 <code>task::promise_type::return_value</code> doesn't have a default
@@ -23,7 +24,6 @@ on 2025-08-26 it is considered to be more a bug fix than a new feature.
 <p>
 Set status to Tentatively Ready after five votes in favour during reflector poll.
 </p>
-<note>2025-10-24; Resolves <a href="https://github.com/cplusplus/nbballot/issues/963">US 251-388</a></note>
 </discussion>
 
 <resolution>

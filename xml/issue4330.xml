@@ -9,6 +9,7 @@
 <priority>2</priority>
 
 <discussion>
+<b>Addresses <a href="https://github.com/cplusplus/nbballot/issues/940">US 233-365</a></b>
 <p>
 The specification of <code>affine_on</code> uses "current execution
 resource" and it is unclear what that means exactly. Additionally,
@@ -31,7 +32,6 @@ context that is different from the one specified by the scheduler.
 <p>
 Set priority to 2 after reflector poll. Send to LEWG.
 </p>
-<note>2025-10-24; Resolves <a href="https://github.com/cplusplus/nbballot/issues/940">US 233-365</a></note>
 </discussion>
 
 <resolution>

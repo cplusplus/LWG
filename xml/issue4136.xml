@@ -9,6 +9,7 @@
 <priority>99</priority>
 
 <discussion>
+<b>Addresses <a href="https://github.com/cplusplus/nbballot/issues/853">US 170-278</a></b>
 <p>
 Mathematically, the diagonal elements of a Hermitian matrix must all
 have zero imaginary part (if they are complex numbers). <sref ref="[linalg.general]"/> 
@@ -70,7 +71,6 @@ affect the behavior of [linalg] Hermitian algorithms.
 <p>
 Set status to Tentatively Ready after six votes in favour during reflector poll.
 </p>
-<note>2025-10-24; Resolves <a href="https://github.com/cplusplus/nbballot/issues/853">US 170-278</a></note>
 </discussion>
 
 <resolution>

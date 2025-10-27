@@ -9,6 +9,7 @@
 <priority>2</priority>
 
 <discussion>
+<b>Addresses <a href="https://github.com/cplusplus/nbballot/issues/947">US 242-372</a></b>
 <p>
 The specification of <code>task</code> doesn't spell out when the
 coroutine frame is destroyed (i.e., when <code>handle.destroy()</code>
@@ -48,7 +49,6 @@ Set priority to 2 after reflector poll.
 <p>
 "P/R is incomplete - also needs to update at least `promise_type::uncaught_exception()`."
 </p>
-<note>2025-10-24; Resolves <a href="https://github.com/cplusplus/nbballot/issues/947">US 242-372</a></note>
 </discussion>
 
 <resolution>

@@ -9,6 +9,7 @@
 <priority>99</priority>
 
 <discussion>
+<b>Addresses <a href="https://github.com/cplusplus/nbballot/issues/850">US 172-275</a></b>
 <p>
 As <a href="https://github.com/ORNL/cpp-proposals-pub/issues/464">pointed out by Raffaele Solcà</a> 
 (CSCS Swiss National Supercomputing Centre), some of the <i>Mandates</i>, <i>Preconditions</i>, and 
@@ -348,7 +349,6 @@ template&lt;class ExecutionPolicy,
 <p>Add missing `()` in one place and change `(0, 1)` to `()` in another.</p>
 
 <note>LWG telecon 2025-10-10; Status updated New &rarr; Ready</note>
-<note>2025-10-24; Resolves <a href="https://github.com/cplusplus/nbballot/issues/850">US 172-275</a></note>
 </discussion>
 
 <resolution>
