@@ -62,7 +62,7 @@
 </tr>
 <tr>
 <td align="left">Date:</td>
-<td align="left">Revised 2025-10-27 at 13:06:59 UTC
+<td align="left">Revised 2025-10-27 at 16:18:31 UTC
 </td>
 </tr>
 <tr>
@@ -512,6 +512,7 @@ can use the <code>static_cast</code> branch without loss of precision. &mdash; <
 </p>
 <p><b>View all issues with</b> <a href="lwg-status.html#Tentatively Ready">Tentatively Ready</a> status.</p>
 <p><b>Discussion:</b></p>
+<b>Addresses <a href="https://github.com/cplusplus/nbballot/issues/853">US 170-278</a></b>
 <p>
 Mathematically, the diagonal elements of a Hermitian matrix must all
 have zero imaginary part (if they are complex numbers). 29.9.3 <a href="https://wg21.link/linalg.general">[linalg.general]</a> 
@@ -574,8 +575,6 @@ affect the behavior of [linalg] Hermitian algorithms.
 <p>
 Set status to Tentatively Ready after six votes in favour during reflector poll.
 </p>
-<p><i>[2025-10-24; Resolves <a href="https://github.com/cplusplus/nbballot/issues/853">US 170-278</a>]</i></p>
-
 
 
 <p id="res-4136"><b>Proposed resolution:</b></p>
@@ -616,6 +615,7 @@ will use the value [&hellip;]
 </p>
 <p><b>View all issues with</b> <a href="lwg-status.html#Ready">Ready</a> status.</p>
 <p><b>Discussion:</b></p>
+<b>Addresses <a href="https://github.com/cplusplus/nbballot/issues/850">US 172-275</a></b>
 <p>
 As <a href="https://github.com/ORNL/cpp-proposals-pub/issues/464">pointed out by Raffaele Solcà</a> 
 (CSCS Swiss National Supercomputing Centre), some of the <i>Mandates</i>, <i>Preconditions</i>, and 
@@ -958,8 +958,6 @@ template&lt;class ExecutionPolicy,
 <p>Add missing <code class='backtick'>()</code> in one place and change <code class='backtick'>(0, 1)</code> to <code class='backtick'>()</code> in another.</p>
 
 <p><i>[LWG telecon 2025-10-10; Status updated New &rarr; Ready]</i></p>
-
-<p><i>[2025-10-24; Resolves <a href="https://github.com/cplusplus/nbballot/issues/850">US 172-275</a>]</i></p>
 
 
 
@@ -3808,6 +3806,7 @@ This wording is relative to <a href="https://wg21.link/N5014">N5014</a>.
 </p>
 <p><b>View all issues with</b> <a href="lwg-status.html#Ready">Ready</a> status.</p>
 <p><b>Discussion:</b></p>
+<b>Addresses <a href="https://github.com/cplusplus/nbballot/issues/849">US 171-274</a></b>
 <p>
 The Returns clauses of <code class='backtick'>vector_two_norm</code> 29.9.13.9 <a href="https://wg21.link/linalg.algs.blas1.nrm2">[linalg.algs.blas1.nrm2]</a> and
 <code class='backtick'>matrix_frob_norm</code> 29.9.13.12 <a href="https://wg21.link/linalg.algs.blas1.matfrobnorm">[linalg.algs.blas1.matfrobnorm]</a> say that the
@@ -3931,8 +3930,6 @@ checkable as part of the API.
 </p>
 
 <p><i>[LWG telecon 2025-10-10; Status updated New &rarr; Ready]</i></p>
-
-<p><i>[2025-10-24; Resolves <a href="https://github.com/cplusplus/nbballot/issues/849">US 171-274</a>]</i></p>
 
 
 
@@ -4245,6 +4242,7 @@ the associated execution resource of the scheduler. &mdash; <i>end note</i>]</de
 <p><b>View all other</b> <a href="lwg-index.html#task.promise">issues</a> in [task.promise].</p>
 <p><b>View all issues with</b> <a href="lwg-status.html#Tentatively Ready">Tentatively Ready</a> status.</p>
 <p><b>Discussion:</b></p>
+<b>Addresses <a href="https://github.com/cplusplus/nbballot/issues/962">US 252-387</a></b>
 <p>
 The function <code>task::promise_type::unhandled_stopped()</code>
 is called from <code>set_stopped()</code> of a receiver and calls
@@ -4261,8 +4259,6 @@ already marked <code>noexcept</code> but
 <p>
 Set status to Tentatively Ready after five votes in favour during reflector poll.
 </p>
-<p><i>[2025-10-24; Resolves <a href="https://github.com/cplusplus/nbballot/issues/962">US 252-387</a>]</i></p>
-
 
 
 <p id="res-4340"><b>Proposed resolution:</b></p>
@@ -4306,6 +4302,7 @@ associated with <code><i>STATE</i>(*this)</code> by invoking
 <p><b>View all other</b> <a href="lwg-index.html#task.class">issues</a> in [task.class].</p>
 <p><b>View all issues with</b> <a href="lwg-status.html#Tentatively Ready">Tentatively Ready</a> status.</p>
 <p><b>Discussion:</b></p>
+<b>Addresses <a href="https://github.com/cplusplus/nbballot/issues/950">US 244-375</a></b>
 <p>
 Coroutines can't be copied. Thus, a <code>task</code> can be
 <code>connect()</code> just once.  To represent that
@@ -4321,8 +4318,6 @@ Set status to Tentatively Ready after five votes in favour during reflector poll
 <p>
 "It's nice to rvalue qualify such a function, but it is not strictly necessary."
 </p>
-<p><i>[2025-10-24; Resolves <a href="https://github.com/cplusplus/nbballot/issues/950">US 244-375</a>]</i></p>
-
 
 
 <p id="res-4341"><b>Proposed resolution:</b></p>
@@ -4369,6 +4364,7 @@ template&lt;receiver Rcvr&gt;
 <p><b>View all other</b> <a href="lwg-index.html#exec.task.scheduler">issues</a> in [exec.task.scheduler].</p>
 <p><b>View all issues with</b> <a href="lwg-status.html#Tentatively Ready">Tentatively Ready</a> status.</p>
 <p><b>Discussion:</b></p>
+<b>Addresses <a href="https://github.com/cplusplus/nbballot/issues/944">US 237-369</a></b>
 <p>
 The result of <code>schedule(sched)</code> for a scheduler
 <code>sched</code> is only required to be movable. An object of
@@ -4382,8 +4378,6 @@ this function should be qualified with an rvalue reference.
 <p>
 Set status to Tentatively Ready after six votes in favour during reflector poll.
 </p>
-<p><i>[2025-10-24; Resolves <a href="https://github.com/cplusplus/nbballot/issues/944">US 237-369</a>]</i></p>
-
 
 
 <p id="res-4342"><b>Proposed resolution:</b></p>
@@ -4433,6 +4427,7 @@ object initialized with <code>connect(<i>SENDER</i>(*this), std::move(<i>r</i>))
 <p><b>View all other</b> <a href="lwg-index.html#task.class">issues</a> in [task.class].</p>
 <p><b>View all issues with</b> <a href="lwg-status.html#Tentatively Ready">Tentatively Ready</a> status.</p>
 <p><b>Discussion:</b></p>
+<b>Addresses <a href="https://github.com/cplusplus/nbballot/issues/951">US 243-376</a></b>
 <p>
 The design discussion of <code>task</code> describes defaults for
 the two template parameters <code>T</code> and <code>Environment</code>
@@ -4463,8 +4458,6 @@ on 2025-08-26 the direction is to add the default arguments.
 <p>
 Set status to Tentatively Ready after five votes in favour during reflector poll.
 </p>
-<p><i>[2025-10-24; Resolves <a href="https://github.com/cplusplus/nbballot/issues/951">US 243-376</a>]</i></p>
-
 
 
 <p id="res-4343"><b>Proposed resolution:</b></p>
@@ -4496,6 +4489,7 @@ namespace std::execution {
 <p><b>View all other</b> <a href="lwg-index.html#task.promise">issues</a> in [task.promise].</p>
 <p><b>View all issues with</b> <a href="lwg-status.html#Tentatively Ready">Tentatively Ready</a> status.</p>
 <p><b>Discussion:</b></p>
+<b>Addresses <a href="https://github.com/cplusplus/nbballot/issues/963">US 251-388</a></b>
 <p>
 The template parameter <code>V</code> of
 <code>task::promise_type::return_value</code> doesn't have a default
@@ -4511,8 +4505,6 @@ on 2025-08-26 it is considered to be more a bug fix than a new feature.
 <p>
 Set status to Tentatively Ready after five votes in favour during reflector poll.
 </p>
-<p><i>[2025-10-24; Resolves <a href="https://github.com/cplusplus/nbballot/issues/963">US 251-388</a>]</i></p>
-
 
 
 <p id="res-4345"><b>Proposed resolution:</b></p>
@@ -4548,6 +4540,7 @@ namespace std::execution {
 <p><b>View all other</b> <a href="lwg-index.html#task.promise">issues</a> in [task.promise].</p>
 <p><b>View all issues with</b> <a href="lwg-status.html#Tentatively Ready">Tentatively Ready</a> status.</p>
 <p><b>Discussion:</b></p>
+<b>Addresses <a href="https://github.com/cplusplus/nbballot/issues/964">US 250-389</a></b>
 <p>
 The synopsis for <code>std::execution::task&lt;T,
 E&gt;::promise_type</code> declares <code>return_void()</code> or
@@ -4563,8 +4556,6 @@ into the <code><i>result</i></code>.
 <p>
 Set status to Tentatively Ready after five votes in favour during reflector poll.
 </p>
-<p><i>[2025-10-24; Resolves <a href="https://github.com/cplusplus/nbballot/issues/964">US 250-389</a>]</i></p>
-
 
 
 <p id="res-4346"><b>Proposed resolution:</b></p>
@@ -4603,6 +4594,7 @@ template&lt;class V&gt;
 <p><b>View all other</b> <a href="lwg-index.html#task.promise">issues</a> in [task.promise].</p>
 <p><b>View all issues with</b> <a href="lwg-status.html#Tentatively Ready">Tentatively Ready</a> status.</p>
 <p><b>Discussion:</b></p>
+<b>Addresses <a href="https://github.com/cplusplus/nbballot/issues/956">US 258-381</a></b>
 <p>
 The wording for <code>task&lt;...&gt;::promise_type::initial_suspend</code>
 in 33.13.6.5 <a href="https://wg21.link/task.promise">[task.promise]</a> paragraph 6
@@ -4627,8 +4619,6 @@ unnecessary scheduling operations for the likely common case when
 <p>
 Set status to Tentatively Ready after five votes in favour during reflector poll.
 </p>
-<p><i>[2025-10-24; Resolves <a href="https://github.com/cplusplus/nbballot/issues/956">US 258-381</a>]</i></p>
-
 
 
 <p id="res-4349"><b>Proposed resolution:</b></p>

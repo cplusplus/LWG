@@ -54,7 +54,7 @@
 </style>
 </head>
 <body>
-<p>Revised 2025-10-27 at 13:06:59 UTC
+<p>Revised 2025-10-27 at 16:18:31 UTC
 </p><h2>Unresolved Issues</h2>
 <hr>
 <h3 id="423"><a href="#423">423</a><sup><a href="https://cplusplus.github.io/LWG/issue423">(i)</a></sup>. Effects of negative <code>streamsize</code> in iostreams</h3>
@@ -22517,6 +22517,7 @@ path("..").filename();           <i>// yields</i> ".."
 <p><b>View all other</b> <a href="lwg-index.html#meta.type.synop">issues</a> in [meta.type.synop].</p>
 <p><b>View all issues with</b> <a href="lwg-status.html#Open">Open</a> status.</p>
 <p><b>Discussion:</b></p>
+<b>Addresses <a href="https://github.com/cplusplus/nbballot/issues/726">RU-147</a></b>
 <p>
 LWG <a href="lwg-active.html#2939" title="Some type-completeness constraints of traits are overspecified (Status: Open)">2939</a><sup><a href="https://cplusplus.github.io/LWG/issue2939" title="Latest snapshot">(i)</a></sup> suggests that the the preconditions of the type traits need reevaluation.
 This issue focuses specifically on <code>is_assignable</code> and, by extension, its variants:
@@ -22621,8 +22622,6 @@ We do not know how to solve this problem, and it's broader than just
 It was suggested to make an incremental improvement to <code class='backtick'>is_assignable</code>
 and open a new issue for the broader issue.
 </p>
-<p><i>[2025-10-24; Resolves <a href="https://github.com/cplusplus/nbballot/issues/726">RU-147</a>]</i></p>
-
 
 
 <p id="res-3099"><b>Proposed resolution:</b></p>
@@ -36903,6 +36902,7 @@ are written directly to the output sequence without calling <code>xsputn</code>.
 <p><b>View all other</b> <a href="lwg-index.html#string.append">issues</a> in [string.append].</p>
 <p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
 <p><b>Discussion:</b></p>
+<b>Addresses <a href="https://github.com/cplusplus/nbballot/issues/843">RU-268</a></b>
 <p>
 This will allocate temporary string, then copy one byte from it:
 </p>
@@ -36950,8 +36950,6 @@ The same problem applies to <code>assign("...", pos, n)</code>.
 <p>
 Set priority to 3 after reflector poll.
 </p>
-<p><i>[2025-10-24; Resolves <a href="https://github.com/cplusplus/nbballot/issues/843">RU-268</a>]</i></p>
-
 
 
 <p id="res-3662"><b>Proposed resolution:</b></p>
@@ -58805,6 +58803,7 @@ namespace std::ranges {
 <p><b>View all other</b> <a href="lwg-index.html#rand.req.genl">issues</a> in [rand.req.genl].</p>
 <p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
 <p><b>Discussion:</b></p>
+<b>Addresses <a href="https://github.com/cplusplus/nbballot/issues/847">RU-272</a></b>
 <p>
 As pointed out in LWG issue <a href="lwg-closed.html#2326" title="uniform_int_distribution&lt;unsigned char&gt; should be permitted (Status: NAD)">2326</a><sup><a href="https://cplusplus.github.io/LWG/issue2326" title="Latest snapshot">(i)</a></sup> (closed as NAD) and 
 <a href="https://www.reddit.com/r/cpp/comments/1czwa5h/is_instantiating_stduniform_int_distributionuint8/">on reddit</a>, 
@@ -58883,8 +58882,6 @@ unsigned lead to subtle bugs. Most users are better off picking <code class='bac
 <code class='backtick'>unsigned int</code> (which is what they get from integral promotions anyway)
 and just using values that are in range for their intended destination type."
 </p>
-<p><i>[2025-10-24; Resolves <a href="https://github.com/cplusplus/nbballot/issues/847">RU-272</a>]</i></p>
-
 
 
 <p id="res-4109"><b>Proposed resolution:</b></p>
@@ -67250,6 +67247,7 @@ Set priority to 3 after reflector poll.
 <p><b>View all other</b> <a href="lwg-index.html#simd.mask.unary">issues</a> in [simd.mask.unary].</p>
 <p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
 <p><b>Discussion:</b></p>
+<b>Addresses <a href="https://github.com/cplusplus/nbballot/issues/872">DE 297</a></b>
 <p>
 Consider:
 </p>
@@ -67294,8 +67292,6 @@ Set priority to 1 after reflector poll.
 
 
 <p><i>[2025-10-17; related to <a href="lwg-active.html#4376" title="ABI tag in return type of [simd.mask.unary] is overconstrained (Status: New)">4376</a><sup><a href="https://cplusplus.github.io/LWG/issue4376" title="Latest snapshot">(i)</a></sup>.]</i></p>
-
-<p><i>[2025-10-24; Resolves <a href="https://github.com/cplusplus/nbballot/issues/872">DE 297</a>]</i></p>
 
 
 
@@ -68860,6 +68856,7 @@ Victor thinks it should be an exception.
 </p>
 <p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
 <p><b>Discussion:</b></p>
+<b>Addresses <a href="https://github.com/cplusplus/nbballot/issues/790">RU-220</a></b>
 <p>
 Currently the wording in 22.10.17.1 <a href="https://wg21.link/func.wrap.general">[func.wrap.general]</a> allows implementation
 to avoid double indirection when constructing owning functions wrappers from another one:
@@ -69027,8 +69024,6 @@ Set priority to 2 after reflector poll.
 Strong oposition to making it unspecified whether <code>function_ref</code> constructed from
 other <code>function_ref</code> will reference source object or its target directly.
 </p>
-<p><i>[2025-10-24; Resolves <a href="https://github.com/cplusplus/nbballot/issues/790">RU-220</a>]</i></p>
-
 
 
 <p id="res-4264"><b>Proposed resolution:</b></p>
@@ -71998,6 +71993,7 @@ member function of function type <code class='backtick'>F</code> or <code class=
 </p>
 <p><b>View all issues with</b> <a href="lwg-status.html#LEWG">LEWG</a> status.</p>
 <p><b>Discussion:</b></p>
+<b>Addresses <a href="https://github.com/cplusplus/nbballot/issues/851">US 169-276</a></b>
 <p>
 The current wording for <code class='backtick'>vector_sum_of_squares</code>
 29.9.13.8 <a href="https://wg21.link/linalg.algs.blas1.ssq">[linalg.algs.blas1.ssq]</a> has three problems with its specification of the
@@ -72061,8 +72057,6 @@ This is the subject of NB comment 169-276.
 LWG took a poll in the 2025-10-10 telecon and recommends that LEWG confirms
 this resolution.
 </p>
-<p><i>[2025-10-24; Resolves <a href="https://github.com/cplusplus/nbballot/issues/851">US 169-276</a>]</i></p>
-
 
 
 <p id="res-4302"><b>Proposed resolution:</b></p>
@@ -73689,6 +73683,7 @@ constexpr mapping(const extents_type&amp; ext, OtherIndexType pad<ins>ding</ins>
 </p>
 <p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
 <p><b>Discussion:</b></p>
+<b>Addresses <a href="https://github.com/cplusplus/nbballot/issues/993">US 114-175</a></b>
 <p>
 <code class='backtick'>can_substitute</code> and <code class='backtick'>substitute</code> are currently specified in terms of splices in a template argument list:
 <p/>
@@ -73719,8 +73714,6 @@ While the intent seems clear, this should be rephrased to be more technically co
 <p>
 Set priority to 1 after reflector poll.
 </p>
-<p><i>[2025-10-24; Resolves <a href="https://github.com/cplusplus/nbballot/issues/993">US 114-175</a>]</i></p>
-
 
 
 <p id="res-4316"><b>Proposed resolution:</b></p>
@@ -75070,6 +75063,7 @@ the first will execute sequentially and the second will execute in parallel."
 <p><b>View all other</b> <a href="lwg-index.html#exec.affine.on">issues</a> in [exec.affine.on].</p>
 <p><b>View all issues with</b> <a href="lwg-status.html#LEWG">LEWG</a> status.</p>
 <p><b>Discussion:</b></p>
+<b>Addresses <a href="https://github.com/cplusplus/nbballot/issues/941">US 232-366</a></b>
 <p>
 There are no customisations of <code>affine_on</code> for other
 algorithms specified. For example, <code>affine_on(just(), sched)</code>
@@ -75085,8 +75079,6 @@ Set priority to 3 after reflector poll. Send to LEWG.
 <p>
 "Becomes moot if we remove customization entirely."
 </p>
-<p><i>[2025-10-24; Resolves <a href="https://github.com/cplusplus/nbballot/issues/941">US 232-366</a>]</i></p>
-
 
 
 <p id="res-4329"><b>Proposed resolution:</b></p>
@@ -75107,6 +75099,7 @@ Set priority to 3 after reflector poll. Send to LEWG.
 <p><b>View all other</b> <a href="lwg-index.html#exec.affine.on">issues</a> in [exec.affine.on].</p>
 <p><b>View all issues with</b> <a href="lwg-status.html#LEWG">LEWG</a> status.</p>
 <p><b>Discussion:</b></p>
+<b>Addresses <a href="https://github.com/cplusplus/nbballot/issues/940">US 233-365</a></b>
 <p>
 The specification of <code>affine_on</code> uses "current execution
 resource" and it is unclear what that means exactly. Additionally,
@@ -75130,8 +75123,6 @@ context that is different from the one specified by the scheduler.
 <p>
 Set priority to 2 after reflector poll. Send to LEWG.
 </p>
-<p><i>[2025-10-24; Resolves <a href="https://github.com/cplusplus/nbballot/issues/940">US 233-365</a>]</i></p>
-
 
 
 <p id="res-4330"><b>Proposed resolution:</b></p>
@@ -75152,6 +75143,7 @@ Set priority to 2 after reflector poll. Send to LEWG.
 <p><b>View all other</b> <a href="lwg-index.html#exec.affine.on">issues</a> in [exec.affine.on].</p>
 <p><b>View all issues with</b> <a href="lwg-status.html#LEWG">LEWG</a> status.</p>
 <p><b>Discussion:</b></p>
+<b>Addresses <a href="https://github.com/cplusplus/nbballot/issues/939">US 234-364</a></b>
 <p>
 <code>affine_on</code> is specified to take a sender and a scheduler
 as arguments. The scheduler is meant to match the scheduler obtained
@@ -75167,8 +75159,6 @@ argument.
 <p>
 Set priority to 2 after reflector poll. Send to LEWG.
 </p>
-<p><i>[2025-10-24; Resolves <a href="https://github.com/cplusplus/nbballot/issues/939">US 234-364</a>]</i></p>
-
 
 
 <p id="res-4331"><b>Proposed resolution:</b></p>
@@ -75189,6 +75179,7 @@ Set priority to 2 after reflector poll. Send to LEWG.
 <p><b>View all other</b> <a href="lwg-index.html#exec.affine.on">issues</a> in [exec.affine.on].</p>
 <p><b>View all issues with</b> <a href="lwg-status.html#LEWG">LEWG</a> status.</p>
 <p><b>Discussion:</b></p>
+<b>Addresses <a href="https://github.com/cplusplus/nbballot/issues/938">US 235-363</a></b>
 <p>
 The main purpose of <code>affine_on</code> is to make sure work
 resumes on a specific execution context. The scheduling operation
@@ -75208,8 +75199,6 @@ Set priority to 2 after reflector poll. Send to LEWG.
 <p>
 "This affects the cancelation behaviour so should also be seen by SG1."
 </p>
-<p><i>[2025-10-24; Resolves <a href="https://github.com/cplusplus/nbballot/issues/938">US 235-363</a>]</i></p>
-
 
 
 <p id="res-4332"><b>Proposed resolution:</b></p>
@@ -75323,6 +75312,7 @@ Set priority to 2 after reflector poll.
 <p><b>View all other</b> <a href="lwg-index.html#task.promise">issues</a> in [task.promise].</p>
 <p><b>View all issues with</b> <a href="lwg-status.html#LEWG">LEWG</a> status.</p>
 <p><b>Discussion:</b></p>
+<b>Addresses <a href="https://github.com/cplusplus/nbballot/issues/959">US 255-384</a></b>
 <p>
 Normally, the <code>get_allocator</code> query forwards the allocator
 from the receiver's environment. For <code>task</code> the
@@ -75347,8 +75337,6 @@ used by the coroutine and to produce a compile-time error otherwise.
 <p>
 Set priority to 2 after reflector poll. Send to LEWG.
 </p>
-<p><i>[2025-10-24; Resolves <a href="https://github.com/cplusplus/nbballot/issues/959">US 255-384</a>]</i></p>
-
 
 
 <p id="res-4335"><b>Proposed resolution:</b></p>
@@ -75543,6 +75531,7 @@ Set priority to 2 after reflector poll. Send to LEWG.
 </p>
 <p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
 <p><b>Discussion:</b></p>
+<b>Addresses <a href="https://github.com/cplusplus/nbballot/issues/947">US 242-372</a></b>
 <p>
 The specification of <code>task</code> doesn't spell out when the
 coroutine frame is destroyed (i.e., when <code>handle.destroy()</code>
@@ -75583,8 +75572,6 @@ Set priority to 2 after reflector poll.
 <p>
 "P/R is incomplete - also needs to update at least <code class='backtick'>promise_type::uncaught_exception()</code>."
 </p>
-<p><i>[2025-10-24; Resolves <a href="https://github.com/cplusplus/nbballot/issues/947">US 242-372</a>]</i></p>
-
 
 
 <p id="res-4339"><b>Proposed resolution:</b></p>
@@ -75677,6 +75664,7 @@ Change the specification of <code>unhandled_stopped</code> to destroy the corout
 <p><b>View all other</b> <a href="lwg-index.html#exec.affine.on">issues</a> in [exec.affine.on].</p>
 <p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
 <p><b>Discussion:</b></p>
+<b>Addresses <a href="https://github.com/cplusplus/nbballot/issues/937">US 236-362</a></b>
 <p>
 The wording of <code>affine_on</code> doesnt have a specification
 for the default implementation. For other algorithms the default
@@ -75696,8 +75684,6 @@ allow that.
 <p>
 Set priority to 2 after reflector poll.
 </p>
-<p><i>[2025-10-24; Resolves <a href="https://github.com/cplusplus/nbballot/issues/937">US 236-362</a>]</i></p>
-
 
 
 <p id="res-4344"><b>Proposed resolution:</b></p>
@@ -75742,6 +75728,7 @@ return transform_sender(
 <p><b>View all other</b> <a href="lwg-index.html#task.promise">issues</a> in [task.promise].</p>
 <p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
 <p><b>Discussion:</b></p>
+<b>Addresses <a href="https://github.com/cplusplus/nbballot/issues/957">US 257-382</a></b>
 <p>
 The type <code>task&lt;...&gt;::promise_type</code> has exposition-only
 members <code><i>source</i></code> and <code><i>token</i></code>.
@@ -75769,8 +75756,6 @@ it is only created when accessed.
 <p>
 Set priority to 2 after reflector poll.
 </p>
-<p><i>[2025-10-24; Resolves <a href="https://github.com/cplusplus/nbballot/issues/957">US 257-382</a>]</i></p>
-
 
 
 <p id="res-4347"><b>Proposed resolution:</b></p>
@@ -77423,6 +77408,7 @@ Set priority to 3 after reflector poll.
 <p><b>View all other</b> <a href="lwg-index.html#simd.mask.unary">issues</a> in [simd.mask.unary].</p>
 <p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
 <p><b>Discussion:</b></p>
+<b>Addresses <a href="https://github.com/cplusplus/nbballot/issues/873">DE 298</a></b>
 <p>
 29.10.9.4 <a href="https://wg21.link/simd.mask.unary">[simd.mask.unary]</a> spells out the return type with the ABI tag of 
 the <code class='backtick'>basic_mask</code> specialization. That's problematic / overconstrained.
@@ -77472,8 +77458,6 @@ Set priority to 1 after reflector poll.
 <p>
 "Should be addressed together with <a href="lwg-active.html#4238" title="simd_mask&lt;complex&lt;double&gt;&gt;::operator+/-/~ return a disabled simd specialization (Status: New)">4238</a><sup><a href="https://cplusplus.github.io/LWG/issue4238" title="Latest snapshot">(i)</a></sup>."
 </p>
-<p><i>[2025-10-24; Resolves <a href="https://github.com/cplusplus/nbballot/issues/873">DE 298</a>]</i></p>
-
 
 
 <p id="res-4376"><b>Proposed resolution:</b></p>
@@ -81382,6 +81366,7 @@ leading zeroes) <ins>in the ordinary literal encoding (5.3.1 <a href="https://wg
 <p><b>View all other</b> <a href="lwg-index.html#meta.reflection.define.aggregate">issues</a> in [meta.reflection.define.aggregate].</p>
 <p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
 <p><b>Discussion:</b></p>
+<b>Addresses <a href="https://github.com/cplusplus/nbballot/issues/757">US 125-188</a></b>
 <p>
 The <code class='backtick'>meta::define_aggregate</code> function doesn't say what happens if <i>C</i>
 does not represent a class type.
@@ -81445,8 +81430,6 @@ be the corresponding data member description represented by
 <p><i>[2025-10-24; LWG telecon. Jonathan updates wording]</i></p>
 
 <p>Make a minimal change for now, can add support for aliases later.</p>
-
-<p><i>[2025-10-24; Resolves <a href="https://github.com/cplusplus/nbballot/issues/757">US 125-188</a>]</i></p>
 
 
 
@@ -81726,13 +81709,12 @@ for every element <code class='backtick'>e</code> of <code class='backtick'>r</c
 </p>
 <p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
 <p><b>Discussion:</b></p>
+<b>Addresses <a href="https://github.com/cplusplus/nbballot/issues/988">US 109-170</a></b>
 <b>Addresses US 109-170</b>
 <p>
 21.4.11 <a href="https://wg21.link/meta.reflection.layout">[meta.reflection.layout]</a> p#8
 This should similarly disallow data member descriptions of bit-fields.
 </p>
-<p><i>[2025-10-24; Resolves <a href="https://github.com/cplusplus/nbballot/issues/988">US 109-170</a>]</i></p>
-
 
 
 <p id="res-4429"><b>Proposed resolution:</b></p>
@@ -81932,7 +81914,7 @@ namespace ranges {
 <p><b>View all other</b> <a href="lwg-index.html#meta.reflection.array">issues</a> in [meta.reflection.array].</p>
 <p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
 <p><b>Discussion:</b></p>
-<b>Addresses US 120-181 and US 121-182</b>
+<b>Addresses <a href="https://github.com/cplusplus/nbballot/issues/750">US 120-181</a> and <a href="https://github.com/cplusplus/nbballot/issues/751">US 121-182</a></b>
 <p>
 21.4.15 <a href="https://wg21.link/meta.reflection.array">[meta.reflection.array]</a> p10 Clarify <i>e<sub>i</sub></i> type.
 It is not clear what <i>e<sub>i</sub></i> is when proxy references are involved.
@@ -81988,7 +81970,7 @@ where <i><del>e<sub>i</sub></del><ins>it<sub>i</sub></ins></i> is <ins>an iterat
 <p><b>View all other</b> <a href="lwg-index.html#meta.reflection.queries">issues</a> in [meta.reflection.queries].</p>
 <p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
 <p><b>Discussion:</b></p>
-<b>Addresses US 97-203</b>
+<b>Addresses US <a href="https://github.com/cplusplus/nbballot/issues/772">97-203</a></b>
 <p>
 21.4.7 <a href="https://wg21.link/meta.reflection.queries">[meta.reflection.queries]</a>
 Language linkage is a property of functions, variables, and function types (6.7 <a href="https://wg21.link/basic.link">[basic.link]</a>),
