@@ -17,6 +17,9 @@
 Language linkage is a property of functions, variables, and function types (<sref ref="[basic.link]"/>),
 not of names.
 </p>
+<note>
+The wording below contains a drive-by fix for a misapplication of <paper num="P2996R13"/>
+</note>
 </discussion>
 
 <resolution>
@@ -37,7 +40,7 @@ consteval bool has_linkage(info r);
 </pre>
 <blockquote>
 <p>-25- <i>Returns</i>: `true` if `r` represents a variable, function, type, template, or namespace
-whose name has internal linkage, module linkage, <del>C language linkage, </del>or any linkage,
+whose name has internal linkage, module linkage, <del>C language</del><ins>external</ins> linkage, or any linkage,
 respectively (<sref ref="[basic.link]"/>). Otherwise, `false`.</p>
 </blockquote>
 
@@ -46,7 +49,7 @@ respectively (<sref ref="[basic.link]"/>). Otherwise, `false`.</p>
 </pre>
 <blockquote>
 <p><ins>-??- <i>Returns</i>: `true` if `r` represents a variable, function, or function type with C language
-linkage, module linkage. Otherwise, `false`.</ins></p>
+linkage. Otherwise, `false`.</ins></p>
 </blockquote>
 
 </li>

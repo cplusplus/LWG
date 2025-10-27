@@ -41,11 +41,11 @@ template&lt;ranges::input_range R&gt;
   <tt>T</tt> is a structural type (<sref ref="[temp.param]"/>),
   <tt>is_constructible_v&lt;T, ranges::range_reference_t&lt;R&gt;&gt;</tt> is <tt>true</tt>, and
   <del><tt>is_copy_constructible_v&lt;T&gt;</tt> is <tt>true</tt></del>
-  <ins><tt>T</tt> statisfies <tt>copy_constructible</tt></ins>.</p>
+  <ins><tt>T</tt> satisfies <tt>copy_constructible</tt></ins>.</p>
 <p>-10- Let <tt>V</tt> be the pack of values of type info of the same size as <tt>r</tt>,
 where the <i>i<sup>th</sup></i> element is
 <tt>reflect_constant(<del><i>e<sub>i</sub></i></del><ins>static_cast&lt;T&gt;(*<i>it<sub>i</sub></i>)</ins>)</tt>,
-where <i><del>e<sub>i</sub></del><ins>it<sub>i</sub></ins></i> is <ins>an iterator to</ins> the ith element of <tt>r</tt>.
+where <i><del>e<sub>i</sub></del><ins>it<sub>i</sub></ins></i> is <ins>an iterator to</ins> the <i>i<sup>th</sup></i> element of <tt>r</tt>.
 </p>
 <p>[&hellip;]</p>
 </blockquote>
