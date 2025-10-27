@@ -59,7 +59,7 @@
 <p>Reference ISO/IEC IS 14882:2024(E)</p>
 <p>This document is the Table of Contents for the <a href="lwg-active.html">Library Active Issues List</a>,
 <a href="lwg-defects.html">Library Defect Reports and Accepted Issues</a>, and <a href="lwg-closed.html">Library Closed Issues List</a>.</p>
-<p>Revised 2025-10-27 at 09:59:19 UTC
+<p>Revised 2025-10-27 at 10:01:53 UTC
 </p><table class="issues-index">
 <tr>
   <th><a href="lwg-toc.html">Issue</a></th>
@@ -69,6 +69,15 @@
   <th>Proposed Resolution</th>
   <th><a href="unresolved-prioritized.html">Priority</a></th>
   <th>Duplicates</th>
+</tr>
+<tr>
+<td id="2991"><a href="lwg-active.html#2991" title="variant copy constructor missing noexcept(see below) (Status: Tentatively Ready)">2991</a><sup><a href="https://cplusplus.github.io/LWG/issue2991">(i)</a></sup></td>
+<td><a href="lwg-active.html#Ready">Tentatively Ready</a></td>
+<td>22.6.3.2 [variant.ctor]</td>
+<td><code>variant</code> copy constructor missing <code>noexcept(<i>see below</i>)</code></td>
+<td>Yes</td>
+<td></td>
+<td></td>
 </tr>
 <tr>
 <td id="3090"><a href="lwg-active.html#3090" title="What is &sect;[time.duration.cons]p4's &quot;no overflow is induced in the conversion&quot; intended to mean? (Status: Tentatively Ready)">3090</a><sup><a href="https://cplusplus.github.io/LWG/issue3090">(i)</a></sup></td>
@@ -487,6 +496,17 @@ of uses-allocator construction</td>
 <td></td>
 </tr>
 <tr>
+<td id="4382"><a href="lwg-active.html#4382" title="The simd::basic_mask(bool) overload needs to be more constrained
+ (Status: Tentatively Ready)">4382</a><sup><a href="https://cplusplus.github.io/LWG/issue4382">(i)</a></sup></td>
+<td><a href="lwg-active.html#Ready">Tentatively Ready</a></td>
+<td>29.10.9.2 [simd.mask.ctor]</td>
+<td>The <code>simd::basic_mask(bool)</code> overload needs to be more constrained
+</td>
+<td>Yes</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
 <td id="4384"><a href="lwg-active.html#4384" title="flat_set::erase(iterator) is underconstrained
  (Status: Tentatively Ready)">4384</a><sup><a href="https://cplusplus.github.io/LWG/issue4384">(i)</a></sup></td>
 <td><a href="lwg-active.html#Ready">Tentatively Ready</a></td>
@@ -572,6 +592,15 @@ constructor</td>
 <td></td>
 </tr>
 <tr>
+<td id="4422"><a href="lwg-active.html#4422" title="meta::access_context should be a consteval-only type (Status: Tentatively Ready)">4422</a><sup><a href="https://cplusplus.github.io/LWG/issue4422">(i)</a></sup></td>
+<td><a href="lwg-active.html#Ready">Tentatively Ready</a></td>
+<td>21.4.8 [meta.reflection.access.context]</td>
+<td><code class='backtick'>meta::access_context</code> should be a consteval-only type</td>
+<td>Yes</td>
+<td>2</td>
+<td></td>
+</tr>
+<tr>
 <td id="4423"><a href="lwg-active.html#4423" title="meta::data_member_spec allows negative bit-field widths (Status: Ready)">4423</a><sup><a href="https://cplusplus.github.io/LWG/issue4423">(i)</a></sup></td>
 <td><a href="lwg-active.html#Ready">Ready</a></td>
 <td>21.4.16 [meta.reflection.define.aggregate]</td>
@@ -585,6 +614,15 @@ constructor</td>
 <td><a href="lwg-active.html#Ready">Tentatively Ready</a></td>
 <td>22.10.17.6.5 [func.wrap.ref.deduct]</td>
 <td>CTAD <code>function_ref</code> of data member pointer should produce <code>noexcept</code> signature</td>
+<td>Yes</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td id="4426"><a href="lwg-active.html#4426" title="Clarify what meta::reflect_constant_string considers a string literal (Status: Tentatively Ready)">4426</a><sup><a href="https://cplusplus.github.io/LWG/issue4426">(i)</a></sup></td>
+<td><a href="lwg-active.html#Ready">Tentatively Ready</a></td>
+<td>21.4.15 [meta.reflection.array]</td>
+<td>Clarify what <code class='backtick'>meta::reflect_constant_string</code> considers a string literal</td>
 <td>Yes</td>
 <td></td>
 <td></td>

@@ -60,8 +60,8 @@
 <p>This document is the Table of Contents for the <a href="lwg-active.html">Library Active Issues List</a>,
 <a href="lwg-defects.html">Library Defect Reports and Accepted Issues</a>, and <a href="lwg-closed.html">Library Closed Issues List</a>,
 sorted by priority.</p>
-<p>Revised 2025-10-27 at 09:59:19 UTC
-</p><h2 id="Priority_1">Priority 1 (19 issues)</h2>
+<p>Revised 2025-10-27 at 10:01:53 UTC
+</p><h2 id="Priority_1">Priority 1 (20 issues)</h2>
 <table class="issues-index">
 <tr>
   <th><a href="lwg-toc.html">Issue</a></th>
@@ -98,6 +98,15 @@ sorted by priority.</p>
 <td>21.4.13 [meta.reflection.substitute]</td>
 <td><code>{can_}substitute</code> specification is ill-formed</td>
 <td><span class="no-pr">No</span></td>
+<td>1</td>
+<td></td>
+</tr>
+<tr>
+<td id="4424"><a href="lwg-active.html#4424" title="meta::define_aggregate should require a class type (Status: New)">4424</a><sup><a href="https://cplusplus.github.io/LWG/issue4424">(i)</a></sup></td>
+<td><a href="lwg-active.html#New">New</a></td>
+<td>21.4.16 [meta.reflection.define.aggregate]</td>
+<td><code class='backtick'>meta::define_aggregate</code> should require a class type</td>
+<td>Yes</td>
 <td>1</td>
 <td></td>
 </tr>
@@ -248,7 +257,7 @@ incorrectly constrained for <code>&lt;stdfloat&gt;</code> types</td>
 <td></td>
 </tr>
 </table>
-<h2 id="Priority_2">Priority 2 (95 issues)</h2>
+<h2 id="Priority_2">Priority 2 (94 issues)</h2>
 <table class="issues-index">
 <tr>
   <th><a href="lwg-toc.html">Issue</a></th>
@@ -381,15 +390,6 @@ incorrectly constrained for <code>&lt;stdfloat&gt;</code> types</td>
 <td><a href="lwg-active.html#New">New</a></td>
 <td>21.3.8 [meta.rel]</td>
 <td><code>std::is_(nothrow_)convertible</code> should be reworded to avoid dependence on the <code>return</code> statement</td>
-<td>Yes</td>
-<td>2</td>
-<td></td>
-</tr>
-<tr>
-<td id="4422"><a href="lwg-active.html#4422" title="meta::access_context should be a consteval-only type (Status: New)">4422</a><sup><a href="https://cplusplus.github.io/LWG/issue4422">(i)</a></sup></td>
-<td><a href="lwg-active.html#New">New</a></td>
-<td>21.4.8 [meta.reflection.access.context]</td>
-<td><code class='backtick'>meta::access_context</code> should be a consteval-only type</td>
 <td>Yes</td>
 <td>2</td>
 <td></td>
@@ -6305,7 +6305,7 @@ co_await expression instead of same_as&lt;void&gt; (Status: New)">4357</a><sup><
 <td></td>
 </tr>
 </table>
-<h2 id="Priority_99">Not Prioritized (14 issues)</h2>
+<h2 id="Priority_99">Not Prioritized (10 issues)</h2>
 <table class="issues-index">
 <tr>
   <th><a href="lwg-toc.html">Issue</a></th>
@@ -6353,33 +6353,6 @@ co_await expression instead of same_as&lt;void&gt; (Status: New)">4357</a><sup><
 <td></td>
 </tr>
 <tr>
-<td id="4426"><a href="lwg-active.html#4426" title="Clarify what meta::reflect_constant_string considers a string literal (Status: New)">4426</a><sup><a href="https://cplusplus.github.io/LWG/issue4426">(i)</a></sup></td>
-<td><a href="lwg-active.html#New">New</a></td>
-<td>21.4.15 [meta.reflection.array]</td>
-<td>Clarify what <code class='backtick'>meta::reflect_constant_string</code> considers a string literal</td>
-<td>Yes</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td id="4424"><a href="lwg-active.html#4424" title="meta::define_aggregate should require a class type (Status: New)">4424</a><sup><a href="https://cplusplus.github.io/LWG/issue4424">(i)</a></sup></td>
-<td><a href="lwg-active.html#New">New</a></td>
-<td>21.4.16 [meta.reflection.define.aggregate]</td>
-<td><code class='backtick'>meta::define_aggregate</code> should require a class type</td>
-<td>Yes</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td id="2991"><a href="lwg-active.html#2991" title="variant copy constructor missing noexcept(see below) (Status: Open)">2991</a><sup><a href="https://cplusplus.github.io/LWG/issue2991">(i)</a></sup></td>
-<td><a href="lwg-active.html#Open">Open</a></td>
-<td>22.6.3.2 [variant.ctor]</td>
-<td><code>variant</code> copy constructor missing <code>noexcept(<i>see below</i>)</code></td>
-<td>Yes</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
 <td id="4320"><a href="lwg-active.html#4320" title="hive operations involving insertion/erasure should have &#x1d4aa;(log n) time complexity (Status: New)">4320</a><sup><a href="https://cplusplus.github.io/LWG/issue4320">(i)</a></sup></td>
 <td><a href="lwg-active.html#New">New</a></td>
 <td>23.3.9 [hive]</td>
@@ -6413,17 +6386,6 @@ from rebind and resize (Status: New)">4414</a><sup><a href="https://cplusplus.gi
 <td>29.10.2.2 [simd.expos.abi]</td>
 <td>&sect;[simd.expos.abi] <code><i>deduce-abi-t</i></code> is underspecified and incorrectly referenced
 from <code class='backtick'>rebind</code> and <code class='backtick'>resize</code></td>
-<td>Yes</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td id="4382"><a href="lwg-active.html#4382" title="The simd::basic_mask(bool) overload needs to be more constrained
- (Status: New)">4382</a><sup><a href="https://cplusplus.github.io/LWG/issue4382">(i)</a></sup></td>
-<td><a href="lwg-active.html#New">New</a></td>
-<td>29.10.9.2 [simd.mask.ctor]</td>
-<td>The <code>simd::basic_mask(bool)</code> overload needs to be more constrained
-</td>
 <td>Yes</td>
 <td></td>
 <td></td>

@@ -54,7 +54,7 @@
 </style>
 </head>
 <body>
-<p>Revised 2025-10-27 at 09:59:19 UTC
+<p>Revised 2025-10-27 at 10:01:53 UTC
 </p><h2>Unresolved Issues</h2>
 <hr>
 <h3 id="423"><a href="#423">423</a><sup><a href="https://cplusplus.github.io/LWG/issue423">(i)</a></sup>. Effects of negative <code>streamsize</code> in iostreams</h3>
@@ -19288,147 +19288,6 @@ template &lt;class T&gt;
 </blockquote>
 </li>
 </ol>
-
-
-
-
-<hr>
-<h3 id="2991"><a href="#2991">2991</a><sup><a href="https://cplusplus.github.io/LWG/issue2991">(i)</a></sup>. <code>variant</code> copy constructor missing <code>noexcept(<i>see below</i>)</code></h3>
-<p><b>Section:</b> 22.6.3.2 <a href="https://wg21.link/variant.ctor">[variant.ctor]</a> <b>Status:</b> <a href="lwg-active.html#Open">Open</a>
- <b>Submitter:</b> Peter Dimov <b>Opened:</b> 2017-06-27 <b>Last modified:</b> 2025-10-20</p>
-<p><b>Priority: </b>Not Prioritized
-</p>
-<p><b>View other</b> <a href="lwg-index-open.html#variant.ctor">active issues</a> in [variant.ctor].</p>
-<p><b>View all other</b> <a href="lwg-index.html#variant.ctor">issues</a> in [variant.ctor].</p>
-<p><b>View all issues with</b> <a href="lwg-status.html#Open">Open</a> status.</p>
-<p><b>Discussion:</b></p>
-<p>
-The copy constructor of <code>std::variant</code> is not conditionally <code>noexcept</code> (I think
-it was in the original proposal.)
-<p/>
-It should be, for two reasons: first, this would be consistent with the other three constructors
-</p>
-<blockquote><pre>
-constexpr variant() noexcept(<i>see below</i>);
-
-variant(variant&amp;&amp;) noexcept(<i>see below</i>);
-
-template &lt;class T&gt;
-constexpr variant(T&amp;&amp;) noexcept(<i>see below</i>);
-</pre></blockquote>
-<p>
-and second, <code>variant</code> itself makes use of <code>is_nothrow_copy_constructible</code>, so
-it's inconsistent for it to take a stance against it.
-</p>
-
-<p><i>[2017-07 Toronto Tuesday PM issue prioritization]</i></p>
-
-<p>Status to LEWG</p>
-
-<p><i>[Wrocław 2024-11-18; LEWG approves the direction]</i></p>
-
-<p>
-In <a href="https://wg21.link/P0088R1" title=" Variant: a type-safe union that is rarely invalid (v6)">P0088R1</a> the copy constructor was conditionally noexcept
-in the synopsis, but not the detailed description. This was pointed out
-during LWG review in Jacksonville.
-The approved paper, <a href="https://wg21.link/P008R3">P008R3</a>, doesn't have it in either place.
-</p>
-<p><strong>Previous resolution [SUPERSEDED]:</strong></p>
-<blockquote class="note">
-
-<p>
-This wording is relative to <a href="https://wg21.link/n4659">N4659</a>.
-</p>
-
-<ol>
-<li><p>Edit 22.6.3 <a href="https://wg21.link/variant.variant">[variant.variant]</a>, class template <code>variant</code> synopsis, as indicated:</p>
-
-<blockquote>
-<pre>
-template &lt;class... Types&gt;
-  class variant {
-  public:
-    // 23.7.3.1, constructors
-    constexpr variant() noexcept(<i>see below</i>);
-    variant(const variant&amp;) <ins>noexcept(<i>see below</i>)</ins>;
-    variant(variant&amp;&amp;) noexcept(<i>see below</i>);
-    [&hellip;]
-  };
-</pre>
-</blockquote>
-</li>
-
-<li><p>Edit 22.6.3.2 <a href="https://wg21.link/variant.ctor">[variant.ctor]</a> as indicated:</p>
-
-<blockquote>
-<pre>
-variant(const variant&amp; w) <ins>noexcept(<i>see below</i>)</ins>;
-</pre>
-<blockquote>
-<p>
-[&hellip;]
-<p/>
--8- <i>Remarks:</i> This function shall not participate in overload resolution unless 
-<code>is_copy_constructible_v&lt;T<sub><i>i</i></sub>&gt;</code> is <code>true</code> for all <code><i>i</i></code>.
-<ins>The expression inside <code>noexcept</code> is equivalent to the logical AND of
-<code>is_nothrow_copy_constructible_v&lt;T<sub><i>i</i></sub>&gt;</code> for all <code><i>i</i></code>.</ins>
-</p>
-</blockquote>
-</blockquote>
-</li>
-</ol>
-</blockquote>
-
-<p><i>[2025-10-20; Jonathan provides updated wording]</i></p>
-
-
-
-
-<p id="res-2991"><b>Proposed resolution:</b></p>
-<p>
-This wording is relative to <a href="https://wg21.link/P5014">P5014</a>.
-</p>
-
-<ol>
-<li><p>Edit 22.6.3 <a href="https://wg21.link/variant.variant">[variant.variant]</a>, class template <code>variant</code> synopsis, as indicated:</p>
-
-<blockquote>
-<pre>
-template &lt;class... Types&gt;
-  class variant {
-  public:
-    // 23.7.3.1, constructors
-    constexpr variant() noexcept(<i>see below</i>);
-    variant(const variant&amp;) <ins>noexcept(<i>see below</i>)</ins>;
-    variant(variant&amp;&amp;) noexcept(<i>see below</i>);
-    [&hellip;]
-  };
-</pre>
-</blockquote>
-</li>
-
-<li><p>Edit 22.6.3.2 <a href="https://wg21.link/variant.ctor">[variant.ctor]</a> as indicated:</p>
-
-<blockquote>
-<pre>
-variant(const variant&amp; w) <ins>noexcept(<i>see below</i>)</ins>;
-</pre>
-<blockquote>
-<p>
-[&hellip;]
-<p/>
--8- <i>Remarks:</i> This function is defined as deleted unless
-<code>is_copy_constructible_v&lt;T<sub><i>i</i></sub>&gt;</code> is <code>true</code> for all <code><i>i</i></code>.
-<ins>The exception specification is equivalent to the logical
-<span style="font-variant: small-caps">and</span> of
-<code>is_nothrow_copy_constructible_v&lt;T<sub><i>i</i></sub>&gt;</code>
-for all <code><i>i</i></code>.</ins>
-</p>
-</blockquote>
-</blockquote>
-</li>
-</ol>
-
 
 
 
@@ -78122,175 +77981,6 @@ C(declval&lt;<i>input-iterator</i>&gt;(), declval&lt;<i>input-iterator</i>&gt;()
 
 
 <hr>
-<h3 id="4382"><a href="#4382">4382</a><sup><a href="https://cplusplus.github.io/LWG/issue4382">(i)</a></sup>. The <code>simd::basic_mask(bool)</code> overload needs to be more constrained
-</h3>
-<p><b>Section:</b> 29.10.9.2 <a href="https://wg21.link/simd.mask.ctor">[simd.mask.ctor]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Matthias Kretz <b>Opened:</b> 2025-09-24 <b>Last modified:</b> 2025-10-10</p>
-<p><b>Priority: </b>Not Prioritized
-</p>
-<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
-<p><b>Discussion:</b></p>
-<p>
-29.10.9.2 <a href="https://wg21.link/simd.mask.ctor">[simd.mask.ctor]</a> defines the overloads <code class='backtick'>basic_mask(bool)</code> and
-<code class='backtick'>basic_mask(unsigned_integral auto)</code>. This leads to the following pitfall:
-</p>
-<blockquote><pre>
-auto g0() {
-  unsigned short k = 0xf;
-  return simd::mask&lt;float, 8&gt;(k); // mov eax, 15
-}
-
-auto g1() {
-  unsigned short k = 0xf;
-  return simd::mask&lt;float, 8&gt;(k >> 1); // mov eax, -1 ⚠️
-}
-
-auto g2() {
-  unsigned int k = 0xf;
-  return simd::mask&lt;float, 8&gt;(k >> 1); // mov eax, 7
-}
-</pre></blockquote>
-<p>
-In <code class='backtick'>g1</code>, <code class='backtick'>k</code> is promoted to <code class='backtick'>int</code>, shifted and then passed to 
-the mask constructor. Instead of failing, <code class='backtick'>int(0x7)</code> is 
-converted to <code class='backtick'>bool</code> and the mask thus initialized to all <code class='backtick'>true</code>.
-<p/>
-Also consider:
-</p>
-<ol>
-<li><p><code>simd::mask&lt;float&gt;(true_type());</code></p></li>
-<li><p><code>unsigned_integral&lt;bool&gt;</code> is <code class='backtick'>true</code> => 
-<code>same_as&lt;bool&gt; auto</code> instead of 'bool' makes 
-the overload set ambiguous</p></li>
-<li><p><code class='backtick'>float</code> is convertible to <code class='backtick'>bool</code>, thus 
-<code>simd::mask&lt;float&gt;(1.f)</code> continues to compile</p></li>
-</ol>
-
-<p><strong>Previous resolution [SUPERSEDED]:</strong></p>
-<blockquote class="note">
-
-<p>
-This wording is relative to <a href="https://wg21.link/N5014">N5014</a>.
-</p>
-
-<ol>
-
-<li><p>Modify 29.10.9.1 <a href="https://wg21.link/simd.mask.overview">[simd.mask.overview]</a>, <code>class template basic_mask</code> synopsis, as indicated:</p>
-
-<blockquote>
-<pre>
-namespace std::simd {
-  template&lt;size_t Bytes, class Abi&gt; class basic_mask {
-  public:
-    [&hellip;]
-    
-    constexpr basic_mask() noexcept = default;
-    
-    // <i>29.10.9.2 <a href="https://wg21.link/simd.mask.ctor">[simd.mask.ctor]</a>, basic_mask constructors</i>
-    constexpr explicit basic_mask(value_type) noexcept;
-    template&lt;size_t UBytes, class UAbi&gt;
-      constexpr explicit basic_mask(const basic_mask&lt;UBytes, UAbi&gt;&amp;) noexcept;
-    template&lt;class G&gt;
-      constexpr explicit basic_mask(G&amp;&amp; gen) noexcept;
-    constexpr basic_mask(const bitset&lt;size()&gt;&amp; b) noexcept;
-    constexpr explicit basic_mask(unsigned_integral auto val) noexcept;
-    <ins>basic_mask(signed_integral auto) = delete;</ins>
-    
-    [&hellip;]
-  };
-}
-</pre>
-</blockquote>
-
-</li>
-
-</ol>
-</blockquote>
-
-<p><i>[2025-10-06; Matthias Kretz improves wording after reflector discussion]</i></p>
-
-
-
-<p id="res-4382"><b>Proposed resolution:</b></p>
-<p>
-This wording is relative to <a href="https://wg21.link/N5014">N5014</a>.
-</p>
-
-<ol>
-
-<li><p>Modify 29.10.9.1 <a href="https://wg21.link/simd.mask.overview">[simd.mask.overview]</a>, <code>class template basic_mask</code> synopsis, as indicated:</p>
-
-<blockquote>
-<pre>
-namespace std::simd {
-  template&lt;size_t Bytes, class Abi&gt; class basic_mask {
-  public:
-    [&hellip;]
-    
-    constexpr basic_mask() noexcept = default;
-    
-    // <i>29.10.9.2 <a href="https://wg21.link/simd.mask.ctor">[simd.mask.ctor]</a>, basic_mask constructors</i>
-    constexpr explicit basic_mask(<ins>same_as&lt;</ins>value_type<ins>&gt; auto</ins>) noexcept;
-    template&lt;size_t UBytes, class UAbi&gt;
-      constexpr explicit basic_mask(const basic_mask&lt;UBytes, UAbi&gt;&amp;) noexcept;
-    template&lt;class G&gt;
-      constexpr explicit basic_mask(G&amp;&amp; gen) noexcept;
-    <ins>template&lt;same_as&lt;bitset&lt;size()&gt;&gt; T&gt;</ins>
-      constexpr basic_mask(const <ins>T</ins><del>bitset&lt;size()&gt;</del>&amp; b) noexcept;
-    <ins>template&lt;unsigned_integral T&gt; requires (!same_as&lt;T, value_type&gt;)</ins>
-      constexpr explicit basic_mask(<ins>T</ins><del>unsigned_integral auto</del> val) noexcept;
-    
-    [&hellip;]
-  };
-}
-</pre>
-</blockquote>
-
-</li>
-
-<li><p>Modify 29.10.9.2 <a href="https://wg21.link/simd.mask.ctor">[simd.mask.ctor]</a> as indicated:</p>
-
-<blockquote>
-<pre>
-constexpr explicit basic_mask(<ins>same_as&lt;</ins>value_type<ins>&gt; auto</ins> x) noexcept;
-</pre>
-<blockquote>
-<p>
--1- <i>Effects</i>: Initializes each element with <code class='backtick'>x</code>.
-</p>
-</blockquote>
-[&hellip;]
-<pre>
-<ins>template&lt;same_as&lt;bitset&lt;size()&gt;&gt; T&gt;</ins>
-  constexpr basic_mask(const <ins>T</ins><del>bitset&lt;size()&gt;</del>&amp; b) noexcept;
-</pre>
-<blockquote>
-<p>
--7- <i>Effects</i>: Initializes the <code><i>i</i></code><sup>th</sup> element with <code>b[<i>i</i>]</code> 
-for all <code><i>i</i></code> in the range <code class='backtick'>[0, size())</code>.
-</p>
-</blockquote>
-<pre>
-<ins>template&lt;unsigned_integral T&gt; requires (!same_as&lt;T, value_type&gt;)</ins>
-  constexpr explicit basic_mask(<ins>T</ins><del>unsigned_integral auto</del> val) noexcept;
-</pre>
-<blockquote>
-<p>
--8- <i>Effects</i>: Initializes the first <code><i>M</i></code> elements to the corresponding bit values 
-in <code class='backtick'>val</code>, [&hellip;]
-</p>
-</blockquote>
-</blockquote>
-
-</li>
-
-</ol>
-
-
-
-
-
-<hr>
 <h3 id="4383"><a href="#4383">4383</a><sup><a href="https://cplusplus.github.io/LWG/issue4383">(i)</a></sup>. <code class='backtick'>constant_wrapper</code>'s pseudo-mutators are underconstrained
 </h3>
 <p><b>Section:</b> 21.3.5 <a href="https://wg21.link/const.wrap.class">[const.wrap.class]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
@@ -81683,89 +81373,10 @@ leading zeroes) <ins>in the ordinary literal encoding (5.3.1 <a href="https://wg
 
 
 <hr>
-<h3 id="4422"><a href="#4422">4422</a><sup><a href="https://cplusplus.github.io/LWG/issue4422">(i)</a></sup>. <code class='backtick'>meta::access_context</code> should be a consteval-only type</h3>
-<p><b>Section:</b> 21.4.8 <a href="https://wg21.link/meta.reflection.access.context">[meta.reflection.access.context]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Jakub Jelinek <b>Opened:</b> 2025-10-20 <b>Last modified:</b> 2025-10-23</p>
-<p><b>Priority: </b>2
-</p>
-<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
-<p><b>Discussion:</b></p>
-<p>
-The <code class='backtick'>meta::access_context</code> type is expected to contain some <code class='backtick'>meta::info</code>
-objects, which would make it a consteval-only type. But we don't actually
-specify any members, so nothing in the current specification says you can't
-persist one until runtime.
-</p>
-
-<p><i>[2025-10-23; Reflector poll. Adjust proposed wording.]</i></p>
-
-<p>
-Set priority to 2 after reflector poll.
-</p>
-<p>
-Reflector discussion requested that 'non-aggregate' and 'consteval-only' both
-be put in paragraph 3, adjacent to 'structural'.
-Also added a drive-by editorial change to paragraph 1.
-</p>
-
-
-
-<p id="res-4422"><b>Proposed resolution:</b></p>
-<p>
-This wording is relative to <a href="https://wg21.link/N5014">N5014</a>.
-</p>
-
-<ol>
-
-<li><p>Modify 21.4.8 <a href="https://wg21.link/meta.reflection.access.context">[meta.reflection.access.context]</a> as indicated:</p>
-
-<blockquote>
-<p>-1-
-The <ins>class</ins> <code class='backtick'>access_context</code>
-<del>class is a non-aggregate type that</del>
-represents a namespace, class, or function from which queries pertaining
-to access rules may be performed, as well as the designating class
-(11.8.3 <a href="https://wg21.link/class.access.base">[class.access.base]</a>), if any.
-</p>
-<p>-2-
-An <code class='backtick'>access_context</code> has an associated scope and designating class.
-<blockquote>
-<pre>namespace std::meta {
-  struct access_context {
-    access_context() = delete;
-
-    consteval info scope() const;
-    consteval info designating_class() const;
-
-    static consteval access_context current() noexcept;
-    static consteval access_context unprivileged() noexcept;
-    static consteval access_context unchecked() noexcept;
-    consteval access_context via(info cls) const;
-  };
-}</pre>
-</blockquote>
-</p>
-<p>-3-
-<code class='backtick'>access_context</code> is a structural<ins>, consteval-only, non-aggregate</ins> type.
-Two values <code class='backtick'>ac1</code> and <code class='backtick'>ac2</code> of type <code class='backtick'>access_context</code> are
-template-argument-equivalent (13.6 <a href="https://wg21.link/temp.type">[temp.type]</a>) if
-<code class='backtick'>ac1.scope()</code> and <code class='backtick'>ac2.scope()</code> are template-argument-equivalent
-and <code class='backtick'>ac1.designating_class()</code> and <code class='backtick'>ac2.designating_class()</code> are
-template-argument-equivalent.
-</p>
-</blockquote>
-</li>
-</ol>
-
-
-
-
-
-<hr>
 <h3 id="4424"><a href="#4424">4424</a><sup><a href="https://cplusplus.github.io/LWG/issue4424">(i)</a></sup>. <code class='backtick'>meta::define_aggregate</code> should require a class type</h3>
 <p><b>Section:</b> 21.4.16 <a href="https://wg21.link/meta.reflection.define.aggregate">[meta.reflection.define.aggregate]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
  <b>Submitter:</b> Jakub Jelinek <b>Opened:</b> 2025-10-20 <b>Last modified:</b> 2025-10-27</p>
-<p><b>Priority: </b>Not Prioritized
+<p><b>Priority: </b>1
 </p>
 <p><b>View other</b> <a href="lwg-index-open.html#meta.reflection.define.aggregate">active issues</a> in [meta.reflection.define.aggregate].</p>
 <p><b>View all other</b> <a href="lwg-index.html#meta.reflection.define.aggregate">issues</a> in [meta.reflection.define.aggregate].</p>
@@ -81784,9 +81395,17 @@ And what happens if you try to define a cv-qualified type:
 <pre>struct S; meta::define_aggregate(^^const S, {});</pre>
 Should this be an error, or inject a definition of the unqualified type?
 </p>
+
+<p><i>[2025-10-23; Reflector poll.]</i></p>
+
+<p>
+Set priority to 1 after reflector poll.
+</p>
+
 <p><strong>Previous resolution [SUPERSEDED]:</strong></p>
 <blockquote class="note">
 
+	
 <p>
 This wording is relative to <a href="https://wg21.link/N5014">N5014</a>.
 </p>
@@ -81866,74 +81485,6 @@ be the corresponding data member description represented by
 </blockquote>
 </li>
 </ol>
-
-
-
-
-
-<hr>
-<h3 id="4426"><a href="#4426">4426</a><sup><a href="https://cplusplus.github.io/LWG/issue4426">(i)</a></sup>. Clarify what <code class='backtick'>meta::reflect_constant_string</code> considers a string literal</h3>
-<p><b>Section:</b> 21.4.15 <a href="https://wg21.link/meta.reflection.array">[meta.reflection.array]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Jakub Jelinek <b>Opened:</b> 2025-10-21 <b>Last modified:</b> 2025-10-21</p>
-<p><b>Priority: </b>Not Prioritized
-</p>
-<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
-<p><b>Discussion:</b></p>
-<p>
-<code class='backtick'>meta::reflect_constant_string</code> says:
-<blockquote>
-Let <i>V</i> be the pack of values of type <code class='backtick'>CharT</code> whose elements are
-the corresponding elements of <code class='backtick'>r</code>,
-except that if <code class='backtick'>r</code> refers to a string literal object,
-then <i>V</i> does not include the trailing null terminator of <code class='backtick'>r</code>.
-</blockquote>
-It's unclear how the implementation should decide whether <code class='backtick'>r</code> refers to
-a string literal. If <code class='backtick'>R</code> models <code class='backtick'>contiguous_iterator</code>, should it use
-<code class='backtick'>meta::is_string_literal(ranges::data(r))</code>?
-Should it omit the <code class='backtick'>'\0'</code> from <code class='backtick'>string_view("abc", 3)</code>?
-</p>
-<p>
-Also, "null terminator" is only defined in 27.4.3.1 <a href="https://wg21.link/basic.string.general">[basic.string.general]</a>
-and not used for string literal objects (5.13.5 <a href="https://wg21.link/lex.string">[lex.string]</a>).
-</p>
-
-
-<p id="res-4426"><b>Proposed resolution:</b></p>
-<p>
-This wording is relative to <a href="https://wg21.link/N5014">N5014</a>.
-</p>
-
-<ol>
-
-<li><p>Modify 21.4.15 <a href="https://wg21.link/meta.reflection.array">[meta.reflection.array]</a> as indicated:</p>
-
-<blockquote>
-<pre>
-template&lt;ranges::input_range R&gt;
-  consteval info reflect_constant_string(R&amp;&amp; r);
-</pre>
-<blockquote>
-<p>-2-
-Let <code class='backtick'>CharT</code> be <code>ranges::range_value_t&lt;R&gt;</code>.
-</p>
-<p>-3- <i>Mandates</i>:
-<code class='backtick'>CharT</code> is one of <code class='backtick'>char</code>, <code class='backtick'>wchar_t</code>, <code class='backtick'>char8_t</code>, <code class='backtick'>char16_t</code>, <code class='backtick'>char32_t</code>.
-</p>
-<p>
-Let <i>V</i> be the pack of values of type <code class='backtick'>CharT</code> whose elements are
-the corresponding elements of <code class='backtick'>r</code>,
-except that if <code class='backtick'>r</code> <del>refers</del> <ins>is a reference</ins>
-to a string literal object,
-then <i>V</i> does not include the <del>trailing null terminator</del>
-<ins>terminating <span style="font-variant: small-caps">u+0000 null</span>
-character</ins>
-of <code class='backtick'>r</code>.
-</p>
-</blockquote>
-</blockquote>
-</li>
-</ol>
-
 
 
 
