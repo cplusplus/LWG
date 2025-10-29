@@ -54,7 +54,7 @@
 </style>
 </head>
 <body>
-<p>Revised 2025-10-28 at 17:27:46 UTC
+<p>Revised 2025-10-29 at 10:13:43 UTC
 </p><h2>Unresolved Issues</h2>
 <hr>
 <h3 id="423"><a href="#423">423</a><sup><a href="https://cplusplus.github.io/LWG/issue423">(i)</a></sup>. Effects of negative <code>streamsize</code> in iostreams</h3>
@@ -82160,14 +82160,26 @@ for which <i>D</i> is incomplete.</del>
 <hr>
 <h3 id="4435"><a href="#4435">4435</a><sup><a href="https://cplusplus.github.io/LWG/issue4435">(i)</a></sup>. <code class='backtick'>meta::has_identifier</code> doesn't handle all types</h3>
 <p><b>Section:</b> 21.4.6 <a href="https://wg21.link/meta.reflection.names">[meta.reflection.names]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Jakub Jelinek <b>Opened:</b> 2025-10-27 <b>Last modified:</b> 2025-10-27</p>
-<p><b>Priority: </b>Not Prioritized
+ <b>Submitter:</b> Jakub Jelinek <b>Opened:</b> 2025-10-27 <b>Last modified:</b> 2025-10-29</p>
+<p><b>Priority: </b>2
 </p>
 <p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
 <p><b>Discussion:</b></p>
 <p>
 The wording for <code class='backtick'>meta::has_identifier</code> doesn't specify what it returns for
 <code class='backtick'>^^int</code> or <code class='backtick'>^^void</code> or <code class='backtick'>^^Enum</code>.
+</p>
+
+<p><i>[2025-10-29; Reflector poll.]</i></p>
+
+<p>
+Set priority to 2 after reflector poll.
+</p>
+<p>
+Move bullet point for aliases before bullet for types.
+Add "cv-unqualified" to class type and enumeration type.
+Simplify "<code class='backtick'>!has_template_arguments() is </code>true`" to
+"<code class='backtick'>has_template_arguments()</code> is <code class='backtick'>false</code>".
 </p>
 
 
@@ -82192,23 +82204,28 @@ If <code class='backtick'>r</code> represents an entity that has a typedef name 
 <li>(1.2) &mdash;
 Otherwise, if <code class='backtick'>r</code> represents an unnamed entity, then <code class='backtick'>false</code>.
 </li>
+<li><ins>(1.?) &mdash;
+Otherwise, if <code class='backtick'>r</code> represents a type alias, then <code class='backtick'>!has_template_arguments(r)</code>.
+</ins>
+</li>
 <li>(1.3) &mdash;
 Otherwise, if <code class='backtick'>r</code> represents a <ins>type, then <code class='backtick'>true</code> if</ins>
 <del>class type, then <code class='backtick'>!has_template_arguments(r)</code>.</del>
 <ul>
 <li><ins>(1.3.1) &mdash;
-<code class='backtick'>r</code> represents a class type and <code class='backtick'>!has_template_arguments(r)</code> is <code class='backtick'>true</code>, or
+<code class='backtick'>r</code> represents a cv-unqualified class type
+and <code class='backtick'>has_template_arguments(r)</code> is <code class='backtick'>false</code>, or
 </ins>
 </li>
 <li><ins>(1.3.2) &mdash;
-<code class='backtick'>r</code> represents an enumeration type.
+<code class='backtick'>r</code> represents a cv-unqualified enumeration type.
 </ins>
 </li>
 </ul>
 <ins>Otherwise, <code class='backtick'>false</code>.</ins>
 </li>
 <li>(1.4) &mdash;
-Otherwise, if <code class='backtick'>r</code> represents a function, then <code class='backtick'>true</code> if <code class='backtick'>has_template_arguments(r)</code> is false and the function is not a constructor, destructor, operator function, or conversion function.
+Otherwise, if <code class='backtick'>r</code> represents a function, then <code class='backtick'>true</code> if <code class='backtick'>has_template_arguments(r)</code> is <code class='backtick'>false</code> and the function is not a constructor, destructor, operator function, or conversion function.
 Otherwise, <code class='backtick'>false</code>.
 </li>
 <li>(1.5) &mdash;
@@ -82241,8 +82258,9 @@ then <code class='backtick'>false</code> if the declaration of that structured b
 from a structured binding pack.
 Otherwise, <code class='backtick'>true</code>.
 </li>
-<li>(1.10) &mdash;
+<li><del>(1.10) &mdash;
 Otherwise, if <code class='backtick'>r</code> represents a type alias, then <code class='backtick'>!has_template_arguments(r)</code>.
+</del>
 </li>
 <li>(1.11) &mdash;
 Otherwise, if <code class='backtick'>r</code> represents an enumerator, non-static-data member,
