@@ -64,7 +64,7 @@
 <p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#Voting">Voting</a> status.</em></p>
 <h3 id="4423"><a href="lwg-active.html#4423">4423</a>. <code class='backtick'>meta::data_member_spec</code> allows negative bit-field widths</h3>
 <p><b>Section:</b> 21.4.16 <a href="https://wg21.link/meta.reflection.define.aggregate">[meta.reflection.define.aggregate]</a> <b>Status:</b> <a href="lwg-active.html#Voting">Voting</a>
- <b>Submitter:</b> Jakub Jelinek <b>Opened:</b> 2025-10-20 <b>Last modified:</b> 2025-10-30</p>
+ <b>Submitter:</b> Jakub Jelinek <b>Opened:</b> 2025-10-20 <b>Last modified:</b> 2025-10-31</p>
 <p><b>Priority: </b>Not Prioritized
 </p>
 <p><b>View other</b> <a href="lwg-index-open.html#meta.reflection.define.aggregate">active issues</a> in [meta.reflection.define.aggregate].</p>
@@ -93,14 +93,14 @@ This wording is relative to <a href="https://wg21.link/N5014">N5014</a>.
 <li><p>Modify 21.4.16 <a href="https://wg21.link/meta.reflection.define.aggregate">[meta.reflection.define.aggregate]</a> as indicated:</p>
 
 <blockquote>
-<ul>
+<ul style="list-style-type: none">
 <li>(5.3) &mdash;
 if <code class='backtick'>options.name</code> does not contain a value, then <code class='backtick'>options.bit_width</code>
 contains a value;
 </li>
 <li>(5.4) &mdash;
 if <code class='backtick'>options.bit_width</code> contains a value <i>V</i>, then
-<ul>
+<ul style="list-style-type: none">
 <li>(5.4.1) &mdash;
 <code class='backtick'>is_integral_type(type) || is_enum_type(type)</code> is <code class='backtick'>true</code>,
 </li>

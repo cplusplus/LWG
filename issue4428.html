@@ -64,7 +64,7 @@
 <p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#New">New</a> status.</em></p>
 <h3 id="4428"><a href="lwg-active.html#4428">4428</a>. Metafunctions should not be defined in terms of constant subexpressions</h3>
 <p><b>Section:</b> 21.4.9 <a href="https://wg21.link/meta.reflection.access.queries">[meta.reflection.access.queries]</a>, 21.4.18 <a href="https://wg21.link/meta.reflection.annotation">[meta.reflection.annotation]</a>, 21.4.15 <a href="https://wg21.link/meta.reflection.array">[meta.reflection.array]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Jonathan Wakely <b>Opened:</b> 2025-10-24 <b>Last modified:</b> 2025-10-28</p>
+ <b>Submitter:</b> Jonathan Wakely <b>Opened:</b> 2025-10-24 <b>Last modified:</b> 2025-10-31</p>
 <p><b>Priority: </b>Not Prioritized
 </p>
 <p><b>View other</b> <a href="lwg-index-open.html#meta.reflection.access.queries">active issues</a> in [meta.reflection.access.queries].</p>
@@ -99,7 +99,7 @@ Otherwise, <code class='backtick'>false</code>.
 </p>
 <p>-6- <i>Throws</i>:
 <code class='backtick'>meta::exception</code> unless
-<ul>
+<ul style="list-style-type: none">
 <li>(6.1) &mdash;
 <ins>the evaluation of</ins>
 <code class='backtick'>nonstatic_data_members_of(r, access_context::unchecked())</code>
@@ -151,7 +151,7 @@ is <code class='backtick'>true</code>, preserving their order.
 </p>
 <p>-5- <i>Throws</i>:
 <code class='backtick'>meta::exception</code> unless
-<ul>
+<ul style="list-style-type: none">
 <li>(5.1) &mdash;
 <ins>the evaluation of</ins>
 <code class='backtick'>annotations_of(item)</code>
@@ -199,7 +199,7 @@ the <i>i</i><sup>th</sup> element of <code class='backtick'>r</code>.
 </p>
 <p>-11-
 Let <i>P</i> be
-<ul>
+<ul style="list-style-type: none">
 <li>(11.1) &mdash;
 If <code class='backtick'>sizeof...(</code><i>V</i><code class='backtick'>) &gt; 0</code> is <code class='backtick'>true</code>,
 then the template parameter object (13.2 <a href="https://wg21.link/temp.param">[temp.param]</a>)

@@ -64,7 +64,7 @@
 <p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#New">New</a> status.</em></p>
 <h3 id="4435"><a href="lwg-active.html#4435">4435</a>. <code class='backtick'>meta::has_identifier</code> doesn't handle all types</h3>
 <p><b>Section:</b> 21.4.6 <a href="https://wg21.link/meta.reflection.names">[meta.reflection.names]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Jakub Jelinek <b>Opened:</b> 2025-10-27 <b>Last modified:</b> 2025-10-29</p>
+ <b>Submitter:</b> Jakub Jelinek <b>Opened:</b> 2025-10-27 <b>Last modified:</b> 2025-10-31</p>
 <p><b>Priority: </b>2
 </p>
 <p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
@@ -100,7 +100,7 @@ This wording is relative to <a href="https://wg21.link/N5014">N5014</a>.
 <pre>consteval bool has_identifier(info r);</pre>
 <blockquote>
 <p>-1- <i>Returns</i>:
-<ul>
+<ul style="list-style-type: none">
 <li>(1.1) &mdash;
 If <code class='backtick'>r</code> represents an entity that has a typedef name for linkage purposes
 (9.2.4 <a href="https://wg21.link/dcl.typedef">[dcl.typedef]</a>), then <code class='backtick'>true</code>.
@@ -115,7 +115,7 @@ Otherwise, if <code class='backtick'>r</code> represents a type alias, then <cod
 <li>(1.3) &mdash;
 Otherwise, if <code class='backtick'>r</code> represents a <ins>type, then <code class='backtick'>true</code> if</ins>
 <del>class type, then <code class='backtick'>!has_template_arguments(r)</code>.</del>
-<ul>
+<ul style="list-style-type: none">
 <li><ins>(1.3.1) &mdash;
 <code class='backtick'>r</code> represents a cv-unqualified class type
 and <code class='backtick'>has_template_arguments(r)</code> is <code class='backtick'>false</code>, or
@@ -141,7 +141,7 @@ Otherwise, if <code class='backtick'>r</code> represents the <i>i</i><sup>th</su
 </li>
 <li>(1.7) &mdash;
 Otherwise, if <code class='backtick'>r</code> represents the parameter <i>P</i> of a function <i>F</i>, then let <i>S</i> be the set of declarations, ignoring any explicit instantiations, that precede some point in the evaluation context and that declare either <i>F</i> or a templated function of which <i>F</i> is a specialization; <code class='backtick'>true</code> if
-<ul>
+<ul style="list-style-type: none">
 <li>(1.7.1) &mdash;
 there is a declaration <i>D</i> in <i>S</i> that introduces a name <i>N</i> for either <i>P</i> or the parameter corresponding to <i>P</i> in the templated function that <i>D</i> declares and
 </li>
