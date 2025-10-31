@@ -54,7 +54,7 @@
 </style>
 </head>
 <body>
-<p>Revised 2025-10-31 at 10:40:21 UTC
+<p>Revised 2025-10-31 at 11:09:05 UTC
 </p><h2>Unresolved Issues</h2>
 <hr>
 <h3 id="423"><a href="#423">423</a><sup><a href="https://cplusplus.github.io/LWG/issue423">(i)</a></sup>. Effects of negative <code>streamsize</code> in iostreams</h3>
@@ -82348,6 +82348,75 @@ is an arithmetic type, and <code class='backtick'>From::value</code> is represen
 </li>
 </ul>
 
+</blockquote>
+</blockquote>
+</li>
+</ol>
+
+
+
+
+
+
+<hr>
+<h3 id="4437"><a href="#4437">4437</a><sup><a href="https://cplusplus.github.io/LWG/issue4437">(i)</a></sup>. <code class='backtick'>constant_of(^^v)</code> for variable <code class='backtick'>v</code> of array type produces reflection of pointer constant</h3>
+<p><b>Section:</b> 21.4.7 <a href="https://wg21.link/meta.reflection.queries">[meta.reflection.queries]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
+ <b>Submitter:</b> Tomasz Kamiński <b>Opened:</b> 2025-10-29 <b>Last modified:</b> 2025-10-31</p>
+<p><b>Priority: </b>Not Prioritized
+</p>
+<p><b>View other</b> <a href="lwg-index-open.html#meta.reflection.queries">active issues</a> in [meta.reflection.queries].</p>
+<p><b>View all other</b> <a href="lwg-index.html#meta.reflection.queries">issues</a> in [meta.reflection.queries].</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
+<p><b>Discussion:</b></p>
+<p>
+The unintended consequence of the late change of <code class='backtick'>reflect_constant</code> to accept its parameter by value 
+is that <code class='backtick'>constant_of(a)</code> returns a reflection of the value <code>&amp;a[0]</code> for a variable of array type.
+<p/>
+For reference, <code class='backtick'>constant_of</code> is specified as:
+</p>
+<blockquote><pre>
+if constexpr (is_annotation(<i>R</i>))  {
+  return <i>C</i>;
+} else { 
+  return reflect_constant([: <i>R</i> :]);
+}
+</pre></blockquote>
+<p>
+In case when <code>[: <i>R</i> :]</code> is a reference to array, it will decay to a pointer to 
+the first element when accepted by value. I believe this is unintended and we should return an 
+reflection of an array object instead.
+</p>
+
+
+<p id="res-4437"><b>Proposed resolution:</b></p>
+<p>
+This wording is relative to <a href="https://wg21.link/N5014">N5014</a>.
+</p>
+
+<ol>
+
+<li><p>Modify 21.4.7 <a href="https://wg21.link/meta.reflection.queries">[meta.reflection.queries]</a> as indicated:</p>
+
+<blockquote>
+<pre>
+consteval info constant_of(info r);
+</pre>
+<blockquote>
+<p>
+-6 Let <code><i>R</i></code> be a constant expression of type <code class='backtick'>info</code> such that <code><i>R</i> == r</code> is 
+<code class='backtick'>true</code>. If <code class='backtick'>r</code> represents an annotation, then let <code><i>C</i></code> be its underlying constant.
+<p/>
+-7- <i>Effects</i>: Equivalent to:
+</p>
+<blockquote><pre>
+if constexpr (is_annotation(<i>R</i>)) {
+  return <i>C</i>;
+<ins>} else if constexpr (is_array(type_of(<i>R</i>))) {
+  return reflect_constant_array([: <i>R</i> :]);</ins>
+} else {
+  return reflect_constant([: <i>R</i> :]);
+}
+</pre></blockquote>
 </blockquote>
 </blockquote>
 </li>
