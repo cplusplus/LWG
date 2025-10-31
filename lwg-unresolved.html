@@ -54,7 +54,7 @@
 </style>
 </head>
 <body>
-<p>Revised 2025-10-31 at 10:34:29 UTC
+<p>Revised 2025-10-31 at 10:40:21 UTC
 </p><h2>Unresolved Issues</h2>
 <hr>
 <h3 id="423"><a href="#423">423</a><sup><a href="https://cplusplus.github.io/LWG/issue423">(i)</a></sup>. Effects of negative <code>streamsize</code> in iostreams</h3>
@@ -82277,6 +82277,77 @@ Otherwise, <code class='backtick'>false</code>.
 </li>
 </ul>
 </p>
+</blockquote>
+</blockquote>
+</li>
+</ol>
+
+
+
+
+
+
+<hr>
+<h3 id="4436"><a href="#4436">4436</a><sup><a href="https://cplusplus.github.io/LWG/issue4436">(i)</a></sup>. <code class='backtick'>simd</code> broadcast is overconstrained &mdash; <code>std::cw&lt;0.f&gt;</code> is not convertible to <code>simd::vec&lt;float16_t&gt;</code></h3>
+<p><b>Section:</b> 29.10.7.2 <a href="https://wg21.link/simd.ctor">[simd.ctor]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
+ <b>Submitter:</b> Matthias Kretz <b>Opened:</b> 2025-10-28 <b>Last modified:</b> 2025-10-31</p>
+<p><b>Priority: </b>Not Prioritized
+</p>
+<p><b>View other</b> <a href="lwg-index-open.html#simd.ctor">active issues</a> in [simd.ctor].</p>
+<p><b>View all other</b> <a href="lwg-index.html#simd.ctor">issues</a> in [simd.ctor].</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
+<p><b>Discussion:</b></p>
+<p>
+29.10.7.2 <a href="https://wg21.link/simd.ctor">[simd.ctor]</a> p4 requires all implicit conversions via broadcast
+constructor to satisfy <code>convertible_to&lt;value_type&gt;</code>. However, 
+<code>std::cw&lt;0.f&gt;</code> is not convertible to <code class='backtick'>float16_t</code> because <code class='backtick'>float</code> 
+does not satisfy <code>convertible_to&lt;float16_t&gt;</code>. Consequently, with 
+the current wording we don't arrive at bullet (4.3) which allows 
+not-value-preserving conversions if the value is known to not change on conversion. 
+The <code class='backtick'>convertible_to</code> constraint is implicit in bullet (4.2), not needed/wrong for 
+bullet (4.3) and thus needs to be moved into bullet (4.1).
+</p>
+
+
+<p id="res-4436"><b>Proposed resolution:</b></p>
+<p>
+This wording is relative to <a href="https://wg21.link/N5014">N5014</a>.
+</p>
+
+<ol>
+
+<li><p>Modify 29.10.7.2 <a href="https://wg21.link/simd.ctor">[simd.ctor]</a> as indicated:</p>
+
+<blockquote>
+<pre>
+template&lt;class U&gt; constexpr explicit(<i>see below</i>) basic_vec(U&amp;&amp; value) noexcept;
+</pre>
+<blockquote>
+<p>
+-1- Let <code class='backtick'>From</code> denote the type <code>remove_cvref_t&lt;U&gt;</code>.
+<p/>
+-2- <i>Constraints</i>: <code class='backtick'>value_type</code> satisfies <code>constructible_from&lt;U&gt;</code>.
+<p/>
+-3- <i>Effects</i>: Initializes each element to the value of the argument after conversion to <code class='backtick'>value_type</code>.
+<p/>
+-4- <i>Remarks</i>: The expression inside explicit evaluates to <code class='backtick'>false</code> if and only if <del><code class='backtick'>U</code> satisfies 
+<code>convertible_to&lt;value_type&gt;</code>, and</del> either
+</p>
+<ul style="list-style-type: none">
+<li>(4.1) &mdash;
+<ins><code class='backtick'>U</code> satisfies <code>convertible_to&lt;value_type&gt;</code> and</ins> <code class='backtick'>From</code> is not an arithmetic type 
+and does not satisfy <code><i>constexpr-wrapper-like</i></code>,
+</li>
+<li>(4.2) &mdash;
+<code class='backtick'>From</code> is an arithmetic type and the conversion from <code class='backtick'>From</code> to <code class='backtick'>value_type</code> is value-preserving
+(29.10.1 <a href="https://wg21.link/simd.general">[simd.general]</a>), or
+</li>
+<li>(4.3) &mdash;
+<code class='backtick'>From</code> satisfies <code><i>constexpr-wrapper-like</i></code>, <code>remove_const_t&lt;decltype(From::value)&gt;</code> 
+is an arithmetic type, and <code class='backtick'>From::value</code> is representable by <code class='backtick'>value_type</code>.
+</li>
+</ul>
+
 </blockquote>
 </blockquote>
 </li>

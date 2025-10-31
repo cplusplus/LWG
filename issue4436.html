@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Issue 4436: simd broadcast is overconstrained &mdash; std::cw&lt;0.f&gt; is not convertible to simd::vec&lt;float16_t&gt;</title>
+<meta property="og:title" content="Issue 4436: simd broadcast is overconstrained &mdash; std::cw&lt;0.f&gt; is not convertible to simd::vec&lt;float16_t&gt;">
+<meta property="og:description" content="C++ library issue. Status: New">
+<meta property="og:url" content="https://cplusplus.github.io/LWG/issue4436.html">
+<meta property="og:type" content="website">
+<meta property="og:image" content="http://cplusplus.github.io/LWG/images/cpp_logo.png">
+<meta property="og:image:alt" content="C++ logo">
+<style>
+  p {text-align:justify}
+  li {text-align:justify}
+  pre code.backtick::before { content: "`" }
+  pre code.backtick::after { content: "`" }
+  blockquote.note
+  {
+    background-color:#E0E0E0;
+    padding-left: 15px;
+    padding-right: 15px;
+    padding-top: 1px;
+    padding-bottom: 1px;
+  }
+  ins {background-color:#A0FFA0}
+  del {background-color:#FFA0A0}
+  table.issues-index { border: 1px solid; border-collapse: collapse; }
+  table.issues-index th { text-align: center; padding: 4px; border: 1px solid; }
+  table.issues-index td { padding: 4px; border: 1px solid; }
+  table.issues-index td:nth-child(1) { text-align: right; }
+  table.issues-index td:nth-child(2) { text-align: left; }
+  table.issues-index td:nth-child(3) { text-align: left; }
+  table.issues-index td:nth-child(4) { text-align: left; }
+  table.issues-index td:nth-child(5) { text-align: center; }
+  table.issues-index td:nth-child(6) { text-align: center; }
+  table.issues-index td:nth-child(7) { text-align: left; }
+  table.issues-index td:nth-child(5) span.no-pr { color: red; }
+  @media (prefers-color-scheme: dark) {
+     html {
+        color: #ddd;
+        background-color: black;
+     }
+     ins {
+        background-color: #225522
+     }
+     del {
+        background-color: #662222
+     }
+     a {
+        color: #6af
+     }
+     a:visited {
+        color: #6af
+     }
+     blockquote.note
+     {
+        background-color: rgba(255, 255, 255, .10)
+     }
+  }
+</style>
+</head>
+<body>
+<hr>
+<p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#New">New</a> status.</em></p>
+<h3 id="4436"><a href="lwg-active.html#4436">4436</a>. <code class='backtick'>simd</code> broadcast is overconstrained &mdash; <code>std::cw&lt;0.f&gt;</code> is not convertible to <code>simd::vec&lt;float16_t&gt;</code></h3>
+<p><b>Section:</b> 29.10.7.2 <a href="https://wg21.link/simd.ctor">[simd.ctor]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
+ <b>Submitter:</b> Matthias Kretz <b>Opened:</b> 2025-10-28 <b>Last modified:</b> 2025-10-31</p>
+<p><b>Priority: </b>Not Prioritized
+</p>
+<p><b>View other</b> <a href="lwg-index-open.html#simd.ctor">active issues</a> in [simd.ctor].</p>
+<p><b>View all other</b> <a href="lwg-index.html#simd.ctor">issues</a> in [simd.ctor].</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
+<p><b>Discussion:</b></p>
+<p>
+29.10.7.2 <a href="https://wg21.link/simd.ctor">[simd.ctor]</a> p4 requires all implicit conversions via broadcast
+constructor to satisfy <code>convertible_to&lt;value_type&gt;</code>. However, 
+<code>std::cw&lt;0.f&gt;</code> is not convertible to <code class='backtick'>float16_t</code> because <code class='backtick'>float</code> 
+does not satisfy <code>convertible_to&lt;float16_t&gt;</code>. Consequently, with 
+the current wording we don't arrive at bullet (4.3) which allows 
+not-value-preserving conversions if the value is known to not change on conversion. 
+The <code class='backtick'>convertible_to</code> constraint is implicit in bullet (4.2), not needed/wrong for 
+bullet (4.3) and thus needs to be moved into bullet (4.1).
+</p>
+
+
+<p id="res-4436"><b>Proposed resolution:</b></p>
+<p>
+This wording is relative to <a href="https://wg21.link/N5014">N5014</a>.
+</p>
+
+<ol>
+
+<li><p>Modify 29.10.7.2 <a href="https://wg21.link/simd.ctor">[simd.ctor]</a> as indicated:</p>
+
+<blockquote>
+<pre>
+template&lt;class U&gt; constexpr explicit(<i>see below</i>) basic_vec(U&amp;&amp; value) noexcept;
+</pre>
+<blockquote>
+<p>
+-1- Let <code class='backtick'>From</code> denote the type <code>remove_cvref_t&lt;U&gt;</code>.
+<p/>
+-2- <i>Constraints</i>: <code class='backtick'>value_type</code> satisfies <code>constructible_from&lt;U&gt;</code>.
+<p/>
+-3- <i>Effects</i>: Initializes each element to the value of the argument after conversion to <code class='backtick'>value_type</code>.
+<p/>
+-4- <i>Remarks</i>: The expression inside explicit evaluates to <code class='backtick'>false</code> if and only if <del><code class='backtick'>U</code> satisfies 
+<code>convertible_to&lt;value_type&gt;</code>, and</del> either
+</p>
+<ul style="list-style-type: none">
+<li>(4.1) &mdash;
+<ins><code class='backtick'>U</code> satisfies <code>convertible_to&lt;value_type&gt;</code> and</ins> <code class='backtick'>From</code> is not an arithmetic type 
+and does not satisfy <code><i>constexpr-wrapper-like</i></code>,
+</li>
+<li>(4.2) &mdash;
+<code class='backtick'>From</code> is an arithmetic type and the conversion from <code class='backtick'>From</code> to <code class='backtick'>value_type</code> is value-preserving
+(29.10.1 <a href="https://wg21.link/simd.general">[simd.general]</a>), or
+</li>
+<li>(4.3) &mdash;
+<code class='backtick'>From</code> satisfies <code><i>constexpr-wrapper-like</i></code>, <code>remove_const_t&lt;decltype(From::value)&gt;</code> 
+is an arithmetic type, and <code class='backtick'>From::value</code> is representable by <code class='backtick'>value_type</code>.
+</li>
+</ul>
+
+</blockquote>
+</blockquote>
+</li>
+</ol>
+
+
+
+
+
+
+</body>
+</html>
