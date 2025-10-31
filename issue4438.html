@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Issue 4438: Bad expression in [exec.when.all]</title>
+<meta property="og:title" content="Issue 4438: Bad expression in [exec.when.all]">
+<meta property="og:description" content="C++ library issue. Status: New">
+<meta property="og:url" content="https://cplusplus.github.io/LWG/issue4438.html">
+<meta property="og:type" content="website">
+<meta property="og:image" content="http://cplusplus.github.io/LWG/images/cpp_logo.png">
+<meta property="og:image:alt" content="C++ logo">
+<style>
+  p {text-align:justify}
+  li {text-align:justify}
+  pre code.backtick::before { content: "`" }
+  pre code.backtick::after { content: "`" }
+  blockquote.note
+  {
+    background-color:#E0E0E0;
+    padding-left: 15px;
+    padding-right: 15px;
+    padding-top: 1px;
+    padding-bottom: 1px;
+  }
+  ins {background-color:#A0FFA0}
+  del {background-color:#FFA0A0}
+  table.issues-index { border: 1px solid; border-collapse: collapse; }
+  table.issues-index th { text-align: center; padding: 4px; border: 1px solid; }
+  table.issues-index td { padding: 4px; border: 1px solid; }
+  table.issues-index td:nth-child(1) { text-align: right; }
+  table.issues-index td:nth-child(2) { text-align: left; }
+  table.issues-index td:nth-child(3) { text-align: left; }
+  table.issues-index td:nth-child(4) { text-align: left; }
+  table.issues-index td:nth-child(5) { text-align: center; }
+  table.issues-index td:nth-child(6) { text-align: center; }
+  table.issues-index td:nth-child(7) { text-align: left; }
+  table.issues-index td:nth-child(5) span.no-pr { color: red; }
+  @media (prefers-color-scheme: dark) {
+     html {
+        color: #ddd;
+        background-color: black;
+     }
+     ins {
+        background-color: #225522
+     }
+     del {
+        background-color: #662222
+     }
+     a {
+        color: #6af
+     }
+     a:visited {
+        color: #6af
+     }
+     blockquote.note
+     {
+        background-color: rgba(255, 255, 255, .10)
+     }
+  }
+</style>
+</head>
+<body>
+<hr>
+<p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#New">New</a> status.</em></p>
+<h3 id="4438"><a href="lwg-active.html#4438">4438</a>. Bad expression in [exec.when.all]</h3>
+<p><b>Section:</b> 33.9.12.12 <a href="https://wg21.link/exec.when.all">[exec.when.all]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
+ <b>Submitter:</b> Eric Niebler <b>Opened:</b> 2025-10-30 <b>Last modified:</b> 2025-10-31</p>
+<p><b>Priority: </b>Not Prioritized
+</p>
+<p><b>View all other</b> <a href="lwg-index.html#exec.when.all">issues</a> in [exec.when.all].</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
+<p><b>Discussion:</b></p>
+<p>
+33.9.12.12 <a href="https://wg21.link/exec.when.all">[exec.when.all]</a> p5 reads as follows:
+</p>
+<blockquote style="border-left: 3px solid #ccc;padding-left: 15px;">
+<p>
+-5- Let <code><i>make-when-all-env</i></code> be the following exposition-only function template:
+</p>
+<blockquote>
+<pre>
+template&lt;class Env&gt;
+  constexpr auto <i>make-when-all-env</i>(inplace_stop_source&amp; stop_src,        <i>// exposition only</i>
+                                   Env&amp;&amp; env) noexcept {
+  return <i>see below</i>;
+}
+</pre>
+</blockquote>
+<p>
+Returns an object <code class='backtick'>e</code> such that
+</p>
+<ul style="list-style-type: none">
+<li>(5.1) &mdash; <code class='backtick'>decltype(e)</code> models <code><i>queryable</i></code>, and
+</li>
+<li>(5.2) &mdash; <code class='backtick'>e.query(get_stop_token)</code> is expression-equivalent to <code>state.<i>stop-src</i>.get_token()</code>, 
+and
+</li>
+<li>(5.3) &mdash; given a query object <code class='backtick'>q</code> with type other than <i>cv</i> <code class='backtick'>stop_token_t</code> and whose type 
+satisfies <code><i>forwarding-query</i></code>, <code class='backtick'>e.query(q)</code> is expression-equivalent to <code class='backtick'>get_env(rcvr).query(q)</code>.
+</li>
+</ul>
+
+</blockquote>
+<p>
+The problem is with "<code>state.<i>stop-src</i>.get_token()</code>" in bullet (5.2). There is no <code class='backtick'>state</code> 
+object here. This expression should be <code class='backtick'>stop_src.get_token()</code>.
+</p>
+
+
+<p id="res-4438"><b>Proposed resolution:</b></p>
+<p>
+This wording is relative to <a href="https://wg21.link/N5014">N5014</a>.
+</p>
+
+<ol>
+
+<li><p>Modify 33.9.12.12 <a href="https://wg21.link/exec.when.all">[exec.when.all]</a> as indicated:</p>
+
+<blockquote>
+<p>
+-5- Let <code><i>make-when-all-env</i></code> be the following exposition-only function template:
+</p>
+<blockquote>
+<pre>
+template&lt;class Env&gt;
+  constexpr auto <i>make-when-all-env</i>(inplace_stop_source&amp; stop_src,        <i>// exposition only</i>
+                                   Env&amp;&amp; env) noexcept {
+  return <i>see below</i>;
+}
+</pre>
+</blockquote>
+<p>
+Returns an object <code class='backtick'>e</code> such that
+</p>
+<ul style="list-style-type: none">
+<li>(5.1) &mdash; <code class='backtick'>decltype(e)</code> models <code><i>queryable</i></code>, and
+</li>
+<li>(5.2) &mdash; <code class='backtick'>e.query(get_stop_token)</code> is expression-equivalent to <code><del>state.<i>stop-src</i></del><ins>stop_src</ins>.get_token()</code>, 
+and
+</li>
+<li>(5.3) &mdash; given a query object <code class='backtick'>q</code> with type other than <i>cv</i> <code class='backtick'>stop_token_t</code> and whose type 
+satisfies <code><i>forwarding-query</i></code>, <code class='backtick'>e.query(q)</code> is expression-equivalent to <code class='backtick'>get_env(rcvr).query(q)</code>.
+</li>
+</ul>
+</blockquote>
+</li>
+</ol>
+
+
+
+
+
+
+</body>
+</html>
