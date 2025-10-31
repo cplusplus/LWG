@@ -114,7 +114,7 @@ consteval info constant_of(info r);
 <blockquote><pre>
 if constexpr (is_annotation(<i>R</i>)) {
   return <i>C</i>;
-<ins>} else if constexpr (is_array(type_of(<i>R</i>))) {
+<ins>} else if constexpr (is_array_type(type_of(<i>R</i>))) {
   return reflect_constant_array([: <i>R</i> :]);</ins>
 } else {
   return reflect_constant([: <i>R</i> :]);
