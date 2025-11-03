@@ -1,0 +1,50 @@
+<?xml version='1.0' encoding='utf-8' standalone='no'?>
+<!DOCTYPE issue SYSTEM "lwg-issue.dtd">
+
+<issue num="4440" status="New">
+<title>Forward declarations of entities need also in entries</title>
+<section>
+<sref ref="[version.syn]"/>
+</section>
+<submitter>Tomasz Kamiński</submitter>
+<date>03 Nov 2025</date>
+<priority>99</priority>
+
+<discussion>
+<b>US 65-116</b>
+<p>
+There are forward declarations of entities from <tt>&lt;spanstream&gt;</tt> and
+<tt>&lt;syncstream&gt;</tt> in <tt>&lt;iosfwd&gt;</tt> so their feature macros
+should be added to that header too. Proposed change: Add <tt>&lt;iosfwd&gt;</tt>
+to the "also in" entries for `__cpp_lib_char8_t`, `__cpp_lib_spanstream`, and
+`__cpp_lib_syncbuf`.
+</p>
+</discussion>
+
+<resolution>
+<p>
+This wording is relative to <paper num="N5014"/>.
+</p>
+
+<ol>
+
+<li><p>Modify <sref ref="[version.syn]"/> as indicated:</p>
+
+<blockquote>
+<pre>
+#define __cpp_lib_char8_t                           201907L
+  // freestanding, also in &lt;atomic&gt;, &lt;filesystem&gt;, <ins>&lt;iosfwd&gt;,</ins> &lt;istream&gt;, &lt;limits&gt;, &lt;locale&gt;, &lt;ostream&gt;, &lt;string&gt;,
+  // &lt;string_view&gt;
+[&hellip;]
+#define __cpp_lib_spanstream                        202106L // also in <ins>&lt;iosfwd&gt;,</ins> &lt;spanstream&gt;
+[&hellip;]
+#define __cpp_lib_syncbuf                           201803L // also in <ins>&lt;iosfwd&gt;,</ins> &lt;syncstream&gt;
+</pre>
+</blockquote>
+</li>
+
+</ol>
+
+</resolution>
+
+</issue>
