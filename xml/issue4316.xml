@@ -43,9 +43,7 @@ Set priority to 1 after reflector poll.
 </p>
 
 <note>2025-10-27; Tomasz provides wording.</note>
-</discussion>
-
-<resolution>
+<superseded>
 
 <p>
 This wording is relative to <paper num="N5014"/>.
@@ -119,6 +117,89 @@ be the i<sup>th</sup> element of `arguments`.</ins>
 -8- [<i>Note</i>: If forming <tt>Z&lt;<del>[:Args:]...</del><ins><i>TARG-SPLICE</i>(<i>e<sub>0</sub></i>),
 ..., <i>TARG-SPLICE</i>(<i>e<sub>n-1</sub></i>)</ins>&gt;</tt> leads to a failure outside of the immediate
 context, the program is ill-formed. &mdash; <i>end note</i>]
+</p>
+</blockquote>
+
+</blockquote>
+</li>
+</ol>
+
+</superseded>
+
+<note>2025-10-27; Reflector comments.</note>
+<p>
+We lost definition of `Z`. Use <tt><i>TARG-SPLICE</i>([:Args:])...</tt>.
+</p>
+
+<note>2025-11-03; Tomasz provides wording.</note>
+</discussion>
+
+<resolution>
+
+<p>
+This wording is relative to <paper num="N5014"/>.
+</p>
+
+<ol>
+
+<li><p>Modify <sref ref="[meta.reflection.substitute]"/> as indicated:</p>
+
+<blockquote>
+<blockquote>
+<p>
+<ins>-1- For value `x` of type `info`, and prvalue constant expression `X` that computes the
+reflection held by `x`, let <tt><i>TARG-SPLICE</i>(x)</tt> be:</ins>
+<ul>
+<li><ins>-1.1- <tt>template [: X :]</tt> if `is_template(x)` is `true`, otherwise</ins></li>
+<li><ins>-1.2- <tt>typename [: X :]</tt> if `is_type(x)` is `true`, otherwise</ins></li>
+<li><ins>-1.3- <tt>([: X :])</tt></ins></li>
+</ul>
+</p>
+</blockquote>
+
+<pre>
+template&lt;reflection_range R = initializer_list&lt;info&gt;&gt;
+  consteval bool can_substitute(info templ, R&amp;&amp; arguments);
+</pre>
+<blockquote>
+<p>
+-1- Let `Z` be the template represented by `templ` and let `Args...` be a
+sequence of prvalue constant expressions that compute the reflections held by
+the elements of `arguments`, in order.
+</p>
+<p>
+-2- <i>Returns</i>: `true` if <tt>Z&lt;<ins><i>TARG-SPLICE</i>(</ins>[:Args:]<ins>)</ins>...&gt;</tt> is a valid <i>template-id</i>
+(<sref ref="[temp.names]"/>) that does not name a function whose type contains an undeduced placeholder type.
+Otherwise, `false`.
+</p>
+<p>
+-3- <i>Throws</i>: `meta::exception` unless `templ` represents a template, and every reflection
+in `arguments` represents a construct usable as a template argument (<sref ref="[temp.arg]"/>).
+</p>
+<p>
+-4- [<i>Note</i>: If forming <tt>Z&lt;<ins><i>TARG-SPLICE</i>(</ins>[:Args:]<ins>)</ins>...&gt;</tt>
+leads to a failure outside of the immediate context, the program is ill-formed. &mdash; <i>end note</i>]
+</p>
+</blockquote>
+
+<pre>
+template&lt;reflection_range R = initializer_list&lt;info&gt;&gt;
+  consteval info substitute(info templ, R&amp;&amp; arguments);
+</pre>
+<blockquote>
+<p>
+-5- Let `Z` be the template represented by `templ` and let `Args...` be a
+sequence of prvalue constant expressions that compute the reflections held by
+the elements of `arguments`, in order.
+</p>
+<p>
+-6- <i>Returns</i>: <tt>Z&lt;<ins><i>TARG-SPLICE</i>(</ins>[:Args:]<ins>)</ins>...&gt;</tt>.</p>
+<p>
+-7- <i>Throws</i>: `meta::exception` unless `can_substitute(templ, arguments)` is `true`.
+</p>
+<p>
+-8- [<i>Note</i>: If forming <tt>Z&lt;<ins><i>TARG-SPLICE</i>(</ins>[:Args:]<ins>)</ins>...&gt;</tt>
+leads to a failure outside of the immediate context, the program is ill-formed. &mdash; <i>end note</i>]
 </p>
 </blockquote>
 
