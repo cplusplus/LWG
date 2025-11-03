@@ -3,7 +3,10 @@
 
 <issue num="4251" status="New">
 <title>Move assignment for `indirect` unnecessarily requires copy construction</title>
-<section><sref ref="[indirect.asgn]"/></section>
+<section>
+<sref ref="[indirect.assign]"/>
+<sref ref="[polymorphic.assign]"/>
+</section>
 <submitter>Jonathan Wakely</submitter>
 <date>01 May 2025</date>
 <priority>1</priority>
@@ -46,15 +49,14 @@ Set priority to 1 after reflector poll.
 Similar change needed for `std::polymorphic`.
 </p>
 
-</discussion>
 
-<resolution>
+<superseded>
 <p>
 This wording is relative to <paper num="N5008"/>.
 </p>
 <ol>
 
-<li><p>Modify <sref ref="[indirect.asgn]"/> as indicated:</p>
+<li><p>Modify <sref ref="[indirect.assign]"/> as indicated:</p>
 <blockquote>
 <pre><code>
 constexpr indirect&amp; operator=(indirect&amp;&amp; other)
@@ -122,6 +124,153 @@ the allocator in `*this` is replaced with a copy of the allocator in `other`.
 </blockquote>
 </blockquote>
 </li>
+</ol>
+</superseded>
+
+<note>2025-11-03; Tomasz provides wording.</note>
+</discussion>
+
+<resolution>
+<p>
+This wording is relative to <paper num="N5008"/>.
+</p>
+<ol>
+
+<li><p>Modify <sref ref="[indirect.assign]"/> as indicated:</p>
+<blockquote>
+<pre><code>
+constexpr indirect&amp; operator=(indirect&amp;&amp; other)
+  noexcept(allocator_traits&lt;Allocator&gt;::propagate_on_container_move_assignment::value ||
+           allocator_traits&lt;Allocator&gt;::is_always_equal::value);
+</code></pre>
+<blockquote>
+<p>
+-5- <i>Mandates</i>:
+<ins>
+If
+<code>allocator_traits&lt;Allocator&gt;::propagate_on_container_move_assignment::value</code>
+is `false`
+and
+<code>allocator_traits&lt;Allocator&gt;::is_always_equal::value</code>
+is `false`,
+</ins>
+<code>is_<del>copy</del><ins>move</ins>_constructible_t&lt;T&gt;</code> is `true`.
+</p>
+<p>
+-6- <i>Effects</i>:
+If `addressof(other) == this` is `true`, there are no effects.
+Otherwise:
+<ol style="list-style-type:none">
+<li>(6.1) &mdash;
+The allocator needs updating if
+<code>allocator_traits&lt;Allocator&gt;::propagate_on_container_move_assignment::value</code>
+is `true`.
+</li>
+<li>(6.2) &mdash;
+If `other` is valueless, `*this` becomes valueless<del> and the owned object
+in `*this`, if any, is destroyed using
+<code>allocator_traits&lt;Allocator&gt;::destroy</code>
+and then the storage is deallocated</del>.
+</li>
+<li>(6.3) &mdash;
+Otherwise,
+<ins>if the allocator needs updating or</ins>
+if <code><i>alloc</i> == other.<i>alloc</i></code> is `true`,
+<del>
+swaps the owned objects in `*this` and `other`;
+the owned object in `other`, if any, is then destroyed using
+<code>allocator_traits&lt;Allocator&gt;::destroy</code>
+and then the storage is deallocated
+</del>
+<ins>`*this` takes ownership of the owned object of `other`</ins>.
+</li>
+<li>(6.4) &mdash;
+Otherwise, constructs a new owned object with the owned object of `other`
+as the argument as an rvalue, using <del>either</del> the allocator in `*this`
+<del>or the allocator in `other` if the allocator needs updating</del>.
+</li>
+<li>(6.5) &mdash;
+The previously owned object in `*this`, if any, is destroyed using
+<code>allocator_traits&lt;Allocator&gt;::destroy</code>
+and then the storage is deallocated.
+</li>
+<li>(6.6) &mdash;
+If the allocator needs updating,
+the allocator in `*this` is replaced with a copy of the allocator in `other`.
+</li>
+</ol>
+</p>
+<p>-7- <i>Postcondition</i>: `other` is valueless.</p>
+</blockquote>
+</blockquote>
+</li>
+
+<li><p>Modify <sref ref="[polymorphic.assign]"/> as indicated:</p>
+<blockquote>
+<pre><code>
+constexpr polymorphic&amp; operator=(polymorphic&amp;&amp; other)
+  noexcept(allocator_traits&lt;Allocator&gt;::propagate_on_container_move_assignment::value ||
+           allocator_traits&lt;Allocator&gt;::is_always_equal::value);
+</code></pre>
+<blockquote>
+<p>
+-5- <i>Mandates</i>:
+If
+<ins>
+<code>allocator_traits&lt;Allocator&gt;::propagate_on_container_move_assignment::value</code>
+is `false`
+and
+</ins>
+<code>allocator_traits&lt;Allocator&gt;::is_always_equal::value</code>
+is `false`,
+`T` is complete type.
+</p>
+<p>
+-6- <i>Effects</i>:
+If `addressof(other) == this` is `true`, there are no effects.
+Otherwise:
+<ol style="list-style-type:none">
+<li>(6.1) &mdash;
+The allocator needs updating if
+<code>allocator_traits&lt;Allocator&gt;::propagate_on_container_move_assignment::value</code>
+is `true`.
+</li>
+<li><ins>(6.?) &mdash; If `other` is valueless, `*this` becomes valueless.</ins></li>
+<li>(6.2) &mdash;
+<ins>Otherwise, if the allocator needs updating or</ins><del>If</del>
+<code><i>alloc</i> == other.<i>alloc</i></code> is `true`,
+<del>
+swaps the owned objects in `*this` and `other`;
+the owned object in `other`, if any, is then destroyed using
+<code>allocator_traits&lt;Allocator&gt;::destroy</code>
+and then the storage is deallocated
+</del>
+<ins>`*this` takes ownership of the owned object of `other`</ins>.
+</li>
+<li>(6.3) &mdash;
+<del>Otherwise, if `alloc != other.alloc` is `true`; if `other` is not valueless, 
+a new owned object is constructed in `*this` using <tt>allocator_traits::construct</tt>
+with the owned object from</del>
+<ins>Otherwise, constructs a new owned object with the owned object of</ins>
+`other` as the argument as an rvalue, using <del>either</del> the allocator in `*this`
+<del>or the allocator in `other` if the allocator needs updating</del>.
+</li>
+<li>(6.4) &mdash;
+The previously owned object in `*this`, if any, is destroyed using
+<code>allocator_traits&lt;Allocator&gt;::destroy</code>
+and then the storage is deallocated.
+</li>
+<li>(6.5) &mdash;
+If the allocator needs updating,
+the allocator in `*this` is replaced with a copy of the allocator in `other`.
+</li>
+</ol>
+</p>
+[&hellip;]
+</blockquote>
+</blockquote>
+</li>
+
 </ol>
 </resolution>
 
