@@ -1,0 +1,122 @@
+<?xml version='1.0' encoding='utf-8' standalone='no'?>
+<!DOCTYPE issue SYSTEM "lwg-issue.dtd">
+
+<issue num="4441" status="New">
+<title><tt>ranges::rotate</tt> do not handle sized-but-not-sized-sentinel ranges correctly</title>
+<section>
+<sref ref="[alg.rotate]"/>
+<sref ref="[partial.sort]"/>
+<sref ref="[alg.nth.element]"/>
+<sref ref="[alg.merge]"/>
+</section>
+<submitter>Tomasz Kamiński</submitter>
+<date>03 Nov 2025</date>
+<priority>99</priority>
+
+<discussion>
+<b>Addresses US 161-258</b>
+<p>These do not handle sized-but-not-sized-sentinel ranges correctly.</p>
+</discussion>
+
+<resolution>
+<p>
+This wording is relative to <paper num="N5014"/>.
+</p>
+
+<ol>
+
+<li><p>Modify <sref ref="[alg.rotate]"/> as indicated:</p>
+
+<pre>
+template&lt;execution-policy Ep, <i>sized-random-access-range</i> R&gt;
+  requires permutable&lt;iterator_t&lt;R&gt;&gt;
+  borrowed_subrange_t&lt;R&gt; ranges::rotate(Ep&amp;&amp; exec, R&amp;&amp; r, iterator_t&lt;R&gt; middle);
+
+</pre>
+<blockquote>
+<p>-6- <i>Effects</i> Equivalent to:
+<tt>return ranges::rotate(std::forward&lt;Ep&gt;(exec), ranges::begin(r), middle,
+<del>ranges::end(r)</del><ins>ranges::begin(r) + ranges::distance(r)</ins>);</tt>
+</p>
+</blockquote>
+
+[&hellip;]
+
+<pre>
+template&lt;execution-policy Ep, <i>sized-random-access-range</i> R, <i>sized-random-access-range</i> OutR&gt;
+  requires indirectly_copyable&lt;iterator_t&lt;R&gt;, iterator_t&lt;OutR&gt;&gt;
+  ranges::rotate_copy_truncated_result&lt;borrowed_iterator_t&lt;R&gt;, borrowed_iterator_t&lt;OutR&gt;&gt;
+	  ranges::rotate_copy(Ep&amp;&amp; exec, R&amp;&amp; r, iterator_t&lt;R&gt; middle, OutR&amp;&amp; result_r);
+</pre>
+<blockquote>
+<p>-18- <i>Effects</i> Equivalent to:
+<tt>return ranges::rotate(std::forward&lt;Ep&gt;(exec), ranges::begin(r), middle,
+<del>ranges::end(r)</del><ins>ranges::begin(r)+ranges::distance(r)</ins>
+ranges::begin(result_r), <del>ranges::end(result_r)</del><ins>ranges::begin(result_r) + ranges::distance(result_r)</ins>);</tt>
+</p>
+</blockquote>
+
+</li>
+
+<li><p>Modify <sref ref="[partial.sort]"/> as indicated:</p>
+
+<pre>
+template&lt;execution-policy Ep, sized-random-access-range R,
+         class Comp = ranges::less, class Proj = identity&gt;
+  requires sortable&lt;iterator_t&lt;R&gt;, Comp, Proj&gt;
+  borrowed_iterator_t&lt;R&gt;
+    ranges::partial_sort(Ep&amp;&amp; exec, R&amp;&amp; r, iterator_t&lt;R&gt; middle, Comp comp = {},
+                         Proj proj = {});
+</pre>
+<blockquote>
+<p>-7- <i>Effects</i> Equivalent to:
+<tt>return ranges::partial_sort(std::forward&lt;Ep&gt;(exec), ranges::begin(r), middle,
+<del>ranges::end(r)</del><ins>ranges::begin(r) + ranges::distance(r)</ins>, comp, proj);</tt>
+</p>
+</blockquote>
+
+</li>
+
+<li><p>Modify <sref ref="[alg.nth.element]"/> as indicated:</p>
+
+<pre>
+template&lt;execution-policy Ep, <i>sized-random-access-range</i> R, class Comp = ranges::less,
+         class Proj = identity&gt;
+  requires sortable&lt;iterator_t&lt;R&gt;, Comp, Proj&gt;
+  borrowed_iterator_t&lt;R&gt;
+    ranges::nth_element(Ep&amp;&amp; exec, R&amp;&amp; r, iterator_t&lt;R&gt; nth, Comp comp = {}, Proj proj = {});
+</pre>
+<blockquote>
+<p>-7- <i>Effects</i> Equivalent to:
+<tt>return ranges::nth_element(std::forward&lt;Ep&gt;(exec), ranges::begin(r), nth,
+<del>ranges::end(r)</del><ins>ranges::begin(r) + ranges::distance(r)</ins>, comp, proj);</tt>
+</p>
+</blockquote>
+
+</li>
+
+<li><p>Modify <sref ref="[alg.merge]"/> as indicated:</p>
+
+<pre>
+template&lt;execution-policy Ep, sized-random-access-range R, class Comp = ranges::less,
+         class Proj = identity&gt;
+  requires sortable&lt;iterator_t&lt;R&gt;, Comp, Proj&gt;
+  borrowed_iterator_t&lt;R&gt;
+    ranges::inplace_merge(Ep&amp;&amp; exec, R&amp;&amp; r, iterator_t&lt;R&gt; middle, Comp comp = {},
+                          Proj proj = {});
+</pre>
+<blockquote>
+<p>-14- <i>Effects</i> Equivalent to:
+<tt>return ranges::inplace_merge(std::forward&lt;Ep&gt;(exec), ranges::begin(r), middle,
+<del>ranges::end(r)</del><ins>ranges::begin(r) + ranges::distance(r)</ins>, comp, proj);</tt>
+</p>
+</blockquote>
+
+</li>
+
+
+</ol>
+
+</resolution>
+
+</issue>
