@@ -11,7 +11,7 @@
 <priority>99</priority>
 
 <discussion>
-<b>US 65-116</b>
+<b>Addresses US 65-116</b>
 <p>
 There are forward declarations of entities from <tt>&lt;spanstream&gt;</tt> and
 <tt>&lt;syncstream&gt;</tt> in <tt>&lt;iosfwd&gt;</tt> so their feature macros
