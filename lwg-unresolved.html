@@ -54,7 +54,7 @@
 </style>
 </head>
 <body>
-<p>Revised 2025-11-04 at 19:49:18 UTC
+<p>Revised 2025-11-04 at 20:11:50 UTC
 </p><h2>Unresolved Issues</h2>
 <hr>
 <h3 id="423"><a href="#423">423</a><sup><a href="https://cplusplus.github.io/LWG/issue423">(i)</a></sup>. Effects of negative <code>streamsize</code> in iostreams</h3>
@@ -80215,7 +80215,7 @@ Set priority to 1 after reflector poll.
 <h3 id="4420"><a href="#4420">4420</a><sup><a href="https://cplusplus.github.io/LWG/issue4420">(i)</a></sup>. &sect;[simd] conversions (constructor, load, stores, gather, and scatter) are
 incorrectly constrained for <code>&lt;stdfloat&gt;</code> types</h3>
 <p><b>Section:</b> 29.10 <a href="https://wg21.link/simd">[simd]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Matthias Kretz <b>Opened:</b> 2025-10-15 <b>Last modified:</b> 2025-10-23</p>
+ <b>Submitter:</b> Matthias Kretz <b>Opened:</b> 2025-10-15 <b>Last modified:</b> 2025-11-04</p>
 <p><b>Priority: </b>1
 </p>
 <p><b>View other</b> <a href="lwg-index-open.html#simd">active issues</a> in [simd].</p>
@@ -80569,10 +80569,23 @@ template&lt;class V = see below , contiguous_iterator I, sized_sentinel_for&lt;I
 </pre>
 <blockquote>
 <p>
--6- Let [&hellip;]
-<p/>
-[&hellip;]
-<p/>
+-6- Let
+</p>
+<ol style="list-style-type: none">
+<li><p>
+(6.1) &mdash; <code>mask</code> be <code>V::mask_type(true)</code> for the overloads with no <code>mask</code> parameter;
+</p></li>
+<li><p>
+(6.2) &mdash; <code>R</code> be <code>span&lt;const iter_value_t&lt;I&gt;&gt;</code> for the overloads with no template parameter <code>R</code>;
+</p></li>
+<li><p>
+(6.3) &mdash; <code>r</code> be <code>R(first, n)</code> for the overloads with an <code>n</code> parameter and <code>R(first, last)</code> for the overloads with a <code>last</code> parameter<del>.</del><ins>;</ins>
+</p></li>
+<li><p>
+<ins>(6.?) &mdash; <code>T</code> be <code>typename V::value_type</code>.</ins>
+</p></li>
+</ol>
+<p>
 -7- <i>Mandates</i>:
 </p>
 <ol style="list-style-type: none">
@@ -80661,7 +80674,7 @@ template&lt;class T, class Abi, contiguous_iterator I, sized_sentinel_for&lt;I&g
 </p>
 <ol style="list-style-type: none">
 <li><p>
-<ins>(?.1) &mdash; <code>ranges::iterator_t&lt;R&gt;</code> satisfies
+<ins>(?.1) &mdash; <code>ranges::iterator_t&lt;R&gt;</code> models
 <code>indirectly_writable&lt;ranges::range_value_t&lt;R&gt;&gt;</code>, and</ins>
 </p></li>
 <li><p>
@@ -80727,7 +80740,7 @@ template&lt;<i>simd-vec-type</i> V, ranges::contiguous_range R, <i>simd-integral
 <ins>(14.1) &mdash;</ins> <code class='backtick'>V::size() == I::size()</code> is <code class='backtick'>true</code><ins>,</ins>
 </p></li>
 <li><p>
-<ins>(14.2) &mdash; <code>ranges::iterator_t&lt;R&gt;</code> satisfies
+<ins>(14.2) &mdash; <code>ranges::iterator_t&lt;R&gt;</code> models
 <code>indirectly_writable&lt;ranges::range_value_t&lt;R&gt;&gt;</code>, and</ins> 
 </p></li>
 <li><p>
@@ -80735,6 +80748,12 @@ template&lt;<i>simd-vec-type</i> V, ranges::contiguous_range R, <i>simd-integral
 <code><i>explicitly-convertible-to</i>&lt;ranges::range_value_t&lt;R&gt;&gt;</code></ins>.
 </p></li>
 </ol>
+[&hellip;]
+<p>
+-17- <i>Effects</i>: For all <i>i</i> in the range [<code>0</code>, <code>I::size()</code>), if <code>mask[<i>i</i>] 
+&amp;&amp; (indices[<i>i</i>] &lt; ranges::size(out))</code> is <code>true</code>, evaluates 
+<code>ranges::data(out)[indices[<i>i</i>]] = <ins>static_cast&lt;ranges::range_value_t&lt;R&gt;&gt;(</ins>v[<i>i</i>]<ins>)</ins></code>.
+</p>
 </blockquote>
 </blockquote>
 </li>
