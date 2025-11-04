@@ -62,7 +62,7 @@
 </tr>
 <tr>
 <td align="left">Date:</td>
-<td align="left">Revised 2025-11-04 at 19:33:41 UTC
+<td align="left">Revised 2025-11-04 at 19:36:23 UTC
 </td>
 </tr>
 <tr>
@@ -1259,6 +1259,58 @@ If <code class='backtick'>dealias(r)</code> represents a type, then <code class=
 </p>
 </blockquote>
 </li>
+</ol>
+
+
+
+
+
+
+<hr>
+<h3 id="4440"><a href="#4440">4440</a><sup><a href="https://cplusplus.github.io/LWG/issue4440">(i)</a></sup>. Forward declarations of entities need also in entries</h3>
+<p><b>Section:</b> 17.3.2 <a href="https://wg21.link/version.syn">[version.syn]</a> <b>Status:</b> <a href="lwg-active.html#Immediate">Immediate</a>
+ <b>Submitter:</b> Tomasz Kamiński <b>Opened:</b> 2025-11-03 <b>Last modified:</b> 2025-11-04</p>
+<p><b>Priority: </b>Not Prioritized
+</p>
+<p><b>View other</b> <a href="lwg-index-open.html#version.syn">active issues</a> in [version.syn].</p>
+<p><b>View all other</b> <a href="lwg-index.html#version.syn">issues</a> in [version.syn].</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#Immediate">Immediate</a> status.</p>
+<p><b>Discussion:</b></p>
+<b>Addresses US 65-116</b>
+<p>
+There are forward declarations of entities from <code>&lt;spanstream&gt;</code> and
+<code>&lt;syncstream&gt;</code> in <code>&lt;iosfwd&gt;</code> so their feature macros
+should be added to that header too. Proposed change: Add <code>&lt;iosfwd&gt;</code>
+to the "also in" entries for <code class='backtick'>__cpp_lib_char8_t</code>, <code class='backtick'>__cpp_lib_spanstream</code>, and
+<code class='backtick'>__cpp_lib_syncbuf</code>.
+</p>
+
+<p><i>[Kona 2025-11-04; approved by LWG. Status changed: New &rarr; Immediate.]</i></p>
+
+
+
+<p id="res-4440"><b>Proposed resolution:</b></p>
+<p>
+This wording is relative to <a href="https://wg21.link/N5014">N5014</a>.
+</p>
+
+<ol>
+
+<li><p>Modify 17.3.2 <a href="https://wg21.link/version.syn">[version.syn]</a> as indicated:</p>
+
+<blockquote>
+<pre>
+#define __cpp_lib_char8_t                           201907L
+  // freestanding, also in &lt;atomic&gt;, &lt;filesystem&gt;, <ins>&lt;iosfwd&gt;,</ins> &lt;istream&gt;, &lt;limits&gt;, &lt;locale&gt;, &lt;ostream&gt;, &lt;string&gt;,
+  // &lt;string_view&gt;
+[&hellip;]
+#define __cpp_lib_spanstream                        202106L // also in <ins>&lt;iosfwd&gt;,</ins> &lt;spanstream&gt;
+[&hellip;]
+#define __cpp_lib_syncbuf                           201803L // also in <ins>&lt;iosfwd&gt;,</ins> &lt;syncstream&gt;
+</pre>
+</blockquote>
+</li>
+
 </ol>
 
 
