@@ -107,7 +107,7 @@ template&lt;execution-policy Ep, <i>sized-random-access-range</i> R, <i>sized-ra
 <blockquote>
 <p>-18- <i>Effects</i> Equivalent to:
 <code>return ranges::rotate(std::forward&lt;Ep&gt;(exec), ranges::begin(r), middle,
-<del>ranges::end(r)</del><ins>ranges::begin(r)+ranges::distance(r)</ins>
+<del>ranges::end(r)</del><ins>ranges::begin(r) + ranges::distance(r)</ins>
 ranges::begin(result_r), <del>ranges::end(result_r)</del><ins>ranges::begin(result_r) + ranges::distance(result_r)</ins>);</code>
 </p>
 </blockquote>
