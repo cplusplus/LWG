@@ -54,7 +54,7 @@
 </style>
 </head>
 <body>
-<p>Revised 2025-11-04 at 02:58:43 UTC
+<p>Revised 2025-11-04 at 18:50:36 UTC
 </p><h2>Unresolved Issues</h2>
 <hr>
 <h3 id="423"><a href="#423">423</a><sup><a href="https://cplusplus.github.io/LWG/issue423">(i)</a></sup>. Effects of negative <code>streamsize</code> in iostreams</h3>
@@ -77308,7 +77308,7 @@ Set priority to 3 after reflector poll.
 <hr>
 <h3 id="4376"><a href="#4376">4376</a><sup><a href="https://cplusplus.github.io/LWG/issue4376">(i)</a></sup>. ABI tag in return type of [simd.mask.unary] is overconstrained</h3>
 <p><b>Section:</b> 29.10.9.4 <a href="https://wg21.link/simd.mask.unary">[simd.mask.unary]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Matthias Kretz <b>Opened:</b> 2025-09-15 <b>Last modified:</b> 2025-10-27</p>
+ <b>Submitter:</b> Matthias Kretz <b>Opened:</b> 2025-09-15 <b>Last modified:</b> 2025-11-04</p>
 <p><b>Priority: </b>1
 </p>
 <p><b>View other</b> <a href="lwg-index-open.html#simd.mask.unary">active issues</a> in [simd.mask.unary].</p>
@@ -77366,8 +77366,9 @@ Set priority to 1 after reflector poll.
 "Should be addressed together with <a href="lwg-active.html#4238" title="simd_mask&lt;complex&lt;double&gt;&gt;::operator+/-/~ return a disabled simd specialization (Status: New)">4238</a><sup><a href="https://cplusplus.github.io/LWG/issue4238" title="Latest snapshot">(i)</a></sup>."
 </p>
 
+<p><strong>Previous resolution [SUPERSEDED]:</strong></p>
+<blockquote class="note">
 
-<p id="res-4376"><b>Proposed resolution:</b></p>
 <p>
 This wording is relative to <a href="https://wg21.link/N5014">N5014</a>.
 </p>
@@ -77471,7 +77472,72 @@ constexpr <del>basic_vec&lt;<i>integer-from</i>&lt;Bytes&gt;, Abi&gt;</del><ins>
 
 </li>
 
+</ol></blockquote>
+
+<p><i>[2025-11-04; Matthias Kretz provides new wording]</i></p>
+
+<p>
+This also resolves <a href="lwg-active.html#4238" title="simd_mask&lt;complex&lt;double&gt;&gt;::operator+/-/~ return a disabled simd specialization (Status: New)">4238</a><sup><a href="https://cplusplus.github.io/LWG/issue4238" title="Latest snapshot">(i)</a></sup> and addresses 
+<a href="https://github.com/cplusplus/nbballot/issues/872">DE 297</a>.
+</p>
+
+
+<p id="res-4376"><b>Proposed resolution:</b></p>
+<p>
+This wording is relative to <a href="https://wg21.link/N5014">N5014</a>.
+</p>
+
+<ol>
+
+<li><p>Modify 29.10.9.1 <a href="https://wg21.link/simd.mask.overview">[simd.mask.overview]</a>, class template <code class='backtick'>basic_mask overview</code> synopsis, as indicated:</p>
+
+<blockquote>
+<pre>
+namespace std::simd {
+  template&lt;size_t Bytes, class Abi&gt; class basic_mask {
+  public:
+    [&hellip;]
+    // <i>29.10.9.4 <a href="https://wg21.link/simd.mask.unary">[simd.mask.unary]</a>, basic_mask unary operators</i>
+    constexpr basic_mask operator!() const noexcept;
+    constexpr <del>basic_vec&lt;<i>integer-from</i>&lt;Bytes&gt;, Abi&gt;</del><ins><i>see below</i></ins> operator+() const noexcept;
+    constexpr <del>basic_vec&lt;<i>integer-from</i>&lt;Bytes&gt;, Abi&gt;</del><ins><i>see below</i></ins> operator-() const noexcept;
+    constexpr <del>basic_vec&lt;<i>integer-from</i>&lt;Bytes&gt;, Abi&gt;</del><ins><i>see below</i></ins> operator~() const noexcept;
+    [&hellip;]
+}
+</pre>
+</blockquote>
+
+</li>
+
+<li><p>Modify 29.10.9.4 <a href="https://wg21.link/simd.mask.unary">[simd.mask.unary]</a> as indicated:</p>
+
+<blockquote>
+<pre>
+constexpr basic_mask operator!() const noexcept;
+constexpr <del>basic_vec&lt;<i>integer-from</i>&lt;Bytes&gt;, Abi&gt;</del><ins><i>see below</i></ins> operator+() const noexcept;
+constexpr <del>basic_vec&lt;<i>integer-from</i>&lt;Bytes&gt;, Abi&gt;</del><ins><i>see below</i></ins> operator-() const noexcept;
+constexpr <del>basic_vec&lt;<i>integer-from</i>&lt;Bytes&gt;, Abi&gt;</del><ins><i>see below</i></ins> operator~() const noexcept;
+</pre>
+<blockquote>
+<p>
+-1- Let <code><i>op</i></code> be the operator.
+<p/>
+-2- <i>Returns</i>: A data-parallel object where the <i>i</i>-th element is initialized to the 
+results of applying <code><i>op</i></code> to <code>operator[](<i>i</i>)</code> for all <i>i</i> in the 
+range of [0, <code>size()</code>).
+<p/>
+<ins>-?- <i>Remarks</i>: If there exists a vectorizable signed integral type <code>I</code> such that 
+<code>sizeof(I) == Bytes</code>, <code>operator+()</code>, <code>operator-()</code>, and <code>operator~()</code> 
+return an enabled specialization <code>R</code> of <code>basic_vec</code> such that <code>R::value_type</code> 
+denotes <code>I</code> and <code>R::size() == size()</code> is <code>true</code>. Otherwise, these operators 
+are deleted and the return type is unspecified.</ins>
+</p>
+</blockquote>
+</blockquote>
+</li>
 </ol>
+
+
 
 
 
