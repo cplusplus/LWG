@@ -1,0 +1,160 @@
+<?xml version='1.0' encoding='utf-8' standalone='no'?>
+<!DOCTYPE issue SYSTEM "lwg-issue.dtd">
+
+<issue num="4444" status="New">
+<title>Fix default template arguments for `ranges::replace` and `ranges::replace_if`</title>
+<section>
+<sref ref="[alg.replace]"/><sref ref="[algorithm.syn]"/>
+</section>
+<submitter>Tim Song</submitter>
+<date>04 Nov 2025</date>
+<priority>99</priority>
+
+<discussion>
+<b>Addresses <a href="https://github.com/cplusplus/nbballot/issues/834">US 159-259</a></b>
+<p>The default template argument for the type of the new value in 
+`ranges::replace` and `ranges::replace_if` should not have projections applied.</p>
+</discussion>
+
+<resolution>
+<p>
+This wording is relative to <paper num="N5014"/>.
+</p>
+
+<ol>
+
+<li><p>Modify <sref ref="[algorithm.syn]"/>, header <tt>&lt;algorithm&gt;</tt> synopsis, as indicated:</p>
+
+<blockquote>
+<pre>
+[&hellip;]
+  namespace ranges {
+    template&lt;input_iterator I, sentinel_for&lt;I&gt; S, class Proj = identity,
+             class T1 = projected_value_t&lt;I, Proj&gt;, class T2 = <del>T1</del><ins>iter_value_t&lt;I&gt;</ins>&gt;
+      requires indirectly_writable&lt;I, const T2&amp;&gt; &amp;&amp;
+               indirect_binary_predicate&lt;ranges::equal_to, projected&lt;I, Proj&gt;, const T1*&gt;
+      constexpr I
+        replace(I first, S last, const T1&amp; old_value, const T2&amp; new_value, Proj proj = {});
+    template&lt;input_range R, class Proj = identity,
+             class T1 = projected_value_t&lt;iterator_t&lt;R&gt;, Proj&gt;, class T2 = <del>T1</del><ins>range_value_t&lt;R&gt;</ins>&gt;
+      requires indirectly_writable&lt;iterator_t&lt;R&gt;, const T2&amp;&gt; &amp;&amp;
+               indirect_binary_predicate&lt;ranges::equal_to,
+                                         projected&lt;iterator_t&lt;R&gt;, Proj&gt;, const T1*&gt;
+      constexpr borrowed_iterator_t&lt;R&gt;
+        replace(R&amp;&amp; r, const T1&amp; old_value, const T2&amp; new_value, Proj proj = {});
+
+    template&lt;<i>execution-policy</i> Ep, random_access_iterator I, sized_sentinel_for&lt;I&gt; S,
+             class Proj = identity, class T1 = projected_value_t&lt;I, Proj&gt;, class T2 = <del>T1</del><ins>iter_value_t&lt;I&gt;</ins>&gt;
+      requires indirectly_writable&lt;I, const T2&amp;&gt; &amp;&amp;
+               indirect_binary_predicate&lt;ranges::equal_to, projected&lt;I, Proj&gt;, const T1*&gt;
+      I replace(Ep&amp;&amp; exec, I first, S last,
+                const T1&amp; old_value, const T2&amp; new_value, Proj proj = {});  // <i>freestanding-deleted</i>
+    template&lt;<i>execution-policy</i> Ep, <i>sized-random-access-range</i> R, class Proj = identity,
+             class T1 = projected_value_t&lt;iterator_t&lt;R&gt;, Proj&gt;, class T2 = <del>T1</del><ins>range_value_t&lt;R&gt;</ins>&gt;
+      requires indirectly_writable&lt;iterator_t&lt;R&gt;, const T2&amp;&gt; &amp;&amp;
+               indirect_binary_predicate&lt;ranges::equal_to,
+                                         projected&lt;iterator_t&lt;R&gt;, Proj&gt;, const T1*&gt;
+      borrowed_iterator_t&lt;R&gt;
+        replace(Ep&amp;&amp; exec, R&amp;&amp; r, const T1&amp; old_value, const T2&amp; new_value,
+                Proj proj = {});                                            // <i>freestanding-deleted</i>
+
+    template&lt;input_iterator I, sentinel_for&lt;I&gt; S, class Proj = identity,
+             class T = <del>projected_</del><ins>iter_</ins>value_t&lt;I, Proj&gt;,
+             indirect_unary_predicate&lt;projected&lt;I, Proj&gt;&gt; Pred&gt;
+      requires indirectly_writable&lt;I, const T&amp;&gt;
+      constexpr I replace_if(I first, S last, Pred pred, const T&amp; new_value, Proj proj = {});
+    template&lt;input_range R, class Proj = identity, class T = <del>projected_value_t&lt;I</del><ins>range_value_t&lt;R</ins>, Proj&gt;,
+             indirect_unary_predicate&lt;projected&lt;iterator_t&lt;R&gt;, Proj&gt;&gt; Pred&gt;
+      requires indirectly_writable&lt;iterator_t&lt;R&gt;, const T&amp;&gt;
+      constexpr borrowed_iterator_t&lt;R&gt;
+        replace_if(R&amp;&amp; r, Pred pred, const T&amp; new_value, Proj proj = {});
+
+    template&lt;<i>execution-policy</i> Ep, random_access_iterator I, sized_sentinel_for&lt;I&gt; S,
+             class Proj = identity, class T = <del>projected</del><ins>iter</ins>_value_t&lt;I, Proj&gt;,
+             indirect_unary_predicate&lt;projected&lt;I, Proj&gt;&gt; Pred&gt;
+      requires indirectly_writable&lt;I, const T&amp;&gt;
+      I replace_if(Ep&amp;&amp; exec, I first, S last, Pred pred,
+                   const T&amp; new_value, Proj proj = {});         // <i>freestanding-deleted</i>
+    template&lt;<i>execution-policy</i> Ep, <i>sized-random-access-range</i> R, class Proj = identity,
+             class T = <del>projected_value_t&lt;iterator_t&lt;R&gt;</del><ins>range_value_t&lt;R</ins>, Proj&gt;,
+             indirect_unary_predicate&lt;projected&lt;iterator_t&lt;R&gt;, Proj&gt;&gt; Pred&gt;
+      requires indirectly_writable&lt;iterator_t&lt;R&gt;, const T&amp;&gt;
+      borrowed_iterator_t&lt;R&gt;
+        replace_if(Ep&amp;&amp; exec, R&amp;&amp; r, Pred pred, const T&amp; new_value,
+                   Proj proj = {});                             // <i>freestanding-deleted</i>
+  }
+[&hellip;]
+</pre>
+</blockquote>
+</li>
+<li><p>Modify <sref ref="[alg.replace]"/> as indicated:</p>
+
+<blockquote>
+<pre>
+[&hellip;]
+template&lt;input_iterator I, sentinel_for&lt;I&gt; S, class Proj = identity,
+         class T1 = projected_value_t&lt;I, Proj&gt;, class T2 = <del>T1</del><ins>iter_value_t&lt;I&gt;</ins>&gt;
+  requires indirectly_writable&lt;I, const T2&amp;&gt; &amp;&amp;
+           indirect_binary_predicate&lt;ranges::equal_to, projected&lt;I, Proj&gt;, const T1*&gt;
+  constexpr I
+    ranges::replace(I first, S last, const T1&amp; old_value, const T2&amp; new_value, Proj proj = {});
+template&lt;input_range R, class Proj = identity,
+         class T1 = projected_value_t&lt;iterator_t&lt;R&gt;, Proj&gt;, class T2 = <del>T1</del><ins>range_value_t&lt;R&gt;</ins>&gt;
+  requires indirectly_writable&lt;iterator_t&lt;R&gt;, const T2&amp;&gt; &amp;&amp;
+           indirect_binary_predicate&lt;ranges::equal_to,
+                                     projected&lt;iterator_t&lt;R&gt;, Proj&gt;, const T1*&gt;
+  constexpr borrowed_iterator_t&lt;R&gt;
+    ranges::replace(R&amp;&amp; r, const T1&amp; old_value, const T2&amp; new_value, Proj proj = {});
+
+template&lt;<i>execution-policy</i> Ep, random_access_iterator I, sized_sentinel_for&lt;I&gt; S,
+         class Proj = identity, class T1 = projected_value_t&lt;I, Proj&gt;, class T2 = <del>T1</del><ins>iter_value_t&lt;I&gt;</ins>&gt;
+  requires indirectly_writable&lt;I, const T2&amp;&gt; &amp;&amp;
+           indirect_binary_predicate&lt;ranges::equal_to, projected&lt;I, Proj&gt;, const T1*&gt;
+  I ranges::replace(Ep&amp;&amp; exec, I first, S last,
+                    const T1&amp; old_value, const T2&amp; new_value, Proj proj = {});
+template&lt;<i>execution-policy</i> Ep, <i>sized-random-access-range</i> R, class Proj = identity,
+         class T1 = projected_value_t&lt;iterator_t&lt;R&gt;, Proj&gt;, class T2 = <del>T1</del><ins>range_value_t&lt;R&gt;</ins>&gt;
+  requires indirectly_writable&lt;iterator_t&lt;R&gt;, const T2&amp;&gt; &amp;&amp;
+           indirect_binary_predicate&lt;ranges::equal_to,
+                                     projected&lt;iterator_t&lt;R&gt;, Proj&gt;, const T1*&gt;
+  borrowed_iterator_t&lt;R&gt;
+    ranges::replace(Ep&amp;&amp; exec, R&amp;&amp; r, const T1&amp; old_value, const T2&amp; new_value,
+                    Proj proj = {});
+
+template&lt;input_iterator I, sentinel_for&lt;I&gt; S, class Proj = identity,
+         class T = <del>projected_</del><ins>iter_</ins>value_t&lt;I, Proj&gt;,
+         indirect_unary_predicate&lt;projected&lt;I, Proj&gt;&gt; Pred&gt;
+  requires indirectly_writable&lt;I, const T&amp;&gt;
+  constexpr I ranges::replace_if(I first, S last, Pred pred, const T&amp; new_value, Proj proj = {});
+template&lt;input_range R, class Proj = identity, class T = <del>projected_value_t&lt;I</del><ins>range_value_t&lt;R</ins>, Proj&gt;,
+         indirect_unary_predicate&lt;projected&lt;iterator_t&lt;R&gt;, Proj&gt;&gt; Pred&gt;
+  requires indirectly_writable&lt;iterator_t&lt;R&gt;, const T&amp;&gt;
+  constexpr borrowed_iterator_t&lt;R&gt;
+    ranges::replace_if(R&amp;&amp; r, Pred pred, const T&amp; new_value, Proj proj = {});
+
+template&lt;<i>execution-policy</i> Ep, random_access_iterator I, sized_sentinel_for&lt;I&gt; S,
+         class Proj = identity, class T = <del>projected</del><ins>iter</ins>_value_t&lt;I, Proj&gt;,
+         indirect_unary_predicate&lt;projected&lt;I, Proj&gt;&gt; Pred&gt;
+  requires indirectly_writable&lt;I, const T&amp;&gt;
+  I ranges::replace_if(Ep&amp;&amp; exec, I first, S last, Pred pred,
+                       const T&amp; new_value, Proj proj = {});
+template&lt;<i>execution-policy</i> Ep, <i>sized-random-access-range</i> R, class Proj = identity,
+         class T = <del>projected_value_t&lt;iterator_t&lt;R&gt;</del><ins>range_value_t&lt;R</ins>, Proj&gt;,
+         indirect_unary_predicate&lt;projected&lt;iterator_t&lt;R&gt;, Proj&gt;&gt; Pred&gt;
+  requires indirectly_writable&lt;iterator_t&lt;R&gt;, const T&amp;&gt;
+  borrowed_iterator_t&lt;R&gt;
+    ranges::replace_if(Ep&amp;&amp; exec, R&amp;&amp; r, Pred pred, const T&amp; new_value,
+                       Proj proj = {});
+</pre>
+<blockquote>
+<p>
+-1- [&hellip;]
+</p>
+</blockquote>
+</blockquote>
+</li>
+</ol>
+
+</resolution>
+
+</issue>
