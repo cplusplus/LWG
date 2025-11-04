@@ -54,7 +54,7 @@
 </style>
 </head>
 <body>
-<p>Revised 2025-11-04 at 01:54:40 UTC
+<p>Revised 2025-11-04 at 01:58:03 UTC
 </p><h2>Unresolved Issues</h2>
 <hr>
 <h3 id="423"><a href="#423">423</a><sup><a href="https://cplusplus.github.io/LWG/issue423">(i)</a></sup>. Effects of negative <code>streamsize</code> in iostreams</h3>
@@ -32983,81 +32983,6 @@ and <code>[first2, last2)</code> contains <code><i>n</i></code> elements that ar
 
 </ol>
 
-
-
-
-
-
-<hr>
-<h3 id="3537"><a href="#3537">3537</a><sup><a href="https://cplusplus.github.io/LWG/issue3537">(i)</a></sup>. &sect;[iterator.range] Missing <code>noexcept</code> for <code>std::rbegin</code>/<code>rend</code> for arrays and 
-<code>initializer_list</code></h3>
-<p><b>Section:</b> 24.7 <a href="https://wg21.link/iterator.range">[iterator.range]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Jiang An <b>Opened:</b> 2021-03-21 <b>Last modified:</b> 2025-07-01</p>
-<p><b>Priority: </b>3
-</p>
-<p><b>View other</b> <a href="lwg-index-open.html#iterator.range">active issues</a> in [iterator.range].</p>
-<p><b>View all other</b> <a href="lwg-index.html#iterator.range">issues</a> in [iterator.range].</p>
-<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
-<p><b>Discussion:</b></p>
-<p>
-Overloads for <code>std::rbegin</code>/<code>rend</code> for built-in arrays and <code>std::initializer_list</code>'s has 
-no preconditions and never throw exceptions, thus should be <code>noexcept</code>. LWG <a href="lwg-defects.html#2280" title="begin/end for arrays should be constexpr and noexcept (Status: C++14)">2280</a><sup><a href="https://cplusplus.github.io/LWG/issue2280" title="Latest snapshot">(i)</a></sup> 
-addressed a similar issue for <code>std::begin/end</code>.
-<p/>
-Suggestion: change these declarations in 24.7 <a href="https://wg21.link/iterator.range">[iterator.range]</a> (p10, 11, 12, 13) as indicated:
-</p>
-<blockquote>
-<pre>
-template&lt;class T, size_t N&gt; constexpr reverse_iterator&lt;T*&gt; rbegin(T (&amp;array)[N]) <ins>noexcept</ins>;
-
-template&lt;class T, size_t N&gt; constexpr reverse_iterator&lt;T*&gt; rend(T (&amp;array)[N]) <ins>noexcept</ins>;
-
-template&lt;class E&gt; constexpr reverse_iterator&lt;const E*&gt; rbegin(initializer_list&lt;E&gt; il) <ins>noexcept</ins>;
-
-template&lt;class E&gt; constexpr reverse_iterator&lt;const E*&gt; rend(initializer_list&lt;E&gt; il) <ins>noexcept</ins>;
-</pre>
-</blockquote>
-<p>
-If this change is accepted, we may also specify <em>conditional</em> <code>noexcept</code> for <code>std::crbegin/crend</code> 
-(in 24.7 <a href="https://wg21.link/iterator.range">[iterator.range]</a> p14, 15), by adding <code>noexcept(noexcept(std::rbegin/crend(c)))</code>, like in 
-LWG <a href="lwg-defects.html#2280" title="begin/end for arrays should be constexpr and noexcept (Status: C++14)">2280</a><sup><a href="https://cplusplus.github.io/LWG/issue2280" title="Latest snapshot">(i)</a></sup>.
-<p/>
-Conditional noexcept for other functions in 24.7 <a href="https://wg21.link/iterator.range">[iterator.range]</a> (p2, 3, 7, 8, 16, 18, 20 22) may also be 
-added for consistency.
-</p>
-
-<p><i>[2021-03-21; Daniel comments]</i></p>
-
-<p>
-There is intentionally no P/R provided at this point, but I'm volunteering to provide it if we got feedback whether
-adding <em>conditional</em> <code>noexcept</code> specifiers similar to those provided by LWG <a href="lwg-defects.html#2280" title="begin/end for arrays should be constexpr and noexcept (Status: C++14)">2280</a><sup><a href="https://cplusplus.github.io/LWG/issue2280" title="Latest snapshot">(i)</a></sup> would
-be preferred or not.
-</p>
-
-<p><i>[2021-04-20; Reflector poll]</i></p>
-
-<p>
-Priority set to 3.
-</p>
-<p>
-Jonathan: This would create a strange situation where <code>std::rbegin</code>
-and <code>std::crbegin</code> on an <code>initializer_list</code> are noexcept but
-<code>std::begin</code> and <code>std::cbegin</code> aren't guaranteed to be
-(because an <code>initializer_list</code> uses the generic <code>std::begin</code>
-and <code>std::cbegin</code> overloads, which have no conditional noexcept).
-</p>
-<p>
-Casey: I don't think we should mark these rbegin/rend overloads noexcept
-without making the pertinent <code>reverse_iterator</code> constructors
-conditionally noexcept.
-</p>
-
-<p><i>[2025-07-01; <a href="https://wg21.link/P3623R0" title=" Add noexcept to [iterator.range] (LWG 3537)">P3623R0</a> would resolve this]</i></p>
-
-
-
-
-<p id="res-3537"><b>Proposed resolution:</b></p>
 
 
 

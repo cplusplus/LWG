@@ -6,7 +6,7 @@
 initializer_list</title>
 <meta property="og:title" content="Issue 3537: &sect;[iterator.range] Missing noexcept for std::rbegin/rend for arrays and 
 initializer_list">
-<meta property="og:description" content="C++ library issue. Status: New">
+<meta property="og:description" content="C++ library issue. Status: Resolved">
 <meta property="og:url" content="https://cplusplus.github.io/LWG/issue3537.html">
 <meta property="og:type" content="website">
 <meta property="og:image" content="http://cplusplus.github.io/LWG/images/cpp_logo.png">
@@ -63,16 +63,16 @@ initializer_list">
 </head>
 <body>
 <hr>
-<p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#New">New</a> status.</em></p>
-<h3 id="3537"><a href="lwg-active.html#3537">3537</a>. &sect;[iterator.range] Missing <code>noexcept</code> for <code>std::rbegin</code>/<code>rend</code> for arrays and 
+<p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#Resolved">Resolved</a> status.</em></p>
+<h3 id="3537"><a href="lwg-defects.html#3537">3537</a>. &sect;[iterator.range] Missing <code>noexcept</code> for <code>std::rbegin</code>/<code>rend</code> for arrays and 
 <code>initializer_list</code></h3>
-<p><b>Section:</b> 24.7 <a href="https://wg21.link/iterator.range">[iterator.range]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Jiang An <b>Opened:</b> 2021-03-21 <b>Last modified:</b> 2025-07-01</p>
+<p><b>Section:</b> 24.7 <a href="https://wg21.link/iterator.range">[iterator.range]</a> <b>Status:</b> <a href="lwg-active.html#Resolved">Resolved</a>
+ <b>Submitter:</b> Jiang An <b>Opened:</b> 2021-03-21 <b>Last modified:</b> 2025-11-04</p>
 <p><b>Priority: </b>3
 </p>
 <p><b>View other</b> <a href="lwg-index-open.html#iterator.range">active issues</a> in [iterator.range].</p>
 <p><b>View all other</b> <a href="lwg-index.html#iterator.range">issues</a> in [iterator.range].</p>
-<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#Resolved">Resolved</a> status.</p>
 <p><b>Discussion:</b></p>
 <p>
 Overloads for <code>std::rbegin</code>/<code>rend</code> for built-in arrays and <code>std::initializer_list</code>'s has 
@@ -129,6 +129,8 @@ conditionally noexcept.
 
 <p><i>[2025-07-01; <a href="https://wg21.link/P3623R0" title=" Add noexcept to [iterator.range] (LWG 3537)">P3623R0</a> would resolve this]</i></p>
 
+
+<p><i>[2025-11-04 Resolved by <a href="https://wg21.link/P3016R6" title=" Resolve inconsistencies in begin/end for valarray and braced initializer lists">P3016R6</a>. Status changed: New &rarr; Resolved.]</i></p>
 
 
 
