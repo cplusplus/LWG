@@ -54,7 +54,7 @@
 </style>
 </head>
 <body>
-<p>Revised 2025-11-04 at 18:50:36 UTC
+<p>Revised 2025-11-04 at 19:03:18 UTC
 </p><h2>Unresolved Issues</h2>
 <hr>
 <h3 id="423"><a href="#423">423</a><sup><a href="https://cplusplus.github.io/LWG/issue423">(i)</a></sup>. Effects of negative <code>streamsize</code> in iostreams</h3>
@@ -77522,15 +77522,15 @@ constexpr <del>basic_vec&lt;<i>integer-from</i>&lt;Bytes&gt;, Abi&gt;</del><ins>
 <p>
 -1- Let <code><i>op</i></code> be the operator.
 <p/>
--2- <i>Returns</i>: A data-parallel object where the <i>i</i>-th element is initialized to the 
-results of applying <code><i>op</i></code> to <code>operator[](<i>i</i>)</code> for all <i>i</i> in the 
+-2- <i>Returns</i>: A data-parallel object where the <i>i</i>-th element is initialized to the
+results of applying <code><i>op</i></code> to <code>operator[](<i>i</i>)</code> for all <i>i</i> in the
 range of [0, <code>size()</code>).
 <p/>
-<ins>-?- <i>Remarks</i>: If there exists a vectorizable signed integral type <code>I</code> such that 
-<code>sizeof(I) == Bytes</code>, <code>operator+()</code>, <code>operator-()</code>, and <code>operator~()</code> 
-return an enabled specialization <code>R</code> of <code>basic_vec</code> such that <code>R::value_type</code> 
-denotes <code>I</code> and <code>R::size() == size()</code> is <code>true</code>. Otherwise, these operators 
-are deleted and the return type is unspecified.</ins>
+<ins>-?- <i>Remarks</i>: If there exists a vectorizable signed integer type <code>I</code> such that
+<code>sizeof(I) == Bytes</code> is <code class='backtick'>true</code>, <code>operator+</code>, <code>operator-</code>, and <code>operator~</code>
+return an enabled specialization <code>R</code> of <code>basic_vec</code> such that <code>R::value_type</code>
+denotes <code><i>integer-from</i>&lt;Bytes&gt;</code> and <code>R::size() == size()</code> is <code>true</code>.
+Otherwise, these operators are defined as deleted and their return types are unspecified.</ins>
 </p>
 </blockquote>
 </blockquote>
