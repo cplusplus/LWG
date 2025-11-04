@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <title>Issue 4442: Clarify expr and fn for meta::reflect_object and meta::reflect_function</title>
 <meta property="og:title" content="Issue 4442: Clarify expr and fn for meta::reflect_object and meta::reflect_function">
-<meta property="og:description" content="C++ library issue. Status: New">
+<meta property="og:description" content="C++ library issue. Status: Immediate">
 <meta property="og:url" content="https://cplusplus.github.io/LWG/issue4442.html">
 <meta property="og:type" content="website">
 <meta property="og:image" content="http://cplusplus.github.io/LWG/images/cpp_logo.png">
@@ -61,16 +61,19 @@
 </head>
 <body>
 <hr>
-<p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#New">New</a> status.</em></p>
+<p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#Immediate">Immediate</a> status.</em></p>
 <h3 id="4442"><a href="lwg-active.html#4442">4442</a>. Clarify <code class='backtick'>expr</code> and <code class='backtick'>fn</code> for <code class='backtick'>meta::reflect_object</code> and <code class='backtick'>meta::reflect_function</code></h3>
-<p><b>Section:</b> 21.4.14 <a href="https://wg21.link/meta.reflection.result">[meta.reflection.result]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
+<p><b>Section:</b> 21.4.14 <a href="https://wg21.link/meta.reflection.result">[meta.reflection.result]</a> <b>Status:</b> <a href="lwg-active.html#Immediate">Immediate</a>
  <b>Submitter:</b> Tomasz Kamiński <b>Opened:</b> 2025-11-04 <b>Last modified:</b> 2025-11-04</p>
 <p><b>Priority: </b>Not Prioritized
 </p>
-<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#Immediate">Immediate</a> status.</p>
 <p><b>Discussion:</b></p>
 <b>Addresses <a href="https://github.com/cplusplus/nbballot/issues/748">US 118-179</a></b>
 <p>This should talk about the object/function designated by <code class='backtick'>expr</code>/<code class='backtick'>fn</code>, rather than <code class='backtick'>expr</code>/<code class='backtick'>fn</code>.</p>
+
+<p><i>[Kona 2025-11-04; approved by LWG. Status changed: New &rarr; Immediate.]</i></p>
+
 
 
 <p id="res-4442"><b>Proposed resolution:</b></p>
@@ -90,22 +93,26 @@ template&lt;class T&gt;
 <p>-7- <i>Mandates</i>: <code class='backtick'>T</code> is an object type.</p>
 <p>-8- <i>Returns</i>: A reflection of the object designated by <code class='backtick'>expr</code>.</p>
 <p>-9- <i>Throws</i>: <code class='backtick'>meta::exception</code>
-<ins>if for an lvalue constant expression <code class='backtick'>E</code> that computes the object that <code class='backtick'>expr</code> refers to, <code class='backtick'>E</code></ins>
-<del>unless <code class='backtick'>expr</code></del> is <ins>not</ins> suitable for use as a constant template argument
-for a constant template parameter of type <code>T&amp;</code> (13.4.3 <a href="https://wg21.link/temp.arg.nontype">[temp.arg.nontype]</a>).</p>
+<del>unless <code class='backtick'>expr</code> is</del>
+<ins>if <code class='backtick'>E</code> is not</ins>
+suitable for use as a constant template argument
+for a constant template parameter of type <code>T&amp;</code> (13.4.3 <a href="https://wg21.link/temp.arg.nontype">[temp.arg.nontype]</a>)
+<ins>, where <code class='backtick'>E</code> is an lvalue constant expression that computes the object that <code class='backtick'>expr</code> refers to</ins>.</p>
 </blockquote>
 
 <pre>
 template&lt;class T&gt;
-  consteval info reflect_function(T&amp; expr);
+  consteval info reflect_function(T&amp; fn);
 </pre>
 <blockquote>
 <p>-10- <i>Mandates</i>: <code class='backtick'>T</code> is an function type.</p>
 <p>-11- <i>Returns</i>: A reflection of the function designated by <code class='backtick'>fn</code>.</p>
 <p>-12- <i>Throws</i>: <code class='backtick'>meta::exception</code>
-<ins>if for an lvalue constant expression <code class='backtick'>F</code> that computes the function that <code class='backtick'>fn</code> refers to, <code class='backtick'>F</code></ins>
-<del>unless <code class='backtick'>fn</code></del> is <ins>not</ins> suitable for use as a constant template argument
-for a constant template parameter of type <code>T&amp;</code> (13.4.3 <a href="https://wg21.link/temp.arg.nontype">[temp.arg.nontype]</a>).</p>
+<del>unless <code class='backtick'>fn</code> is</del>
+<ins>if <code class='backtick'>F</code> is not</ins>
+suitable for use as a constant template argument
+for a constant template parameter of type <code>T&amp;</code> (13.4.3 <a href="https://wg21.link/temp.arg.nontype">[temp.arg.nontype]</a>)
+<ins>, where <code class='backtick'>F</code> is an lvalue constant expression that computes the function that <code class='backtick'>fn</code> refers to</ins>.</p>
 </blockquote>
 
 </li>
