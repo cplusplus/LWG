@@ -60,9 +60,8 @@ Set priority to 1 after reflector poll.
 <p>
 "Should be addressed together with <iref ref="4238"/>."
 </p>
-</discussion>
 
-<resolution>
+<superseded>
 <p>
 This wording is relative to <paper num="N5014"/>.
 </p>
@@ -166,6 +165,70 @@ constexpr <del>basic_vec&lt;<i>integer-from</i>&lt;Bytes&gt;, Abi&gt;</del><ins>
 
 </li>
 
-</ol></resolution>
+</ol></superseded>
+
+<note>2025-11-04; Matthias Kretz provides new wording</note>
+<p>
+This also resolves <iref ref="4238"/> and addresses 
+<a href="https://github.com/cplusplus/nbballot/issues/872">DE 297</a>.
+</p>
+</discussion>
+
+<resolution>
+<p>
+This wording is relative to <paper num="N5014"/>.
+</p>
+
+<ol>
+
+<li><p>Modify <sref ref="[simd.mask.overview]"/>, class template `basic_mask overview` synopsis, as indicated:</p>
+
+<blockquote>
+<pre>
+namespace std::simd {
+  template&lt;size_t Bytes, class Abi&gt; class basic_mask {
+  public:
+    [&hellip;]
+    // <i><sref ref="[simd.mask.unary]"/>, basic_mask unary operators</i>
+    constexpr basic_mask operator!() const noexcept;
+    constexpr <del>basic_vec&lt;<i>integer-from</i>&lt;Bytes&gt;, Abi&gt;</del><ins><i>see below</i></ins> operator+() const noexcept;
+    constexpr <del>basic_vec&lt;<i>integer-from</i>&lt;Bytes&gt;, Abi&gt;</del><ins><i>see below</i></ins> operator-() const noexcept;
+    constexpr <del>basic_vec&lt;<i>integer-from</i>&lt;Bytes&gt;, Abi&gt;</del><ins><i>see below</i></ins> operator~() const noexcept;
+    [&hellip;]
+}
+</pre>
+</blockquote>
+
+</li>
+
+<li><p>Modify <sref ref="[simd.mask.unary]"/> as indicated:</p>
+
+<blockquote>
+<pre>
+constexpr basic_mask operator!() const noexcept;
+constexpr <del>basic_vec&lt;<i>integer-from</i>&lt;Bytes&gt;, Abi&gt;</del><ins><i>see below</i></ins> operator+() const noexcept;
+constexpr <del>basic_vec&lt;<i>integer-from</i>&lt;Bytes&gt;, Abi&gt;</del><ins><i>see below</i></ins> operator-() const noexcept;
+constexpr <del>basic_vec&lt;<i>integer-from</i>&lt;Bytes&gt;, Abi&gt;</del><ins><i>see below</i></ins> operator~() const noexcept;
+</pre>
+<blockquote>
+<p>
+-1- Let <tt><i>op</i></tt> be the operator.
+<p/>
+-2- <i>Returns</i>: A data-parallel object where the <i>i</i>-th element is initialized to the 
+results of applying <tt><i>op</i></tt> to <tt>operator[](<i>i</i>)</tt> for all <i>i</i> in the 
+range of [0, <tt>size()</tt>).
+<p/>
+<ins>-?- <i>Remarks</i>: If there exists a vectorizable signed integral type <tt>I</tt> such that 
+<tt>sizeof(I) == Bytes</tt>, <tt>operator+()</tt>, <tt>operator-()</tt>, and <tt>operator~()</tt> 
+return an enabled specialization <tt>R</tt> of <tt>basic_vec</tt> such that <tt>R::value_type</tt> 
+denotes <tt>I</tt> and <tt>R::size() == size()</tt> is <tt>true</tt>. Otherwise, these operators 
+are deleted and the return type is unspecified.</ins>
+</p>
+</blockquote>
+</blockquote>
+</li>
+</ol>
+
+</resolution>
 
 </issue>
