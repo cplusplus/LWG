@@ -54,7 +54,7 @@
 </style>
 </head>
 <body>
-<p>Revised 2025-11-04 at 23:11:30 UTC
+<p>Revised 2025-11-04 at 23:25:45 UTC
 </p><h2>Unresolved Issues</h2>
 <hr>
 <h3 id="423"><a href="#423">423</a><sup><a href="https://cplusplus.github.io/LWG/issue423">(i)</a></sup>. Effects of negative <code>streamsize</code> in iostreams</h3>
@@ -80641,66 +80641,6 @@ where <i><del>e<sub>i</sub></del><ins>it<sub>i</sub></ins></i> is <ins>an iterat
 </p>
 <p>[&hellip;]</p>
 </blockquote>
-</li>
-</ol>
-
-
-
-
-
-
-<hr>
-<h3 id="4433"><a href="#4433">4433</a><sup><a href="https://cplusplus.github.io/LWG/issue4433">(i)</a></sup>. Incorrect query for C language linkage</h3>
-<p><b>Section:</b> 21.4.7 <a href="https://wg21.link/meta.reflection.queries">[meta.reflection.queries]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Tomasz Kamiński <b>Opened:</b> 2025-10-27 <b>Last modified:</b> 2025-10-27</p>
-<p><b>Priority: </b>Not Prioritized
-</p>
-<p><b>View other</b> <a href="lwg-index-open.html#meta.reflection.queries">active issues</a> in [meta.reflection.queries].</p>
-<p><b>View all other</b> <a href="lwg-index.html#meta.reflection.queries">issues</a> in [meta.reflection.queries].</p>
-<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
-<p><b>Discussion:</b></p>
-<b>Addresses US <a href="https://github.com/cplusplus/nbballot/issues/772">97-203</a></b>
-<p>
-21.4.7 <a href="https://wg21.link/meta.reflection.queries">[meta.reflection.queries]</a>
-Language linkage is a property of functions, variables, and function types (6.7 <a href="https://wg21.link/basic.link">[basic.link]</a>),
-not of names.
-</p>
-<p><i>[
-The wording below contains a drive-by fix for a misapplication of <a href="https://wg21.link/P2996R13" title=" Reflection for C++26">P2996R13</a>
-]</i></p>
-
-
-
-<p id="res-4433"><b>Proposed resolution:</b></p>
-<p>
-This wording is relative to <a href="https://wg21.link/N5014">N5014</a>.
-</p>
-
-<ol>
-
-<li><p>Modify 21.4.7 <a href="https://wg21.link/meta.reflection.queries">[meta.reflection.queries]</a> as indicated:</p>
-
-<pre>
-consteval bool has_internal_linkage(info r);
-consteval bool has_module_linkage(info r);
-consteval bool has_external_linkage(info r);
-<del>consteval bool has_c_language_linkage(info r);</del>
-consteval bool has_linkage(info r);
-</pre>
-<blockquote>
-<p>-25- <i>Returns</i>: <code class='backtick'>true</code> if <code class='backtick'>r</code> represents a variable, function, type, template, or namespace
-whose name has internal linkage, module linkage, <del>C language</del><ins>external</ins> linkage, or any linkage,
-respectively (6.7 <a href="https://wg21.link/basic.link">[basic.link]</a>). Otherwise, <code class='backtick'>false</code>.</p>
-</blockquote>
-
-<pre>
-<ins>consteval bool has_c_language_linkage(info r);</ins>
-</pre>
-<blockquote>
-<p><ins>-??- <i>Returns</i>: <code class='backtick'>true</code> if <code class='backtick'>r</code> represents a variable, function, or function type with C language
-linkage. Otherwise, <code class='backtick'>false</code>.</ins></p>
-</blockquote>
-
 </li>
 </ol>
 
