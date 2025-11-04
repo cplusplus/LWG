@@ -4,7 +4,7 @@
 <issue num="4432" status="New">
 <title>Clarify element initialization for <tt>meta::reflect_constant_array</tt></title>
 <section>
-<sref ref="[meta.reflection.array]"/>
+<sref ref="[meta.define.static]"/>
 </section>
 <submitter>Tomasz Kamiński</submitter>
 <date>27 Oct 2025</date>
@@ -20,16 +20,15 @@ It is not clear what <i>e<sub>i</sub></i> is when proxy references are involved.
 <sref ref="[meta.reflection.array]"/> Clarify copy-initialization vs. direct-initialization use
 The initialization of <tt>P</tt> uses copy-initialization but the Mandates clause uses direct-initialization.
 </p>
-</discussion>
 
-<resolution>
+<superseded>
 <p>
 This wording is relative to <paper num="N5014"/>.
 </p>
 
 <ol>
 
-<li><p>Modify <sref ref="[meta.reflection.array]"/> as indicated:</p>
+<li><p>Modify <sref ref="[meta.define.static]"/> as indicated:</p>
 
 <pre>
 template&lt;ranges::input_range R&gt;
@@ -52,6 +51,47 @@ where <i><del>e<sub>i</sub></del><ins>it<sub>i</sub></ins></i> is <ins>an iterat
 </li>
 </ol>
 
+</superseded>
+</discussion>
+
+<resolution>
+<p>
+This wording is relative to <paper num="N5014"/>.
+</p>
+
+<ol>
+
+<li><p>Modify <sref ref="[meta.define.static]"/> as indicated:</p>
+
+<pre>
+template&lt;ranges::input_range R&gt;
+  consteval info reflect_constant_array(R&amp;&amp; r);
+</pre>
+<blockquote>
+<p>-8- Let <tt>T</tt> be <tt>ranges::range_value_t&lt;R&gt;</tt>
+<ins>and <i>e<sub>i</sub></i> be <tt>static_cast&lt;T&gt;(*<i>it<sub>i</sub></i>)</tt>,
+where <i>it<sub>i</sub></i> is an iterator to the <i>i<sup>th</sup></i> element of `r`</ins>.
+</p>
+<p>-9- <i>Mandates</i>:
+  <tt>T</tt> is a structural type (<sref ref="[temp.param]"/>),
+  <tt>is_constructible_v&lt;T, ranges::range_reference_t&lt;R&gt;&gt;</tt> is <tt>true</tt>, and
+  <del><tt>is_copy_constructible_v&lt;T&gt;</tt> is <tt>true</tt></del>
+  <ins><tt>T</tt> satisfies <tt>copy_constructible</tt></ins>.</p>
+<p>-10- Let <tt>V</tt> be the pack of values of type `info` of the same size as <tt>r</tt>,
+where the <i>i<sup>th</sup></i> element is <tt>reflect_constant(<i>e<sub>i</sub></i>)</tt><del>,
+where <i>e<sub>i</sub></i> is an iterator to the <i>i<sup>th</sup></i> element of <tt>r</tt></del>.
+</p>
+<p>[&hellip;]</p>
+<p>-13- Throws: <ins>Any exception thrown by the evaluation of any <i>e<sub>i</sub></i>, or</ins>
+`meta::exception` <del>unless</del><ins>if evaluation of any</ins> <tt>reflect_constant(<del>e</del><ins><i>e<sub>i</sub></i></ins>)</tt>
+<ins>would exit via an exception</ins>
+<del>is a constant subexpression for every element `e` of `r`</del>.</p>
+</blockquote>
+</li>
+</ol>
+
 </resolution>
+
+
 
 </issue>
