@@ -1,0 +1,76 @@
+<?xml version='1.0' encoding='utf-8' standalone='no'?>
+<!DOCTYPE issue SYSTEM "lwg-issue.dtd">
+
+<issue num="4443" status="New">
+<title>Clean up identifier comparisons in `meta::define_aggregate`</title>
+<section>
+<sref ref="[meta.reflection.define.aggregate]"/>
+</section>
+<submitter>Tomasz Kamiński</submitter>
+<date>04 Nov 2025</date>
+<priority>99</priority>
+
+<discussion>
+<b>Addresses <a href="https://github.com/cplusplus/nbballot/issues/759">US 127-190</a></b>
+<p><i>N<sub>K</sub></i> is defined as an identifier (see 11.4.1) and should not be compared with
+code or with string literals in bullet 8.4. Similarly, 9.5.1 should not talk about
+“character sequence encoded by <i>N<sub>K</sub></i>”</p>
+</discussion>
+
+<resolution>
+<p>
+This wording is relative to <paper num="N5014"/>.
+</p>
+
+<ol>
+
+<li><p>Modify <sref ref="[meta.reflection.define.aggregate]"/> as indicated:</p>
+
+<pre>
+template&lt;reflection_range R = initializer_list&lt;info&gt;&gt;
+  consteval info define_aggregate(info class_type, R&amp;&amp; mdescrs);
+</pre>
+<blockquote>
+<p>-7- [&hellip;]</p>
+<p>-8- <i>Constant When</i>:<ul>
+<li>-8.1- [&hellip;]</li>
+<li>-8.2- [&hellip;]</li>
+<li>-8.3- [&hellip;]</li>
+<li>-8.4- for every pair (<i>r<sub>K</sub></i>, <i>r<sub>L</sub></i>) where
+<i>K&lt;L</i>, if <i>N<sub>K</sub></i> is not ⊥ and N<sub>L</sub> is not ⊥, then either:
+<ul>
+  <li>-8.4.1- <del><i>N<sub>K</sub></i><tt> != </tt><i>N<sub>L</sub></i> is `true`</del>
+  <ins><i>N<sub>K</sub></i> is not the same identifier as <i>N<sub>L</sub></i></ins> or</li>
+  <li>-8.4.2- <del><i>N<sub>K</sub></i><tt> == u8"_" </tt> is `true`</del>
+  <ins><i>N<sub>K</sub></i> is the identifier `_`</ins></li>
+</ul></li>
+</ul></p>
+<p>-9- <i>Effects</i>: Produces an injected declaration <ins>D</ins> (<sref ref="[expr.const]"/>)
+that defines <i>C</i> and has properties as follows: <ul>
+<li>-9.1- [&hellip;]</li>
+<li>-9.2- [&hellip;]</li>
+<li>-9.3- [&hellip;]</li>
+<li>-9.4- [&hellip;]</li>
+<li>-9.5- for every <i>r<sub>K</sub></i>, there is corresponding entity <i>M<sub>K</sub></i>
+belonging to the class scope of <i>D</i> with the following properties:
+<i>K&lt;L</i>, if <i>N<sub>K</sub></i> is not ⊥ and N<sub>L</sub> is not ⊥, then either:
+<ul>
+  <li>-9.5.1- if <i>N<sub>K</sub></i> is ⊥, <i>M<sub>K</sub></i> is an unnamed bit-field.
+  Otherwise, <i>M<sub>K</sub></i> is a non-static data member whose name is the identifier
+  <del>determined by the character sequence encoded by</del> <i>N<sub>K</sub></i><del> in UTF-8</del>.</li>
+  <li>-9.5.2- [&hellip;]</li>
+  <li>-9.5.3- [&hellip;]</li>
+  <li>-9.5.4- [&hellip;]</li>
+  <li>-9.5.5- [&hellip;]</li>
+</ul></li>
+<li>-9.6- [&hellip;]</li>
+</ul></p>
+</blockquote>
+
+</li>
+
+</ol>
+
+</resolution>
+
+</issue>
