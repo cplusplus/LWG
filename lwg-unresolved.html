@@ -54,7 +54,7 @@
 </style>
 </head>
 <body>
-<p>Revised 2025-11-04 at 01:09:32 UTC
+<p>Revised 2025-11-04 at 01:27:19 UTC
 </p><h2>Unresolved Issues</h2>
 <hr>
 <h3 id="423"><a href="#423">423</a><sup><a href="https://cplusplus.github.io/LWG/issue423">(i)</a></sup>. Effects of negative <code>streamsize</code> in iostreams</h3>
@@ -72418,141 +72418,6 @@ else
 
 
 <hr>
-<h3 id="4304"><a href="#4304">4304</a><sup><a href="https://cplusplus.github.io/LWG/issue4304">(i)</a></sup>. <code>std::optional&lt;<i>NonReturnable</i>&amp;&gt;</code> is ill-formed due to <code class='backtick'>value_or</code></h3>
-<p><b>Section:</b> 22.5.4.6 <a href="https://wg21.link/optional.ref.observe">[optional.ref.observe]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Jiang An <b>Opened:</b> 2025-07-25 <b>Last modified:</b> 2025-10-16</p>
-<p><b>Priority: </b>1
-</p>
-<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
-<p><b>Discussion:</b></p>
-<p>
-Currently, if <code class='backtick'>T</code> is an array type or a function type, instantiation of <code>std::optional&lt;T&amp;&gt;</code> 
-is still ill-formed, because the return type of its <code class='backtick'>value_or</code> member function is specified as 
-<code>remove_cv_t&lt;T&gt;</code>, which is invalid as a return type.
-<p/>
-However, we don't exclude such <code>T&amp;</code> from valid contained types. Given only <code class='backtick'>value_or</code> is 
-problematic here, perhaps we can avoid providing it if <code class='backtick'>T</code> is not returnable.
-</p>
-
-<p><i>[2025-10-16; Reflector poll]</i></p>
-
-<p>
-Set priority to 1 after reflector poll.
-</p>
-<p>
-Why not just add <i>Constraints</i>: and use <code>decay_t&lt;T&gt;</code>
-for the return type, instead of "not always present" which is currently
-only used for member types, not member functions.
-</p>
-
-<p><strong>Previous resolution [SUPERSEDED]:</strong></p>
-<blockquote class="note">
-
-<p>
-This wording is relative to <a href="https://wg21.link/N5014">N5014</a>.
-</p>
-
-<ol>
-
-<li><p>Modify 22.5.4.1 <a href="https://wg21.link/optional.optional.ref.general">[optional.optional.ref.general]</a>, header <code>&lt;iterator&gt;</code> synopsis, as indicated:</p>
-
-<blockquote>
-<pre>
-namespace std {
-  template&lt;class T&gt;
-  class optional&lt;T&amp;&gt; {
-    [&hellip;]
-    constexpr T&amp; value() const; // freestanding-deleted
-    template&lt;class U = remove_cv_t&lt;T&gt;&gt;
-      constexpr remove_cv_t&lt;T&gt; value_or(U&amp;&amp; u) const; <ins>// <i>not always present</i></ins>
-    [&hellip;]
-  };
-}
-</pre>
-</blockquote>
-</li>
-
-<li><p>Modify 22.5.4.6 <a href="https://wg21.link/optional.ref.observe">[optional.ref.observe]</a> as indicated:</p>
-
-<blockquote>
-<pre>
-template&lt;class U = remove_cv_t&lt;T&gt;&gt; constexpr remove_cv_t&lt;T&gt; value_or(U&amp;&amp; u) const;
-</pre>
-<blockquote>
-<p>
--8- Let <code class='backtick'>X</code> be <code>remove_cv_t&lt;T&gt;</code>.
-<p/>
--9- <i>Mandates</i>: <code>is_constructible_v&lt;X, T&amp;&gt; &amp;&amp; is_convertible_v&lt;U, X&gt;</code> is <code class='backtick'>true</code>.
-<p/>
--10- <i>Effects</i>: Equivalent to:
-</p>
-<blockquote><pre>
-return has_value() ? *<i>val</i> : static_cast&lt;X&gt;(std::forward&lt;U&gt;(u));
-</pre></blockquote>
-<p>
-<ins>-?- <i>Remarks</i>: This function template is present if and only if <code class='backtick'>T</code> is a non-array object type.</ins>
-</p>
-</blockquote>
-</blockquote>
-</li>
-</ol>
-</blockquote>
-
-<p><i>[2025-10-16; Jonathan provides new wording]</i></p>
-
-
-
-
-<p id="res-4304"><b>Proposed resolution:</b></p>
-
-<p>
-This wording is relative to <a href="https://wg21.link/N5014">N5014</a>.
-</p>
-
-<ol>
-
-<li><p>Modify 22.5.4.6 <a href="https://wg21.link/optional.ref.observe">[optional.ref.observe]</a> as indicated:</p>
-
-<blockquote>
-<pre>
-template&lt;class U = remove_cv_t&lt;T&gt;&gt; constexpr remove_cv_t&lt;T&gt; value_or(U&amp;&amp; u) const;
-</pre>
-<blockquote>
-<p>
-<ins>
--?- <i>Constraints</i>:
-<code class='backtick'>T</code> is a non-array object type.
-</ins>
-</p>
-<p>
--8- Let <code class='backtick'>X</code> be <code>remove_cv_t&lt;T&gt;</code>.
-<p/>
--9- <i>Mandates</i>: <code>is_constructible_v&lt;X, T&amp;&gt; &amp;&amp; is_convertible_v&lt;U, X&gt;</code> is <code class='backtick'>true</code>.
-<p/>
--10- <i>Effects</i>: Equivalent to:
-</p>
-<blockquote><pre>
-return has_value() ? *<i>val</i> : static_cast&lt;X&gt;(std::forward&lt;U&gt;(u));
-</pre></blockquote>
-<p>
-<ins>
--?- <i>Remarks</i>:
-The return type is unspecified if <code class='backtick'>T</code> is an array type or a non-object type.
-[<i>Note ?</i>: This is to avoid the declaration being ill-formed.
-<i>&mdash; end note</i>]
-</ins>
-</p>
-</blockquote>
-</blockquote>
-</li>
-</ol>
-
-
-
-
-
-
-<hr>
 <h3 id="4306"><a href="#4306">4306</a><sup><a href="https://cplusplus.github.io/LWG/issue4306">(i)</a></sup>. Interaction between LWG 2259 and <i>Constraints</i> of member functions</h3>
 <p><b>Section:</b> 16.4.6.5 <a href="https://wg21.link/member.functions">[member.functions]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
  <b>Submitter:</b> Jiang An <b>Opened:</b> 2025-07-24 <b>Last modified:</b> 2025-08-29</p>
@@ -73140,7 +73005,7 @@ namespace std::ranges {
 <p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
 <p><b>Discussion:</b></p>
 <p>
-This is related to LWG <a href="lwg-active.html#4304" title="std::optional&lt;NonReturnable&amp;&gt; is ill-formed due to value_or (Status: New)">4304</a><sup><a href="https://cplusplus.github.io/LWG/issue4304" title="Latest snapshot">(i)</a></sup>. When <code class='backtick'>T</code> is function type or an incomplete array type, 
+This is related to LWG <a href="lwg-active.html#4304" title="std::optional&lt;NonReturnable&amp;&gt; is ill-formed due to value_or (Status: Immediate)">4304</a><sup><a href="https://cplusplus.github.io/LWG/issue4304" title="Latest snapshot">(i)</a></sup>. When <code class='backtick'>T</code> is function type or an incomplete array type, 
 it is impossible to implement all requirements in 22.5.4.5 <a href="https://wg21.link/optional.ref.iterators">[optional.ref.iterators]</a>/1.
 <p/>
 When <code class='backtick'>T</code> is an incomplete object type, we may want to support <code>std::optional&lt;T&amp;&gt;</code> 
