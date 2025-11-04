@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <title>Issue 4230: simd&lt;complex&gt;::real/imag is overconstrained</title>
 <meta property="og:title" content="Issue 4230: simd&lt;complex&gt;::real/imag is overconstrained">
-<meta property="og:description" content="C++ library issue. Status: New">
+<meta property="og:description" content="C++ library issue. Status: Immediate">
 <meta property="og:url" content="https://cplusplus.github.io/LWG/issue4230.html">
 <meta property="og:type" content="website">
 <meta property="og:image" content="http://cplusplus.github.io/LWG/images/cpp_logo.png">
@@ -61,13 +61,13 @@
 </head>
 <body>
 <hr>
-<p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#New">New</a> status.</em></p>
+<p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#Immediate">Immediate</a> status.</em></p>
 <h3 id="4230"><a href="lwg-active.html#4230">4230</a>. <code>simd&lt;complex&gt;::real/imag</code> is overconstrained</h3>
-<p><b>Section:</b> 29.10.8.4 <a href="https://wg21.link/simd.complex.access">[simd.complex.access]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Matthias Kretz <b>Opened:</b> 2025-03-18 <b>Last modified:</b> 2025-08-16</p>
+<p><b>Section:</b> 29.10.8.4 <a href="https://wg21.link/simd.complex.access">[simd.complex.access]</a> <b>Status:</b> <a href="lwg-active.html#Immediate">Immediate</a>
+ <b>Submitter:</b> Matthias Kretz <b>Opened:</b> 2025-03-18 <b>Last modified:</b> 2025-11-04</p>
 <p><b>Priority: </b>2
 </p>
-<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#Immediate">Immediate</a> status.</p>
 <p><b>Discussion:</b></p>
 <p>
 29.10.8.4 <a href="https://wg21.link/simd.complex.access">[simd.complex.access]</a> overconstrains the arguments to <code class='backtick'>real</code> and <code class='backtick'>imag</code>.
@@ -232,6 +232,9 @@ Consequently, the proposed resolution needs to strike <code class='backtick'>exp
 from 29.10.7.1 <a href="https://wg21.link/simd.overview">[simd.overview]</a> and 29.10.7.2 <a href="https://wg21.link/simd.ctor">[simd.ctor]</a> and drop the Remarks paragraph (21).
 </p>
 
+<p><i>[Kona 2025-11-04; approved by LWG. Status changed: New &rarr; Immediate.]</i></p>
+
+
 
 <p id="res-4230"><b>Proposed resolution:</b></p>
 <p>
@@ -247,14 +250,13 @@ This wording is relative to <a href="https://wg21.link/N5014">N5014</a>.
 <pre>
 namespace std::simd {
   template&lt;class T, class Abi&gt; class basic_vec {
+    <ins>using <i>real-type</i> = <i>see below</i>; <i>// exposition-only</i></ins>
   public:
     using value_type = T;
     using mask_type = basic_mask&lt;sizeof(T), Abi&gt;;
     using abi_type = Abi;
     using iterator = <i>simd-iterator</i>&lt;basic_vec&gt;;
     using const_iterator = <i>simd-iterator</i>&lt;const basic_vec&gt;;
-    
-    <ins>using <i>real-type</i> = rebind_t&lt;typename T::value_type, basic_vec&gt; <i>// exposition-only</i></ins>
     
     <i>// 29.10.7.2 <a href="https://wg21.link/simd.ctor">[simd.ctor]</a>, basic_vec constructors</i>   
     [&hellip;]
@@ -273,6 +275,14 @@ namespace std::simd {
   [&hellip;]
 }
 </pre>
+<p>-2- <i>Recommended practice</i>: [&hellip;]</p>
+<blockquote>[<i>Note 1</i>: &hellip;]</blockquote>
+<p>-?- <ins>
+If <code class='backtick'>T</code> is a specialization of <code class='backtick'>complex</code>, <i><code class='backtick'>real-type</code></i> denotes the same type
+as <code>rebind_t&lt;typename T::value_type, basic_vec&lt;T, Abi&gt;&gt;</code>,
+otherwise an unspecified non-array object type.
+</ins>
+</p>
 </blockquote>
 </li>
 
