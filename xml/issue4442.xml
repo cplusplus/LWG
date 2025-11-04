@@ -1,0 +1,59 @@
+<?xml version='1.0' encoding='utf-8' standalone='no'?>
+<!DOCTYPE issue SYSTEM "lwg-issue.dtd">
+
+<issue num="4442" status="New">
+<title>Clarify `expr` and `fn` for `meta::reflect_object` and `meta::reflect_function`</title>
+<section>
+<sref ref="[meta.reflection.result]"/>
+</section>
+<submitter>Tomasz Kamiński</submitter>
+<date>04 Nov 2025</date>
+<priority>99</priority>
+
+<discussion>
+<b>Addresses <a href="https://github.com/cplusplus/nbballot/issues/748">US 118-179</a></b>
+<p>This should talk about the object/function designated by `expr`/`fn`, rather than `expr`/`fn`.</p>
+</discussion>
+
+<resolution>
+<p>
+This wording is relative to <paper num="N5014"/>.
+</p>
+
+<ol>
+
+<li><p>Modify <sref ref="[meta.reflection.result]"/> as indicated:</p>
+
+<pre>
+template&lt;class T&gt;
+  consteval info reflect_object(T&amp; expr);
+</pre>
+<blockquote>
+<p>-7- <i>Mandates</i>: `T` is an object type.</p>
+<p>-8- <i>Returns</i>: A reflection of the object designated by `expr`.</p>
+<p>-9- <i>Throws</i>: `meta::exception`
+<ins>if for an lvalue constant expression `E` that computes the object that `expr` refers to, `E`</ins>
+<del>unless `expr`</del> is <ins>not</ins> suitable for use as a constant template argument
+for a constant template parameter of type <tt>T&amp;</tt> (<sref ref="[temp.arg.nontype]"/>).</p>
+</blockquote>
+
+<pre>
+template&lt;class T&gt;
+  consteval info reflect_function(T&amp; expr);
+</pre>
+<blockquote>
+<p>-10- <i>Mandates</i>: `T` is an function type.</p>
+<p>-11- <i>Returns</i>: A reflection of the function designated by `fn`.</p>
+<p>-12- <i>Throws</i>: `meta::exception`
+<ins>if for an lvalue constant expression `F` that computes the function that `fn` refers to, `F`</ins>
+<del>unless `fn`</del> is <ins>not</ins> suitable for use as a constant template argument
+for a constant template parameter of type <tt>T&amp;</tt> (<sref ref="[temp.arg.nontype]"/>).</p>
+</blockquote>
+
+</li>
+
+</ol>
+
+</resolution>
+
+</issue>
