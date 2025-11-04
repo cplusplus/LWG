@@ -211,12 +211,11 @@ This wording is relative to <a href="https://wg21.link/N5014">N5014</a>.
 <blockquote>
 <blockquote>
 <p>
-<ins>-1- For value <code class='backtick'>x</code> of type <code class='backtick'>info</code>, and prvalue constant expression <code class='backtick'>X</code> that computes the
-reflection held by <code class='backtick'>x</code>, let <code><i>TARG-SPLICE</i>(x)</code> be:</ins>
+<ins>-1- Let <code><i>TARG-SPLICE</i>(x)</code> be:</ins>
 <ul>
-<li><ins>-1.1- <code>template [: X :]</code> if <code class='backtick'>is_template(x)</code> is <code class='backtick'>true</code>, otherwise</ins></li>
-<li><ins>-1.2- <code>typename [: X :]</code> if <code class='backtick'>is_type(x)</code> is <code class='backtick'>true</code>, otherwise</ins></li>
-<li><ins>-1.3- <code>([: X :])</code></ins></li>
+<li><ins>-1.1- <code>template [: x :]</code> if <code class='backtick'>is_template(x)</code> is <code class='backtick'>true</code>, otherwise</ins></li>
+<li><ins>-1.2- <code>typename [: x :]</code> if <code class='backtick'>is_type(x)</code> is <code class='backtick'>true</code>, otherwise</ins></li>
+<li><ins>-1.3- <code>([: x :])</code></ins></li>
 </ul>
 </p>
 </blockquote>
@@ -232,7 +231,7 @@ sequence of prvalue constant expressions that compute the reflections held by
 the elements of <code class='backtick'>arguments</code>, in order.
 </p>
 <p>
--2- <i>Returns</i>: <code class='backtick'>true</code> if <code>Z&lt;<ins><i>TARG-SPLICE</i>(</ins>[:Args:]<ins>)</ins>...&gt;</code> is a valid <i>template-id</i>
+-2- <i>Returns</i>: <code class='backtick'>true</code> if <code>Z&lt;<ins><i>TARG-SPLICE</i>(</ins><del>[:</del>Args<del>:]</del><ins>)</ins>...&gt;</code> is a valid <i>template-id</i>
 (13.3 <a href="https://wg21.link/temp.names">[temp.names]</a>) that does not name a function whose type contains an undeduced placeholder type.
 Otherwise, <code class='backtick'>false</code>.
 </p>
@@ -241,7 +240,7 @@ Otherwise, <code class='backtick'>false</code>.
 in <code class='backtick'>arguments</code> represents a construct usable as a template argument (13.4 <a href="https://wg21.link/temp.arg">[temp.arg]</a>).
 </p>
 <p>
--4- [<i>Note</i>: If forming <code>Z&lt;<ins><i>TARG-SPLICE</i>(</ins>[:Args:]<ins>)</ins>...&gt;</code>
+-4- [<i>Note</i>: If forming <code>Z&lt;<ins><i>TARG-SPLICE</i>(</ins><del>[:</del>Args<del>:]</del><ins>)</ins>...&gt;</code>
 leads to a failure outside of the immediate context, the program is ill-formed. &mdash; <i>end note</i>]
 </p>
 </blockquote>
@@ -257,12 +256,12 @@ sequence of prvalue constant expressions that compute the reflections held by
 the elements of <code class='backtick'>arguments</code>, in order.
 </p>
 <p>
--6- <i>Returns</i>: <code>Z&lt;<ins><i>TARG-SPLICE</i>(</ins>[:Args:]<ins>)</ins>...&gt;</code>.</p>
+-6- <i>Returns</i>: <code>Z&lt;<ins><i>TARG-SPLICE</i>(</ins><del>[:</del>Args<del>:]</del><ins>)</ins>...&gt;</code>.</p>
 <p>
 -7- <i>Throws</i>: <code class='backtick'>meta::exception</code> unless <code class='backtick'>can_substitute(templ, arguments)</code> is <code class='backtick'>true</code>.
 </p>
 <p>
--8- [<i>Note</i>: If forming <code>Z&lt;<ins><i>TARG-SPLICE</i>(</ins>[:Args:]<ins>)</ins>...&gt;</code>
+-8- [<i>Note</i>: If forming <code>Z&lt;<ins><i>TARG-SPLICE</i>(</ins><del>[:</del>Args<del>:]</del><ins>)</ins>...&gt;</code>
 leads to a failure outside of the immediate context, the program is ill-formed. &mdash; <i>end note</i>]
 </p>
 </blockquote>
