@@ -62,7 +62,7 @@
 </tr>
 <tr>
 <td align="left">Date:</td>
-<td align="left">Revised 2025-11-04 at 23:51:27 UTC
+<td align="left">Revised 2025-11-04 at 23:56:34 UTC
 </td>
 </tr>
 <tr>
@@ -1819,6 +1819,105 @@ If <code class='backtick'>dealias(r)</code> represents a type, then <code class=
 </blockquote>
 </li>
 </ol>
+
+
+
+
+
+
+<hr>
+<h3 id="4432"><a href="#4432">4432</a><sup><a href="https://cplusplus.github.io/LWG/issue4432">(i)</a></sup>. Clarify element initialization for <code>meta::reflect_constant_array</code></h3>
+<p><b>Section:</b> 21.4.3 <a href="https://wg21.link/meta.define.static">[meta.define.static]</a> <b>Status:</b> <a href="lwg-active.html#Immediate">Immediate</a>
+ <b>Submitter:</b> Tomasz Kamiński <b>Opened:</b> 2025-10-27 <b>Last modified:</b> 2025-11-04</p>
+<p><b>Priority: </b>Not Prioritized
+</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#Immediate">Immediate</a> status.</p>
+<p><b>Discussion:</b></p>
+<b>Addresses <a href="https://github.com/cplusplus/nbballot/issues/750">US 120-181</a> and <a href="https://github.com/cplusplus/nbballot/issues/751">US 121-182</a></b>
+<p>
+21.4.15 <a href="https://wg21.link/meta.reflection.array">[meta.reflection.array]</a> p10 Clarify <i>e<sub>i</sub></i> type.
+It is not clear what <i>e<sub>i</sub></i> is when proxy references are involved.
+</p>
+<p>
+21.4.15 <a href="https://wg21.link/meta.reflection.array">[meta.reflection.array]</a> Clarify copy-initialization vs. direct-initialization use
+The initialization of <code>P</code> uses copy-initialization but the Mandates clause uses direct-initialization.
+</p>
+
+<p><strong>Previous resolution [SUPERSEDED]:</strong></p>
+<blockquote class="note">
+
+<p>
+This wording is relative to <a href="https://wg21.link/N5014">N5014</a>.
+</p>
+
+<ol>
+
+<li><p>Modify 21.4.3 <a href="https://wg21.link/meta.define.static">[meta.define.static]</a> as indicated:</p>
+
+<pre>
+template&lt;ranges::input_range R&gt;
+  consteval info reflect_constant_array(R&amp;&amp; r);
+</pre>
+<blockquote>
+<p>-8- Let <code>T</code> be <code>ranges::range_value_t&lt;R&gt;</code>.</p>
+<p>-9- <i>Mandates</i>:
+  <code>T</code> is a structural type (13.2 <a href="https://wg21.link/temp.param">[temp.param]</a>),
+  <code>is_constructible_v&lt;T, ranges::range_reference_t&lt;R&gt;&gt;</code> is <code>true</code>, and
+  <del><code>is_copy_constructible_v&lt;T&gt;</code> is <code>true</code></del>
+  <ins><code>T</code> satisfies <code>copy_constructible</code></ins>.</p>
+<p>-10- Let <code>V</code> be the pack of values of type info of the same size as <code>r</code>,
+where the <i>i<sup>th</sup></i> element is
+<code>reflect_constant(<del><i>e<sub>i</sub></i></del><ins>static_cast&lt;T&gt;(*<i>it<sub>i</sub></i>)</ins>)</code>,
+where <i><del>e<sub>i</sub></del><ins>it<sub>i</sub></ins></i> is <ins>an iterator to</ins> the <i>i<sup>th</sup></i> element of <code>r</code>.
+</p>
+<p>[&hellip;]</p>
+</blockquote>
+</li>
+</ol>
+
+</blockquote>
+
+<p><i>[Kona 2025-11-04; approved by LWG. Status changed: New &rarr; Immediate.]</i></p>
+
+
+
+<p id="res-4432"><b>Proposed resolution:</b></p>
+<p>
+This wording is relative to <a href="https://wg21.link/N5014">N5014</a>.
+</p>
+
+<ol>
+
+<li><p>Modify 21.4.3 <a href="https://wg21.link/meta.define.static">[meta.define.static]</a> as indicated:</p>
+
+<pre>
+template&lt;ranges::input_range R&gt;
+  consteval info reflect_constant_array(R&amp;&amp; r);
+</pre>
+<blockquote>
+<p>-8- Let <code>T</code> be <code>ranges::range_value_t&lt;R&gt;</code>
+<ins>and <i>e<sub>i</sub></i> be <code>static_cast&lt;T&gt;(*<i>it<sub>i</sub></i>)</code>,
+where <i>it<sub>i</sub></i> is an iterator to the <i>i<sup>th</sup></i> element of <code class='backtick'>r</code></ins>.
+</p>
+<p>-9- <i>Mandates</i>:
+  <code>T</code> is a structural type (13.2 <a href="https://wg21.link/temp.param">[temp.param]</a>),
+  <code>is_constructible_v&lt;T, ranges::range_reference_t&lt;R&gt;&gt;</code> is <code>true</code>, and
+  <del><code>is_copy_constructible_v&lt;T&gt;</code> is <code>true</code></del>
+  <ins><code>T</code> satisfies <code>copy_constructible</code></ins>.</p>
+<p>-10- Let <code>V</code> be the pack of values of type <code class='backtick'>info</code> of the same size as <code>r</code>,
+where the <i>i<sup>th</sup></i> element is <code>reflect_constant(<i>e<sub>i</sub></i>)</code><del>,
+where <i>e<sub>i</sub></i> is an iterator to the <i>i<sup>th</sup></i> element of <code>r</code></del>.
+</p>
+<p>[&hellip;]</p>
+<p>-13- Throws: <ins>Any exception thrown by the evaluation of any <i>e<sub>i</sub></i>, or</ins>
+<code class='backtick'>meta::exception</code> <del>unless</del><ins>if evaluation of any</ins> <code>reflect_constant(<del>e</del><ins><i>e<sub>i</sub></i></ins>)</code>
+<ins>would exit via an exception</ins>
+<del>is a constant subexpression for every element <code class='backtick'>e</code> of <code class='backtick'>r</code></del>.</p>
+</blockquote>
+</li>
+</ol>
+
+
 
 
 
