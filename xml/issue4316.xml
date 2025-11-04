@@ -147,12 +147,11 @@ This wording is relative to <paper num="N5014"/>.
 <blockquote>
 <blockquote>
 <p>
-<ins>-1- For value `x` of type `info`, and prvalue constant expression `X` that computes the
-reflection held by `x`, let <tt><i>TARG-SPLICE</i>(x)</tt> be:</ins>
+<ins>-1- Let <tt><i>TARG-SPLICE</i>(x)</tt> be:</ins>
 <ul>
-<li><ins>-1.1- <tt>template [: X :]</tt> if `is_template(x)` is `true`, otherwise</ins></li>
-<li><ins>-1.2- <tt>typename [: X :]</tt> if `is_type(x)` is `true`, otherwise</ins></li>
-<li><ins>-1.3- <tt>([: X :])</tt></ins></li>
+<li><ins>-1.1- <tt>template [: x :]</tt> if `is_template(x)` is `true`, otherwise</ins></li>
+<li><ins>-1.2- <tt>typename [: x :]</tt> if `is_type(x)` is `true`, otherwise</ins></li>
+<li><ins>-1.3- <tt>([: x :])</tt></ins></li>
 </ul>
 </p>
 </blockquote>
@@ -168,7 +167,7 @@ sequence of prvalue constant expressions that compute the reflections held by
 the elements of `arguments`, in order.
 </p>
 <p>
--2- <i>Returns</i>: `true` if <tt>Z&lt;<ins><i>TARG-SPLICE</i>(</ins>[:Args:]<ins>)</ins>...&gt;</tt> is a valid <i>template-id</i>
+-2- <i>Returns</i>: `true` if <tt>Z&lt;<ins><i>TARG-SPLICE</i>(</ins><del>[:</del>Args<del>:]</del><ins>)</ins>...&gt;</tt> is a valid <i>template-id</i>
 (<sref ref="[temp.names]"/>) that does not name a function whose type contains an undeduced placeholder type.
 Otherwise, `false`.
 </p>
@@ -177,7 +176,7 @@ Otherwise, `false`.
 in `arguments` represents a construct usable as a template argument (<sref ref="[temp.arg]"/>).
 </p>
 <p>
--4- [<i>Note</i>: If forming <tt>Z&lt;<ins><i>TARG-SPLICE</i>(</ins>[:Args:]<ins>)</ins>...&gt;</tt>
+-4- [<i>Note</i>: If forming <tt>Z&lt;<ins><i>TARG-SPLICE</i>(</ins><del>[:</del>Args<del>:]</del><ins>)</ins>...&gt;</tt>
 leads to a failure outside of the immediate context, the program is ill-formed. &mdash; <i>end note</i>]
 </p>
 </blockquote>
@@ -193,12 +192,12 @@ sequence of prvalue constant expressions that compute the reflections held by
 the elements of `arguments`, in order.
 </p>
 <p>
--6- <i>Returns</i>: <tt>Z&lt;<ins><i>TARG-SPLICE</i>(</ins>[:Args:]<ins>)</ins>...&gt;</tt>.</p>
+-6- <i>Returns</i>: <tt>Z&lt;<ins><i>TARG-SPLICE</i>(</ins><del>[:</del>Args<del>:]</del><ins>)</ins>...&gt;</tt>.</p>
 <p>
 -7- <i>Throws</i>: `meta::exception` unless `can_substitute(templ, arguments)` is `true`.
 </p>
 <p>
--8- [<i>Note</i>: If forming <tt>Z&lt;<ins><i>TARG-SPLICE</i>(</ins>[:Args:]<ins>)</ins>...&gt;</tt>
+-8- [<i>Note</i>: If forming <tt>Z&lt;<ins><i>TARG-SPLICE</i>(</ins><del>[:</del>Args<del>:]</del><ins>)</ins>...&gt;</tt>
 leads to a failure outside of the immediate context, the program is ill-formed. &mdash; <i>end note</i>]
 </p>
 </blockquote>
