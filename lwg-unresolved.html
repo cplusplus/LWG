@@ -54,7 +54,7 @@
 </style>
 </head>
 <body>
-<p>Revised 2025-11-04 at 23:25:45 UTC
+<p>Revised 2025-11-04 at 23:45:41 UTC
 </p><h2>Unresolved Issues</h2>
 <hr>
 <h3 id="423"><a href="#423">423</a><sup><a href="https://cplusplus.github.io/LWG/issue423">(i)</a></sup>. Effects of negative <code>streamsize</code> in iostreams</h3>
@@ -81166,24 +81166,24 @@ This wording is relative to <a href="https://wg21.link/N5014">N5014</a>.
                 Proj proj = {});                                            // <i>freestanding-deleted</i>
 
     template&lt;input_iterator I, sentinel_for&lt;I&gt; S, class Proj = identity,
-             class T = <del>projected_</del><ins>iter_</ins>value_t&lt;I, Proj&gt;,
+             class T = <del>projected</del><ins>iter</ins>_value_t&lt;I<del>, Proj</del>&gt;,
              indirect_unary_predicate&lt;projected&lt;I, Proj&gt;&gt; Pred&gt;
       requires indirectly_writable&lt;I, const T&amp;&gt;
       constexpr I replace_if(I first, S last, Pred pred, const T&amp; new_value, Proj proj = {});
-    template&lt;input_range R, class Proj = identity, class T = <del>projected_value_t&lt;I</del><ins>range_value_t&lt;R</ins>, Proj&gt;,
+    template&lt;input_range R, class Proj = identity, class T = <del>projected_value_t&lt;I</del><ins>range_value_t&lt;R</ins><del>, Proj</del>&gt;,
              indirect_unary_predicate&lt;projected&lt;iterator_t&lt;R&gt;, Proj&gt;&gt; Pred&gt;
       requires indirectly_writable&lt;iterator_t&lt;R&gt;, const T&amp;&gt;
       constexpr borrowed_iterator_t&lt;R&gt;
         replace_if(R&amp;&amp; r, Pred pred, const T&amp; new_value, Proj proj = {});
 
     template&lt;<i>execution-policy</i> Ep, random_access_iterator I, sized_sentinel_for&lt;I&gt; S,
-             class Proj = identity, class T = <del>projected</del><ins>iter</ins>_value_t&lt;I, Proj&gt;,
+             class Proj = identity, class T = <del>projected</del><ins>iter</ins>_value_t&lt;I<del>, Proj</del>&gt;,
              indirect_unary_predicate&lt;projected&lt;I, Proj&gt;&gt; Pred&gt;
       requires indirectly_writable&lt;I, const T&amp;&gt;
       I replace_if(Ep&amp;&amp; exec, I first, S last, Pred pred,
                    const T&amp; new_value, Proj proj = {});         // <i>freestanding-deleted</i>
     template&lt;<i>execution-policy</i> Ep, <i>sized-random-access-range</i> R, class Proj = identity,
-             class T = <del>projected_value_t&lt;iterator_t&lt;R&gt;</del><ins>range_value_t&lt;R</ins>, Proj&gt;,
+             class T = <del>projected_value_t&lt;iterator_t&lt;R&gt;</del><ins>range_value_t&lt;R</ins><del>, Proj</del>&gt;,
              indirect_unary_predicate&lt;projected&lt;iterator_t&lt;R&gt;, Proj&gt;&gt; Pred&gt;
       requires indirectly_writable&lt;iterator_t&lt;R&gt;, const T&amp;&gt;
       borrowed_iterator_t&lt;R&gt;
@@ -81229,24 +81229,24 @@ template&lt;<i>execution-policy</i> Ep, <i>sized-random-access-range</i> R, clas
                     Proj proj = {});
 
 template&lt;input_iterator I, sentinel_for&lt;I&gt; S, class Proj = identity,
-         class T = <del>projected_</del><ins>iter_</ins>value_t&lt;I, Proj&gt;,
+         class T = <del>projected</del><ins>iter</ins>_value_t&lt;I<del>, Proj</del>&gt;,
          indirect_unary_predicate&lt;projected&lt;I, Proj&gt;&gt; Pred&gt;
   requires indirectly_writable&lt;I, const T&amp;&gt;
   constexpr I ranges::replace_if(I first, S last, Pred pred, const T&amp; new_value, Proj proj = {});
-template&lt;input_range R, class Proj = identity, class T = <del>projected_value_t&lt;I</del><ins>range_value_t&lt;R</ins>, Proj&gt;,
+template&lt;input_range R, class Proj = identity, class T = <del>projected_value_t&lt;I</del><ins>range_value_t&lt;R</ins><del>, Proj</del>&gt;,
          indirect_unary_predicate&lt;projected&lt;iterator_t&lt;R&gt;, Proj&gt;&gt; Pred&gt;
   requires indirectly_writable&lt;iterator_t&lt;R&gt;, const T&amp;&gt;
   constexpr borrowed_iterator_t&lt;R&gt;
     ranges::replace_if(R&amp;&amp; r, Pred pred, const T&amp; new_value, Proj proj = {});
 
 template&lt;<i>execution-policy</i> Ep, random_access_iterator I, sized_sentinel_for&lt;I&gt; S,
-         class Proj = identity, class T = <del>projected</del><ins>iter</ins>_value_t&lt;I, Proj&gt;,
+         class Proj = identity, class T = <del>projected</del><ins>iter</ins>_value_t&lt;I<del>, Proj</del>&gt;,
          indirect_unary_predicate&lt;projected&lt;I, Proj&gt;&gt; Pred&gt;
   requires indirectly_writable&lt;I, const T&amp;&gt;
   I ranges::replace_if(Ep&amp;&amp; exec, I first, S last, Pred pred,
                        const T&amp; new_value, Proj proj = {});
 template&lt;<i>execution-policy</i> Ep, <i>sized-random-access-range</i> R, class Proj = identity,
-         class T = <del>projected_value_t&lt;iterator_t&lt;R&gt;</del><ins>range_value_t&lt;R</ins>, Proj&gt;,
+         class T = <del>projected_value_t&lt;iterator_t&lt;R&gt;</del><ins>range_value_t&lt;R</ins><del>, Proj</del>&gt;,
          indirect_unary_predicate&lt;projected&lt;iterator_t&lt;R&gt;, Proj&gt;&gt; Pred&gt;
   requires indirectly_writable&lt;iterator_t&lt;R&gt;, const T&amp;&gt;
   borrowed_iterator_t&lt;R&gt;
