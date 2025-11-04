@@ -353,10 +353,23 @@ template&lt;class V = see below , contiguous_iterator I, sized_sentinel_for&lt;I
 </pre>
 <blockquote>
 <p>
--6- Let [&hellip;]
-<p/>
-[&hellip;]
-<p/>
+-6- Let
+</p>
+<ol style="list-style-type: none">
+<li><p>
+(6.1) &mdash; <tt>mask</tt> be <tt>V::mask_type(true)</tt> for the overloads with no <tt>mask</tt> parameter;
+</p></li>
+<li><p>
+(6.2) &mdash; <tt>R</tt> be <tt>span&lt;const iter_value_t&lt;I&gt;&gt;</tt> for the overloads with no template parameter <tt>R</tt>;
+</p></li>
+<li><p>
+(6.3) &mdash; <tt>r</tt> be <tt>R(first, n)</tt> for the overloads with an <tt>n</tt> parameter and <tt>R(first, last)</tt> for the overloads with a <tt>last</tt> parameter<del>.</del><ins>;</ins>
+</p></li>
+<li><p>
+<ins>(6.?) &mdash; <tt>T</tt> be <tt>typename V::value_type</tt>.</ins>
+</p></li>
+</ol>
+<p>
 -7- <i>Mandates</i>:
 </p>
 <ol style="list-style-type: none">
@@ -445,7 +458,7 @@ template&lt;class T, class Abi, contiguous_iterator I, sized_sentinel_for&lt;I&g
 </p>
 <ol style="list-style-type: none">
 <li><p>
-<ins>(?.1) &mdash; <tt>ranges::iterator_t&lt;R&gt;</tt> satisfies
+<ins>(?.1) &mdash; <tt>ranges::iterator_t&lt;R&gt;</tt> models
 <tt>indirectly_writable&lt;ranges::range_value_t&lt;R&gt;&gt;</tt>, and</ins>
 </p></li>
 <li><p>
@@ -511,7 +524,7 @@ template&lt;<i>simd-vec-type</i> V, ranges::contiguous_range R, <i>simd-integral
 <ins>(14.1) &mdash;</ins> `V::size() == I::size()` is `true`<ins>,</ins>
 </p></li>
 <li><p>
-<ins>(14.2) &mdash; <tt>ranges::iterator_t&lt;R&gt;</tt> satisfies
+<ins>(14.2) &mdash; <tt>ranges::iterator_t&lt;R&gt;</tt> models
 <tt>indirectly_writable&lt;ranges::range_value_t&lt;R&gt;&gt;</tt>, and</ins> 
 </p></li>
 <li><p>
@@ -519,6 +532,12 @@ template&lt;<i>simd-vec-type</i> V, ranges::contiguous_range R, <i>simd-integral
 <tt><i>explicitly-convertible-to</i>&lt;ranges::range_value_t&lt;R&gt;&gt;</tt></ins>.
 </p></li>
 </ol>
+[&hellip;]
+<p>
+-17- <i>Effects</i>: For all <i>i</i> in the range [<tt>0</tt>, <tt>I::size()</tt>), if <tt>mask[<i>i</i>] 
+&amp;&amp; (indices[<i>i</i>] &lt; ranges::size(out))</tt> is <tt>true</tt>, evaluates 
+<tt>ranges::data(out)[indices[<i>i</i>]] = <ins>static_cast&lt;ranges::range_value_t&lt;R&gt;&gt;(</ins>v[<i>i</i>]<ins>)</ins></tt>.
+</p>
 </blockquote>
 </blockquote>
 </li>
