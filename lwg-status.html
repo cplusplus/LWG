@@ -62,7 +62,7 @@ This document is the Index by Status and Section for the <a href="lwg-active.htm
 <a href="lwg-defects.html">Library Defect Reports and Accepted Issues</a>, and <a href="lwg-closed.html">Library Closed Issues List</a>.
 </p>
 
-<p>Revised 2025-11-04 at 00:45:32 UTC
+<p>Revised 2025-11-04 at 01:09:32 UTC
 </p><h2 id="Voting">Voting (61 issues)</h2>
 <table class="issues-index">
 <tr>
@@ -632,7 +632,7 @@ constructor</td>
 <td></td>
 </tr>
 </table>
-<h2 id="Immediate">Immediate (1 issues)</h2>
+<h2 id="Immediate">Immediate (2 issues)</h2>
 <table class="issues-index">
 <tr>
   <th><a href="lwg-toc.html">Issue</a></th>
@@ -650,6 +650,15 @@ constructor</td>
 <td><code>meta::alignment_of</code> should exclude data member description of bit-field</td>
 <td>Yes</td>
 <td></td>
+<td></td>
+</tr>
+<tr>
+<td id="4424"><a href="lwg-active.html#4424" title="meta::define_aggregate should require a class type (Status: Immediate)">4424</a><sup><a href="https://cplusplus.github.io/LWG/issue4424">(i)</a></sup></td>
+<td><a href="lwg-active.html#Immediate">Immediate</a></td>
+<td>21.4.16 [meta.reflection.define.aggregate]</td>
+<td><code class='backtick'>meta::define_aggregate</code> should require a class type</td>
+<td>Yes</td>
+<td>1</td>
 <td></td>
 </tr>
 </table>
@@ -1895,6 +1904,15 @@ passed to allocator <code>construct</code> and <code>destroy</code></td>
 <td></td>
 </tr>
 <tr>
+<td id="4251"><a href="lwg-active.html#4251" title="Move assignment for indirect unnecessarily requires copy construction (Status: New)">4251</a><sup><a href="https://cplusplus.github.io/LWG/issue4251">(i)</a></sup></td>
+<td><a href="lwg-active.html#New">New</a></td>
+<td>20.4.1.5 [indirect.assign]</td>
+<td>Move assignment for <code class='backtick'>indirect</code> unnecessarily requires copy construction</td>
+<td>Yes</td>
+<td>1</td>
+<td></td>
+</tr>
+<tr>
 <td id="4325"><a href="lwg-active.html#4325" title="std::indirect's operator== still does not support incomplete types (Status: New)">4325</a><sup><a href="https://cplusplus.github.io/LWG/issue4325">(i)</a></sup></td>
 <td><a href="lwg-active.html#New">New</a></td>
 <td>20.4.1.8 [indirect.relops]</td>
@@ -2141,15 +2159,6 @@ the evaluation of type traits</td>
 <td>Clarify element initialization for <code>meta::reflect_constant_array</code></td>
 <td>Yes</td>
 <td></td>
-<td></td>
-</tr>
-<tr>
-<td id="4424"><a href="lwg-active.html#4424" title="meta::define_aggregate should require a class type (Status: New)">4424</a><sup><a href="https://cplusplus.github.io/LWG/issue4424">(i)</a></sup></td>
-<td><a href="lwg-active.html#New">New</a></td>
-<td>21.4.16 [meta.reflection.define.aggregate]</td>
-<td><code class='backtick'>meta::define_aggregate</code> should require a class type</td>
-<td>Yes</td>
-<td>1</td>
 <td></td>
 </tr>
 <tr>
@@ -4023,6 +4032,15 @@ inner-iterator with std::default_sentinel results in null pointer dereference (S
     <code>input_iterator</code> are not quite right</td>
 <td>Yes</td>
 <td>3</td>
+<td></td>
+</tr>
+<tr>
+<td id="4441"><a href="lwg-active.html#4441" title="ranges::rotate do not handle sized-but-not-sized-sentinel ranges correctly (Status: New)">4441</a><sup><a href="https://cplusplus.github.io/LWG/issue4441">(i)</a></sup></td>
+<td><a href="lwg-active.html#New">New</a></td>
+<td>26.7.11 [alg.rotate]</td>
+<td><code>ranges::rotate</code> do not handle sized-but-not-sized-sentinel ranges correctly</td>
+<td>Yes</td>
+<td></td>
 <td></td>
 </tr>
 <tr>
@@ -5939,15 +5957,6 @@ co_await expression instead of same_as&lt;void&gt; (Status: New)">4357</a><sup><
 <td><a href="lwg-active.html#New">New</a></td>
 <td>99 [exec.syn]</td>
 <td>Alias template <code class='backtick'>connect_result_t</code> should be constrained with <code class='backtick'>sender_to</code></td>
-<td>Yes</td>
-<td>1</td>
-<td></td>
-</tr>
-<tr>
-<td id="4251"><a href="lwg-active.html#4251" title="Move assignment for indirect unnecessarily requires copy construction (Status: New)">4251</a><sup><a href="https://cplusplus.github.io/LWG/issue4251">(i)</a></sup></td>
-<td><a href="lwg-active.html#New">New</a></td>
-<td>99 [indirect.asgn]</td>
-<td>Move assignment for <code class='backtick'>indirect</code> unnecessarily requires copy construction</td>
 <td>Yes</td>
 <td>1</td>
 <td></td>

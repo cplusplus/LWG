@@ -62,7 +62,7 @@
 </tr>
 <tr>
 <td align="left">Date:</td>
-<td align="left">Revised 2025-11-04 at 00:45:32 UTC
+<td align="left">Revised 2025-11-04 at 01:09:32 UTC
 </td>
 </tr>
 <tr>
@@ -76,11 +76,132 @@
 </table>
 <h2>Immediate Issues</h2>
 <hr>
+<h3 id="4424"><a href="#4424">4424</a><sup><a href="https://cplusplus.github.io/LWG/issue4424">(i)</a></sup>. <code class='backtick'>meta::define_aggregate</code> should require a class type</h3>
+<p><b>Section:</b> 21.4.16 <a href="https://wg21.link/meta.reflection.define.aggregate">[meta.reflection.define.aggregate]</a> <b>Status:</b> <a href="lwg-active.html#Immediate">Immediate</a>
+ <b>Submitter:</b> Jakub Jelinek <b>Opened:</b> 2025-10-20 <b>Last modified:</b> 2025-11-04</p>
+<p><b>Priority: </b>1
+</p>
+<p><b>View other</b> <a href="lwg-index-open.html#meta.reflection.define.aggregate">active issues</a> in [meta.reflection.define.aggregate].</p>
+<p><b>View all other</b> <a href="lwg-index.html#meta.reflection.define.aggregate">issues</a> in [meta.reflection.define.aggregate].</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#Immediate">Immediate</a> status.</p>
+<p><b>Discussion:</b></p>
+<b>Addresses <a href="https://github.com/cplusplus/nbballot/issues/757">US 125-188</a></b>
+<p>
+The <code class='backtick'>meta::define_aggregate</code> function doesn't say what happens if <i>C</i>
+does not represent a class type.
+</p>
+<p>It's also unclear whether it should work
+with aliases to class types, e.g.
+<pre>struct S; using A = S; ... meta::define_aggregate(^^A, {});</pre>
+</p>
+<p>
+And what happens if you try to define a cv-qualified type:
+<pre>struct S; meta::define_aggregate(^^const S, {});</pre>
+Should this be an error, or inject a definition of the unqualified type?
+</p>
+
+<p><i>[2025-10-23; Reflector poll.]</i></p>
+
+<p>
+Set priority to 1 after reflector poll.
+</p>
+
+<p><i>[Kona 2025-11-04; approved by LWG. Status changed: New &rarr; Immediate.]</i></p>
+
+
+<p><strong>Previous resolution [SUPERSEDED]:</strong></p>
+<blockquote class="note">
+
+	
+<p>
+This wording is relative to <a href="https://wg21.link/N5014">N5014</a>.
+</p>
+
+<ol>
+
+<li><p>Modify 21.4.16 <a href="https://wg21.link/meta.reflection.define.aggregate">[meta.reflection.define.aggregate]</a> as indicated:</p>
+
+<blockquote>
+<p>-7-
+Let <i>C</i> be the class represented by 
+<code><ins>dealias(</ins>class_type<ins>)</ins></code>
+and <i>r<sub>K</sub></i> be the <i>K</i><sup>th</sup> reflection value
+in <code class='backtick'>mdescrs</code>.
+For every <i>r<sub>K</sub></i> in <code class='backtick'>mdescrs</code>,
+let (<i>T<sub>K</sub></i>, <i>N<sub>K</sub></i>, <i>A<sub>K</sub></i>,
+<i>W<sub>K</sub></i>, <i>NUA<sub>K</sub></i>)
+be the corresponding data member description represented by
+<i>r<sub>K</sub></i>.
+</p>
+<p>-8- <i>Constant when</i>:
+<ul style="list-style-type: none">
+<li><ins>(8.?) &mdash;
+<code class='backtick'>dealias(class_type)</code> represents a class type;
+</ins>
+</li>
+<li>(8.1) &mdash;
+<i>C</i> is incomplete from every point in the evaluation context;
+</li>
+</ul>
+</p>
+</blockquote>
+</li>
+</ol>
+</blockquote>
+
+<p><i>[2025-10-24; LWG telecon. Jonathan updates wording]</i></p>
+
+<p>Make a minimal change for now, can add support for aliases later.</p>
+
+
+
+<p id="res-4424"><b>Proposed resolution:</b></p>
+<p>
+This wording is relative to <a href="https://wg21.link/N5014">N5014</a>.
+</p>
+
+<ol>
+
+<li><p>Modify 21.4.16 <a href="https://wg21.link/meta.reflection.define.aggregate">[meta.reflection.define.aggregate]</a> as indicated:</p>
+
+<blockquote>
+<p>-7-
+Let <i>C</i> be the <del>class</del> <ins>type</ins> represented by
+<code>class_type</code>
+and <i>r<sub>K</sub></i> be the <i>K</i><sup>th</sup> reflection value
+in <code class='backtick'>mdescrs</code>.
+For every <i>r<sub>K</sub></i> in <code class='backtick'>mdescrs</code>,
+let (<i>T<sub>K</sub></i>, <i>N<sub>K</sub></i>, <i>A<sub>K</sub></i>,
+<i>W<sub>K</sub></i>, <i>NUA<sub>K</sub></i>)
+be the corresponding data member description represented by
+<i>r<sub>K</sub></i>.
+</p>
+<p>-8- <i>Constant when</i>:
+<ul style="list-style-type: none">
+<li><ins>(8.?) &mdash;
+<code class='backtick'>class_type</code> represents a cv-unqualified class type;
+</ins>
+</li>
+<li>(8.1) &mdash;
+<i>C</i> is incomplete from every point in the evaluation context;
+</li>
+</ul>
+</p>
+</blockquote>
+</li>
+</ol>
+
+
+
+
+
+<hr>
 <h3 id="4429"><a href="#4429">4429</a><sup><a href="https://cplusplus.github.io/LWG/issue4429">(i)</a></sup>. <code>meta::alignment_of</code> should exclude data member description of bit-field</h3>
 <p><b>Section:</b> 21.4.11 <a href="https://wg21.link/meta.reflection.layout">[meta.reflection.layout]</a> <b>Status:</b> <a href="lwg-active.html#Immediate">Immediate</a>
  <b>Submitter:</b> Tomasz Kamiński <b>Opened:</b> 2025-10-24 <b>Last modified:</b> 2025-11-04</p>
 <p><b>Priority: </b>Not Prioritized
 </p>
+<p><b>View all issues with</b> <a href="lwg-status.html#Immediate">Immediate</a> status.</p>
 <p><b>Discussion:</b></p>
 <b>Addresses <a href="https://github.com/cplusplus/nbballot/issues/988">US 109-170</a></b>
 <p>

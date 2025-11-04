@@ -64,7 +64,7 @@
 <p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#New">New</a> status.</em></p>
 <h3 id="4316"><a href="lwg-active.html#4316">4316</a>. <code>{can_}substitute</code> specification is ill-formed</h3>
 <p><b>Section:</b> 21.4.13 <a href="https://wg21.link/meta.reflection.substitute">[meta.reflection.substitute]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Matthias Wippich <b>Opened:</b> 2025-08-15 <b>Last modified:</b> 2025-10-27</p>
+ <b>Submitter:</b> Matthias Wippich <b>Opened:</b> 2025-08-15 <b>Last modified:</b> 2025-11-04</p>
 <p><b>Priority: </b>1
 </p>
 <p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
@@ -103,9 +103,9 @@ Set priority to 1 after reflector poll.
 
 <p><i>[2025-10-27; Tomasz provides wording.]</i></p>
 
+<p><strong>Previous resolution [SUPERSEDED]:</strong></p>
+<blockquote class="note">
 
-
-<p id="res-4316"><b>Proposed resolution:</b></p>
 
 <p>
 This wording is relative to <a href="https://wg21.link/N5014">N5014</a>.
@@ -179,6 +179,91 @@ be the i<sup>th</sup> element of <code class='backtick'>arguments</code>.</ins>
 -8- [<i>Note</i>: If forming <code>Z&lt;<del>[:Args:]...</del><ins><i>TARG-SPLICE</i>(<i>e<sub>0</sub></i>),
 ..., <i>TARG-SPLICE</i>(<i>e<sub>n-1</sub></i>)</ins>&gt;</code> leads to a failure outside of the immediate
 context, the program is ill-formed. &mdash; <i>end note</i>]
+</p>
+</blockquote>
+
+</blockquote>
+</li>
+</ol>
+
+</blockquote>
+
+<p><i>[2025-10-27; Reflector comments.]</i></p>
+
+<p>
+We lost definition of <code class='backtick'>Z</code>. Use <code><i>TARG-SPLICE</i>([:Args:])...</code>.
+</p>
+
+<p><i>[2025-11-03; Tomasz provides wording.]</i></p>
+
+
+
+<p id="res-4316"><b>Proposed resolution:</b></p>
+
+<p>
+This wording is relative to <a href="https://wg21.link/N5014">N5014</a>.
+</p>
+
+<ol>
+
+<li><p>Modify 21.4.13 <a href="https://wg21.link/meta.reflection.substitute">[meta.reflection.substitute]</a> as indicated:</p>
+
+<blockquote>
+<blockquote>
+<p>
+<ins>-1- For value <code class='backtick'>x</code> of type <code class='backtick'>info</code>, and prvalue constant expression <code class='backtick'>X</code> that computes the
+reflection held by <code class='backtick'>x</code>, let <code><i>TARG-SPLICE</i>(x)</code> be:</ins>
+<ul>
+<li><ins>-1.1- <code>template [: X :]</code> if <code class='backtick'>is_template(x)</code> is <code class='backtick'>true</code>, otherwise</ins></li>
+<li><ins>-1.2- <code>typename [: X :]</code> if <code class='backtick'>is_type(x)</code> is <code class='backtick'>true</code>, otherwise</ins></li>
+<li><ins>-1.3- <code>([: X :])</code></ins></li>
+</ul>
+</p>
+</blockquote>
+
+<pre>
+template&lt;reflection_range R = initializer_list&lt;info&gt;&gt;
+  consteval bool can_substitute(info templ, R&amp;&amp; arguments);
+</pre>
+<blockquote>
+<p>
+-1- Let <code class='backtick'>Z</code> be the template represented by <code class='backtick'>templ</code> and let <code class='backtick'>Args...</code> be a
+sequence of prvalue constant expressions that compute the reflections held by
+the elements of <code class='backtick'>arguments</code>, in order.
+</p>
+<p>
+-2- <i>Returns</i>: <code class='backtick'>true</code> if <code>Z&lt;<ins><i>TARG-SPLICE</i>(</ins>[:Args:]<ins>)</ins>...&gt;</code> is a valid <i>template-id</i>
+(13.3 <a href="https://wg21.link/temp.names">[temp.names]</a>) that does not name a function whose type contains an undeduced placeholder type.
+Otherwise, <code class='backtick'>false</code>.
+</p>
+<p>
+-3- <i>Throws</i>: <code class='backtick'>meta::exception</code> unless <code class='backtick'>templ</code> represents a template, and every reflection
+in <code class='backtick'>arguments</code> represents a construct usable as a template argument (13.4 <a href="https://wg21.link/temp.arg">[temp.arg]</a>).
+</p>
+<p>
+-4- [<i>Note</i>: If forming <code>Z&lt;<ins><i>TARG-SPLICE</i>(</ins>[:Args:]<ins>)</ins>...&gt;</code>
+leads to a failure outside of the immediate context, the program is ill-formed. &mdash; <i>end note</i>]
+</p>
+</blockquote>
+
+<pre>
+template&lt;reflection_range R = initializer_list&lt;info&gt;&gt;
+  consteval info substitute(info templ, R&amp;&amp; arguments);
+</pre>
+<blockquote>
+<p>
+-5- Let <code class='backtick'>Z</code> be the template represented by <code class='backtick'>templ</code> and let <code class='backtick'>Args...</code> be a
+sequence of prvalue constant expressions that compute the reflections held by
+the elements of <code class='backtick'>arguments</code>, in order.
+</p>
+<p>
+-6- <i>Returns</i>: <code>Z&lt;<ins><i>TARG-SPLICE</i>(</ins>[:Args:]<ins>)</ins>...&gt;</code>.</p>
+<p>
+-7- <i>Throws</i>: <code class='backtick'>meta::exception</code> unless <code class='backtick'>can_substitute(templ, arguments)</code> is <code class='backtick'>true</code>.
+</p>
+<p>
+-8- [<i>Note</i>: If forming <code>Z&lt;<ins><i>TARG-SPLICE</i>(</ins>[:Args:]<ins>)</ins>...&gt;</code>
+leads to a failure outside of the immediate context, the program is ill-formed. &mdash; <i>end note</i>]
 </p>
 </blockquote>
 

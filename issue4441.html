@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Issue 4441: ranges::rotate do not handle sized-but-not-sized-sentinel ranges correctly</title>
+<meta property="og:title" content="Issue 4441: ranges::rotate do not handle sized-but-not-sized-sentinel ranges correctly">
+<meta property="og:description" content="C++ library issue. Status: New">
+<meta property="og:url" content="https://cplusplus.github.io/LWG/issue4441.html">
+<meta property="og:type" content="website">
+<meta property="og:image" content="http://cplusplus.github.io/LWG/images/cpp_logo.png">
+<meta property="og:image:alt" content="C++ logo">
+<style>
+  p {text-align:justify}
+  li {text-align:justify}
+  pre code.backtick::before { content: "`" }
+  pre code.backtick::after { content: "`" }
+  blockquote.note
+  {
+    background-color:#E0E0E0;
+    padding-left: 15px;
+    padding-right: 15px;
+    padding-top: 1px;
+    padding-bottom: 1px;
+  }
+  ins {background-color:#A0FFA0}
+  del {background-color:#FFA0A0}
+  table.issues-index { border: 1px solid; border-collapse: collapse; }
+  table.issues-index th { text-align: center; padding: 4px; border: 1px solid; }
+  table.issues-index td { padding: 4px; border: 1px solid; }
+  table.issues-index td:nth-child(1) { text-align: right; }
+  table.issues-index td:nth-child(2) { text-align: left; }
+  table.issues-index td:nth-child(3) { text-align: left; }
+  table.issues-index td:nth-child(4) { text-align: left; }
+  table.issues-index td:nth-child(5) { text-align: center; }
+  table.issues-index td:nth-child(6) { text-align: center; }
+  table.issues-index td:nth-child(7) { text-align: left; }
+  table.issues-index td:nth-child(5) span.no-pr { color: red; }
+  @media (prefers-color-scheme: dark) {
+     html {
+        color: #ddd;
+        background-color: black;
+     }
+     ins {
+        background-color: #225522
+     }
+     del {
+        background-color: #662222
+     }
+     a {
+        color: #6af
+     }
+     a:visited {
+        color: #6af
+     }
+     blockquote.note
+     {
+        background-color: rgba(255, 255, 255, .10)
+     }
+  }
+</style>
+</head>
+<body>
+<hr>
+<p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#New">New</a> status.</em></p>
+<h3 id="4441"><a href="lwg-active.html#4441">4441</a>. <code>ranges::rotate</code> do not handle sized-but-not-sized-sentinel ranges correctly</h3>
+<p><b>Section:</b> 26.7.11 <a href="https://wg21.link/alg.rotate">[alg.rotate]</a>, 26.8.2.3 <a href="https://wg21.link/partial.sort">[partial.sort]</a>, 26.8.3 <a href="https://wg21.link/alg.nth.element">[alg.nth.element]</a>, 26.8.6 <a href="https://wg21.link/alg.merge">[alg.merge]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
+ <b>Submitter:</b> Tomasz Kamiński <b>Opened:</b> 2025-11-03 <b>Last modified:</b> 2025-11-04</p>
+<p><b>Priority: </b>Not Prioritized
+</p>
+<p><b>View all other</b> <a href="lwg-index.html#alg.rotate">issues</a> in [alg.rotate].</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
+<p><b>Discussion:</b></p>
+<b>Addresses US 161-258</b>
+<p>These do not handle sized-but-not-sized-sentinel ranges correctly.</p>
+
+
+<p id="res-4441"><b>Proposed resolution:</b></p>
+<p>
+This wording is relative to <a href="https://wg21.link/N5014">N5014</a>.
+</p>
+
+<ol>
+
+<li><p>Modify 26.7.11 <a href="https://wg21.link/alg.rotate">[alg.rotate]</a> as indicated:</p>
+
+<pre>
+template&lt;execution-policy Ep, <i>sized-random-access-range</i> R&gt;
+  requires permutable&lt;iterator_t&lt;R&gt;&gt;
+  borrowed_subrange_t&lt;R&gt; ranges::rotate(Ep&amp;&amp; exec, R&amp;&amp; r, iterator_t&lt;R&gt; middle);
+
+</pre>
+<blockquote>
+<p>-6- <i>Effects</i> Equivalent to:
+<code>return ranges::rotate(std::forward&lt;Ep&gt;(exec), ranges::begin(r), middle,
+<del>ranges::end(r)</del><ins>ranges::begin(r) + ranges::distance(r)</ins>);</code>
+</p>
+</blockquote>
+
+[&hellip;]
+
+<pre>
+template&lt;execution-policy Ep, <i>sized-random-access-range</i> R, <i>sized-random-access-range</i> OutR&gt;
+  requires indirectly_copyable&lt;iterator_t&lt;R&gt;, iterator_t&lt;OutR&gt;&gt;
+  ranges::rotate_copy_truncated_result&lt;borrowed_iterator_t&lt;R&gt;, borrowed_iterator_t&lt;OutR&gt;&gt;
+	  ranges::rotate_copy(Ep&amp;&amp; exec, R&amp;&amp; r, iterator_t&lt;R&gt; middle, OutR&amp;&amp; result_r);
+</pre>
+<blockquote>
+<p>-18- <i>Effects</i> Equivalent to:
+<code>return ranges::rotate(std::forward&lt;Ep&gt;(exec), ranges::begin(r), middle,
+<del>ranges::end(r)</del><ins>ranges::begin(r)+ranges::distance(r)</ins>
+ranges::begin(result_r), <del>ranges::end(result_r)</del><ins>ranges::begin(result_r) + ranges::distance(result_r)</ins>);</code>
+</p>
+</blockquote>
+
+</li>
+
+<li><p>Modify 26.8.2.3 <a href="https://wg21.link/partial.sort">[partial.sort]</a> as indicated:</p>
+
+<pre>
+template&lt;execution-policy Ep, sized-random-access-range R,
+         class Comp = ranges::less, class Proj = identity&gt;
+  requires sortable&lt;iterator_t&lt;R&gt;, Comp, Proj&gt;
+  borrowed_iterator_t&lt;R&gt;
+    ranges::partial_sort(Ep&amp;&amp; exec, R&amp;&amp; r, iterator_t&lt;R&gt; middle, Comp comp = {},
+                         Proj proj = {});
+</pre>
+<blockquote>
+<p>-7- <i>Effects</i> Equivalent to:
+<code>return ranges::partial_sort(std::forward&lt;Ep&gt;(exec), ranges::begin(r), middle,
+<del>ranges::end(r)</del><ins>ranges::begin(r) + ranges::distance(r)</ins>, comp, proj);</code>
+</p>
+</blockquote>
+
+</li>
+
+<li><p>Modify 26.8.3 <a href="https://wg21.link/alg.nth.element">[alg.nth.element]</a> as indicated:</p>
+
+<pre>
+template&lt;execution-policy Ep, <i>sized-random-access-range</i> R, class Comp = ranges::less,
+         class Proj = identity&gt;
+  requires sortable&lt;iterator_t&lt;R&gt;, Comp, Proj&gt;
+  borrowed_iterator_t&lt;R&gt;
+    ranges::nth_element(Ep&amp;&amp; exec, R&amp;&amp; r, iterator_t&lt;R&gt; nth, Comp comp = {}, Proj proj = {});
+</pre>
+<blockquote>
+<p>-7- <i>Effects</i> Equivalent to:
+<code>return ranges::nth_element(std::forward&lt;Ep&gt;(exec), ranges::begin(r), nth,
+<del>ranges::end(r)</del><ins>ranges::begin(r) + ranges::distance(r)</ins>, comp, proj);</code>
+</p>
+</blockquote>
+
+</li>
+
+<li><p>Modify 26.8.6 <a href="https://wg21.link/alg.merge">[alg.merge]</a> as indicated:</p>
+
+<pre>
+template&lt;execution-policy Ep, sized-random-access-range R, class Comp = ranges::less,
+         class Proj = identity&gt;
+  requires sortable&lt;iterator_t&lt;R&gt;, Comp, Proj&gt;
+  borrowed_iterator_t&lt;R&gt;
+    ranges::inplace_merge(Ep&amp;&amp; exec, R&amp;&amp; r, iterator_t&lt;R&gt; middle, Comp comp = {},
+                          Proj proj = {});
+</pre>
+<blockquote>
+<p>-14- <i>Effects</i> Equivalent to:
+<code>return ranges::inplace_merge(std::forward&lt;Ep&gt;(exec), ranges::begin(r), middle,
+<del>ranges::end(r)</del><ins>ranges::begin(r) + ranges::distance(r)</ins>, comp, proj);</code>
+</p>
+</blockquote>
+
+</li>
+
+
+</ol>
+
+
+
+
+
+
+</body>
+</html>

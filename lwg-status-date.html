@@ -67,7 +67,7 @@
 This document is the Index by Status and Date for the <a href="lwg-active.html">Library Active Issues List</a>,
 <a href="lwg-defects.html">Library Defect Reports and Accepted Issues</a>, and <a href="lwg-closed.html">Library Closed Issues List</a>.
 </p>
-<p>Revised 2025-11-04 at 00:45:32 UTC
+<p>Revised 2025-11-04 at 01:09:32 UTC
 </p><h2 id="Voting">Voting (61 issues)</h2>
 <table class="issues-index">
 <tr>
@@ -637,7 +637,7 @@ constructor</td>
 <td></td>
 </tr>
 </table>
-<h2 id="Immediate">Immediate (1 issues)</h2>
+<h2 id="Immediate">Immediate (2 issues)</h2>
 <table class="issues-index">
 <tr>
   <th><a href="lwg-toc.html">Issue</a></th>
@@ -655,6 +655,15 @@ constructor</td>
 <td><code>meta::alignment_of</code> should exclude data member description of bit-field</td>
 <td>Yes</td>
 <td></td>
+<td></td>
+</tr>
+<tr>
+<td id="4424"><a href="lwg-active.html#4424" title="meta::define_aggregate should require a class type (Status: Immediate)">4424</a><sup><a href="https://cplusplus.github.io/LWG/issue4424">(i)</a></sup></td>
+<td><a href="lwg-active.html#Immediate">Immediate</a></td>
+<td>21.4.16 [meta.reflection.define.aggregate]</td>
+<td><code class='backtick'>meta::define_aggregate</code> should require a class type</td>
+<td>Yes</td>
+<td>1</td>
 <td></td>
 </tr>
 </table>
@@ -954,6 +963,33 @@ complexity for algorithms that are in fact &#x1d4aa;(n)</td>
   <th>Duplicates</th>
 </tr>
 <tr>
+<td id="4251"><a href="lwg-active.html#4251" title="Move assignment for indirect unnecessarily requires copy construction (Status: New)">4251</a><sup><a href="https://cplusplus.github.io/LWG/issue4251">(i)</a></sup></td>
+<td><a href="lwg-active.html#New">New</a></td>
+<td>20.4.1.5 [indirect.assign]</td>
+<td>Move assignment for <code class='backtick'>indirect</code> unnecessarily requires copy construction</td>
+<td>Yes</td>
+<td>1</td>
+<td></td>
+</tr>
+<tr>
+<td id="4316"><a href="lwg-active.html#4316" title="{can_}substitute specification is ill-formed (Status: New)">4316</a><sup><a href="https://cplusplus.github.io/LWG/issue4316">(i)</a></sup></td>
+<td><a href="lwg-active.html#New">New</a></td>
+<td>21.4.13 [meta.reflection.substitute]</td>
+<td><code>{can_}substitute</code> specification is ill-formed</td>
+<td>Yes</td>
+<td>1</td>
+<td></td>
+</tr>
+<tr>
+<td id="4441"><a href="lwg-active.html#4441" title="ranges::rotate do not handle sized-but-not-sized-sentinel ranges correctly (Status: New)">4441</a><sup><a href="https://cplusplus.github.io/LWG/issue4441">(i)</a></sup></td>
+<td><a href="lwg-active.html#New">New</a></td>
+<td>26.7.11 [alg.rotate]</td>
+<td><code>ranges::rotate</code> do not handle sized-but-not-sized-sentinel ranges correctly</td>
+<td>Yes</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
 <td id="4440"><a href="lwg-active.html#4440" title="Forward declarations of entities need also in entries (Status: New)">4440</a><sup><a href="https://cplusplus.github.io/LWG/issue4440">(i)</a></sup></td>
 <td><a href="lwg-active.html#New">New</a></td>
 <td>17.3.2 [version.syn]</td>
@@ -999,15 +1035,6 @@ complexity for algorithms that are in fact &#x1d4aa;(n)</td>
 <td></td>
 </tr>
 <tr>
-<td id="4424"><a href="lwg-active.html#4424" title="meta::define_aggregate should require a class type (Status: New)">4424</a><sup><a href="https://cplusplus.github.io/LWG/issue4424">(i)</a></sup></td>
-<td><a href="lwg-active.html#New">New</a></td>
-<td>21.4.16 [meta.reflection.define.aggregate]</td>
-<td><code class='backtick'>meta::define_aggregate</code> should require a class type</td>
-<td>Yes</td>
-<td>1</td>
-<td></td>
-</tr>
-<tr>
 <td id="4439"><a href="lwg-active.html#4439" title="std::optional&lt;T&amp;&gt;::swap possibly selects ADL-found swap (Status: New)">4439</a><sup><a href="https://cplusplus.github.io/LWG/issue4439">(i)</a></sup></td>
 <td><a href="lwg-active.html#New">New</a></td>
 <td>22.5.4.4 [optional.ref.swap]</td>
@@ -1041,15 +1068,6 @@ complexity for algorithms that are in fact &#x1d4aa;(n)</td>
 <td>Incorrect query for C language linkage</td>
 <td>Yes</td>
 <td></td>
-<td></td>
-</tr>
-<tr>
-<td id="4316"><a href="lwg-active.html#4316" title="{can_}substitute specification is ill-formed (Status: New)">4316</a><sup><a href="https://cplusplus.github.io/LWG/issue4316">(i)</a></sup></td>
-<td><a href="lwg-active.html#New">New</a></td>
-<td>21.4.13 [meta.reflection.substitute]</td>
-<td><code>{can_}substitute</code> specification is ill-formed</td>
-<td>Yes</td>
-<td>1</td>
 <td></td>
 </tr>
 <tr>
@@ -2347,15 +2365,6 @@ max, and minmax is unclear (Status: New)">4167</a><sup><a href="https://cplusplu
 <td><a href="lwg-active.html#New">New</a></td>
 <td>33.9.2 [exec.snd.expos]</td>
 <td>Late domain-based dispatching of <code class='backtick'>schedule_from</code> and <code class='backtick'>continues_on</code> are flipped</td>
-<td>Yes</td>
-<td>1</td>
-<td></td>
-</tr>
-<tr>
-<td id="4251"><a href="lwg-active.html#4251" title="Move assignment for indirect unnecessarily requires copy construction (Status: New)">4251</a><sup><a href="https://cplusplus.github.io/LWG/issue4251">(i)</a></sup></td>
-<td><a href="lwg-active.html#New">New</a></td>
-<td>99 [indirect.asgn]</td>
-<td>Move assignment for <code class='backtick'>indirect</code> unnecessarily requires copy construction</td>
 <td>Yes</td>
 <td>1</td>
 <td></td>

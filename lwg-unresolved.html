@@ -54,7 +54,7 @@
 </style>
 </head>
 <body>
-<p>Revised 2025-11-04 at 00:45:32 UTC
+<p>Revised 2025-11-04 at 01:09:32 UTC
 </p><h2>Unresolved Issues</h2>
 <hr>
 <h3 id="423"><a href="#423">423</a><sup><a href="https://cplusplus.github.io/LWG/issue423">(i)</a></sup>. Effects of negative <code>streamsize</code> in iostreams</h3>
@@ -68136,8 +68136,8 @@ constexpr void swap(polymorphic<ins>&lt;T, Allocator&gt;</ins>&amp; lhs, polymor
 
 <hr>
 <h3 id="4251"><a href="#4251">4251</a><sup><a href="https://cplusplus.github.io/LWG/issue4251">(i)</a></sup>. Move assignment for <code class='backtick'>indirect</code> unnecessarily requires copy construction</h3>
-<p><b>Section:</b> 99 [indirect.asgn] <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Jonathan Wakely <b>Opened:</b> 2025-05-01 <b>Last modified:</b> 2025-06-12</p>
+<p><b>Section:</b> 20.4.1.5 <a href="https://wg21.link/indirect.assign">[indirect.assign]</a>, 20.4.2.5 <a href="https://wg21.link/polymorphic.assign">[polymorphic.assign]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
+ <b>Submitter:</b> Jonathan Wakely <b>Opened:</b> 2025-05-01 <b>Last modified:</b> 2025-11-04</p>
 <p><b>Priority: </b>1
 </p>
 <p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
@@ -68181,14 +68181,15 @@ Similar change needed for <code class='backtick'>std::polymorphic</code>.
 </p>
 
 
+<p><strong>Previous resolution [SUPERSEDED]:</strong></p>
+<blockquote class="note">
 
-<p id="res-4251"><b>Proposed resolution:</b></p>
 <p>
 This wording is relative to <a href="https://wg21.link/N5008" title=" Working Draft, Programming Languages — C++">N5008</a>.
 </p>
 <ol>
 
-<li><p>Modify 99 [indirect.asgn] as indicated:</p>
+<li><p>Modify 20.4.1.5 <a href="https://wg21.link/indirect.assign">[indirect.assign]</a> as indicated:</p>
 <blockquote>
 <pre><code>
 constexpr indirect&amp; operator=(indirect&amp;&amp; other)
@@ -68256,6 +68257,154 @@ the allocator in <code class='backtick'>*this</code> is replaced with a copy of 
 </blockquote>
 </blockquote>
 </li>
+</ol>
+</blockquote>
+
+<p><i>[2025-11-03; Tomasz provides wording.]</i></p>
+
+
+
+<p id="res-4251"><b>Proposed resolution:</b></p>
+<p>
+This wording is relative to <a href="https://wg21.link/N5014">N5014</a>.
+</p>
+<ol>
+
+<li><p>Modify 20.4.1.5 <a href="https://wg21.link/indirect.assign">[indirect.assign]</a> as indicated:</p>
+<blockquote>
+<pre><code>
+constexpr indirect&amp; operator=(indirect&amp;&amp; other)
+  noexcept(allocator_traits&lt;Allocator&gt;::propagate_on_container_move_assignment::value ||
+           allocator_traits&lt;Allocator&gt;::is_always_equal::value);
+</code></pre>
+<blockquote>
+<p>
+-5- <i>Mandates</i>:
+<ins>
+If
+<code>allocator_traits&lt;Allocator&gt;::propagate_on_container_move_assignment::value</code>
+is <code class='backtick'>false</code>
+and
+<code>allocator_traits&lt;Allocator&gt;::is_always_equal::value</code>
+is <code class='backtick'>false</code>,
+</ins>
+<code>is_<del>copy</del><ins>move</ins>_constructible_t&lt;T&gt;</code> is <code class='backtick'>true</code>.
+</p>
+<p>
+-6- <i>Effects</i>:
+If <code class='backtick'>addressof(other) == this</code> is <code class='backtick'>true</code>, there are no effects.
+Otherwise:
+<ol style="list-style-type:none">
+<li>(6.1) &mdash;
+The allocator needs updating if
+<code>allocator_traits&lt;Allocator&gt;::propagate_on_container_move_assignment::value</code>
+is <code class='backtick'>true</code>.
+</li>
+<li>(6.2) &mdash;
+If <code class='backtick'>other</code> is valueless, <code class='backtick'>*this</code> becomes valueless<del> and the owned object
+in <code class='backtick'>*this</code>, if any, is destroyed using
+<code>allocator_traits&lt;Allocator&gt;::destroy</code>
+and then the storage is deallocated</del>.
+</li>
+<li>(6.3) &mdash;
+Otherwise,
+<ins>if the allocator needs updating or</ins>
+if <code><i>alloc</i> == other.<i>alloc</i></code> is <code class='backtick'>true</code>,
+<del>
+swaps the owned objects in <code class='backtick'>*this</code> and <code class='backtick'>other</code>;
+the owned object in <code class='backtick'>other</code>, if any, is then destroyed using
+<code>allocator_traits&lt;Allocator&gt;::destroy</code>
+and then the storage is deallocated
+</del>
+<ins><code class='backtick'>*this</code> takes ownership of the owned object of <code class='backtick'>other</code></ins>.
+</li>
+<li>(6.4) &mdash;
+Otherwise, constructs a new owned object with the owned object of <code class='backtick'>other</code>
+as the argument as an rvalue, using <del>either</del> the allocator in <code class='backtick'>*this</code>
+<del>or the allocator in <code class='backtick'>other</code> if the allocator needs updating</del>.
+</li>
+<li>(6.5) &mdash;
+The previously owned object in <code class='backtick'>*this</code>, if any, is destroyed using
+<code>allocator_traits&lt;Allocator&gt;::destroy</code>
+and then the storage is deallocated.
+</li>
+<li>(6.6) &mdash;
+If the allocator needs updating,
+the allocator in <code class='backtick'>*this</code> is replaced with a copy of the allocator in <code class='backtick'>other</code>.
+</li>
+</ol>
+</p>
+<p>-7- <i>Postcondition</i>: <code class='backtick'>other</code> is valueless.</p>
+</blockquote>
+</blockquote>
+</li>
+
+<li><p>Modify 20.4.2.5 <a href="https://wg21.link/polymorphic.assign">[polymorphic.assign]</a> as indicated:</p>
+<blockquote>
+<pre><code>
+constexpr polymorphic&amp; operator=(polymorphic&amp;&amp; other)
+  noexcept(allocator_traits&lt;Allocator&gt;::propagate_on_container_move_assignment::value ||
+           allocator_traits&lt;Allocator&gt;::is_always_equal::value);
+</code></pre>
+<blockquote>
+<p>
+-5- <i>Mandates</i>:
+If
+<ins>
+<code>allocator_traits&lt;Allocator&gt;::propagate_on_container_move_assignment::value</code>
+is <code class='backtick'>false</code>
+and
+</ins>
+<code>allocator_traits&lt;Allocator&gt;::is_always_equal::value</code>
+is <code class='backtick'>false</code>,
+<code class='backtick'>T</code> is complete type.
+</p>
+<p>
+-6- <i>Effects</i>:
+If <code class='backtick'>addressof(other) == this</code> is <code class='backtick'>true</code>, there are no effects.
+Otherwise:
+<ol style="list-style-type:none">
+<li>(6.1) &mdash;
+The allocator needs updating if
+<code>allocator_traits&lt;Allocator&gt;::propagate_on_container_move_assignment::value</code>
+is <code class='backtick'>true</code>.
+</li>
+<li><ins>(6.?) &mdash; If <code class='backtick'>other</code> is valueless, <code class='backtick'>*this</code> becomes valueless.</ins></li>
+<li>(6.2) &mdash;
+<ins>Otherwise, if the allocator needs updating or</ins><del>If</del>
+<code><i>alloc</i> == other.<i>alloc</i></code> is <code class='backtick'>true</code>,
+<del>
+swaps the owned objects in <code class='backtick'>*this</code> and <code class='backtick'>other</code>;
+the owned object in <code class='backtick'>other</code>, if any, is then destroyed using
+<code>allocator_traits&lt;Allocator&gt;::destroy</code>
+and then the storage is deallocated
+</del>
+<ins><code class='backtick'>*this</code> takes ownership of the owned object of <code class='backtick'>other</code></ins>.
+</li>
+<li>(6.3) &mdash;
+<del>Otherwise, if <code class='backtick'>alloc != other.alloc</code> is <code class='backtick'>true</code>; if <code class='backtick'>other</code> is not valueless, 
+a new owned object is constructed in <code class='backtick'>*this</code> using <code>allocator_traits::construct</code>
+with the owned object from</del>
+<ins>Otherwise, constructs a new owned object with the owned object of</ins>
+<code class='backtick'>other</code> as the argument as an rvalue, using <del>either</del> the allocator in <code class='backtick'>*this</code>
+<del>or the allocator in <code class='backtick'>other</code> if the allocator needs updating</del>.
+</li>
+<li>(6.4) &mdash;
+The previously owned object in <code class='backtick'>*this</code>, if any, is destroyed using
+<code>allocator_traits&lt;Allocator&gt;::destroy</code>
+and then the storage is deallocated.
+</li>
+<li>(6.5) &mdash;
+If the allocator needs updating,
+the allocator in <code class='backtick'>*this</code> is replaced with a copy of the allocator in <code class='backtick'>other</code>.
+</li>
+</ol>
+</p>
+[&hellip;]
+</blockquote>
+</blockquote>
+</li>
+
 </ol>
 
 
@@ -73678,7 +73827,7 @@ constexpr mapping(const extents_type&amp; ext, OtherIndexType pad<ins>ding</ins>
 <hr>
 <h3 id="4316"><a href="#4316">4316</a><sup><a href="https://cplusplus.github.io/LWG/issue4316">(i)</a></sup>. <code>{can_}substitute</code> specification is ill-formed</h3>
 <p><b>Section:</b> 21.4.13 <a href="https://wg21.link/meta.reflection.substitute">[meta.reflection.substitute]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Matthias Wippich <b>Opened:</b> 2025-08-15 <b>Last modified:</b> 2025-10-27</p>
+ <b>Submitter:</b> Matthias Wippich <b>Opened:</b> 2025-08-15 <b>Last modified:</b> 2025-11-04</p>
 <p><b>Priority: </b>1
 </p>
 <p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
@@ -73717,9 +73866,9 @@ Set priority to 1 after reflector poll.
 
 <p><i>[2025-10-27; Tomasz provides wording.]</i></p>
 
+<p><strong>Previous resolution [SUPERSEDED]:</strong></p>
+<blockquote class="note">
 
-
-<p id="res-4316"><b>Proposed resolution:</b></p>
 
 <p>
 This wording is relative to <a href="https://wg21.link/N5014">N5014</a>.
@@ -73793,6 +73942,91 @@ be the i<sup>th</sup> element of <code class='backtick'>arguments</code>.</ins>
 -8- [<i>Note</i>: If forming <code>Z&lt;<del>[:Args:]...</del><ins><i>TARG-SPLICE</i>(<i>e<sub>0</sub></i>),
 ..., <i>TARG-SPLICE</i>(<i>e<sub>n-1</sub></i>)</ins>&gt;</code> leads to a failure outside of the immediate
 context, the program is ill-formed. &mdash; <i>end note</i>]
+</p>
+</blockquote>
+
+</blockquote>
+</li>
+</ol>
+
+</blockquote>
+
+<p><i>[2025-10-27; Reflector comments.]</i></p>
+
+<p>
+We lost definition of <code class='backtick'>Z</code>. Use <code><i>TARG-SPLICE</i>([:Args:])...</code>.
+</p>
+
+<p><i>[2025-11-03; Tomasz provides wording.]</i></p>
+
+
+
+<p id="res-4316"><b>Proposed resolution:</b></p>
+
+<p>
+This wording is relative to <a href="https://wg21.link/N5014">N5014</a>.
+</p>
+
+<ol>
+
+<li><p>Modify 21.4.13 <a href="https://wg21.link/meta.reflection.substitute">[meta.reflection.substitute]</a> as indicated:</p>
+
+<blockquote>
+<blockquote>
+<p>
+<ins>-1- For value <code class='backtick'>x</code> of type <code class='backtick'>info</code>, and prvalue constant expression <code class='backtick'>X</code> that computes the
+reflection held by <code class='backtick'>x</code>, let <code><i>TARG-SPLICE</i>(x)</code> be:</ins>
+<ul>
+<li><ins>-1.1- <code>template [: X :]</code> if <code class='backtick'>is_template(x)</code> is <code class='backtick'>true</code>, otherwise</ins></li>
+<li><ins>-1.2- <code>typename [: X :]</code> if <code class='backtick'>is_type(x)</code> is <code class='backtick'>true</code>, otherwise</ins></li>
+<li><ins>-1.3- <code>([: X :])</code></ins></li>
+</ul>
+</p>
+</blockquote>
+
+<pre>
+template&lt;reflection_range R = initializer_list&lt;info&gt;&gt;
+  consteval bool can_substitute(info templ, R&amp;&amp; arguments);
+</pre>
+<blockquote>
+<p>
+-1- Let <code class='backtick'>Z</code> be the template represented by <code class='backtick'>templ</code> and let <code class='backtick'>Args...</code> be a
+sequence of prvalue constant expressions that compute the reflections held by
+the elements of <code class='backtick'>arguments</code>, in order.
+</p>
+<p>
+-2- <i>Returns</i>: <code class='backtick'>true</code> if <code>Z&lt;<ins><i>TARG-SPLICE</i>(</ins>[:Args:]<ins>)</ins>...&gt;</code> is a valid <i>template-id</i>
+(13.3 <a href="https://wg21.link/temp.names">[temp.names]</a>) that does not name a function whose type contains an undeduced placeholder type.
+Otherwise, <code class='backtick'>false</code>.
+</p>
+<p>
+-3- <i>Throws</i>: <code class='backtick'>meta::exception</code> unless <code class='backtick'>templ</code> represents a template, and every reflection
+in <code class='backtick'>arguments</code> represents a construct usable as a template argument (13.4 <a href="https://wg21.link/temp.arg">[temp.arg]</a>).
+</p>
+<p>
+-4- [<i>Note</i>: If forming <code>Z&lt;<ins><i>TARG-SPLICE</i>(</ins>[:Args:]<ins>)</ins>...&gt;</code>
+leads to a failure outside of the immediate context, the program is ill-formed. &mdash; <i>end note</i>]
+</p>
+</blockquote>
+
+<pre>
+template&lt;reflection_range R = initializer_list&lt;info&gt;&gt;
+  consteval info substitute(info templ, R&amp;&amp; arguments);
+</pre>
+<blockquote>
+<p>
+-5- Let <code class='backtick'>Z</code> be the template represented by <code class='backtick'>templ</code> and let <code class='backtick'>Args...</code> be a
+sequence of prvalue constant expressions that compute the reflections held by
+the elements of <code class='backtick'>arguments</code>, in order.
+</p>
+<p>
+-6- <i>Returns</i>: <code>Z&lt;<ins><i>TARG-SPLICE</i>(</ins>[:Args:]<ins>)</ins>...&gt;</code>.</p>
+<p>
+-7- <i>Throws</i>: <code class='backtick'>meta::exception</code> unless <code class='backtick'>can_substitute(templ, arguments)</code> is <code class='backtick'>true</code>.
+</p>
+<p>
+-8- [<i>Note</i>: If forming <code>Z&lt;<ins><i>TARG-SPLICE</i>(</ins>[:Args:]<ins>)</ins>...&gt;</code>
+leads to a failure outside of the immediate context, the program is ill-formed. &mdash; <i>end note</i>]
 </p>
 </blockquote>
 
@@ -81440,123 +81674,6 @@ leading zeroes) <ins>in the ordinary literal encoding (5.3.1 <a href="https://wg
 
 
 <hr>
-<h3 id="4424"><a href="#4424">4424</a><sup><a href="https://cplusplus.github.io/LWG/issue4424">(i)</a></sup>. <code class='backtick'>meta::define_aggregate</code> should require a class type</h3>
-<p><b>Section:</b> 21.4.16 <a href="https://wg21.link/meta.reflection.define.aggregate">[meta.reflection.define.aggregate]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Jakub Jelinek <b>Opened:</b> 2025-10-20 <b>Last modified:</b> 2025-10-31</p>
-<p><b>Priority: </b>1
-</p>
-<p><b>View other</b> <a href="lwg-index-open.html#meta.reflection.define.aggregate">active issues</a> in [meta.reflection.define.aggregate].</p>
-<p><b>View all other</b> <a href="lwg-index.html#meta.reflection.define.aggregate">issues</a> in [meta.reflection.define.aggregate].</p>
-<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
-<p><b>Discussion:</b></p>
-<b>Addresses <a href="https://github.com/cplusplus/nbballot/issues/757">US 125-188</a></b>
-<p>
-The <code class='backtick'>meta::define_aggregate</code> function doesn't say what happens if <i>C</i>
-does not represent a class type.
-</p>
-<p>It's also unclear whether it should work
-with aliases to class types, e.g.
-<pre>struct S; using A = S; ... meta::define_aggregate(^^A, {});</pre>
-</p>
-<p>
-And what happens if you try to define a cv-qualified type:
-<pre>struct S; meta::define_aggregate(^^const S, {});</pre>
-Should this be an error, or inject a definition of the unqualified type?
-</p>
-
-<p><i>[2025-10-23; Reflector poll.]</i></p>
-
-<p>
-Set priority to 1 after reflector poll.
-</p>
-
-<p><strong>Previous resolution [SUPERSEDED]:</strong></p>
-<blockquote class="note">
-
-	
-<p>
-This wording is relative to <a href="https://wg21.link/N5014">N5014</a>.
-</p>
-
-<ol>
-
-<li><p>Modify 21.4.16 <a href="https://wg21.link/meta.reflection.define.aggregate">[meta.reflection.define.aggregate]</a> as indicated:</p>
-
-<blockquote>
-<p>-7-
-Let <i>C</i> be the class represented by 
-<code><ins>dealias(</ins>class_type<ins>)</ins></code>
-and <i>r<sub>K</sub></i> be the <i>K</i><sup>th</sup> reflection value
-in <code class='backtick'>mdescrs</code>.
-For every <i>r<sub>K</sub></i> in <code class='backtick'>mdescrs</code>,
-let (<i>T<sub>K</sub></i>, <i>N<sub>K</sub></i>, <i>A<sub>K</sub></i>,
-<i>W<sub>K</sub></i>, <i>NUA<sub>K</sub></i>)
-be the corresponding data member description represented by
-<i>r<sub>K</sub></i>.
-</p>
-<p>-8- <i>Constant when</i>:
-<ul style="list-style-type: none">
-<li><ins>(8.?) &mdash;
-<code class='backtick'>dealias(class_type)</code> represents a class type;
-</ins>
-</li>
-<li>(8.1) &mdash;
-<i>C</i> is incomplete from every point in the evaluation context;
-</li>
-</ul>
-</p>
-</blockquote>
-</li>
-</ol>
-</blockquote>
-
-<p><i>[2025-10-24; LWG telecon. Jonathan updates wording]</i></p>
-
-<p>Make a minimal change for now, can add support for aliases later.</p>
-
-
-
-<p id="res-4424"><b>Proposed resolution:</b></p>
-<p>
-This wording is relative to <a href="https://wg21.link/N5014">N5014</a>.
-</p>
-
-<ol>
-
-<li><p>Modify 21.4.16 <a href="https://wg21.link/meta.reflection.define.aggregate">[meta.reflection.define.aggregate]</a> as indicated:</p>
-
-<blockquote>
-<p>-7-
-Let <i>C</i> be the <del>class</del> <ins>type</ins> represented by
-<code>class_type</code>
-and <i>r<sub>K</sub></i> be the <i>K</i><sup>th</sup> reflection value
-in <code class='backtick'>mdescrs</code>.
-For every <i>r<sub>K</sub></i> in <code class='backtick'>mdescrs</code>,
-let (<i>T<sub>K</sub></i>, <i>N<sub>K</sub></i>, <i>A<sub>K</sub></i>,
-<i>W<sub>K</sub></i>, <i>NUA<sub>K</sub></i>)
-be the corresponding data member description represented by
-<i>r<sub>K</sub></i>.
-</p>
-<p>-8- <i>Constant when</i>:
-<ul style="list-style-type: none">
-<li><ins>(8.?) &mdash;
-<code class='backtick'>class_type</code> represents a cv-unqualified class type;
-</ins>
-</li>
-<li>(8.1) &mdash;
-<i>C</i> is incomplete from every point in the evaluation context;
-</li>
-</ul>
-</p>
-</blockquote>
-</li>
-</ol>
-
-
-
-
-
-<hr>
 <h3 id="4427"><a href="#4427">4427</a><sup><a href="https://cplusplus.github.io/LWG/issue4427">(i)</a></sup>. <code class='backtick'>meta::dealias</code> needs to work with things that aren't entities</h3>
 <p><b>Section:</b> 21.4.7 <a href="https://wg21.link/meta.reflection.queries">[meta.reflection.queries]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
  <b>Submitter:</b> Jonathan Wakely <b>Opened:</b> 2025-10-24 <b>Last modified:</b> 2025-10-24</p>
@@ -82552,6 +82669,123 @@ This wording is relative to <a href="https://wg21.link/N5014">N5014</a>.
 </pre>
 </blockquote>
 </li>
+
+</ol>
+
+
+
+
+
+
+<hr>
+<h3 id="4441"><a href="#4441">4441</a><sup><a href="https://cplusplus.github.io/LWG/issue4441">(i)</a></sup>. <code>ranges::rotate</code> do not handle sized-but-not-sized-sentinel ranges correctly</h3>
+<p><b>Section:</b> 26.7.11 <a href="https://wg21.link/alg.rotate">[alg.rotate]</a>, 26.8.2.3 <a href="https://wg21.link/partial.sort">[partial.sort]</a>, 26.8.3 <a href="https://wg21.link/alg.nth.element">[alg.nth.element]</a>, 26.8.6 <a href="https://wg21.link/alg.merge">[alg.merge]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
+ <b>Submitter:</b> Tomasz Kamiński <b>Opened:</b> 2025-11-03 <b>Last modified:</b> 2025-11-04</p>
+<p><b>Priority: </b>Not Prioritized
+</p>
+<p><b>View all other</b> <a href="lwg-index.html#alg.rotate">issues</a> in [alg.rotate].</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
+<p><b>Discussion:</b></p>
+<b>Addresses US 161-258</b>
+<p>These do not handle sized-but-not-sized-sentinel ranges correctly.</p>
+
+
+<p id="res-4441"><b>Proposed resolution:</b></p>
+<p>
+This wording is relative to <a href="https://wg21.link/N5014">N5014</a>.
+</p>
+
+<ol>
+
+<li><p>Modify 26.7.11 <a href="https://wg21.link/alg.rotate">[alg.rotate]</a> as indicated:</p>
+
+<pre>
+template&lt;execution-policy Ep, <i>sized-random-access-range</i> R&gt;
+  requires permutable&lt;iterator_t&lt;R&gt;&gt;
+  borrowed_subrange_t&lt;R&gt; ranges::rotate(Ep&amp;&amp; exec, R&amp;&amp; r, iterator_t&lt;R&gt; middle);
+
+</pre>
+<blockquote>
+<p>-6- <i>Effects</i> Equivalent to:
+<code>return ranges::rotate(std::forward&lt;Ep&gt;(exec), ranges::begin(r), middle,
+<del>ranges::end(r)</del><ins>ranges::begin(r) + ranges::distance(r)</ins>);</code>
+</p>
+</blockquote>
+
+[&hellip;]
+
+<pre>
+template&lt;execution-policy Ep, <i>sized-random-access-range</i> R, <i>sized-random-access-range</i> OutR&gt;
+  requires indirectly_copyable&lt;iterator_t&lt;R&gt;, iterator_t&lt;OutR&gt;&gt;
+  ranges::rotate_copy_truncated_result&lt;borrowed_iterator_t&lt;R&gt;, borrowed_iterator_t&lt;OutR&gt;&gt;
+	  ranges::rotate_copy(Ep&amp;&amp; exec, R&amp;&amp; r, iterator_t&lt;R&gt; middle, OutR&amp;&amp; result_r);
+</pre>
+<blockquote>
+<p>-18- <i>Effects</i> Equivalent to:
+<code>return ranges::rotate(std::forward&lt;Ep&gt;(exec), ranges::begin(r), middle,
+<del>ranges::end(r)</del><ins>ranges::begin(r)+ranges::distance(r)</ins>
+ranges::begin(result_r), <del>ranges::end(result_r)</del><ins>ranges::begin(result_r) + ranges::distance(result_r)</ins>);</code>
+</p>
+</blockquote>
+
+</li>
+
+<li><p>Modify 26.8.2.3 <a href="https://wg21.link/partial.sort">[partial.sort]</a> as indicated:</p>
+
+<pre>
+template&lt;execution-policy Ep, sized-random-access-range R,
+         class Comp = ranges::less, class Proj = identity&gt;
+  requires sortable&lt;iterator_t&lt;R&gt;, Comp, Proj&gt;
+  borrowed_iterator_t&lt;R&gt;
+    ranges::partial_sort(Ep&amp;&amp; exec, R&amp;&amp; r, iterator_t&lt;R&gt; middle, Comp comp = {},
+                         Proj proj = {});
+</pre>
+<blockquote>
+<p>-7- <i>Effects</i> Equivalent to:
+<code>return ranges::partial_sort(std::forward&lt;Ep&gt;(exec), ranges::begin(r), middle,
+<del>ranges::end(r)</del><ins>ranges::begin(r) + ranges::distance(r)</ins>, comp, proj);</code>
+</p>
+</blockquote>
+
+</li>
+
+<li><p>Modify 26.8.3 <a href="https://wg21.link/alg.nth.element">[alg.nth.element]</a> as indicated:</p>
+
+<pre>
+template&lt;execution-policy Ep, <i>sized-random-access-range</i> R, class Comp = ranges::less,
+         class Proj = identity&gt;
+  requires sortable&lt;iterator_t&lt;R&gt;, Comp, Proj&gt;
+  borrowed_iterator_t&lt;R&gt;
+    ranges::nth_element(Ep&amp;&amp; exec, R&amp;&amp; r, iterator_t&lt;R&gt; nth, Comp comp = {}, Proj proj = {});
+</pre>
+<blockquote>
+<p>-7- <i>Effects</i> Equivalent to:
+<code>return ranges::nth_element(std::forward&lt;Ep&gt;(exec), ranges::begin(r), nth,
+<del>ranges::end(r)</del><ins>ranges::begin(r) + ranges::distance(r)</ins>, comp, proj);</code>
+</p>
+</blockquote>
+
+</li>
+
+<li><p>Modify 26.8.6 <a href="https://wg21.link/alg.merge">[alg.merge]</a> as indicated:</p>
+
+<pre>
+template&lt;execution-policy Ep, sized-random-access-range R, class Comp = ranges::less,
+         class Proj = identity&gt;
+  requires sortable&lt;iterator_t&lt;R&gt;, Comp, Proj&gt;
+  borrowed_iterator_t&lt;R&gt;
+    ranges::inplace_merge(Ep&amp;&amp; exec, R&amp;&amp; r, iterator_t&lt;R&gt; middle, Comp comp = {},
+                          Proj proj = {});
+</pre>
+<blockquote>
+<p>-14- <i>Effects</i> Equivalent to:
+<code>return ranges::inplace_merge(std::forward&lt;Ep&gt;(exec), ranges::begin(r), middle,
+<del>ranges::end(r)</del><ins>ranges::begin(r) + ranges::distance(r)</ins>, comp, proj);</code>
+</p>
+</blockquote>
+
+</li>
+
 
 </ol>
 

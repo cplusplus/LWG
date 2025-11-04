@@ -63,8 +63,8 @@
 <hr>
 <p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#New">New</a> status.</em></p>
 <h3 id="4251"><a href="lwg-active.html#4251">4251</a>. Move assignment for <code class='backtick'>indirect</code> unnecessarily requires copy construction</h3>
-<p><b>Section:</b> 99 [indirect.asgn] <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Jonathan Wakely <b>Opened:</b> 2025-05-01 <b>Last modified:</b> 2025-06-12</p>
+<p><b>Section:</b> 20.4.1.5 <a href="https://wg21.link/indirect.assign">[indirect.assign]</a>, 20.4.2.5 <a href="https://wg21.link/polymorphic.assign">[polymorphic.assign]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
+ <b>Submitter:</b> Jonathan Wakely <b>Opened:</b> 2025-05-01 <b>Last modified:</b> 2025-11-04</p>
 <p><b>Priority: </b>1
 </p>
 <p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
@@ -108,14 +108,15 @@ Similar change needed for <code class='backtick'>std::polymorphic</code>.
 </p>
 
 
+<p><strong>Previous resolution [SUPERSEDED]:</strong></p>
+<blockquote class="note">
 
-<p id="res-4251"><b>Proposed resolution:</b></p>
 <p>
 This wording is relative to <a href="https://wg21.link/N5008" title=" Working Draft, Programming Languages — C++">N5008</a>.
 </p>
 <ol>
 
-<li><p>Modify 99 [indirect.asgn] as indicated:</p>
+<li><p>Modify 20.4.1.5 <a href="https://wg21.link/indirect.assign">[indirect.assign]</a> as indicated:</p>
 <blockquote>
 <pre><code>
 constexpr indirect&amp; operator=(indirect&amp;&amp; other)
@@ -183,6 +184,154 @@ the allocator in <code class='backtick'>*this</code> is replaced with a copy of 
 </blockquote>
 </blockquote>
 </li>
+</ol>
+</blockquote>
+
+<p><i>[2025-11-03; Tomasz provides wording.]</i></p>
+
+
+
+<p id="res-4251"><b>Proposed resolution:</b></p>
+<p>
+This wording is relative to <a href="https://wg21.link/N5014">N5014</a>.
+</p>
+<ol>
+
+<li><p>Modify 20.4.1.5 <a href="https://wg21.link/indirect.assign">[indirect.assign]</a> as indicated:</p>
+<blockquote>
+<pre><code>
+constexpr indirect&amp; operator=(indirect&amp;&amp; other)
+  noexcept(allocator_traits&lt;Allocator&gt;::propagate_on_container_move_assignment::value ||
+           allocator_traits&lt;Allocator&gt;::is_always_equal::value);
+</code></pre>
+<blockquote>
+<p>
+-5- <i>Mandates</i>:
+<ins>
+If
+<code>allocator_traits&lt;Allocator&gt;::propagate_on_container_move_assignment::value</code>
+is <code class='backtick'>false</code>
+and
+<code>allocator_traits&lt;Allocator&gt;::is_always_equal::value</code>
+is <code class='backtick'>false</code>,
+</ins>
+<code>is_<del>copy</del><ins>move</ins>_constructible_t&lt;T&gt;</code> is <code class='backtick'>true</code>.
+</p>
+<p>
+-6- <i>Effects</i>:
+If <code class='backtick'>addressof(other) == this</code> is <code class='backtick'>true</code>, there are no effects.
+Otherwise:
+<ol style="list-style-type:none">
+<li>(6.1) &mdash;
+The allocator needs updating if
+<code>allocator_traits&lt;Allocator&gt;::propagate_on_container_move_assignment::value</code>
+is <code class='backtick'>true</code>.
+</li>
+<li>(6.2) &mdash;
+If <code class='backtick'>other</code> is valueless, <code class='backtick'>*this</code> becomes valueless<del> and the owned object
+in <code class='backtick'>*this</code>, if any, is destroyed using
+<code>allocator_traits&lt;Allocator&gt;::destroy</code>
+and then the storage is deallocated</del>.
+</li>
+<li>(6.3) &mdash;
+Otherwise,
+<ins>if the allocator needs updating or</ins>
+if <code><i>alloc</i> == other.<i>alloc</i></code> is <code class='backtick'>true</code>,
+<del>
+swaps the owned objects in <code class='backtick'>*this</code> and <code class='backtick'>other</code>;
+the owned object in <code class='backtick'>other</code>, if any, is then destroyed using
+<code>allocator_traits&lt;Allocator&gt;::destroy</code>
+and then the storage is deallocated
+</del>
+<ins><code class='backtick'>*this</code> takes ownership of the owned object of <code class='backtick'>other</code></ins>.
+</li>
+<li>(6.4) &mdash;
+Otherwise, constructs a new owned object with the owned object of <code class='backtick'>other</code>
+as the argument as an rvalue, using <del>either</del> the allocator in <code class='backtick'>*this</code>
+<del>or the allocator in <code class='backtick'>other</code> if the allocator needs updating</del>.
+</li>
+<li>(6.5) &mdash;
+The previously owned object in <code class='backtick'>*this</code>, if any, is destroyed using
+<code>allocator_traits&lt;Allocator&gt;::destroy</code>
+and then the storage is deallocated.
+</li>
+<li>(6.6) &mdash;
+If the allocator needs updating,
+the allocator in <code class='backtick'>*this</code> is replaced with a copy of the allocator in <code class='backtick'>other</code>.
+</li>
+</ol>
+</p>
+<p>-7- <i>Postcondition</i>: <code class='backtick'>other</code> is valueless.</p>
+</blockquote>
+</blockquote>
+</li>
+
+<li><p>Modify 20.4.2.5 <a href="https://wg21.link/polymorphic.assign">[polymorphic.assign]</a> as indicated:</p>
+<blockquote>
+<pre><code>
+constexpr polymorphic&amp; operator=(polymorphic&amp;&amp; other)
+  noexcept(allocator_traits&lt;Allocator&gt;::propagate_on_container_move_assignment::value ||
+           allocator_traits&lt;Allocator&gt;::is_always_equal::value);
+</code></pre>
+<blockquote>
+<p>
+-5- <i>Mandates</i>:
+If
+<ins>
+<code>allocator_traits&lt;Allocator&gt;::propagate_on_container_move_assignment::value</code>
+is <code class='backtick'>false</code>
+and
+</ins>
+<code>allocator_traits&lt;Allocator&gt;::is_always_equal::value</code>
+is <code class='backtick'>false</code>,
+<code class='backtick'>T</code> is complete type.
+</p>
+<p>
+-6- <i>Effects</i>:
+If <code class='backtick'>addressof(other) == this</code> is <code class='backtick'>true</code>, there are no effects.
+Otherwise:
+<ol style="list-style-type:none">
+<li>(6.1) &mdash;
+The allocator needs updating if
+<code>allocator_traits&lt;Allocator&gt;::propagate_on_container_move_assignment::value</code>
+is <code class='backtick'>true</code>.
+</li>
+<li><ins>(6.?) &mdash; If <code class='backtick'>other</code> is valueless, <code class='backtick'>*this</code> becomes valueless.</ins></li>
+<li>(6.2) &mdash;
+<ins>Otherwise, if the allocator needs updating or</ins><del>If</del>
+<code><i>alloc</i> == other.<i>alloc</i></code> is <code class='backtick'>true</code>,
+<del>
+swaps the owned objects in <code class='backtick'>*this</code> and <code class='backtick'>other</code>;
+the owned object in <code class='backtick'>other</code>, if any, is then destroyed using
+<code>allocator_traits&lt;Allocator&gt;::destroy</code>
+and then the storage is deallocated
+</del>
+<ins><code class='backtick'>*this</code> takes ownership of the owned object of <code class='backtick'>other</code></ins>.
+</li>
+<li>(6.3) &mdash;
+<del>Otherwise, if <code class='backtick'>alloc != other.alloc</code> is <code class='backtick'>true</code>; if <code class='backtick'>other</code> is not valueless, 
+a new owned object is constructed in <code class='backtick'>*this</code> using <code>allocator_traits::construct</code>
+with the owned object from</del>
+<ins>Otherwise, constructs a new owned object with the owned object of</ins>
+<code class='backtick'>other</code> as the argument as an rvalue, using <del>either</del> the allocator in <code class='backtick'>*this</code>
+<del>or the allocator in <code class='backtick'>other</code> if the allocator needs updating</del>.
+</li>
+<li>(6.4) &mdash;
+The previously owned object in <code class='backtick'>*this</code>, if any, is destroyed using
+<code>allocator_traits&lt;Allocator&gt;::destroy</code>
+and then the storage is deallocated.
+</li>
+<li>(6.5) &mdash;
+If the allocator needs updating,
+the allocator in <code class='backtick'>*this</code> is replaced with a copy of the allocator in <code class='backtick'>other</code>.
+</li>
+</ol>
+</p>
+[&hellip;]
+</blockquote>
+</blockquote>
+</li>
+
 </ol>
 
 
