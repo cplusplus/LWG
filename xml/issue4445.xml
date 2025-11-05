@@ -42,7 +42,7 @@ namespace std::execution {
     explicit task_scheduler(Sch&amp;&amp; sch, Allocator alloc = {});
 
     <ins>task_scheduler(const task_scheduler&amp;) = default;</ins>
-    <ins>task_scheduler& operator=(const task_scheduler&amp;) = default;</ins>
+    <ins>task_scheduler&amp; operator=(const task_scheduler&amp;) = default;</ins>
 
     <i>ts-sender</i> schedule();
 

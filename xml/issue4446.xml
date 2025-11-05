@@ -1,0 +1,39 @@
+<?xml version='1.0' encoding='utf-8' standalone='no'?>
+<!DOCTYPE issue SYSTEM "lwg-issue.dtd">
+
+<issue num="4446" status="New">
+<title>Bad phrasing for <tt><i>SCHED</i>(s)</tt></title>
+<section>
+<sref ref="[exec.task.scheduler]"/>
+</section>
+<submitter>Tomasz Kamiński</submitter>
+<date>05 Nov 2025</date>
+<priority>99</priority>
+
+<discussion>
+<b>Addresses <a href="https://github.com/cplusplus/nbballot/issues/945">US 240-370</a></b>
+<p>`shared_ptr` owns a pointer (or `nullptr_t`), not the pointee, but <tt><i>SCHED</i></tt> wants the pointee.</p>
+</discussion>
+
+<resolution>
+<p>
+This wording is relative to <paper num="N5014"/>.
+</p>
+
+<ol>
+
+<li><p>Modify <sref ref="[exec.task.scheduler]"/> as indicated:</p>
+
+<blockquote>
+<p>
+-1- `task_scheduler` is a class that models `scheduler` (<sref ref="[exec.sched]"/>).
+Given an object `s` of type `task_scheduler`, let <tt><i>SCHED</i></tt> be the object
+<ins>pointed by the pointer</ins> owned by `s.sch_`.
+</p>
+</blockquote>
+</li>
+</ol>
+
+</resolution>
+
+</issue>
