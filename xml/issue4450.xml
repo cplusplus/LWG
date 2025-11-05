@@ -58,7 +58,7 @@ constexpr void store_<i>key</i>(value_type operand,
 </pre>
 <blockquote>
 <p><ins>-?- <i>Constraints</i>:
-<tt>is_const_v&lt;<i>integral-type</i>&gt;</tt> is `false`.</ins>
+<tt>is_const_v&lt;<i>floating-point-type</i>&gt;</tt> is `false`.</ins>
 </p>
 <p>-10- <i>Preconditions</i>:
 `order` is `memory_order::relaxed`, `memory_order::release`,
@@ -85,7 +85,7 @@ constexpr void store_<i>key</i>(<i>see above</i> operand,
 </pre>
 <blockquote>
 <p><ins>-?- <i>Constraints</i>:
-<tt>is_const_v&lt;<i>integral-type</i>&gt;</tt> is `false`.</ins>
+<tt>is_const_v&lt;<i>pointer-type</i>&gt;</tt> is `false`.</ins>
 </p>
 <p>-11- <i>Mandates</i>:
 `T` is a complete object type.
