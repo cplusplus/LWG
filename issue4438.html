@@ -70,7 +70,10 @@
 <p><b>View all other</b> <a href="lwg-index.html#exec.when.all">issues</a> in [exec.when.all].</p>
 <p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
 <p><b>Discussion:</b></p>
-<b>Addresses <a href="https://github.com/cplusplus/nbballot/issues/919">US 220-344</a></b>
+<b>
+Addresses <a href="https://github.com/cplusplus/nbballot/issues/919">US 220-344</a>
+and <a href="https://github.com/cplusplus/nbballot/issues/917">US 224-342</a>
+</b>
 <p>
 33.9.12.12 <a href="https://wg21.link/exec.when.all">[exec.when.all]</a> p5 reads as follows:
 </p>
@@ -107,7 +110,7 @@ The problem is with "<code>state.<i>stop-src</i>.get_token()</code>" in bullet (
 object here. This expression should be <code class='backtick'>stop_src.get_token()</code>.
 </p>
 
-<p><i>[Kona 2025-11-05; add edits to address NB comment.]</i></p>
+<p><i>[Kona 2025-11-04; add edits to address NB comments.]</i></p>
 
 
 
@@ -143,9 +146,13 @@ template&lt;class Env&gt;
 <li>(5.2) &mdash; <code class='backtick'>e.query(get_stop_token)</code> is expression-equivalent to <code><del>state.<i>stop-src</i></del><ins>stop_src</ins>.get_token()</code>, 
 and
 </li>
-<li>(5.3) &mdash; given a query object <code class='backtick'>q</code> with type other than <i>cv</i> <code class='backtick'>stop_token_t</code> and whose type 
-satisfies <code><i>forwarding-query</i></code>, <code class='backtick'>e.query(q)</code> is expression-equivalent to <del><code class='backtick'>get_env(rcvr)</code></del><ins><code class='backtick'>env</code></ins><code class='backtick'>.query(q)</code>.
+<li>(5.3) &mdash;
+given a query object <code class='backtick'>q</code> with type other than <i>cv</i> <code class='backtick'>get_stop_token_t</code>
+<del>and whose type satisfies <code><i>forwarding-query</i></code></del>,
+<code class='backtick'>e.query(q)</code> is expression-equivalent to <del><code class='backtick'>get_env(rcvr)</code></del><ins><code class='backtick'>env</code></ins><code class='backtick'>.query(q)</code>
+<ins>if the type of <code class='backtick'>q</code> satisfies <i><code class='backtick'>forwarding-query</code></i>, and ill-formed otherwise</ins>.
 </li>
+
 </ul>
 </blockquote>
 </li>
