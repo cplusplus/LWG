@@ -1,0 +1,49 @@
+<?xml version='1.0' encoding='utf-8' standalone='no'?>
+<!DOCTYPE issue SYSTEM "lwg-issue.dtd">
+
+<issue num="4448" status="New">
+<title>Do not forward `fn` in `completion_signatures`</title>
+<section>
+<sref ref="[exec.cmplsig]"/>
+</section>
+<submitter>Tomasz Kamiński</submitter>
+<date>05 Nov 2025</date>
+<priority>99</priority>
+
+<discussion>
+<b>Addresses <a href="https://github.com/cplusplus/nbballot/issues/935">US 230-360</a></b>
+<p>`fn` can be called multiple times and therefore should not be forwarded.</p>
+</discussion>
+
+<resolution>
+<p>
+This wording is relative to <paper num="N5014"/>.
+</p>
+
+<ol>
+
+<li><p>Modify <sref ref="[exec.cmplsig]"/> as indicated:</p>
+
+<p>-8-</p>
+<pre>
+namespace std::execution {
+  template&lt;<i>completion-signature</i>... Fns&gt;
+    struct completion_signatures {
+      template&lt;class Tag&gt;
+        static constexpr size_t <i>count-of</i>(Tag) { return <i>see below</i>; }
+
+      template&lt;class Fn&gt;
+        static constexpr void <i>for-each</i>(Fn&amp;&amp; fn) {               <i>// exposition only</i>
+          (<del>std::forward&lt;Fn&gt;(fn)</del><ins>fn</ins>(static_cast&lt;Fns*&gt;(nullptr)), ...);
+        }
+    };
+
+  [&hellip;]
+}
+</pre>
+</li>
+</ol>
+
+</resolution>
+
+</issue>
