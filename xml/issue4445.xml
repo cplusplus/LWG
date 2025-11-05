@@ -1,0 +1,66 @@
+<?xml version='1.0' encoding='utf-8' standalone='no'?>
+<!DOCTYPE issue SYSTEM "lwg-issue.dtd">
+
+<issue num="4445" status="New">
+<title>`sch_` must not be in moved-from state</title>
+<section>
+<sref ref="[exec.task.scheduler]"/>
+</section>
+<submitter>Tomasz Kamiński</submitter>
+<date>05 Nov 2025</date>
+<priority>99</priority>
+
+<discussion>
+<b>Addresses <a href="https://github.com/cplusplus/nbballot/issues/942">US 239-367</a></b>
+<p>As specified, there is an implicit precondition that `sch_` is not moved from on all the
+member functions. If that is intended, the precondition should be made explicit.</p>
+</discussion>
+
+<resolution>
+<p>
+This wording is relative to <paper num="N5014"/>.
+</p>
+
+<ol>
+
+<li><p>Modify <sref ref="[exec.task.scheduler]"/> as indicated:</p>
+
+<pre>
+namespace std::execution {
+  class task_scheduler {
+    class <i>ts-sender</i>;                    // exposition only
+
+    template&lt;receiver R&gt;
+      class state;                      // exposition only
+
+  public:
+    using scheduler_concept = scheduler_t;
+
+    template&lt;class Sch, class Allocator = allocator&lt;void&gt;&gt;
+      requires (!same_as&lt;task_scheduler, remove_cvref_t&lt;Sch&gt;&gt;)
+        &amp;&amp; scheduler&lt;Sch&gt;
+    explicit task_scheduler(Sch&amp;&amp; sch, Allocator alloc = {});
+
+    <ins>task_scheduler(const task_scheduler&amp;) = default;</ins>
+    <ins>task_scheduler& operator=(const task_scheduler&amp;) = default;</ins>
+
+    <i>ts-sender</i> schedule();
+
+    friend bool operator==(const task_scheduler&amp; lhs, const task_scheduler&amp; rhs)
+        noexcept;
+    template&lt;class Sch&gt;
+      requires (!same_as&lt;task_scheduler, Sch&gt;)
+      &amp;&amp; scheduler&lt;Sch&gt;
+    friend bool operator==(const task_scheduler&amp; lhs, const Sch&amp; rhs) noexcept;
+
+  private:
+    shared_ptr&lt;void&gt; <i>sch_</i>; // exposition only
+  };
+}
+</pre>
+</li>
+</ol>
+
+</resolution>
+
+</issue>
