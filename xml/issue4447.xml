@@ -12,7 +12,7 @@
 
 <discussion>
 <b>Addresses <a href="https://github.com/cplusplus/nbballot/issues/900">US 206-325</a></b>
-<p>The “`sizeof…(Env) > 1` is `true`” part seems unreachable because `CS` is ill-formed in that case.</p>
+<p>The “`sizeof…(Env) &gt; 1` is `true`” part seems unreachable because `CS` is ill-formed in that case.</p>
 </discussion>
 
 <resolution>
