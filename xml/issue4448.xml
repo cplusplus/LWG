@@ -33,7 +33,7 @@ namespace std::execution {
         static constexpr size_t <i>count-of</i>(Tag) { return <i>see below</i>; }
 
       template&lt;class Fn&gt;
-        static constexpr void <i>for-each</i>(Fn&amp;&amp; fn) {               // exposition only
+        static constexpr void <i>for-each</i>(Fn&amp;&amp; fn) {               <i>// exposition only</i>
           (<del>std::forward&lt;Fn&gt;(fn)</del><ins>fn</ins>(static_cast&lt;Fns*&gt;(nullptr)), ...);
         }
     };
