@@ -54,7 +54,7 @@
 </style>
 </head>
 <body>
-<p>Revised 2025-11-05 at 18:05:41 UTC
+<p>Revised 2025-11-05 at 19:30:37 UTC
 </p><h2>Unresolved Issues</h2>
 <hr>
 <h3 id="423"><a href="#423">423</a><sup><a href="https://cplusplus.github.io/LWG/issue423">(i)</a></sup>. Effects of negative <code>streamsize</code> in iostreams</h3>
@@ -30367,117 +30367,6 @@ template&lt;class R&gt;
 </blockquote>
 </li>
 </ol>
-
-
-
-
-<hr>
-<h3 id="3454"><a href="#3454">3454</a><sup><a href="https://cplusplus.github.io/LWG/issue3454">(i)</a></sup>. <code>pointer_traits::pointer_to</code> should be <code>constexpr</code></h3>
-<p><b>Section:</b> 20.2.3 <a href="https://wg21.link/pointer.traits">[pointer.traits]</a> <b>Status:</b> <a href="lwg-active.html#Open">Open</a>
- <b>Submitter:</b> Alisdair Meredith <b>Opened:</b> 2020-06-21 <b>Last modified:</b> 2025-10-20</p>
-<p><b>Priority: </b>4
-</p>
-<p><b>View all other</b> <a href="lwg-index.html#pointer.traits">issues</a> in [pointer.traits].</p>
-<p><b>View all issues with</b> <a href="lwg-status.html#Open">Open</a> status.</p>
-<p><b>Discussion:</b></p>
-<p>
-Trying to implement a <code>constexpr std::list</code> (inspired by Tim Song's
-note on using variant members in the node) as part of evaluating
-the <code>constexpr</code> container and adapters proposals, I hit problems
-I could not code around in <code>pointer_traits</code>, as only the specialization
-for native pointers has a <code>constexpr pointer_to</code> function.
-<p/>
-This means that containers of my custom allocator, that delegates
-all allocation behavior to <code>std::allocator&lt;T&gt;</code> but adds extra
-telemetry and uses a fancy pointer, does not work with the approach
-I tried for implementing <code>list</code> (common link type, shared between
-nodes, and stored as <code>end</code> sentinel directly in the <code>list</code> object).
-</p>
-
-<p><i>[2020-07-17; Forwarded to LEWG after review in telecon]</i></p>
-
-
-<p><i>[2022-07-19; Casey Carter comments]</i></p>
-
-<p>
- This is no longer simply a theoretical problem that impedes implementing 
- <code>constexpr std::list</code>, but an actual defect affecting current 
- implementations of <code>constexpr std::string</code>. More specifically, it 
- makes it impossible to  support so-called "fancy pointers" in a <code>constexpr 
- basic_string</code> that performs the small string optimization (SSO). 
- (<code>pointer_traits::pointer_to</code> is critically necessary to get a 
- pointer that designates the SSO buffer.) As things currently stand, 
- <code>constexpr basic_string</code> can support fancy pointers <em>or</em> SSO, 
- but not both.
-</p>
-<p><i>[Wrocław 2024-11-18; LEWG approves the direction]</i></p>
-
-<p>
-Should there be an Annex C entry noting that program-defined specializations
-need to add <code class='backtick'>constexpr</code> to be conforming?
-</p>
-
-<p><i>[2025-10-20; Set priority to 4 based on age of issue and lack of recent interest.]</i></p>
-
-
-
-<p id="res-3454"><b>Proposed resolution:</b></p>
-<p>
-This wording is relative to <a href="https://wg21.link/n4861">N4861</a>. 
-</p>
-
-<ol>
-<li><p>Modify 20.2.3 <a href="https://wg21.link/pointer.traits">[pointer.traits]</a> as indicated:</p>
-
-<blockquote>
-<p>
--1- The class template <code>pointer_traits</code> supplies a uniform interface to certain attributes of pointer-like types.
-</p>
-<blockquote>
-<pre>
-namespace std {
-  template&lt;class Ptr&gt; struct pointer_traits {
-    using pointer         = Ptr;
-    using element_type    = <i>see below</i>;
-    using difference_type = <i>see below</i>;
-    
-    template&lt;class U&gt; using rebind = <i>see below</i>;
-    
-    static <ins>constexpr</ins> pointer pointer_to(<i>see below</i> r);
-  };
-  [&hellip;]
-}
-</pre>
-</blockquote>
-</blockquote>
-</li>
-
-<li><p>Modify 20.2.3.3 <a href="https://wg21.link/pointer.traits.functions">[pointer.traits.functions]</a> as indicated:</p>
-
-<blockquote>
-<pre>
-static <ins>constexpr</ins> pointer pointer_traits::pointer_to(<i>see below</i> r);
-static constexpr pointer pointer_traits&lt;T*&gt;::pointer_to(<i>see below</i> r) noexcept;
-</pre>
-<blockquote>
-<p>
--1- <i>Mandates:</i> For the first member function, <code>Ptr::pointer_to(r)</code> is well-formed.
-<p/>
--2- <i>Preconditions:</i> For the first member function, <code>Ptr::pointer_to(r)</code> returns a pointer 
-to <code>r</code> through which indirection is valid.
-<p/>
--3- <i>Returns:</i> The first member function returns <code>Ptr::pointer_to(r)</code>. The second member function
-returns <code>addressof(r)</code>.
-<p/>
--4- <i>Remarks:</i> If <code>element_type</code> is <i>cv</i> <code>void</code>, the type of <code>r</code> is unspecified; 
-otherwise, it is <code>element_type&amp;</code>.
-</p>
-</blockquote>
-</blockquote>
-</li>
-</ol>
-
-
 
 
 
@@ -79739,6 +79628,117 @@ of <code><i>D</i></code> with the following properties: [&hellip;]
 <li>(9.6) &mdash; [&hellip;]
 </li>
 </ul>
+</blockquote>
+</blockquote>
+</li>
+</ol>
+
+
+
+
+
+
+<hr>
+<h3 id="4450"><a href="#4450">4450</a><sup><a href="https://cplusplus.github.io/LWG/issue4450">(i)</a></sup>. <code>std::atomic_ref&lt;T&gt;::store_<i>key</i></code> should be disabled for const <code class='backtick'>T</code></h3>
+<p><b>Section:</b> 32.5.7.3 <a href="https://wg21.link/atomics.ref.int">[atomics.ref.int]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
+ <b>Submitter:</b> Jonathan Wakely <b>Opened:</b> 2025-11-05 <b>Last modified:</b> 2025-11-05</p>
+<p><b>Priority: </b>Not Prioritized
+</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
+<p><b>Discussion:</b></p>
+<b>Addresses <a href="https://github.com/cplusplus/nbballot/issues/886">US 193-311</a></b>
+<p>
+The new <code>store_<i>key</i></code> functions modify the object,
+so it can't be const.
+</p>
+
+
+<p id="res-4450"><b>Proposed resolution:</b></p>
+<p>
+This wording is relative to <a href="https://wg21.link/N5014">N5014</a>.
+</p>
+
+<ol>
+<li><p>Modify 32.5.7.3 <a href="https://wg21.link/atomics.ref.int">[atomics.ref.int]</a>, as indicated:</p>
+
+<blockquote>
+<pre>
+constexpr void store_<i>key</i>(value_type operand,
+                         memory_order order = memory_order::seq_cst) const noexcept;
+</pre>
+<blockquote>
+<p><ins>-?- <i>Constraints</i>:
+<code>is_const_v&lt;<i>integral-type</i>&gt;</code> is <code class='backtick'>false</code>.</ins>
+</p>
+<p>-10- <i>Preconditions</i>:
+<code class='backtick'>order</code> is <code class='backtick'>memory_order::relaxed</code>, <code class='backtick'>memory_order::release</code>,
+or <code class='backtick'>memory_order::seq_cst</code>.
+</p>
+<p>-11- <i>Effects</i>:
+Atomically replaces the value referenced by <code class='backtick'>*ptr</code> with the result of
+the computation applied to the value referenced by <code class='backtick'>*ptr</code>
+and the given <code class='backtick'>operand</code>.
+Memory is affected according to the value of <code class='backtick'>order</code>.
+These operations are atomic modify-write operations
+(32.5.4 <a href="https://wg21.link/atomics.order">[atomics.order]</a>).
+</p>
+</blockquote>
+</blockquote>
+</li>
+
+<li><p>Modify 32.5.7.4 <a href="https://wg21.link/atomics.ref.float">[atomics.ref.float]</a>, as indicated:</p>
+
+<blockquote>
+<pre>
+constexpr void store_<i>key</i>(value_type operand,
+                         memory_order order = memory_order::seq_cst) const noexcept;
+</pre>
+<blockquote>
+<p><ins>-?- <i>Constraints</i>:
+<code>is_const_v&lt;<i>integral-type</i>&gt;</code> is <code class='backtick'>false</code>.</ins>
+</p>
+<p>-10- <i>Preconditions</i>:
+<code class='backtick'>order</code> is <code class='backtick'>memory_order::relaxed</code>, <code class='backtick'>memory_order::release</code>,
+or <code class='backtick'>memory_order::seq_cst</code>.
+</p>
+<p>-11- <i>Effects</i>:
+Atomically replaces the value referenced by <code class='backtick'>*ptr</code> with the result of
+the computation applied to the value referenced by <code class='backtick'>*ptr</code>
+and the given <code class='backtick'>operand</code>.
+Memory is affected according to the value of <code class='backtick'>order</code>.
+These operations are atomic modify-write operations
+(32.5.4 <a href="https://wg21.link/atomics.order">[atomics.order]</a>).
+</p>
+</blockquote>
+</blockquote>
+</li>
+
+<li><p>Modify 32.5.7.5 <a href="https://wg21.link/atomics.ref.pointer">[atomics.ref.pointer]</a>, as indicated:</p>
+
+<blockquote>
+<pre>
+constexpr void store_<i>key</i>(<i>see above</i> operand,
+                         memory_order order = memory_order::seq_cst) const noexcept;
+</pre>
+<blockquote>
+<p><ins>-?- <i>Constraints</i>:
+<code>is_const_v&lt;<i>integral-type</i>&gt;</code> is <code class='backtick'>false</code>.</ins>
+</p>
+<p>-11- <i>Mandates</i>:
+<code class='backtick'>T</code> is a complete object type.
+</p>
+<p>-12- <i>Preconditions</i>:
+<code class='backtick'>order</code> is <code class='backtick'>memory_order::relaxed</code>, <code class='backtick'>memory_order::release</code>,
+or <code class='backtick'>memory_order::seq_cst</code>.
+</p>
+<p>-13- <i>Effects</i>:
+Atomically replaces the value referenced by <code class='backtick'>*ptr</code> with the result of
+the computation applied to the value referenced by <code class='backtick'>*ptr</code>
+and the given <code class='backtick'>operand</code>.
+Memory is affected according to the value of <code class='backtick'>order</code>.
+These operations are atomic modify-write operations
+(32.5.4 <a href="https://wg21.link/atomics.order">[atomics.order]</a>).
+</p>
 </blockquote>
 </blockquote>
 </li>
