@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <title>Issue 4445: sch_ must not be in moved-from state</title>
 <meta property="og:title" content="Issue 4445: sch_ must not be in moved-from state">
-<meta property="og:description" content="C++ library issue. Status: New">
+<meta property="og:description" content="C++ library issue. Status: Immediate">
 <meta property="og:url" content="https://cplusplus.github.io/LWG/issue4445.html">
 <meta property="og:type" content="website">
 <meta property="og:image" content="http://cplusplus.github.io/LWG/images/cpp_logo.png">
@@ -61,19 +61,22 @@
 </head>
 <body>
 <hr>
-<p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#New">New</a> status.</em></p>
+<p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#Immediate">Immediate</a> status.</em></p>
 <h3 id="4445"><a href="lwg-active.html#4445">4445</a>. <code class='backtick'>sch_</code> must not be in moved-from state</h3>
-<p><b>Section:</b> 33.13.5 <a href="https://wg21.link/exec.task.scheduler">[exec.task.scheduler]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
+<p><b>Section:</b> 33.13.5 <a href="https://wg21.link/exec.task.scheduler">[exec.task.scheduler]</a> <b>Status:</b> <a href="lwg-active.html#Immediate">Immediate</a>
  <b>Submitter:</b> Tomasz Kamiński <b>Opened:</b> 2025-11-05 <b>Last modified:</b> 2025-11-05</p>
 <p><b>Priority: </b>Not Prioritized
 </p>
 <p><b>View other</b> <a href="lwg-index-open.html#exec.task.scheduler">active issues</a> in [exec.task.scheduler].</p>
 <p><b>View all other</b> <a href="lwg-index.html#exec.task.scheduler">issues</a> in [exec.task.scheduler].</p>
-<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#Immediate">Immediate</a> status.</p>
 <p><b>Discussion:</b></p>
 <b>Addresses <a href="https://github.com/cplusplus/nbballot/issues/942">US 239-367</a></b>
 <p>As specified, there is an implicit precondition that <code class='backtick'>sch_</code> is not moved from on all the
 member functions. If that is intended, the precondition should be made explicit.</p>
+
+<p><i>[Kona 2025-11-05; approved by LWG. Status changed: New &rarr; Immediate.]</i></p>
+
 
 
 <p id="res-4445"><b>Proposed resolution:</b></p>

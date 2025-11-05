@@ -62,7 +62,7 @@
 </tr>
 <tr>
 <td align="left">Date:</td>
-<td align="left">Revised 2025-11-05 at 19:41:58 UTC
+<td align="left">Revised 2025-11-05 at 19:42:33 UTC
 </td>
 </tr>
 <tr>
@@ -4967,6 +4967,115 @@ template&lt;<i>execution-policy</i> Ep, <i>sized-random-access-range</i> R, clas
 -1- [&hellip;]
 </p>
 </blockquote>
+</blockquote>
+</li>
+</ol>
+
+
+
+
+
+
+<hr>
+<h3 id="4445"><a href="#4445">4445</a><sup><a href="https://cplusplus.github.io/LWG/issue4445">(i)</a></sup>. <code class='backtick'>sch_</code> must not be in moved-from state</h3>
+<p><b>Section:</b> 33.13.5 <a href="https://wg21.link/exec.task.scheduler">[exec.task.scheduler]</a> <b>Status:</b> <a href="lwg-active.html#Immediate">Immediate</a>
+ <b>Submitter:</b> Tomasz Kamiński <b>Opened:</b> 2025-11-05 <b>Last modified:</b> 2025-11-05</p>
+<p><b>Priority: </b>Not Prioritized
+</p>
+<p><b>View other</b> <a href="lwg-index-open.html#exec.task.scheduler">active issues</a> in [exec.task.scheduler].</p>
+<p><b>View all other</b> <a href="lwg-index.html#exec.task.scheduler">issues</a> in [exec.task.scheduler].</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#Immediate">Immediate</a> status.</p>
+<p><b>Discussion:</b></p>
+<b>Addresses <a href="https://github.com/cplusplus/nbballot/issues/942">US 239-367</a></b>
+<p>As specified, there is an implicit precondition that <code class='backtick'>sch_</code> is not moved from on all the
+member functions. If that is intended, the precondition should be made explicit.</p>
+
+<p><i>[Kona 2025-11-05; approved by LWG. Status changed: New &rarr; Immediate.]</i></p>
+
+
+
+<p id="res-4445"><b>Proposed resolution:</b></p>
+<p>
+This wording is relative to <a href="https://wg21.link/N5014">N5014</a>.
+</p>
+
+<ol>
+
+<li><p>Modify 33.13.5 <a href="https://wg21.link/exec.task.scheduler">[exec.task.scheduler]</a> as indicated:</p>
+
+<pre>
+namespace std::execution {
+  class task_scheduler {
+    class <i>ts-sender</i>;                    // exposition only
+
+    template&lt;receiver R&gt;
+      class state;                      // exposition only
+
+  public:
+    using scheduler_concept = scheduler_t;
+
+    template&lt;class Sch, class Allocator = allocator&lt;void&gt;&gt;
+      requires (!same_as&lt;task_scheduler, remove_cvref_t&lt;Sch&gt;&gt;)
+        &amp;&amp; scheduler&lt;Sch&gt;
+    explicit task_scheduler(Sch&amp;&amp; sch, Allocator alloc = {});
+
+    <ins>task_scheduler(const task_scheduler&amp;) = default;</ins>
+    <ins>task_scheduler&amp; operator=(const task_scheduler&amp;) = default;</ins>
+
+    <i>ts-sender</i> schedule();
+
+    friend bool operator==(const task_scheduler&amp; lhs, const task_scheduler&amp; rhs)
+        noexcept;
+    template&lt;class Sch&gt;
+      requires (!same_as&lt;task_scheduler, Sch&gt;)
+      &amp;&amp; scheduler&lt;Sch&gt;
+    friend bool operator==(const task_scheduler&amp; lhs, const Sch&amp; rhs) noexcept;
+
+  private:
+    shared_ptr&lt;void&gt; <i>sch_</i>; // exposition only
+  };
+}
+</pre>
+</li>
+</ol>
+
+
+
+
+
+
+<hr>
+<h3 id="4446"><a href="#4446">4446</a><sup><a href="https://cplusplus.github.io/LWG/issue4446">(i)</a></sup>. Bad phrasing for <code><i>SCHED</i>(s)</code></h3>
+<p><b>Section:</b> 33.13.5 <a href="https://wg21.link/exec.task.scheduler">[exec.task.scheduler]</a> <b>Status:</b> <a href="lwg-active.html#Immediate">Immediate</a>
+ <b>Submitter:</b> Tomasz Kamiński <b>Opened:</b> 2025-11-05 <b>Last modified:</b> 2025-11-05</p>
+<p><b>Priority: </b>Not Prioritized
+</p>
+<p><b>View other</b> <a href="lwg-index-open.html#exec.task.scheduler">active issues</a> in [exec.task.scheduler].</p>
+<p><b>View all other</b> <a href="lwg-index.html#exec.task.scheduler">issues</a> in [exec.task.scheduler].</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#Immediate">Immediate</a> status.</p>
+<p><b>Discussion:</b></p>
+<b>Addresses <a href="https://github.com/cplusplus/nbballot/issues/945">US 240-370</a></b>
+<p><code class='backtick'>shared_ptr</code> owns a pointer (or <code class='backtick'>nullptr_t</code>), not the pointee, but <code><i>SCHED</i></code> wants the pointee.</p>
+
+<p><i>[Kona 2025-11-05; approved by LWG. Status changed: New &rarr; Immediate.]</i></p>
+
+
+
+<p id="res-4446"><b>Proposed resolution:</b></p>
+<p>
+This wording is relative to <a href="https://wg21.link/N5014">N5014</a>.
+</p>
+
+<ol>
+
+<li><p>Modify 33.13.5 <a href="https://wg21.link/exec.task.scheduler">[exec.task.scheduler]</a> as indicated:</p>
+
+<blockquote>
+<p>
+-1- <code class='backtick'>task_scheduler</code> is a class that models <code class='backtick'>scheduler</code> (33.6 <a href="https://wg21.link/exec.sched">[exec.sched]</a>).
+Given an object <code class='backtick'>s</code> of type <code class='backtick'>task_scheduler</code>, let <code><i>SCHED</i></code> be the object
+<ins>pointed to by the pointer</ins> owned by <code class='backtick'>s.sch_</code>.
+</p>
 </blockquote>
 </li>
 </ol>
