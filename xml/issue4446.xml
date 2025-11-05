@@ -28,7 +28,7 @@ This wording is relative to <paper num="N5014"/>.
 <p>
 -1- `task_scheduler` is a class that models `scheduler` (<sref ref="[exec.sched]"/>).
 Given an object `s` of type `task_scheduler`, let <tt><i>SCHED</i></tt> be the object
-<ins>pointed by the pointer</ins> owned by `s.sch_`.
+<ins>pointed to by the pointer</ins> owned by `s.sch_`.
 </p>
 </blockquote>
 </li>
