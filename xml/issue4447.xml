@@ -2,7 +2,7 @@
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
 <issue num="4447" status="Immediate">
-<title>Remove unnecessary `sizeof…(Env) &gt; 1` condition</title>
+<title>Remove unnecessary <tt>sizeof…(Env) &gt; 1</tt> condition</title>
 <section>
 <sref ref="[execution.syn]"/>
 </section>
