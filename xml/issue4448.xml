@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="4448" status="New">
+<issue num="4448" status="Immediate">
 <title>Do not forward `fn` in `completion_signatures`</title>
 <section>
 <sref ref="[exec.cmplsig]"/>
@@ -13,6 +13,8 @@
 <discussion>
 <b>Addresses <a href="https://github.com/cplusplus/nbballot/issues/935">US 230-360</a></b>
 <p>`fn` can be called multiple times and therefore should not be forwarded.</p>
+
+<note>Kona 2025-11-05; approved by LWG. Status changed: New &rarr; Immediate.</note>
 </discussion>
 
 <resolution>
