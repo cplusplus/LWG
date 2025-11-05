@@ -1,0 +1,112 @@
+<?xml version='1.0' encoding='utf-8' standalone='no'?>
+<!DOCTYPE issue SYSTEM "lwg-issue.dtd">
+
+<issue num="4450" status="New">
+<title><tt>std::atomic_ref&lt;T&gt;::store_<i>key</i></tt> should be disabled for const `T`</title>
+<section><sref ref="[atomics.ref.int]"/></section>
+<submitter>Jonathan Wakely</submitter>
+<date>05 Nov 2025</date>
+<priority>99</priority>
+
+<discussion>
+<b>Addresses <a href="https://github.com/cplusplus/nbballot/issues/886">US 193-311</a></b>
+<p>
+The new <tt>store_<i>key</i></tt> functions modify the object,
+so it can't be const.
+</p>
+</discussion>
+
+<resolution>
+<p>
+This wording is relative to <paper num="N5014"/>.
+</p>
+
+<ol>
+<li><p>Modify <sref ref="[atomics.ref.int]"/>, as indicated:</p>
+
+<blockquote>
+<pre>
+constexpr void store_<i>key</i>(value_type operand,
+                         memory_order order = memory_order::seq_cst) const noexcept;
+</pre>
+<blockquote>
+<p><ins>-?- <i>Constraints</i>:
+<tt>is_const_v&lt;<i>integral-type</i>&gt;</tt> is `false`.</ins>
+</p>
+<p>-10- <i>Preconditions</i>:
+`order` is `memory_order::relaxed`, `memory_order::release`,
+or `memory_order::seq_cst`.
+</p>
+<p>-11- <i>Effects</i>:
+Atomically replaces the value referenced by `*ptr` with the result of
+the computation applied to the value referenced by `*ptr`
+and the given `operand`.
+Memory is affected according to the value of `order`.
+These operations are atomic modify-write operations
+(<sref ref="[atomics.order]"/>).
+</p>
+</blockquote>
+</blockquote>
+</li>
+
+<li><p>Modify <sref ref="[atomics.ref.float]"/>, as indicated:</p>
+
+<blockquote>
+<pre>
+constexpr void store_<i>key</i>(value_type operand,
+                         memory_order order = memory_order::seq_cst) const noexcept;
+</pre>
+<blockquote>
+<p><ins>-?- <i>Constraints</i>:
+<tt>is_const_v&lt;<i>integral-type</i>&gt;</tt> is `false`.</ins>
+</p>
+<p>-10- <i>Preconditions</i>:
+`order` is `memory_order::relaxed`, `memory_order::release`,
+or `memory_order::seq_cst`.
+</p>
+<p>-11- <i>Effects</i>:
+Atomically replaces the value referenced by `*ptr` with the result of
+the computation applied to the value referenced by `*ptr`
+and the given `operand`.
+Memory is affected according to the value of `order`.
+These operations are atomic modify-write operations
+(<sref ref="[atomics.order]"/>).
+</p>
+</blockquote>
+</blockquote>
+</li>
+
+<li><p>Modify <sref ref="[atomics.ref.pointer]"/>, as indicated:</p>
+
+<blockquote>
+<pre>
+constexpr void store_<i>key</i>(<i>see above</i> operand,
+                         memory_order order = memory_order::seq_cst) const noexcept;
+</pre>
+<blockquote>
+<p><ins>-?- <i>Constraints</i>:
+<tt>is_const_v&lt;<i>integral-type</i>&gt;</tt> is `false`.</ins>
+</p>
+<p>-11- <i>Mandates</i>:
+`T` is a complete object type.
+</p>
+<p>-12- <i>Preconditions</i>:
+`order` is `memory_order::relaxed`, `memory_order::release`,
+or `memory_order::seq_cst`.
+</p>
+<p>-13- <i>Effects</i>:
+Atomically replaces the value referenced by `*ptr` with the result of
+the computation applied to the value referenced by `*ptr`
+and the given `operand`.
+Memory is affected according to the value of `order`.
+These operations are atomic modify-write operations
+(<sref ref="[atomics.order]"/>).
+</p>
+</blockquote>
+</blockquote>
+</li>
+</ol>
+
+</resolution>
+
+</issue>
