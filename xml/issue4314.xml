@@ -84,9 +84,8 @@ validate if input value is representable.
 We should require convertibility without regard to const and
 value category.
 </p>
-</discussion>
 
-<resolution>
+<superseded>
 <p>
 This wording is relative to <paper num="N5014"/>.
 </p>
@@ -289,6 +288,236 @@ constexpr mapping(const extents_type&amp; ext, OtherIndexType pad<ins>ding</ins>
 </li>
 
 </ol>
+</superseded>
+
+<note>2025-10-05; Tomasz provides upated wording after LWG review</note>
+
+</discussion>
+
+<resolution>
+<p>
+This wording is relative to <paper num="N5014"/>.
+</p>
+
+<ol>
+	
+<li><p>Modify <sref ref="[mdspan.extents.expo]"/> as indicated:</p>
+
+<blockquote>
+<pre>
+template&lt;class OtherIndexType&gt;
+  static constexpr auto index-cast(OtherIndexType&amp;&amp; i) noexcept;
+</pre>
+<blockquote>
+<p>
+-9- <i>Effects</i>:<ul>
+<li>-9.1- If `OtherIndexType` is an integral type other than `bool`, then equivalent to `return i;`,</li>
+<li>-9.2- otherwise, equivalent to <tt>return static_cast&lt;index_type&gt;(<ins>std::move(</ins>i<ins>)</ins>);</tt>.</li>
+</ul>
+</p>
+</blockquote>
+</blockquote>
+</li>
+
+<li><p>Modify <sref ref="[mdspan.layout.left.obs]"/> as indicated:</p>
+
+<blockquote>
+<pre>
+template&lt;class... Indices&gt;
+  constexpr index_type operator()(Indices... i) const noexcept;
+</pre>
+<blockquote>
+<p>
+-2- <i>Constraints</i>: [&hellip;]
+<p/>
+-3- <i>Preconditions</i>: [&hellip;]
+<p/>
+-4- <i>Effects</i>: Let `P` be a parameter pack such that
+</p>
+<blockquote><pre>
+is_same_v&lt;index_sequence_for&lt;Indices...&gt;, index_sequence&lt;P...&gt;&gt;
+</pre></blockquote>
+<p>
+is `true`. Equivalent to:
+</p>
+<blockquote><pre>
+return ((static_cast&lt;index_type&gt;(<ins>std::move(</ins>i<ins>)</ins>) * stride(P)) + ... + 0);
+</pre></blockquote>
+</blockquote>
+</blockquote>
+
+</li>
+
+<li><p>Modify <sref ref="[mdspan.layout.right.obs]"/> as indicated:</p>
+
+<blockquote>
+<pre>
+template&lt;class... Indices&gt;
+  constexpr index_type operator()(Indices... i) const noexcept;
+</pre>
+<blockquote>
+<p>
+-2- <i>Constraints</i>: [&hellip;]
+<p/>
+-3- <i>Preconditions</i>: [&hellip;]
+<p/>
+-4- <i>Effects</i>: Let `P` be a parameter pack such that
+</p>
+<blockquote><pre>
+is_same_v&lt;index_sequence_for&lt;Indices...&gt;, index_sequence&lt;P...&gt;&gt;
+</pre></blockquote>
+<p>
+is `true`. Equivalent to:
+</p>
+<blockquote><pre>
+return ((static_cast&lt;index_type&gt;(<ins>std::move(</ins>i<ins>)</ins>) * stride(P)) + ... + 0);
+</pre></blockquote>
+</blockquote>
+</blockquote>
+
+</li>
+
+<li><p>Modify <sref ref="[mdspan.layout.stride.obs]"/> as indicated:</p>
+
+<blockquote>
+<pre>
+template&lt;class... Indices&gt;
+  constexpr index_type operator()(Indices... i) const noexcept;
+</pre>
+<blockquote>
+<p>
+-2- <i>Constraints</i>: [&hellip;]
+<p/>
+-3- <i>Preconditions</i>: [&hellip;]
+<p/>
+-4- <i>Effects</i>: Let `P` be a parameter pack such that
+</p>
+<blockquote><pre>
+is_same_v&lt;index_sequence_for&lt;Indices...&gt;, index_sequence&lt;P...&gt;&gt;
+</pre></blockquote>
+<p>
+is `true`. Equivalent to:
+</p>
+<blockquote><pre>
+return ((static_cast&lt;index_type&gt;(<ins>std::move(</ins>i<ins>)</ins>) * stride(P)) + ... + 0);
+</pre></blockquote>
+</blockquote>
+</blockquote>
+
+</li>
+
+<li><p>Modify <sref ref="[mdspan.layout.leftpad.obs]"/> as indicated:</p>
+
+<blockquote>
+<pre>
+template&lt;class... Indices&gt;
+  constexpr index_type operator()(Indices... idxs) const noexcept;
+</pre>
+<blockquote>
+<p>
+-3- <i>Constraints</i>: [&hellip;]
+<p/>
+-4- <i>Preconditions</i>: [&hellip;]
+<p/>
+-5- <i>Returns</i>: <tt>((static_cast&lt;index_type&gt;(<ins>std::move(</ins>idxs<ins>)</ins>) * stride(P_rank)) + ... + 0)</tt>.
+</p>
+</blockquote>
+</blockquote>
+
+</li>
+
+<li><p>Modify <sref ref="[mdspan.layout.rightpad.obs]"/> as indicated:</p>
+
+<blockquote>
+<pre>
+template&lt;class... Indices&gt;
+  constexpr index_type operator()(Indices... idxs) const noexcept;
+</pre>
+<blockquote>
+<p>
+-3- <i>Constraints</i>: [&hellip;]
+<p/>
+-4- <i>Preconditions</i>: [&hellip;]
+<p/>
+-5- <i>Returns</i>: <tt>((static_cast&lt;index_type&gt;(<ins>std::move(</ins>idxs<ins>)</ins>) * stride(P_rank)) + ... + 0)</tt>.
+</p>
+</blockquote>
+</blockquote>
+
+</li>
+
+<li><p>Modify <sref ref="[mdspan.layout.leftpad.cons]"/> as indicated:</p>
+
+<blockquote>
+<pre>
+template&lt;class OtherIndexType&gt;
+constexpr mapping(const extents_type&amp; ext, OtherIndexType pad<ins>ding</ins>);
+</pre>
+<blockquote>
+<p>
+<ins>Let <tt>pad</tt> be <tt>extents_type::<i>index-cast</i>(std::move(padding))</tt>.</ins>
+<p/>
+-3- <i>Constraints</i>: [&hellip;]
+<p/>
+-4- <i>Preconditions</i>: 
+</p>
+<ol style="list-style-type: none">
+<li><p>(4.1) &mdash; <tt>pad</tt> is representable as a value of type `index_type`.</p></li>
+<li><p>(4.2) &mdash; <del><tt>extents_type::<i>index-cast</i>(pad)</tt></del><ins>pad</ins> is greater than zero.</p></li>
+<li><p>(4.3) &mdash; If <tt><i>rank_</i></tt> is greater than one, then 
+<tt><i>LEAST-MULTIPLE-AT-LEAST</i>(pad, ext.extent(0))</tt> is representable as a value of type `index_type`.</p></li>
+<li><p>(4.4) &mdash; If <tt><i>rank_</i></tt> is greater than one, then the product of 
+<tt><i>LEAST-MULTIPLE-AT-LEAST</i>(pad, ext.extent(0))</tt> and all values <tt>ext.extent(<i>k</i>)</tt> with 
+<tt><i>k</i></tt> in the range of <tt>[1, <i>rank_</i>)</tt> is representable as a value of type `index_type`.</p></li>
+<li><p>(4.5) &mdash; If `padding_value` is not equal to `dynamic_extent`, `padding_value` equals 
+<tt><del>extents_type::<i>index-cast</i>(pad)</del><ins>pad</ins></tt>.</p></li>
+</ol>
+<p>
+-5- <i>Effects</i>: Direct-non-list-initializes `extents_` with `ext`, and if `rank_` is greater than one,
+direct-non-list-initializes <tt><i>stride-rm2</i></tt> with <tt><i>LEAST-MULTIPLE-AT-LEAST</i>(pad, ext.extent(rank_ - 1))</tt>.
+</p>
+</blockquote>
+</blockquote>
+
+</li>
+
+<li><p>Modify <sref ref="[mdspan.layout.rightpad.cons]"/> as indicated:</p>
+
+<blockquote>
+<pre>
+template&lt;class OtherIndexType&gt;
+constexpr mapping(const extents_type&amp; ext, OtherIndexType pad<ins>ding</ins>);
+</pre>
+<blockquote>
+<p>
+<ins>Let <tt>pad</tt> be <tt>extents_type::<i>index-cast</i>(std::move(padding))</tt>.</ins>
+<p/>
+-3- <i>Constraints</i>: [&hellip;]
+<p/>
+-4- <i>Preconditions</i>: 
+</p>
+<ol style="list-style-type: none">
+<li><p>(4.1) &mdash; <tt>pad</tt> is representable as a value of type `index_type`.</p></li>
+<li><p>(4.2) &mdash; <del><tt>extents_type::<i>index-cast</i>(pad)</tt></del><ins>pad</ins> is greater than zero.</p></li>
+<li><p>(4.3) &mdash; If <tt><i>rank_</i></tt> is greater than one, then 
+<tt><i>LEAST-MULTIPLE-AT-LEAST</i>(pad, ext.extent(<i>rank_</i> - 1))</tt> is representable as a value of type `index_type`.</p></li>
+<li><p>(4.4) &mdash; If <tt><i>rank_</i></tt> is greater than one, then the product of 
+<tt><i>LEAST-MULTIPLE-AT-LEAST</i>(pad, ext.extent(<i>rank_</i> - 1))</tt> and all values <tt>ext.extent(<i>k</i>)</tt> with 
+<tt><i>k</i></tt> in the range of <tt>[1, <i>rank_</i> - 1)</tt> is representable as a value of type `index_type`.</p></li>
+<li><p>(4.5) &mdash; If `padding_value` is not equal to `dynamic_extent`, `padding_value` equals 
+<tt><del>extents_type::<i>index-cast</i>(pad)</del><ins>pad</ins></tt>.</p></li>
+</ol>
+<p>
+-5- <i>Effects</i>: Direct-non-list-initializes `extents_` with `ext`, and if `rank_` is greater than one,
+direct-non-list-initializes <tt><i>stride-rm2</i></tt> with <tt><i>LEAST-MULTIPLE-AT-LEAST</i>(pad, ext.extent(rank_ - 1))</tt>.
+</p>
+</blockquote>
+</blockquote>
+
+</li>
+
+</ol>
 </resolution>
+
 
 </issue>
