@@ -1,0 +1,67 @@
+<?xml version='1.0' encoding='utf-8' standalone='no'?>
+<!DOCTYPE issue SYSTEM "lwg-issue.dtd">
+
+<issue num="4449" status="New">
+<title>`define_aggregate` members must be public</title>
+<section>
+<sref ref="[meta.reflection.define.aggregate]"/>
+</section>
+<submitter>Daniel Katz</submitter>
+<date>05 Nov 2025</date>
+<priority>99</priority>
+
+<discussion>
+<p>
+The access of members of classes defined by injected declarations produced by evaluations of 
+`std::meta::define_aggregate` is unspecified.
+</p>
+</discussion>
+
+<resolution>
+<p>
+This wording is relative to <paper num="N5014"/>.
+</p>
+
+<ol>
+
+<li><p>Modify <sref ref="[meta.reflection.define.aggregate]"/> as indicated:</p>
+
+<blockquote>
+<pre>
+template&lt;reflection_range R = initializer_list&lt;info&gt;&gt;
+  consteval info define_aggregate(info class_type, R&amp;&amp; mdescrs);
+</pre>
+<blockquote>
+<p>
+-7- Let <tt><i>C</i></tt> be the class represented by `class_type` and <tt><i>r<sub>K</sub></i></tt> 
+be the <tt><i>K</i></tt><sup>th</sup> reflection value in `mdescrs`. [&hellip;]
+<p/>
+-8- <i>Constant When</i>: [&hellip;]
+<p/>
+-9- <i>Effects</i>: Produces an injected declaration <tt><i>D</i></tt> (<sref ref="[expr.const]"/>) 
+that defines <tt><i>C</i></tt> and has properties as follows:
+</p>
+<ul style="list-style-type: none">
+<li>(9.1) &mdash; [&hellip;]
+</li>
+<li>(9.2) &mdash; [&hellip;]
+</li>
+<li>(9.3) &mdash; [&hellip;]
+</li>
+<li>(9.4) &mdash; [&hellip;]
+</li>
+<li>(9.5) &mdash; For each <tt><i>r<sub>K</sub></i></tt>, there is a corresponding entity 
+<tt><i>M<sub>K</sub></i></tt> <ins>with public access</ins> belonging to the class scope 
+of <tt><i>D</i></tt> with the following properties: [&hellip;]
+</li>
+<li>(9.6) &mdash; [&hellip;]
+</li>
+</ul>
+</blockquote>
+</blockquote>
+</li>
+</ol>
+
+</resolution>
+
+</issue>
