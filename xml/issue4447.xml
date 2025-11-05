@@ -28,7 +28,7 @@ This wording is relative to <paper num="N5014"/>.
 <p>
 -2- For type `Sndr` and pack of types `Env`, let `CS` be `completion_signatures_of_t&lt;Sndr, Env...&gt;`.
 Then `single-sender-value-type&lt;Sndr, Env...&gt;` is ill-formed if `CS` is ill-formed
-<del>or if `sizeof...(Env) &gt; 1` is `true`</del>; otherwise, it is an alias for:
+<del>or if <tt>sizeof...(Env) &gt; 1</tt> is `true`</del>; otherwise, it is an alias for:
 [&hellip;]
 </p>
 </blockquote>
