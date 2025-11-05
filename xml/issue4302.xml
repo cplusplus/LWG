@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="4302" status="LEWG">
+<issue num="4302" status="Immediate">
 <title>Problematic `vector_sum_of_squares` wording</title>
 <section><sref ref="[linalg.algs.blas1.ssq]"/></section>
 <submitter>Mark Hoemmen</submitter>
@@ -72,6 +72,9 @@ This is the subject of NB comment 169-276.
 LWG took a poll in the 2025-10-10 telecon and recommends that LEWG confirms
 this resolution.
 </p>
+
+<note>Kona 2025-11-05; approved by LEWG to resolve US 169-276.</note>
+<note>Kona 2025-11-05; approved by LWG. Status changed: LEWG &rarr; Immediate.</note>
 </discussion>
 
 <resolution>
