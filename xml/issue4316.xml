@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="4316" status="New">
+<issue num="4316" status="Immediate">
 <title><tt>{can_}substitute</tt> specification is ill-formed</title>
 <section>
 <sref ref="[meta.reflection.substitute]"/>
@@ -132,6 +132,8 @@ We lost definition of `Z`. Use <tt><i>TARG-SPLICE</i>([:Args:])...</tt>.
 </p>
 
 <note>2025-11-03; Tomasz provides wording.</note>
+
+<note>Kona 2025-11-05; approved by LWG. Status changed: New &rarr; Immediate.</note>
 </discussion>
 
 <resolution>
