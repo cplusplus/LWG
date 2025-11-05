@@ -62,7 +62,7 @@
 </tr>
 <tr>
 <td align="left">Date:</td>
-<td align="left">Revised 2025-11-05 at 19:39:30 UTC
+<td align="left">Revised 2025-11-05 at 19:40:52 UTC
 </td>
 </tr>
 <tr>
@@ -4968,6 +4968,95 @@ template&lt;<i>execution-policy</i> Ep, <i>sized-random-access-range</i> R, clas
 </p>
 </blockquote>
 </blockquote>
+</li>
+</ol>
+
+
+
+
+
+
+<hr>
+<h3 id="4447"><a href="#4447">4447</a><sup><a href="https://cplusplus.github.io/LWG/issue4447">(i)</a></sup>. Remove unnecessary <code class='backtick'>sizeof…(Env) &amp;gt; 1</code> condition</h3>
+<p><b>Section:</b> 33.4 <a href="https://wg21.link/execution.syn">[execution.syn]</a> <b>Status:</b> <a href="lwg-active.html#Immediate">Immediate</a>
+ <b>Submitter:</b> Tomasz Kamiński <b>Opened:</b> 2025-11-05 <b>Last modified:</b> 2025-11-05</p>
+<p><b>Priority: </b>Not Prioritized
+</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#Immediate">Immediate</a> status.</p>
+<p><b>Discussion:</b></p>
+<b>Addresses <a href="https://github.com/cplusplus/nbballot/issues/900">US 206-325</a></b>
+<p>The “<code class='backtick'>sizeof…(Env) &amp;gt; 1</code> is <code class='backtick'>true</code>” part seems unreachable because <code class='backtick'>CS</code> is ill-formed in that case.</p>
+
+<p><i>[Kona 2025-11-05; approved by LWG. Status changed: New &rarr; Immediate.]</i></p>
+
+
+
+<p id="res-4447"><b>Proposed resolution:</b></p>
+<p>
+This wording is relative to <a href="https://wg21.link/N5014">N5014</a>.
+</p>
+
+<ol>
+
+<li><p>Modify 33.4 <a href="https://wg21.link/execution.syn">[execution.syn]</a> as indicated:</p>
+
+<blockquote>
+<p>
+-2- For type <code class='backtick'>Sndr</code> and pack of types <code class='backtick'>Env</code>, let <code class='backtick'>CS</code> be <code class='backtick'>completion_signatures_of_t&amp;lt;Sndr, Env...&amp;gt;</code>.
+Then <code class='backtick'>single-sender-value-type&amp;lt;Sndr, Env...&amp;gt;</code> is ill-formed if <code class='backtick'>CS</code> is ill-formed
+<del>or if <code>sizeof...(Env) &gt; 1</code> is <code class='backtick'>true</code></del>; otherwise, it is an alias for:
+[&hellip;]
+</p>
+</blockquote>
+</li>
+</ol>
+
+
+
+
+
+
+<hr>
+<h3 id="4448"><a href="#4448">4448</a><sup><a href="https://cplusplus.github.io/LWG/issue4448">(i)</a></sup>. Do not forward <code class='backtick'>fn</code> in <code class='backtick'>completion_signatures</code></h3>
+<p><b>Section:</b> 33.10 <a href="https://wg21.link/exec.cmplsig">[exec.cmplsig]</a> <b>Status:</b> <a href="lwg-active.html#Immediate">Immediate</a>
+ <b>Submitter:</b> Tomasz Kamiński <b>Opened:</b> 2025-11-05 <b>Last modified:</b> 2025-11-05</p>
+<p><b>Priority: </b>Not Prioritized
+</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#Immediate">Immediate</a> status.</p>
+<p><b>Discussion:</b></p>
+<b>Addresses <a href="https://github.com/cplusplus/nbballot/issues/935">US 230-360</a></b>
+<p><code class='backtick'>fn</code> can be called multiple times and therefore should not be forwarded.</p>
+
+<p><i>[Kona 2025-11-05; approved by LWG. Status changed: New &rarr; Immediate.]</i></p>
+
+
+
+<p id="res-4448"><b>Proposed resolution:</b></p>
+<p>
+This wording is relative to <a href="https://wg21.link/N5014">N5014</a>.
+</p>
+
+<ol>
+
+<li><p>Modify 33.10 <a href="https://wg21.link/exec.cmplsig">[exec.cmplsig]</a> as indicated:</p>
+
+<p>-8-</p>
+<pre>
+namespace std::execution {
+  template&lt;<i>completion-signature</i>... Fns&gt;
+    struct completion_signatures {
+      template&lt;class Tag&gt;
+        static constexpr size_t <i>count-of</i>(Tag) { return <i>see below</i>; }
+
+      template&lt;class Fn&gt;
+        static constexpr void <i>for-each</i>(Fn&amp;&amp; fn) {               <i>// exposition only</i>
+          (<del>std::forward&lt;Fn&gt;(fn)</del><ins>fn</ins>(static_cast&lt;Fns*&gt;(nullptr)), ...);
+        }
+    };
+
+  [&hellip;]
+}
+</pre>
 </li>
 </ol>
 

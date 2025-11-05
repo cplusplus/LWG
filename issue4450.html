@@ -118,7 +118,7 @@ constexpr void store_<i>key</i>(value_type operand,
 </pre>
 <blockquote>
 <p><ins>-?- <i>Constraints</i>:
-<code>is_const_v&lt;<i>integral-type</i>&gt;</code> is <code class='backtick'>false</code>.</ins>
+<code>is_const_v&lt;<i>floating-point-type</i>&gt;</code> is <code class='backtick'>false</code>.</ins>
 </p>
 <p>-10- <i>Preconditions</i>:
 <code class='backtick'>order</code> is <code class='backtick'>memory_order::relaxed</code>, <code class='backtick'>memory_order::release</code>,
@@ -145,7 +145,7 @@ constexpr void store_<i>key</i>(<i>see above</i> operand,
 </pre>
 <blockquote>
 <p><ins>-?- <i>Constraints</i>:
-<code>is_const_v&lt;<i>integral-type</i>&gt;</code> is <code class='backtick'>false</code>.</ins>
+<code>is_const_v&lt;<i>pointer-type</i>&gt;</code> is <code class='backtick'>false</code>.</ins>
 </p>
 <p>-11- <i>Mandates</i>:
 <code class='backtick'>T</code> is a complete object type.
