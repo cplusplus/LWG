@@ -215,7 +215,7 @@ and <tt><i>thunk-ptr</i></tt> with the address of a function <tt><i>thunk</i></t
 </p>
 <p>
 <ins>-?- <i>Remarks</i>:
-If <tt>remove_cveref_t&lt;F&gt;</tt> is a specialization of <tt>function_ref</tt> an implementation
+If <tt>remove_cvref_t&lt;F&gt;</tt> is a specialization of <tt>function_ref</tt> an implementation
 may initialize <tt><i>bound-entity</i></tt> with <tt><i>bound-entity</i></tt> of <tt>f</tt>.
 [<i>Example:</i>:</ins>
 </p>
