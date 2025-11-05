@@ -1636,7 +1636,7 @@ to destroy the contained value; otherwise no effect.
 <p><i>[2025-11-03; Tomasz tweaks proposed resolution]</i></p>
 
 <p>
-Updated converting constructor and assigments to use <code class='backtick'>operator*()</code>
+Updated converting constructor and assignments to use <code class='backtick'>operator*()</code>
 directly, required to correctly support <code>optional&lt;T&amp;&gt;</code>.
 Also update corresponding constructor in specialization.
 </p>
@@ -1679,9 +1679,9 @@ namespace std {
 <p>
 -1-
 <ins>
-(11.5.1 <a href="https://wg21.link/class.union.general">[class.union.general]</a>),
 An instance of <code>optional&lt;T&gt;</code> is said to
-<i>contain a value</i> when its member <code><i>val</i></code> is active,
+<i>contain a value</i> when its member <code><i>val</i></code> is active
+(11.5.1 <a href="https://wg21.link/class.union.general">[class.union.general]</a>),
 and <code><i>val</i></code> is referred to as its
 <i>contained value</i>.
 </ins>
