@@ -38,9 +38,8 @@ The aliases shouldn't be defined for non-object types, but probably harmless."
 <p>
 <tt>optional&lt;T&amp;&gt;</tt> doesn't currently allow incomplete types anyway.
 </p>
-</discussion>
 
-<resolution>
+<superseded>
 <p>
 This wording is relative to <paper num="N5014"/>.
 </p>
@@ -80,6 +79,81 @@ type because it is not an actual iterator type. &mdash; <i>end note</i>]</ins>
 </li>
 
 </ol>
+</superseded>
+
+<note>2025-11-06, Tomasz provides updated</note>
+</discussion>
+
+<resolution>
+	
+<ol>
+
+<li><p>Modify <sref ref="[optional.optional.ref.general]"/> as indicated:</p>
+<blockquote>
+<pre>
+namespace std {
+  template&lt;class T&gt;
+  class optional&lt;T&amp;&gt; {
+  public:
+    using value_type     = T;
+    using iterator       = implementation-defined;  // <ins>present only if T is object type other than array of unknown bound;</ins> see [optional.ref.iterators]
+  public:
+    [&hellip;]
+
+    // [optional.ref.iterators], iterator support
+    constexpr <del>iterator</del><ins>auto</ins> begin() const noexcept;
+    constexpr <del>iterator</del><ins>auto</ins> end() const noexcept;
+
+    [&hellip;]
+  };
+}
+</pre>
+</blockquote>
+</li>
+<li><p>Modify <sref ref="[optional.ref.iterators]"/> as indicated:</p>
+
+<blockquote>
+<pre>
+using iterator = <i>implementation-defined</i>; <ins>// present only if T is object type other than array of unknown bound</ins>
+</pre>
+<blockquote>
+<p>
+-1- This type models `contiguous_iterator` (<sref ref="[iterator.concept.contiguous]"/>), meets the 
+<i>Cpp17RandomAccessIterator</i> requirements (<sref ref="[random.access.iterators]"/>), and meets 
+the requirements for constexpr iterators (<sref ref="[iterator.requirements.general]"/>), with value 
+type <tt>remove_cv_t&lt;T&gt;</tt>. The reference type is <tt>T&amp;</tt> for `iterator`.
+</p>
+<p>
+-2- All requirements on container iterators (<sref ref="[container.reqmts]"/>) apply to 
+`optional::iterator`.
+</p>
+</blockquote>
+
+<pre>
+constexpr <del>iterator</del><ins>auto</ins> begin() const noexcept;
+</pre>
+<blockquote>
+<p><ins>-?- <i>Constraints</i>: T is an object type other than array of unknown bound.</ins></p>
+<p>
+-3- Returns: <ins>An object `i` of `iterator` type, such that</ins><del>If `has_value()` is `true`,</del>
+<ins>`i` is</ins> an iterator referring to `*val` <ins>if `has_value()` is `true`, and</ins><del>Otherwise, </del>
+a past-the-end iterator value <ins>otherwise</ins>.
+</p>
+</blockquote>
+
+<pre>
+constexpr <del>iterator</del><ins>auto</ins> end() const noexcept;
+</pre>
+<blockquote>
+<p><ins>-?- <i>Constraints</i>: T is an object type other than array of unknown bound.</ins></p>
+<p>-4- Returns: `begin() + has_value()`.</p>
+</blockquote>
+</blockquote>
+
+</li>
+
+</ol>
 </resolution>
+
 
 </issue>
