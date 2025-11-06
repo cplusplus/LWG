@@ -1,0 +1,69 @@
+<?xml version='1.0' encoding='utf-8' standalone='no'?>
+<!DOCTYPE issue SYSTEM "lwg-issue.dtd">
+
+<issue num="4456" status="New">
+<title>Decay `Data` and `Child` in <i>`make-sender`</i></title>
+<section><sref ref="[exec.snd.expos]"/></section>
+<submitter>Jonathan Wakely</submitter>
+<date>06 Nov 2025</date>
+<priority>99</priority>
+
+<discussion>
+<b>Addresses <a href="https://github.com/cplusplus/nbballot/issues/926">US 211-351</a></b>
+<p>
+The <i>Mandates</i>: for <i>`make-sender`</i> defines `Sndr` as a type that
+is different from what the <i>Returns</i>: element uses.
+</p>
+</discussion>
+
+<resolution>
+<p>
+This wording is relative to <paper num="N5014"/>.
+</p>
+
+<ol>
+<li><p>Modify <sref ref="[exec.snd.expos]"/>, as indicated:</p>
+
+<blockquote>
+<pre>
+template&lt;class Tag, class Data = see below, class... Child&gt;
+  constexpr auto make-sender(Tag tag, Data&amp;&amp; data, Child&amp;&amp;... child);
+</pre>
+<blockquote>
+<p>-24- <i>Mandates</i>: The following expressions are `true`:
+<ul>
+<li>(24.1) &mdash; <tt>semiregular&lt;Tag&gt;</tt></li>
+<li>(24.2) &mdash; <tt><i>movable-value</i>&lt;Data&gt;</tt></li>
+<li>(24.3) &mdash; <tt>(sender&lt;Child&gt; &amp;&amp; ...)</tt></li>
+<li>(24.4) &mdash;
+<tt>dependent_sender&lt;Sndr&gt; || sender_in&lt;Sndr&gt;</tt>,
+where `Sndr` is
+<tt><i>basic-sender</i>&lt;Tag, <del>Data, Child</del>
+<ins>decay_t&lt;Data&gt;, decay_t&lt;Child&gt;</ins>...&gt;</tt>
+as defined below.
+<blockquote>
+<i>Recommended practice</i>:
+If evaluation of <tt>sender_in&lt;Sndr&gt;</tt> results in
+an uncaught exception from the evaluation of
+<code>get_completion_signatures&lt;Sndr&gt;()</code>,
+the implementation should include information about that exception
+in the resulting diagnostic.
+</blockquote>
+</li>
+</ul>
+</p>
+<p>-25- <i>Returns</i>:
+A prvalue of type
+<tt><i>basic-sender</i>&lt;Tag, decay_t&lt;Data&gt;, decay_t&lt;Child&gt;...&gt;</tt>
+that has been direct-list-initialized with the forwarded arguments,
+where <i>`basic-sender`</i> is the following exposition-only class template
+except as noted below.
+</p>
+</blockquote>
+</blockquote>
+</li>
+</ol>
+
+</resolution>
+
+</issue>
