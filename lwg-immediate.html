@@ -62,7 +62,7 @@
 </tr>
 <tr>
 <td align="left">Date:</td>
-<td align="left">Revised 2025-11-06 at 01:53:20 UTC
+<td align="left">Revised 2025-11-06 at 02:25:32 UTC
 </td>
 </tr>
 <tr>
@@ -4669,6 +4669,112 @@ leads to a failure outside of the immediate context, the program is ill-formed. 
 </ol>
 
 
+
+
+
+
+<hr>
+<h3 id="4369"><a href="#4369">4369</a><sup><a href="https://cplusplus.github.io/LWG/issue4369">(i)</a></sup>. <code><i>check-types</i></code> function for <code class='backtick'>upon_error</code> and <code class='backtick'>upon_stopped</code> is wrong</h3>
+<p><b>Section:</b> 33.9.12.9 <a href="https://wg21.link/exec.then">[exec.then]</a> <b>Status:</b> <a href="lwg-active.html#Immediate">Immediate</a>
+ <b>Submitter:</b> Eric Niebler <b>Opened:</b> 2025-08-31 <b>Last modified:</b> 2025-11-06</p>
+<p><b>Priority: </b>2
+</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#Immediate">Immediate</a> status.</p>
+<p><b>Discussion:</b></p>
+<b>Addresses <a href="https://github.com/cplusplus/nbballot/issues/925">US 219-350</a></b>
+<p>
+The following has been reported by Trevor Gray:
+</p>
+<p>
+In 33.9.12.9 <a href="https://wg21.link/exec.then">[exec.then]</a> p5, the <code><i>impls-for</i>&lt;<i>decayed-typeof</i>&lt;<i>then-cpo</i>&gt;&gt;::<i>check-types</i></code> 
+unction is specified as follows:
+</p>
+<blockquote style="border-left: 3px solid #ccc;padding-left: 15px;">
+<pre>
+template&lt;class Sndr, class... Env&gt;
+  static consteval void <i>check-types</i>();
+</pre>
+<blockquote>
+<p>
+<i>Effects</i>: Equivalent to:
+</p>
+<blockquote><pre>
+auto cs = get_completion_signatures&lt;<i>child-type</i>&lt;Sndr&gt;, <i>FWD-ENV-T</i>(Env)...&gt;();
+auto fn = []&lt;class... Ts&gt;(set_value_t(*)(Ts...)) {
+  if constexpr (!invocable&lt;remove_cvref_t&lt;<i>data-type</i>&lt;Sndr&gt;&gt;, Ts...&gt;)
+    throw <i>unspecified-exception</i>();
+};
+cs.<i>for-each</i>(<i>overload-set</i>{fn, [](auto){}});
+</pre></blockquote>
+<p>
+where <code><i>unspecified-exception</i></code> is a type derived from <code class='backtick'>exception</code>.
+</p>
+</blockquote>
+</blockquote>
+<p>
+The line <code>auto fn = []&lt;class... Ts&gt;(set_value_t(*)(Ts...)) {</code> 
+is correct when <code><i>then-cpo</i></code> is <code class='backtick'>then</code> but not when it is <code class='backtick'>upon_error</code> or <code class='backtick'>upon_stopped</code>.
+<p/>
+For <code class='backtick'>upon_error</code> it should be:
+</p>
+<blockquote><pre>
+auto fn = []&lt;class... Ts&gt;(set_error_t(*)(Ts...)) {
+</pre></blockquote>
+<p>
+and for <code class='backtick'>upon_stopped</code> it should be:
+</p>
+<blockquote><pre>
+auto fn = []&lt;class... Ts&gt;(set_stopped_t(*)(Ts...)) {
+</pre></blockquote>
+<p>
+We can achieve that by replacing <code class='backtick'>set_value_t</code> in the problematic line with <code><i>decayed-typeof</i>&lt;<i>set-cpo</i>&gt;</code>.
+</p>
+
+<p><i>[2025-10-23; Reflector poll.]</i></p>
+
+<p>
+Set priority to 2 after reflector poll.
+</p>
+
+<p><i>[Kona 2025-11-06; approved by LWG. Status changed: New &rarr; Immediate.]</i></p>
+
+
+
+<p id="res-4369"><b>Proposed resolution:</b></p>
+<p>
+This wording is relative to <a href="https://wg21.link/N5014">N5014</a>.
+</p>
+
+<ol>
+
+<li><p>Modify 33.9.12.9 <a href="https://wg21.link/exec.then">[exec.then]</a> as indicated:</p>
+
+<blockquote>
+<pre>
+template&lt;class Sndr, class... Env&gt;
+  static consteval void <i>check-types</i>();
+</pre>
+<blockquote>
+<p>
+-5- <i>Effects:</i> Equivalent to:
+</p>
+<blockquote><pre>
+auto cs = get_completion_signatures&lt;<i>child-type</i>&lt;Sndr&gt;, <i>FWD-ENV-T</i>(Env)...&gt;();
+auto fn = []&lt;class... Ts&gt;(<del>set_value_t</del><ins><i>decayed-typeof</i>&lt;<i>set-cpo</i>&gt;</ins>(*)(Ts...)) {
+  if constexpr (!invocable&lt;remove_cvref_t&lt;<i>data-type</i>&lt;Sndr&gt;&gt;, Ts...&gt;)
+    throw <i>unspecified-exception</i>();
+};
+cs.<i>for-each</i>(<i>overload-set</i>{fn, [](auto){}});
+</pre></blockquote>
+<p>
+where <code><i>unspecified-exception</i></code> is a type derived from <code class='backtick'>exception</code>.
+</p>
+</blockquote>
+</blockquote>
+
+</li>
+
+</ol>
 
 
 
