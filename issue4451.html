@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <title>Issue 4451: make_shared should not refer to a type U[N] for runtime N</title>
 <meta property="og:title" content="Issue 4451: make_shared should not refer to a type U[N] for runtime N">
-<meta property="og:description" content="C++ library issue. Status: New">
+<meta property="og:description" content="C++ library issue. Status: Immediate">
 <meta property="og:url" content="https://cplusplus.github.io/LWG/issue4451.html">
 <meta property="og:type" content="website">
 <meta property="og:image" content="http://cplusplus.github.io/LWG/images/cpp_logo.png">
@@ -61,22 +61,27 @@
 </head>
 <body>
 <hr>
-<p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#New">New</a> status.</em></p>
+<p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#Immediate">Immediate</a> status.</em></p>
 <h3 id="4451"><a href="lwg-active.html#4451">4451</a>. <code class='backtick'>make_shared</code> should not refer to a type <code class='backtick'>U[N]</code> for runtime N</h3>
-<p><b>Section:</b> 20.3.2.2.7 <a href="https://wg21.link/util.smartptr.shared.create">[util.smartptr.shared.create]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
+<p><b>Section:</b> 20.3.2.2.7 <a href="https://wg21.link/util.smartptr.shared.create">[util.smartptr.shared.create]</a> <b>Status:</b> <a href="lwg-active.html#Immediate">Immediate</a>
  <b>Submitter:</b> Jonathan Wakely <b>Opened:</b> 2025-11-05 <b>Last modified:</b> 2025-11-06</p>
 <p><b>Priority: </b>Not Prioritized
 </p>
 <p><b>View other</b> <a href="lwg-index-open.html#util.smartptr.shared.create">active issues</a> in [util.smartptr.shared.create].</p>
 <p><b>View all other</b> <a href="lwg-index.html#util.smartptr.shared.create">issues</a> in [util.smartptr.shared.create].</p>
-<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#Immediate">Immediate</a> status.</p>
 <p><b>Discussion:</b></p>
 <b>Addresses <a href="https://github.com/cplusplus/nbballot/issues/718">US 76-139</a></b>
 <p>
 The overloads of <code class='backtick'>make_shared</code> and <code class='backtick'>allocate_shared</code> for creating
 <code>shared_ptr&lt;T[]&gt;</code> refer to an object a type <code class='backtick'>U[N]</code>
 where <code class='backtick'>N</code> is a function parameter not a constant expression.
+Since <code class='backtick'>N</code> is allowed to be zero, this also allows <code class='backtick'>U[0]</code> which is
+an invalid type and so totally ill-formed.
 </p>
+
+<p><i>[Kona 2025-11-06; approved by LWG. Status changed: New &rarr; Immediate.]</i></p>
+
 
 
 <p id="res-4451"><b>Proposed resolution:</b></p>
