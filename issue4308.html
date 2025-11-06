@@ -99,8 +99,9 @@ The aliases shouldn't be defined for non-object types, but probably harmless."
 <code>optional&lt;T&amp;&gt;</code> doesn't currently allow incomplete types anyway.
 </p>
 
+<p><strong>Previous resolution [SUPERSEDED]:</strong></p>
+<blockquote class="note">
 
-<p id="res-4308"><b>Proposed resolution:</b></p>
 <p>
 This wording is relative to <a href="https://wg21.link/N5014">N5014</a>.
 </p>
@@ -140,6 +141,82 @@ type because it is not an actual iterator type. &mdash; <i>end note</i>]</ins>
 </li>
 
 </ol>
+</blockquote>
+
+<p><i>[2025-11-06, Tomasz provides updated]</i></p>
+
+
+
+<p id="res-4308"><b>Proposed resolution:</b></p>
+	
+<ol>
+
+<li><p>Modify 22.5.4.1 <a href="https://wg21.link/optional.optional.ref.general">[optional.optional.ref.general]</a> as indicated:</p>
+<blockquote>
+<pre>
+namespace std {
+  template&lt;class T&gt;
+  class optional&lt;T&amp;&gt; {
+  public:
+    using value_type     = T;
+    using iterator       = implementation-defined;  // <ins>present only if T is object type other than array of unknown bound;</ins> see [optional.ref.iterators]
+  public:
+    [&hellip;]
+
+    // [optional.ref.iterators], iterator support
+    constexpr <del>iterator</del><ins>auto</ins> begin() const noexcept;
+    constexpr <del>iterator</del><ins>auto</ins> end() const noexcept;
+
+    [&hellip;]
+  };
+}
+</pre>
+</blockquote>
+</li>
+<li><p>Modify 22.5.4.5 <a href="https://wg21.link/optional.ref.iterators">[optional.ref.iterators]</a> as indicated:</p>
+
+<blockquote>
+<pre>
+using iterator = <i>implementation-defined</i>; <ins>// present only if T is object type other than array of unknown bound</ins>
+</pre>
+<blockquote>
+<p>
+-1- This type models <code class='backtick'>contiguous_iterator</code> (24.3.4.14 <a href="https://wg21.link/iterator.concept.contiguous">[iterator.concept.contiguous]</a>), meets the 
+<i>Cpp17RandomAccessIterator</i> requirements (24.3.5.7 <a href="https://wg21.link/random.access.iterators">[random.access.iterators]</a>), and meets 
+the requirements for constexpr iterators (24.3.1 <a href="https://wg21.link/iterator.requirements.general">[iterator.requirements.general]</a>), with value 
+type <code>remove_cv_t&lt;T&gt;</code>. The reference type is <code>T&amp;</code> for <code class='backtick'>iterator</code>.
+</p>
+<p>
+-2- All requirements on container iterators (23.2.2.2 <a href="https://wg21.link/container.reqmts">[container.reqmts]</a>) apply to 
+<code class='backtick'>optional::iterator</code>.
+</p>
+</blockquote>
+
+<pre>
+constexpr <del>iterator</del><ins>auto</ins> begin() const noexcept;
+</pre>
+<blockquote>
+<p><ins>-?- <i>Constraints</i>: T is an object type other than array of unknown bound.</ins></p>
+<p>
+-3- Returns: <ins>An object <code class='backtick'>i</code> of <code class='backtick'>iterator</code> type, such that</ins><del>If <code class='backtick'>has_value()</code> is <code class='backtick'>true</code>,</del>
+<ins><code class='backtick'>i</code> is</ins> an iterator referring to <code class='backtick'>*val</code> <ins>if <code class='backtick'>has_value()</code> is <code class='backtick'>true</code>, and</ins><del>Otherwise, </del>
+a past-the-end iterator value <ins>otherwise</ins>.
+</p>
+</blockquote>
+
+<pre>
+constexpr <del>iterator</del><ins>auto</ins> end() const noexcept;
+</pre>
+<blockquote>
+<p><ins>-?- <i>Constraints</i>: T is an object type other than array of unknown bound.</ins></p>
+<p>-4- Returns: <code class='backtick'>begin() + has_value()</code>.</p>
+</blockquote>
+</blockquote>
+
+</li>
+
+</ol>
+
 
 
 

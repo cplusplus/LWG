@@ -54,7 +54,7 @@
 </style>
 </head>
 <body>
-<p>Revised 2025-11-06 at 11:30:26 UTC
+<p>Revised 2025-11-06 at 15:39:29 UTC
 </p><h2>Unresolved Issues</h2>
 <hr>
 <h3 id="423"><a href="#423">423</a><sup><a href="https://cplusplus.github.io/LWG/issue423">(i)</a></sup>. Effects of negative <code>streamsize</code> in iostreams</h3>
@@ -66602,7 +66602,7 @@ Victor thinks it should be an exception.
 <hr>
 <h3 id="4264"><a href="#4264">4264</a><sup><a href="https://cplusplus.github.io/LWG/issue4264">(i)</a></sup>. Skipping indirection is not allowed for <code>function_ref</code></h3>
 <p><b>Section:</b> 22.10.17.1 <a href="https://wg21.link/func.wrap.general">[func.wrap.general]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Tomasz Kami&nacute;ski <b>Opened:</b> 2025-05-15 <b>Last modified:</b> 2025-11-05</p>
+ <b>Submitter:</b> Tomasz Kami&nacute;ski <b>Opened:</b> 2025-05-15 <b>Last modified:</b> 2025-11-06</p>
 <p><b>Priority: </b>2
 </p>
 <p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
@@ -66776,8 +66776,9 @@ Strong oposition to making it unspecified whether <code>function_ref</code> cons
 other <code>function_ref</code> will reference source object or its target directly.
 </p>
 
+<p><strong>Previous resolution [SUPERSEDED]:</strong></p>
+<blockquote class="note">
 
-<p id="res-4264"><b>Proposed resolution:</b></p>
 <p>
 This wording is relative to <a href="https://wg21.link/N5008" title=" Working Draft, Programming Languages — C++">N5008</a>.
 </p>
@@ -66829,6 +66830,76 @@ function_ref&lt;void() noexcept&gt; r1(&amp;r1);
 function_ref&lt;void()&gt; r2(r1);
 r1 = &amp;f2;
 f2(); // it is unspecified if <code class='backtick'>f1</code> or <code class='backtick'>f2</code> is invoked</ins>
+</pre>
+<p> 
+<ins>&mdash; <i>end example</i>]</ins>
+</p>
+</blockquote>
+</blockquote>
+
+</li>
+</ol>
+
+</blockquote>
+
+<p><i>[2025-11-06, Tomasz provides updated wording correcting example]</i></p>
+
+
+
+
+<p id="res-4264"><b>Proposed resolution:</b></p>
+<p>
+This wording is relative to <a href="https://wg21.link/N5014">N5014</a>.
+</p>
+<ol>
+
+<li><p>Modify 22.10.17.1 <a href="https://wg21.link/func.wrap.general">[func.wrap.general]</a> as indicated:</p>
+
+<blockquote>
+<p>
+-2- Let <code>t</code> be an object of a type that is a specialization of <code>function</code>,
+<code>copyable_function</code>, <del>or</del> <code>move_only_function</code><ins>, or <code>function_ref</code></ins>,
+such that the target object <code>x</code> of <code>t</code> has a type that is a specialization of <code>function</code>,
+<code>copyable_function</code>, <del>or</del><code>move_only_function</code><ins>, or <code>function_ref</code></ins>.
+Each argument of the invocation of <code>x</code> evaluated as part of the invocation of <code>t</code>
+may alias an argument in the same position in the invocation of <code>t</code> that has the same type,
+even if the corresponding parameter is not of reference type.
+</p>
+</blockquote>
+
+</li>
+
+<li><p>Modify 22.10.17.6.3 <a href="https://wg21.link/func.wrap.ref.ctor">[func.wrap.ref.ctor]</a> as indicated:</p>
+
+<blockquote>
+<pre>
+template&lt;class F&gt; constexpr function_ref(F&amp;&amp;) noexcept;
+</pre>
+<blockquote>
+[&hellip;]
+<p>
+-7- <i>Effects</i>: 
+Initializes <code><i>bound-entity</i></code> with <code>addressof(f)</code>
+and <code><i>thunk-ptr</i></code> with the address of a function <code><i>thunk</i></code> such that 
+<code><i>thunk</i>(<i>bound-entity</i>, <i>call-args</i>...)</code> is expression-equivalent
+(3.22 <a href="https://wg21.link/defns.expression.equivalent">[defns.expression.equivalent]</a>) to 
+<code>invoke_r&lt;R&gt;(static_cast&lt;cv T&amp;&gt;(f), <i>call-args</i>...)</code>.
+</p>
+<p>
+<ins>-?- <i>Remarks</i>:
+If <code>remove_cvref_t&lt;F&gt;</code> is a specialization of <code>function_ref</code> an implementation
+may initialize <code><i>bound-entity</i></code> with <code><i>bound-entity</i></code> of <code>f</code>.
+[<i>Example</i>:</ins>
+</p>
+<pre>
+<ins>void f1() noexcept;
+void f2() noexcept;
+
+function_ref&lt;void() noexcept&gt; r1(&amp;f1);
+function_ref&lt;void()&gt; r2(r1);
+r2(); // f1 is invoked
+r1 = &amp;f2;
+r2(); // it is unspecified if f1 or f2 is invoked</ins>
 </pre>
 <p> 
 <ins>&mdash; <i>end example</i>]</ins>
@@ -69694,8 +69765,9 @@ The aliases shouldn't be defined for non-object types, but probably harmless."
 <code>optional&lt;T&amp;&gt;</code> doesn't currently allow incomplete types anyway.
 </p>
 
+<p><strong>Previous resolution [SUPERSEDED]:</strong></p>
+<blockquote class="note">
 
-<p id="res-4308"><b>Proposed resolution:</b></p>
 <p>
 This wording is relative to <a href="https://wg21.link/N5014">N5014</a>.
 </p>
@@ -69735,6 +69807,82 @@ type because it is not an actual iterator type. &mdash; <i>end note</i>]</ins>
 </li>
 
 </ol>
+</blockquote>
+
+<p><i>[2025-11-06, Tomasz provides updated]</i></p>
+
+
+
+<p id="res-4308"><b>Proposed resolution:</b></p>
+	
+<ol>
+
+<li><p>Modify 22.5.4.1 <a href="https://wg21.link/optional.optional.ref.general">[optional.optional.ref.general]</a> as indicated:</p>
+<blockquote>
+<pre>
+namespace std {
+  template&lt;class T&gt;
+  class optional&lt;T&amp;&gt; {
+  public:
+    using value_type     = T;
+    using iterator       = implementation-defined;  // <ins>present only if T is object type other than array of unknown bound;</ins> see [optional.ref.iterators]
+  public:
+    [&hellip;]
+
+    // [optional.ref.iterators], iterator support
+    constexpr <del>iterator</del><ins>auto</ins> begin() const noexcept;
+    constexpr <del>iterator</del><ins>auto</ins> end() const noexcept;
+
+    [&hellip;]
+  };
+}
+</pre>
+</blockquote>
+</li>
+<li><p>Modify 22.5.4.5 <a href="https://wg21.link/optional.ref.iterators">[optional.ref.iterators]</a> as indicated:</p>
+
+<blockquote>
+<pre>
+using iterator = <i>implementation-defined</i>; <ins>// present only if T is object type other than array of unknown bound</ins>
+</pre>
+<blockquote>
+<p>
+-1- This type models <code class='backtick'>contiguous_iterator</code> (24.3.4.14 <a href="https://wg21.link/iterator.concept.contiguous">[iterator.concept.contiguous]</a>), meets the 
+<i>Cpp17RandomAccessIterator</i> requirements (24.3.5.7 <a href="https://wg21.link/random.access.iterators">[random.access.iterators]</a>), and meets 
+the requirements for constexpr iterators (24.3.1 <a href="https://wg21.link/iterator.requirements.general">[iterator.requirements.general]</a>), with value 
+type <code>remove_cv_t&lt;T&gt;</code>. The reference type is <code>T&amp;</code> for <code class='backtick'>iterator</code>.
+</p>
+<p>
+-2- All requirements on container iterators (23.2.2.2 <a href="https://wg21.link/container.reqmts">[container.reqmts]</a>) apply to 
+<code class='backtick'>optional::iterator</code>.
+</p>
+</blockquote>
+
+<pre>
+constexpr <del>iterator</del><ins>auto</ins> begin() const noexcept;
+</pre>
+<blockquote>
+<p><ins>-?- <i>Constraints</i>: T is an object type other than array of unknown bound.</ins></p>
+<p>
+-3- Returns: <ins>An object <code class='backtick'>i</code> of <code class='backtick'>iterator</code> type, such that</ins><del>If <code class='backtick'>has_value()</code> is <code class='backtick'>true</code>,</del>
+<ins><code class='backtick'>i</code> is</ins> an iterator referring to <code class='backtick'>*val</code> <ins>if <code class='backtick'>has_value()</code> is <code class='backtick'>true</code>, and</ins><del>Otherwise, </del>
+a past-the-end iterator value <ins>otherwise</ins>.
+</p>
+</blockquote>
+
+<pre>
+constexpr <del>iterator</del><ins>auto</ins> end() const noexcept;
+</pre>
+<blockquote>
+<p><ins>-?- <i>Constraints</i>: T is an object type other than array of unknown bound.</ins></p>
+<p>-4- Returns: <code class='backtick'>begin() + has_value()</code>.</p>
+</blockquote>
+</blockquote>
+
+</li>
+
+</ol>
+
 
 
 
