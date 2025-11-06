@@ -1,0 +1,77 @@
+<?xml version='1.0' encoding='utf-8' standalone='no'?>
+<!DOCTYPE issue SYSTEM "lwg-issue.dtd">
+
+<issue num="4453" status="New">
+<title><tt>atomic_ref&lt;cv T&gt;::required_alignment</tt> should be the same as for `T`</title>
+<section><sref ref="[atomics.ref.ops]"/></section>
+<submitter>Jonathan Wakely</submitter>
+<date>06 Nov 2025</date>
+<priority>99</priority>
+
+<discussion>
+<p>
+When <paper num="p3323r1"/> fixed support for <tt>atomic_ref&lt;cv T&gt;</tt>
+we didn't consider that an implementation could define `required_alignment`
+to be different from <tt>atomic_ref&lt;T&gt;::required_alignment</tt>.
+For example, a processor could support atomic loads on any `int` object,
+but could require a greater alignment for atomic stores (and read-modify-write
+and modify-write operations).
+So the `required_alignment` could be `alignof(int)` for `const int`
+but `2 * alignof(int)` for `int`, because the latter is needed for stores.
+</p>
+
+<p>
+A malicious implementation could even define `required_alignment` to be
+greater for the `const T` specialization, which would make it undefined
+to use the new converting constructor added by <paper num="P3860R1"/>.
+</p>
+
+<p>
+We should constrain implementations to use the same `required_alignment`
+for cv `T`, so that users can use <tt>atomic_ref&lt;const T&gt;</tt>
+on any object that is referenced by a <tt>atomic_ref&lt;T&gt;</tt>.
+</p>
+
+</discussion>
+
+<resolution>
+<p>
+This wording is relative to <paper num="N5014"/>.
+</p>
+
+<ol>
+
+<li><p>Modify <sref ref="[atomics.refs.ops]"/>, as indicated:</p>
+
+<blockquote>
+<pre>
+static constexpr size_t required_alignment;
+</pre>
+<p>-1-
+The alignment required for an object to be referenced by an atomic reference,
+which is at least `alignof(T)`.
+<ins>
+The value of
+<tt>atomic_ref&lt;<i>cv</i> T&gt;::required_alignment</tt>
+is the same as
+<tt>atomic_ref&lt;T&gt;::required_alignment</tt>
+</ins>
+</p>
+<p> -2-
+[<i>Note 1</i>:
+Hardware could require an object referenced by an `atomic_ref`
+to have stricter alignment (<sref ref="[basic.align]"/>)
+than other objects of type `T`.
+Further, whether operations on an `atomic_ref` are lock-free
+could depend on the alignment of the referenced object.
+For example, lock-free operations on <code>std::complex&lt;double&gt;</code>
+could be supported only if aligned to `2*alignof(double)`.
+&mdash; <i>end note</i>]
+</p>
+</blockquote>
+</li>
+</ol>
+
+</resolution>
+
+</issue>
