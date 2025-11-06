@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <title>Issue 4075: Thread stability requirement on constructors and destructors</title>
 <meta property="og:title" content="Issue 4075: Thread stability requirement on constructors and destructors">
-<meta property="og:description" content="C++ library issue. Status: SG1">
+<meta property="og:description" content="C++ library issue. Status: NAD">
 <meta property="og:url" content="https://cplusplus.github.io/LWG/issue4075.html">
 <meta property="og:type" content="website">
 <meta property="og:image" content="http://cplusplus.github.io/LWG/images/cpp_logo.png">
@@ -61,15 +61,14 @@
 </head>
 <body>
 <hr>
-<p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#SG1">SG1</a> status.</em></p>
-<h3 id="4075"><a href="lwg-active.html#4075">4075</a>. Thread stability requirement on constructors and destructors</h3>
-<p><b>Section:</b> 16.4.4 <a href="https://wg21.link/utility.requirements">[utility.requirements]</a> <b>Status:</b> <a href="lwg-active.html#SG1">SG1</a>
- <b>Submitter:</b> Detlef Vollmann <b>Opened:</b> 2024-04-21 <b>Last modified:</b> 2024-06-24</p>
+<p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#NAD">NAD</a> status.</em></p>
+<h3 id="4075"><a href="lwg-closed.html#4075">4075</a>. Thread stability requirement on constructors and destructors</h3>
+<p><b>Section:</b> 16.4.4 <a href="https://wg21.link/utility.requirements">[utility.requirements]</a> <b>Status:</b> <a href="lwg-active.html#NAD">NAD</a>
+ <b>Submitter:</b> Detlef Vollmann <b>Opened:</b> 2024-04-21 <b>Last modified:</b> 2025-11-06</p>
 <p><b>Priority: </b>3
 </p>
-<p><b>View other</b> <a href="lwg-index-open.html#utility.requirements">active issues</a> in [utility.requirements].</p>
 <p><b>View all other</b> <a href="lwg-index.html#utility.requirements">issues</a> in [utility.requirements].</p>
-<p><b>View all issues with</b> <a href="lwg-status.html#SG1">SG1</a> status.</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#NAD">NAD</a> status.</p>
 <p><b>Discussion:</b></p>
 <p>
 <a href="https://wg21.link/P0260R8" title=" C++ Concurrent Queues">P0260R8</a> had a requirement for constructors and destructors of
@@ -84,6 +83,15 @@ issue and not specific to concurrent queues.
 
 <p>
 Set priority to 3 after reflector poll. Send to SG1.
+</p>
+
+<p><i>[Kona 2025-11-06; Status changed: SG1 &rarr; NAD.]</i></p>
+
+<p>
+SG1 response: It has been determined that this cannot happen.
+The only facility which can change the thread is co-routines,
+and they cannot apply to constructors and destructors (yet).
+There is nothing to be done about this after all.
 </p>
 
 

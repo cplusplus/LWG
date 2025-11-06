@@ -54,7 +54,7 @@
 </style>
 </head>
 <body>
-<p>Revised 2025-11-06 at 19:48:00 UTC
+<p>Revised 2025-11-06 at 23:56:07 UTC
 </p><h2>Unresolved Issues</h2>
 <hr>
 <h3 id="423"><a href="#423">423</a><sup><a href="https://cplusplus.github.io/LWG/issue423">(i)</a></sup>. Effects of negative <code>streamsize</code> in iostreams</h3>
@@ -35728,7 +35728,6 @@ y = b;</ins>
  <b>Submitter:</b> Johel Ernesto Guerrero Pe&ntilde;a <b>Opened:</b> 2021-11-01 <b>Last modified:</b> 2022-10-01</p>
 <p><b>Priority: </b>3
 </p>
-<p><b>View other</b> <a href="lwg-index-open.html#utility.requirements">active issues</a> in [utility.requirements].</p>
 <p><b>View all other</b> <a href="lwg-index.html#utility.requirements">issues</a> in [utility.requirements].</p>
 <p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
 <p><b>Discussion:</b></p>
@@ -54647,39 +54646,6 @@ covered by general wording?
 
 
 <p id="res-4073"><b>Proposed resolution:</b></p>
-
-
-
-
-
-<hr>
-<h3 id="4075"><a href="#4075">4075</a><sup><a href="https://cplusplus.github.io/LWG/issue4075">(i)</a></sup>. Thread stability requirement on constructors and destructors</h3>
-<p><b>Section:</b> 16.4.4 <a href="https://wg21.link/utility.requirements">[utility.requirements]</a> <b>Status:</b> <a href="lwg-active.html#SG1">SG1</a>
- <b>Submitter:</b> Detlef Vollmann <b>Opened:</b> 2024-04-21 <b>Last modified:</b> 2024-06-24</p>
-<p><b>Priority: </b>3
-</p>
-<p><b>View other</b> <a href="lwg-index-open.html#utility.requirements">active issues</a> in [utility.requirements].</p>
-<p><b>View all other</b> <a href="lwg-index.html#utility.requirements">issues</a> in [utility.requirements].</p>
-<p><b>View all issues with</b> <a href="lwg-status.html#SG1">SG1</a> status.</p>
-<p><b>Discussion:</b></p>
-<p>
-<a href="https://wg21.link/P0260R8" title=" C++ Concurrent Queues">P0260R8</a> had a requirement for constructors and destructors of
-concurrent queue value types to return on the same thread where it was called.
-<p/>
-During the discussion in Tokyo, SG1 decided this to be a general
-issue and not specific to concurrent queues.
-</p>
-
-
-<p><i>[2024-06-24; Reflector poll]</i></p>
-
-<p>
-Set priority to 3 after reflector poll. Send to SG1.
-</p>
-
-
-
-<p id="res-4075"><b>Proposed resolution:</b></p>
 
 
 
@@ -77207,7 +77173,7 @@ leading zeroes) <ins>in the ordinary literal encoding (5.3.1 <a href="https://wg
 <hr>
 <h3 id="4428"><a href="#4428">4428</a><sup><a href="https://cplusplus.github.io/LWG/issue4428">(i)</a></sup>. Metafunctions should not be defined in terms of constant subexpressions</h3>
 <p><b>Section:</b> 21.4.9 <a href="https://wg21.link/meta.reflection.access.queries">[meta.reflection.access.queries]</a>, 21.4.18 <a href="https://wg21.link/meta.reflection.annotation">[meta.reflection.annotation]</a>, 21.4.15 <a href="https://wg21.link/meta.reflection.array">[meta.reflection.array]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Jonathan Wakely <b>Opened:</b> 2025-10-24 <b>Last modified:</b> 2025-11-04</p>
+ <b>Submitter:</b> Jonathan Wakely <b>Opened:</b> 2025-10-24 <b>Last modified:</b> 2025-11-06</p>
 <p><b>Priority: </b>Not Prioritized
 </p>
 <p><b>View other</b> <a href="lwg-index-open.html#meta.reflection.access.queries">active issues</a> in [meta.reflection.access.queries].</p>
@@ -77219,9 +77185,9 @@ leading zeroes) <ins>in the ordinary literal encoding (5.3.1 <a href="https://wg
 "is a constant (sub)expression" is incorrect now that errors are reported
 via exceptions.
 </p>
+<p><strong>Previous resolution [SUPERSEDED]:</strong></p>
+<blockquote class="note">
 
-
-<p id="res-4428"><b>Proposed resolution:</b></p>
 <p>
 This wording is relative to <a href="https://wg21.link/N5014">N5014</a>.
 </p>
@@ -77365,6 +77331,112 @@ initialized with <code class='backtick'>{}</code>.
 for every element <code class='backtick'>e</code> of <code class='backtick'>r</code>.
 </p>
 
+</blockquote>
+</blockquote>
+</li>
+
+</ol>
+
+</blockquote>
+
+<p><i>[Kona 2025-11-06; Jonathan removes change to 21.4.15 <a href="https://wg21.link/meta.reflection.array">[meta.reflection.array]</a>
+that was handled by LWG <a href="lwg-active.html#4432" title="Clarify element initialization for meta::reflect_constant_array (Status: Immediate)">4432</a><sup><a href="https://cplusplus.github.io/LWG/issue4432" title="Latest snapshot">(i)</a></sup>.]</i></p>
+
+
+
+
+<p id="res-4428"><b>Proposed resolution:</b></p>
+
+<p>
+This wording is relative to <a href="https://wg21.link/N5014">N5014</a>.
+</p>
+
+<ol>
+
+<li><p>Modify 21.4.9 <a href="https://wg21.link/meta.reflection.access.queries">[meta.reflection.access.queries]</a> as indicated:</p>
+
+<blockquote>
+<pre>
+consteval bool has_inaccessible_nonstatic_data_members(info r, access_context ctx);
+</pre>
+<blockquote>
+<p>-5- <i>Returns</i>:
+<code class='backtick'>true</code> if <code class='backtick'>is_accessible(</code><i>R</i><code class='backtick'>, ctx)</code> is <code class='backtick'>false</code> for any <i>R</i>
+in <code class='backtick'>nonstatic_data_members_of(r, access_context::unchecked())</code>.
+Otherwise, <code class='backtick'>false</code>.
+</p>
+<p>-6- <i>Throws</i>:
+<code class='backtick'>meta::exception</code> unless
+<ul style="list-style-type: none">
+<li>(6.1) &mdash;
+<ins>the evaluation of</ins>
+<code class='backtick'>nonstatic_data_members_of(r, access_context::unchecked())</code>
+<del>
+is a constant subexpression
+</del>
+<ins>
+would not exit via an exception
+</ins>
+and
+</li>
+<li>(6.2) &mdash;
+<code class='backtick'>r</code> does not represent a closure type.
+</li>
+</ul>
+</p>
+</blockquote>
+<pre>
+consteval bool has_inaccessible_bases(info r, access_context ctx);
+</pre>
+<blockquote>
+<p>-5- <i>Returns</i>:
+<code class='backtick'>true</code> if <code class='backtick'>is_accessible(</code><i>R</i><code class='backtick'>, ctx)</code> is <code class='backtick'>false</code> for any <i>R</i>
+in <code class='backtick'>bases_of(r, access_context::unchecked())</code>.
+Otherwise, <code class='backtick'>false</code>.
+</p>
+<p>-6- <i>Throws</i>:
+<code class='backtick'>meta::exception</code> unless
+<ins>the evaluation of</ins>
+<code class='backtick'>bases_of(r, access_context::unchecked())</code>
+<del>is a constant subexpression</del>
+<ins>would not exit via an exception</ins>.
+</p>
+</blockquote>
+</blockquote>
+</li>
+
+<li><p>Modify 21.4.18 <a href="https://wg21.link/meta.reflection.annotation">[meta.reflection.annotation]</a> as indicated:</p>
+
+<blockquote>
+<pre>
+consteval vector&lt;info&gt; annotations_of_with_type(info item, info type);
+</pre>
+<blockquote>
+<p>-4- <i>Returns</i>:
+A <code class='backtick'>vector</code> containing each element <code class='backtick'>e</code> of <code class='backtick'>annotations_of(item)</code>
+where <code class='backtick'>remove_const(type_of(e)) == remove_const(type)</code>
+is <code class='backtick'>true</code>, preserving their order.
+</p>
+<p>-5- <i>Throws</i>:
+<code class='backtick'>meta::exception</code> unless
+<ul style="list-style-type: none">
+<li>(5.1) &mdash;
+<ins>the evaluation of</ins>
+<code class='backtick'>annotations_of(item)</code>
+<del>
+is a constant subexpression
+</del>
+<ins>
+would not exit via an exception
+</ins>
+and
+</li>
+<li>(5.2) &mdash;
+<code class='backtick'>dealias(type)</code> represents a type that is complete
+from some point in the evaluation context.
+</li>
+</ul>
+</p>
 </blockquote>
 </blockquote>
 </li>

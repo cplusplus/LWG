@@ -64,7 +64,7 @@
 <p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#New">New</a> status.</em></p>
 <h3 id="4428"><a href="lwg-active.html#4428">4428</a>. Metafunctions should not be defined in terms of constant subexpressions</h3>
 <p><b>Section:</b> 21.4.9 <a href="https://wg21.link/meta.reflection.access.queries">[meta.reflection.access.queries]</a>, 21.4.18 <a href="https://wg21.link/meta.reflection.annotation">[meta.reflection.annotation]</a>, 21.4.15 <a href="https://wg21.link/meta.reflection.array">[meta.reflection.array]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Jonathan Wakely <b>Opened:</b> 2025-10-24 <b>Last modified:</b> 2025-11-04</p>
+ <b>Submitter:</b> Jonathan Wakely <b>Opened:</b> 2025-10-24 <b>Last modified:</b> 2025-11-06</p>
 <p><b>Priority: </b>Not Prioritized
 </p>
 <p><b>View other</b> <a href="lwg-index-open.html#meta.reflection.access.queries">active issues</a> in [meta.reflection.access.queries].</p>
@@ -76,9 +76,9 @@
 "is a constant (sub)expression" is incorrect now that errors are reported
 via exceptions.
 </p>
+<p><strong>Previous resolution [SUPERSEDED]:</strong></p>
+<blockquote class="note">
 
-
-<p id="res-4428"><b>Proposed resolution:</b></p>
 <p>
 This wording is relative to <a href="https://wg21.link/N5014">N5014</a>.
 </p>
@@ -222,6 +222,112 @@ initialized with <code class='backtick'>{}</code>.
 for every element <code class='backtick'>e</code> of <code class='backtick'>r</code>.
 </p>
 
+</blockquote>
+</blockquote>
+</li>
+
+</ol>
+
+</blockquote>
+
+<p><i>[Kona 2025-11-06; Jonathan removes change to 21.4.15 <a href="https://wg21.link/meta.reflection.array">[meta.reflection.array]</a>
+that was handled by LWG <a href="lwg-active.html#4432" title="Clarify element initialization for meta::reflect_constant_array (Status: Immediate)">4432</a><sup><a href="https://cplusplus.github.io/LWG/issue4432" title="Latest snapshot">(i)</a></sup>.]</i></p>
+
+
+
+
+<p id="res-4428"><b>Proposed resolution:</b></p>
+
+<p>
+This wording is relative to <a href="https://wg21.link/N5014">N5014</a>.
+</p>
+
+<ol>
+
+<li><p>Modify 21.4.9 <a href="https://wg21.link/meta.reflection.access.queries">[meta.reflection.access.queries]</a> as indicated:</p>
+
+<blockquote>
+<pre>
+consteval bool has_inaccessible_nonstatic_data_members(info r, access_context ctx);
+</pre>
+<blockquote>
+<p>-5- <i>Returns</i>:
+<code class='backtick'>true</code> if <code class='backtick'>is_accessible(</code><i>R</i><code class='backtick'>, ctx)</code> is <code class='backtick'>false</code> for any <i>R</i>
+in <code class='backtick'>nonstatic_data_members_of(r, access_context::unchecked())</code>.
+Otherwise, <code class='backtick'>false</code>.
+</p>
+<p>-6- <i>Throws</i>:
+<code class='backtick'>meta::exception</code> unless
+<ul style="list-style-type: none">
+<li>(6.1) &mdash;
+<ins>the evaluation of</ins>
+<code class='backtick'>nonstatic_data_members_of(r, access_context::unchecked())</code>
+<del>
+is a constant subexpression
+</del>
+<ins>
+would not exit via an exception
+</ins>
+and
+</li>
+<li>(6.2) &mdash;
+<code class='backtick'>r</code> does not represent a closure type.
+</li>
+</ul>
+</p>
+</blockquote>
+<pre>
+consteval bool has_inaccessible_bases(info r, access_context ctx);
+</pre>
+<blockquote>
+<p>-5- <i>Returns</i>:
+<code class='backtick'>true</code> if <code class='backtick'>is_accessible(</code><i>R</i><code class='backtick'>, ctx)</code> is <code class='backtick'>false</code> for any <i>R</i>
+in <code class='backtick'>bases_of(r, access_context::unchecked())</code>.
+Otherwise, <code class='backtick'>false</code>.
+</p>
+<p>-6- <i>Throws</i>:
+<code class='backtick'>meta::exception</code> unless
+<ins>the evaluation of</ins>
+<code class='backtick'>bases_of(r, access_context::unchecked())</code>
+<del>is a constant subexpression</del>
+<ins>would not exit via an exception</ins>.
+</p>
+</blockquote>
+</blockquote>
+</li>
+
+<li><p>Modify 21.4.18 <a href="https://wg21.link/meta.reflection.annotation">[meta.reflection.annotation]</a> as indicated:</p>
+
+<blockquote>
+<pre>
+consteval vector&lt;info&gt; annotations_of_with_type(info item, info type);
+</pre>
+<blockquote>
+<p>-4- <i>Returns</i>:
+A <code class='backtick'>vector</code> containing each element <code class='backtick'>e</code> of <code class='backtick'>annotations_of(item)</code>
+where <code class='backtick'>remove_const(type_of(e)) == remove_const(type)</code>
+is <code class='backtick'>true</code>, preserving their order.
+</p>
+<p>-5- <i>Throws</i>:
+<code class='backtick'>meta::exception</code> unless
+<ul style="list-style-type: none">
+<li>(5.1) &mdash;
+<ins>the evaluation of</ins>
+<code class='backtick'>annotations_of(item)</code>
+<del>
+is a constant subexpression
+</del>
+<ins>
+would not exit via an exception
+</ins>
+and
+</li>
+<li>(5.2) &mdash;
+<code class='backtick'>dealias(type)</code> represents a type that is complete
+from some point in the evaluation context.
+</li>
+</ul>
+</p>
 </blockquote>
 </blockquote>
 </li>
