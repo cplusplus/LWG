@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Issue 4453: atomic_ref&lt;cv T&gt;::required_alignment should be the same as for T</title>
+<meta property="og:title" content="Issue 4453: atomic_ref&lt;cv T&gt;::required_alignment should be the same as for T">
+<meta property="og:description" content="C++ library issue. Status: New">
+<meta property="og:url" content="https://cplusplus.github.io/LWG/issue4453.html">
+<meta property="og:type" content="website">
+<meta property="og:image" content="http://cplusplus.github.io/LWG/images/cpp_logo.png">
+<meta property="og:image:alt" content="C++ logo">
+<style>
+  p {text-align:justify}
+  li {text-align:justify}
+  pre code.backtick::before { content: "`" }
+  pre code.backtick::after { content: "`" }
+  blockquote.note
+  {
+    background-color:#E0E0E0;
+    padding-left: 15px;
+    padding-right: 15px;
+    padding-top: 1px;
+    padding-bottom: 1px;
+  }
+  ins {background-color:#A0FFA0}
+  del {background-color:#FFA0A0}
+  table.issues-index { border: 1px solid; border-collapse: collapse; }
+  table.issues-index th { text-align: center; padding: 4px; border: 1px solid; }
+  table.issues-index td { padding: 4px; border: 1px solid; }
+  table.issues-index td:nth-child(1) { text-align: right; }
+  table.issues-index td:nth-child(2) { text-align: left; }
+  table.issues-index td:nth-child(3) { text-align: left; }
+  table.issues-index td:nth-child(4) { text-align: left; }
+  table.issues-index td:nth-child(5) { text-align: center; }
+  table.issues-index td:nth-child(6) { text-align: center; }
+  table.issues-index td:nth-child(7) { text-align: left; }
+  table.issues-index td:nth-child(5) span.no-pr { color: red; }
+  @media (prefers-color-scheme: dark) {
+     html {
+        color: #ddd;
+        background-color: black;
+     }
+     ins {
+        background-color: #225522
+     }
+     del {
+        background-color: #662222
+     }
+     a {
+        color: #6af
+     }
+     a:visited {
+        color: #6af
+     }
+     blockquote.note
+     {
+        background-color: rgba(255, 255, 255, .10)
+     }
+  }
+</style>
+</head>
+<body>
+<hr>
+<p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#New">New</a> status.</em></p>
+<h3 id="4453"><a href="lwg-active.html#4453">4453</a>. <code>atomic_ref&lt;cv T&gt;::required_alignment</code> should be the same as for <code class='backtick'>T</code></h3>
+<p><b>Section:</b> 32.5.7.2 <a href="https://wg21.link/atomics.ref.ops">[atomics.ref.ops]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
+ <b>Submitter:</b> Jonathan Wakely <b>Opened:</b> 2025-11-06 <b>Last modified:</b> 2025-11-06</p>
+<p><b>Priority: </b>Not Prioritized
+</p>
+<p><b>View other</b> <a href="lwg-index-open.html#atomics.ref.ops">active issues</a> in [atomics.ref.ops].</p>
+<p><b>View all other</b> <a href="lwg-index.html#atomics.ref.ops">issues</a> in [atomics.ref.ops].</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
+<p><b>Discussion:</b></p>
+<p>
+When <a href="https://wg21.link/P3323R1" title=" cv-qualified types in atomic and atomic_ref">P3323R1</a> fixed support for <code>atomic_ref&lt;cv T&gt;</code>
+we didn't consider that an implementation could define <code class='backtick'>required_alignment</code>
+to be different from <code>atomic_ref&lt;T&gt;::required_alignment</code>.
+For example, a processor could support atomic loads on any <code class='backtick'>int</code> object,
+but could require a greater alignment for atomic stores (and read-modify-write
+and modify-write operations).
+So the <code class='backtick'>required_alignment</code> could be <code class='backtick'>alignof(int)</code> for <code class='backtick'>const int</code>
+but <code class='backtick'>2 * alignof(int)</code> for <code class='backtick'>int</code>, because the latter is needed for stores.
+</p>
+
+<p>
+A malicious implementation could even define <code class='backtick'>required_alignment</code> to be
+greater for the <code class='backtick'>const T</code> specialization, which would make it undefined
+to use the new converting constructor added by <a href="https://wg21.link/P3860R1">P3860R1</a>.
+</p>
+
+<p>
+We should constrain implementations to use the same <code class='backtick'>required_alignment</code>
+for cv <code class='backtick'>T</code>, so that users can use <code>atomic_ref&lt;const T&gt;</code>
+on any object that is referenced by a <code>atomic_ref&lt;T&gt;</code>.
+</p>
+
+
+
+<p id="res-4453"><b>Proposed resolution:</b></p>
+<p>
+This wording is relative to <a href="https://wg21.link/N5014">N5014</a>.
+</p>
+
+<ol>
+
+<li><p>Modify  [atomics.refs.ops], as indicated:</p>
+
+<blockquote>
+<pre>
+static constexpr size_t required_alignment;
+</pre>
+<p>-1-
+The alignment required for an object to be referenced by an atomic reference,
+which is at least <code class='backtick'>alignof(T)</code>.
+<ins>
+The value of
+<code>atomic_ref&lt;<i>cv</i> T&gt;::required_alignment</code>
+is the same as
+<code>atomic_ref&lt;T&gt;::required_alignment</code>
+</ins>
+</p>
+<p> -2-
+[<i>Note 1</i>:
+Hardware could require an object referenced by an <code class='backtick'>atomic_ref</code>
+to have stricter alignment (6.8.3 <a href="https://wg21.link/basic.align">[basic.align]</a>)
+than other objects of type <code class='backtick'>T</code>.
+Further, whether operations on an <code class='backtick'>atomic_ref</code> are lock-free
+could depend on the alignment of the referenced object.
+For example, lock-free operations on <code>std::complex&lt;double&gt;</code>
+could be supported only if aligned to <code class='backtick'>2*alignof(double)</code>.
+&mdash; <i>end note</i>]
+</p>
+</blockquote>
+</li>
+</ol>
+
+
+
+
+
+
+</body>
+</html>

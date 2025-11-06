@@ -54,7 +54,7 @@
 </style>
 </head>
 <body>
-<p>Revised 2025-11-06 at 03:03:43 UTC
+<p>Revised 2025-11-06 at 03:21:53 UTC
 </p><h2>Unresolved Issues</h2>
 <hr>
 <h3 id="423"><a href="#423">423</a><sup><a href="https://cplusplus.github.io/LWG/issue423">(i)</a></sup>. Effects of negative <code>streamsize</code> in iostreams</h3>
@@ -78054,6 +78054,116 @@ template&lt;class I&gt;
 </li>
 </ol>
 
+
+
+
+
+
+<hr>
+<h3 id="4453"><a href="#4453">4453</a><sup><a href="https://cplusplus.github.io/LWG/issue4453">(i)</a></sup>. <code>atomic_ref&lt;cv T&gt;::required_alignment</code> should be the same as for <code class='backtick'>T</code></h3>
+<p><b>Section:</b> 32.5.7.2 <a href="https://wg21.link/atomics.ref.ops">[atomics.ref.ops]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
+ <b>Submitter:</b> Jonathan Wakely <b>Opened:</b> 2025-11-06 <b>Last modified:</b> 2025-11-06</p>
+<p><b>Priority: </b>Not Prioritized
+</p>
+<p><b>View other</b> <a href="lwg-index-open.html#atomics.ref.ops">active issues</a> in [atomics.ref.ops].</p>
+<p><b>View all other</b> <a href="lwg-index.html#atomics.ref.ops">issues</a> in [atomics.ref.ops].</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
+<p><b>Discussion:</b></p>
+<p>
+When <a href="https://wg21.link/P3323R1" title=" cv-qualified types in atomic and atomic_ref">P3323R1</a> fixed support for <code>atomic_ref&lt;cv T&gt;</code>
+we didn't consider that an implementation could define <code class='backtick'>required_alignment</code>
+to be different from <code>atomic_ref&lt;T&gt;::required_alignment</code>.
+For example, a processor could support atomic loads on any <code class='backtick'>int</code> object,
+but could require a greater alignment for atomic stores (and read-modify-write
+and modify-write operations).
+So the <code class='backtick'>required_alignment</code> could be <code class='backtick'>alignof(int)</code> for <code class='backtick'>const int</code>
+but <code class='backtick'>2 * alignof(int)</code> for <code class='backtick'>int</code>, because the latter is needed for stores.
+</p>
+
+<p>
+A malicious implementation could even define <code class='backtick'>required_alignment</code> to be
+greater for the <code class='backtick'>const T</code> specialization, which would make it undefined
+to use the new converting constructor added by <a href="https://wg21.link/P3860R1">P3860R1</a>.
+</p>
+
+<p>
+We should constrain implementations to use the same <code class='backtick'>required_alignment</code>
+for cv <code class='backtick'>T</code>, so that users can use <code>atomic_ref&lt;const T&gt;</code>
+on any object that is referenced by a <code>atomic_ref&lt;T&gt;</code>.
+</p>
+
+
+
+<p id="res-4453"><b>Proposed resolution:</b></p>
+<p>
+This wording is relative to <a href="https://wg21.link/N5014">N5014</a>.
+</p>
+
+<ol>
+
+<li><p>Modify  [atomics.refs.ops], as indicated:</p>
+
+<blockquote>
+<pre>
+static constexpr size_t required_alignment;
+</pre>
+<p>-1-
+The alignment required for an object to be referenced by an atomic reference,
+which is at least <code class='backtick'>alignof(T)</code>.
+<ins>
+The value of
+<code>atomic_ref&lt;<i>cv</i> T&gt;::required_alignment</code>
+is the same as
+<code>atomic_ref&lt;T&gt;::required_alignment</code>
+</ins>
+</p>
+<p> -2-
+[<i>Note 1</i>:
+Hardware could require an object referenced by an <code class='backtick'>atomic_ref</code>
+to have stricter alignment (6.8.3 <a href="https://wg21.link/basic.align">[basic.align]</a>)
+than other objects of type <code class='backtick'>T</code>.
+Further, whether operations on an <code class='backtick'>atomic_ref</code> are lock-free
+could depend on the alignment of the referenced object.
+For example, lock-free operations on <code>std::complex&lt;double&gt;</code>
+could be supported only if aligned to <code class='backtick'>2*alignof(double)</code>.
+&mdash; <i>end note</i>]
+</p>
+</blockquote>
+</li>
+</ol>
+
+
+
+
+
+
+<hr>
+<h3 id="4454"><a href="#4454">4454</a><sup><a href="https://cplusplus.github.io/LWG/issue4454">(i)</a></sup>. <code class='backtick'>assert</code> should forbid <code class='backtick'>co_await</code> and <code class='backtick'>co_yield</code></h3>
+<p><b>Section:</b> 19.3.3 <a href="https://wg21.link/assertions.assert">[assertions.assert]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
+ <b>Submitter:</b> Jonathan Wakely <b>Opened:</b> 2025-11-06 <b>Last modified:</b> 2025-11-06</p>
+<p><b>Priority: </b>1
+</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
+<p><b>Discussion:</b></p>
+<b>Addresses <a href="https://github.com/cplusplus/nbballot/issues/708">GB 05-129</a></b>
+<p>
+The new implementation of <code class='backtick'>assert</code> introduced by <a href="https://wg21.link/P2264R7" title=" Make assert() macro user friendly for C and C++">P2264R7</a>
+might require something like <code class='backtick'>sizeof(bool(__VA_ARGS__))</code>.
+Using something like <code class='backtick'>assert((co_yield 1, true))</code> would be ill-formed
+if the implementation of <code class='backtick'>assert</code> uses <code class='backtick'>sizeof</code>, because <code class='backtick'>co_yield</code> cannot
+appear in an unevaluated context.
+</p>
+<p>
+The specification for <code class='backtick'>assert</code> should forbid using any constructs which
+are not valid in unevaluated contexts, unless we are certain that the
+new <code class='backtick'>assert</code> requirements can be implemented without such tricks using
+unevaluated contexts. "Ill-formed; no diagnostic required" seems appropriate.
+</p>
+
+
+<p id="res-4454"><b>Proposed resolution:</b></p>
+<p>
+</p>
 
 
 
