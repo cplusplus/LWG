@@ -173,9 +173,8 @@ Set priority to 2 after reflector poll.
 Strong oposition to making it unspecified whether <tt>function_ref</tt> constructed from
 other <tt>function_ref</tt> will reference source object or its target directly.
 </p>
-</discussion>
 
-<resolution>
+<superseded>
 <p>
 This wording is relative to <paper num="N5008"/>.
 </p>
@@ -227,6 +226,75 @@ function_ref&lt;void() noexcept&gt; r1(&amp;r1);
 function_ref&lt;void()&gt; r2(r1);
 r1 = &amp;f2;
 f2(); // it is unspecified if `f1` or `f2` is invoked</ins>
+</pre>
+<p> 
+<ins>&mdash; <i>end example</i>]</ins>
+</p>
+</blockquote>
+</blockquote>
+
+</li>
+</ol>
+
+</superseded>
+
+<note>2025-11-06, Tomasz provides updated wording correcting example</note>
+
+</discussion>
+
+<resolution>
+<p>
+This wording is relative to <paper num="N5014"/>.
+</p>
+<ol>
+
+<li><p>Modify <sref ref="[func.wrap.general]"/> as indicated:</p>
+
+<blockquote>
+<p>
+-2- Let <tt>t</tt> be an object of a type that is a specialization of <tt>function</tt>,
+<tt>copyable_function</tt>, <del>or</del> <tt>move_only_function</tt><ins>, or <tt>function_ref</tt></ins>,
+such that the target object <tt>x</tt> of <tt>t</tt> has a type that is a specialization of <tt>function</tt>,
+<tt>copyable_function</tt>, <del>or</del><tt>move_only_function</tt><ins>, or <tt>function_ref</tt></ins>.
+Each argument of the invocation of <tt>x</tt> evaluated as part of the invocation of <tt>t</tt>
+may alias an argument in the same position in the invocation of <tt>t</tt> that has the same type,
+even if the corresponding parameter is not of reference type.
+</p>
+</blockquote>
+
+</li>
+
+<li><p>Modify <sref ref="[func.wrap.ref.ctor]"/> as indicated:</p>
+
+<blockquote>
+<pre>
+template&lt;class F&gt; constexpr function_ref(F&amp;&amp;) noexcept;
+</pre>
+<blockquote>
+[&hellip;]
+<p>
+-7- <i>Effects</i>: 
+Initializes <tt><i>bound-entity</i></tt> with <tt>addressof(f)</tt>
+and <tt><i>thunk-ptr</i></tt> with the address of a function <tt><i>thunk</i></tt> such that 
+<tt><i>thunk</i>(<i>bound-entity</i>, <i>call-args</i>...)</tt> is expression-equivalent
+(<sref ref="[defns.expression.equivalent]"/>) to 
+<tt>invoke_r&lt;R&gt;(static_cast&lt;cv T&amp;&gt;(f), <i>call-args</i>...)</tt>.
+</p>
+<p>
+<ins>-?- <i>Remarks</i>:
+If <tt>remove_cvref_t&lt;F&gt;</tt> is a specialization of <tt>function_ref</tt> an implementation
+may initialize <tt><i>bound-entity</i></tt> with <tt><i>bound-entity</i></tt> of <tt>f</tt>.
+[<i>Example</i>:</ins>
+</p>
+<pre>
+<ins>void f1() noexcept;
+void f2() noexcept;
+
+function_ref&lt;void() noexcept&gt; r1(&amp;f1);
+function_ref&lt;void()&gt; r2(r1);
+r2(); // f1 is invoked
+r1 = &amp;f2;
+r2(); // it is unspecified if f1 or f2 is invoked</ins>
 </pre>
 <p> 
 <ins>&mdash; <i>end example</i>]</ins>
