@@ -54,7 +54,7 @@
 </style>
 </head>
 <body>
-<p>Revised 2025-11-06 at 01:52:15 UTC
+<p>Revised 2025-11-06 at 01:53:20 UTC
 </p><h2>Unresolved Issues</h2>
 <hr>
 <h3 id="423"><a href="#423">423</a><sup><a href="https://cplusplus.github.io/LWG/issue423">(i)</a></sup>. Effects of negative <code>streamsize</code> in iostreams</h3>
@@ -74616,7 +74616,7 @@ C(declval&lt;<i>input-iterator</i>&gt;(), declval&lt;<i>input-iterator</i>&gt;()
 <h3 id="4383"><a href="#4383">4383</a><sup><a href="https://cplusplus.github.io/LWG/issue4383">(i)</a></sup>. <code class='backtick'>constant_wrapper</code>'s pseudo-mutators are underconstrained
 </h3>
 <p><b>Section:</b> 21.3.5 <a href="https://wg21.link/const.wrap.class">[const.wrap.class]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Hewill Kang <b>Opened:</b> 2025-09-24 <b>Last modified:</b> 2025-11-05</p>
+ <b>Submitter:</b> Hewill Kang <b>Opened:</b> 2025-09-24 <b>Last modified:</b> 2025-11-06</p>
 <p><b>Priority: </b>1
 </p>
 <p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
@@ -74754,12 +74754,130 @@ struct <i>cw-operators</i> {                                                    
 </ol>
 </blockquote>
 
-<p><i>[2025-11-04; Zach provides improved wording]</i></p>
+<p><i>[2025-11-05; Zach provides improved wording]</i></p>
 
 
 
 
 <p id="res-4383"><b>Proposed resolution:</b></p>
+<p>
+This wording is relative to <a href="https://wg21.link/N5014">N5014</a>.
+</p>
+
+<ol>
+
+<li><p>Modify 21.3.5 <a href="https://wg21.link/const.wrap.class">[const.wrap.class]</a>, class template <code>constant_wrapper</code> synopsis, as indicated:</p>
+
+<blockquote class="note">
+<p>
+[<i>Drafting note:</i> The requires clause follows the form of <code class='backtick'>constant_wrapper</code>'s
+function call operator.]
+</p>
+</blockquote>
+
+<blockquote>
+<pre>
+  struct <i>cw-operators</i> {                                                           // <i>exposition only</i>
+    [&hellip;]
+    // <i>pseudo-mutators</i>
+    <del>template&lt;<i>constexpr-param</i> T&gt;
+      constexpr auto operator++(this T) noexcept requires requires(T::value_type x) { ++x; }
+        { return constant_wrapper&lt;[] { auto c = T::value; return ++c; }()&gt;{}; }
+    template&lt;<i>constexpr-param</i> T&gt;
+      constexpr auto operator++(this T, int) noexcept requires requires(T::value_type x) { x++; }
+        { return constant_wrapper&lt;[] { auto c = T::value; return c++; }()&gt;{}; }
+
+    template&lt;<i>constexpr-param</i> T&gt;
+      constexpr auto operator--(this T) noexcept requires requires(T::value_type x) { --x; }
+        { return constant_wrapper&lt;[] { auto c = T::value; return --c; }()&gt;{}; }
+    template&lt;<i>constexpr-param</i> T&gt;
+      constexpr auto operator--(this T, int) noexcept requires requires(T::value_type x) { x--; }
+        { return constant_wrapper&lt;[] { auto c = T::value; return c--; }()&gt;{}; }
+
+    template&lt;<i>constexpr-param</i> T, <i>constexpr-param</i> R&gt;
+      constexpr auto operator+=(this T, R) noexcept requires requires(T::value_type x) { x += R::value; }
+        { return constant_wrapper&lt;[] { auto v = T::value; return v += R::value; }()&gt;{}; }
+    template&lt;<i>constexpr-param</i> T, <i>constexpr-param</i> R&gt;
+      constexpr auto operator-=(this T, R) noexcept requires requires(T::value_type x) { x -= R::value; }
+        { return constant_wrapper&lt;[] { auto v = T::value; return v -= R::value; }()&gt;{}; }
+    template&lt;<i>constexpr-param</i> T, <i>constexpr-param</i> R&gt;
+      constexpr auto operator*=(this T, R) noexcept requires requires(T::value_type x) { x *= R::value; }
+        { return constant_wrapper&lt;[] { auto v = T::value; return v *= R::value; }()&gt;{}; }
+    template&lt;<i>constexpr-param</i> T, <i>constexpr-param</i> R&gt;
+      constexpr auto operator/=(this T, R) noexcept requires requires(T::value_type x) { x /= R::value; }
+        { return constant_wrapper&lt;[] { auto v = T::value; return v /= R::value; }()&gt;{}; }
+    template&lt;<i>constexpr-param</i> T, <i>constexpr-param</i> R&gt;
+      constexpr auto operator%=(this T, R) noexcept requires requires(T::value_type x) { x %= R::value; }
+        { return constant_wrapper&lt;[] { auto v = T::value; return v %= R::value; }()&gt;{}; }
+    template&lt;<i>constexpr-param</i> T, <i>constexpr-param</i> R&gt;
+      constexpr auto operator&amp;=(this T, R) noexcept requires requires(T::value_type x) { x &amp;= R::value; }
+        { return constant_wrapper&lt;[] { auto v = T::value; return v &amp;= R::value; }()&gt;{}; }
+    template&lt;<i>constexpr-param</i> T, <i>constexpr-param</i> R&gt;
+      constexpr auto operator|=(this T, R) noexcept requires requires(T::value_type x) { x |= R::value; }
+        { return constant_wrapper&lt;[] { auto v = T::value; return v |= R::value; }()&gt;{}; }
+    template&lt;<i>constexpr-param</i> T, <i>constexpr-param</i> R&gt;
+      constexpr auto operator^=(this T, R) noexcept requires requires(T::value_type x) { x ^= R::value; }
+        { return constant_wrapper&lt;[] { auto v = T::value; return v ^= R::value; }()&gt;{}; }
+    template&lt;<i>constexpr-param</i> T, <i>constexpr-param</i> R&gt;
+      constexpr auto operator&lt;&lt;=(this T, R) noexcept requires requires(T::value_type x) { x &lt;&lt;= R::value; }
+        { return constant_wrapper&lt;[] { auto v = T::value; return v &lt;&lt;= R::value; }()&gt;{}; }
+    template&lt;<i>constexpr-param</i> T, <i>constexpr-param</i> R&gt;
+      constexpr auto operator&gt;&gt;=(this T, R) noexcept requires requires(T::value_type x) { x &gt;&gt;= R::value; }
+        { return constant_wrapper&lt;[] { auto v = T::value; return v &gt;&gt;= R::value; }()&gt;{}; }</del>
+    <ins>template&lt;<i>constexpr-param</i> T&gt;
+      constexpr auto operator++(this T) noexcept -&gt; constant_wrapper&lt;++Y&gt; { return {}; }
+    template&lt;<i>constexpr-param</i> T&gt;
+      constexpr auto operator++(this T, int) noexcept -&gt; constant_wrapper&lt;Y++&gt; { return {}; }
+    template&lt;<i>constexpr-param</i> T&gt;
+      constexpr auto operator--(this T) noexcept -&gt; constant_wrapper&lt;--Y&gt; { return {}; }
+    template&lt;<i>constexpr-param</i> T&gt;
+      constexpr auto operator--(this T, int) noexcept -&gt; constant_wrapper&lt;Y--&gt; { return {}; }
+
+    template&lt;<i>constexpr-param</i> T, <i>constexpr-param</i> R&gt;
+      constexpr auto operator+=(T, R) noexcept -&gt; constant_wrapper&lt;(T::value += R::value)&gt; { return {}; }
+    template&lt;<i>constexpr-param</i> T, <i>constexpr-param</i> R&gt;
+      constexpr auto operator-=(T, R) noexcept -&gt; constant_wrapper&lt;(T::value -= R::value)&gt; { return {}; }
+    template&lt;<i>constexpr-param</i> T, <i>constexpr-param</i> R&gt;
+      constexpr auto operator*=(T, R) noexcept -&gt; constant_wrapper&lt;(T::value *= R::value)&gt; { return {}; }
+    template&lt;<i>constexpr-param</i> T, <i>constexpr-param</i> R&gt;
+      constexpr auto operator/=(T, R) noexcept -&gt; constant_wrapper&lt;(T::value /= R::value)&gt; { return {}; }
+    template&lt;<i>constexpr-param</i> T, <i>constexpr-param</i> R&gt;
+      constexpr auto operator%=(T, R) noexcept -&gt; constant_wrapper&lt;(T::value %= R::value)&gt; { return {}; }
+    template&lt;<i>constexpr-param</i> T, <i>constexpr-param</i> R&gt;
+      constexpr auto operator&amp;=(T, R) noexcept -&gt; constant_wrapper&lt;(T::value &amp;= R::value)&gt; { return {}; }
+    template&lt;<i>constexpr-param</i> T, <i>constexpr-param</i> R&gt;
+      constexpr auto operator|=(T, R) noexcept -&gt; constant_wrapper&lt;(T::value |= R::value)&gt; { return {}; }
+    template&lt;<i>constexpr-param</i> T, <i>constexpr-param</i> R&gt;
+      constexpr auto operator^=(T, R) noexcept -&gt; constant_wrapper&lt;(T::value ^= R::value)&gt; { return {}; }
+    template&lt;<i>constexpr-param</i> T, <i>constexpr-param</i> R&gt;
+      constexpr auto operator&lt;&lt;=(T, R) noexcept -&gt; constant_wrapper&lt;(T::value &lt;&lt;= R::value)&gt; { return {}; }
+    template&lt;<i>constexpr-param</i> T, <i>constexpr-param</i> R&gt;
+      constexpr auto operator&gt;&gt;=(T, R) noexcept -&gt; constant_wrapper&lt;(T::value &gt;&gt;= R::value)&gt; { return {}; }</ins>
+  };
+}
+
+template&lt;exposition_only::cw_fixed_value X, typename&gt;
+struct constant_wrapper: exposition_only::cw_operators {
+  static constexpr const auto &amp; value = X.data;
+  using type = constant_wrapper;
+  using value_type = typename decltype(X)::type;
+
+  <del>template&lt;<i>constexpr-param</i> R&gt;
+    constexpr auto operator=(R) const noexcept requires requires(value_type x) { x = R::value; }
+      { return constant_wrapper&lt;[] { auto v = value; return v = R::value; }()&gt;{}; }</del>
+  <ins>template&lt;<i>constexpr-param</i> R&gt;
+    constexpr auto operator=(R) const noexcept -&gt; constant_wrapper&lt;X = R::value&gt; { return {}; }</ins>
+
+  constexpr operator decltype(auto)() const noexcept { return value; }
+};
+
+</pre>
+</blockquote>
+
+</li>
+
+</ol>
+
 
 
 
