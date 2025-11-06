@@ -159,7 +159,7 @@ namespace std {
   class optional&lt;T&amp;&gt; {
   public:
     using value_type     = T;
-    using iterator       = implementation-defined;  // <ins>present only if T is object type other than array of unknown bound;</ins> see [optional.ref.iterators]
+    using iterator       = implementation-defined;  // <ins>present only if T is an object type other than an array of unknown bound;</ins> see [optional.ref.iterators]
   public:
     [&hellip;]
 
@@ -177,7 +177,7 @@ namespace std {
 
 <blockquote>
 <pre>
-using iterator = <i>implementation-defined</i>; <ins>// present only if T is object type other than array of unknown bound</ins>
+using iterator = <i>implementation-defined</i>; <ins>// present only if T is an object type other than an array of unknown bound</ins>
 </pre>
 <blockquote>
 <p>
@@ -196,10 +196,10 @@ type <code>remove_cv_t&lt;T&gt;</code>. The reference type is <code>T&amp;</code
 constexpr <del>iterator</del><ins>auto</ins> begin() const noexcept;
 </pre>
 <blockquote>
-<p><ins>-?- <i>Constraints</i>: T is an object type other than array of unknown bound.</ins></p>
+<p><ins>-?- <i>Constraints</i>: T is an object type other than an array of unknown bound.</ins></p>
 <p>
--3- Returns: <ins>An object <code class='backtick'>i</code> of <code class='backtick'>iterator</code> type, such that</ins><del>If <code class='backtick'>has_value()</code> is <code class='backtick'>true</code>,</del>
-<ins><code class='backtick'>i</code> is</ins> an iterator referring to <code class='backtick'>*val</code> <ins>if <code class='backtick'>has_value()</code> is <code class='backtick'>true</code>, and</ins><del>Otherwise, </del>
+-3- Returns: <ins>An object <code class='backtick'>i</code> of type <code class='backtick'>iterator</code>, such that</ins> <del>If <code class='backtick'>has_value()</code> is <code class='backtick'>true</code>,</del>
+<ins><code class='backtick'>i</code> is</ins> an iterator referring to <code class='backtick'>*val</code> <ins>if <code class='backtick'>has_value()</code> is <code class='backtick'>true</code>, and</ins> <del>Otherwise, </del>
 a past-the-end iterator value <ins>otherwise</ins>.
 </p>
 </blockquote>
@@ -208,7 +208,7 @@ a past-the-end iterator value <ins>otherwise</ins>.
 constexpr <del>iterator</del><ins>auto</ins> end() const noexcept;
 </pre>
 <blockquote>
-<p><ins>-?- <i>Constraints</i>: T is an object type other than array of unknown bound.</ins></p>
+<p><ins>-?- <i>Constraints</i>: T is an object type other than an array of unknown bound.</ins></p>
 <p>-4- Returns: <code class='backtick'>begin() + has_value()</code>.</p>
 </blockquote>
 </blockquote>
