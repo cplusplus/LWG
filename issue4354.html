@@ -64,7 +64,7 @@
 <p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#SG1">SG1</a> status.</em></p>
 <h3 id="4354"><a href="lwg-active.html#4354">4354</a>. Reconsider <code class='backtick'>weakly_parallel</code> as the default <code class='backtick'>forward_progress_guarantee</code></h3>
 <p><b>Section:</b> 33.5.8 <a href="https://wg21.link/exec.get.fwd.progress">[exec.get.fwd.progress]</a> <b>Status:</b> <a href="lwg-active.html#SG1">SG1</a>
- <b>Submitter:</b> Lewis Baker <b>Opened:</b> 2025-08-25 <b>Last modified:</b> 2025-10-20</p>
+ <b>Submitter:</b> Lewis Baker <b>Opened:</b> 2025-08-25 <b>Last modified:</b> 2025-11-06</p>
 <p><b>Priority: </b>1
 </p>
 <p><b>View all issues with</b> <a href="lwg-status.html#SG1">SG1</a> status.</p>
@@ -134,6 +134,14 @@ than <code class='backtick'>weakly_parallel</code> forward progress, but it was 
 The absence of an explicit implementation of the query could either be
 intentional or an accidental omission.
 Perhaps this is an indication that there should not be a default forward-progress guarantee for schedulers?"
+</p>
+
+<p><i>[Kona 2025-11-06; SG1 feedback.]</i></p>
+
+<p>
+SG1 recommends to remove the default <code class='backtick'>get_forward_progress_guarantee</code>
+implementation instead of adopting LWG4354 current proposed resolution
+and encourages the paper the explores that direction.
 </p>
 
 

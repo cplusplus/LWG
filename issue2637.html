@@ -94,7 +94,7 @@ as an optional action, we cannot rely on it.
 The Standard is currently very careful <em>not</em> to specify functions as <code>noexcept</code>,
 if this case can happen, see e.g. <code>std::locale::name()</code>. To the contrary, enforcing them to be
 <code>noexcept</code>, would cause a similar problem as the unconditional <code>noexcept</code> specifier of
-the value-returning <code>kill_dependency</code> as denoted by LWG <a href="lwg-active.html#2236" title="kill_dependency unconditionally noexcept (Status: SG1)">2236</a><sup><a href="https://cplusplus.github.io/LWG/issue2236" title="Latest snapshot">(i)</a></sup>.
+the value-returning <code>kill_dependency</code> as denoted by LWG <a href="lwg-active.html#2236" title="kill_dependency unconditionally noexcept (Status: Open)">2236</a><sup><a href="https://cplusplus.github.io/LWG/issue2236" title="Latest snapshot">(i)</a></sup>.
 <p/>
 Basically this requirement conflicts with the section "Adopted Guidelines", second bullet of
 <a href="http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2011/n3279.pdf">N3279</a>.
