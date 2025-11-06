@@ -32,8 +32,7 @@ This wording is relative to <paper num="N5014"/>.
 <blockquote>
 <pre>
 template&lt;class I&gt;
-  decltype(auto) <i>deref-move</i>(I&amp; it) {
-  constexpr decltype(auto) <i>deref-move</i>(I&amp; it) {
+  <ins>constexpr </ins>decltype(auto) <i>deref-move</i>(I&amp; it) {
     if constexpr (is_lvalue_reference_v&lt;decltype(*it)&gt;)
       return std::move(*it);
     else
