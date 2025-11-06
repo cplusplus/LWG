@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Issue 4456: Decay Data and Child in make-sender</title>
+<meta property="og:title" content="Issue 4456: Decay Data and Child in make-sender">
+<meta property="og:description" content="C++ library issue. Status: New">
+<meta property="og:url" content="https://cplusplus.github.io/LWG/issue4456.html">
+<meta property="og:type" content="website">
+<meta property="og:image" content="http://cplusplus.github.io/LWG/images/cpp_logo.png">
+<meta property="og:image:alt" content="C++ logo">
+<style>
+  p {text-align:justify}
+  li {text-align:justify}
+  pre code.backtick::before { content: "`" }
+  pre code.backtick::after { content: "`" }
+  blockquote.note
+  {
+    background-color:#E0E0E0;
+    padding-left: 15px;
+    padding-right: 15px;
+    padding-top: 1px;
+    padding-bottom: 1px;
+  }
+  ins {background-color:#A0FFA0}
+  del {background-color:#FFA0A0}
+  table.issues-index { border: 1px solid; border-collapse: collapse; }
+  table.issues-index th { text-align: center; padding: 4px; border: 1px solid; }
+  table.issues-index td { padding: 4px; border: 1px solid; }
+  table.issues-index td:nth-child(1) { text-align: right; }
+  table.issues-index td:nth-child(2) { text-align: left; }
+  table.issues-index td:nth-child(3) { text-align: left; }
+  table.issues-index td:nth-child(4) { text-align: left; }
+  table.issues-index td:nth-child(5) { text-align: center; }
+  table.issues-index td:nth-child(6) { text-align: center; }
+  table.issues-index td:nth-child(7) { text-align: left; }
+  table.issues-index td:nth-child(5) span.no-pr { color: red; }
+  @media (prefers-color-scheme: dark) {
+     html {
+        color: #ddd;
+        background-color: black;
+     }
+     ins {
+        background-color: #225522
+     }
+     del {
+        background-color: #662222
+     }
+     a {
+        color: #6af
+     }
+     a:visited {
+        color: #6af
+     }
+     blockquote.note
+     {
+        background-color: rgba(255, 255, 255, .10)
+     }
+  }
+</style>
+</head>
+<body>
+<hr>
+<p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#New">New</a> status.</em></p>
+<h3 id="4456"><a href="lwg-active.html#4456">4456</a>. Decay <code class='backtick'>Data</code> and <code class='backtick'>Child</code> in <i><code class='backtick'>make-sender</code></i></h3>
+<p><b>Section:</b> 33.9.2 <a href="https://wg21.link/exec.snd.expos">[exec.snd.expos]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
+ <b>Submitter:</b> Jonathan Wakely <b>Opened:</b> 2025-11-06 <b>Last modified:</b> 2025-11-06</p>
+<p><b>Priority: </b>Not Prioritized
+</p>
+<p><b>View other</b> <a href="lwg-index-open.html#exec.snd.expos">active issues</a> in [exec.snd.expos].</p>
+<p><b>View all other</b> <a href="lwg-index.html#exec.snd.expos">issues</a> in [exec.snd.expos].</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
+<p><b>Discussion:</b></p>
+<b>Addresses <a href="https://github.com/cplusplus/nbballot/issues/926">US 211-351</a></b>
+<p>
+The <i>Mandates</i>: for <i><code class='backtick'>make-sender</code></i> defines <code class='backtick'>Sndr</code> as a type that
+is different from what the <i>Returns</i>: element uses.
+</p>
+
+
+<p id="res-4456"><b>Proposed resolution:</b></p>
+<p>
+This wording is relative to <a href="https://wg21.link/N5014">N5014</a>.
+</p>
+
+<ol>
+<li><p>Modify 33.9.2 <a href="https://wg21.link/exec.snd.expos">[exec.snd.expos]</a>, as indicated:</p>
+
+<blockquote>
+<pre>
+template&lt;class Tag, class Data = see below, class... Child&gt;
+  constexpr auto make-sender(Tag tag, Data&amp;&amp; data, Child&amp;&amp;... child);
+</pre>
+<blockquote>
+<p>-24- <i>Mandates</i>: The following expressions are <code class='backtick'>true</code>:
+<ul>
+<li>(24.1) &mdash; <code>semiregular&lt;Tag&gt;</code></li>
+<li>(24.2) &mdash; <code><i>movable-value</i>&lt;Data&gt;</code></li>
+<li>(24.3) &mdash; <code>(sender&lt;Child&gt; &amp;&amp; ...)</code></li>
+<li>(24.4) &mdash;
+<code>dependent_sender&lt;Sndr&gt; || sender_in&lt;Sndr&gt;</code>,
+where <code class='backtick'>Sndr</code> is
+<code><i>basic-sender</i>&lt;Tag, <del>Data, Child</del>
+<ins>decay_t&lt;Data&gt;, decay_t&lt;Child&gt;</ins>...&gt;</code>
+as defined below.
+<blockquote>
+<i>Recommended practice</i>:
+If evaluation of <code>sender_in&lt;Sndr&gt;</code> results in
+an uncaught exception from the evaluation of
+<code>get_completion_signatures&lt;Sndr&gt;()</code>,
+the implementation should include information about that exception
+in the resulting diagnostic.
+</blockquote>
+</li>
+</ul>
+</p>
+<p>-25- <i>Returns</i>:
+A prvalue of type
+<code><i>basic-sender</i>&lt;Tag, decay_t&lt;Data&gt;, decay_t&lt;Child&gt;...&gt;</code>
+that has been direct-list-initialized with the forwarded arguments,
+where <i><code class='backtick'>basic-sender</code></i> is the following exposition-only class template
+except as noted below.
+</p>
+</blockquote>
+</blockquote>
+</li>
+</ol>
+
+
+
+
+
+
+</body>
+</html>
