@@ -54,7 +54,7 @@
 </style>
 </head>
 <body>
-<p>Revised 2025-11-06 at 15:39:29 UTC
+<p>Revised 2025-11-06 at 16:53:31 UTC
 </p><h2>Unresolved Issues</h2>
 <hr>
 <h3 id="423"><a href="#423">423</a><sup><a href="https://cplusplus.github.io/LWG/issue423">(i)</a></sup>. Effects of negative <code>streamsize</code> in iostreams</h3>
@@ -78527,6 +78527,95 @@ namespace ranges {
       stable_partition(Ep&amp;&amp; exec, R&amp;&amp; r, Pred pred, Proj proj = {});      // <del>freestanding-deleted</del><ins>hosted</ins>;
 }
 </pre></blockquote>
+</li>
+
+</ol>
+
+
+
+
+
+<hr>
+<h3 id="4458"><a href="#4458">4458</a><sup><a href="https://cplusplus.github.io/LWG/issue4458">(i)</a></sup>. <code>indirect&lt;T&gt;</code> should be convertible to <code>T&amp;</code></h3>
+<p><b>Section:</b> 20.4.1.6 <a href="https://wg21.link/indirect.obs">[indirect.obs]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
+ <b>Submitter:</b> Zhihao Yuan <b>Opened:</b> 2025-11-05 <b>Last modified:</b> 2025-11-06</p>
+<p><b>Priority: </b>Not Prioritized
+</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
+<p><b>Discussion:</b></p>
+<b>Addresses <a href="https://github.com/cplusplus/nbballot/issues/719">US 77-140</a></b>
+<p>
+In addition to serving as a better <code>unique_ptr&lt;T&gt;</code> in
+Pimpl, <code>indirect&lt;T&gt;</code> can also appear as a drop-in
+replacement for <code class='backtick'>T</code> when <code class='backtick'>T</code> may conditionally be an incomplete type. 
+In which case, if <code>indirect&lt;T&gt;</code> is convertible to <code>T&amp;</code>, 
+certain tasks can be done without meta-programming (e.g., returning the 
+object of type <code class='backtick'>T</code> or <code>indirect&lt;T&gt;</code> from a function with a 
+return type <code>T&amp;</code>).
+</p>
+
+
+<p id="res-4458"><b>Proposed resolution:</b></p>
+<p>
+This wording is relative to <a href="https://wg21.link/N5014">N5014</a>.
+</p>
+
+<ol>
+<li><p>Modify 20.4.1.2 <a href="https://wg21.link/indirect.syn">[indirect.syn]</a>, as indicated:</p>
+
+<blockquote>
+<pre>
+namespace std {
+  template&lt;class T, class Allocator = allocator&lt;T&gt;&gt;
+  class indirect {
+  public:
+    [&hellip;]
+    <i>// 20.4.1.6 <a href="https://wg21.link/indirect.obs">[indirect.obs]</a>, observers</i>
+    <ins>constexpr operator const T&amp; () const &amp; noexcept;
+    constexpr operator T&amp; () &amp; noexcept;
+    constexpr operator const T&amp;&amp; () const &amp;&amp; noexcept;
+    constexpr operator T&amp;&amp; () &amp;&amp; noexcept;</ins>
+    constexpr const T&amp; operator*() const &amp; noexcept;
+    constexpr T&amp; operator*() &amp; noexcept;
+    constexpr const T&amp;&amp; operator*() const &amp;&amp; noexcept;
+    constexpr T&amp;&amp; operator*() &amp;&amp; noexcept;
+    constexpr const_pointer operator-&gt;() const noexcept;
+    constexpr pointer operator-&gt;() noexcept;
+    [&hellip;]
+</pre>
+</blockquote>
+</li>
+
+<li><p>Modify 20.4.1.6 <a href="https://wg21.link/indirect.obs">[indirect.obs]</a>, as indicated:</p>
+
+<blockquote>
+<pre>
+<ins>constexpr operator const T&amp; () const &amp; noexcept;
+constexpr operator T&amp; () &amp; noexcept;</ins>
+constexpr const T&amp; operator*() const &amp; noexcept;
+constexpr T&amp; operator*() &amp; noexcept;
+</pre>
+<blockquote>
+<p>
+-1- <i>Preconditions</i>: <code class='backtick'>*this</code> is not valueless.
+<p/>
+-2- <i>Returns</i>: <code>*<i>p</i></code>.
+</p>
+</blockquote>
+<pre>
+<ins>constexpr operator const T&amp;&amp; () const &amp;&amp; noexcept;
+constexpr operator T&amp;&amp; () &amp;&amp; noexcept;</ins>
+constexpr const T&amp;&amp; operator*() const &amp;&amp; noexcept;
+constexpr T&amp;&amp; operator*() &amp;&amp; noexcept;
+</pre>
+<blockquote>
+<p>
+-3- <i>Preconditions</i>: <code class='backtick'>*this</code> is not valueless.
+<p/>
+-4- <i>Returns</i>: <code>std::move(*<i>p</i>)</code>.
+</p>
+</blockquote>
+</blockquote>
 </li>
 
 </ol>
