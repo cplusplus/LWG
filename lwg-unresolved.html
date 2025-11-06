@@ -54,7 +54,7 @@
 </style>
 </head>
 <body>
-<p>Revised 2025-11-06 at 03:55:51 UTC
+<p>Revised 2025-11-06 at 04:13:23 UTC
 </p><h2>Unresolved Issues</h2>
 <hr>
 <h3 id="423"><a href="#423">423</a><sup><a href="https://cplusplus.github.io/LWG/issue423">(i)</a></sup>. Effects of negative <code>streamsize</code> in iostreams</h3>
@@ -78048,7 +78048,7 @@ A <code class='backtick'>shared_ptr</code> to an <del>object of type <code class
 <hr>
 <h3 id="4452"><a href="#4452">4452</a><sup><a href="https://cplusplus.github.io/LWG/issue4452">(i)</a></sup>. Make <i>deref-move</i> constexpr</h3>
 <p><b>Section:</b> 26.11.1 <a href="https://wg21.link/specialized.algorithms.general">[specialized.algorithms.general]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> S.B. Tam <b>Opened:</b> 2025-11-05 <b>Last modified:</b> 2025-11-05</p>
+ <b>Submitter:</b> S.B. Tam <b>Opened:</b> 2025-11-05 <b>Last modified:</b> 2025-11-06</p>
 <p><b>Priority: </b>Not Prioritized
 </p>
 <p><b>View all other</b> <a href="lwg-index.html#specialized.algorithms.general">issues</a> in [specialized.algorithms.general].</p>
@@ -78077,8 +78077,7 @@ This wording is relative to <a href="https://wg21.link/N5014">N5014</a>.
 <blockquote>
 <pre>
 template&lt;class I&gt;
-  decltype(auto) <i>deref-move</i>(I&amp; it) {
-  constexpr decltype(auto) <i>deref-move</i>(I&amp; it) {
+  <ins>constexpr </ins>decltype(auto) <i>deref-move</i>(I&amp; it) {
     if constexpr (is_lvalue_reference_v&lt;decltype(*it)&gt;)
       return std::move(*it);
     else
