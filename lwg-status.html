@@ -62,7 +62,7 @@ This document is the Index by Status and Section for the <a href="lwg-active.htm
 <a href="lwg-defects.html">Library Defect Reports and Accepted Issues</a>, and <a href="lwg-closed.html">Library Closed Issues List</a>.
 </p>
 
-<p>Revised 2025-11-06 at 02:46:07 UTC
+<p>Revised 2025-11-06 at 03:03:43 UTC
 </p><h2 id="Voting">Voting (61 issues)</h2>
 <table class="issues-index">
 <tr>
@@ -632,7 +632,7 @@ constructor</td>
 <td></td>
 </tr>
 </table>
-<h2 id="Immediate">Immediate (29 issues)</h2>
+<h2 id="Immediate">Immediate (33 issues)</h2>
 <table class="issues-index">
 <tr>
   <th><a href="lwg-toc.html">Issue</a></th>
@@ -779,6 +779,15 @@ constructor</td>
 <td></td>
 </tr>
 <tr>
+<td id="4396"><a href="lwg-active.html#4396" title="Improve inplace_vector(from_range_t, R&amp;&amp; rg) (Status: Immediate)">4396</a><sup><a href="https://cplusplus.github.io/LWG/issue4396">(i)</a></sup></td>
+<td><a href="lwg-active.html#Immediate">Immediate</a></td>
+<td>23.2.4 [sequence.reqmts]</td>
+<td>Improve <code>inplace_vector(from_range_t, R&amp;&amp; rg)</code></td>
+<td>Yes</td>
+<td>3</td>
+<td></td>
+</tr>
+<tr>
 <td id="4272"><a href="lwg-active.html#4272" title="For rank == 0, layout_stride is atypically convertible (Status: Immediate)">4272</a><sup><a href="https://cplusplus.github.io/LWG/issue4272">(i)</a></sup></td>
 <td><a href="lwg-active.html#Immediate">Immediate</a></td>
 <td>23.7.3.4 [mdspan.layout]</td>
@@ -880,12 +889,39 @@ incorrectly constrained for <code>&lt;stdfloat&gt;</code> types</td>
 <td></td>
 </tr>
 <tr>
+<td id="4438"><a href="lwg-active.html#4438" title="Bad expression in [exec.when.all] (Status: Immediate)">4438</a><sup><a href="https://cplusplus.github.io/LWG/issue4438">(i)</a></sup></td>
+<td><a href="lwg-active.html#Immediate">Immediate</a></td>
+<td>33.9.12.12 [exec.when.all]</td>
+<td>Bad expression in [exec.when.all]</td>
+<td>Yes</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
 <td id="4448"><a href="lwg-active.html#4448" title="Do not forward fn in completion_signatures (Status: Immediate)">4448</a><sup><a href="https://cplusplus.github.io/LWG/issue4448">(i)</a></sup></td>
 <td><a href="lwg-active.html#Immediate">Immediate</a></td>
 <td>33.10 [exec.cmplsig]</td>
 <td>Do not forward <code class='backtick'>fn</code> in <code class='backtick'>completion_signatures</code></td>
 <td>Yes</td>
 <td></td>
+<td></td>
+</tr>
+<tr>
+<td id="4358"><a href="lwg-active.html#4358" title="&sect;[exec.as.awaitable] is using &quot;Preconditions:&quot; when it should probably be described in the constraint (Status: Immediate)">4358</a><sup><a href="https://cplusplus.github.io/LWG/issue4358">(i)</a></sup></td>
+<td><a href="lwg-active.html#Immediate">Immediate</a></td>
+<td>33.13.1 [exec.as.awaitable]</td>
+<td>&sect;[exec.as.awaitable] is using "Preconditions:" when it should probably be described in the constraint</td>
+<td>Yes</td>
+<td>2</td>
+<td></td>
+</tr>
+<tr>
+<td id="4360"><a href="lwg-active.html#4360" title="awaitable-sender concept should qualify use of awaitable-receiver type (Status: Immediate)">4360</a><sup><a href="https://cplusplus.github.io/LWG/issue4360">(i)</a></sup></td>
+<td><a href="lwg-active.html#Immediate">Immediate</a></td>
+<td>33.13.1 [exec.as.awaitable]</td>
+<td><code><i>awaitable-sender</i></code> concept should qualify use of <code><i>awaitable-receiver</i></code> type</td>
+<td>Yes</td>
+<td>2</td>
 <td></td>
 </tr>
 <tr>
@@ -1191,7 +1227,7 @@ complexity for algorithms that are in fact &#x1d4aa;(n)</td>
 <td></td>
 </tr>
 </table>
-<h2 id="New">New (544 issues)</h2>
+<h2 id="New">New (541 issues)</h2>
 <table class="issues-index">
 <tr>
   <th><a href="lwg-toc.html">Issue</a></th>
@@ -5944,37 +5980,10 @@ co_await expression instead of same_as&lt;void&gt; (Status: New)">4357</a><sup><
 <td></td>
 </tr>
 <tr>
-<td id="4438"><a href="lwg-active.html#4438" title="Bad expression in [exec.when.all] (Status: New)">4438</a><sup><a href="https://cplusplus.github.io/LWG/issue4438">(i)</a></sup></td>
-<td><a href="lwg-active.html#New">New</a></td>
-<td>33.9.12.12 [exec.when.all]</td>
-<td>Bad expression in [exec.when.all]</td>
-<td>Yes</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
 <td id="4215"><a href="lwg-active.html#4215" title="run_loop::finish should be noexcept (Status: New)">4215</a><sup><a href="https://cplusplus.github.io/LWG/issue4215">(i)</a></sup></td>
 <td><a href="lwg-active.html#New">New</a></td>
 <td>33.12.1 [exec.run.loop]</td>
 <td><code class='backtick'>run_loop::finish</code> should be <code class='backtick'>noexcept</code></td>
-<td>Yes</td>
-<td>2</td>
-<td></td>
-</tr>
-<tr>
-<td id="4358"><a href="lwg-active.html#4358" title="&sect;[exec.as.awaitable] is using &quot;Preconditions:&quot; when it should probably be described in the constraint (Status: New)">4358</a><sup><a href="https://cplusplus.github.io/LWG/issue4358">(i)</a></sup></td>
-<td><a href="lwg-active.html#New">New</a></td>
-<td>33.13.1 [exec.as.awaitable]</td>
-<td>&sect;[exec.as.awaitable] is using "Preconditions:" when it should probably be described in the constraint</td>
-<td>Yes</td>
-<td>2</td>
-<td></td>
-</tr>
-<tr>
-<td id="4360"><a href="lwg-active.html#4360" title="awaitable-sender concept should qualify use of awaitable-receiver type (Status: New)">4360</a><sup><a href="https://cplusplus.github.io/LWG/issue4360">(i)</a></sup></td>
-<td><a href="lwg-active.html#New">New</a></td>
-<td>33.13.1 [exec.as.awaitable]</td>
-<td><code><i>awaitable-sender</i></code> concept should qualify use of <code><i>awaitable-receiver</i></code> type</td>
 <td>Yes</td>
 <td>2</td>
 <td></td>
@@ -6171,7 +6180,7 @@ don't support <code>DynamicBuffer</code> lvalues</td>
 <td></td>
 </tr>
 </table>
-<h2 id="Open">Open (81 issues)</h2>
+<h2 id="Open">Open (82 issues)</h2>
 <table class="issues-index">
 <tr>
   <th><a href="lwg-toc.html">Issue</a></th>
@@ -6860,6 +6869,15 @@ don't support <code>DynamicBuffer</code> lvalues</td>
 <td></td>
 </tr>
 <tr>
+<td id="3417"><a href="lwg-active.html#3417" title="Missing volatile atomic deprecations (Status: Open)">3417</a><sup><a href="https://cplusplus.github.io/LWG/issue3417">(i)</a></sup></td>
+<td><a href="lwg-active.html#Open">Open</a></td>
+<td>32.5.8.2 [atomics.types.operations]</td>
+<td>Missing <code>volatile</code> atomic deprecations</td>
+<td>Yes</td>
+<td>3</td>
+<td></td>
+</tr>
+<tr>
 <td id="2530"><a href="lwg-active.html#2530" title="Clarify observable side effects of releasing a shared state (Status: Open)">2530</a><sup><a href="https://cplusplus.github.io/LWG/issue2530">(i)</a></sup></td>
 <td><a href="lwg-active.html#Open">Open</a></td>
 <td>32.10.5 [futures.state]</td>
@@ -6914,7 +6932,7 @@ don't support <code>DynamicBuffer</code> lvalues</td>
 <td></td>
 </tr>
 </table>
-<h2 id="LEWG">LEWG (41 issues)</h2>
+<h2 id="LEWG">LEWG (40 issues)</h2>
 <table class="issues-index">
 <tr>
   <th><a href="lwg-toc.html">Issue</a></th>
@@ -6995,15 +7013,6 @@ don't support <code>DynamicBuffer</code> lvalues</td>
 <td>Should the Standard Library use <code>explicit</code> only when necessary?</td>
 <td><span class="no-pr">No</span></td>
 <td>2</td>
-<td></td>
-</tr>
-<tr>
-<td id="4396"><a href="lwg-active.html#4396" title="Improve inplace_vector(from_range_t, R&amp;&amp; rg) (Status: LEWG)">4396</a><sup><a href="https://cplusplus.github.io/LWG/issue4396">(i)</a></sup></td>
-<td><a href="lwg-active.html#LEWG">LEWG</a></td>
-<td>23.2.4 [sequence.reqmts]</td>
-<td>Improve <code>inplace_vector(from_range_t, R&amp;&amp; rg)</code></td>
-<td>Yes</td>
-<td>3</td>
 <td></td>
 </tr>
 <tr>
@@ -7327,7 +7336,7 @@ don't support <code>DynamicBuffer</code> lvalues</td>
 <td></td>
 </tr>
 </table>
-<h2 id="SG1">SG1 (8 issues)</h2>
+<h2 id="SG1">SG1 (7 issues)</h2>
 <table class="issues-index">
 <tr>
   <th><a href="lwg-toc.html">Issue</a></th>
@@ -7389,15 +7398,6 @@ don't support <code>DynamicBuffer</code> lvalues</td>
 <td>32.5.4 [atomics.order]</td>
 <td>The load and store operation in &sect;[atomics.order] p1 is ambiguous</td>
 <td><span class="no-pr">No</span></td>
-<td>3</td>
-<td></td>
-</tr>
-<tr>
-<td id="3417"><a href="lwg-active.html#3417" title="Missing volatile atomic deprecations (Status: SG1)">3417</a><sup><a href="https://cplusplus.github.io/LWG/issue3417">(i)</a></sup></td>
-<td><a href="lwg-active.html#SG1">SG1</a></td>
-<td>32.5.8.2 [atomics.types.operations]</td>
-<td>Missing <code>volatile</code> atomic deprecations</td>
-<td>Yes</td>
 <td>3</td>
 <td></td>
 </tr>
