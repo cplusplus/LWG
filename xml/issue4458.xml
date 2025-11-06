@@ -1,0 +1,90 @@
+<?xml version='1.0' encoding='utf-8' standalone='no'?>
+<!DOCTYPE issue SYSTEM "lwg-issue.dtd">
+
+<issue num="4458" status="New">
+<title><tt>indirect&lt;T&gt;</tt> should be convertible to <tt>T&amp;</tt></title>
+<section><sref ref="[indirect.obs]"/></section>
+<submitter>Zhihao Yuan</submitter>
+<date>05 Nov 2025</date>
+<priority>99</priority>
+
+<discussion>
+<b>Addresses <a href="https://github.com/cplusplus/nbballot/issues/719">US 77-140</a></b>
+<p>
+In addition to serving as a better <tt>unique_ptr&lt;T&gt;</tt> in
+Pimpl, <tt>indirect&lt;T&gt;</tt> can also appear as a drop-in
+replacement for `T` when `T` may conditionally be an incomplete type. 
+In which case, if <tt>indirect&lt;T&gt;</tt> is convertible to <tt>T&amp;</tt>, 
+certain tasks can be done without meta-programming (e.g., returning the 
+object of type `T` or <tt>indirect&lt;T&gt;</tt> from a function with a 
+return type <tt>T&amp;</tt>).
+</p>
+</discussion>
+
+<resolution>
+<p>
+This wording is relative to <paper num="N5014"/>.
+</p>
+
+<ol>
+<li><p>Modify <sref ref="[indirect.syn]"/>, as indicated:</p>
+
+<blockquote>
+<pre>
+namespace std {
+  template&lt;class T, class Allocator = allocator&lt;T&gt;&gt;
+  class indirect {
+  public:
+    [&hellip;]
+    <i>// <sref ref="[indirect.obs]"/>, observers</i>
+    <ins>constexpr operator const T&amp; () const &amp; noexcept;
+    constexpr operator T&amp; () &amp; noexcept;
+    constexpr operator const T&amp;&amp; () const &amp;&amp; noexcept;
+    constexpr operator T&amp;&amp; () &amp;&amp; noexcept;</ins>
+    constexpr const T&amp; operator*() const &amp; noexcept;
+    constexpr T&amp; operator*() &amp; noexcept;
+    constexpr const T&amp;&amp; operator*() const &amp;&amp; noexcept;
+    constexpr T&amp;&amp; operator*() &amp;&amp; noexcept;
+    constexpr const_pointer operator-&gt;() const noexcept;
+    constexpr pointer operator-&gt;() noexcept;
+    [&hellip;]
+</pre>
+</blockquote>
+</li>
+
+<li><p>Modify <sref ref="[indirect.obs]"/>, as indicated:</p>
+
+<blockquote>
+<pre>
+<ins>constexpr operator const T&amp; () const &amp; noexcept;
+constexpr operator T&amp; () &amp; noexcept;</ins>
+constexpr const T&amp; operator*() const &amp; noexcept;
+constexpr T&amp; operator*() &amp; noexcept;
+</pre>
+<blockquote>
+<p>
+-1- <i>Preconditions</i>: `*this` is not valueless.
+<p/>
+-2- <i>Returns</i>: <tt>*<i>p</i></tt>.
+</p>
+</blockquote>
+<pre>
+<ins>constexpr operator const T&amp;&amp; () const &amp;&amp; noexcept;
+constexpr operator T&amp;&amp; () &amp;&amp; noexcept;</ins>
+constexpr const T&amp;&amp; operator*() const &amp;&amp; noexcept;
+constexpr T&amp;&amp; operator*() &amp;&amp; noexcept;
+</pre>
+<blockquote>
+<p>
+-3- <i>Preconditions</i>: `*this` is not valueless.
+<p/>
+-4- <i>Returns</i>: <tt>std::move(*<i>p</i>)</tt>.
+</p>
+</blockquote>
+</blockquote>
+</li>
+
+</ol>
+</resolution>
+
+</issue>
