@@ -30,9 +30,7 @@ If we want to mandate nothrow construction
 (a.k.a the implementation isn't out to get you),
 I'd rather we do it for all CPOs."
 </p>
-</discussion>
-
-<resolution>
+<superseded>
 <p>
 This wording is relative to <paper num="N5008"/>.
 </p>
@@ -53,6 +51,40 @@ A query imposes syntactic and semantic requirements on its invocations.
 </blockquote>
 </li>
 </ol>
+</superseded>
+
+<note>2025-11-05; Tim provides improved wording</note>
+<p>
+LWG decided to guarantee some additional properties for CPOs.
+</p>
+</discussion>
+
+<resolution>
+<p>
+This wording is relative to <paper num="N5014"/>.
+</p>
+<ol>
+
+<li><p>Modify <sref ref="[customization.point.object]"/> as indicated:</p>
+
+<blockquote>
+<p>
+-1- A <i>customization point object</i> is a function object (<sref ref="[function.objects]"/>)
+with a literal class type that interacts with program-defined types 
+while enforcing semantic requirements on that interaction.
+</p>
+<p>
+-2- The type of a customization point object, ignoring cv-qualifiers, 
+shall model `semiregular` (<sref ref="[concepts.object]"/>) 
+<ins>and shall be a structural type (<sref ref="[temp.param]"/>) 
+and a trivially copyable type (<sref ref="[class.prop]"/>)</ins>. 
+<ins>Every constructor of this type
+shall have a non-throwing exception specification (<sref ref="[except.spec]"/>).</ins>
+</p>
+</blockquote>
+</li>
+</ol>
+
 </resolution>
 
 </issue>
