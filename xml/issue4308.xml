@@ -33,6 +33,11 @@ be constrained on object types, and Mandate complete object types.
 The aliases shouldn't be defined for non-object types, but probably harmless."
 </p>
 
+
+<note>Kona 2025-11-05; Should only be a range for an object type.</note>
+<p>
+<tt>optional&lt;T&amp;&gt;</tt> doesn't currently allow incomplete types anyway.
+</p>
 </discussion>
 
 <resolution>
