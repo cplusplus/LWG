@@ -18,9 +18,7 @@
 "is a constant (sub)expression" is incorrect now that errors are reported
 via exceptions.
 </p>
-</discussion>
-
-<resolution>
+<superseded>
 <p>
 This wording is relative to <paper num="N5014"/>.
 </p>
@@ -164,6 +162,111 @@ initialized with `{}`.
 for every element `e` of `r`.
 </p>
 
+</blockquote>
+</blockquote>
+</li>
+
+</ol>
+
+</superseded>
+
+<note>Kona 2025-11-06; Jonathan removes change to <sref ref="[meta.reflection.array]"/>
+that was handled by LWG <iref ref="4432"/>.</note>
+
+</discussion>
+
+<resolution>
+
+<p>
+This wording is relative to <paper num="N5014"/>.
+</p>
+
+<ol>
+
+<li><p>Modify <sref ref="[meta.reflection.access.queries]"/> as indicated:</p>
+
+<blockquote>
+<pre>
+consteval bool has_inaccessible_nonstatic_data_members(info r, access_context ctx);
+</pre>
+<blockquote>
+<p>-5- <i>Returns</i>:
+`true` if `is_accessible(`<i>R</i>`, ctx)` is `false` for any <i>R</i>
+in `nonstatic_data_members_of(r, access_context::unchecked())`.
+Otherwise, `false`.
+</p>
+<p>-6- <i>Throws</i>:
+`meta::exception` unless
+<ul style="list-style-type: none">
+<li>(6.1) &mdash;
+<ins>the evaluation of</ins>
+`nonstatic_data_members_of(r, access_context::unchecked())`
+<del>
+is a constant subexpression
+</del>
+<ins>
+would not exit via an exception
+</ins>
+and
+</li>
+<li>(6.2) &mdash;
+`r` does not represent a closure type.
+</li>
+</ul>
+</p>
+</blockquote>
+<pre>
+consteval bool has_inaccessible_bases(info r, access_context ctx);
+</pre>
+<blockquote>
+<p>-5- <i>Returns</i>:
+`true` if `is_accessible(`<i>R</i>`, ctx)` is `false` for any <i>R</i>
+in `bases_of(r, access_context::unchecked())`.
+Otherwise, `false`.
+</p>
+<p>-6- <i>Throws</i>:
+`meta::exception` unless
+<ins>the evaluation of</ins>
+`bases_of(r, access_context::unchecked())`
+<del>is a constant subexpression</del>
+<ins>would not exit via an exception</ins>.
+</p>
+</blockquote>
+</blockquote>
+</li>
+
+<li><p>Modify <sref ref="[meta.reflection.annotation]"/> as indicated:</p>
+
+<blockquote>
+<pre>
+consteval vector&lt;info&gt; annotations_of_with_type(info item, info type);
+</pre>
+<blockquote>
+<p>-4- <i>Returns</i>:
+A `vector` containing each element `e` of `annotations_of(item)`
+where `remove_const(type_of(e)) == remove_const(type)`
+is `true`, preserving their order.
+</p>
+<p>-5- <i>Throws</i>:
+`meta::exception` unless
+<ul style="list-style-type: none">
+<li>(5.1) &mdash;
+<ins>the evaluation of</ins>
+`annotations_of(item)`
+<del>
+is a constant subexpression
+</del>
+<ins>
+would not exit via an exception
+</ins>
+and
+</li>
+<li>(5.2) &mdash;
+`dealias(type)` represents a type that is complete
+from some point in the evaluation context.
+</li>
+</ul>
+</p>
 </blockquote>
 </blockquote>
 </li>
