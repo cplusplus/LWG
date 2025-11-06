@@ -64,7 +64,7 @@
 <p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#New">New</a> status.</em></p>
 <h3 id="4260"><a href="lwg-active.html#4260">4260</a>. Query objects must be default constructible</h3>
 <p><b>Section:</b> 33.2.1 <a href="https://wg21.link/exec.queryable.general">[exec.queryable.general]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Eric Niebler <b>Opened:</b> 2025-05-07 <b>Last modified:</b> 2025-10-23</p>
+ <b>Submitter:</b> Eric Niebler <b>Opened:</b> 2025-05-07 <b>Last modified:</b> 2025-11-06</p>
 <p><b>Priority: </b>2
 </p>
 <p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
@@ -91,9 +91,9 @@ If we want to mandate nothrow construction
 (a.k.a the implementation isn't out to get you),
 I'd rather we do it for all CPOs."
 </p>
+<p><strong>Previous resolution [SUPERSEDED]:</strong></p>
+<blockquote class="note">
 
-
-<p id="res-4260"><b>Proposed resolution:</b></p>
 <p>
 This wording is relative to <a href="https://wg21.link/N5008" title=" Working Draft, Programming Languages — C++">N5008</a>.
 </p>
@@ -114,6 +114,41 @@ A query imposes syntactic and semantic requirements on its invocations.
 </blockquote>
 </li>
 </ol>
+</blockquote>
+
+<p><i>[2025-11-05; Tim provides improved wording]</i></p>
+
+<p>
+LWG decided to guarantee some additional properties for CPOs.
+</p>
+
+
+<p id="res-4260"><b>Proposed resolution:</b></p>
+<p>
+This wording is relative to <a href="https://wg21.link/N5014">N5014</a>.
+</p>
+<ol>
+
+<li><p>Modify 16.3.3.3.5 <a href="https://wg21.link/customization.point.object">[customization.point.object]</a> as indicated:</p>
+
+<blockquote>
+<p>
+-1- A <i>customization point object</i> is a function object (22.10 <a href="https://wg21.link/function.objects">[function.objects]</a>)
+with a literal class type that interacts with program-defined types 
+while enforcing semantic requirements on that interaction.
+</p>
+<p>
+-2- The type of a customization point object, ignoring cv-qualifiers, 
+shall model <code class='backtick'>semiregular</code> (18.6 <a href="https://wg21.link/concepts.object">[concepts.object]</a>) 
+<ins>and shall be a structural type (13.2 <a href="https://wg21.link/temp.param">[temp.param]</a>) 
+and a trivially copyable type (11.2 <a href="https://wg21.link/class.prop">[class.prop]</a>)</ins>. 
+<ins>Every constructor of this type
+shall have a non-throwing exception specification (14.5 <a href="https://wg21.link/except.spec">[except.spec]</a>).</ins>
+</p>
+</blockquote>
+</li>
+</ol>
+
 
 
 
