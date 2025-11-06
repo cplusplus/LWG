@@ -76,6 +76,13 @@ The absence of an explicit implementation of the query could either be
 intentional or an accidental omission.
 Perhaps this is an indication that there should not be a default forward-progress guarantee for schedulers?"
 </p>
+
+<note>Kona 2025-11-06; SG1 feedback.</note>
+<p>
+SG1 recommends to remove the default `get_forward_progress_guarantee`
+implementation instead of adopting LWG4354 current proposed resolution
+and encourages the paper the explores that direction.
+</p>
 </discussion>
 
 <resolution>
