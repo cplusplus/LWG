@@ -1,0 +1,151 @@
+<?xml version='1.0' encoding='utf-8' standalone='no'?>
+<!DOCTYPE issue SYSTEM "lwg-issue.dtd">
+
+<issue num="4451" status="New">
+<title>`make_shared` should not refer to a type `U[N]` for runtime N</title>
+<section><sref ref="[util.smartptr.shared.create]"/></section>
+<submitter>Jonathan Wakely</submitter>
+<date>05 Nov 2025</date>
+<priority>99</priority>
+
+<discussion>
+<b>Addresses <a href="https://github.com/cplusplus/nbballot/issues/718">US 76-139</a></b>
+<p>
+The overloads of `make_shared` and `allocate_shared` for creating
+<code>shared_ptr&lt;T[]&gt;</code> refer to an object a type `U[N]`
+where `N` is a function parameter not a constant expression.
+</p>
+</discussion>
+
+<resolution>
+<p>
+This wording is relative to <paper num="N5014"/>.
+</p>
+
+<ol>
+<li><p>Modify <sref ref="[util.smartptr.shared.create]"/>, as indicated:</p>
+
+<blockquote>
+<pre>
+template&lt;class T&gt;
+  constexpr shared_ptr&lt;T&gt; make_shared(size_t N); <i>// T is U[]</i>
+template&lt;class T, class A&gt;
+  constexpr shared_ptr&lt;T&gt; allocate_shared(const A&amp; a, size_t N); <i>// T is U[]</i>
+</pre>
+<blockquote>
+<p>-12- <i>Constraints</i>:
+`T` is
+<del>of the form `U[]`</del>
+<ins>an array of unknown bound</ins>.
+</p>
+<p>-13- <i>Returns</i>:
+A `shared_ptr` to an <del>object of type `U[N]`</del>
+<ins> array of `N` elements of type <code>remove_extent_t&lt;T&gt;</code></ins>
+with a default initial value<del>,
+where `U` is <code>remove_extent_t&lt;T&gt;</code></del>.
+</p>
+<p>-14- [<i>Example 2</i>: ...]</p>
+</blockquote>
+
+<pre>
+template&lt;class T&gt;
+  constexpr shared_ptr&lt;T&gt; make_shared(); <i>// T is U[N]</i>
+template&lt;class T, class A&gt;
+  constexpr shared_ptr&lt;T&gt; allocate_shared(const A&amp; a); <i>// T is U[N]</i>
+</pre>
+<blockquote>
+<p>-15- <i>Constraints</i>:
+`T` is <del>of the form `U[N]`</del>
+<ins>an array of known bound</ins>.
+</p>
+<p>-16- <i>Returns</i>:
+A `shared_ptr` to an object of type `T` with a default initial value.
+</p>
+<p>-17- [<i>Example 3</i>: ...]</p>
+</blockquote>
+
+<pre>
+template&lt;class T&gt;
+  constexpr shared_ptr&lt;T&gt; make_shared(size_t N,
+                                         const remove_extent_t&lt;T&gt;&amp; u); <i>// T is U[]</i>
+template&lt;class T, class A&gt;
+  constexpr shared_ptr&lt;T&gt; allocate_shared(const A&amp; a, size_t N,
+                                             const remove_extent_t&lt;T&gt;&amp; u); <i>// T is U[]</i>
+</pre>
+<blockquote>
+<p>-18- <i>Constraints</i>:
+`T` is
+<del>of the form `U[]`</del>
+<ins>an array of unknown bound</ins>.
+</p>
+<p>-19- <i>Returns</i>:
+A `shared_ptr` to an <del>object of type `U[N]`</del>
+<ins> array of `N` elements of type <code>remove_extent_t&lt;T&gt;</code></ins>
+where
+<del>`U` is <code>remove_extent_t&lt;T&gt;</code> and</del>
+each array element has an initial value of `u`.
+</p>
+<p>-20- [<i>Example 4</i>: ...]</p>
+</blockquote>
+
+<pre>
+template&lt;class T&gt;
+  constexpr shared_ptr&lt;T&gt; make_shared(const remove_extent_t&lt;T&gt;&amp; u); <i>// T is U[N]</i>
+template&lt;class T, class A&gt;
+  constexpr shared_ptr&lt;T&gt; allocate_shared(const A&amp; a,
+                                      const remove_extent_t&lt;T&gt;&amp; u); <i>// T is U[N]</i>
+</pre>
+<blockquote>
+<p>-21- <i>Constraints</i>:
+`T` is <del>of the form `U[N]`</del>
+<ins>an array of known bound</ins>.
+</p>
+<p>-22- <i>Returns</i>:
+A `shared_ptr` to an object of type `T`, where each array element of type
+<code>remove_extent_t&lt;T&gt;</code> has an initial value of `u`.
+</p>
+<p>-23- [<i>Example 5</i>: ...]</p>
+</blockquote>
+
+
+<pre>
+template&lt;class T&gt;
+  constexpr shared_ptr&lt;T&gt; make_shared_for_overwrite(); <i>// T is U[N]</i>
+template&lt;class T, class A&gt;
+  constexpr shared_ptr&lt;T&gt; allocate_shared_for_overwrite(const A&amp; a); <i>// T is U[N]</i>
+</pre>
+<blockquote>
+<p>-24- <i>Constraints</i>:
+`T` is not an array of unknown bound.
+</p>
+<p>-25- <i>Returns</i>:
+A `shared_ptr` to an object of type `T`.
+</p>
+<p>-26- [<i>Example 6</i>: ...]</p>
+</blockquote>
+
+<pre>
+template&lt;class T&gt;
+  constexpr shared_ptr&lt;T&gt; make_shared_for_overwrite(size_t N); <i>// T is U[]</i>
+template&lt;class T, class A&gt;
+  constexpr shared_ptr&lt;T&gt; allocate_shared_for_overwrite(const A&amp; a, size_t N); <i>// T is U[]</i>
+</pre>
+<blockquote>
+<p>-27- <i>Constraints</i>:
+`T` is an array of unknown bound.
+</p>
+<p>-28- <i>Returns</i>:
+A `shared_ptr` to an <del>object of type `U[N]`</del>
+<ins> array of `N` elements of type <code>remove_extent_t&lt;T&gt;</code></ins>
+<del>, where `U` is <code>remove_extent_t&lt;T&gt;</code></del>.
+</p>
+<p>-29- [<i>Example 7</i>: ...]</p>
+</blockquote>
+
+</blockquote>
+</li>
+</ol>
+
+</resolution>
+
+</issue>
