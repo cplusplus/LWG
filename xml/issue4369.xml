@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="4369" status="New">
+<issue num="4369" status="Immediate">
 <title><tt><i>check-types</i></tt> function for `upon_error` and `upon_stopped` is wrong</title>
 <section>
 <sref ref="[exec.then]"/>
@@ -64,6 +64,8 @@ We can achieve that by replacing `set_value_t` in the problematic line with <tt>
 <p>
 Set priority to 2 after reflector poll.
 </p>
+
+<note>Kona 2025-11-06; approved by LWG. Status changed: New &rarr; Immediate.</note>
 </discussion>
 
 <resolution>
