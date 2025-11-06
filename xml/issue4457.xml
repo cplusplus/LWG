@@ -1,0 +1,57 @@
+<?xml version='1.0' encoding='utf-8' standalone='no'?>
+<!DOCTYPE issue SYSTEM "lwg-issue.dtd">
+
+<issue num="4457" status="New">
+<title>freestanding for `stable_sort`, `stable_partition` and `inplace_merge`</title>
+<section><sref ref="[algorithm.syn]"/></section>
+<submitter>Braden Ganetsky</submitter>
+<date>06 Nov 2025</date>
+<priority>99</priority>
+
+<discussion>
+<b>Addresses <a href="https://github.com/cplusplus/nbballot/issues/830">US 157-255</a></b>
+<p>
+This applies the resolution for US 157-255.
+</p>
+</discussion>
+
+<resolution>
+<p>
+This wording is relative to <paper num="N5014"/>.
+</p>
+
+<ol>
+<li><p>Modify <sref ref="[algorithm.syn]"/>, as indicated:</p>
+
+<blockquote><pre>
+namespace ranges {
+  template&lt;bidirectional_iterator I, sentinel_for&lt;I&gt; S, class Proj = identity,
+           indirect_unary_predicate&lt;projected&lt;I, Proj&gt;&gt; Pred&gt;
+    requires permutable&lt;I&gt;
+    constexpr subrange&lt;I&gt; stable_partition(I first, S last, Pred pred,            // hosted
+                                           Proj proj = {});
+  template&lt;bidirectional_range R, class Proj = identity,
+           indirect_unary_predicate&lt;projected&lt;iterator_t&lt;R&gt;, Proj&gt;&gt; Pred&gt;
+    requires permutable&lt;iterator_t&lt;R&gt;&gt;
+    constexpr borrowed_subrange_t&lt;R&gt; stable_partition(R&amp;&amp; r, Pred pred,           // hosted
+                                                      Proj proj = {});
+
+  template&lt;execution-policy Ep, random_access_iterator I, sized_sentinel_for&lt;I&gt; S,
+           class Proj = identity, indirect_unary_predicate&lt;projected&lt;I, Proj&gt;&gt; Pred&gt;
+    requires permutable&lt;I&gt;
+    subrange&lt;I&gt;
+      stable_partition(Ep&amp;&amp; exec, I first, S last, Pred pred,
+                       Proj proj = {});                                   // <del>freestanding-deleted</del><ins>hosted</ins>;
+  template&lt;execution-policy Ep, sized-random-access-range R, class Proj = identity,
+           indirect_unary_predicate&lt;projected&lt;iterator_t&lt;R&gt;, Proj&gt;&gt; Pred&gt;
+    requires permutable&lt;iterator_t&lt;R&gt;&gt;
+    borrowed_subrange_t&lt;R&gt;
+      stable_partition(Ep&amp;&amp; exec, R&amp;&amp; r, Pred pred, Proj proj = {});      // <del>freestanding-deleted</del><ins>hosted</ins>;
+}
+</pre></blockquote>
+</li>
+
+</ol>
+</resolution>
+
+</issue>
