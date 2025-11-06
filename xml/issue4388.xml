@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="4388" status="New">
+<issue num="4388" status="Immediate">
 <title>Align new definition of `va_start` with C23</title>
 <section><sref ref="[cstdarg.syn]"/></section>
 <submitter>Jakub Jelinek</submitter>
@@ -34,6 +34,19 @@ va_start(ap, BAD);
 Set priority to 1 after reflector poll.
 </p>
 
+
+<note>Kona 2025-11-05; LWG had questions about <i>requiring</i> some cases to be ill-formed.</note>
+<p>
+The submitter clarified that it would constrain implementations
+(effectively requiring `va_start` to be implemented as a magic
+keyword in the preprocessor, in order to be able to diagnose
+misuses when preprocessing separately from compilation).
+</p>
+<p>
+Core approved the new wording.
+</p>
+
+<note>Kona 2025-11-05; approved by LWG. Status changed: New &rarr; Immediate.</note>
 </discussion>
 
 <resolution>
