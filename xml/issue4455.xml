@@ -1,0 +1,40 @@
+<?xml version='1.0' encoding='utf-8' standalone='no'?>
+<!DOCTYPE issue SYSTEM "lwg-issue.dtd">
+
+<issue num="4455" status="New">
+<title>Add missing constraint to <tt><i>basic-sender</i>::get_completion_signatures</tt> definition</title>
+<section><sref ref="[exec.snd.expos]"/></section>
+<submitter>Jonathan Wakely</submitter>
+<date>06 Nov 2025</date>
+<priority>99</priority>
+
+<discussion>
+<b>Addresses <a href="https://github.com/cplusplus/nbballot/issues/931">US 215-356</a></b>
+<p>
+The definition of <tt><i>basic-sender</i>::get_completion_signatures</tt>
+is missing the <tt><i>decays-to</i>&lt;<i>basic-sender</i>&gt;</tt>
+type constraint.
+</p>
+</discussion>
+
+<resolution>
+<p>
+This wording is relative to <paper num="N5014"/>.
+</p>
+
+<ol>
+<li><p>Modify <sref ref="[exec.snd.expos]"/>, as indicated (just above paragraph 43):</p>
+
+<blockquote>
+<pre>
+template&lt;class Tag, class Data, class... Child&gt;
+  template&lt;<del>class</del> <ins><i>decays-to</i>&lt;<i>basic-sender</i>&gt;</ins> Sndr, class... Env&gt;
+    constexpr auto <i>basic-sender</i>&lt;Tag, Data, Child...&gt;::get_completion_signatures();
+</pre>
+</blockquote>
+</li>
+</ol>
+
+</resolution>
+
+</issue>
