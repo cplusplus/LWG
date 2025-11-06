@@ -93,7 +93,7 @@ This wording is relative to <a href="https://wg21.link/N5014">N5014</a>.
 <blockquote>
 <pre>
 template&lt;class I&gt;
-  <ins>constexpr </ins>decltype(auto) <i>deref-move</i>(I&amp; it) {
+  <ins>constexpr</ins> decltype(auto) <i>deref-move</i>(I&amp; it) {
     if constexpr (is_lvalue_reference_v&lt;decltype(*it)&gt;)
       return std::move(*it);
     else
