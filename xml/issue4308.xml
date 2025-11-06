@@ -96,7 +96,7 @@ namespace std {
   class optional&lt;T&amp;&gt; {
   public:
     using value_type     = T;
-    using iterator       = implementation-defined;  // <ins>present only if T is object type other than array of unknown bound;</ins> see [optional.ref.iterators]
+    using iterator       = implementation-defined;  // <ins>present only if T is an object type other than an array of unknown bound;</ins> see [optional.ref.iterators]
   public:
     [&hellip;]
 
@@ -114,7 +114,7 @@ namespace std {
 
 <blockquote>
 <pre>
-using iterator = <i>implementation-defined</i>; <ins>// present only if T is object type other than array of unknown bound</ins>
+using iterator = <i>implementation-defined</i>; <ins>// present only if T is an object type other than an array of unknown bound</ins>
 </pre>
 <blockquote>
 <p>
@@ -133,10 +133,10 @@ type <tt>remove_cv_t&lt;T&gt;</tt>. The reference type is <tt>T&amp;</tt> for `i
 constexpr <del>iterator</del><ins>auto</ins> begin() const noexcept;
 </pre>
 <blockquote>
-<p><ins>-?- <i>Constraints</i>: T is an object type other than array of unknown bound.</ins></p>
+<p><ins>-?- <i>Constraints</i>: T is an object type other than an array of unknown bound.</ins></p>
 <p>
--3- Returns: <ins>An object `i` of `iterator` type, such that</ins><del>If `has_value()` is `true`,</del>
-<ins>`i` is</ins> an iterator referring to `*val` <ins>if `has_value()` is `true`, and</ins><del>Otherwise, </del>
+-3- Returns: <ins>An object `i` of type `iterator`, such that</ins> <del>If `has_value()` is `true`,</del>
+<ins>`i` is</ins> an iterator referring to `*val` <ins>if `has_value()` is `true`, and</ins> <del>Otherwise, </del>
 a past-the-end iterator value <ins>otherwise</ins>.
 </p>
 </blockquote>
@@ -145,7 +145,7 @@ a past-the-end iterator value <ins>otherwise</ins>.
 constexpr <del>iterator</del><ins>auto</ins> end() const noexcept;
 </pre>
 <blockquote>
-<p><ins>-?- <i>Constraints</i>: T is an object type other than array of unknown bound.</ins></p>
+<p><ins>-?- <i>Constraints</i>: T is an object type other than an array of unknown bound.</ins></p>
 <p>-4- Returns: `begin() + has_value()`.</p>
 </blockquote>
 </blockquote>
