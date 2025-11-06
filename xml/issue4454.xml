@@ -1,0 +1,33 @@
+<?xml version='1.0' encoding='utf-8' standalone='no'?>
+<!DOCTYPE issue SYSTEM "lwg-issue.dtd">
+
+<issue num="4454" status="New">
+<title>`assert` should forbid `co_await` and `co_yield`</title>
+<section><sref ref="[assertions.assert]"/></section>
+<submitter>Jonathan Wakely</submitter>
+<date>06 Nov 2025</date>
+<priority>1</priority>
+
+<discussion>
+<b>Addresses <a href="https://github.com/cplusplus/nbballot/issues/708">GB 05-129</a></b>
+<p>
+The new implementation of `assert` introduced by <paper num="P2264R7"/>
+might require something like `sizeof(bool(__VA_ARGS__))`.
+Using something like `assert((co_yield 1, true))` would be ill-formed
+if the implementation of `assert` uses `sizeof`, because `co_yield` cannot
+appear in an unevaluated context.
+</p>
+<p>
+The specification for `assert` should forbid using any constructs which
+are not valid in unevaluated contexts, unless we are certain that the
+new `assert` requirements can be implemented without such tricks using
+unevaluated contexts. "Ill-formed; no diagnostic required" seems appropriate.
+</p>
+</discussion>
+
+<resolution>
+<p>
+</p>
+</resolution>
+
+</issue>
