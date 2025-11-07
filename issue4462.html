@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Issue 4462: Algorithm requirements don't describe semantics of s - i well</title>
+<meta property="og:title" content="Issue 4462: Algorithm requirements don't describe semantics of s - i well">
+<meta property="og:description" content="C++ library issue. Status: New">
+<meta property="og:url" content="https://cplusplus.github.io/LWG/issue4462.html">
+<meta property="og:type" content="website">
+<meta property="og:image" content="http://cplusplus.github.io/LWG/images/cpp_logo.png">
+<meta property="og:image:alt" content="C++ logo">
+<style>
+  p {text-align:justify}
+  li {text-align:justify}
+  pre code.backtick::before { content: "`" }
+  pre code.backtick::after { content: "`" }
+  blockquote.note
+  {
+    background-color:#E0E0E0;
+    padding-left: 15px;
+    padding-right: 15px;
+    padding-top: 1px;
+    padding-bottom: 1px;
+  }
+  ins {background-color:#A0FFA0}
+  del {background-color:#FFA0A0}
+  table.issues-index { border: 1px solid; border-collapse: collapse; }
+  table.issues-index th { text-align: center; padding: 4px; border: 1px solid; }
+  table.issues-index td { padding: 4px; border: 1px solid; }
+  table.issues-index td:nth-child(1) { text-align: right; }
+  table.issues-index td:nth-child(2) { text-align: left; }
+  table.issues-index td:nth-child(3) { text-align: left; }
+  table.issues-index td:nth-child(4) { text-align: left; }
+  table.issues-index td:nth-child(5) { text-align: center; }
+  table.issues-index td:nth-child(6) { text-align: center; }
+  table.issues-index td:nth-child(7) { text-align: left; }
+  table.issues-index td:nth-child(5) span.no-pr { color: red; }
+  @media (prefers-color-scheme: dark) {
+     html {
+        color: #ddd;
+        background-color: black;
+     }
+     ins {
+        background-color: #225522
+     }
+     del {
+        background-color: #662222
+     }
+     a {
+        color: #6af
+     }
+     a:visited {
+        color: #6af
+     }
+     blockquote.note
+     {
+        background-color: rgba(255, 255, 255, .10)
+     }
+  }
+</style>
+</head>
+<body>
+<hr>
+<p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#New">New</a> status.</em></p>
+<h3 id="4462"><a href="lwg-active.html#4462">4462</a>. Algorithm requirements don't describe semantics of <code class='backtick'>s - i</code> well</h3>
+<p><b>Section:</b> 26.2 <a href="https://wg21.link/algorithms.requirements">[algorithms.requirements]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
+ <b>Submitter:</b> Jonathan Wakely <b>Opened:</b> 2025-11-07 <b>Last modified:</b> 2025-11-07</p>
+<p><b>Priority: </b>Not Prioritized
+</p>
+<p><b>View other</b> <a href="lwg-index-open.html#algorithms.requirements">active issues</a> in [algorithms.requirements].</p>
+<p><b>View all other</b> <a href="lwg-index.html#algorithms.requirements">issues</a> in [algorithms.requirements].</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
+<p><b>Discussion:</b></p>
+<b>Addresses <a href="https://github.com/cplusplus/nbballot/issues/827">US 154-252</a></b>
+<p>
+“the semantics of <code class='backtick'>s - i</code> has” is not grammatically correct.
+Additionally, “type, value, and value category” are properties of expressions,
+not “semantics”.
+</p>
+
+
+<p id="res-4462"><b>Proposed resolution:</b></p>
+<p>
+This wording is relative to <a href="https://wg21.link/N5014">N5014</a>.
+</p>
+
+<ol>
+<li><p>Modify 26.2 <a href="https://wg21.link/algorithms.requirements">[algorithms.requirements]</a>, as indicated:</p>
+
+<blockquote>
+<p>-11-
+In the description of the algorithms, operator <code class='backtick'>+</code> is used for some of the
+iterator categories for which it does not have to be defined.
+In these cases the semantics of <code class='backtick'>a + n</code> are the same as those of
+<pre>
+    auto tmp = a;
+    for (; n &lt; 0; ++n) --tmp;
+    for (; n &gt; 0; --n) ++tmp;
+    return tmp;
+</pre>
+Similarly, operator <code class='backtick'>-</code> is used for some combinations of iterators
+and sentinel types for which it does not have to be defined.
+If [<code class='backtick'>a</code>, <code class='backtick'>b</code>) denotes a range, the semantics of <code class='backtick'>b - a</code> in these cases
+are the same as those of
+<pre>
+    iter_difference_t&lt;decltype(a)&gt; n = 0;
+    for (auto tmp = a; tmp != b; ++tmp) ++n;
+    return n;
+</pre>
+and if [<code class='backtick'>b</code>, <code class='backtick'>a</code>) denotes a range, the same as those of
+<pre>
+    iter_difference_t&lt;decltype(b)&gt; n = 0;
+    for (auto tmp = b; tmp != a; ++tmp) --n;
+    return n;
+</pre>
+</p>
+<p>
+For each iterator <code class='backtick'>i</code> and sentinel <code class='backtick'>s</code> produced from a range <code class='backtick'>r</code>,
+the semantics of <code class='backtick'>s - i</code>
+<ins>are the same as those of an expression that</ins>
+has the same type, value,
+and value category as <code class='backtick'>ranges::distance(i, s)</code>.
+</p>
+<p>
+[<i>Note 3</i>: The implementation can use <code class='backtick'>ranges::distance(r)</code>
+when that produces the same value as <code class='backtick'>ranges::distance(i, s)</code>.
+This can be more efficient for sized ranges. &mdash; <i>end note</i>]
+</p>
+</blockquote>
+</li>
+</ol>
+
+
+
+
+
+
+</body>
+</html>
