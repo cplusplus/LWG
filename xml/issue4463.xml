@@ -1,0 +1,46 @@
+<?xml version='1.0' encoding='utf-8' standalone='no'?>
+<!DOCTYPE issue SYSTEM "lwg-issue.dtd">
+
+<issue num="4463" status="New">
+<title>Change wording to 'model' from 'subsumes' in [algorithms.parallel.user]</title>
+<section><sref ref="[algorithms.parallel.user]"/></section>
+<submitter>Ruslan Arutyunyan</submitter>
+<date>07 Nov 2025</date>
+<priority>99</priority>
+
+<discussion>
+<b>Addresses <a href="https://github.com/cplusplus/nbballot/issues/828">US 155-253</a></b>
+<p>
+“Subsumes” word does not work here because `regular_invocable` and `invocable` subsume each other. 
+<p/>
+Proposed change: Say that the type is required to model `regular_invocable`.
+</p>
+</discussion>
+
+<resolution>
+<p>
+This wording is relative to <paper num="N5014"/>.
+</p>
+
+<ol>
+<li><p>Modify <sref ref="[algorithms.parallel.user]"/>, as indicated:</p>
+
+<blockquote>
+<p>
+-1- Unless otherwise specified, invocable objects passed into parallel algorithms as objects of a 
+type denoted by a template parameter named `Predicate`, `BinaryPredicate`, `Compare`, 
+`UnaryOperation`, `BinaryOperation`, `BinaryOperation1`, `BinaryOperation2`, `BinaryDivideOp`, 
+or constrained by a concept<ins>, which semantic requirements impose</ins> that 
+<del>subsumes</del><ins>the type models</ins> `regular_invocable` and the operators used by the 
+analogous overloads to these parallel algorithms that are formed by an invocation with the 
+specified default predicate or operation (where applicable) shall not directly
+or indirectly modify objects via their arguments, nor shall they rely on the identity of the 
+provided objects.
+</p>
+</blockquote>
+</li>
+</ol>
+
+</resolution>
+
+</issue>
