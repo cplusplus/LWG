@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Issue 4466: task should move its result</title>
+<meta property="og:title" content="Issue 4466: task should move its result">
+<meta property="og:description" content="C++ library issue. Status: New">
+<meta property="og:url" content="https://cplusplus.github.io/LWG/issue4466.html">
+<meta property="og:type" content="website">
+<meta property="og:image" content="http://cplusplus.github.io/LWG/images/cpp_logo.png">
+<meta property="og:image:alt" content="C++ logo">
+<style>
+  p {text-align:justify}
+  li {text-align:justify}
+  pre code.backtick::before { content: "`" }
+  pre code.backtick::after { content: "`" }
+  blockquote.note
+  {
+    background-color:#E0E0E0;
+    padding-left: 15px;
+    padding-right: 15px;
+    padding-top: 1px;
+    padding-bottom: 1px;
+  }
+  ins {background-color:#A0FFA0}
+  del {background-color:#FFA0A0}
+  table.issues-index { border: 1px solid; border-collapse: collapse; }
+  table.issues-index th { text-align: center; padding: 4px; border: 1px solid; }
+  table.issues-index td { padding: 4px; border: 1px solid; }
+  table.issues-index td:nth-child(1) { text-align: right; }
+  table.issues-index td:nth-child(2) { text-align: left; }
+  table.issues-index td:nth-child(3) { text-align: left; }
+  table.issues-index td:nth-child(4) { text-align: left; }
+  table.issues-index td:nth-child(5) { text-align: center; }
+  table.issues-index td:nth-child(6) { text-align: center; }
+  table.issues-index td:nth-child(7) { text-align: left; }
+  table.issues-index td:nth-child(5) span.no-pr { color: red; }
+  @media (prefers-color-scheme: dark) {
+     html {
+        color: #ddd;
+        background-color: black;
+     }
+     ins {
+        background-color: #225522
+     }
+     del {
+        background-color: #662222
+     }
+     a {
+        color: #6af
+     }
+     a:visited {
+        color: #6af
+     }
+     blockquote.note
+     {
+        background-color: rgba(255, 255, 255, .10)
+     }
+  }
+</style>
+</head>
+<body>
+<hr>
+<p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#New">New</a> status.</em></p>
+<h3 id="4466"><a href="lwg-active.html#4466">4466</a>. <code>task</code> should move its result</h3>
+<p><b>Section:</b> 33.13.6.5 <a href="https://wg21.link/task.promise">[task.promise]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
+ <b>Submitter:</b> Robert A.H. Leahy <b>Opened:</b> 2025-11-05 <b>Last modified:</b> 2025-11-07</p>
+<p><b>Priority: </b>Not Prioritized
+</p>
+<p><b>View other</b> <a href="lwg-index-open.html#task.promise">active issues</a> in [task.promise].</p>
+<p><b>View all other</b> <a href="lwg-index.html#task.promise">issues</a> in [task.promise].</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
+<p><b>Discussion:</b></p>
+<p>
+In 33.13.6.5 <a href="https://wg21.link/task.promise">[task.promise]</a> there's the following bullet (7.3):
+</p>
+<blockquote><pre>
+set_value(std::move(<i>RCVR</i>(*this)), *<i>result</i>).
+</pre></blockquote>
+<p>
+This has the effect of sending the result as an lvalue whereas an rvalue is almost 
+certainly what's intended, see the bullet (7.1) above:
+</p>
+<blockquote><pre>
+set_error(std::move(<i>RCVR</i>(*this)), std::move(e)) [&hellip;]
+</pre></blockquote>
+<p>
+Resolution would be to change the bullet (7.3) to:
+</p>
+<blockquote><pre>
+set_value(std::move(<i>RCVR</i>(*this)), *<ins>std::move(</ins><i>result</i><ins>)</ins>).
+</pre></blockquote>
+
+
+<p id="res-4466"><b>Proposed resolution:</b></p>
+<p>
+This wording is relative to <a href="https://wg21.link/N5014">N5014</a>.
+</p>
+
+<ol>
+<li><p>Modify 33.13.6.5 <a href="https://wg21.link/task.promise">[task.promise]</a>, as indicated:</p>
+
+<blockquote>
+<pre>
+auto final_suspend() noexcept;
+</pre>
+<blockquote>
+<p>
+-7- <i>Returns</i>: An awaitable object of unspecified type (7.6.2.4 <a href="https://wg21.link/expr.await">[expr.await]</a>) 
+whose member functions arrange for the completion of the asynchronous operation associated 
+with <code><i>STATE</i>(*this)</code> by invoking:
+</p>
+<ul style="list-style-type: none">
+<li>(7.1) &mdash; 
+<code>set_error(std::move(<i>RCVR</i>(*this)), std::move(e))</code> if <code><i>errors</i>.index()</code> 
+is greater than zero and <code class='backtick'>e</code> is the value held by <code><i>errors</i></code>, otherwise
+</li>
+<li>(7.2) &mdash; 
+<code>set_value(std::move(<i>RCVR</i>(*this)))</code> if <code>is_void&lt;T&gt;</code> is <code class='backtick'>true</code>, 
+and otherwise
+</li>
+<li>(7.3) &mdash; 
+<code>set_value(std::move(<i>RCVR</i>(*this)), *<ins>std::move(</ins><i>result</i><ins>)</ins>)</code>.
+</li>
+</ul>
+</blockquote>
+</blockquote>
+</li>
+</ol>
+
+
+
+
+
+
+</body>
+</html>
