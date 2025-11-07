@@ -49,6 +49,17 @@ Set priority to 2 after reflector poll.
 <p>
 "P/R is incomplete - also needs to update at least `promise_type::uncaught_exception()`."
 </p>
+
+<note>Kona 2025-11-06</note>
+<p>
+SG1 think resolution looks good, but noted pre-existing issue that 7.3 doesn't
+use `std::move` on `*st.result`.
+(Would need to be `*std::move(st.result)` to handle <tt>optional&lt;T&amp;&gt;</tt> correctly.)
+</p>
+<p>
+LWG <iref ref="4415"/> renames `uncaught_exception` to `unhandled_exception`.
+</p>
+
 </discussion>
 
 <resolution>
