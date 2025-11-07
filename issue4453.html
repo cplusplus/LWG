@@ -64,7 +64,7 @@
 <p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#New">New</a> status.</em></p>
 <h3 id="4453"><a href="lwg-active.html#4453">4453</a>. <code>atomic_ref&lt;cv T&gt;::required_alignment</code> should be the same as for <code class='backtick'>T</code></h3>
 <p><b>Section:</b> 32.5.7.2 <a href="https://wg21.link/atomics.ref.ops">[atomics.ref.ops]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Jonathan Wakely <b>Opened:</b> 2025-11-06 <b>Last modified:</b> 2025-11-06</p>
+ <b>Submitter:</b> Jonathan Wakely <b>Opened:</b> 2025-11-06 <b>Last modified:</b> 2025-11-07</p>
 <p><b>Priority: </b>Not Prioritized
 </p>
 <p><b>View other</b> <a href="lwg-index-open.html#atomics.ref.ops">active issues</a> in [atomics.ref.ops].</p>
@@ -114,9 +114,9 @@ The alignment required for an object to be referenced by an atomic reference,
 which is at least <code class='backtick'>alignof(T)</code>.
 <ins>
 The value of
-<code>atomic_ref&lt;<i>cv</i> T&gt;::required_alignment</code>
+<code>required_alignment</code>
 is the same as
-<code>atomic_ref&lt;T&gt;::required_alignment</code>
+<code>atomic_ref&lt;remove_cv_t&lt;T&gt;&gt;::required_alignment</code>
 </ins>
 </p>
 <p> -2-

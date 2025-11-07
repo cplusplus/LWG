@@ -64,7 +64,7 @@
 <p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#Immediate">Immediate</a> status.</em></p>
 <h3 id="4456"><a href="lwg-active.html#4456">4456</a>. Decay <code class='backtick'>Data</code> and <code class='backtick'>Child</code> in <i><code class='backtick'>make-sender</code></i></h3>
 <p><b>Section:</b> 33.9.2 <a href="https://wg21.link/exec.snd.expos">[exec.snd.expos]</a> <b>Status:</b> <a href="lwg-active.html#Immediate">Immediate</a>
- <b>Submitter:</b> Jonathan Wakely <b>Opened:</b> 2025-11-06 <b>Last modified:</b> 2025-11-06</p>
+ <b>Submitter:</b> Jonathan Wakely <b>Opened:</b> 2025-11-06 <b>Last modified:</b> 2025-11-07</p>
 <p><b>Priority: </b>Not Prioritized
 </p>
 <p><b>View other</b> <a href="lwg-index-open.html#exec.snd.expos">active issues</a> in [exec.snd.expos].</p>
@@ -96,7 +96,7 @@ template&lt;class Tag, class Data = see below, class... Child&gt;
 </pre>
 <blockquote>
 <p>-24- <i>Mandates</i>: The following expressions are <code class='backtick'>true</code>:
-<ul>
+<ol style="list-style-type: none">
 <li>(24.1) &mdash; <code>semiregular&lt;Tag&gt;</code></li>
 <li>(24.2) &mdash; <code><i>movable-value</i>&lt;Data&gt;</code></li>
 <li>(24.3) &mdash; <code>(sender&lt;Child&gt; &amp;&amp; ...)</code></li>
@@ -115,7 +115,7 @@ the implementation should include information about that exception
 in the resulting diagnostic.
 </blockquote>
 </li>
-</ul>
+</ol>
 </p>
 <p>-25- <i>Returns</i>:
 A prvalue of type
