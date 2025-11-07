@@ -67,7 +67,7 @@
 <h3 id="4383"><a href="lwg-active.html#4383">4383</a>. <code class='backtick'>constant_wrapper</code>'s pseudo-mutators are underconstrained
 </h3>
 <p><b>Section:</b> 21.3.5 <a href="https://wg21.link/const.wrap.class">[const.wrap.class]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Hewill Kang <b>Opened:</b> 2025-09-24 <b>Last modified:</b> 2025-11-06</p>
+ <b>Submitter:</b> Hewill Kang <b>Opened:</b> 2025-09-24 <b>Last modified:</b> 2025-11-07</p>
 <p><b>Priority: </b>1
 </p>
 <p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
@@ -307,11 +307,11 @@ function call operator.]
   };
 }
 
-template&lt;exposition_only::cw_fixed_value X, typename&gt;
-struct constant_wrapper: exposition_only::cw_operators {
-  static constexpr const auto &amp; value = X.data;
+template&lt;<i>cw-fixed-value</i> X, typename&gt;
+struct constant_wrapper: <i>cw-operators</i> {
+  static constexpr const auto &amp; value = X.<i>data</i>;
   using type = constant_wrapper;
-  using value_type = typename decltype(X)::type;
+  using value_type = typename decltype(X)::<i>type</i>;
 
   <del>template&lt;<i>constexpr-param</i> R&gt;
     constexpr auto operator=(R) const noexcept requires requires(value_type x) { x = R::value; }
