@@ -1,0 +1,54 @@
+<?xml version='1.0' encoding='utf-8' standalone='no'?>
+<!DOCTYPE issue SYSTEM "lwg-issue.dtd">
+
+<issue num="4461" status="New">
+<title><i>`stop-when`</i> needs to evaluate unstoppable tokens</title>
+<section><sref ref="[exec.stop.when]"/></section>
+<submitter>Jonathan Wakely</submitter>
+<date>06 Nov 2025</date>
+<priority>99</priority>
+
+<discussion>
+<b>Addresses <a href="https://github.com/cplusplus/nbballot/issues/920">US 226-345</a></b>
+<p>
+For the case where `token` models `unstoppable_token` the expression that
+<i>`stop-when`</i> is expression-equivalent to needs to include the fact
+that `token` is evaluated (even if not used).
+</p>
+</discussion>
+
+<resolution>
+<p>
+This wording is relative to <paper num="N5014"/>.
+</p>
+
+<ol>
+<li><p>Modify <sref ref="[exec.stop.when]"/>, as indicated:</p>
+
+<blockquote>
+<p>-2-
+The name <i>`stop-when`</i> denotes an exposition-only sender adaptor.
+For subexpressions `sndr` and `token`:
+<ol style="list-style-type: none">
+<li>(2.1) &mdash;
+If `decltype((sndr))` does not satisfy `sender`,
+or <code>remove_cvref_t&lt;decltype((token))&gt;</code>
+does not satisfy `stoppable_token`,
+then <code><i>stop-when</i>(sndr, token)</code> is ill-formed.
+</li>
+<li>(2.2) &mdash;
+Otherwise, if <code>remove_cvref_t&lt;decltype((token))&gt;</code>
+models `unstoppable_token` then <code><i>stop-when</i>(sndr, token)</code>
+is expression-equivalent to
+<code><ins>(void)token, </ins>sndr</code><ins>, except that `token`
+and `sndr` are indeterminately sequenced</ins>.
+</li>
+</ol>
+</p>
+</blockquote>
+</li>
+</ol>
+
+</resolution>
+
+</issue>
