@@ -1,0 +1,48 @@
+<?xml version='1.0' encoding='utf-8' standalone='no'?>
+<!DOCTYPE issue SYSTEM "lwg-issue.dtd">
+
+<issue num="4459" status="New">
+<title>Protect `get_completion_signatures` fold expression from overloaded commas</title>
+<section><sref ref="[exec.snd.expos]"/></section>
+<submitter>Jonathan Wakely</submitter>
+<date>07 Nov 2025</date>
+<priority>99</priority>
+
+<discussion>
+<b>Addresses <a href="https://github.com/cplusplus/nbballot/issues/930">US 214-355</a></b>
+<p>
+The fold expression can pick up overloaded comma operators.
+</p>
+</discussion>
+
+<resolution>
+<p>
+This wording is relative to <paper num="N5014"/>.
+</p>
+
+<ol>
+<li><p>Modify <sref ref="[exec.snd.expos]"/>, as indicated:</p>
+
+<blockquote>
+<pre>
+template&lt;class Sndr, class... Env&gt;
+  static consteval void <i>default-impls</i>::<i>check-types</i>();
+</pre>
+<blockquote>
+<p>-40-
+Let `Is` be the pack of integral template arguments of the
+`integer_sequence` specialization denoted by
+<code><i>indices-for</i>&lt;Sndr&gt;</code>.
+</p>
+<p>-41- <i>Effects</i>:
+Equivalent to:
+<code>(<ins>(void)</ins>get_completion_signatures&lt;<i>child-type</i>&lt;Sndr, Is&gt;, <i>FWD-ENV-T</i>(Env)...&gt;(), ...);</code>
+</p>
+</blockquote>
+</blockquote>
+</li>
+</ol>
+
+</resolution>
+
+</issue>
