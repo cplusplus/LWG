@@ -1,0 +1,83 @@
+<?xml version='1.0' encoding='utf-8' standalone='no'?>
+<!DOCTYPE issue SYSTEM "lwg-issue.dtd">
+
+<issue num="4465" status="New">
+<title>&sect;[alg.partitions] Clarify <i>Returns:</i> element</title>
+<section><sref ref="[alg.partitions]"/></section>
+<submitter>Ruslan Arutyunyan</submitter>
+<date>07 Nov 2025</date>
+<priority>99</priority>
+
+<discussion>
+<b>Addresses <a href="https://github.com/cplusplus/nbballot/issues/836">US 162-261</a></b>
+<p>
+In <sref ref="[alg.partitions]"/> p21 the wording is unclear what happens if there is not such element. 
+The proposed resolution tries to clarify that without complicating the wording. If the proposed resolution 
+(or something along those lines) fails, the recommendation is to reject US 162-261. 
+</p>
+</discussion>
+
+<resolution>
+<p>
+This wording is relative to <paper num="N5014"/>.
+</p>
+
+<ol>
+<li><p>Modify <sref ref="[alg.partitions]"/>, as indicated:</p>
+
+<blockquote>
+<pre>
+template&lt;class InputIterator, class OutputIterator1, class OutputIterator2, class Predicate&gt;
+  constexpr pair&lt;OutputIterator1, OutputIterator2&gt;
+    partition_copy(InputIterator first, InputIterator last,
+                   OutputIterator1 out_true, OutputIterator2 out_false, Predicate pred);
+[&hellip;]
+template&lt;<i>execution-policy</i> Ep, <i>sized-random-access-range</i> R,
+         <i>sized-random-access-range</i> OutR1, <i>sized-random-access-range</i> OutR2,
+         class Proj = identity,
+         indirect_unary_predicate&lt;projected&lt;iterator_t&lt;R&gt;, Proj&gt;&gt; Pred&gt;
+  requires indirectly_copyable&lt;iterator_t&lt;R&gt;, iterator_t&lt;OutR1&gt;&gt; &amp;&amp;
+            indirectly_copyable&lt;iterator_t&lt;R&gt;, iterator_t&lt;OutR2&gt;&gt;
+  ranges::partition_copy_result&lt;borrowed_iterator_t&lt;R&gt;, borrowed_iterator_t&lt;OutR1&gt;,
+                                borrowed_iterator_t&lt;OutR2&gt;&gt;
+    ranges::partition_copy(Ep&amp;&amp; exec, R&amp;&amp; r, OutR1&amp;&amp; out_true_r, OutR2&amp;&amp; out_false_r,
+                           Pred pred, Proj proj = {});
+</pre>
+<blockquote>
+<p>
+-14- Let `proj` be `identity{}` for the overloads with no parameter named `proj` and let 
+<tt><i>E</i>(x)</tt> be <tt>bool(invoke(pred, invoke(proj, x)))</tt>.
+<p/>
+[&hellip;]
+<p/>
+-19- <i>Preconditions</i>: The input range and output ranges do not overlap. [&hellip;]
+<p/>
+-20- <i>Effects</i>: For each iterator `i` in <tt>[first, first + <i>N</i>)</tt>, copies `*i` 
+to the output range `[out_true, last_true)` if <tt><i>E</i>(*i)</tt> is `true`, or to the 
+output range `[out_false, last_false)` otherwise.
+<p/>
+-21- <i>Returns</i>: Let <del>`o1`</del><ins><tt><i>Q</i></tt></ins> be the <del>iterator past the 
+last</del><ins>number of</ins> copied element<ins>s</ins> in<ins>to</ins> the output range 
+`[out_true, last_true)`, and <del>`o2`</del><ins><tt><i>V</i></tt></ins> be the <del>iterator past the 
+last</del><ins> number of</ins> copied element<ins>s</ins> in<ins>to</ins> the output range 
+`[out_false, last_false)`. Returns:
+</p>
+<ul style="list-style-type: none">
+<li>(21.1) &mdash; <tt>{<del>o1</del><ins>out_true + <i>Q</i></ins>, <del>o2</del><ins>out_false + <i>V</i></ins>}</tt> 
+for the overloads in namespace `std`.
+</li>
+<li>(21.2) &mdash; <tt>{first + <i>N</i>, <del>o1</del><ins>out_true + <i>Q</i></ins>, 
+<del>o2</del><ins>out_false + <i>V</i></ins>}</tt> for the overloads in namespace `ranges`.
+</li>
+</ul>
+<p>
+-22- <i>Complexity</i>: At `most last - first` applications of `pred` and `proj`.
+</p>
+</blockquote>
+</blockquote>
+</li>
+</ol>
+
+</resolution>
+
+</issue>
