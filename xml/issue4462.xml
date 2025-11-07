@@ -1,0 +1,73 @@
+<?xml version='1.0' encoding='utf-8' standalone='no'?>
+<!DOCTYPE issue SYSTEM "lwg-issue.dtd">
+
+<issue num="4462" status="New">
+<title>Algorithm requirements don't describe semantics of `s - i` well</title>
+<section><sref ref="[algorithms.requirements]"/></section>
+<submitter>Jonathan Wakely</submitter>
+<date>07 Nov 2025</date>
+<priority>99</priority>
+
+<discussion>
+<b>Addresses <a href="https://github.com/cplusplus/nbballot/issues/827">US 154-252</a></b>
+<p>
+“the semantics of `s - i` has” is not grammatically correct.
+Additionally, “type, value, and value category” are properties of expressions,
+not “semantics”.
+</p>
+</discussion>
+
+<resolution>
+<p>
+This wording is relative to <paper num="N5014"/>.
+</p>
+
+<ol>
+<li><p>Modify <sref ref="[algorithms.requirements]"/>, as indicated:</p>
+
+<blockquote>
+<p>-11-
+In the description of the algorithms, operator `+` is used for some of the
+iterator categories for which it does not have to be defined.
+In these cases the semantics of `a + n` are the same as those of
+<pre>
+    auto tmp = a;
+    for (; n &lt; 0; ++n) --tmp;
+    for (; n &gt; 0; --n) ++tmp;
+    return tmp;
+</pre>
+Similarly, operator `-` is used for some combinations of iterators
+and sentinel types for which it does not have to be defined.
+If [`a`, `b`) denotes a range, the semantics of `b - a` in these cases
+are the same as those of
+<pre>
+    iter_difference_t&lt;decltype(a)&gt; n = 0;
+    for (auto tmp = a; tmp != b; ++tmp) ++n;
+    return n;
+</pre>
+and if [`b`, `a`) denotes a range, the same as those of
+<pre>
+    iter_difference_t&lt;decltype(b)&gt; n = 0;
+    for (auto tmp = b; tmp != a; ++tmp) --n;
+    return n;
+</pre>
+</p>
+<p>
+For each iterator `i` and sentinel `s` produced from a range `r`,
+the semantics of `s - i`
+<ins>are the same as those of an expression that</ins>
+has the same type, value,
+and value category as `ranges::distance(i, s)`.
+</p>
+<p>
+[<i>Note 3</i>: The implementation can use `ranges::distance(r)`
+when that produces the same value as `ranges::distance(i, s)`.
+This can be more efficient for sized ranges. &mdash; <i>end note</i>]
+</p>
+</blockquote>
+</li>
+</ol>
+
+</resolution>
+
+</issue>
