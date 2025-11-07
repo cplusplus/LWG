@@ -196,7 +196,7 @@ in `nonstatic_data_members_of(r, access_context::unchecked())`.
 Otherwise, `false`.
 </p>
 <p>-6- <i>Throws</i>:
-`meta::exception` unless
+`meta::exception` <del>unless</del> <ins>if</ins>
 <ul style="list-style-type: none">
 <li>(6.1) &mdash;
 <ins>the evaluation of</ins>
@@ -205,12 +205,12 @@ Otherwise, `false`.
 is a constant subexpression
 </del>
 <ins>
-would not exit via an exception
+would exit via an exception
 </ins>
-and
+<del>and</del> <ins>or</ins>
 </li>
 <li>(6.2) &mdash;
-`r` does not represent a closure type.
+`r` <del>does not represent</del> <ins>represents</ins> a closure type.
 </li>
 </ul>
 </p>
@@ -219,17 +219,17 @@ and
 consteval bool has_inaccessible_bases(info r, access_context ctx);
 </pre>
 <blockquote>
-<p>-5- <i>Returns</i>:
+<p>-7- <i>Returns</i>:
 `true` if `is_accessible(`<i>R</i>`, ctx)` is `false` for any <i>R</i>
 in `bases_of(r, access_context::unchecked())`.
 Otherwise, `false`.
 </p>
-<p>-6- <i>Throws</i>:
-`meta::exception` unless
+<p>-8- <i>Throws</i>:
+`meta::exception` <del>unless</del> <ins>if</ins>
 <ins>the evaluation of</ins>
 `bases_of(r, access_context::unchecked())`
 <del>is a constant subexpression</del>
-<ins>would not exit via an exception</ins>.
+<ins>would exit via an exception</ins>.
 </p>
 </blockquote>
 </blockquote>
