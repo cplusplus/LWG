@@ -1,0 +1,71 @@
+<?xml version='1.0' encoding='utf-8' standalone='no'?>
+<!DOCTYPE issue SYSTEM "lwg-issue.dtd">
+
+<issue num="4460" status="New">
+<title>Missing <i>Throws</i>: for last `variant` constructor</title>
+<section><sref ref="[variant.ctor]"/></section>
+<submitter>Jonathan Wakely</submitter>
+<date>07 Nov 2025</date>
+<priority>99</priority>
+
+<discussion>
+<p>
+All `variant` constructors except the last one have a <i>Throws</i>: element
+saying what they're allowed to throw.
+</p>
+<p>
+This originates from an editorial pull request, where the submitter said:
+</p>
+<blockquote>
+"It looks like this defect is an artifact of a change between
+<paper num="P0088R0"/> and <paper num="P0088R1"/>.
+Note how in R0 neither one of the `emplaced_type_t`/`emplaced_index_t`
+(as they were then called) + `initializer_list` constructors have a
+throws clause. In R1 only one of them gained it."
+</blockquote>
+</discussion>
+
+<resolution>
+<p>
+This wording is relative to <paper num="N5014"/>.
+</p>
+
+<ol>
+<li><p>Modify <sref ref="[variant.ctor]"/>, as indicated:</p>
+
+<blockquote>
+<pre>
+template&lt;size_t I, class U, class... Args&gt;
+  constexpr explicit variant(in_place_index_t&lt;I&gt;, initializer_list&lt;U&gt; il, Args&amp;&amp;... args);
+</pre>
+<blockquote>
+<p>-35- <i>Constraints</i>:
+<ol style="list-style-type: none">
+<li>(35.1) &mdash; `I` is less than `sizeof...(Types)` and</li>
+<li>(35.2) &mdash;
+<code>is_constructible_v&lt;T<sub>I</sub>, initializer_list&lt;U&gt;&amp;, Args...&gt;</code>
+is `true`.
+</li>
+</ol>
+</p>
+<p>-36- <i>Effects</i>:
+Direct-non-list-initializes the contained value of type
+<tt>T<sub>I</sub></tt> with <code>il, std::forward&lt;Args&gt;(args)...</code>.
+</p>
+<p>-37- <i>Postconditions</i>: `index()` is `I`.</p>
+<p><ins>-?- <i>Throws</i>:
+Any exception thrown by calling the selected constructor of
+<tt>T<sub>I</sub></tt>.
+</ins>
+</p>
+<p>-38- <i>Remarks</i>:
+If <tt>T<sub>I</sub></tt>’s selected constructor is a constexpr constructor,
+this constructor is a constexpr constructor.
+</p>
+</blockquote>
+</blockquote>
+</li>
+</ol>
+</resolution>
+
+</issue>
