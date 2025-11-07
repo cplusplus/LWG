@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="4434" status="New">
+<issue num="4434" status="Immediate">
 <title>`meta::is_accessible` does not need to consider incomplete <i>D</i></title>
 <section><sref ref="[meta.reflection.access.queries]"/></section>
 <submitter>Jakub Jelinek</submitter>
@@ -20,6 +20,8 @@ However, the only way to get access to a direct base relationship is
 through `bases_of`/`subobjects_of` and those throw if the class is incomplete,
 so I don't see how an `is_base` reflection could have ever incomplete <i>D</i>.
 </p>
+
+<note>Kona 2025-11-07; approved by LWG. Status changed: New &rarr; Immediate.</note>
 </discussion>
 
 <resolution>
