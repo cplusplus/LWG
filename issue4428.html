@@ -64,7 +64,7 @@
 <p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#New">New</a> status.</em></p>
 <h3 id="4428"><a href="lwg-active.html#4428">4428</a>. Metafunctions should not be defined in terms of constant subexpressions</h3>
 <p><b>Section:</b> 21.4.9 <a href="https://wg21.link/meta.reflection.access.queries">[meta.reflection.access.queries]</a>, 21.4.18 <a href="https://wg21.link/meta.reflection.annotation">[meta.reflection.annotation]</a>, 21.4.15 <a href="https://wg21.link/meta.reflection.array">[meta.reflection.array]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Jonathan Wakely <b>Opened:</b> 2025-10-24 <b>Last modified:</b> 2025-11-06</p>
+ <b>Submitter:</b> Jonathan Wakely <b>Opened:</b> 2025-10-24 <b>Last modified:</b> 2025-11-07</p>
 <p><b>Priority: </b>Not Prioritized
 </p>
 <p><b>View other</b> <a href="lwg-index-open.html#meta.reflection.access.queries">active issues</a> in [meta.reflection.access.queries].</p>
@@ -257,7 +257,7 @@ in <code class='backtick'>nonstatic_data_members_of(r, access_context::unchecked
 Otherwise, <code class='backtick'>false</code>.
 </p>
 <p>-6- <i>Throws</i>:
-<code class='backtick'>meta::exception</code> unless
+<code class='backtick'>meta::exception</code> <del>unless</del> <ins>if</ins>
 <ul style="list-style-type: none">
 <li>(6.1) &mdash;
 <ins>the evaluation of</ins>
@@ -266,12 +266,12 @@ Otherwise, <code class='backtick'>false</code>.
 is a constant subexpression
 </del>
 <ins>
-would not exit via an exception
+would exit via an exception
 </ins>
-and
+<del>and</del> <ins>or</ins>
 </li>
 <li>(6.2) &mdash;
-<code class='backtick'>r</code> does not represent a closure type.
+<code class='backtick'>r</code> <del>does not represent</del> <ins>represents</ins> a closure type.
 </li>
 </ul>
 </p>
@@ -280,17 +280,17 @@ and
 consteval bool has_inaccessible_bases(info r, access_context ctx);
 </pre>
 <blockquote>
-<p>-5- <i>Returns</i>:
+<p>-7- <i>Returns</i>:
 <code class='backtick'>true</code> if <code class='backtick'>is_accessible(</code><i>R</i><code class='backtick'>, ctx)</code> is <code class='backtick'>false</code> for any <i>R</i>
 in <code class='backtick'>bases_of(r, access_context::unchecked())</code>.
 Otherwise, <code class='backtick'>false</code>.
 </p>
-<p>-6- <i>Throws</i>:
-<code class='backtick'>meta::exception</code> unless
+<p>-8- <i>Throws</i>:
+<code class='backtick'>meta::exception</code> <del>unless</del> <ins>if</ins>
 <ins>the evaluation of</ins>
 <code class='backtick'>bases_of(r, access_context::unchecked())</code>
 <del>is a constant subexpression</del>
-<ins>would not exit via an exception</ins>.
+<ins>would exit via an exception</ins>.
 </p>
 </blockquote>
 </blockquote>
