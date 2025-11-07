@@ -62,7 +62,7 @@
 </tr>
 <tr>
 <td align="left">Date:</td>
-<td align="left">Revised 2025-11-07 at 18:31:36 UTC
+<td align="left">Revised 2025-11-07 at 19:27:24 UTC
 </td>
 </tr>
 <tr>
@@ -8201,6 +8201,187 @@ Equivalent to:
 <code>(<ins>(void)</ins>get_completion_signatures&lt;<i>child-type</i>&lt;Sndr, Is&gt;, <i>FWD-ENV-T</i>(Env)...&gt;(), ...);</code>
 </p>
 </blockquote>
+</blockquote>
+</li>
+</ol>
+
+
+
+
+
+
+<hr>
+<h3 id="4461"><a href="#4461">4461</a><sup><a href="https://cplusplus.github.io/LWG/issue4461">(i)</a></sup>. <i><code class='backtick'>stop-when</code></i> needs to evaluate unstoppable tokens</h3>
+<p><b>Section:</b> 33.9.12.17 <a href="https://wg21.link/exec.stop.when">[exec.stop.when]</a> <b>Status:</b> <a href="lwg-active.html#Immediate">Immediate</a>
+ <b>Submitter:</b> Jonathan Wakely <b>Opened:</b> 2025-11-06 <b>Last modified:</b> 2025-11-07</p>
+<p><b>Priority: </b>Not Prioritized
+</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#Immediate">Immediate</a> status.</p>
+<p><b>Discussion:</b></p>
+<b>Addresses <a href="https://github.com/cplusplus/nbballot/issues/920">US 226-345</a></b>
+<p>
+For the case where <code class='backtick'>token</code> models <code class='backtick'>unstoppable_token</code> the expression that
+<i><code class='backtick'>stop-when</code></i> is expression-equivalent to needs to include the fact
+that <code class='backtick'>token</code> is evaluated (even if not used).
+</p>
+
+<p><i>[Kona 2025-11-07; approved by LWG. Status changed: New &rarr; Immediate.]</i></p>
+
+
+
+<p id="res-4461"><b>Proposed resolution:</b></p>
+<p>
+This wording is relative to <a href="https://wg21.link/N5014">N5014</a>.
+</p>
+
+<ol>
+<li><p>Modify 33.9.12.17 <a href="https://wg21.link/exec.stop.when">[exec.stop.when]</a>, as indicated:</p>
+
+<blockquote>
+<p>-2-
+The name <i><code class='backtick'>stop-when</code></i> denotes an exposition-only sender adaptor.
+For subexpressions <code class='backtick'>sndr</code> and <code class='backtick'>token</code>:
+<ol style="list-style-type: none">
+<li>(2.1) &mdash;
+If <code class='backtick'>decltype((sndr))</code> does not satisfy <code class='backtick'>sender</code>,
+or <code>remove_cvref_t&lt;decltype((token))&gt;</code>
+does not satisfy <code class='backtick'>stoppable_token</code>,
+then <code><i>stop-when</i>(sndr, token)</code> is ill-formed.
+</li>
+<li>(2.2) &mdash;
+Otherwise, if <code>remove_cvref_t&lt;decltype((token))&gt;</code>
+models <code class='backtick'>unstoppable_token</code> then <code><i>stop-when</i>(sndr, token)</code>
+is expression-equivalent to
+<code><ins>(void)token, </ins>sndr</code><ins>, except that <code class='backtick'>token</code>
+and <code class='backtick'>sndr</code> are indeterminately sequenced</ins>.
+</li>
+</ol>
+</p>
+</blockquote>
+</li>
+</ol>
+
+
+
+
+
+
+<hr>
+<h3 id="4462"><a href="#4462">4462</a><sup><a href="https://cplusplus.github.io/LWG/issue4462">(i)</a></sup>. Algorithm requirements don't describe semantics of <code class='backtick'>s - i</code> well</h3>
+<p><b>Section:</b> 26.2 <a href="https://wg21.link/algorithms.requirements">[algorithms.requirements]</a> <b>Status:</b> <a href="lwg-active.html#Immediate">Immediate</a>
+ <b>Submitter:</b> Jonathan Wakely <b>Opened:</b> 2025-11-07 <b>Last modified:</b> 2025-11-07</p>
+<p><b>Priority: </b>Not Prioritized
+</p>
+<p><b>View other</b> <a href="lwg-index-open.html#algorithms.requirements">active issues</a> in [algorithms.requirements].</p>
+<p><b>View all other</b> <a href="lwg-index.html#algorithms.requirements">issues</a> in [algorithms.requirements].</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#Immediate">Immediate</a> status.</p>
+<p><b>Discussion:</b></p>
+<b>Addresses <a href="https://github.com/cplusplus/nbballot/issues/827">US 154-252</a></b>
+<p>
+“the semantics of <code class='backtick'>s - i</code> has” is not grammatically correct.
+Additionally, “type, value, and value category” are properties of expressions,
+not “semantics”.
+</p>
+
+<p><i>[Kona 2025-11-07; approved by LWG. Status changed: New &rarr; Immediate.]</i></p>
+
+
+
+<p id="res-4462"><b>Proposed resolution:</b></p>
+<p>
+This wording is relative to <a href="https://wg21.link/N5014">N5014</a>.
+</p>
+
+<ol>
+<li><p>Modify 26.2 <a href="https://wg21.link/algorithms.requirements">[algorithms.requirements]</a>, as indicated:</p>
+
+<blockquote>
+<p>-11-
+In the description of the algorithms, operator <code class='backtick'>+</code> is used for some of the
+iterator categories for which it does not have to be defined.
+In these cases the semantics of <code class='backtick'>a + n</code> are the same as those of
+<pre>
+    auto tmp = a;
+    for (; n &lt; 0; ++n) --tmp;
+    for (; n &gt; 0; --n) ++tmp;
+    return tmp;
+</pre>
+Similarly, operator <code class='backtick'>-</code> is used for some combinations of iterators
+and sentinel types for which it does not have to be defined.
+If [<code class='backtick'>a</code>, <code class='backtick'>b</code>) denotes a range, the semantics of <code class='backtick'>b - a</code> in these cases
+are the same as those of
+<pre>
+    iter_difference_t&lt;decltype(a)&gt; n = 0;
+    for (auto tmp = a; tmp != b; ++tmp) ++n;
+    return n;
+</pre>
+and if [<code class='backtick'>b</code>, <code class='backtick'>a</code>) denotes a range, the same as those of
+<pre>
+    iter_difference_t&lt;decltype(b)&gt; n = 0;
+    for (auto tmp = b; tmp != a; ++tmp) --n;
+    return n;
+</pre>
+</p>
+<p>
+For each iterator <code class='backtick'>i</code> and sentinel <code class='backtick'>s</code> produced from a range <code class='backtick'>r</code>,
+the semantics of <code class='backtick'>s - i</code>
+<ins>are the same as those of an expression that</ins>
+has the same type, value,
+and value category as <code class='backtick'>ranges::distance(i, s)</code>.
+</p>
+<p>
+[<i>Note 3</i>: The implementation can use <code class='backtick'>ranges::distance(r)</code>
+when that produces the same value as <code class='backtick'>ranges::distance(i, s)</code>.
+This can be more efficient for sized ranges. &mdash; <i>end note</i>]
+</p>
+</blockquote>
+</li>
+</ol>
+
+
+
+
+
+
+<hr>
+<h3 id="4463"><a href="#4463">4463</a><sup><a href="https://cplusplus.github.io/LWG/issue4463">(i)</a></sup>. Change wording to 'model' from 'subsumes' in [algorithms.parallel.user]</h3>
+<p><b>Section:</b> 26.3.2 <a href="https://wg21.link/algorithms.parallel.user">[algorithms.parallel.user]</a> <b>Status:</b> <a href="lwg-active.html#Immediate">Immediate</a>
+ <b>Submitter:</b> Ruslan Arutyunyan <b>Opened:</b> 2025-11-07 <b>Last modified:</b> 2025-11-07</p>
+<p><b>Priority: </b>Not Prioritized
+</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#Immediate">Immediate</a> status.</p>
+<p><b>Discussion:</b></p>
+<b>Addresses <a href="https://github.com/cplusplus/nbballot/issues/828">US 155-253</a></b>
+<p>
+“Subsumes” word does not work here because <code class='backtick'>regular_invocable</code> and <code class='backtick'>invocable</code> subsume each other. 
+<p/>
+Proposed change: Say that the type is required to model <code class='backtick'>regular_invocable</code>.
+</p>
+
+<p><i>[Kona 2025-11-07; approved by LWG. Status changed: New &rarr; Immediate.]</i></p>
+
+
+
+<p id="res-4463"><b>Proposed resolution:</b></p>
+<p>
+This wording is relative to <a href="https://wg21.link/N5014">N5014</a>.
+</p>
+
+<ol>
+<li><p>Modify 26.3.2 <a href="https://wg21.link/algorithms.parallel.user">[algorithms.parallel.user]</a>, as indicated:</p>
+
+<blockquote>
+<p>
+-1- Unless otherwise specified, invocable objects passed into parallel algorithms as objects of a 
+type denoted by a template parameter named <code class='backtick'>Predicate</code>, <code class='backtick'>BinaryPredicate</code>, <code class='backtick'>Compare</code>, 
+<code class='backtick'>UnaryOperation</code>, <code class='backtick'>BinaryOperation</code>, <code class='backtick'>BinaryOperation1</code>, <code class='backtick'>BinaryOperation2</code>, <code class='backtick'>BinaryDivideOp</code>, 
+or constrained by a concept <ins>whose semantic requirements include</ins> that 
+<del>subsumes</del> <ins>the type models</ins> <code class='backtick'>regular_invocable</code> and the operators used by the 
+analogous overloads to these parallel algorithms that are formed by an invocation with the 
+specified default predicate or operation (where applicable) shall not directly
+or indirectly modify objects via their arguments, nor shall they rely on the identity of the 
+provided objects.
+</p>
 </blockquote>
 </li>
 </ol>

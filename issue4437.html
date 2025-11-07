@@ -64,7 +64,7 @@
 <p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#New">New</a> status.</em></p>
 <h3 id="4437"><a href="lwg-active.html#4437">4437</a>. <code class='backtick'>constant_of(^^v)</code> for variable <code class='backtick'>v</code> of array type produces reflection of pointer constant</h3>
 <p><b>Section:</b> 21.4.7 <a href="https://wg21.link/meta.reflection.queries">[meta.reflection.queries]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Tomasz Kamiński <b>Opened:</b> 2025-10-29 <b>Last modified:</b> 2025-10-31</p>
+ <b>Submitter:</b> Tomasz Kamiński <b>Opened:</b> 2025-10-29 <b>Last modified:</b> 2025-11-07</p>
 <p><b>Priority: </b>Not Prioritized
 </p>
 <p><b>View other</b> <a href="lwg-index-open.html#meta.reflection.queries">active issues</a> in [meta.reflection.queries].</p>
@@ -89,6 +89,9 @@ In case when <code>[: <i>R</i> :]</code> is a reference to array, it will decay 
 the first element when accepted by value. I believe this is unintended and we should return an 
 reflection of an array object instead.
 </p>
+
+<p><i>[Kona 2025-11-07; Will be resolved by CWG 3111.]</i></p>
+
 
 
 <p id="res-4437"><b>Proposed resolution:</b></p>
