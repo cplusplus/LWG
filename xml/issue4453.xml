@@ -52,9 +52,9 @@ The alignment required for an object to be referenced by an atomic reference,
 which is at least `alignof(T)`.
 <ins>
 The value of
-<tt>atomic_ref&lt;<i>cv</i> T&gt;::required_alignment</tt>
+<tt>required_alignment</tt>
 is the same as
-<tt>atomic_ref&lt;T&gt;::required_alignment</tt>
+<tt>atomic_ref&lt;remove_cv_t&lt;T&gt;&gt;::required_alignment</tt>
 </ins>
 </p>
 <p> -2-
