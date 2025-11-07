@@ -1,0 +1,71 @@
+<?xml version='1.0' encoding='utf-8' standalone='no'?>
+<!DOCTYPE issue SYSTEM "lwg-issue.dtd">
+
+<issue num="4466" status="New">
+<title><tt>task</tt> should move its result</title>
+<section><sref ref="[task.promise]"/></section>
+<submitter>Robert A.H. Leahy</submitter>
+<date>05 Nov 2025</date>
+<priority>99</priority>
+
+<discussion>
+<p>
+In <sref ref="[task.promise]"/> there's the following bullet (7.3):
+</p>
+<blockquote><pre>
+set_value(std::move(<i>RCVR</i>(*this)), *<i>result</i>).
+</pre></blockquote>
+<p>
+This has the effect of sending the result as an lvalue whereas an rvalue is almost 
+certainly what's intended, see the bullet (7.1) above:
+</p>
+<blockquote><pre>
+set_error(std::move(<i>RCVR</i>(*this)), std::move(e)) [&hellip;]
+</pre></blockquote>
+<p>
+Resolution would be to change the bullet (7.3) to:
+</p>
+<blockquote><pre>
+set_value(std::move(<i>RCVR</i>(*this)), *<ins>std::move(</ins><i>result</i><ins>)</ins>).
+</pre></blockquote>
+</discussion>
+
+<resolution>
+<p>
+This wording is relative to <paper num="N5014"/>.
+</p>
+
+<ol>
+<li><p>Modify <sref ref="[task.promise]"/>, as indicated:</p>
+
+<blockquote>
+<pre>
+auto final_suspend() noexcept;
+</pre>
+<blockquote>
+<p>
+-7- <i>Returns</i>: An awaitable object of unspecified type (<sref ref="[expr.await]"/>) 
+whose member functions arrange for the completion of the asynchronous operation associated 
+with <tt><i>STATE</i>(*this)</tt> by invoking:
+</p>
+<ul style="list-style-type: none">
+<li>(7.1) &mdash; 
+<tt>set_error(std::move(<i>RCVR</i>(*this)), std::move(e))</tt> if <tt><i>errors</i>.index()</tt> 
+is greater than zero and `e` is the value held by <tt><i>errors</i></tt>, otherwise
+</li>
+<li>(7.2) &mdash; 
+<tt>set_value(std::move(<i>RCVR</i>(*this)))</tt> if <tt>is_void&lt;T&gt;</tt> is `true`, 
+and otherwise
+</li>
+<li>(7.3) &mdash; 
+<tt>set_value(std::move(<i>RCVR</i>(*this)), *<ins>std::move(</ins><i>result</i><ins>)</ins>)</tt>.
+</li>
+</ul>
+</blockquote>
+</blockquote>
+</li>
+</ol>
+
+</resolution>
+
+</issue>
