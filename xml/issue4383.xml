@@ -243,11 +243,11 @@ function call operator.]
   };
 }
 
-template&lt;exposition_only::cw_fixed_value X, typename&gt;
-struct constant_wrapper: exposition_only::cw_operators {
-  static constexpr const auto &amp; value = X.data;
+template&lt;<i>cw-fixed-value</i> X, typename&gt;
+struct constant_wrapper: <i>cw-operators</i> {
+  static constexpr const auto &amp; value = X.<i>data</i>;
   using type = constant_wrapper;
-  using value_type = typename decltype(X)::type;
+  using value_type = typename decltype(X)::<i>type</i>;
 
   <del>template&lt;<i>constexpr-param</i> R&gt;
     constexpr auto operator=(R) const noexcept requires requires(value_type x) { x = R::value; }
