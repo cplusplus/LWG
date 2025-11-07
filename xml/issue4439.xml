@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="4439" status="New">
+<issue num="4439" status="Immediate">
 <title><tt>std::optional&lt;T&amp;&gt;::swap</tt> possibly selects ADL-found `swap`</title>
 <section><sref ref="[optional.ref.swap]"/></section>
 <submitter>Jiang An</submitter>
@@ -18,6 +18,8 @@ It's unlike to be intentional to call ADL-found `swap` on pointers (given `range
 doesn't), and the unconditional `noexcept` also suggests that user-provided `swap` functions 
 shouldn't interfere with <tt>optional&lt;T&amp;&gt;::swap</tt>.
 </p>
+
+<note>Kona 2025-11-07; approved by LWG. Status changed: New &rarr; Immediate.</note>
 </discussion>
 
 <resolution>
