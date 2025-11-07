@@ -33,7 +33,7 @@ template&lt;class Tag, class Data = see below, class... Child&gt;
 </pre>
 <blockquote>
 <p>-24- <i>Mandates</i>: The following expressions are `true`:
-<ul>
+<ol style="list-style-type: none">
 <li>(24.1) &mdash; <tt>semiregular&lt;Tag&gt;</tt></li>
 <li>(24.2) &mdash; <tt><i>movable-value</i>&lt;Data&gt;</tt></li>
 <li>(24.3) &mdash; <tt>(sender&lt;Child&gt; &amp;&amp; ...)</tt></li>
@@ -52,7 +52,7 @@ the implementation should include information about that exception
 in the resulting diagnostic.
 </blockquote>
 </li>
-</ul>
+</ol>
 </p>
 <p>-25- <i>Returns</i>:
 A prvalue of type
