@@ -27,6 +27,8 @@ In case when <tt>[: <i>R</i> :]</tt> is a reference to array, it will decay to a
 the first element when accepted by value. I believe this is unintended and we should return an 
 reflection of an array object instead.
 </p>
+
+<note>Kona 2025-11-07; Will be resolved by CWG 3111.</note>
 </discussion>
 
 <resolution>
