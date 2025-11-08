@@ -22,7 +22,7 @@ and it is up to the particular execution policy to decide which exceptions can b
 from parallel algorithms.
 </p>
 
-<note>Kona 2025-11-08; approved by LWG. Status changed: New &rarr; Immediate.</note>
+<note>Kona 2025-11-07; approved by LWG. Status changed: New &rarr; Immediate.</note>
 </discussion>
 
 <resolution>
