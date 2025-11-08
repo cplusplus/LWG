@@ -43,10 +43,8 @@ but they now behave as iterators into `*this`, not into `x`.
 </p>
 <p>-4- <i>Throws</i>:
 `length_error` if any of `x`'s active blocks are not within the bounds of
-<i>`current-limits`</i>.
-<ins>
-Any exception thrown by the allocator.
-</ins>
+<i>`current-limits`</i>
+<ins>, as well as any exceptions thrown by the allocator</ins>.
 </p>
 <p>-5- <i>Complexity</i>:
 Linear in the sum of all element blocks in `x`
