@@ -221,25 +221,25 @@ function call operator.]
       constexpr auto operator--(this T, int) noexcept -&gt; constant_wrapper&lt;Y--&gt; { return {}; }
 
     template&lt;<i>constexpr-param</i> T, <i>constexpr-param</i> R&gt;
-      constexpr auto operator+=(T, R) noexcept -&gt; constant_wrapper&lt;(T::value += R::value)&gt; { return {}; }
+      constexpr auto operator+=(this T, R) noexcept -&gt; constant_wrapper&lt;(T::value += R::value)&gt; { return {}; }
     template&lt;<i>constexpr-param</i> T, <i>constexpr-param</i> R&gt;
-      constexpr auto operator-=(T, R) noexcept -&gt; constant_wrapper&lt;(T::value -= R::value)&gt; { return {}; }
+      constexpr auto operator-=(this T, R) noexcept -&gt; constant_wrapper&lt;(T::value -= R::value)&gt; { return {}; }
     template&lt;<i>constexpr-param</i> T, <i>constexpr-param</i> R&gt;
-      constexpr auto operator*=(T, R) noexcept -&gt; constant_wrapper&lt;(T::value *= R::value)&gt; { return {}; }
+      constexpr auto operator*=(this T, R) noexcept -&gt; constant_wrapper&lt;(T::value *= R::value)&gt; { return {}; }
     template&lt;<i>constexpr-param</i> T, <i>constexpr-param</i> R&gt;
-      constexpr auto operator/=(T, R) noexcept -&gt; constant_wrapper&lt;(T::value /= R::value)&gt; { return {}; }
+      constexpr auto operator/=(this T, R) noexcept -&gt; constant_wrapper&lt;(T::value /= R::value)&gt; { return {}; }
     template&lt;<i>constexpr-param</i> T, <i>constexpr-param</i> R&gt;
-      constexpr auto operator%=(T, R) noexcept -&gt; constant_wrapper&lt;(T::value %= R::value)&gt; { return {}; }
+      constexpr auto operator%=(this T, R) noexcept -&gt; constant_wrapper&lt;(T::value %= R::value)&gt; { return {}; }
     template&lt;<i>constexpr-param</i> T, <i>constexpr-param</i> R&gt;
-      constexpr auto operator&amp;=(T, R) noexcept -&gt; constant_wrapper&lt;(T::value &amp;= R::value)&gt; { return {}; }
+      constexpr auto operator&amp;=(this T, R) noexcept -&gt; constant_wrapper&lt;(T::value &amp;= R::value)&gt; { return {}; }
     template&lt;<i>constexpr-param</i> T, <i>constexpr-param</i> R&gt;
-      constexpr auto operator|=(T, R) noexcept -&gt; constant_wrapper&lt;(T::value |= R::value)&gt; { return {}; }
+      constexpr auto operator|=(this T, R) noexcept -&gt; constant_wrapper&lt;(T::value |= R::value)&gt; { return {}; }
     template&lt;<i>constexpr-param</i> T, <i>constexpr-param</i> R&gt;
-      constexpr auto operator^=(T, R) noexcept -&gt; constant_wrapper&lt;(T::value ^= R::value)&gt; { return {}; }
+      constexpr auto operator^=(this T, R) noexcept -&gt; constant_wrapper&lt;(T::value ^= R::value)&gt; { return {}; }
     template&lt;<i>constexpr-param</i> T, <i>constexpr-param</i> R&gt;
-      constexpr auto operator&lt;&lt;=(T, R) noexcept -&gt; constant_wrapper&lt;(T::value &lt;&lt;= R::value)&gt; { return {}; }
+      constexpr auto operator&lt;&lt;=(this T, R) noexcept -&gt; constant_wrapper&lt;(T::value &lt;&lt;= R::value)&gt; { return {}; }
     template&lt;<i>constexpr-param</i> T, <i>constexpr-param</i> R&gt;
-      constexpr auto operator&gt;&gt;=(T, R) noexcept -&gt; constant_wrapper&lt;(T::value &gt;&gt;= R::value)&gt; { return {}; }</ins>
+      constexpr auto operator&gt;&gt;=(this T, R) noexcept -&gt; constant_wrapper&lt;(T::value &gt;&gt;= R::value)&gt; { return {}; }</ins>
   };
 }
 
