@@ -64,7 +64,7 @@
 <p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#New">New</a> status.</em></p>
 <h3 id="4465"><a href="lwg-active.html#4465">4465</a>. &sect;[alg.partitions] Clarify <i>Returns:</i> element</h3>
 <p><b>Section:</b> 26.8.5 <a href="https://wg21.link/alg.partitions">[alg.partitions]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Ruslan Arutyunyan <b>Opened:</b> 2025-11-07 <b>Last modified:</b> 2025-11-07</p>
+ <b>Submitter:</b> Ruslan Arutyunyan <b>Opened:</b> 2025-11-07 <b>Last modified:</b> 2025-11-08</p>
 <p><b>Priority: </b>Not Prioritized
 </p>
 <p><b>View all other</b> <a href="lwg-index.html#alg.partitions">issues</a> in [alg.partitions].</p>
@@ -72,7 +72,7 @@
 <p><b>Discussion:</b></p>
 <b>Addresses <a href="https://github.com/cplusplus/nbballot/issues/836">US 162-261</a></b>
 <p>
-In 26.8.5 <a href="https://wg21.link/alg.partitions">[alg.partitions]</a> p21 the wording is unclear what happens if there is not such element. 
+In 26.8.5 <a href="https://wg21.link/alg.partitions">[alg.partitions]</a> p21 the wording is unclear what happens if there is no such element. 
 The proposed resolution tries to clarify that without complicating the wording. If the proposed resolution 
 (or something along those lines) fails, the recommendation is to reject US 162-261. 
 </p>
@@ -117,10 +117,10 @@ template&lt;<i>execution-policy</i> Ep, <i>sized-random-access-range</i> R,
 to the output range <code class='backtick'>[out_true, last_true)</code> if <code><i>E</i>(*i)</code> is <code class='backtick'>true</code>, or to the 
 output range <code class='backtick'>[out_false, last_false)</code> otherwise.
 <p/>
--21- <i>Returns</i>: Let <del><code class='backtick'>o1</code></del><ins><code><i>Q</i></code></ins> be the <del>iterator past the 
-last</del><ins>number of</ins> copied element<ins>s</ins> in<ins>to</ins> the output range 
-<code class='backtick'>[out_true, last_true)</code>, and <del><code class='backtick'>o2</code></del><ins><code><i>V</i></code></ins> be the <del>iterator past the 
-last</del><ins> number of</ins> copied element<ins>s</ins> in<ins>to</ins> the output range 
+-21- <i>Returns</i>: Let <del><code class='backtick'>o1</code></del> <ins><code><i>Q</i></code></ins> be the <del>iterator past the
+last</del> <ins>number of elements</ins> copied <del>element</del> in<ins>to</ins> the output range
+<code class='backtick'>[out_true, last_true)</code>, and <del><code class='backtick'>o2</code></del> <ins><code><i>V</i></code></ins> be the <del>iterator past the
+last</del> <ins> number of elements</ins> copied <del>element</del> in<ins>to</ins> the output range
 <code class='backtick'>[out_false, last_false)</code>. Returns:
 </p>
 <ul style="list-style-type: none">
