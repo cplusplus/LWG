@@ -62,7 +62,7 @@
 </tr>
 <tr>
 <td align="left">Date:</td>
-<td align="left">Revised 2025-11-08 at 01:33:06 UTC
+<td align="left">Revised 2025-11-08 at 02:12:41 UTC
 </td>
 </tr>
 <tr>
@@ -6766,6 +6766,106 @@ a signed type.
 
 
 <hr>
+<h3 id="4431"><a href="#4431">4431</a><sup><a href="https://cplusplus.github.io/LWG/issue4431">(i)</a></sup>. Parallel <code class='backtick'>std::ranges::destroy</code> should allow exceptions</h3>
+<p><b>Section:</b> 20.2.2 <a href="https://wg21.link/memory.syn">[memory.syn]</a> <b>Status:</b> <a href="lwg-active.html#Immediate">Immediate</a>
+ <b>Submitter:</b> Ruslan Arutyunyan <b>Opened:</b> 2025-10-24 <b>Last modified:</b> 2025-11-08</p>
+<p><b>Priority: </b>Not Prioritized
+</p>
+<p><b>View all other</b> <a href="lwg-index.html#memory.syn">issues</a> in [memory.syn].</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#Immediate">Immediate</a> status.</p>
+<p><b>Discussion:</b></p>
+<p>
+The serial <code class='backtick'>std::ranges::destroy</code> algorithm is marked as <code class='backtick'>noexcept</code>. However, the parallel 
+counterpart should not be marked <code class='backtick'>noexcept</code>.
+<p/>
+While we generally don't expect any exceptions from the <code class='backtick'>destroy</code> algorithm when called 
+with the standard execution policies (<code class='backtick'>seq</code>, <code class='backtick'>unseq</code>, <code class='backtick'>par</code>, <code class='backtick'>par_unseq</code>), the 
+implementation-defined policies for parallel algorithms are allowed by the C++ standard, 
+and it is up to the particular execution policy to decide which exceptions can be thrown 
+from parallel algorithms.
+</p>
+
+<p><i>[Kona 2025-11-08; approved by LWG. Status changed: New &rarr; Immediate.]</i></p>
+
+
+
+<p id="res-4431"><b>Proposed resolution:</b></p>
+<p>
+This wording is relative to <a href="https://wg21.link/N5014">N5014</a>.
+</p>
+
+<ol>
+
+<li><p>Modify 20.2.2 <a href="https://wg21.link/memory.syn">[memory.syn]</a>, header <code>&lt;memory&gt;</code> synopsis, as indicated:</p>
+
+<blockquote class="note">
+<p>
+[<i>Drafting note</i>: There are no further prototype definitions for the affected
+<code><i>execution-policy</i></code> overloads in 26.11.9 <a href="https://wg21.link/specialized.destroy">[specialized.destroy]</a>.]
+</p>
+</blockquote>
+
+<blockquote>
+<pre>
+[&hellip;]
+<i>// 26.11.9, 26.11.9 <a href="https://wg21.link/specialized.destroy">[specialized.destroy]</a></i>
+template&lt;class T&gt;
+  constexpr void destroy_at(T* location);                                  <i>// freestanding</i>
+template&lt;class NoThrowForwardIterator&gt;
+  constexpr void destroy(NoThrowForwardIterator first,                     <i>// freestanding</i>
+                         NoThrowForwardIterator last);
+template&lt;class ExecutionPolicy, class NoThrowForwardIterator&gt;
+  void destroy(ExecutionPolicy&amp;&amp; exec,                                     <i>// freestanding-deleted,</i>
+               NoThrowForwardIterator first,                               <i>// see 26.3.5 <a href="https://wg21.link/algorithms.parallel.overloads">[algorithms.parallel.overloads]</a></i>
+               NoThrowForwardIterator last);
+template&lt;class NoThrowForwardIterator, class Size&gt;
+  constexpr NoThrowForwardIterator destroy_n(NoThrowForwardIterator first, <i>// freestanding</i>
+                                             Size n);
+template&lt;class ExecutionPolicy, class NoThrowForwardIterator, class Size&gt;
+  NoThrowForwardIterator destroy_n(ExecutionPolicy&amp;&amp; exec,                 <i>// freestanding-deleted,</i>
+                                   NoThrowForwardIterator first, Size n);  <i>// see 26.3.5 <a href="https://wg21.link/algorithms.parallel.overloads">[algorithms.parallel.overloads]</a></i>
+namespace ranges {
+  template&lt;destructible T&gt;
+    constexpr void destroy_at(T* location) noexcept;                       <i>// freestanding</i>
+    
+  template&lt;<i>nothrow-input-iterator</i> I, <i>nothrow-sentinel-for</i> &lt;I&gt; S&gt;
+    requires destructible&lt;iter_value_t&lt;I&gt;&gt;
+      constexpr I destroy(I first, S last) noexcept;                       <i>// freestanding</i>     
+  template&lt;<i>nothrow-input-range</i> R&gt;
+    requires destructible&lt;range_value_t&lt;R&gt;&gt;
+      constexpr borrowed_iterator_t&lt;R&gt; destroy(R&amp;&amp; r) noexcept;            <i>// freestanding</i>
+      
+  template&lt;<i>nothrow-input-iterator</i> I&gt;
+    requires destructible&lt;iter_value_t&lt;I&gt;&gt;
+    constexpr I destroy_n(I first, iter_difference_t&lt;I&gt; n) noexcept;       <i>// freestanding</i>
+    
+  template&lt;<i>execution-policy</i> Ep, <i>nothrow-random-access-iterator</i> I,
+           <i>nothrow-sized-sentinel-for</i> &lt;I&gt; S&gt;
+    requires destructible&lt;iter_value_t&lt;I&gt;&gt;
+      I destroy(Ep&amp;&amp; exec, I first, S last) <del>noexcept</del>;                       <i>// freestanding-deleted,</i>
+                                                                            <i>// see 26.3.5 <a href="https://wg21.link/algorithms.parallel.overloads">[algorithms.parallel.overloads]</a></i>
+  template&lt;<i>execution-policy</i> Ep, <i>nothrow-sized-random-access-range</i> R&gt;
+    requires destructible&lt;range_value_t&lt;R&gt;&gt;
+      borrowed_iterator_t&lt;R&gt; destroy(Ep&amp;&amp; exec, R&amp;&amp; r) <del>noexcept</del>;            <i>// freestanding-deleted,</i>
+                                                                            <i>// see 26.3.5 <a href="https://wg21.link/algorithms.parallel.overloads">[algorithms.parallel.overloads]</a></i>
+  template&lt;<i>execution-policy</i> Ep, <i>nothrow-random-access-iterator</i> I&gt;
+    requires destructible&lt;iter_value_t&lt;I&gt;&gt;
+      I destroy_n(Ep&amp;&amp; exec, I first, iter_difference_t&lt;I&gt; n) <del>noexcept</del>;     <i>// freestanding-deleted,</i>
+                                                                            <i>// see 26.3.5 <a href="https://wg21.link/algorithms.parallel.overloads">[algorithms.parallel.overloads]</a></i>
+}
+[&hellip;]
+</pre>
+</blockquote>
+</li>
+
+</ol>
+
+
+
+
+
+
+<hr>
 <h3 id="4432"><a href="#4432">4432</a><sup><a href="https://cplusplus.github.io/LWG/issue4432">(i)</a></sup>. Clarify element initialization for <code>meta::reflect_constant_array</code></h3>
 <p><b>Section:</b> 21.4.3 <a href="https://wg21.link/meta.define.static">[meta.define.static]</a> <b>Status:</b> <a href="lwg-active.html#Immediate">Immediate</a>
  <b>Submitter:</b> Tomasz Kamiński <b>Opened:</b> 2025-10-27 <b>Last modified:</b> 2025-11-04</p>
@@ -8762,6 +8862,92 @@ and the first <code><i>N</i> − <i>K</i></code> elements of the range <code cla
 range, <code class='backtick'>a</code> is copied into the output range before <code class='backtick'>b</code>. If <code class='backtick'>e1</code> is an element of <code class='backtick'>[first1, last1)</code> 
 and <code class='backtick'>e2</code> of <code class='backtick'>[first2, last2)</code>, <code class='backtick'>e2</code> is copied into the output range before <code class='backtick'>e1</code> if and only if 
 <code><i>E</i><del>(e1, e1)</del></code> is <code class='backtick'>true</code>.
+</p>
+</blockquote>
+</blockquote>
+</li>
+</ol>
+
+
+
+
+
+
+<hr>
+<h3 id="4465"><a href="#4465">4465</a><sup><a href="https://cplusplus.github.io/LWG/issue4465">(i)</a></sup>. &sect;[alg.partitions] Clarify <i>Returns:</i> element</h3>
+<p><b>Section:</b> 26.8.5 <a href="https://wg21.link/alg.partitions">[alg.partitions]</a> <b>Status:</b> <a href="lwg-active.html#Immediate">Immediate</a>
+ <b>Submitter:</b> Ruslan Arutyunyan <b>Opened:</b> 2025-11-07 <b>Last modified:</b> 2025-11-08</p>
+<p><b>Priority: </b>Not Prioritized
+</p>
+<p><b>View all other</b> <a href="lwg-index.html#alg.partitions">issues</a> in [alg.partitions].</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#Immediate">Immediate</a> status.</p>
+<p><b>Discussion:</b></p>
+<b>Addresses <a href="https://github.com/cplusplus/nbballot/issues/836">US 162-261</a></b>
+<p>
+In 26.8.5 <a href="https://wg21.link/alg.partitions">[alg.partitions]</a> p21 the wording is unclear what happens if there is no such element. 
+The proposed resolution tries to clarify that without complicating the wording. If the proposed resolution 
+(or something along those lines) fails, the recommendation is to reject US 162-261. 
+</p>
+
+<p><i>[Kona 2025-11-08; approved by LWG. Status changed: New &rarr; Immediate.]</i></p>
+
+
+
+<p id="res-4465"><b>Proposed resolution:</b></p>
+<p>
+This wording is relative to <a href="https://wg21.link/N5014">N5014</a>.
+</p>
+
+<ol>
+<li><p>Modify 26.8.5 <a href="https://wg21.link/alg.partitions">[alg.partitions]</a>, as indicated:</p>
+
+<blockquote>
+<pre>
+template&lt;class InputIterator, class OutputIterator1, class OutputIterator2, class Predicate&gt;
+  constexpr pair&lt;OutputIterator1, OutputIterator2&gt;
+    partition_copy(InputIterator first, InputIterator last,
+                   OutputIterator1 out_true, OutputIterator2 out_false, Predicate pred);
+[&hellip;]
+template&lt;<i>execution-policy</i> Ep, <i>sized-random-access-range</i> R,
+         <i>sized-random-access-range</i> OutR1, <i>sized-random-access-range</i> OutR2,
+         class Proj = identity,
+         indirect_unary_predicate&lt;projected&lt;iterator_t&lt;R&gt;, Proj&gt;&gt; Pred&gt;
+  requires indirectly_copyable&lt;iterator_t&lt;R&gt;, iterator_t&lt;OutR1&gt;&gt; &amp;&amp;
+            indirectly_copyable&lt;iterator_t&lt;R&gt;, iterator_t&lt;OutR2&gt;&gt;
+  ranges::partition_copy_result&lt;borrowed_iterator_t&lt;R&gt;, borrowed_iterator_t&lt;OutR1&gt;,
+                                borrowed_iterator_t&lt;OutR2&gt;&gt;
+    ranges::partition_copy(Ep&amp;&amp; exec, R&amp;&amp; r, OutR1&amp;&amp; out_true_r, OutR2&amp;&amp; out_false_r,
+                           Pred pred, Proj proj = {});
+</pre>
+<blockquote>
+<p>
+-14- Let <code class='backtick'>proj</code> be <code class='backtick'>identity{}</code> for the overloads with no parameter named <code class='backtick'>proj</code> and let 
+<code><i>E</i>(x)</code> be <code>bool(invoke(pred, invoke(proj, x)))</code>.
+<p/>
+[&hellip;]
+<p/>
+-19- <i>Preconditions</i>: The input range and output ranges do not overlap. [&hellip;]
+<p/>
+-20- <i>Effects</i>: For each iterator <code class='backtick'>i</code> in <code>[first, first + <i>N</i>)</code>, copies <code class='backtick'>*i</code> 
+to the output range <code class='backtick'>[out_true, last_true)</code> if <code><i>E</i>(*i)</code> is <code class='backtick'>true</code>, or to the 
+output range <code class='backtick'>[out_false, last_false)</code> otherwise.
+<p/>
+-21- <i>Returns</i>: Let <del><code class='backtick'>o1</code></del> <ins><code><i>Q</i></code></ins> be the <del>iterator past the
+last</del> <ins>number of elements</ins> copied <del>element</del> in<ins>to</ins> the output range
+<code class='backtick'>[out_true, last_true)</code>, and <del><code class='backtick'>o2</code></del> <ins><code><i>V</i></code></ins> be the <del>iterator past the
+last</del> <ins> number of elements</ins> copied <del>element</del> in<ins>to</ins> the output range
+<code class='backtick'>[out_false, last_false)</code>. Returns:
+</p>
+<ul style="list-style-type: none">
+<li>(21.1) &mdash; <code>{<del>o1</del><ins>out_true + <i>Q</i></ins>, <del>o2</del><ins>out_false + <i>V</i></ins>}</code> 
+for the overloads in namespace <code class='backtick'>std</code>.
+</li>
+<li>(21.2) &mdash; <code>{first + <i>N</i>, <del>o1</del><ins>out_true + <i>Q</i></ins>, 
+<del>o2</del><ins>out_false + <i>V</i></ins>}</code> for the overloads in namespace <code class='backtick'>ranges</code>.
+</li>
+</ul>
+<p>
+-22- <i>Complexity</i>: At <code class='backtick'>most last - first</code> applications of <code class='backtick'>pred</code> and <code class='backtick'>proj</code>.
 </p>
 </blockquote>
 </blockquote>
