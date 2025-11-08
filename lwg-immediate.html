@@ -62,7 +62,7 @@
 </tr>
 <tr>
 <td align="left">Date:</td>
-<td align="left">Revised 2025-11-08 at 02:55:58 UTC
+<td align="left">Revised 2025-11-08 at 03:00:30 UTC
 </td>
 </tr>
 <tr>
@@ -5080,7 +5080,7 @@ Incorporate change from LWG <a href="lwg-active.html#4466" title="task should mo
 </p>
 
 
-<p><i>[Kona 2025-11-08; approved by LWG. Status changed: New &rarr; Immediate.]</i></p>
+<p><i>[Kona 2025-11-07; approved by LWG. Status changed: New &rarr; Immediate.]</i></p>
 
 
 
@@ -5684,6 +5684,279 @@ Otherwise, these operators are defined as deleted and their return types are uns
 </blockquote>
 </blockquote>
 </li>
+</ol>
+
+
+
+
+
+
+<hr>
+<h3 id="4383"><a href="#4383">4383</a><sup><a href="https://cplusplus.github.io/LWG/issue4383">(i)</a></sup>. <code class='backtick'>constant_wrapper</code>'s pseudo-mutators are underconstrained
+</h3>
+<p><b>Section:</b> 21.3.5 <a href="https://wg21.link/const.wrap.class">[const.wrap.class]</a> <b>Status:</b> <a href="lwg-active.html#Immediate">Immediate</a>
+ <b>Submitter:</b> Hewill Kang <b>Opened:</b> 2025-09-24 <b>Last modified:</b> 2025-11-08</p>
+<p><b>Priority: </b>1
+</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#Immediate">Immediate</a> status.</p>
+<p><b>Discussion:</b></p>
+<p>
+Unlike other operators, <code class='backtick'>constant_wrapper</code>'s pseudo-mutators only require that the wrapped type has
+corresponding mutators, but do not require them to be <code>constexpr</code> or to return a sensible value.
+This inconsistency loses the SFINAE friendliness (<a href="https://godbolt.org/z/r4z1GGT6f">demo</a>):
+</p>
+<blockquote><pre>
+#include &lt;type_traits&gt;
+
+void test(auto t) {
+  if constexpr (requires { +t; })  // ok
+    +t;
+  if constexpr (requires { -t; })  // ok
+    -t;
+  if constexpr (requires { ++t; }) // <span style="color:#C80000;font-weight:bold">hard error</span>
+    ++t;
+  if constexpr (requires { --t; }) // <span style="color:#C80000;font-weight:bold">hard error</span>
+    --t;
+}
+
+struct S {
+  /* constexpr */ int operator+() const { return 0; }
+  /* constexpr */ int operator++() { return 0; }
+  constexpr void operator-() const { }
+  constexpr void operator--() { }
+};
+
+int main() {
+  test(std::cw&lt;S{}&gt;);
+}
+</pre></blockquote>
+<p>
+Since these pseudo-mutators have constraints, it is reasonable to further require constant
+expressions.
+</p>
+
+<p><i>[2025-10-17; Reflector poll.]</i></p>
+
+<p>
+Set priority to 1 after reflector poll.
+</p>
+<p>
+<code class='backtick'>operator+=</code> changed between <a href="https://wg21.link/P2781R4" title=" std::constexpr_wrapper">P2781R4</a> and <a href="https://wg21.link/P2781R5" title=" std::constexpr_wrapper">P2781R5</a>, intent is unclear.
+</p>
+<p><strong>Previous resolution [SUPERSEDED]:</strong></p>
+<blockquote class="note">
+
+<p>
+This wording is relative to <a href="https://wg21.link/N5014">N5014</a>.
+</p>
+
+<ol>
+
+<li><p>Modify 21.3.5 <a href="https://wg21.link/const.wrap.class">[const.wrap.class]</a>, class template <code>constant_wrapper</code> synopsis, as indicated:</p>
+
+<blockquote class="note">
+<p>
+[<i>Drafting note:</i> The requires clause follows the form of <code class='backtick'>constant_wrapper</code>'s
+function call operator.]
+</p>
+</blockquote>
+
+<blockquote>
+<pre>
+struct <i>cw-operators</i> {                                                           // <i>exposition only</i>
+  [&hellip;]
+  // <i>pseudo-mutators</i>
+  template&lt;<i>constexpr-param</i> T&gt;
+    constexpr auto operator++(this T) noexcept
+      requires requires(T::value_type x) { <ins>constant_wrapper&lt;</ins>++x<ins>&gt;()</ins>; }
+        { return constant_wrapper&lt;[] { auto c = T::value; return ++c; }()&gt;{}; }
+  template&lt;<i>constexpr-param</i> T&gt;
+    constexpr auto operator++(this T, int) noexcept
+      requires requires(T::value_type x) { <ins>constant_wrapper&lt;</ins>x++<ins>&gt;()</ins>; }
+        { return constant_wrapper&lt;[] { auto c = T::value; return c++; }()&gt;{}; }
+
+  template&lt;<i>constexpr-param</i> T&gt;
+    constexpr auto operator--(this T) noexcept
+      requires requires(T::value_type x) { <ins>constant_wrapper&lt;</ins>--x<ins>&gt;()</ins>; }
+        { return constant_wrapper&lt;[] { auto c = T::value; return --c; }()&gt;{}; }
+  template&lt;<i>constexpr-param</i> T&gt;
+    constexpr auto operator--(this T, int) noexcept
+      requires requires(T::value_type x) { <ins>constant_wrapper&lt;</ins>x--<ins>&gt;()</ins>; }
+        { return constant_wrapper&lt;[] { auto c = T::value; return c--; }()&gt;{}; }
+
+  template&lt;<i>constexpr-param</i> T, <i>constexpr-param</i> R&gt;
+    constexpr auto operator+=(this T, R) noexcept
+      requires requires(T::value_type x) { <ins>constant_wrapper&lt;</ins>x += R::value<ins>&gt;()</ins>; }
+        { return constant_wrapper&lt;[] { auto v = T::value; return v += R::value; }()&gt;{}; }
+  template&lt;<i>constexpr-param</i> T, <i>constexpr-param</i> R&gt;
+    constexpr auto operator-=(this T, R) noexcept
+      requires requires(T::value_type x) { <ins>constant_wrapper&lt;</ins>x -= R::value<ins>&gt;()</ins>; }
+        { return constant_wrapper&lt;[] { auto v = T::value; return v -= R::value; }()&gt;{}; }
+  template&lt;<i>constexpr-param</i> T, <i>constexpr-param</i> R&gt;
+    constexpr auto operator*=(this T, R) noexcept
+      requires requires(T::value_type x) { <ins>constant_wrapper&lt;</ins>x *= R::value<ins>&gt;()</ins>; }
+        { return constant_wrapper&lt;[] { auto v = T::value; return v *= R::value; }()&gt;{}; }
+  template&lt;<i>constexpr-param</i> T, <i>constexpr-param</i> R&gt;
+    constexpr auto operator/=(this T, R) noexcept
+      requires requires(T::value_type x) { <ins>constant_wrapper&lt;</ins>x /= R::value<ins>&gt;()</ins>; }
+        { return constant_wrapper&lt;[] { auto v = T::value; return v /= R::value; }()&gt;{}; }
+  template&lt;<i>constexpr-param</i> T, <i>constexpr-param</i> R&gt;
+    constexpr auto operator%=(this T, R) noexcept
+      requires requires(T::value_type x) { <ins>constant_wrapper&lt;</ins>x %= R::value<ins>&gt;()</ins>; }
+        { return constant_wrapper&lt;[] { auto v = T::value; return v %= R::value; }()&gt;{}; }
+  template&lt;<i>constexpr-param</i> T, <i>constexpr-param</i> R&gt;
+    constexpr auto operator&amp;=(this T, R) noexcept
+      requires requires(T::value_type x) { <ins>constant_wrapper&lt;</ins>x &amp;= R::value<ins>&gt;()</ins>; }
+        { return constant_wrapper&lt;[] { auto v = T::value; return v &amp;= R::value; }()&gt;{}; }
+  template&lt;<i>constexpr-param</i> T, <i>constexpr-param</i> R&gt;
+    constexpr auto operator|=(this T, R) noexcept
+      requires requires(T::value_type x) { <ins>constant_wrapper&lt;</ins>x |= R::value<ins>&gt;()</ins>; }
+        { return constant_wrapper&lt;[] { auto v = T::value; return v |= R::value; }()&gt;{}; }
+  template&lt;<i>constexpr-param</i> T, <i>constexpr-param</i> R&gt;
+    constexpr auto operator^=(this T, R) noexcept
+      requires requires(T::value_type x) { <ins>constant_wrapper&lt;</ins>x ^= R::value<ins>&gt;()</ins>; }
+        { return constant_wrapper&lt;[] { auto v = T::value; return v ^= R::value; }()&gt;{}; }
+  template&lt;<i>constexpr-param</i> T, <i>constexpr-param</i> R&gt;
+    constexpr auto operator&lt;&lt;=(this T, R) noexcept
+      requires requires(T::value_type x) { <ins>constant_wrapper&lt;</ins>x &lt;&lt;= R::value<ins>&gt;()</ins>; }
+        { return constant_wrapper&lt;[] { auto v = T::value; return v &lt;&lt;= R::value; }()&gt;{}; }
+  template&lt;<i>constexpr-param</i> T, <i>constexpr-param</i> R&gt;
+    constexpr auto operator&gt;&gt;=(this T, R) noexcept
+      requires requires(T::value_type x) { <ins>constant_wrapper&lt;</ins>x &gt;&gt;= R::value<ins>&gt;()</ins>; }
+        { return constant_wrapper&lt;[] { auto v = T::value; return v &gt;&gt;= R::value; }()&gt;{}; }
+};
+</pre>
+</blockquote>
+
+</li>
+
+</ol>
+</blockquote>
+
+<p><i>[2025-11-05; Zach provides improved wording]</i></p>
+
+
+<p><i>[Kona 2025-11-07; approved by LWG. Status changed: New &rarr; Immediate.]</i></p>
+
+
+
+<p id="res-4383"><b>Proposed resolution:</b></p>
+<p>
+This wording is relative to <a href="https://wg21.link/N5014">N5014</a>.
+</p>
+
+<ol>
+
+<li><p>Modify 21.3.5 <a href="https://wg21.link/const.wrap.class">[const.wrap.class]</a>, class template <code>constant_wrapper</code> synopsis, as indicated:</p>
+
+<blockquote class="note">
+<p>
+[<i>Drafting note:</i> The requires clause follows the form of <code class='backtick'>constant_wrapper</code>'s
+function call operator.]
+</p>
+</blockquote>
+
+<blockquote>
+<pre>
+  struct <i>cw-operators</i> {                                                           // <i>exposition only</i>
+    [&hellip;]
+    // <i>pseudo-mutators</i>
+    <del>template&lt;<i>constexpr-param</i> T&gt;
+      constexpr auto operator++(this T) noexcept requires requires(T::value_type x) { ++x; }
+        { return constant_wrapper&lt;[] { auto c = T::value; return ++c; }()&gt;{}; }
+    template&lt;<i>constexpr-param</i> T&gt;
+      constexpr auto operator++(this T, int) noexcept requires requires(T::value_type x) { x++; }
+        { return constant_wrapper&lt;[] { auto c = T::value; return c++; }()&gt;{}; }
+
+    template&lt;<i>constexpr-param</i> T&gt;
+      constexpr auto operator--(this T) noexcept requires requires(T::value_type x) { --x; }
+        { return constant_wrapper&lt;[] { auto c = T::value; return --c; }()&gt;{}; }
+    template&lt;<i>constexpr-param</i> T&gt;
+      constexpr auto operator--(this T, int) noexcept requires requires(T::value_type x) { x--; }
+        { return constant_wrapper&lt;[] { auto c = T::value; return c--; }()&gt;{}; }
+
+    template&lt;<i>constexpr-param</i> T, <i>constexpr-param</i> R&gt;
+      constexpr auto operator+=(this T, R) noexcept requires requires(T::value_type x) { x += R::value; }
+        { return constant_wrapper&lt;[] { auto v = T::value; return v += R::value; }()&gt;{}; }
+    template&lt;<i>constexpr-param</i> T, <i>constexpr-param</i> R&gt;
+      constexpr auto operator-=(this T, R) noexcept requires requires(T::value_type x) { x -= R::value; }
+        { return constant_wrapper&lt;[] { auto v = T::value; return v -= R::value; }()&gt;{}; }
+    template&lt;<i>constexpr-param</i> T, <i>constexpr-param</i> R&gt;
+      constexpr auto operator*=(this T, R) noexcept requires requires(T::value_type x) { x *= R::value; }
+        { return constant_wrapper&lt;[] { auto v = T::value; return v *= R::value; }()&gt;{}; }
+    template&lt;<i>constexpr-param</i> T, <i>constexpr-param</i> R&gt;
+      constexpr auto operator/=(this T, R) noexcept requires requires(T::value_type x) { x /= R::value; }
+        { return constant_wrapper&lt;[] { auto v = T::value; return v /= R::value; }()&gt;{}; }
+    template&lt;<i>constexpr-param</i> T, <i>constexpr-param</i> R&gt;
+      constexpr auto operator%=(this T, R) noexcept requires requires(T::value_type x) { x %= R::value; }
+        { return constant_wrapper&lt;[] { auto v = T::value; return v %= R::value; }()&gt;{}; }
+    template&lt;<i>constexpr-param</i> T, <i>constexpr-param</i> R&gt;
+      constexpr auto operator&amp;=(this T, R) noexcept requires requires(T::value_type x) { x &amp;= R::value; }
+        { return constant_wrapper&lt;[] { auto v = T::value; return v &amp;= R::value; }()&gt;{}; }
+    template&lt;<i>constexpr-param</i> T, <i>constexpr-param</i> R&gt;
+      constexpr auto operator|=(this T, R) noexcept requires requires(T::value_type x) { x |= R::value; }
+        { return constant_wrapper&lt;[] { auto v = T::value; return v |= R::value; }()&gt;{}; }
+    template&lt;<i>constexpr-param</i> T, <i>constexpr-param</i> R&gt;
+      constexpr auto operator^=(this T, R) noexcept requires requires(T::value_type x) { x ^= R::value; }
+        { return constant_wrapper&lt;[] { auto v = T::value; return v ^= R::value; }()&gt;{}; }
+    template&lt;<i>constexpr-param</i> T, <i>constexpr-param</i> R&gt;
+      constexpr auto operator&lt;&lt;=(this T, R) noexcept requires requires(T::value_type x) { x &lt;&lt;= R::value; }
+        { return constant_wrapper&lt;[] { auto v = T::value; return v &lt;&lt;= R::value; }()&gt;{}; }
+    template&lt;<i>constexpr-param</i> T, <i>constexpr-param</i> R&gt;
+      constexpr auto operator&gt;&gt;=(this T, R) noexcept requires requires(T::value_type x) { x &gt;&gt;= R::value; }
+        { return constant_wrapper&lt;[] { auto v = T::value; return v &gt;&gt;= R::value; }()&gt;{}; }</del>
+    <ins>template&lt;<i>constexpr-param</i> T&gt;
+      constexpr auto operator++(this T) noexcept -&gt; constant_wrapper&lt;++Y&gt; { return {}; }
+    template&lt;<i>constexpr-param</i> T&gt;
+      constexpr auto operator++(this T, int) noexcept -&gt; constant_wrapper&lt;Y++&gt; { return {}; }
+    template&lt;<i>constexpr-param</i> T&gt;
+      constexpr auto operator--(this T) noexcept -&gt; constant_wrapper&lt;--Y&gt; { return {}; }
+    template&lt;<i>constexpr-param</i> T&gt;
+      constexpr auto operator--(this T, int) noexcept -&gt; constant_wrapper&lt;Y--&gt; { return {}; }
+
+    template&lt;<i>constexpr-param</i> T, <i>constexpr-param</i> R&gt;
+      constexpr auto operator+=(this T, R) noexcept -&gt; constant_wrapper&lt;(T::value += R::value)&gt; { return {}; }
+    template&lt;<i>constexpr-param</i> T, <i>constexpr-param</i> R&gt;
+      constexpr auto operator-=(this T, R) noexcept -&gt; constant_wrapper&lt;(T::value -= R::value)&gt; { return {}; }
+    template&lt;<i>constexpr-param</i> T, <i>constexpr-param</i> R&gt;
+      constexpr auto operator*=(this T, R) noexcept -&gt; constant_wrapper&lt;(T::value *= R::value)&gt; { return {}; }
+    template&lt;<i>constexpr-param</i> T, <i>constexpr-param</i> R&gt;
+      constexpr auto operator/=(this T, R) noexcept -&gt; constant_wrapper&lt;(T::value /= R::value)&gt; { return {}; }
+    template&lt;<i>constexpr-param</i> T, <i>constexpr-param</i> R&gt;
+      constexpr auto operator%=(this T, R) noexcept -&gt; constant_wrapper&lt;(T::value %= R::value)&gt; { return {}; }
+    template&lt;<i>constexpr-param</i> T, <i>constexpr-param</i> R&gt;
+      constexpr auto operator&amp;=(this T, R) noexcept -&gt; constant_wrapper&lt;(T::value &amp;= R::value)&gt; { return {}; }
+    template&lt;<i>constexpr-param</i> T, <i>constexpr-param</i> R&gt;
+      constexpr auto operator|=(this T, R) noexcept -&gt; constant_wrapper&lt;(T::value |= R::value)&gt; { return {}; }
+    template&lt;<i>constexpr-param</i> T, <i>constexpr-param</i> R&gt;
+      constexpr auto operator^=(this T, R) noexcept -&gt; constant_wrapper&lt;(T::value ^= R::value)&gt; { return {}; }
+    template&lt;<i>constexpr-param</i> T, <i>constexpr-param</i> R&gt;
+      constexpr auto operator&lt;&lt;=(this T, R) noexcept -&gt; constant_wrapper&lt;(T::value &lt;&lt;= R::value)&gt; { return {}; }
+    template&lt;<i>constexpr-param</i> T, <i>constexpr-param</i> R&gt;
+      constexpr auto operator&gt;&gt;=(this T, R) noexcept -&gt; constant_wrapper&lt;(T::value &gt;&gt;= R::value)&gt; { return {}; }</ins>
+  };
+}
+
+template&lt;<i>cw-fixed-value</i> X, typename&gt;
+struct constant_wrapper: <i>cw-operators</i> {
+  static constexpr const auto &amp; value = X.<i>data</i>;
+  using type = constant_wrapper;
+  using value_type = typename decltype(X)::<i>type</i>;
+
+  <del>template&lt;<i>constexpr-param</i> R&gt;
+    constexpr auto operator=(R) const noexcept requires requires(value_type x) { x = R::value; }
+      { return constant_wrapper&lt;[] { auto v = value; return v = R::value; }()&gt;{}; }</del>
+  <ins>template&lt;<i>constexpr-param</i> R&gt;
+    constexpr auto operator=(R) const noexcept -&gt; constant_wrapper&lt;X = R::value&gt; { return {}; }</ins>
+
+  constexpr operator decltype(auto)() const noexcept { return value; }
+};
+
+</pre>
+</blockquote>
+
+</li>
+
 </ol>
 
 
