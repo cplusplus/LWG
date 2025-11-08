@@ -1,0 +1,66 @@
+<?xml version='1.0' encoding='utf-8' standalone='no'?>
+<!DOCTYPE issue SYSTEM "lwg-issue.dtd">
+
+<issue num="4467" status="New">
+<title>`hive::splice` can throw `bad_alloc`</title>
+<section><sref ref="[hive.operations]"/></section>
+<submitter>Jonathan Wakely</submitter>
+<date>08 Nov 2025</date>
+<priority>99</priority>
+
+<discussion>
+<p>
+Moving blocks from the source `hive` to the destination `hive` might require
+reallocating the array of pointers to blocks, so the <i>Throws</i>: element
+should allow this.
+</p>
+</discussion>
+
+<resolution>
+<p>
+This wording is relative to <paper num="N5014"/>.
+</p>
+
+<ol>
+<li><p>Modify <sref ref="[hive.operations]"/>, as indicated:</p>
+<blockquote>
+<pre>
+void splice(hive&amp; x);
+void splice(hive&amp;&amp; x);
+</pre>
+<blockquote>
+<p>-2- <i>Preconditions</i>:
+`get_allocator() == x.get_allocator()` is `true`.
+</p>
+<p>-3- <i>Effects</i>:
+If `addressof(x) == this` is `true`,
+the behavior is erroneous and there are no effects.
+Otherwise, inserts the contents of `x` into `*this` and `x` becomes empty.
+Pointers and references to the moved elements of `x` now refer to those same
+elements but as members of `*this`.
+Iterators referring to the moved elements continue to refer to their elements,
+but they now behave as iterators into `*this`, not into `x`.
+</p>
+<p>-4- <i>Throws</i>:
+`length_error` if any of `x`'s active blocks are not within the bounds of
+<i>`current-limits`</i>.
+<ins>
+Any exception thrown by the allocator.
+</ins>
+</p>
+<p>-5- <i>Complexity</i>:
+Linear in the sum of all element blocks in `x`
+plus all element blocks in `*this`.
+</p>
+<p>-6- <i>Remarks</i>: Reserved blocks in `x` are not transferred into `*this`.
+If `addressof(x) == this` is `false`,
+invalidates the past-the-end iterator for both `x` and `*this`.
+</p>
+</blockquote>
+</blockquote>
+</li>
+</ol>
+
+</resolution>
+
+</issue>
