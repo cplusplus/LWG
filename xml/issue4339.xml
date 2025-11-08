@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="4339" status="New">
+<issue num="4339" status="Immediate">
 <title><code>task</code>'s coroutine frame may be released late</title>
 <section><sref ref="[exec.task]"/></section>
 <submitter>Dietmar Kühl</submitter>
@@ -142,6 +142,8 @@ Change the specification of <code>unhandled_stopped</code> to destroy the corout
 Incorporate change from LWG <iref ref="4466"/> and add `_v` to `is_void`.
 </p>
 
+
+<note>Kona 2025-11-08; approved by LWG. Status changed: New &rarr; Immediate.</note>
 </discussion>
 
 <resolution>
