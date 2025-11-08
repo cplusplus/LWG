@@ -28,6 +28,9 @@ Resolution would be to change the bullet (7.3) to:
 <blockquote><pre>
 set_value(std::move(<i>RCVR</i>(*this)), *<ins>std::move(</ins><i>result</i><ins>)</ins>).
 </pre></blockquote>
+
+<note>2025-11-07; This would be resolved by LWG <iref ref="4339"/>.</note>
+
 </discussion>
 
 <resolution>
