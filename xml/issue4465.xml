@@ -11,7 +11,7 @@
 <discussion>
 <b>Addresses <a href="https://github.com/cplusplus/nbballot/issues/836">US 162-261</a></b>
 <p>
-In <sref ref="[alg.partitions]"/> p21 the wording is unclear what happens if there is not such element. 
+In <sref ref="[alg.partitions]"/> p21 the wording is unclear what happens if there is no such element. 
 The proposed resolution tries to clarify that without complicating the wording. If the proposed resolution 
 (or something along those lines) fails, the recommendation is to reject US 162-261. 
 </p>
@@ -56,10 +56,10 @@ template&lt;<i>execution-policy</i> Ep, <i>sized-random-access-range</i> R,
 to the output range `[out_true, last_true)` if <tt><i>E</i>(*i)</tt> is `true`, or to the 
 output range `[out_false, last_false)` otherwise.
 <p/>
--21- <i>Returns</i>: Let <del>`o1`</del><ins><tt><i>Q</i></tt></ins> be the <del>iterator past the 
-last</del><ins>number of</ins> copied element<ins>s</ins> in<ins>to</ins> the output range 
-`[out_true, last_true)`, and <del>`o2`</del><ins><tt><i>V</i></tt></ins> be the <del>iterator past the 
-last</del><ins> number of</ins> copied element<ins>s</ins> in<ins>to</ins> the output range 
+-21- <i>Returns</i>: Let <del>`o1`</del> <ins><tt><i>Q</i></tt></ins> be the <del>iterator past the
+last</del> <ins>number of elements</ins> copied <del>element</del> in<ins>to</ins> the output range
+`[out_true, last_true)`, and <del>`o2`</del> <ins><tt><i>V</i></tt></ins> be the <del>iterator past the
+last</del> <ins> number of elements</ins> copied <del>element</del> in<ins>to</ins> the output range
 `[out_false, last_false)`. Returns:
 </p>
 <ul style="list-style-type: none">
