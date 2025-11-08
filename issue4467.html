@@ -105,10 +105,8 @@ but they now behave as iterators into <code class='backtick'>*this</code>, not i
 </p>
 <p>-4- <i>Throws</i>:
 <code class='backtick'>length_error</code> if any of <code class='backtick'>x</code>'s active blocks are not within the bounds of
-<i><code class='backtick'>current-limits</code></i>.
-<ins>
-Any exception thrown by the allocator.
-</ins>
+<i><code class='backtick'>current-limits</code></i>
+<ins>, as well as any exceptions thrown by the allocator</ins>.
 </p>
 <p>-5- <i>Complexity</i>:
 Linear in the sum of all element blocks in <code class='backtick'>x</code>
