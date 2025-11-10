@@ -54,7 +54,7 @@
 </style>
 </head>
 <body>
-<p>Revised 2025-11-08 at 03:10:52 UTC
+<p>Revised 2025-11-10 at 15:35:22 UTC
 </p><h2>Unresolved Issues</h2>
 <hr>
 <h3 id="423"><a href="#423">423</a><sup><a href="https://cplusplus.github.io/LWG/issue423">(i)</a></sup>. Effects of negative <code>streamsize</code> in iostreams</h3>
@@ -77514,6 +77514,57 @@ If <code class='backtick'>addressof(x) == this</code> is <code class='backtick'>
 invalidates the past-the-end iterator for both <code class='backtick'>x</code> and <code class='backtick'>*this</code>.
 </p>
 </blockquote>
+</blockquote>
+</li>
+</ol>
+
+
+
+
+
+
+<hr>
+<h3 id="4468"><a href="#4468">4468</a><sup><a href="https://cplusplus.github.io/LWG/issue4468">(i)</a></sup>. &sect;[const.wrap.class] "<code class='backtick'>operator decltype(auto)</code>" is ill-formed</h3>
+<p><b>Section:</b> 21.3.5 <a href="https://wg21.link/const.wrap.class">[const.wrap.class]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
+ <b>Submitter:</b> Jiang An <b>Opened:</b> 2025-11-07 <b>Last modified:</b> 2025-11-10</p>
+<p><b>Priority: </b>Not Prioritized
+</p>
+<p><b>View other</b> <a href="lwg-index-open.html#const.wrap.class">active issues</a> in [const.wrap.class].</p>
+<p><b>View all other</b> <a href="lwg-index.html#const.wrap.class">issues</a> in [const.wrap.class].</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
+<p><b>Discussion:</b></p>
+<p>
+Following the approval of <a href="https://wg21.link/cwg1670">CWG 1670</a> in Kona 2025, the 
+following declaration in class template <code class='backtick'>constant_wrapper</code>, 21.3.5 <a href="https://wg21.link/const.wrap.class">[const.wrap.class]</a>, 
+is ill-formed:
+</p>
+<blockquote><pre>
+constexpr operator decltype(auto)() const noexcept { return value; }
+</pre></blockquote>
+
+
+<p id="res-4468"><b>Proposed resolution:</b></p>
+<p>
+This wording is relative to <a href="https://wg21.link/N5014">N5014</a>.
+</p>
+
+<ol>
+<li><p>Modify 21.3.5 <a href="https://wg21.link/const.wrap.class">[const.wrap.class]</a>, class template <code class='backtick'>constant_wrapper</code>synopsis, as indicated:</p>
+
+<blockquote>
+<pre>
+[&hellip;]
+template&lt;<i>cw-fixed-value</i> X, class>
+struct constant_wrapper : <i>cw-operators</i> {
+  static constexpr const auto &amp; value = X.<i>data</i>;
+
+  using type = constant_wrapper;
+  using value_type = typename decltype(X)::<i>type</i>;
+
+  [&hellip;]
+  constexpr operator decltype(<del>auto</del><ins>value</ins>)() const noexcept { return value; }
+};
+</pre>
 </blockquote>
 </li>
 </ol>
