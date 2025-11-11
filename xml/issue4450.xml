@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="4450" status="Immediate">
+<issue num="4450" status="WP">
 <title><tt>std::atomic_ref&lt;T&gt;::store_<i>key</i></tt> should be disabled for const `T`</title>
 <section><sref ref="[atomics.ref.int]"/></section>
 <submitter>Jonathan Wakely</submitter>
@@ -16,6 +16,7 @@ so it can't be const.
 </p>
 
 <note>Kona 2025-11-05; approved by LWG. Status changed: New &rarr; Immediate.</note>
+<note>Kona 2025-11-08; Status changed: Immediate &rarr; WP.</note>
 </discussion>
 
 <resolution>

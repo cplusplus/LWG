@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="4015" status="Immediate">
+<issue num="4015" status="WP">
 <title>LWG 3973 broke <code>const</code> overloads of <code>std::optional</code> monadic operations</title>
 <section><sref ref="[optional.monadic]"/></section>
 <submitter>Jonathan Wakely</submitter>
@@ -1573,6 +1573,7 @@ Also update corresponding constructor in specialization.
 
 
 <note>Kona 2025-11-05; approved by LWG. Status changed: New &rarr; Immediate.</note>
+<note>Kona 2025-11-08; Status changed: Immediate &rarr; WP.</note>
 </discussion>
 
 <resolution>

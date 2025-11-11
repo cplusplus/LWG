@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="4429" status="Immediate">
+<issue num="4429" status="WP">
 <title><code>meta::alignment_of</code> should exclude data member description of bit-field</title>
 <section>
 <sref ref="[meta.reflection.layout]"/>
@@ -17,6 +17,7 @@
 This should similarly disallow data member descriptions of bit-fields.
 </p>
 <note>Kona 2025-11-03; approved by LWG. Status changed: New &rarr; Immediate.</note>
+<note>Kona 2025-11-08; Status changed: Immediate &rarr; WP.</note>
 </discussion>
 
 <resolution>

@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="3343" status="Immediate">
+<issue num="3343" status="WP">
 <title>Ordering of calls to <tt>unlock()</tt> and <tt>notify_all()</tt> in <i>Effects</i> element of <tt>notify_all_at_thread_exit()</tt> should be reversed</title>
 <section><sref ref="[thread.condition.nonmember]"/></section>
 <submitter>Lewis Baker</submitter>
@@ -158,6 +158,7 @@ cond.notify_all();
 <note>Kona 2025-11-05; SG1 unanimously approved the proposed resolution.</note>
 
 <note>Kona 2025-11-06; approved by LWG. Status changed: New &rarr; Immediate.</note>
+<note>Kona 2025-11-08; Status changed: Immediate &rarr; WP.</note>
 </discussion>
 
 <resolution>

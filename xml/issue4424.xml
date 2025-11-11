@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="4424" status="Immediate">
+<issue num="4424" status="WP">
 <title>`meta::define_aggregate` should require a class type</title>
 <section><sref ref="[meta.reflection.define.aggregate]"/></section>
 <submitter>Jakub Jelinek</submitter>
@@ -72,6 +72,7 @@ be the corresponding data member description represented by
 <note>2025-10-24; LWG telecon. Jonathan updates wording</note>
 <p>Make a minimal change for now, can add support for aliases later.</p>
 
+<note>Kona 2025-11-08; Status changed: Immediate &rarr; WP.</note>
 </discussion>
 
 <resolution>

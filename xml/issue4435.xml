@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="4435" status="Immediate">
+<issue num="4435" status="WP">
 <title>`meta::has_identifier` doesn't handle all types</title>
 <section><sref ref="[meta.reflection.names]"/></section>
 <submitter>Jakub Jelinek</submitter>
@@ -26,6 +26,7 @@ Simplify "`!has_template_arguments()` is `true`" to
 </p>
 
 <note>Kona 2025-11-07; approved by LWG. Status changed: New &rarr; Immediate.</note>
+<note>Kona 2025-11-08; Status changed: Immediate &rarr; WP.</note>
 </discussion>
 
 <resolution>

@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="4230" status="Immediate">
+<issue num="4230" status="WP">
 <title><tt>simd&lt;complex&gt;::real/imag</tt> is overconstrained</title>
 <section>
 <sref ref="[simd.complex.access]"/>
@@ -171,6 +171,7 @@ from <sref ref="[simd.overview]"/> and <sref ref="[simd.ctor]"/> and drop the Re
 </p>
 
 <note>Kona 2025-11-04; approved by LWG. Status changed: New &rarr; Immediate.</note>
+<note>Kona 2025-11-08; Status changed: Immediate &rarr; WP.</note>
 </discussion>
 
 <resolution>

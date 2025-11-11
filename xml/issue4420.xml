@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="4420" status="Immediate">
+<issue num="4420" status="WP">
 <title>&sect;[simd] conversions (constructor, load, stores, gather, and scatter) are
 incorrectly constrained for <tt>&lt;stdfloat&gt;</tt> types</title>
 <section><sref ref="[simd]"/></section>
@@ -165,6 +165,7 @@ where `x` is an object of type `T` is well-formed.</ins>
 <note>Kona 2025-11-04; Also resolves LWG <iref ref="4393"/>.</note>
 <note>Kona 2025-11-04; approved by LWG. Status changed: New &rarr; Immediate.</note>
 
+<note>Kona 2025-11-08; Status changed: Immediate &rarr; WP.</note>
 </discussion>
 
 <resolution>

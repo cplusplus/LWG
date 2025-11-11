@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="4360" status="Immediate">
+<issue num="4360" status="WP">
 <title><tt><i>awaitable-sender</i></tt> concept should qualify use of <tt><i>awaitable-receiver</i></tt> type</title>
 <section>
 <sref ref="[exec.as.awaitable]"/>
@@ -42,6 +42,7 @@ Set priority to 2 after reflector poll.
 </p>
 
 <note>Kona 2025-11-06; approved by LWG. Status changed: New &rarr; Immediate.</note>
+<note>Kona 2025-11-08; Status changed: Immediate &rarr; WP.</note>
 </discussion>
 
 <resolution>

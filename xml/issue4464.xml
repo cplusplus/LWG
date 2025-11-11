@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="4464" status="Immediate">
+<issue num="4464" status="WP">
 <title>&sect;[alg.merge] Wording tweaks</title>
 <section><sref ref="[alg.merge]"/></section>
 <submitter>Ruslan Arutyunyan</submitter>
@@ -19,6 +19,7 @@ to `merge` algorithm. The proposed resolution is to strike them through.
 </p>
 
 <note>Kona 2025-11-07; approved by LWG. Status changed: New &rarr; Immediate.</note>
+<note>Kona 2025-11-08; Status changed: Immediate &rarr; WP.</note>
 </discussion>
 
 <resolution>
