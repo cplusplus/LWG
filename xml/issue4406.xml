@@ -50,9 +50,7 @@ This would need to use `val` instead of `**this` if LWG <iref ref="4015"/>
 is accepted.
 </p>
 
-</discussion>
-
-<resolution>
+<superseded>
 <p>
 This wording is relative to <paper num="N5014"/>.
 </p>
@@ -161,6 +159,132 @@ template&lt;class U = remove_cv_t&lt;T&gt;&gt; constexpr T value_or(U&amp;&amp; 
 <blockquote><pre>
 <ins>if (has_value())
   return std::move(**this);
+return std::forward&lt;U&gt;(v);</ins>
+</pre></blockquote>
+</blockquote>
+</blockquote>
+</li>
+</ol>
+
+</superseded>
+
+<note>2025-11-11; Jonathan provides updated wording</note>
+<p>
+Rebase after LWG <iref ref="4015"/> which was approved in Kona.
+This would also resolve LWG <iref ref="4281"/>.
+</p>
+
+</discussion>
+
+<resolution>
+<p>
+This wording is relative to <b>the working draft after <paper num="N5014"/></b>.
+</p>
+
+<ol>
+
+<li><p>Modify <sref ref="[optional.observe]"/> as indicated:</p>
+
+<blockquote>
+<pre>
+template&lt;class U = remove_cv_t&lt;T&gt;&gt; constexpr T value_or(U&amp;&amp; v) const &amp;;
+</pre>
+<blockquote>
+<p>
+-15- <i>Mandates</i>: <code>is_copy_constructible_v&lt;T&gt; &amp;&amp; is_convertible_v&lt;U&amp;&amp;, T&gt;</code>
+is `true`.
+<p/>
+-16- <i>Effects</i>: Equivalent to:
+</p>
+<blockquote><pre>
+<del>return has_value() ? <i>val</i> : static_cast&lt;T&gt;(std::forward&lt;U&gt;(v));</del>
+<ins>if (has_value())
+  return <i>val</i>;
+return std::forward&lt;U&gt;(v);</ins>
+</pre></blockquote>
+</blockquote>
+<pre>
+template&lt;class U = remove_cv_t&lt;T&gt;&gt; constexpr T value_or(U&amp;&amp; v) &amp;&amp;;
+</pre>
+<blockquote>
+<p>
+-17- <i>Mandates</i>: <code>is_move_constructible_v&lt;T&gt; &amp;&amp; is_convertible_v&lt;U&amp;&amp;, T&gt;</code>
+is `true`.
+<p/>
+-18- <i>Effects</i>: Equivalent to:
+</p>
+<blockquote><pre>
+<del>return has_value() ? std::move(<i>val</i>) : static_cast&lt;T&gt;(std::forward&lt;U&gt;(v));</del>
+<ins>if (has_value())
+  return std::move(<i>val</i>);
+return std::forward&lt;U&gt;(v);</ins>
+</pre></blockquote>
+</blockquote>
+</blockquote>
+</li>
+
+<li><p>Modify <sref ref="[optional.ref.observe]"/> as indicated:</p>
+
+<blockquote>
+<pre>
+template&lt;class U = remove_cv_t&lt;T&gt;&gt; constexpr remove_cv_t&lt;T&gt; value_or(U&amp;&amp; u) const;
+</pre>
+<blockquote>
+<p>
+-8- Let <code>X</code> be <code>remove_cv_t&lt;T&gt;</code>.
+<p/>
+-9- <i>Mandates</i>: <code>is_constructible_v&lt;X, T&amp;&gt; &amp;&amp; is_convertible_v&lt;U, X&gt;</code>
+is `true`.
+<p/>
+-10- <i>Effects</i>: Equivalent to:
+</p>
+<blockquote><pre>
+<del>return has_value() ? *<i>val</i> : static_cast&lt;X&gt;(std::forward&lt;U&gt;(u));</del>
+<ins>if (has_value())
+  return *<i>val</i>;
+return std::forward&lt;U&gt;(u);
+</ins>
+</pre></blockquote>
+</blockquote>
+</blockquote>
+</li>
+
+<li><p>Modify <sref ref="[expected.object.obs]"/> as indicated:</p>
+
+<blockquote>
+<pre>
+template&lt;class U = remove_cv_t&lt;T&gt;&gt; constexpr T value_or(U&amp;&amp; v) const &amp;;
+</pre>
+<blockquote>
+<p>
+-18- <i>Mandates</i>: <code>is_copy_constructible_v&lt;T&gt;</code> is `true` and
+<code>is_convertible_v&lt;U, T&gt;</code> is `true`.
+<p/>
+<del>-19- <i>Returns</i>: <code>has_value() ? **this : static_cast&lt;T&gt;(std::forward&lt;U&gt;(v))</code>.</del>
+<p/>
+<ins>-?- <i>Effects</i>: Equivalent to:</ins>
+</p>
+<blockquote><pre>
+<ins>if (has_value())
+  return <i>val</i>;
+return std::forward&lt;U&gt;(v);</ins>
+</pre></blockquote>
+</blockquote>
+<pre>
+template&lt;class U = remove_cv_t&lt;T&gt;&gt; constexpr T value_or(U&amp;&amp; v) &amp;&amp;;
+</pre>
+<blockquote>
+<p>
+-20- <i>Mandates</i>: <code>is_move_constructible_v&lt;T&gt;</code> is `true` and
+<code>is_convertible_v&lt;U, T&gt;</code> is `true`.
+<p/>
+<del>-21- <i>Returns</i>: <code>has_value() ? std::move(**this) : static_cast&lt;T&gt;(std::forward&lt;U&gt;(v))</code>.</del>
+<p/>
+<ins>-?- <i>Effects</i>: Equivalent to:</ins>
+</p>
+<blockquote><pre>
+<ins>if (has_value())
+  return std::move(<i>val</i>);
 return std::forward&lt;U&gt;(v);</ins>
 </pre></blockquote>
 </blockquote>
