@@ -64,7 +64,7 @@
 <p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#New">New</a> status.</em></p>
 <h3 id="4406"><a href="lwg-active.html#4406">4406</a>. <code class='backtick'>optional::value_or</code> return statement is inconsistent with <i>Mandates</i></h3>
 <p><b>Section:</b> 22.5.3.7 <a href="https://wg21.link/optional.observe">[optional.observe]</a>, 22.5.4.6 <a href="https://wg21.link/optional.ref.observe">[optional.ref.observe]</a>, 22.8.6.6 <a href="https://wg21.link/expected.object.obs">[expected.object.obs]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Hewill Kang <b>Opened:</b> 2025-09-06 <b>Last modified:</b> 2025-10-16</p>
+ <b>Submitter:</b> Hewill Kang <b>Opened:</b> 2025-09-06 <b>Last modified:</b> 2025-11-11</p>
 <p><b>Priority: </b>3
 </p>
 <p><b>View other</b> <a href="lwg-index-open.html#optional.observe">active issues</a> in [optional.observe].</p>
@@ -109,9 +109,9 @@ This would need to use <code class='backtick'>val</code> instead of <code class=
 is accepted.
 </p>
 
+<p><strong>Previous resolution [SUPERSEDED]:</strong></p>
+<blockquote class="note">
 
-
-<p id="res-4406"><b>Proposed resolution:</b></p>
 <p>
 This wording is relative to <a href="https://wg21.link/N5014">N5014</a>.
 </p>
@@ -220,6 +220,133 @@ template&lt;class U = remove_cv_t&lt;T&gt;&gt; constexpr T value_or(U&amp;&amp; 
 <blockquote><pre>
 <ins>if (has_value())
   return std::move(**this);
+return std::forward&lt;U&gt;(v);</ins>
+</pre></blockquote>
+</blockquote>
+</blockquote>
+</li>
+</ol>
+
+</blockquote>
+
+<p><i>[2025-11-11; Jonathan provides updated wording]</i></p>
+
+<p>
+Rebase after LWG <a href="lwg-defects.html#4015" title="LWG 3973 broke const overloads of std::optional monadic operations (Status: WP)">4015</a><sup><a href="https://cplusplus.github.io/LWG/issue4015" title="Latest snapshot">(i)</a></sup> which was approved in Kona.
+This would also resolve LWG <a href="lwg-active.html#4281" title="Inconsistency between value_or() and error_or() in std::expected (Status: New)">4281</a><sup><a href="https://cplusplus.github.io/LWG/issue4281" title="Latest snapshot">(i)</a></sup>.
+</p>
+
+
+
+<p id="res-4406"><b>Proposed resolution:</b></p>
+<p>
+This wording is relative to <b>the working draft after <a href="https://wg21.link/N5014">N5014</a></b>.
+</p>
+
+<ol>
+
+<li><p>Modify 22.5.3.7 <a href="https://wg21.link/optional.observe">[optional.observe]</a> as indicated:</p>
+
+<blockquote>
+<pre>
+template&lt;class U = remove_cv_t&lt;T&gt;&gt; constexpr T value_or(U&amp;&amp; v) const &amp;;
+</pre>
+<blockquote>
+<p>
+-15- <i>Mandates</i>: <code>is_copy_constructible_v&lt;T&gt; &amp;&amp; is_convertible_v&lt;U&amp;&amp;, T&gt;</code>
+is <code class='backtick'>true</code>.
+<p/>
+-16- <i>Effects</i>: Equivalent to:
+</p>
+<blockquote><pre>
+<del>return has_value() ? <i>val</i> : static_cast&lt;T&gt;(std::forward&lt;U&gt;(v));</del>
+<ins>if (has_value())
+  return <i>val</i>;
+return std::forward&lt;U&gt;(v);</ins>
+</pre></blockquote>
+</blockquote>
+<pre>
+template&lt;class U = remove_cv_t&lt;T&gt;&gt; constexpr T value_or(U&amp;&amp; v) &amp;&amp;;
+</pre>
+<blockquote>
+<p>
+-17- <i>Mandates</i>: <code>is_move_constructible_v&lt;T&gt; &amp;&amp; is_convertible_v&lt;U&amp;&amp;, T&gt;</code>
+is <code class='backtick'>true</code>.
+<p/>
+-18- <i>Effects</i>: Equivalent to:
+</p>
+<blockquote><pre>
+<del>return has_value() ? std::move(<i>val</i>) : static_cast&lt;T&gt;(std::forward&lt;U&gt;(v));</del>
+<ins>if (has_value())
+  return std::move(<i>val</i>);
+return std::forward&lt;U&gt;(v);</ins>
+</pre></blockquote>
+</blockquote>
+</blockquote>
+</li>
+
+<li><p>Modify 22.5.4.6 <a href="https://wg21.link/optional.ref.observe">[optional.ref.observe]</a> as indicated:</p>
+
+<blockquote>
+<pre>
+template&lt;class U = remove_cv_t&lt;T&gt;&gt; constexpr remove_cv_t&lt;T&gt; value_or(U&amp;&amp; u) const;
+</pre>
+<blockquote>
+<p>
+-8- Let <code>X</code> be <code>remove_cv_t&lt;T&gt;</code>.
+<p/>
+-9- <i>Mandates</i>: <code>is_constructible_v&lt;X, T&amp;&gt; &amp;&amp; is_convertible_v&lt;U, X&gt;</code>
+is <code class='backtick'>true</code>.
+<p/>
+-10- <i>Effects</i>: Equivalent to:
+</p>
+<blockquote><pre>
+<del>return has_value() ? *<i>val</i> : static_cast&lt;X&gt;(std::forward&lt;U&gt;(u));</del>
+<ins>if (has_value())
+  return *<i>val</i>;
+return std::forward&lt;U&gt;(u);
+</ins>
+</pre></blockquote>
+</blockquote>
+</blockquote>
+</li>
+
+<li><p>Modify 22.8.6.6 <a href="https://wg21.link/expected.object.obs">[expected.object.obs]</a> as indicated:</p>
+
+<blockquote>
+<pre>
+template&lt;class U = remove_cv_t&lt;T&gt;&gt; constexpr T value_or(U&amp;&amp; v) const &amp;;
+</pre>
+<blockquote>
+<p>
+-18- <i>Mandates</i>: <code>is_copy_constructible_v&lt;T&gt;</code> is <code class='backtick'>true</code> and
+<code>is_convertible_v&lt;U, T&gt;</code> is <code class='backtick'>true</code>.
+<p/>
+<del>-19- <i>Returns</i>: <code>has_value() ? **this : static_cast&lt;T&gt;(std::forward&lt;U&gt;(v))</code>.</del>
+<p/>
+<ins>-?- <i>Effects</i>: Equivalent to:</ins>
+</p>
+<blockquote><pre>
+<ins>if (has_value())
+  return <i>val</i>;
+return std::forward&lt;U&gt;(v);</ins>
+</pre></blockquote>
+</blockquote>
+<pre>
+template&lt;class U = remove_cv_t&lt;T&gt;&gt; constexpr T value_or(U&amp;&amp; v) &amp;&amp;;
+</pre>
+<blockquote>
+<p>
+-20- <i>Mandates</i>: <code>is_move_constructible_v&lt;T&gt;</code> is <code class='backtick'>true</code> and
+<code>is_convertible_v&lt;U, T&gt;</code> is <code class='backtick'>true</code>.
+<p/>
+<del>-21- <i>Returns</i>: <code>has_value() ? std::move(**this) : static_cast&lt;T&gt;(std::forward&lt;U&gt;(v))</code>.</del>
+<p/>
+<ins>-?- <i>Effects</i>: Equivalent to:</ins>
+</p>
+<blockquote><pre>
+<ins>if (has_value())
+  return std::move(<i>val</i>);
 return std::forward&lt;U&gt;(v);</ins>
 </pre></blockquote>
 </blockquote>

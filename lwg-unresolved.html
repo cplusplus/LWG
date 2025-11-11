@@ -54,7 +54,7 @@
 </style>
 </head>
 <body>
-<p>Revised 2025-11-11 at 15:52:06 UTC
+<p>Revised 2025-11-11 at 17:02:16 UTC
 </p><h2>Unresolved Issues</h2>
 <hr>
 <h3 id="423"><a href="#423">423</a><sup><a href="https://cplusplus.github.io/LWG/issue423">(i)</a></sup>. Effects of negative <code>streamsize</code> in iostreams</h3>
@@ -74078,7 +74078,7 @@ constexpr mdspan(<ins><i>convertible-to-non-slicing</i>&lt;</ins>data_handle_typ
 <hr>
 <h3 id="4406"><a href="#4406">4406</a><sup><a href="https://cplusplus.github.io/LWG/issue4406">(i)</a></sup>. <code class='backtick'>optional::value_or</code> return statement is inconsistent with <i>Mandates</i></h3>
 <p><b>Section:</b> 22.5.3.7 <a href="https://wg21.link/optional.observe">[optional.observe]</a>, 22.5.4.6 <a href="https://wg21.link/optional.ref.observe">[optional.ref.observe]</a>, 22.8.6.6 <a href="https://wg21.link/expected.object.obs">[expected.object.obs]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Hewill Kang <b>Opened:</b> 2025-09-06 <b>Last modified:</b> 2025-10-16</p>
+ <b>Submitter:</b> Hewill Kang <b>Opened:</b> 2025-09-06 <b>Last modified:</b> 2025-11-11</p>
 <p><b>Priority: </b>3
 </p>
 <p><b>View other</b> <a href="lwg-index-open.html#optional.observe">active issues</a> in [optional.observe].</p>
@@ -74123,9 +74123,9 @@ This would need to use <code class='backtick'>val</code> instead of <code class=
 is accepted.
 </p>
 
+<p><strong>Previous resolution [SUPERSEDED]:</strong></p>
+<blockquote class="note">
 
-
-<p id="res-4406"><b>Proposed resolution:</b></p>
 <p>
 This wording is relative to <a href="https://wg21.link/N5014">N5014</a>.
 </p>
@@ -74234,6 +74234,133 @@ template&lt;class U = remove_cv_t&lt;T&gt;&gt; constexpr T value_or(U&amp;&amp; 
 <blockquote><pre>
 <ins>if (has_value())
   return std::move(**this);
+return std::forward&lt;U&gt;(v);</ins>
+</pre></blockquote>
+</blockquote>
+</blockquote>
+</li>
+</ol>
+
+</blockquote>
+
+<p><i>[2025-11-11; Jonathan provides updated wording]</i></p>
+
+<p>
+Rebase after LWG <a href="lwg-defects.html#4015" title="LWG 3973 broke const overloads of std::optional monadic operations (Status: WP)">4015</a><sup><a href="https://cplusplus.github.io/LWG/issue4015" title="Latest snapshot">(i)</a></sup> which was approved in Kona.
+This would also resolve LWG <a href="lwg-active.html#4281" title="Inconsistency between value_or() and error_or() in std::expected (Status: New)">4281</a><sup><a href="https://cplusplus.github.io/LWG/issue4281" title="Latest snapshot">(i)</a></sup>.
+</p>
+
+
+
+<p id="res-4406"><b>Proposed resolution:</b></p>
+<p>
+This wording is relative to <b>the working draft after <a href="https://wg21.link/N5014">N5014</a></b>.
+</p>
+
+<ol>
+
+<li><p>Modify 22.5.3.7 <a href="https://wg21.link/optional.observe">[optional.observe]</a> as indicated:</p>
+
+<blockquote>
+<pre>
+template&lt;class U = remove_cv_t&lt;T&gt;&gt; constexpr T value_or(U&amp;&amp; v) const &amp;;
+</pre>
+<blockquote>
+<p>
+-15- <i>Mandates</i>: <code>is_copy_constructible_v&lt;T&gt; &amp;&amp; is_convertible_v&lt;U&amp;&amp;, T&gt;</code>
+is <code class='backtick'>true</code>.
+<p/>
+-16- <i>Effects</i>: Equivalent to:
+</p>
+<blockquote><pre>
+<del>return has_value() ? <i>val</i> : static_cast&lt;T&gt;(std::forward&lt;U&gt;(v));</del>
+<ins>if (has_value())
+  return <i>val</i>;
+return std::forward&lt;U&gt;(v);</ins>
+</pre></blockquote>
+</blockquote>
+<pre>
+template&lt;class U = remove_cv_t&lt;T&gt;&gt; constexpr T value_or(U&amp;&amp; v) &amp;&amp;;
+</pre>
+<blockquote>
+<p>
+-17- <i>Mandates</i>: <code>is_move_constructible_v&lt;T&gt; &amp;&amp; is_convertible_v&lt;U&amp;&amp;, T&gt;</code>
+is <code class='backtick'>true</code>.
+<p/>
+-18- <i>Effects</i>: Equivalent to:
+</p>
+<blockquote><pre>
+<del>return has_value() ? std::move(<i>val</i>) : static_cast&lt;T&gt;(std::forward&lt;U&gt;(v));</del>
+<ins>if (has_value())
+  return std::move(<i>val</i>);
+return std::forward&lt;U&gt;(v);</ins>
+</pre></blockquote>
+</blockquote>
+</blockquote>
+</li>
+
+<li><p>Modify 22.5.4.6 <a href="https://wg21.link/optional.ref.observe">[optional.ref.observe]</a> as indicated:</p>
+
+<blockquote>
+<pre>
+template&lt;class U = remove_cv_t&lt;T&gt;&gt; constexpr remove_cv_t&lt;T&gt; value_or(U&amp;&amp; u) const;
+</pre>
+<blockquote>
+<p>
+-8- Let <code>X</code> be <code>remove_cv_t&lt;T&gt;</code>.
+<p/>
+-9- <i>Mandates</i>: <code>is_constructible_v&lt;X, T&amp;&gt; &amp;&amp; is_convertible_v&lt;U, X&gt;</code>
+is <code class='backtick'>true</code>.
+<p/>
+-10- <i>Effects</i>: Equivalent to:
+</p>
+<blockquote><pre>
+<del>return has_value() ? *<i>val</i> : static_cast&lt;X&gt;(std::forward&lt;U&gt;(u));</del>
+<ins>if (has_value())
+  return *<i>val</i>;
+return std::forward&lt;U&gt;(u);
+</ins>
+</pre></blockquote>
+</blockquote>
+</blockquote>
+</li>
+
+<li><p>Modify 22.8.6.6 <a href="https://wg21.link/expected.object.obs">[expected.object.obs]</a> as indicated:</p>
+
+<blockquote>
+<pre>
+template&lt;class U = remove_cv_t&lt;T&gt;&gt; constexpr T value_or(U&amp;&amp; v) const &amp;;
+</pre>
+<blockquote>
+<p>
+-18- <i>Mandates</i>: <code>is_copy_constructible_v&lt;T&gt;</code> is <code class='backtick'>true</code> and
+<code>is_convertible_v&lt;U, T&gt;</code> is <code class='backtick'>true</code>.
+<p/>
+<del>-19- <i>Returns</i>: <code>has_value() ? **this : static_cast&lt;T&gt;(std::forward&lt;U&gt;(v))</code>.</del>
+<p/>
+<ins>-?- <i>Effects</i>: Equivalent to:</ins>
+</p>
+<blockquote><pre>
+<ins>if (has_value())
+  return <i>val</i>;
+return std::forward&lt;U&gt;(v);</ins>
+</pre></blockquote>
+</blockquote>
+<pre>
+template&lt;class U = remove_cv_t&lt;T&gt;&gt; constexpr T value_or(U&amp;&amp; v) &amp;&amp;;
+</pre>
+<blockquote>
+<p>
+-20- <i>Mandates</i>: <code>is_move_constructible_v&lt;T&gt;</code> is <code class='backtick'>true</code> and
+<code>is_convertible_v&lt;U, T&gt;</code> is <code class='backtick'>true</code>.
+<p/>
+<del>-21- <i>Returns</i>: <code>has_value() ? std::move(**this) : static_cast&lt;T&gt;(std::forward&lt;U&gt;(v))</code>.</del>
+<p/>
+<ins>-?- <i>Effects</i>: Equivalent to:</ins>
+</p>
+<blockquote><pre>
+<ins>if (has_value())
+  return std::move(<i>val</i>);
 return std::forward&lt;U&gt;(v);</ins>
 </pre></blockquote>
 </blockquote>
@@ -75483,7 +75610,7 @@ constexpr T&amp;&amp; operator*() &amp;&amp; noexcept;
 <hr>
 <h3 id="4460"><a href="#4460">4460</a><sup><a href="https://cplusplus.github.io/LWG/issue4460">(i)</a></sup>. Missing <i>Throws</i>: for last <code class='backtick'>variant</code> constructor</h3>
 <p><b>Section:</b> 22.6.3.2 <a href="https://wg21.link/variant.ctor">[variant.ctor]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Jonathan Wakely <b>Opened:</b> 2025-11-07 <b>Last modified:</b> 2025-11-07</p>
+ <b>Submitter:</b> Jonathan Wakely <b>Opened:</b> 2025-11-07 <b>Last modified:</b> 2025-11-11</p>
 <p><b>Priority: </b>Not Prioritized
 </p>
 <p><b>View other</b> <a href="lwg-index-open.html#variant.ctor">active issues</a> in [variant.ctor].</p>
@@ -75504,9 +75631,9 @@ Note how in R0 neither one of the <code class='backtick'>emplaced_type_t</code>/
 (as they were then called) + <code class='backtick'>initializer_list</code> constructors have a
 throws clause. In R1 only one of them gained it."
 </blockquote>
+<p><strong>Previous resolution [SUPERSEDED]:</strong></p>
+<blockquote class="note">
 
-
-<p id="res-4460"><b>Proposed resolution:</b></p>
 <p>
 This wording is relative to <a href="https://wg21.link/N5014">N5014</a>.
 </p>
@@ -75547,6 +75674,225 @@ this constructor is a constexpr constructor.
 </blockquote>
 </li>
 </ol>
+</blockquote>
+
+<p><i>[2025-11-11; Jonathan provides improved wording]</i></p>
+
+
+
+
+<p id="res-4460"><b>Proposed resolution:</b></p>
+
+<p>
+This wording is relative to <a href="https://wg21.link/N5014">N5014</a>.
+</p>
+
+<ol>
+<li><p>Modify 22.6.3.2 <a href="https://wg21.link/variant.ctor">[variant.ctor]</a>, as indicated:</p>
+
+<blockquote>
+<pre>
+constexpr variant() noexcept(<i>see below</i>);
+</pre>
+<blockquote>
+<p>-2- <i>Constraints</i>:
+<code>is_default_constructible_v&lt;T<sub>0</sub>&gt;</code> is <code class='backtick'>true</code>.
+</p>
+<p>-3- <i>Effects</i>:
+Constructs a <code class='backtick'>variant</code> holding a value-initialized value of type <code>T<sub>0</sub></code>.
+</p>
+<p>-4- <i>Postconditions</i>:
+<code class='backtick'>valueless_by_exception()</code> is <code class='backtick'>false</code> and <code class='backtick'>index()</code> is <code class='backtick'>0</code>.
+</p>
+<p>-5- <i>Throws</i>:
+Any exception thrown by the value-initialization of <code>T<sub>0</sub></code>.
+</p>
+<p>-6- <i>Remarks</i>: [&hellip;]
+</p>
+</blockquote>
+
+<pre>
+constexpr variant(const variant&amp;);
+</pre>
+<blockquote>
+<p>-7- <i>Effects</i>:
+If <code class='backtick'>w</code> holds a value, initializes the <code class='backtick'>variant</code> to hold the same alternative
+as <code class='backtick'>w</code> and direct-initializes the contained value with
+<code><i>GET</i>&lt;j&gt;(w)</code>, where <code class='backtick'>j</code> is <code class='backtick'>w.index()</code>.
+Otherwise, initializes the <code class='backtick'>variant</code> to not hold a value.
+</p>
+<p>-8- <i>Throws</i>:
+Any exception thrown by
+<del>direct-initializating any <code>T<sub>i</sub></code> for all <i>i</i></del>
+<ins>the initialization of the contained value</ins>.
+</p>
+<p>-9- <i>Remarks</i>: [&hellip;]
+</p>
+</blockquote>
+
+<pre>
+constexpr variant(variant&amp;&amp;) noexcept(<i>see below</i>);
+</pre>
+<blockquote>
+<p>-10- <i>Constraints</i>:
+<code>is_move_constructible_v&lt;T<sub>i</sub>&gt;</code> is <code class='backtick'>true</code>
+for all <i>i</i>.
+</p>
+<p>-11- <i>Effects</i>:
+If <code class='backtick'>w</code> holds a value, initializes the <code class='backtick'>variant</code> to hold the same alternative
+as <code class='backtick'>w</code> and direct-initializes the contained value with
+<code><i>GET</i>&lt;j&gt;(std::move(w))</code>, where <code class='backtick'>j</code> is <code class='backtick'>w.index()</code>.
+Otherwise, initializes the <code class='backtick'>variant</code> to not hold a value.
+</p>
+<p>-12- <i>Throws</i>:
+Any exception thrown by
+<del>move-constructing any <code>T<sub>i</sub></code> for all <i>i</i></del>
+<ins>the initialization of the contained value</ins>.
+</p>
+<p>-13- <i>Remarks</i>: [&hellip;]
+</p>
+</blockquote>
+
+<pre>
+template&lt;class T&gt; constexpr variant(T&amp;&amp;) noexcept(<i>see below</i>);
+</pre>
+<blockquote>
+<p>-14-
+Let <code>T<sub>j</sub></code> be a type that is determined as follows:
+build an imaginary function <code><i>FUN</i>(T<sub>i</sub>)</code>
+for each alternative type <code>T<sub>i</sub></code>
+for which <code>T<sub>i</sub> x[] = {std::forward&lt;T&gt;(t)};</code>
+is well-formed for some invented variable <code class='backtick'>x</code>.
+The overload <code><i>FUN</i>(T<sub>j</sub>)</code> selected by overload resolution
+for the expression <code><i>FUN</i>(std::forward&lt;T&gt;(t))</code> defines
+the alternative <code>T<sub>j</sub></code> which is the type
+of the contained value after construction.
+</p>
+<p>-15- <i>Constraints</i>: [&hellip;]
+</p>
+<p>-16- <i>Effects</i>:
+Initializes <code class='backtick'>*this</code> to hold the alternative type <code>T<sub>j</sub></code>
+and direct-non-list-initializes the contained value with
+<code>std::forward&lt;T&gt;(t)</code>.
+</p>
+<p>-17- <i>Postconditions</i>: [&hellip;]
+</p>
+<p>-18- <i>Throws</i>:
+Any exception thrown by the initialization of the
+<del>selected alternative <code>T<sub>j</sub></code></del>
+<ins>contained value</ins>.
+</p>
+<p>-19- <i>Remarks</i>: [&hellip;]
+</p>
+</blockquote>
+
+<pre>
+template&lt;class T, class... Args&gt; constexpr variant(in_place_type_t&lt;T&gt;, Args&amp;&amp;... args);
+</pre>
+<blockquote>
+<p>-20- <i>Constraints</i>: [&hellip;]
+</p>
+<p>-21- <i>Effects</i>:
+Direct-non-list-initializes the contained value of type <code class='backtick'>T</code>
+with
+<code>std::forward&lt;Args&gt;(args)...</code>.
+</p>
+<p>-22- <i>Postconditions</i>: [&hellip;]
+</p>
+<p>-23- <i>Throws</i>:
+Any exception thrown by
+<del>the selected constructor of <code class='backtick'>T</code></del>
+<ins>the initialization of the contained value</ins>.
+</p>
+<p>-24- <i>Remarks</i>: [&hellip;]
+</p>
+</blockquote>
+
+<pre>
+template&lt;class T, class U, class... Args&gt;
+  constexpr variant(in_place_type_t&lt;T&gt;, initializer_list&lt;U&gt; li, Args&amp;&amp;... args);
+</pre>
+<blockquote>
+<p>-25- <i>Constraints</i>: [&hellip;]
+</p>
+<p>-26- <i>Effects</i>:
+Direct-non-list-initializes the contained value of type <code class='backtick'>T</code>
+with
+<code>il, std::forward&lt;Args&gt;(args)...</code>.
+</p>
+<p>-27- <i>Postconditions</i>: [&hellip;]
+</p>
+<p>-28- <i>Throws</i>:
+Any exception thrown by
+<del>the selected constructor of <code class='backtick'>T</code></del>
+<ins>the initialization of the contained value</ins>.
+</p>
+<p>-29- <i>Remarks</i>: [&hellip;]
+</p>
+</blockquote>
+
+<pre>
+template&lt;size_t I, class... Args&gt;
+  constexpr explicit variant(in_place_index_t&lt;I&gt;, Args&amp;&amp;... args);
+</pre>
+<blockquote>
+<p>-30- <i>Constraints</i>:
+<ol style="list-style-type: none">
+<li>(30.1) &mdash; <code class='backtick'>I</code> is less than <code class='backtick'>sizeof...(Types)</code> and</li>
+<li>(30.2) &mdash;
+<code>is_constructible_v&lt;T<sub>I</sub>, Args...&gt;</code>
+is <code class='backtick'>true</code>.
+</li>
+</ol>
+</p>
+<p>-31- <i>Effects</i>:
+Direct-non-list-initializes the contained value of type
+<code>T<sub>I</sub></code> with <code>std::forward&lt;Args&gt;(args)...</code>.
+</p>
+<p>-32- <i>Postconditions</i>: <code class='backtick'>index()</code> is <code class='backtick'>I</code>.</p>
+<p>-33- <i>Throws</i>:
+Any exception thrown by
+<del>the selected constructor of <code>T<sub>i</sub></code></del>
+<ins>the initialization of the contained value</ins>.
+</p>
+<p>-34- <i>Remarks</i>:
+If <code>T<sub>I</sub></code>’s selected constructor is a constexpr constructor,
+this constructor is a constexpr constructor.
+</p>
+</blockquote>
+
+<pre>
+template&lt;size_t I, class U, class... Args&gt;
+  constexpr explicit variant(in_place_index_t&lt;I&gt;, initializer_list&lt;U&gt; il, Args&amp;&amp;... args);
+</pre>
+<blockquote>
+<p>-35- <i>Constraints</i>:
+<ol style="list-style-type: none">
+<li>(35.1) &mdash; <code class='backtick'>I</code> is less than <code class='backtick'>sizeof...(Types)</code> and</li>
+<li>(35.2) &mdash;
+<code>is_constructible_v&lt;T<sub>I</sub>, initializer_list&lt;U&gt;&amp;, Args...&gt;</code>
+is <code class='backtick'>true</code>.
+</li>
+</ol>
+</p>
+<p>-36- <i>Effects</i>:
+Direct-non-list-initializes the contained value of type
+<code>T<sub>I</sub></code> with <code>il, std::forward&lt;Args&gt;(args)...</code>.
+</p>
+<p>-37- <i>Postconditions</i>: <code class='backtick'>index()</code> is <code class='backtick'>I</code>.</p>
+<p><ins>-?- <i>Throws</i>:
+Any exception thrown by the initialization of the contained value.
+</ins>
+</p>
+<p>-38- <i>Remarks</i>:
+If <code>T<sub>I</sub></code>’s selected constructor is a constexpr constructor,
+this constructor is a constexpr constructor.
+</p>
+</blockquote>
+</blockquote>
+</li>
+</ol>
+
 
 
 
