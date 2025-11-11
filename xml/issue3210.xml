@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="3210" status="New">
+<issue num="3210" status="Resolved">
 <title><tt>allocate_shared</tt> is inconsistent about removing <tt>const</tt> from the pointer
 passed to allocator <tt>construct</tt> and <tt>destroy</tt></title>
 <section><sref ref="[util.smartptr.shared.create]"/></section>
@@ -112,6 +112,7 @@ because <tt>pv</tt> is merely specified to point some storage instead of an obje
 </p>
 
 <note>2024-10-02; will be resolved by issue <iref ref="3216"/>.</note>
+<note>2025-11-11; LWG <iref ref="3216"/> was accepted in Wrocław. Status changed: New &rarr; Resolved.</note>
 </discussion>
 
 <resolution>
