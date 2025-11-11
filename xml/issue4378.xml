@@ -110,6 +110,19 @@ otherwise, the behavior is undefined</ins>
 </superseded>
 
 <note>2025-11-11; Jonathan provides new wording</note>
+<p>
+We say that `basic_string` is a contiguous container, which makes the
+`addressof` wording in `c_str()` and `data()` redundant.
+The front matter says that there's a null terminator present,
+so we can move the rule about not modifying the terminator there
+instead of repeating it in `operator[]` and `c_str()`.
+</p>
+<p>
+We can also permit modifying the string contents through
+<code>const_cast&lt;charT*&gt;(str.c_str())</code>,
+since there's no reason for that to be undefined when
+<code>const_cast&lt;string&amp;&gt;(str).data()</code> is allowed.
+</p>
 
 </discussion>
 
