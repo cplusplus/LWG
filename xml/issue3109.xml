@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="3109" status="New">
+<issue num="3109" status="Resolved">
 <title><tt>strstreambuf</tt> is copyable</title>
 <section><sref ref="[depr.strstreambuf]"/></section>
 <submitter>Jonathan Wakely</submitter>
@@ -10,18 +10,20 @@
 
 <discussion>
 <p>
-In C++03 <tt>strstreambuf</tt> was not copyable, because <tt>basic_streambuf</tt> wasn't copyable. 
-In C++11 we made <tt>basic_streambuf</tt> copyable by derived classes, and <tt>strstreambuf</tt> 
-doesn't define any special members, so it (unintentionally?) became copyable, with completely 
+In C++03 <tt>strstreambuf</tt> was not copyable, because <tt>basic_streambuf</tt> wasn't copyable.
+In C++11 we made <tt>basic_streambuf</tt> copyable by derived classes, and <tt>strstreambuf</tt>
+doesn't define any special members, so it (unintentionally?) became copyable, with completely
 unspecified semantics.
 <p/>
-VC++ and libc++ make it movable not copyable, and libstdc++ still follows C++03, so it's neither 
-movable nor copyable. Making it movable seems to be the sane option, and consistent with 
+VC++ and libc++ make it movable not copyable, and libstdc++ still follows C++03, so it's neither
+movable nor copyable. Making it movable seems to be the sane option, and consistent with
 <tt>filebuf</tt> and <tt>stringbuf</tt>.
 </p>
 
 <note>2018-06-18 after reflector discussion</note>
 <p>Priority set to 4</p>
+
+<note>2025-11-10 Resolved by the removal of <tt>strstreambuf</tt> via paper <paper num="P2867R2"/> in Tokyo, 2024. Status changed: New &rarr; Resolved.</note>
 </discussion>
 
 <resolution>

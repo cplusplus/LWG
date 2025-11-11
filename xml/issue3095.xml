@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="3095" status="New">
+<issue num="3095" status="Resolved">
 <title><tt>strstreambuf</tt> refers to nonexistent member of <tt>fpos</tt>, <tt>fpos::offset</tt></title>
 <section><sref ref="[depr.strstreambuf.virtuals]"/></section>
 <submitter>Billy O'Neal III</submitter>
@@ -11,20 +11,22 @@
 <discussion>
 <p>
 <tt>strstreambuf</tt> refers to a nonexistent member function of <tt>fpos</tt> in the specification of the member function
-<tt>seekpos</tt>, <sref ref="[depr.strstreambuf.virtuals]"/>/18 (emphasize mine): 
+<tt>seekpos</tt>, <sref ref="[depr.strstreambuf.virtuals]"/>/18 (emphasize mine):
 </p>
 <blockquote><p>
 For a sequence to be positioned, if its next pointer is a null pointer, the positioning operation fails.
 Otherwise, the function determines <tt>newoff</tt> from <span style="color:#C80000;font-weight:bold"><tt>sp.offset()</tt></span>:
 </p></blockquote>
 <p>
-The intent is clearly to get the corresponding <tt>streamoff</tt> from the <tt>fpos</tt>, as p19 says "the resultant 
-offset <tt>newoff</tt> (of type <tt>off_type</tt>)". The mechanism to make that conversion is a normal explicit conversion, 
+The intent is clearly to get the corresponding <tt>streamoff</tt> from the <tt>fpos</tt>, as p19 says "the resultant
+offset <tt>newoff</tt> (of type <tt>off_type</tt>)". The mechanism to make that conversion is a normal explicit conversion,
 as indicated in the last row of the table in [fpos.operations].
 </p>
 
 <note>2018-06-18 after reflector discussion</note>
 <p>Priority set to 4</p>
+
+<note>2025-11-10 Resolved by the removal of <tt>strstreambuf</tt> via paper <paper num="P2867R2"/> in Tokyo, 2024. Status changed: New &rarr; Resolved.</note>
 </discussion>
 
 <resolution>
