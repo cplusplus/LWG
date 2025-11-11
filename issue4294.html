@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <title>Issue 4294: bitset(const CharT*) constructor needs to be constrained</title>
 <meta property="og:title" content="Issue 4294: bitset(const CharT*) constructor needs to be constrained">
-<meta property="og:description" content="C++ library issue. Status: Voting">
+<meta property="og:description" content="C++ library issue. Status: WP">
 <meta property="og:url" content="https://cplusplus.github.io/LWG/issue4294.html">
 <meta property="og:type" content="website">
 <meta property="og:image" content="http://cplusplus.github.io/LWG/images/cpp_logo.png">
@@ -61,14 +61,14 @@
 </head>
 <body>
 <hr>
-<p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#Voting">Voting</a> status.</em></p>
-<h3 id="4294"><a href="lwg-active.html#4294">4294</a>. <code class='backtick'>bitset(const CharT*)</code> constructor needs to be constrained</h3>
-<p><b>Section:</b> 22.9.2.2 <a href="https://wg21.link/bitset.cons">[bitset.cons]</a> <b>Status:</b> <a href="lwg-active.html#Voting">Voting</a>
- <b>Submitter:</b> Jonathan Wakely <b>Opened:</b> 2025-07-12 <b>Last modified:</b> 2025-10-30</p>
+<p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#WP">WP</a> status.</em></p>
+<h3 id="4294"><a href="lwg-defects.html#4294">4294</a>. <code class='backtick'>bitset(const CharT*)</code> constructor needs to be constrained</h3>
+<p><b>Section:</b> 22.9.2.2 <a href="https://wg21.link/bitset.cons">[bitset.cons]</a> <b>Status:</b> <a href="lwg-active.html#WP">WP</a>
+ <b>Submitter:</b> Jonathan Wakely <b>Opened:</b> 2025-07-12 <b>Last modified:</b> 2025-11-11</p>
 <p><b>Priority: </b>Not Prioritized
 </p>
 <p><b>View all other</b> <a href="lwg-index.html#bitset.cons">issues</a> in [bitset.cons].</p>
-<p><b>View all issues with</b> <a href="lwg-status.html#Voting">Voting</a> status.</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#WP">WP</a> status.</p>
 <p><b>Discussion:</b></p>
 <p>
 This code might be ill-formed, with an error outside the immediate context
@@ -95,6 +95,8 @@ where <code>is_trivially_default_constructible_v&lt;T&gt;</code> is <code class=
 <p>
 Set status to Tentatively Ready after five votes in favour during reflector poll.
 </p>
+
+<p><i>[Kona 2025-11-08; Status changed: Voting &rarr; WP.]</i></p>
 
 
 

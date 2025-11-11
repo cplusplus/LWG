@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <title>Issue 4447: Remove unnecessary sizeof…(Env) &gt; 1 condition</title>
 <meta property="og:title" content="Issue 4447: Remove unnecessary sizeof…(Env) &gt; 1 condition">
-<meta property="og:description" content="C++ library issue. Status: Immediate">
+<meta property="og:description" content="C++ library issue. Status: WP">
 <meta property="og:url" content="https://cplusplus.github.io/LWG/issue4447.html">
 <meta property="og:type" content="website">
 <meta property="og:image" content="http://cplusplus.github.io/LWG/images/cpp_logo.png">
@@ -61,18 +61,20 @@
 </head>
 <body>
 <hr>
-<p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#Immediate">Immediate</a> status.</em></p>
-<h3 id="4447"><a href="lwg-active.html#4447">4447</a>. Remove unnecessary <code>sizeof…(Env) &gt; 1</code> condition</h3>
-<p><b>Section:</b> 33.4 <a href="https://wg21.link/execution.syn">[execution.syn]</a> <b>Status:</b> <a href="lwg-active.html#Immediate">Immediate</a>
- <b>Submitter:</b> Tomasz Kamiński <b>Opened:</b> 2025-11-05 <b>Last modified:</b> 2025-11-05</p>
+<p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#WP">WP</a> status.</em></p>
+<h3 id="4447"><a href="lwg-defects.html#4447">4447</a>. Remove unnecessary <code>sizeof…(Env) &gt; 1</code> condition</h3>
+<p><b>Section:</b> 33.4 <a href="https://wg21.link/execution.syn">[execution.syn]</a> <b>Status:</b> <a href="lwg-active.html#WP">WP</a>
+ <b>Submitter:</b> Tomasz Kamiński <b>Opened:</b> 2025-11-05 <b>Last modified:</b> 2025-11-11</p>
 <p><b>Priority: </b>Not Prioritized
 </p>
-<p><b>View all issues with</b> <a href="lwg-status.html#Immediate">Immediate</a> status.</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#WP">WP</a> status.</p>
 <p><b>Discussion:</b></p>
 <b>Addresses <a href="https://github.com/cplusplus/nbballot/issues/900">US 206-325</a></b>
 <p>The “<code class='backtick'>sizeof…(Env) &amp;gt; 1</code> is <code class='backtick'>true</code>” part seems unreachable because <code class='backtick'>CS</code> is ill-formed in that case.</p>
 
 <p><i>[Kona 2025-11-05; approved by LWG. Status changed: New &rarr; Immediate.]</i></p>
+
+<p><i>[Kona 2025-11-08; Status changed: Immediate &rarr; WP.]</i></p>
 
 
 

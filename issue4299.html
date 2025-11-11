@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <title>Issue 4299: Missing Mandates: part in optional&lt;T&amp;&gt;::transform</title>
 <meta property="og:title" content="Issue 4299: Missing Mandates: part in optional&lt;T&amp;&gt;::transform">
-<meta property="og:description" content="C++ library issue. Status: Voting">
+<meta property="og:description" content="C++ library issue. Status: WP">
 <meta property="og:url" content="https://cplusplus.github.io/LWG/issue4299.html">
 <meta property="og:type" content="website">
 <meta property="og:image" content="http://cplusplus.github.io/LWG/images/cpp_logo.png">
@@ -61,15 +61,14 @@
 </head>
 <body>
 <hr>
-<p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#Voting">Voting</a> status.</em></p>
-<h3 id="4299"><a href="lwg-active.html#4299">4299</a>. Missing <i>Mandates:</i> part in <code>optional&lt;T&amp;&gt;::transform</code></h3>
-<p><b>Section:</b> 22.5.4.7 <a href="https://wg21.link/optional.ref.monadic">[optional.ref.monadic]</a> <b>Status:</b> <a href="lwg-active.html#Voting">Voting</a>
- <b>Submitter:</b> Giuseppe D'Angelo <b>Opened:</b> 2025-07-15 <b>Last modified:</b> 2025-10-30</p>
+<p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#WP">WP</a> status.</em></p>
+<h3 id="4299"><a href="lwg-defects.html#4299">4299</a>. Missing <i>Mandates:</i> part in <code>optional&lt;T&amp;&gt;::transform</code></h3>
+<p><b>Section:</b> 22.5.4.7 <a href="https://wg21.link/optional.ref.monadic">[optional.ref.monadic]</a> <b>Status:</b> <a href="lwg-active.html#WP">WP</a>
+ <b>Submitter:</b> Giuseppe D'Angelo <b>Opened:</b> 2025-07-15 <b>Last modified:</b> 2025-11-11</p>
 <p><b>Priority: </b>Not Prioritized
 </p>
-<p><b>View other</b> <a href="lwg-index-open.html#optional.ref.monadic">active issues</a> in [optional.ref.monadic].</p>
 <p><b>View all other</b> <a href="lwg-index.html#optional.ref.monadic">issues</a> in [optional.ref.monadic].</p>
-<p><b>View all issues with</b> <a href="lwg-status.html#Voting">Voting</a> status.</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#WP">WP</a> status.</p>
 <p><b>Discussion:</b></p>
 <p>
 In 22.5.4.7 <a href="https://wg21.link/optional.ref.monadic">[optional.ref.monadic]</a> the specification of <code>optional&lt;T&amp;&gt;::transform</code>
@@ -96,6 +95,8 @@ is part of the signature (return type), we never enter the body to trigger the
 <i>Mandates</i>, so it's already implicitly ill-formed if the result of <code class='backtick'>f</code>
 is not a valid contained type. It's worth clarifying that though."
 </p>
+
+<p><i>[Kona 2025-11-08; Status changed: Voting &rarr; WP.]</i></p>
 
 
 

@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <title>Issue 4452: Make deref-move constexpr</title>
 <meta property="og:title" content="Issue 4452: Make deref-move constexpr">
-<meta property="og:description" content="C++ library issue. Status: Immediate">
+<meta property="og:description" content="C++ library issue. Status: WP">
 <meta property="og:url" content="https://cplusplus.github.io/LWG/issue4452.html">
 <meta property="og:type" content="website">
 <meta property="og:image" content="http://cplusplus.github.io/LWG/images/cpp_logo.png">
@@ -61,14 +61,14 @@
 </head>
 <body>
 <hr>
-<p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#Immediate">Immediate</a> status.</em></p>
-<h3 id="4452"><a href="lwg-active.html#4452">4452</a>. Make <i>deref-move</i> constexpr</h3>
-<p><b>Section:</b> 26.11.1 <a href="https://wg21.link/specialized.algorithms.general">[specialized.algorithms.general]</a> <b>Status:</b> <a href="lwg-active.html#Immediate">Immediate</a>
- <b>Submitter:</b> S.B. Tam <b>Opened:</b> 2025-11-05 <b>Last modified:</b> 2025-11-06</p>
+<p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#WP">WP</a> status.</em></p>
+<h3 id="4452"><a href="lwg-defects.html#4452">4452</a>. Make <i>deref-move</i> constexpr</h3>
+<p><b>Section:</b> 26.11.1 <a href="https://wg21.link/specialized.algorithms.general">[specialized.algorithms.general]</a> <b>Status:</b> <a href="lwg-active.html#WP">WP</a>
+ <b>Submitter:</b> S.B. Tam <b>Opened:</b> 2025-11-05 <b>Last modified:</b> 2025-11-11</p>
 <p><b>Priority: </b>Not Prioritized
 </p>
 <p><b>View all other</b> <a href="lwg-index.html#specialized.algorithms.general">issues</a> in [specialized.algorithms.general].</p>
-<p><b>View all issues with</b> <a href="lwg-status.html#Immediate">Immediate</a> status.</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#WP">WP</a> status.</p>
 <p><b>Discussion:</b></p>
 <p>
 <code class='backtick'>std::uninitialized_move</code> and <code class='backtick'>std::uninitialized_move_n</code> are constexpr and invoke <i><code class='backtick'>deref-move</code></i>,
@@ -82,6 +82,8 @@ and unfortunately none of them was aware of the other.
 </p>
 
 <p><i>[Kona 2025-11-06; approved by LWG. Status changed: New &rarr; Immediate.]</i></p>
+
+<p><i>[Kona 2025-11-08; Status changed: Immediate &rarr; WP.]</i></p>
 
 
 
