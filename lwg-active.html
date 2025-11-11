@@ -79,7 +79,7 @@
 </tr>
 </table>
 <h1>C++ Standard Library Active Issues List (Revision D126)</h1>
-<p>Revised 2025-11-11 at 21:50:50 UTC
+<p>Revised 2025-11-11 at 22:03:04 UTC
 </p>
   <p>Reference ISO/IEC IS 14882:2024(E)</p>
   <p>Also see:</p>
@@ -77022,6 +77022,19 @@ otherwise, the behavior is undefined</ins>
 
 <p><i>[2025-11-11; Jonathan provides new wording]</i></p>
 
+<p>
+We say that <code class='backtick'>basic_string</code> is a contiguous container, which makes the
+<code class='backtick'>addressof</code> wording in <code class='backtick'>c_str()</code> and <code class='backtick'>data()</code> redundant.
+The front matter says that there's a null terminator present,
+so we can move the rule about not modifying the terminator there
+instead of repeating it in <code class='backtick'>operator[]</code> and <code class='backtick'>c_str()</code>.
+</p>
+<p>
+We can also permit modifying the string contents through
+<code>const_cast&lt;charT*&gt;(str.c_str())</code>,
+since there's no reason for that to be undefined when
+<code>const_cast&lt;string&amp;&gt;(str).data()</code> is allowed.
+</p>
 
 
 
