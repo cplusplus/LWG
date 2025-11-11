@@ -3,7 +3,7 @@
 
 <issue num="3178" status="Resolved">
 <title><tt>std::mismatch</tt> is missing an upper bound</title>
-<section><sref ref="[mismatch]"/></section>
+<section><sref ref="[alg.mismatch]"/></section>
 <submitter>Geoffrey Romer</submitter>
 <date>20 Dec 2018</date>
 <priority>0</priority>
@@ -31,7 +31,7 @@ fundamental convention that STL algorithms operate on user-supplied ranges, not 
 <note>2019-01-26 Priority to 0 and Status to Tentatively Ready after discussions on the reflector</note>
 <p>
 During that reflector discussion several contributers argued in favour for changing the current wording in
-<sref ref="[mismatch]"/> p3 from "smallest integer" to "smallest <ins>nonnegative</ins> integer". This minor 
+<sref ref="[mismatch]"/> p3 from "smallest integer" to "smallest <ins>nonnegative</ins> integer". This minor
 wording delta has also been added to the original proposed wording.
 </p>
 
@@ -79,8 +79,8 @@ both parameters <tt>pred</tt> and <tt>proj1</tt>.</p></li>
 </ol>
 <ins>-?- Let <tt><i>N</i></tt> be <tt>min(last1 - first1, last2 - first2)</tt>.</ins>
 <p/>
--3- <i>Returns:</i> <tt>{ first1 + n, first2 + n }</tt>, where <tt>n</tt> is the smallest <ins>nonnegative</ins> integer such 
-that <tt><i>E</i></tt> holds, or <tt><del>min(last1 - first1, last2 - first2)</del><ins><i>N</i></ins></tt> if no such integer 
+-3- <i>Returns:</i> <tt>{ first1 + n, first2 + n }</tt>, where <tt>n</tt> is the smallest <ins>nonnegative</ins> integer such
+that <tt><i>E</i></tt> holds, or <tt><del>min(last1 - first1, last2 - first2)</del><ins><i>N</i></ins></tt> if no such integer
 <ins>less than <tt><i>N</i></tt></ins> exists.
 <p/>
 -4- <i>Complexity:</i> At most <tt><del>min(last1 - first1, last2 - first2)</del><ins><i>N</i></ins></tt> applications of the
