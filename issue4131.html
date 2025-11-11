@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <title>Issue 4131: Including &lt;optional&gt; doesn't provide std::begin/end</title>
 <meta property="og:title" content="Issue 4131: Including &lt;optional&gt; doesn't provide std::begin/end">
-<meta property="og:description" content="C++ library issue. Status: New">
+<meta property="og:description" content="C++ library issue. Status: Resolved">
 <meta property="og:url" content="https://cplusplus.github.io/LWG/issue4131.html">
 <meta property="og:type" content="website">
 <meta property="og:image" content="http://cplusplus.github.io/LWG/images/cpp_logo.png">
@@ -61,15 +61,15 @@
 </head>
 <body>
 <hr>
-<p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#New">New</a> status.</em></p>
-<h3 id="4131"><a href="lwg-active.html#4131">4131</a>. Including <code>&lt;optional&gt;</code> doesn't provide <code>std::begin/end</code></h3>
-<p><b>Section:</b> 24.7 <a href="https://wg21.link/iterator.range">[iterator.range]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Hewill Kang <b>Opened:</b> 2024-08-02 <b>Last modified:</b> 2024-08-21</p>
+<p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#Resolved">Resolved</a> status.</em></p>
+<h3 id="4131"><a href="lwg-defects.html#4131">4131</a>. Including <code>&lt;optional&gt;</code> doesn't provide <code>std::begin/end</code></h3>
+<p><b>Section:</b> 24.7 <a href="https://wg21.link/iterator.range">[iterator.range]</a> <b>Status:</b> <a href="lwg-active.html#Resolved">Resolved</a>
+ <b>Submitter:</b> Hewill Kang <b>Opened:</b> 2024-08-02 <b>Last modified:</b> 2025-11-11</p>
 <p><b>Priority: </b>3
 </p>
 <p><b>View other</b> <a href="lwg-index-open.html#iterator.range">active issues</a> in [iterator.range].</p>
 <p><b>View all other</b> <a href="lwg-index.html#iterator.range">issues</a> in [iterator.range].</p>
-<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#Resolved">Resolved</a> status.</p>
 <p><b>Discussion:</b></p>
 <p>
 Since <code>optional</code> now provides <code>begin/end</code> members, it is reasonable
@@ -85,6 +85,8 @@ Set priority to 3 after reflector poll.
 "I would like to hear opinion of <a href="https://wg21.link/P3168" title=" Give std::optional Range Support">P3168</a> authors,
 or have the change discussed as a part of <a href="https://wg21.link/P3016" title=" Resolve inconsistencies in begin/end for valarray and braced initializer lists">P3016</a>.
 </p>
+
+<p><i>[2025-11-11; Resolved by <a href="https://wg21.link/P3016R6" title=" Resolve inconsistencies in begin/end for valarray and braced initializer lists">P3016R6</a>, approved in Kona. Status changed: New &rarr; Resolved.]</i></p>
 
 
 

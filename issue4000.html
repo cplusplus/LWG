@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <title>Issue 4000: flat_map::insert_range's Effects is not quite right</title>
 <meta property="og:title" content="Issue 4000: flat_map::insert_range's Effects is not quite right">
-<meta property="og:description" content="C++ library issue. Status: New">
+<meta property="og:description" content="C++ library issue. Status: Resolved">
 <meta property="og:url" content="https://cplusplus.github.io/LWG/issue4000.html">
 <meta property="og:type" content="website">
 <meta property="og:image" content="http://cplusplus.github.io/LWG/images/cpp_logo.png">
@@ -61,15 +61,14 @@
 </head>
 <body>
 <hr>
-<p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#New">New</a> status.</em></p>
-<h3 id="4000"><a href="lwg-active.html#4000">4000</a>. <code>flat_map::insert_range</code>'s <i>Effects</i> is not quite right</h3>
-<p><b>Section:</b> 23.6.8.7 <a href="https://wg21.link/flat.map.modifiers">[flat.map.modifiers]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Hewill Kang <b>Opened:</b> 2023-10-23 <b>Last modified:</b> 2025-09-05</p>
+<p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#Resolved">Resolved</a> status.</em></p>
+<h3 id="4000"><a href="lwg-defects.html#4000">4000</a>. <code>flat_map::insert_range</code>'s <i>Effects</i> is not quite right</h3>
+<p><b>Section:</b> 23.6.8.7 <a href="https://wg21.link/flat.map.modifiers">[flat.map.modifiers]</a> <b>Status:</b> <a href="lwg-active.html#Resolved">Resolved</a>
+ <b>Submitter:</b> Hewill Kang <b>Opened:</b> 2023-10-23 <b>Last modified:</b> 2025-11-11</p>
 <p><b>Priority: </b>3
 </p>
-<p><b>View other</b> <a href="lwg-index-open.html#flat.map.modifiers">active issues</a> in [flat.map.modifiers].</p>
 <p><b>View all other</b> <a href="lwg-index.html#flat.map.modifiers">issues</a> in [flat.map.modifiers].</p>
-<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#Resolved">Resolved</a> status.</p>
 <p><b>Discussion:</b></p>
 <p>
 <code>flat_map::insert_range</code> adds elements to the <code>containers</code> member via:
@@ -98,6 +97,8 @@ Set priority to 3 after reflector poll in October 2023.
 <p><i>[2025-09-05; LWG telecon]</i></p>
 
 <p>This will be resolved by <a href="https://wg21.link/P3567" title=" `flat_meow` Fixes">P3567</a>.</p>
+
+<p><i>[2025-11-11; Resolved by <a href="https://wg21.link/P3567R2">P3567R2</a>, approved in Kona. Status changed: New &rarr; Resolved.]</i></p>
 
 
 

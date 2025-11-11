@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <title>Issue 4437: constant_of(^^v) for variable v of array type produces reflection of pointer constant</title>
 <meta property="og:title" content="Issue 4437: constant_of(^^v) for variable v of array type produces reflection of pointer constant">
-<meta property="og:description" content="C++ library issue. Status: New">
+<meta property="og:description" content="C++ library issue. Status: Resolved">
 <meta property="og:url" content="https://cplusplus.github.io/LWG/issue4437.html">
 <meta property="og:type" content="website">
 <meta property="og:image" content="http://cplusplus.github.io/LWG/images/cpp_logo.png">
@@ -61,14 +61,14 @@
 </head>
 <body>
 <hr>
-<p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#New">New</a> status.</em></p>
-<h3 id="4437"><a href="lwg-active.html#4437">4437</a>. <code class='backtick'>constant_of(^^v)</code> for variable <code class='backtick'>v</code> of array type produces reflection of pointer constant</h3>
-<p><b>Section:</b> 21.4.7 <a href="https://wg21.link/meta.reflection.queries">[meta.reflection.queries]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Tomasz Kamiński <b>Opened:</b> 2025-10-29 <b>Last modified:</b> 2025-11-07</p>
+<p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#Resolved">Resolved</a> status.</em></p>
+<h3 id="4437"><a href="lwg-defects.html#4437">4437</a>. <code class='backtick'>constant_of(^^v)</code> for variable <code class='backtick'>v</code> of array type produces reflection of pointer constant</h3>
+<p><b>Section:</b> 21.4.7 <a href="https://wg21.link/meta.reflection.queries">[meta.reflection.queries]</a> <b>Status:</b> <a href="lwg-active.html#Resolved">Resolved</a>
+ <b>Submitter:</b> Tomasz Kamiński <b>Opened:</b> 2025-10-29 <b>Last modified:</b> 2025-11-11</p>
 <p><b>Priority: </b>Not Prioritized
 </p>
 <p><b>View all other</b> <a href="lwg-index.html#meta.reflection.queries">issues</a> in [meta.reflection.queries].</p>
-<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#Resolved">Resolved</a> status.</p>
 <p><b>Discussion:</b></p>
 <p>
 The unintended consequence of the late change of <code class='backtick'>reflect_constant</code> to accept its parameter by value 
@@ -90,6 +90,9 @@ reflection of an array object instead.
 </p>
 
 <p><i>[Kona 2025-11-07; Will be resolved by CWG 3111.]</i></p>
+
+<p><i>[2025-11-11; Resolved by CWG 3111, approved in Kona. Status changed: New &rarr; Resolved.]</i></p>
+
 
 
 

@@ -59,7 +59,7 @@
 <p>Reference ISO/IEC IS 14882:2024(E)</p>
 <p>This document is the Table of Contents for the <a href="lwg-active.html">Library Active Issues List</a>,
 <a href="lwg-defects.html">Library Defect Reports and Accepted Issues</a>, and <a href="lwg-closed.html">Library Closed Issues List</a>.</p>
-<p>Revised 2025-11-11 at 10:50:15 UTC
+<p>Revised 2025-11-11 at 12:56:51 UTC
 </p><table class="issues-index">
 <tr>
   <th><a href="lwg-toc.html">Issue</a></th>
@@ -2451,17 +2451,6 @@ BidirectionalIterator (Status: New)">3261</a><sup><a href="https://cplusplus.git
 <td></td>
 </tr>
 <tr>
-<td id="3537"><a href="lwg-active.html#3537" title="&sect;[iterator.range] Missing noexcept for std::rbegin/rend for arrays and 
-initializer_list (Status: New)">3537</a><sup><a href="https://cplusplus.github.io/LWG/issue3537">(i)</a></sup></td>
-<td><a href="lwg-active.html#New">New</a></td>
-<td>24.7 [iterator.range]</td>
-<td>&sect;[iterator.range] Missing <code>noexcept</code> for <code>std::rbegin</code>/<code>rend</code> for arrays and 
-<code>initializer_list</code></td>
-<td><span class="no-pr">No</span></td>
-<td>3</td>
-<td></td>
-</tr>
-<tr>
 <td id="3538"><a href="lwg-active.html#3538" title="&sect;[library.c] C library functions are not addressable (Status: New)">3538</a><sup><a href="https://cplusplus.github.io/LWG/issue3538">(i)</a></sup></td>
 <td><a href="lwg-active.html#New">New</a></td>
 <td>16.2 [library.c]</td>
@@ -2664,26 +2653,6 @@ sentinel types (Status: New)">3609</a><sup><a href="https://cplusplus.github.io/
 <td></td>
 </tr>
 <tr>
-<td id="3624"><a href="lwg-active.html#3624" title="Inconsistency of &lt;typeinfo&gt;, &lt;initializer_list&gt;, and 
-&lt;compare&gt; in the standard library (Status: New)">3624</a><sup><a href="https://cplusplus.github.io/LWG/issue3624">(i)</a></sup></td>
-<td><a href="lwg-active.html#New">New</a></td>
-<td>17.7 [support.rtti]</td>
-<td>Inconsistency of <code>&lt;typeinfo&gt;</code>, <code>&lt;initializer_list&gt;</code>, and 
-<code>&lt;compare&gt;</code> in the standard library</td>
-<td>Yes</td>
-<td>3</td>
-<td></td>
-</tr>
-<tr>
-<td id="3625"><a href="lwg-active.html#3625" title="Should &lt;stacktrace&gt; provide range access function templates? (Status: Open)">3625</a><sup><a href="https://cplusplus.github.io/LWG/issue3625">(i)</a></sup></td>
-<td><a href="lwg-active.html#Open">Open</a></td>
-<td>19.6.2 [stacktrace.syn]</td>
-<td>Should <code>&lt;stacktrace&gt;</code> provide range access function templates?</td>
-<td>Yes</td>
-<td>3</td>
-<td></td>
-</tr>
-<tr>
 <td id="3626"><a href="lwg-active.html#3626" title="Is std::basic_stacktrace required to use contiguous storage? (Status: New)">3626</a><sup><a href="https://cplusplus.github.io/LWG/issue3626">(i)</a></sup></td>
 <td><a href="lwg-active.html#New">New</a></td>
 <td>19.6.4.1 [stacktrace.basic.overview]</td>
@@ -2734,15 +2703,6 @@ sentinel types (Status: New)">3609</a><sup><a href="https://cplusplus.github.io/
 <td>20.5.2 [mem.res.class]</td>
 <td><code>pmr::memory_resource::do_allocate</code> needs clarification</td>
 <td><span class="no-pr">No</span></td>
-<td>3</td>
-<td></td>
-</tr>
-<tr>
-<td id="3638"><a href="lwg-active.html#3638" title="vector&lt;bool&gt;::swap(reference, reference) is useless (Status: New)">3638</a><sup><a href="https://cplusplus.github.io/LWG/issue3638">(i)</a></sup></td>
-<td><a href="lwg-active.html#New">New</a></td>
-<td>23.3.14 [vector.bool]</td>
-<td><code>vector&lt;bool&gt;::swap(reference, reference)</code> is useless</td>
-<td>Yes</td>
 <td>3</td>
 <td></td>
 </tr>
@@ -4003,15 +3963,6 @@ should require the arguments to have the same length</td>
 <td></td>
 </tr>
 <tr>
-<td id="4000"><a href="lwg-active.html#4000" title="flat_map::insert_range's Effects is not quite right (Status: New)">4000</a><sup><a href="https://cplusplus.github.io/LWG/issue4000">(i)</a></sup></td>
-<td><a href="lwg-active.html#New">New</a></td>
-<td>23.6.8.7 [flat.map.modifiers]</td>
-<td><code>flat_map::insert_range</code>'s <i>Effects</i> is not quite right</td>
-<td>Yes</td>
-<td>3</td>
-<td></td>
-</tr>
-<tr>
 <td id="4002"><a href="lwg-active.html#4002" title="The definition of iota_view::iterator::iterator_concept should be improved (Status: New)">4002</a><sup><a href="https://cplusplus.github.io/LWG/issue4002">(i)</a></sup></td>
 <td><a href="lwg-active.html#New">New</a></td>
 <td>25.6.4.3 [range.iota.iterator]</td>
@@ -4697,15 +4648,6 @@ forward_iterator (Status: New)">4120</a><sup><a href="https://cplusplus.github.i
 <td></td>
 </tr>
 <tr>
-<td id="4131"><a href="lwg-active.html#4131" title="Including &lt;optional&gt; doesn't provide std::begin/end (Status: New)">4131</a><sup><a href="https://cplusplus.github.io/LWG/issue4131">(i)</a></sup></td>
-<td><a href="lwg-active.html#New">New</a></td>
-<td>24.7 [iterator.range]</td>
-<td>Including <code>&lt;optional&gt;</code> doesn't provide <code>std::begin/end</code></td>
-<td>Yes</td>
-<td>3</td>
-<td></td>
-</tr>
-<tr>
 <td id="4132"><a href="lwg-active.html#4132" title="Throws specifications need to include boolean-testable operations (Status: New)">4132</a><sup><a href="https://cplusplus.github.io/LWG/issue4132">(i)</a></sup></td>
 <td><a href="lwg-active.html#New">New</a></td>
 <td>23.2.7.1 [associative.reqmts.general]</td>
@@ -4956,15 +4898,6 @@ max, and minmax is unclear (Status: New)">4167</a><sup><a href="https://cplusplu
 <td>29.9.7 [linalg.helpers]</td>
 <td>Ill-formed, no diagnostic required on runtime behavior</td>
 <td><span class="no-pr">No</span></td>
-<td>3</td>
-<td></td>
-</tr>
-<tr>
-<td id="4187"><a href="lwg-active.html#4187" title="bitset::reference should be const-assignable (Status: New)">4187</a><sup><a href="https://cplusplus.github.io/LWG/issue4187">(i)</a></sup></td>
-<td><a href="lwg-active.html#New">New</a></td>
-<td>22.9.2 [template.bitset]</td>
-<td><code class='backtick'>bitset::reference</code> should be const-assignable</td>
-<td>Yes</td>
 <td>3</td>
 <td></td>
 </tr>
@@ -5919,17 +5852,6 @@ co_await expression instead of same_as&lt;void&gt; (Status: New)">4357</a><sup><
 <td></td>
 </tr>
 <tr>
-<td id="4387"><a href="lwg-active.html#4387" title="Including &lt;stacktrace&gt; doesn't provide std::begin/end
- (Status: Open)">4387</a><sup><a href="https://cplusplus.github.io/LWG/issue4387">(i)</a></sup></td>
-<td><a href="lwg-active.html#Open">Open</a></td>
-<td>24.7 [iterator.range]</td>
-<td>Including <code>&lt;stacktrace&gt;</code> doesn't provide <code class='backtick'>std::begin/end</code>
-</td>
-<td>Yes</td>
-<td>3</td>
-<td></td>
-</tr>
-<tr>
 <td id="4389"><a href="lwg-active.html#4389" title="ranges::for_each possibly behaves differently from range-based for (Status: SG9)">4389</a><sup><a href="https://cplusplus.github.io/LWG/issue4389">(i)</a></sup></td>
 <td><a href="lwg-active.html#SG9">SG9</a></td>
 <td>25.4.2 [range.range]</td>
@@ -6125,15 +6047,6 @@ from <code class='backtick'>rebind</code> and <code class='backtick'>resize</cod
 <td><a href="lwg-active.html#New">New</a></td>
 <td>29.10.7.2 [simd.ctor]</td>
 <td><code class='backtick'>simd</code> broadcast is overconstrained &mdash; <code>std::cw&lt;0.f&gt;</code> is not convertible to <code>simd::vec&lt;float16_t&gt;</code></td>
-<td>Yes</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td id="4437"><a href="lwg-active.html#4437" title="constant_of(^^v) for variable v of array type produces reflection of pointer constant (Status: New)">4437</a><sup><a href="https://cplusplus.github.io/LWG/issue4437">(i)</a></sup></td>
-<td><a href="lwg-active.html#New">New</a></td>
-<td>21.4.7 [meta.reflection.queries]</td>
-<td><code class='backtick'>constant_of(^^v)</code> for variable <code class='backtick'>v</code> of array type produces reflection of pointer constant</td>
 <td>Yes</td>
 <td></td>
 <td></td>

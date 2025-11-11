@@ -66,7 +66,7 @@
 <p>This document is the Index by Section for the <a href="lwg-active.html">Library Active Issues List</a>, <a href="lwg-defects.html">Library Defect Reports and Accepted Issues</a>, and <a href="lwg-closed.html">Library Closed Issues List</a>.</p>
 <h2>Index by Section</h2>
 <p><a href="lwg-index-open.html">(view only non-Ready open issues)</a></p>
-<p>Revised 2025-11-11 at 10:50:15 UTC
+<p>Revised 2025-11-11 at 12:56:51 UTC
 </p><h2 id="Section_2">Section 2 (2 issues)</h2>
 <table class="issues-index">
 <tr>
@@ -3225,9 +3225,9 @@ and user requirements</td>
 <td></td>
 </tr>
 <tr>
-<td id="3624"><a href="lwg-active.html#3624" title="Inconsistency of &lt;typeinfo&gt;, &lt;initializer_list&gt;, and 
-&lt;compare&gt; in the standard library (Status: New)">3624</a><sup><a href="https://cplusplus.github.io/LWG/issue3624">(i)</a></sup></td>
-<td><a href="lwg-active.html#New">New</a></td>
+<td id="3624"><a href="lwg-defects.html#3624" title="Inconsistency of &lt;typeinfo&gt;, &lt;initializer_list&gt;, and 
+&lt;compare&gt; in the standard library (Status: Resolved)">3624</a><sup><a href="https://cplusplus.github.io/LWG/issue3624">(i)</a></sup></td>
+<td><a href="lwg-active.html#Resolved">Resolved</a></td>
 <td>17.7 [support.rtti]<a id="support.rtti"></a></td>
 <td>Inconsistency of <code>&lt;typeinfo&gt;</code>, <code>&lt;initializer_list&gt;</code>, and 
 <code>&lt;compare&gt;</code> in the standard library</td>
@@ -4443,21 +4443,21 @@ to meet their postconditions</td>
 <td></td>
 </tr>
 <tr>
-<td id="3625"><a href="lwg-active.html#3625" title="Should &lt;stacktrace&gt; provide range access function templates? (Status: Open)">3625</a><sup><a href="https://cplusplus.github.io/LWG/issue3625">(i)</a></sup></td>
-<td><a href="lwg-active.html#Open">Open</a></td>
-<td>19.6.2 [stacktrace.syn]<a id="stacktrace.syn"></a></td>
-<td>Should <code>&lt;stacktrace&gt;</code> provide range access function templates?</td>
-<td>Yes</td>
-<td>3</td>
-<td></td>
-</tr>
-<tr>
 <td id="3515"><a href="lwg-defects.html#3515" title="&sect;[stacktrace.basic.nonmem]: operator&lt;&lt; should be less templatized (Status: C++23)">3515</a><sup><a href="https://cplusplus.github.io/LWG/issue3515">(i)</a></sup></td>
 <td><a href="lwg-active.html#C++23">C++23</a></td>
-<td>19.6.2 [stacktrace.syn]</td>
+<td>19.6.2 [stacktrace.syn]<a id="stacktrace.syn"></a></td>
 <td>&sect;[stacktrace.basic.nonmem]: <code>operator&lt;&lt;</code> should be less templatized</td>
 <td>Yes</td>
 <td>2</td>
+<td></td>
+</tr>
+<tr>
+<td id="3625"><a href="lwg-defects.html#3625" title="Should &lt;stacktrace&gt; provide range access function templates? (Status: Resolved)">3625</a><sup><a href="https://cplusplus.github.io/LWG/issue3625">(i)</a></sup></td>
+<td><a href="lwg-active.html#Resolved">Resolved</a></td>
+<td>19.6.2 [stacktrace.syn]</td>
+<td>Should <code>&lt;stacktrace&gt;</code> provide range access function templates?</td>
+<td>Yes</td>
+<td>3</td>
 <td></td>
 </tr>
 <tr>
@@ -7483,18 +7483,9 @@ and <code>BinaryTypeTraits</code></td>
 <td></td>
 </tr>
 <tr>
-<td id="4437"><a href="lwg-active.html#4437" title="constant_of(^^v) for variable v of array type produces reflection of pointer constant (Status: New)">4437</a><sup><a href="https://cplusplus.github.io/LWG/issue4437">(i)</a></sup></td>
-<td><a href="lwg-active.html#New">New</a></td>
-<td>21.4.7 [meta.reflection.queries]<a id="meta.reflection.queries"></a></td>
-<td><code class='backtick'>constant_of(^^v)</code> for variable <code class='backtick'>v</code> of array type produces reflection of pointer constant</td>
-<td>Yes</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
 <td id="4427"><a href="lwg-defects.html#4427" title="meta::dealias needs to work with things that aren't entities (Status: WP)">4427</a><sup><a href="https://cplusplus.github.io/LWG/issue4427">(i)</a></sup></td>
 <td><a href="lwg-active.html#WP">WP</a></td>
-<td>21.4.7 [meta.reflection.queries]</td>
+<td>21.4.7 [meta.reflection.queries]<a id="meta.reflection.queries"></a></td>
 <td><code class='backtick'>meta::dealias</code> needs to work with things that aren't entities</td>
 <td>Yes</td>
 <td></td>
@@ -7505,6 +7496,15 @@ and <code>BinaryTypeTraits</code></td>
 <td><a href="lwg-active.html#WP">WP</a></td>
 <td>21.4.7 [meta.reflection.queries]</td>
 <td>Incorrect query for C language linkage</td>
+<td>Yes</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td id="4437"><a href="lwg-defects.html#4437" title="constant_of(^^v) for variable v of array type produces reflection of pointer constant (Status: Resolved)">4437</a><sup><a href="https://cplusplus.github.io/LWG/issue4437">(i)</a></sup></td>
+<td><a href="lwg-active.html#Resolved">Resolved</a></td>
+<td>21.4.7 [meta.reflection.queries]</td>
+<td><code class='backtick'>constant_of(^^v)</code> for variable <code class='backtick'>v</code> of array type produces reflection of pointer constant</td>
 <td>Yes</td>
 <td></td>
 <td></td>
@@ -9504,18 +9504,9 @@ should take precedence over <code>expected(U&amp;&amp;)</code> with operator <co
 <td></td>
 </tr>
 <tr>
-<td id="4187"><a href="lwg-active.html#4187" title="bitset::reference should be const-assignable (Status: New)">4187</a><sup><a href="https://cplusplus.github.io/LWG/issue4187">(i)</a></sup></td>
-<td><a href="lwg-active.html#New">New</a></td>
-<td>22.9.2 [template.bitset]<a id="template.bitset"></a></td>
-<td><code class='backtick'>bitset::reference</code> should be const-assignable</td>
-<td>Yes</td>
-<td>3</td>
-<td></td>
-</tr>
-<tr>
 <td id="2348"><a href="lwg-active.html#2348" title="charT('1') is not the wide equivalent of '1' (Status: Open)">2348</a><sup><a href="https://cplusplus.github.io/LWG/issue2348">(i)</a></sup></td>
 <td><a href="lwg-active.html#Open">Open</a></td>
-<td>22.9.2 [template.bitset]</td>
+<td>22.9.2 [template.bitset]<a id="template.bitset"></a></td>
 <td><code>charT('1')</code> is not the wide equivalent of <code>'1'</code></td>
 <td>Yes</td>
 <td>3</td>
@@ -9582,6 +9573,15 @@ should take precedence over <code>expected(U&amp;&amp;)</code> with operator <co
 <td>Bitset minor problems</td>
 <td>Yes</td>
 <td></td>
+<td></td>
+</tr>
+<tr>
+<td id="4187"><a href="lwg-defects.html#4187" title="bitset::reference should be const-assignable (Status: Resolved)">4187</a><sup><a href="https://cplusplus.github.io/LWG/issue4187">(i)</a></sup></td>
+<td><a href="lwg-active.html#Resolved">Resolved</a></td>
+<td>22.9.2 [template.bitset]</td>
+<td><code class='backtick'>bitset::reference</code> should be const-assignable</td>
+<td>Yes</td>
+<td>3</td>
 <td></td>
 </tr>
 <tr>
@@ -13363,18 +13363,9 @@ should conditionally require <i>Cpp17CopyInsertable</i> in their preconditions</
 <td></td>
 </tr>
 <tr>
-<td id="3638"><a href="lwg-active.html#3638" title="vector&lt;bool&gt;::swap(reference, reference) is useless (Status: New)">3638</a><sup><a href="https://cplusplus.github.io/LWG/issue3638">(i)</a></sup></td>
-<td><a href="lwg-active.html#New">New</a></td>
-<td>23.3.14 [vector.bool]<a id="vector.bool"></a></td>
-<td><code>vector&lt;bool&gt;::swap(reference, reference)</code> is useless</td>
-<td>Yes</td>
-<td>3</td>
-<td></td>
-</tr>
-<tr>
 <td id="1422"><a href="lwg-active.html#1422" title="vector&lt;bool&gt; iterators are not random access (Status: Open)">1422</a><sup><a href="https://cplusplus.github.io/LWG/issue1422">(i)</a></sup></td>
 <td><a href="lwg-active.html#Open">Open</a></td>
-<td>23.3.14 [vector.bool]</td>
+<td>23.3.14 [vector.bool]<a id="vector.bool"></a></td>
 <td><code>vector&lt;bool&gt;</code> iterators are not random access</td>
 <td><span class="no-pr">No</span></td>
 <td>3</td>
@@ -13414,6 +13405,15 @@ should conditionally require <i>Cpp17CopyInsertable</i> in their preconditions</
 <td><code>vector&lt;bool&gt; initializer_list</code> constructor missing an allocator argument</td>
 <td>Yes</td>
 <td></td>
+<td></td>
+</tr>
+<tr>
+<td id="3638"><a href="lwg-defects.html#3638" title="vector&lt;bool&gt;::swap(reference, reference) is useless (Status: Resolved)">3638</a><sup><a href="https://cplusplus.github.io/LWG/issue3638">(i)</a></sup></td>
+<td><a href="lwg-active.html#Resolved">Resolved</a></td>
+<td>23.3.14 [vector.bool]</td>
+<td><code>vector&lt;bool&gt;::swap(reference, reference)</code> is useless</td>
+<td>Yes</td>
+<td>3</td>
 <td></td>
 </tr>
 <tr>
@@ -14209,21 +14209,21 @@ should conditionally require <i>Cpp17CopyInsertable</i> in their preconditions</
 <td></td>
 </tr>
 <tr>
-<td id="4000"><a href="lwg-active.html#4000" title="flat_map::insert_range's Effects is not quite right (Status: New)">4000</a><sup><a href="https://cplusplus.github.io/LWG/issue4000">(i)</a></sup></td>
-<td><a href="lwg-active.html#New">New</a></td>
-<td>23.6.8.7 [flat.map.modifiers]</td>
-<td><code>flat_map::insert_range</code>'s <i>Effects</i> is not quite right</td>
-<td>Yes</td>
-<td>3</td>
-<td></td>
-</tr>
-<tr>
 <td id="4239"><a href="lwg-defects.html#4239" title="flat_map's transparent comparator no longer works for string literals (Status: WP)">4239</a><sup><a href="https://cplusplus.github.io/LWG/issue4239">(i)</a></sup></td>
 <td><a href="lwg-active.html#WP">WP</a></td>
 <td>23.6.8.7 [flat.map.modifiers]</td>
 <td><code class='backtick'>flat_map</code>'s transparent comparator no longer works for string literals</td>
 <td>Yes</td>
 <td></td>
+<td></td>
+</tr>
+<tr>
+<td id="4000"><a href="lwg-defects.html#4000" title="flat_map::insert_range's Effects is not quite right (Status: Resolved)">4000</a><sup><a href="https://cplusplus.github.io/LWG/issue4000">(i)</a></sup></td>
+<td><a href="lwg-active.html#Resolved">Resolved</a></td>
+<td>23.6.8.7 [flat.map.modifiers]</td>
+<td><code>flat_map::insert_range</code>'s <i>Effects</i> is not quite right</td>
+<td>Yes</td>
+<td>3</td>
 <td></td>
 </tr>
 <tr>
@@ -16465,21 +16465,10 @@ should be fully <code>constexpr</code></td>
 <td></td>
 </tr>
 <tr>
-<td id="3537"><a href="lwg-active.html#3537" title="&sect;[iterator.range] Missing noexcept for std::rbegin/rend for arrays and 
-initializer_list (Status: New)">3537</a><sup><a href="https://cplusplus.github.io/LWG/issue3537">(i)</a></sup></td>
-<td><a href="lwg-active.html#New">New</a></td>
-<td>24.7 [iterator.range]<a id="iterator.range"></a></td>
-<td>&sect;[iterator.range] Missing <code>noexcept</code> for <code>std::rbegin</code>/<code>rend</code> for arrays and 
-<code>initializer_list</code></td>
-<td><span class="no-pr">No</span></td>
-<td>3</td>
-<td></td>
-</tr>
-<tr>
 <td id="4385"><a href="lwg-active.html#4385" title="Including &lt;simd&gt; doesn't provide std::begin/end
  (Status: New)">4385</a><sup><a href="https://cplusplus.github.io/LWG/issue4385">(i)</a></sup></td>
 <td><a href="lwg-active.html#New">New</a></td>
-<td>24.7 [iterator.range]</td>
+<td>24.7 [iterator.range]<a id="iterator.range"></a></td>
 <td>Including <code>&lt;simd&gt;</code> doesn't provide <code class='backtick'>std::begin/end</code>
 </td>
 <td>Yes</td>
@@ -16492,26 +16481,6 @@ initializer_list (Status: New)">3537</a><sup><a href="https://cplusplus.github.i
 <td>24.7 [iterator.range]</td>
 <td>Some ranges have negative <code class='backtick'>ssize</code></td>
 <td><span class="no-pr">No</span></td>
-<td>3</td>
-<td></td>
-</tr>
-<tr>
-<td id="4131"><a href="lwg-active.html#4131" title="Including &lt;optional&gt; doesn't provide std::begin/end (Status: New)">4131</a><sup><a href="https://cplusplus.github.io/LWG/issue4131">(i)</a></sup></td>
-<td><a href="lwg-active.html#New">New</a></td>
-<td>24.7 [iterator.range]</td>
-<td>Including <code>&lt;optional&gt;</code> doesn't provide <code>std::begin/end</code></td>
-<td>Yes</td>
-<td>3</td>
-<td></td>
-</tr>
-<tr>
-<td id="4387"><a href="lwg-active.html#4387" title="Including &lt;stacktrace&gt; doesn't provide std::begin/end
- (Status: Open)">4387</a><sup><a href="https://cplusplus.github.io/LWG/issue4387">(i)</a></sup></td>
-<td><a href="lwg-active.html#Open">Open</a></td>
-<td>24.7 [iterator.range]</td>
-<td>Including <code>&lt;stacktrace&gt;</code> doesn't provide <code class='backtick'>std::begin/end</code>
-</td>
-<td>Yes</td>
 <td>3</td>
 <td></td>
 </tr>
@@ -16576,6 +16545,37 @@ initializer_list (Status: New)">3537</a><sup><a href="https://cplusplus.github.i
 <td><code>begin/end</code> for arrays should be <code>constexpr</code> and <code>noexcept</code></td>
 <td>Yes</td>
 <td></td>
+<td></td>
+</tr>
+<tr>
+<td id="3537"><a href="lwg-defects.html#3537" title="&sect;[iterator.range] Missing noexcept for std::rbegin/rend for arrays and 
+initializer_list (Status: Resolved)">3537</a><sup><a href="https://cplusplus.github.io/LWG/issue3537">(i)</a></sup></td>
+<td><a href="lwg-active.html#Resolved">Resolved</a></td>
+<td>24.7 [iterator.range]</td>
+<td>&sect;[iterator.range] Missing <code>noexcept</code> for <code>std::rbegin</code>/<code>rend</code> for arrays and 
+<code>initializer_list</code></td>
+<td>Yes</td>
+<td>3</td>
+<td></td>
+</tr>
+<tr>
+<td id="4131"><a href="lwg-defects.html#4131" title="Including &lt;optional&gt; doesn't provide std::begin/end (Status: Resolved)">4131</a><sup><a href="https://cplusplus.github.io/LWG/issue4131">(i)</a></sup></td>
+<td><a href="lwg-active.html#Resolved">Resolved</a></td>
+<td>24.7 [iterator.range]</td>
+<td>Including <code>&lt;optional&gt;</code> doesn't provide <code>std::begin/end</code></td>
+<td>Yes</td>
+<td>3</td>
+<td></td>
+</tr>
+<tr>
+<td id="4387"><a href="lwg-defects.html#4387" title="Including &lt;stacktrace&gt; doesn't provide std::begin/end
+ (Status: Resolved)">4387</a><sup><a href="https://cplusplus.github.io/LWG/issue4387">(i)</a></sup></td>
+<td><a href="lwg-active.html#Resolved">Resolved</a></td>
+<td>24.7 [iterator.range]</td>
+<td>Including <code>&lt;stacktrace&gt;</code> doesn't provide <code class='backtick'>std::begin/end</code>
+</td>
+<td>Yes</td>
+<td>3</td>
 <td></td>
 </tr>
 <tr>
