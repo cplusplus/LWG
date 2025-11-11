@@ -67,7 +67,7 @@
 This document is the Index by Status and Date for the <a href="lwg-active.html">Library Active Issues List</a>,
 <a href="lwg-defects.html">Library Defect Reports and Accepted Issues</a>, and <a href="lwg-closed.html">Library Closed Issues List</a>.
 </p>
-<p>Revised 2025-11-11 at 14:49:40 UTC
+<p>Revised 2025-11-11 at 15:36:21 UTC
 </p><h2 id="Tentatively_NAD">Tentatively NAD (30 issues)</h2>
 <table class="issues-index">
 <tr>
@@ -78,6 +78,15 @@ This document is the Index by Status and Date for the <a href="lwg-active.html">
   <th>Proposed Resolution</th>
   <th><a href="unresolved-prioritized.html">Priority</a></th>
   <th>Duplicates</th>
+</tr>
+<tr>
+<td id="3909"><a href="lwg-active.html#3909" title="Issues about viewable_range (Status: Tentatively NAD)">3909</a><sup><a href="https://cplusplus.github.io/LWG/issue3909">(i)</a></sup></td>
+<td><a href="lwg-active.html#NAD">Tentatively NAD</a></td>
+<td>25.4.6 [range.refinements]</td>
+<td>Issues about <code>viewable_range</code></td>
+<td>Yes</td>
+<td></td>
+<td></td>
 </tr>
 <tr>
 <td id="4337"><a href="lwg-active.html#4337" title="co_await change_coroutine_scheduler(s) requires assignable (Status: Tentatively NAD)">4337</a><sup><a href="https://cplusplus.github.io/LWG/issue4337">(i)</a></sup></td>
@@ -342,15 +351,6 @@ complexity for algorithms that are in fact &#x1d4aa;(n)</td>
 <td></td>
 <td></td>
 </tr>
-<tr>
-<td id="3909"><a href="lwg-active.html#3909" title="Issues about viewable_range (Status: Tentatively NAD)">3909</a><sup><a href="https://cplusplus.github.io/LWG/issue3909">(i)</a></sup></td>
-<td><a href="lwg-active.html#NAD">Tentatively NAD</a></td>
-<td>99 [ranges.refinements]</td>
-<td>Issues about <code>viewable_range</code></td>
-<td>Yes</td>
-<td></td>
-<td></td>
-</tr>
 </table>
 <h2 id="New">New (529 issues)</h2>
 <table class="issues-index">
@@ -370,6 +370,15 @@ complexity for algorithms that are in fact &#x1d4aa;(n)</td>
 <td><code>&lt;coroutine&gt;</code> is freestanding, but uses <code>std::hash</code> which is not</td>
 <td>Yes</td>
 <td>3</td>
+<td></td>
+</tr>
+<tr>
+<td id="4206"><a href="lwg-active.html#4206" title="Alias template connect_result_t should be constrained with sender_to (Status: New)">4206</a><sup><a href="https://cplusplus.github.io/LWG/issue4206">(i)</a></sup></td>
+<td><a href="lwg-active.html#New">New</a></td>
+<td>33.4 [execution.syn]</td>
+<td>Alias template <code class='backtick'>connect_result_t</code> should be constrained with <code class='backtick'>sender_to</code></td>
+<td>Yes</td>
+<td>1</td>
 <td></td>
 </tr>
 <tr>
@@ -1778,15 +1787,6 @@ max, and minmax is unclear (Status: New)">4167</a><sup><a href="https://cplusplu
 <td>Specification of <i>completion-signatures-for</i> in [exec.snd.expos]/p39 is recursive</td>
 <td>Yes</td>
 <td>2</td>
-<td></td>
-</tr>
-<tr>
-<td id="4206"><a href="lwg-active.html#4206" title="Alias template connect_result_t should be constrained with sender_to (Status: New)">4206</a><sup><a href="https://cplusplus.github.io/LWG/issue4206">(i)</a></sup></td>
-<td><a href="lwg-active.html#New">New</a></td>
-<td>99 [exec.syn]</td>
-<td>Alias template <code class='backtick'>connect_result_t</code> should be constrained with <code class='backtick'>sender_to</code></td>
-<td>Yes</td>
-<td>1</td>
 <td></td>
 </tr>
 <tr>
@@ -14356,6 +14356,15 @@ root-name (Status: C++20)">3070</a><sup><a href="https://cplusplus.github.io/LWG
   <th>Duplicates</th>
 </tr>
 <tr>
+<td id="2404"><a href="lwg-defects.html#2404" title="mismatch()'s complexity needs to be updated (Status: C++17)">2404</a><sup><a href="https://cplusplus.github.io/LWG/issue2404">(i)</a></sup></td>
+<td><a href="lwg-active.html#C++17">C++17</a></td>
+<td>26.6.12 [alg.mismatch]</td>
+<td><code>mismatch()</code>'s complexity needs to be updated</td>
+<td>Yes</td>
+<td>0</td>
+<td></td>
+</tr>
+<tr>
 <td id="2428"><a href="lwg-defects.html#2428" title="&quot;External declaration&quot; used without being defined (Status: C++17)">2428</a><sup><a href="https://cplusplus.github.io/LWG/issue2428">(i)</a></sup></td>
 <td><a href="lwg-active.html#C++17">C++17</a></td>
 <td>16.4.3.2 [using.headers]</td>
@@ -16898,15 +16907,6 @@ explicit (Status: C++17)">2407</a><sup><a href="https://cplusplus.github.io/LWG/
 <td>99 [fs.op.system_complete]</td>
 <td><code>system_complete</code> refers to undefined variable 'base'
 </td>
-<td>Yes</td>
-<td>0</td>
-<td></td>
-</tr>
-<tr>
-<td id="2404"><a href="lwg-defects.html#2404" title="mismatch()'s complexity needs to be updated (Status: C++17)">2404</a><sup><a href="https://cplusplus.github.io/LWG/issue2404">(i)</a></sup></td>
-<td><a href="lwg-active.html#C++17">C++17</a></td>
-<td>99 [mismatch]</td>
-<td><code>mismatch()</code>'s complexity needs to be updated</td>
 <td>Yes</td>
 <td>0</td>
 <td></td>
@@ -25722,6 +25722,15 @@ initializer_list (Status: Resolved)">3537</a><sup><a href="https://cplusplus.git
 <td></td>
 </tr>
 <tr>
+<td id="3178"><a href="lwg-defects.html#3178" title="std::mismatch is missing an upper bound (Status: Resolved)">3178</a><sup><a href="https://cplusplus.github.io/LWG/issue3178">(i)</a></sup></td>
+<td><a href="lwg-active.html#Resolved">Resolved</a></td>
+<td>26.6.12 [alg.mismatch]</td>
+<td><code>std::mismatch</code> is missing an upper bound</td>
+<td>Yes</td>
+<td>0</td>
+<td></td>
+</tr>
+<tr>
 <td id="2922"><a href="lwg-defects.html#2922" title="The *_constant&lt;&gt; templates do not make use of template&lt;auto&gt; (Status: Resolved)">2922</a><sup><a href="https://cplusplus.github.io/LWG/issue2922">(i)</a></sup></td>
 <td><a href="lwg-active.html#Resolved">Resolved</a></td>
 <td>21.3.3 [meta.type.synop]</td>
@@ -27167,15 +27176,6 @@ find() members constexpr (Status: Resolved)">2232</a><sup><a href="https://cplus
 <td><code>ForwardIterator</code> should only mean forward iterator</td>
 <td>Yes</td>
 <td>3</td>
-<td></td>
-</tr>
-<tr>
-<td id="3178"><a href="lwg-defects.html#3178" title="std::mismatch is missing an upper bound (Status: Resolved)">3178</a><sup><a href="https://cplusplus.github.io/LWG/issue3178">(i)</a></sup></td>
-<td><a href="lwg-active.html#Resolved">Resolved</a></td>
-<td>99 [mismatch]</td>
-<td><code>std::mismatch</code> is missing an upper bound</td>
-<td>Yes</td>
-<td>0</td>
 <td></td>
 </tr>
 <tr>

@@ -63,15 +63,15 @@
 <hr>
 <p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#C++17">C++17</a> status.</em></p>
 <h3 id="2404"><a href="lwg-defects.html#2404">2404</a>. <code>mismatch()</code>'s complexity needs to be updated</h3>
-<p><b>Section:</b> 99 [mismatch] <b>Status:</b> <a href="lwg-active.html#C++17">C++17</a>
- <b>Submitter:</b> Stephan T. Lavavej <b>Opened:</b> 2014-06-14 <b>Last modified:</b> 2017-07-30</p>
+<p><b>Section:</b> 26.6.12 <a href="https://wg21.link/alg.mismatch">[alg.mismatch]</a> <b>Status:</b> <a href="lwg-active.html#C++17">C++17</a>
+ <b>Submitter:</b> Stephan T. Lavavej <b>Opened:</b> 2014-06-14 <b>Last modified:</b> 2025-11-11</p>
 <p><b>Priority: </b>0
 </p>
-<p><b>View all other</b> <a href="lwg-index.html#mismatch">issues</a> in [mismatch].</p>
+<p><b>View all other</b> <a href="lwg-index.html#alg.mismatch">issues</a> in [alg.mismatch].</p>
 <p><b>View all issues with</b> <a href="lwg-status.html#C++17">C++17</a> status.</p>
 <p><b>Discussion:</b></p>
 <p>
-<a href="http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2013/n3671.html">N3671</a> updated the complexities of 
+<a href="http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2013/n3671.html">N3671</a> updated the complexities of
 <code>equal()</code> and <code>is_permutation()</code>, but not <code>mismatch()</code>.
 </p>
 
@@ -87,11 +87,11 @@ Move to Ready
 <p>This wording is relative to N3936.</p>
 
 <ol>
-<li><p>Change 99 [mismatch] p3 as indicated:</p>
+<li><p>Change  [mismatch] p3 as indicated:</p>
 
 <blockquote>
 <p>
--3- <i>Complexity</i>: At most <code><ins>min(</ins>last1 - first1<ins>, last2 - first2)</ins></code> applications of the 
+-3- <i>Complexity</i>: At most <code><ins>min(</ins>last1 - first1<ins>, last2 - first2)</ins></code> applications of the
 corresponding predicate.
 </p>
 </blockquote>

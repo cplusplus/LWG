@@ -63,11 +63,11 @@
 <hr>
 <p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#Resolved">Resolved</a> status.</em></p>
 <h3 id="3178"><a href="lwg-defects.html#3178">3178</a>. <code>std::mismatch</code> is missing an upper bound</h3>
-<p><b>Section:</b> 99 [mismatch] <b>Status:</b> <a href="lwg-active.html#Resolved">Resolved</a>
- <b>Submitter:</b> Geoffrey Romer <b>Opened:</b> 2018-12-20 <b>Last modified:</b> 2020-05-02</p>
+<p><b>Section:</b> 26.6.12 <a href="https://wg21.link/alg.mismatch">[alg.mismatch]</a> <b>Status:</b> <a href="lwg-active.html#Resolved">Resolved</a>
+ <b>Submitter:</b> Geoffrey Romer <b>Opened:</b> 2018-12-20 <b>Last modified:</b> 2025-11-11</p>
 <p><b>Priority: </b>0
 </p>
-<p><b>View all other</b> <a href="lwg-index.html#mismatch">issues</a> in [mismatch].</p>
+<p><b>View all other</b> <a href="lwg-index.html#alg.mismatch">issues</a> in [alg.mismatch].</p>
 <p><b>View all issues with</b> <a href="lwg-status.html#Resolved">Resolved</a> status.</p>
 <p><b>Discussion:</b></p>
 <p>
@@ -93,7 +93,7 @@ fundamental convention that STL algorithms operate on user-supplied ranges, not 
 
 <p>
 During that reflector discussion several contributers argued in favour for changing the current wording in
-99 [mismatch] p3 from "smallest integer" to "smallest <ins>nonnegative</ins> integer". This minor 
+ [mismatch] p3 from "smallest integer" to "smallest <ins>nonnegative</ins> integer". This minor
 wording delta has also been added to the original proposed wording.
 </p>
 
@@ -102,7 +102,7 @@ wording delta has also been added to the original proposed wording.
 <p>This wording is relative to <a href="https://wg21.link/n4791">N4791</a>.</p>
 
 <ol>
-<li><p>Change 99 [mismatch] as indicated:</p>
+<li><p>Change  [mismatch] as indicated:</p>
 <blockquote>
 <pre>
 template&lt;class InputIterator1, class InputIterator2&gt;
@@ -141,8 +141,8 @@ both parameters <code>pred</code> and <code>proj1</code>.</p></li>
 </ol>
 <ins>-?- Let <code><i>N</i></code> be <code>min(last1 - first1, last2 - first2)</code>.</ins>
 <p/>
--3- <i>Returns:</i> <code>{ first1 + n, first2 + n }</code>, where <code>n</code> is the smallest <ins>nonnegative</ins> integer such 
-that <code><i>E</i></code> holds, or <code><del>min(last1 - first1, last2 - first2)</del><ins><i>N</i></ins></code> if no such integer 
+-3- <i>Returns:</i> <code>{ first1 + n, first2 + n }</code>, where <code>n</code> is the smallest <ins>nonnegative</ins> integer such
+that <code><i>E</i></code> holds, or <code><del>min(last1 - first1, last2 - first2)</del><ins><i>N</i></ins></code> if no such integer
 <ins>less than <code><i>N</i></code></ins> exists.
 <p/>
 -4- <i>Complexity:</i> At most <code><del>min(last1 - first1, last2 - first2)</del><ins><i>N</i></ins></code> applications of the
