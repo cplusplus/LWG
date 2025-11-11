@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="4437" status="New">
+<issue num="4437" status="Resolved">
 <title>`constant_of(^^v)` for variable `v` of array type produces reflection of pointer constant</title>
 <section><sref ref="[meta.reflection.queries]"/></section>
 <submitter>Tomasz Kamiński</submitter>
@@ -29,6 +29,8 @@ reflection of an array object instead.
 </p>
 
 <note>Kona 2025-11-07; Will be resolved by CWG 3111.</note>
+<note>2025-11-11; Resolved by CWG 3111, approved in Kona. Status changed: New &rarr; Resolved.</note>
+
 </discussion>
 
 <resolution>
