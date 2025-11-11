@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="4366" status="Voting">
+<issue num="4366" status="WP">
 <title>Heterogeneous comparison of `expected` may be ill-formed</title>
 <section>
 <sref ref="[expected.object.eq]"/><sref ref="[expected.void.eq]"/>
@@ -51,6 +51,7 @@ Related to LWG <iref ref="4366"/>, but the wording styles are inconsistent.
 <i>Returns</i>:.
 </p>
 
+<note>Kona 2025-11-08; Status changed: Voting &rarr; WP.</note>
 </discussion>
 
 <resolution>

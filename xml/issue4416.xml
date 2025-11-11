@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="4416" status="Voting">
+<issue num="4416" status="WP">
 <title><tt>&lt;meta&gt;</tt> should include <tt>&lt;compare&gt;</tt></title>
 <section><sref ref="[meta.syn]"/></section>
 <submitter>Jiang An</submitter>
@@ -20,6 +20,7 @@ This is also noticed in <paper num="P3429R1"/>.
 <p>
 Set status to Tentatively Ready after five votes in favour during reflector poll.
 </p>
+<note>Kona 2025-11-08; Status changed: Voting &rarr; WP.</note>
 </discussion>
 
 <resolution>

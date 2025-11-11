@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="4286" status="Voting">
+<issue num="4286" status="WP">
 <title>Some more feature-test macros for fully freestanding features are not marked freestanding</title>
 <section>
 <sref ref="[version.syn]"/><sref ref="[memory.syn]"/>
@@ -33,6 +33,7 @@ since hopefully this is just an omission when wording the paper.
 Set status to Tentatively Ready after nine votes in favour during reflector poll.
 </p>
 
+<note>Kona 2025-11-08; Status changed: Voting &rarr; WP.</note>
 </discussion>
 
 <resolution>

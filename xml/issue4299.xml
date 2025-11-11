@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="4299" status="Voting">
+<issue num="4299" status="WP">
 <title>Missing <i>Mandates:</i> part in <tt>optional&lt;T&amp;&gt;::transform</tt></title>
 <section><sref ref="[optional.ref.monadic]"/></section>
 <submitter>Giuseppe D'Angelo</submitter>
@@ -34,6 +34,7 @@ is part of the signature (return type), we never enter the body to trigger the
 is not a valid contained type. It's worth clarifying that though."
 </p>
 
+<note>Kona 2025-11-08; Status changed: Voting &rarr; WP.</note>
 </discussion>
 
 <resolution>

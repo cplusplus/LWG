@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="2991" status="Voting">
+<issue num="2991" status="WP">
 <title><tt>variant</tt> copy constructor missing <tt>noexcept(<i>see below</i>)</tt></title>
 <section><sref ref="[variant.ctor]"/></section>
 <submitter>Peter Dimov</submitter>
@@ -89,6 +89,7 @@ variant(const variant&amp; w) <ins>noexcept(<i>see below</i>)</ins>;
 <p>
 Set status to Tentatively Ready after five votes in favour during reflector poll.
 </p>
+<note>Kona 2025-11-08; Status changed: Voting &rarr; WP.</note>
 </discussion>
 
 <resolution>

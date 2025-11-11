@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="4426" status="Voting">
+<issue num="4426" status="WP">
 <title>Clarify what `meta::reflect_constant_string` considers a string literal</title>
 <section><sref ref="[meta.reflection.array]"/></section>
 <submitter>Jakub Jelinek</submitter>
@@ -32,6 +32,7 @@ and not used for string literal objects (<sref ref="[lex.string]"/>).
 Set status to Tentatively Ready after six votes in favour during reflector poll.
 </p>
 
+<note>Kona 2025-11-08; Status changed: Voting &rarr; WP.</note>
 </discussion>
 
 <resolution>

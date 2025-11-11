@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="4256" status="Voting">
+<issue num="4256" status="WP">
 <title>Incorrect constrains for <code>function_ref</code> constructors from <code>nontype_t</code></title>
 <section><sref ref="[func.wrap.ref.ctor]"/></section>
 <submitter>Tomasz Kami&nacute;ski</submitter>
@@ -38,6 +38,7 @@ We should use <code>const F&amp;</code> or <code>decltype((f))</code>.
 <p>
 Set status to Tentatively Ready after six votes in favour during reflector poll.
 </p>
+<note>Kona 2025-11-08; Status changed: Voting &rarr; WP.</note>
 </discussion>
 
 <resolution>

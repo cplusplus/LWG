@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="4301" status="Voting">
+<issue num="4301" status="WP">
 <title>`condition_variable{_any}::wait_{for, until}` should take timeout by value</title>
 <section><sref ref="[thread.condition.condvar]"/><sref ref="[thread.condition.condvarany]"/></section>
 <submitter>Hui Xie</submitter>
@@ -112,6 +112,7 @@ and it is not an ABI break for us as the function signature has changed.
 Set status to Tentatively Ready after nine votes in favour during reflector poll.
 </p>
 
+<note>Kona 2025-11-08; Status changed: Voting &rarr; WP.</note>
 </discussion>
 
 <resolution>

@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="4276" status="Voting">
+<issue num="4276" status="WP">
 <title>`front()` and `back()` are not hardened for zero-length `std::array`s</title>
 <section>
 <sref ref="[array.zero]"/>
@@ -25,6 +25,7 @@ Without this paragraph, `front()` and `back()` would be hardened as well, as spe
 Set status to Tentatively Ready after eight votes in favour during reflector poll.
 </p>
 
+<note>Kona 2025-11-08; Status changed: Voting &rarr; WP.</note>
 </discussion>
 
 <resolution>

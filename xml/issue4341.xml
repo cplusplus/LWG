@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="4341" status="Voting">
+<issue num="4341" status="WP">
 <title>Missing rvalue reference qualification for <code>task::connect()</code></title>
 <section><sref ref="[task.class]"/></section>
 <submitter>Dietmar Kühl</submitter>
@@ -24,6 +24,7 @@ Set status to Tentatively Ready after five votes in favour during reflector poll
 <p>
 "It's nice to rvalue qualify such a function, but it is not strictly necessary."
 </p>
+<note>Kona 2025-11-08; Status changed: Voting &rarr; WP.</note>
 </discussion>
 
 <resolution>

@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="3090" status="Voting">
+<issue num="3090" status="WP">
 <title>What is &sect;[time.duration.cons]p4's "no overflow is induced in the conversion" intended to mean?</title>
 <section><sref ref="[time.duration.cons]"/></section>
 <submitter>Richard Smith</submitter>
@@ -76,6 +76,7 @@ to check if they would overflow, without actually using <tt>ratio_divide</tt>.
 <p>
 Set status to Tentatively Ready after seven votes in favour during reflector poll.
 </p>
+<note>Kona 2025-11-08; Status changed: Voting &rarr; WP.</note>
 </discussion>
 
 <resolution>

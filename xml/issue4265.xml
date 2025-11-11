@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="4265" status="Voting">
+<issue num="4265" status="WP">
 <title>`std::midpoint` should not accept `const bool`</title>
 <section><sref ref="[numeric.ops.midpoint]"/></section>
 <submitter>Jan Schultke</submitter>
@@ -53,6 +53,7 @@ template argument list here, so <code>midpoint&lt;const bool&gt;</code>
 and <code>midpoint&lt;const int&gt;</code> are already unspecified,
 this issue just ensures that `const bool` is explicitly rejected, like `bool`."
 </p>
+<note>Kona 2025-11-08; Status changed: Voting &rarr; WP.</note>
 </discussion>
 
 <resolution>

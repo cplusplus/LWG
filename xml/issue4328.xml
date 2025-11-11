@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="4328" status="Voting">
+<issue num="4328" status="WP">
 <title>Remove note in &sect;[exec.sched] regarding waiting for completion of scheduled operations</title>
 <section>
 <sref ref="[exec.sched]"/>
@@ -39,6 +39,7 @@ Set status to Tentatively Ready after six votes in favour during reflector poll.
 "What is this telling me as a user? That a custom execution resource can add
 a non-standard 'wait for completion' facility?"
 </p>
+<note>Kona 2025-11-08; Status changed: Voting &rarr; WP.</note>
 </discussion>
 
 <resolution>

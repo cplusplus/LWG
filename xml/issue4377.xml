@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="4377" status="Voting">
+<issue num="4377" status="WP">
 <title>Misleading note about lock-free property of `std::atomic_ref`</title>
 <section>
 <sref ref="[atomics.ref.ops]"/>
@@ -52,6 +52,7 @@ Also ask SG1 to take a look.
 </p>
 
 <note>Kona 2025-11-06; SG1 had weak consensus for approving the resolution.</note>
+<note>Kona 2025-11-08; Status changed: Voting &rarr; WP.</note>
 </discussion>
 
 <resolution>

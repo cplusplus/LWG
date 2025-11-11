@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="4305" status="Voting">
+<issue num="4305" status="WP">
 <title>Missing user requirements on `type_order` template</title>
 <section><sref ref="[compare.type]"/></section>
 <submitter>Daniel Krügler</submitter>
@@ -63,6 +63,7 @@ therefore follows the ill-formed program approach.
 Set status to Tentatively Ready after seven votes in favour during reflector poll.
 </p>
 
+<note>Kona 2025-11-08; Status changed: Voting &rarr; WP.</note>
 </discussion>
 
 <resolution>

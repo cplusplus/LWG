@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="4300" status="Voting">
+<issue num="4300" status="WP">
 <title>Missing <i>Returns:</i> element in <tt>optional&lt;T&amp;&gt;::emplace</tt></title>
 <section><sref ref="[optional.ref.assign]"/></section>
 <submitter>Giuseppe D'Angelo</submitter>
@@ -21,6 +21,7 @@ for the primary template's `emplace` (cf. <sref ref="[optional.assign]"/>).
 Set status to Tentatively Ready after nine votes in favour during reflector poll.
 </p>
 
+<note>Kona 2025-11-08; Status changed: Voting &rarr; WP.</note>
 </discussion>
 
 <resolution>

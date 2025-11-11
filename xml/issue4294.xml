@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="4294" status="Voting">
+<issue num="4294" status="WP">
 <title>`bitset(const CharT*)` constructor needs to be constrained</title>
 <section><sref ref="[bitset.cons]"/></section>
 <submitter>Jonathan Wakely</submitter>
@@ -34,6 +34,7 @@ where <code>is_trivially_default_constructible_v&lt;T&gt;</code> is `true`."
 Set status to Tentatively Ready after five votes in favour during reflector poll.
 </p>
 
+<note>Kona 2025-11-08; Status changed: Voting &rarr; WP.</note>
 </discussion>
 
 <resolution>

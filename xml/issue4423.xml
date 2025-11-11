@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="4423" status="Voting">
+<issue num="4423" status="WP">
 <title>`meta::data_member_spec` allows negative bit-field widths</title>
 <section><sref ref="[meta.reflection.define.aggregate]"/></section>
 <submitter>Jakub Jelinek</submitter>
@@ -18,6 +18,7 @@ to be non-negative.
 <p>
 Poll to move issue to Ready: 10/0/0
 </p>
+<note>Kona 2025-11-08; Status changed: Voting &rarr; WP.</note>
 </discussion>
 
 <resolution>

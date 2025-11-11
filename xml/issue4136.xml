@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="4136" status="Voting">
+<issue num="4136" status="WP">
 <title>Specify behavior of [linalg] Hermitian algorithms on diagonal with nonzero imaginary part</title>
 <section><sref ref="[linalg.general]"/></section>
 <submitter>Mark Hoemmen</submitter>
@@ -71,6 +71,7 @@ affect the behavior of [linalg] Hermitian algorithms.
 <p>
 Set status to Tentatively Ready after six votes in favour during reflector poll.
 </p>
+<note>Kona 2025-11-08; Status changed: Voting &rarr; WP.</note>
 </discussion>
 
 <resolution>

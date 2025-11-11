@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="4137" status="Voting">
+<issue num="4137" status="WP">
 <title>Fix <i>Mandates</i>, <i>Preconditions</i>, and <i>Complexity</i> elements of [linalg] algorithms</title>
 <section><sref ref="[linalg.algs.blas2]"/><sref ref="[linalg.algs.blas3]"/></section>
 <submitter>Mark Hoemmen</submitter>
@@ -349,6 +349,7 @@ template&lt;class ExecutionPolicy,
 <p>Add missing `()` in one place and change `(0, 1)` to `()` in another.</p>
 
 <note>LWG telecon 2025-10-10; Status updated New &rarr; Ready</note>
+<note>Kona 2025-11-08; Status changed: Voting &rarr; WP.</note>
 </discussion>
 
 <resolution>

@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="4255" status="Voting">
+<issue num="4255" status="WP">
 <title>`move_only_function` constructor should recognize empty `copyable_function`s</title>
 <section><sref ref="[func.wrap.move.ctor]"/></section>
 <submitter>Tomasz Kami&nacute;ski</submitter>
@@ -43,6 +43,7 @@ other functors should reproduce that behavior.
 <p>
 Set status to Tentatively Ready after six votes in favour during reflector poll.
 </p>
+<note>Kona 2025-11-08; Status changed: Voting &rarr; WP.</note>
 </discussion>
 
 <resolution>

@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="4415" status="Voting">
+<issue num="4415" status="WP">
 <title>`task::promise_type::uncaught_exception` seems to be misnamed</title>
 <section><sref ref="[task.promise]"/></section>
 <submitter>Jiang An</submitter>
@@ -25,6 +25,7 @@ Perhaps `unhandled_exception` is the correct function name.
 <p>
 Set status to Tentatively Ready after five votes in favour during reflector poll.
 </p>
+<note>Kona 2025-11-08; Status changed: Voting &rarr; WP.</note>
 </discussion>
 
 <resolution>

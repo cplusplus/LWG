@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="4398" status="Voting">
+<issue num="4398" status="WP">
 <title>`enable_nonlocking_formatter_optimization` should be disabled for container adaptors</title>
 <section><sref ref="[queue.syn]"/><sref ref="[stack.syn]"/></section>
 <submitter>Tomasz Kamiński</submitter>
@@ -51,6 +51,7 @@ with a different proposed resolution.
 Set status to Tentatively Ready after five votes in favour during reflector poll.
 </p>
 
+<note>Kona 2025-11-08; Status changed: Voting &rarr; WP.</note>
 </discussion>
 
 <resolution>

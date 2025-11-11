@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="4403" status="Voting">
+<issue num="4403" status="WP">
 <title>`simd::basic_vec` CTAD misses difference type casting</title>
 <section>
 <sref ref="[simd.ctor]"/>
@@ -27,6 +27,7 @@ conversion will still correctly be rejected due to the constructor's constraints
 Set status to Tentatively Ready after six votes in favour during reflector poll.
 </p>
 
+<note>Kona 2025-11-08; Status changed: Voting &rarr; WP.</note>
 </discussion>
 
 <resolution>

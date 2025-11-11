@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="4243" status="Voting">
+<issue num="4243" status="WP">
 <title>`as_bytes`/`as_writable_bytes` is broken with <code>span&lt;volatile T&gt;</code></title>
 <section>
 <sref ref="[span.objectrep]"/>
@@ -110,6 +110,7 @@ Set priority to 4 after reflector poll.
 
 <note>Sofia 2025-06-17; Move to Ready</note>
 
+<note>Kona 2025-11-08; Status changed: Voting &rarr; WP.</note>
 </discussion>
 
 <resolution>

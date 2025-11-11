@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="4266" status="Voting">
+<issue num="4266" status="WP">
 <title>`layout_stride::mapping` should treat empty mappings as exhaustive</title>
 <section><sref ref="[mdspan.layout.stride]"/></section>
 <submitter>Tomasz Kamiński</submitter>
@@ -42,6 +42,7 @@ For consistency, we could update `is_always_exhaustive()` to recognize mapping w
 Set status to Tentatively Ready after six votes in favour during reflector poll.
 </p>
 
+<note>Kona 2025-11-08; Status changed: Voting &rarr; WP.</note>
 </discussion>
 
 <resolution>

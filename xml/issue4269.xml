@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="4269" status="Voting">
+<issue num="4269" status="WP">
 <title>`unique_copy` passes arguments to its predicate backwards</title>
 <section><sref ref="[alg.unique]"/></section>
 <submitter>Jonathan Wakely</submitter>
@@ -75,6 +75,7 @@ and rebased on <paper num="N5014"/>.
 <p>
 "I remain inconvinced that this actually matters given the equivalence relation requirement."
 </p>
+<note>Kona 2025-11-08; Status changed: Voting &rarr; WP.</note>
 </discussion>
 
 <resolution>

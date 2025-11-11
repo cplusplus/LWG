@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="4315" status="Voting">
+<issue num="4315" status="WP">
 <title>Insufficient specification of `vector_two_norm` and `matrix_frob_norm`</title>
 <section>
 <sref ref="[linalg.algs.blas1.nrm2]"/>
@@ -133,6 +133,7 @@ checkable as part of the API.
 </p>
 
 <note>LWG telecon 2025-10-10; Status updated New &rarr; Ready</note>
+<note>Kona 2025-11-08; Status changed: Voting &rarr; WP.</note>
 </discussion>
 
 <resolution>

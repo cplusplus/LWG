@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="4275" status="Voting">
+<issue num="4275" status="WP">
 <title>`std::dynamic_extent` should also be defined in <tt>&lt;mdspan&gt;</tt></title>
 <section>
 <sref ref="[mdspan.syn]"/>
@@ -58,6 +58,7 @@ Set priority to 3 after reflector poll.
 <p>
 Set status to Tentatively Ready after eight votes in favour during reflector poll.
 </p>
+<note>Kona 2025-11-08; Status changed: Voting &rarr; WP.</note>
 </discussion>
 
 <resolution>

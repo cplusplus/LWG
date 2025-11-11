@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="4340" status="Voting">
+<issue num="4340" status="WP">
 <title><code>task::promise_type::unhandled_stopped()</code> should be <code>noexcept</code></title>
 <section><sref ref="[task.promise]"/></section>
 <submitter>Dietmar Kühl</submitter>
@@ -25,6 +25,7 @@ already marked <code>noexcept</code> but
 <p>
 Set status to Tentatively Ready after five votes in favour during reflector poll.
 </p>
+<note>Kona 2025-11-08; Status changed: Voting &rarr; WP.</note>
 </discussion>
 
 <resolution>

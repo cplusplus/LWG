@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="4413" status="Voting">
+<issue num="4413" status="WP">
 <title>Unused/left-over `simd::alignment` specialization for `basic_mask`</title>
 <section><sref ref="[simd.traits]"/></section>
 <submitter>Matthias Kretz</submitter>
@@ -21,6 +21,7 @@ conversions were introduced. This left-over TS wording should be removed.
 <p>
 Set status to Tentatively Ready after seven votes in favour during reflector poll.
 </p>
+<note>Kona 2025-11-08; Status changed: Voting &rarr; WP.</note>
 </discussion>
 
 <resolution>

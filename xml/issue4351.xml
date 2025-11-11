@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="4351" status="Voting">
+<issue num="4351" status="WP">
 <title><code><i>integral-constant-like</i></code> needs more `remove_cvref_t`</title>
 <section><sref ref="[span.syn]"/></section>
 <submitter>Jonathan Wakely</submitter>
@@ -36,6 +36,7 @@ but it needs an additional tweak so that
 <p>
 Set status to Tentatively Ready after eight votes in favour during reflector poll.
 </p>
+<note>Kona 2025-11-08; Status changed: Voting &rarr; WP.</note>
 </discussion>
 
 <resolution>

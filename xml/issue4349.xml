@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="4349" status="Voting">
+<issue num="4349" status="WP">
 <title><code>task</code> is not actually started lazily</title>
 <section><sref ref="[task.promise]"/></section>
 <submitter>Dietmar Kühl</submitter>
@@ -33,6 +33,7 @@ unnecessary scheduling operations for the likely common case when
 <p>
 Set status to Tentatively Ready after five votes in favour during reflector poll.
 </p>
+<note>Kona 2025-11-08; Status changed: Voting &rarr; WP.</note>
 </discussion>
 
 <resolution>

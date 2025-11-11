@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="3627" status="Voting">
+<issue num="3627" status="WP">
 <title>Inconsistent specifications for <tt>std::make_optional</tt> overloads</title>
 <section><sref ref="[optional.specalg]"/></section>
 <submitter>Jiang An</submitter>
@@ -30,6 +30,7 @@ Set priority to 3 after reflector poll.
 <note>2025-10-16; Status changed: New &rarr; Tentatively Ready.</note>
 <p>Reflector poll in 2024-07 with eight supporting votes.</p>
 
+<note>Kona 2025-11-08; Status changed: Voting &rarr; WP.</note>
 </discussion>
 
 <resolution>

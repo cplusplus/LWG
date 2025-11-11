@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="4407" status="Voting">
+<issue num="4407" status="WP">
 <title><code><i>constexpr-wrapper-like</i></code> needs `remove_cvref_t` in `simd::basic_vec`
 constructor</title>
 <section>
@@ -22,6 +22,7 @@ so the reference also needs to be removed for checking the arithmetic type.
 Set status to Tentatively Ready after seven votes in favour during reflector poll.
 </p>
 
+<note>Kona 2025-11-08; Status changed: Voting &rarr; WP.</note>
 </discussion>
 
 <resolution>

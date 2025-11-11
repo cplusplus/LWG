@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="4318" status="Voting">
+<issue num="4318" status="WP">
 <title>Have `hive::erase_if` reevaluate `end()` to avoid UB</title>
 <section>
 <sref ref="[hive.erasure]"/>
@@ -24,6 +24,7 @@ in the loop condition. Instead, re-evaluate `end()` each time.
 Set status to Tentatively Ready after five votes in favour during reflector poll.
 </p>
 
+<note>Kona 2025-11-08; Status changed: Voting &rarr; WP.</note>
 </discussion>
 
 <resolution>
