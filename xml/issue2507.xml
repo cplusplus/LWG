@@ -1,10 +1,7 @@
 <?xml version='1.0' encoding='UTF-8' standalone='no'?>
-<!DOCTYPE issue SYSTEM "lwg-issue.dtd" [ 
-  <!ENTITY hellip "&#x2026;">
-  <!ENTITY mdash  "&#x2014;">
-] >
+<!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="2507" status="New">
+<issue num="2507" status="Resolved">
 <title><tt>codecvt_mode</tt> should be a bitmask type</title>
 <section><sref ref="[depr.locale.stdcvt]"/></section>
 <submitter>Jonathan Wakely</submitter>
@@ -34,6 +31,7 @@ or as a minimal fix we provide an overloaded <tt>operator|</tt> that returns
 the right type.
 </p>
 
+<note>2025-11-10 Resolved by the removal of <tt>codecvt_mode</tt> via paper <paper num="P2871R3"/> in Kona, 2023. Status changed: New &rarr; Resolved.</note>
 </discussion>
 
 <resolution>

@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='UTF-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="2479" status="New">
+<issue num="2479" status="Resolved">
 <title>Unclear how <tt>wbuffer_convert</tt> uses <tt>cvtstate</tt></title>
 <section><sref ref="[depr.conversions.buffer]"/></section>
 <submitter>Jonathan Wakely</submitter>
@@ -13,11 +13,12 @@
 How does <tt>wbuffer_convert</tt> use the <tt>cvtstate</tt> member?
 <p/>
 Is the same conversion state object used for converting both the get
-and put areas? That means a read which runs out of bytes halfway 
-through a multibyte character will leave some shift state in cvtstate, 
-which would then be used by a following write, even though the shift 
+and put areas? That means a read which runs out of bytes halfway
+through a multibyte character will leave some shift state in cvtstate,
+which would then be used by a following write, even though the shift
 state of the get area is unrelated to the put area.
 </p>
+<note>2025-11-10 Resolved by the removal of <tt>wbuffer_convert</tt> via paper <paper num="P2872R3"/> in Tokyo, 2024. Status changed: New &rarr; Resolved.</note>
 </discussion>
 
 <resolution>

@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='UTF-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="2481" status="New">
+<issue num="2481" status="Resolved">
 <title><tt>wstring_convert</tt> should be more precise regarding "byte-error string" etc.</title>
 <section><sref ref="[depr.conversions.string]"/></section>
 <submitter>Jonathan Wakely</submitter>
@@ -10,8 +10,8 @@
 
 <discussion>
 <p>
-Paragraph 4 of <sref ref="[depr.conversions.string]"/> introduces <tt>byte_err_string</tt> 
-as "a byte string to display on errors". What does display mean? The string is returned 
+Paragraph 4 of <sref ref="[depr.conversions.string]"/> introduces <tt>byte_err_string</tt>
+as "a byte string to display on errors". What does display mean? The string is returned
 on error, it's not displayed anywhere.
 <p/>
 Paragraph 14 says "Otherwise, if the object was constructed with a
@@ -32,6 +32,7 @@ not.
 <p/>
 All the same issues apply to the <tt>wide_err_string</tt> member.
 </p>
+<note>2025-11-10 Resolved by the removal of <tt>wstring_convert</tt> via paper <paper num="P2872R3"/> in Tokyo, 2024. Status changed: New &rarr; Resolved.</note>
 </discussion>
 
 <resolution>

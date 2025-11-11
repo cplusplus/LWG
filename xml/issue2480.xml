@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='UTF-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="2480" status="New">
+<issue num="2480" status="Resolved">
 <title>Error handling of <tt>wbuffer_convert</tt> unclear</title>
 <section><sref ref="[depr.conversions.buffer]"/></section>
 <submitter>Jonathan Wakely</submitter>
@@ -16,6 +16,7 @@ characters before a conversion error be available to the users of the
 <tt>wbuffer_convert</tt> and/or the internal <tt>streambuf</tt>, or does a conversion
 error lose information?
 </p>
+<note>2025-11-10 Resolved by the removal of <tt>wbuffer_convert</tt> via paper <paper num="P2872R3"/> in Tokyo, 2024. Status changed: New &rarr; Resolved.</note>
 </discussion>
 
 <resolution>
