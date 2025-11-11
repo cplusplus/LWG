@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="3638" status="New">
+<issue num="3638" status="Resolved">
 <title><tt>vector&lt;bool&gt;::swap(reference, reference)</tt> is useless</title>
 <section><sref ref="[vector.bool]"/></section>
 <submitter>Jonathan Wakely</submitter>
@@ -539,6 +539,7 @@ y = b;</ins>
 Add `swap` for `bitset::reference`, as proposed in LWG <iref ref="4187"/>.
 </p>
 
+<note>2025-11-11; Resolved by <paper num="P3612R1"/>, approved in Kona. Status changed: New &rarr; Resolved.</note>
 </discussion>
 
 <resolution>

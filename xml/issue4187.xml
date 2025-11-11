@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="4187" status="New">
+<issue num="4187" status="Resolved">
 <title>`bitset::reference` should be const-assignable</title>
 <section><sref ref="[template.bitset]"/></section>
 <submitter>Arthur O'Dwyer</submitter>
@@ -101,6 +101,7 @@ namespace std {
 <note>2025-02-07; Jonathan provides improved wording</note>
 <p>Moved `swap` changes to LWG <iref ref="3638"/>.</p>
 
+<note>2025-11-11; Resolved by <paper num="P3612R1"/>, approved in Kona. Status changed: New &rarr; Resolved.</note>
 </discussion>
 
 <resolution>
