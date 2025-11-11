@@ -1,18 +1,18 @@
 <?xml version='1.0' encoding='UTF-8' standalone='no'?>
-<!DOCTYPE issue SYSTEM "lwg-issue.dtd" [ 
+<!DOCTYPE issue SYSTEM "lwg-issue.dtd" [
   <!ENTITY nbsp "&#160;">
 ] >
 
 <issue num="2404" status="C++17">
 <title><tt>mismatch()</tt>'s complexity needs to be updated</title>
-<section><sref ref="[mismatch]"/></section>
+<section><sref ref="[alg.mismatch]"/></section>
 <submitter>Stephan T. Lavavej</submitter>
 <date>14 Jun 2014</date>
 <priority>0</priority>
 
 <discussion>
 <p>
-<a href="http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2013/n3671.html">N3671</a> updated the complexities of 
+<a href="http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2013/n3671.html">N3671</a> updated the complexities of
 <tt>equal()</tt> and <tt>is_permutation()</tt>, but not <tt>mismatch()</tt>.
 </p>
 
@@ -31,7 +31,7 @@ Move to Ready
 
 <blockquote>
 <p>
--3- <i>Complexity</i>: At most <tt><ins>min(</ins>last1 - first1<ins>, last2 - first2)</ins></tt> applications of the 
+-3- <i>Complexity</i>: At most <tt><ins>min(</ins>last1 - first1<ins>, last2 - first2)</ins></tt> applications of the
 corresponding predicate.
 </p>
 </blockquote>

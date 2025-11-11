@@ -3,7 +3,7 @@
 
 <issue num="4206" status="New">
 <title>Alias template `connect_result_t` should be constrained with `sender_to`</title>
-<section><sref ref="[exec.syn]"/></section>
+<section><sref ref="[execution.syn]"/></section>
 <submitter>Eric Niebler</submitter>
 <date>04 Feb 2025</date>
 <priority>1</priority>
@@ -60,7 +60,7 @@ This wording is relative to <paper num="N5001"/>.
 
 <ol>
 <li>
-Modify <sref ref="[exec.syn]"/> as indicated:
+Modify <sref ref="[execution.syn]"/> as indicated:
 <blockquote>
 <pre><code>
   template&lt;class Sndr, class Rcvr&gt;
