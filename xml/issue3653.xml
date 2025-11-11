@@ -23,9 +23,33 @@ Would be resolved by <paper num="P1642"/> for C++23,
 but it's still a defect in C++20.
 </p>
 
+
+<note>2025-11-11; Jonathan adds wording for C++20.</note>
+<p>
+This wording would resolve the defect for C++20,
+but the issue should be closed as Resolved in C++23.
+</p>
 </discussion>
 
 <resolution>
+<p>
+This wording is relative to ISO/IEC 14882:2020(E).
+</p>
+
+<ol>
+<li>Modify <sref ref="[coroutine.handle.hash]"/> as indicated:
+<blockquote>
+<pre>
+template&lt;class P&gt; struct hash&lt;coroutine_handle&lt;P&gt;&gt;;
+</pre>
+<p>-1-
+The specialization is enabled (<sref ref="[unord.hash]"/>)
+<ins>in a hosted implementation</ins>.
+</p>
+</blockquote>
+</li>
+</ol>
+
 </resolution>
 
 </issue>
