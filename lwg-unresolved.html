@@ -54,7 +54,7 @@
 </style>
 </head>
 <body>
-<p>Revised 2025-11-11 at 12:56:51 UTC
+<p>Revised 2025-11-11 at 14:49:40 UTC
 </p><h2>Unresolved Issues</h2>
 <hr>
 <h3 id="423"><a href="#423">423</a><sup><a href="https://cplusplus.github.io/LWG/issue423">(i)</a></sup>. Effects of negative <code>streamsize</code> in iostreams</h3>
@@ -25735,194 +25735,6 @@ it denotes the same type as <code>decay_t&lt;common_type&lt;T...&gt;::type&gt;</
 
 
 <hr>
-<h3 id="3210"><a href="#3210">3210</a><sup><a href="https://cplusplus.github.io/LWG/issue3210">(i)</a></sup>. <code>allocate_shared</code> is inconsistent about removing <code>const</code> from the pointer
-passed to allocator <code>construct</code> and <code>destroy</code></h3>
-<p><b>Section:</b> 20.3.2.2.7 <a href="https://wg21.link/util.smartptr.shared.create">[util.smartptr.shared.create]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Billy O'Neal III <b>Opened:</b> 2019-05-29 <b>Last modified:</b> 2024-10-02</p>
-<p><b>Priority: </b>3
-</p>
-<p><b>View all other</b> <a href="lwg-index.html#util.smartptr.shared.create">issues</a> in [util.smartptr.shared.create].</p>
-<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
-<p><b>Discussion:</b></p>
-<p>
-I implemented the fix for LWG <a href="lwg-defects.html#3008" title="make_shared (sub)object destruction semantics are not specified (Status: C++20)">3008</a><sup><a href="https://cplusplus.github.io/LWG/issue3008" title="Latest snapshot">(i)</a></sup> and Stephan pointed out there's an inconsistency here
-for <code>allocate_shared&lt;const T&gt;</code>.
-<p/>
-20.3.2.2.7 <a href="https://wg21.link/util.smartptr.shared.create">[util.smartptr.shared.create]</a> p3 says that the allocator construct call is done without removing
-<i>cv</i> qualifiers, but 20.3.2.2.7 <a href="https://wg21.link/util.smartptr.shared.create">[util.smartptr.shared.create]</a> p7.12 says that the <code>destroy</code>
-call is done with removed <i>cv</i> qualifiers.
-<p/>
-The fallback for <code>allocator_traits::construct</code> rejects <code>const T*</code> (since it <code>static_casts</code>
-to <code>void*</code>), so the most likely outcome of attempting to do this today is to fail to compile, which
-is a break with C++17.
-<p/>
-Our options are:
-</p>
-<ol>
-<li><p>Fix the allocator model to deal with <code>const</code> elements somehow, which breaks compatibility
-with existing allocators unprepared for <code>const</code> elements here. We would need to extend the allocator
-requirements to allow <code>const T*</code> to be passed here, and fix our default to <code>const_cast</code>.</p></li>
-<li><p>Fix <code>allocate_shared</code> to remove <code>const</code> before calling <code>construct</code>, which
-changes the experience for C++17 customers because <code>allocate_shared</code> constructs a <code>T</code>
-instead of a <code>const T</code>, but not in a way substantially different to edits
-<a href="https://wg21.link/p0674">P0674</a> already made here.</p></li>
-<li><p>Back out <code>allocate_shared</code>'s interaction with this part of the allocator model (reverting
-this part of <a href="https://wg21.link/p0674">P0674</a> and reopening LWG <a href="lwg-defects.html#3008" title="make_shared (sub)object destruction semantics are not specified (Status: C++20)">3008</a><sup><a href="https://cplusplus.github.io/LWG/issue3008" title="Latest snapshot">(i)</a></sup>).</p></li>
-<li><p>Go around the problem by prohibiting <code>allocate_shared&lt;const T&gt;</code>, which breaks
-existing C++17 customers.</p></li>
-</ol>
-<p>
-Billy O'Neal argues that only (2) preserves the design intent <a href="https://wg21.link/p0674">P0674</a>
-while maintaining compatibility for most allocators and most C++17 customers.
-<p/>
-Peter Dimov argues that (1) isn't likely to break enough to matter.
-</p>
-
-<p><i>[2019-06-16 Priority set to 3 based on reflector discussion]</i></p>
-
-
-<p><strong>Previous resolution [SUPERSEDED]:</strong></p>
-<blockquote class="note">
-
-<p>This wording is relative to <a href="https://wg21.link/N4810" title=" Working Draft, Standard for Programming Language C++">N4810</a>.</p>
-
-<blockquote class="note">
-<p>
-[<i>Drafting note:</i> As the issue submitter prefers option (2), this is wording for that.]
-</p>
-</blockquote>
-
-<ol>
-<li><p>Modify 20.3.2.2.7 <a href="https://wg21.link/util.smartptr.shared.create">[util.smartptr.shared.create]</a> as indicated:</p>
-
-<blockquote>
-<pre>
-template&lt;class T, ...&gt;
-  shared_ptr&lt;T&gt; make_shared(<i>args</i>);
-template&lt;class T, class A, ...&gt;
-  shared_ptr&lt;T&gt; allocate_shared(const A&amp; a, <i>args</i>);
-template&lt;class T, ...&gt;
-  shared_ptr&lt;T&gt; make_shared_default_init(<i>args</i>);
-template&lt;class T, class A, ...&gt;
-  shared_ptr&lt;T&gt; allocate_shared_default_init(const A&amp; a, <i>args</i>);
-</pre>
-<blockquote>
-<p>
--2- <i>Requires:</i> [&hellip;]
-<p/>
-[&hellip;]
-<p/>
--7- <i>Remarks:</i>
-</p>
-<ol style="list-style-type: none">
-<li><p>(7.1) &mdash; [&hellip;]</p></li>
-<li><p>[&hellip;]</p></li>
-<li><p>(7.5) &mdash; When a (sub)object of a non-array type <code>U</code> is specified to have an initial
-value of <code>v</code>, or <code>U(l...)</code>, where <code>l...</code> is a list of constructor arguments,
-<code>allocate_shared</code> shall initialize this (sub)object via the expression
-</p>
-<ol style="list-style-type: none">
-<li><p>(7.5.1) &mdash; <code>allocator_traits&lt;A2&gt;::construct(a2, pv, v)</code> or</p></li>
-<li><p>(7.5.2) &mdash; <code>allocator_traits&lt;A2&gt;::construct(a2, pv, l...)</code></p></li>
-</ol>
-<p>
-respectively, where <code>pv</code> points to storage suitable to hold an object of type
-<code><ins>remove_cv_t&lt;</ins>U<ins>&gt;</ins></code> and <code>a2</code> of type <code>A2</code> is a
-rebound copy of the allocator <code>a</code> passed to <code>allocate_shared</code> such that its <code>value_type</code>
-is <code>remove_cv_t&lt;U&gt;</code>.
-</p>
-</li>
-</ol>
-</blockquote>
-</blockquote>
-</li>
-
-</ol>
-</blockquote>
-
-<p><i>[2024-04-13; Jiang An comments and provides improved wording]</i></p>
-
-<p>
-The currently proposed resolution is meaningless, because "(allocated) storage suitable to hold an object of type
-<code>remove_cv_t&lt;U&gt;</code>" is always "storage suitable to hold an object of type <code>U</code>", and vice versa.
-Also, the current specification doesn't seem to specify the type of <code>pv</code> in the cases of <code>allocator_shared</code>,
-because <code>pv</code> is merely specified to point some storage instead of an object.
-</p>
-
-<p><i>[2024-10-02; will be resolved by issue <a href="lwg-defects.html#3216" title="Rebinding the allocator before calling construct/destroy in allocate_shared (Status: WP)">3216</a><sup><a href="https://cplusplus.github.io/LWG/issue3216" title="Latest snapshot">(i)</a></sup>.]</i></p>
-
-
-
-<p id="res-3210"><b>Proposed resolution:</b></p>
-<p>
-This wording is relative to <a href="https://wg21.link/N4971" title=" Working Draft, Programming Languages — C++">N4971</a>.
-</p>
-
-<ol>
-<li><p>Modify 20.3.2.2.7 <a href="https://wg21.link/util.smartptr.shared.create">[util.smartptr.shared.create]</a> as indicated:</p>
-
-<blockquote class="note">
-<p>
-[<i>Drafting note:</i> As the issue submitter prefers option (2), this is wording for that.]
-</p>
-</blockquote>
-
-<blockquote>
-<pre>
-template&amp;lt;class T, ...>
-  shared_ptr&amp;lt;T&amp;gt; make_shared(<i>args</i>);
-template&amp;lt;class T, class A, ...>
-  shared_ptr&amp;lt;T&amp;gt; allocate_shared(const A&amp; a, <i>args</i>);
-template&amp;lt;class T, ...>
-  shared_ptr&amp;lt;T&amp;gt; make_shared_for_overwrite(<i>args</i>);
-template&amp;lt;class T, class A, ...>
-  shared_ptr&amp;lt;T&amp;gt; allocate_shared_for_overwrite(const A&amp; a, <i>args</i>);
-</pre>
-<blockquote>
-<p>
--2- <i>Preconditions:</i> [&hellip;]
-<p/>
-[&hellip;]
-<p/>
--7- <i>Remarks:</i>
-</p>
-<ol style="list-style-type: none">
-<li><p>(7.1) &mdash; [&hellip;]</p></li>
-<li><p>[&hellip;]</p></li>
-<li><p>(7.5) &mdash; When a (sub)object of a non-array type <code>U</code> is specified to have an initial
-value of <code>v</code>, or <code>U(l...)</code>, where <code>l...</code> is a list of constructor arguments,
-<code>allocate_shared</code> shall initialize this (sub)object via the expression
-</p>
-<ol style="list-style-type: none">
-<li><p>(7.5.1) &mdash; <code>allocator_traits&lt;A2&gt;::construct(a2, pv, v)</code> or</p></li>
-<li><p>(7.5.2) &mdash; <code>allocator_traits&lt;A2&gt;::construct(a2, pv, l...)</code></p></li>
-</ol>
-<p>
-respectively, where <code>pv</code> <ins>has type <code>remove_cv_t&lt;U&gt;*</code> and</ins> points to storage
-suitable to hold an object of type <code>U</code> and <code>a2</code> of type <code>A2</code> is a rebound copy of
-the allocator a passed to <code>allocate_shared</code> such that its <code>value_type</code> is
-<code>remove_cv_t&lt;U&gt;</code>.
-</p>
-</li>
-<li><p>(7.6) &mdash; [&hellip;]</p></li>
-<li><p>(7.7) &mdash; When a (sub)object of non-array type <code>U</code> is specified to have a default
-initial value, <code>allocate_shared</code> shall initialize this (sub)object via the expression
-<code>allocator_traits&lt;A2&gt;::construct(a2, pv)</code>, where <code>pv</code> <ins>has type <code>remove_cv_t&lt;U&gt;*</code>
-and</ins> points to storage suitable to hold an object of type <code>U</code> and <code>a2</code> of type <code>A2</code>
-is a rebound copy of the allocator a passed to <code>allocate_shared</code> such that its <code>value_type</code>
-is <code>remove_cv_t&lt;U&gt;</code>.
-</p>
-</li>
-</ol>
-</blockquote>
-</blockquote>
-</li>
-</ol>
-
-
-
-
-<hr>
 <h3 id="3214"><a href="#3214">3214</a><sup><a href="https://cplusplus.github.io/LWG/issue3214">(i)</a></sup>. &sect;[facet.num.get.virtuals] doesn't say what it means for digit grouping to be consistent</h3>
 <p><b>Section:</b> 28.3.4.3.2.3 <a href="https://wg21.link/facet.num.get.virtuals">[facet.num.get.virtuals]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
  <b>Submitter:</b> Jonathan Wakely <b>Opened:</b> 2019-06-03 <b>Last modified:</b> 2019-08-23</p>
@@ -35514,7 +35326,7 @@ whichever comes first."
 <hr>
 <h3 id="3653"><a href="#3653">3653</a><sup><a href="https://cplusplus.github.io/LWG/issue3653">(i)</a></sup>. <code>&lt;coroutine&gt;</code> is freestanding, but uses <code>std::hash</code> which is not</h3>
 <p><b>Section:</b> 17.13.2 <a href="https://wg21.link/coroutine.syn">[coroutine.syn]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Jonathan Wakely <b>Opened:</b> 2021-12-17 <b>Last modified:</b> 2022-01-30</p>
+ <b>Submitter:</b> Jonathan Wakely <b>Opened:</b> 2021-12-17 <b>Last modified:</b> 2025-11-11</p>
 <p><b>Priority: </b>3
 </p>
 <p><b>View all other</b> <a href="lwg-index.html#coroutine.syn">issues</a> in [coroutine.syn].</p>
@@ -35536,8 +35348,33 @@ but it's still a defect in C++20.
 </p>
 
 
+<p><i>[2025-11-11; Jonathan adds wording for C++20.]</i></p>
+
+<p>
+This wording would resolve the defect for C++20,
+but the issue should be closed as Resolved in C++23.
+</p>
+
 
 <p id="res-3653"><b>Proposed resolution:</b></p>
+<p>
+This wording is relative to ISO/IEC 14882:2020(E).
+</p>
+
+<ol>
+<li>Modify 17.13.4.9 <a href="https://wg21.link/coroutine.handle.hash">[coroutine.handle.hash]</a> as indicated:
+<blockquote>
+<pre>
+template&lt;class P&gt; struct hash&lt;coroutine_handle&lt;P&gt;&gt;;
+</pre>
+<p>-1-
+The specialization is enabled (22.10.19 <a href="https://wg21.link/unord.hash">[unord.hash]</a>)
+<ins>in a hosted implementation</ins>.
+</p>
+</blockquote>
+</li>
+</ol>
+
 
 
 

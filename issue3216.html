@@ -97,8 +97,8 @@ it looks like it might be saying a copy of the allocator must be made we would l
 <blockquote class="note">
 <p>
 [<i>Drafting note:</i> The edits to change <code>pv</code> to <code>pu</code> were suggested by Jonathan
-Wakely (thanks!). This wording also has the <code>remove_cv_t</code> fixes specified by LWG <a href="lwg-active.html#3210" title="allocate_shared is inconsistent about removing const from the pointer
-passed to allocator construct and destroy (Status: New)">3210</a><sup><a href="https://cplusplus.github.io/LWG/issue3210" title="Latest snapshot">(i)</a></sup>
+Wakely (thanks!). This wording also has the <code>remove_cv_t</code> fixes specified by LWG <a href="lwg-defects.html#3210" title="allocate_shared is inconsistent about removing const from the pointer
+passed to allocator construct and destroy (Status: Resolved)">3210</a><sup><a href="https://cplusplus.github.io/LWG/issue3210" title="Latest snapshot">(i)</a></sup>
 &mdash; if that change is rejected some of those have to be stripped here.]
 </p>
 </blockquote>
@@ -173,8 +173,8 @@ allocator <code>a</code> passed to <code>allocate_shared</code> <del>such that i
 by <a href="https://wg21.link/P1973R1" title=" Rename _default_init functions (NB Comment DE002)">P1973R1</a> so this needs a rebase.
 The edit to (7.11) is just for consistency, so that <code class='backtick'>pv</code> is always <code class='backtick'>void*</code>
 and <code class='backtick'>pu</code> is <code>remove_cv_t&lt;U&gt;*</code>.
-Accepting this proposed resolution would also resolve issue <a href="lwg-active.html#3210" title="allocate_shared is inconsistent about removing const from the pointer
-passed to allocator construct and destroy (Status: New)">3210</a><sup><a href="https://cplusplus.github.io/LWG/issue3210" title="Latest snapshot">(i)</a></sup>.
+Accepting this proposed resolution would also resolve issue <a href="lwg-defects.html#3210" title="allocate_shared is inconsistent about removing const from the pointer
+passed to allocator construct and destroy (Status: Resolved)">3210</a><sup><a href="https://cplusplus.github.io/LWG/issue3210" title="Latest snapshot">(i)</a></sup>.
 </p>
 
 

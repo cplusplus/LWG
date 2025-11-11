@@ -64,7 +64,7 @@
 <p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#New">New</a> status.</em></p>
 <h3 id="3653"><a href="lwg-active.html#3653">3653</a>. <code>&lt;coroutine&gt;</code> is freestanding, but uses <code>std::hash</code> which is not</h3>
 <p><b>Section:</b> 17.13.2 <a href="https://wg21.link/coroutine.syn">[coroutine.syn]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Jonathan Wakely <b>Opened:</b> 2021-12-17 <b>Last modified:</b> 2022-01-30</p>
+ <b>Submitter:</b> Jonathan Wakely <b>Opened:</b> 2021-12-17 <b>Last modified:</b> 2025-11-11</p>
 <p><b>Priority: </b>3
 </p>
 <p><b>View all other</b> <a href="lwg-index.html#coroutine.syn">issues</a> in [coroutine.syn].</p>
@@ -86,8 +86,33 @@ but it's still a defect in C++20.
 </p>
 
 
+<p><i>[2025-11-11; Jonathan adds wording for C++20.]</i></p>
+
+<p>
+This wording would resolve the defect for C++20,
+but the issue should be closed as Resolved in C++23.
+</p>
+
 
 <p id="res-3653"><b>Proposed resolution:</b></p>
+<p>
+This wording is relative to ISO/IEC 14882:2020(E).
+</p>
+
+<ol>
+<li>Modify 17.13.4.9 <a href="https://wg21.link/coroutine.handle.hash">[coroutine.handle.hash]</a> as indicated:
+<blockquote>
+<pre>
+template&lt;class P&gt; struct hash&lt;coroutine_handle&lt;P&gt;&gt;;
+</pre>
+<p>-1-
+The specialization is enabled (22.10.19 <a href="https://wg21.link/unord.hash">[unord.hash]</a>)
+<ins>in a hosted implementation</ins>.
+</p>
+</blockquote>
+</li>
+</ol>
+
 
 
 

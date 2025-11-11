@@ -79,7 +79,7 @@
 </tr>
 </table>
 <h1>C++ Standard Library Active Issues List (Revision D126)</h1>
-<p>Revised 2025-11-11 at 12:56:51 UTC
+<p>Revised 2025-11-11 at 14:49:40 UTC
 </p>
   <p>Reference ISO/IEC IS 14882:2024(E)</p>
   <p>Also see:</p>
@@ -196,8 +196,8 @@ ownership of it.
 <ul>
 <li>D126: 2025-10-30 Since October 2025<ul>
 <li><b>Summary:</b><ul>
-<li>643 open issues, down by 85.</li>
-<li>3295 closed issues, up by 123.</li>
+<li>642 open issues, down by 86.</li>
+<li>3296 closed issues, up by 124.</li>
 <li>52 reassigned issues, down by 5.</li>
 <li>3990 issues total, up by 33.</li>
 </ul></li>
@@ -218,7 +218,8 @@ constructor (Status: WP)">4407</a>, <a href="lwg-defects.html#4412" title="Fix d
 incorrectly constrained for &lt;stdfloat&gt; types (Status: WP)">4420</a>, <a href="lwg-defects.html#4424" title="meta::define_aggregate should require a class type (Status: WP)">4424</a>, <a href="lwg-defects.html#4427" title="meta::dealias needs to work with things that aren't entities (Status: WP)">4427</a>, <a href="lwg-defects.html#4428" title="Metafunctions should not be defined in terms of constant subexpressions (Status: WP)">4428</a>, <a href="lwg-defects.html#4429" title="meta::alignment_of should exclude data member description of bit-field (Status: WP)">4429</a>, <a href="lwg-defects.html#4430" title="from_chars should not parse &quot;0b&quot; base prefixes (Status: WP)">4430</a>, <a href="lwg-defects.html#4431" title="Parallel std::ranges::destroy should allow exceptions (Status: WP)">4431</a>, <a href="lwg-defects.html#4432" title="Clarify element initialization for meta::reflect_constant_array (Status: WP)">4432</a>, <a href="lwg-defects.html#4433" title="Incorrect query for C language linkage (Status: WP)">4433</a>, <a href="lwg-defects.html#4434" title="meta::is_accessible does not need to consider incomplete D (Status: WP)">4434</a>, <a href="lwg-defects.html#4435" title="meta::has_identifier doesn't handle all types (Status: WP)">4435</a>.</li>
 <li>Changed the following 3 issues to WP (from Open): <a href="lwg-defects.html#3343" title="Ordering of calls to unlock() and notify_all() in Effects element of notify_all_at_thread_exit() should be reversed (Status: WP)">3343</a>, <a href="lwg-defects.html#3454" title="pointer_traits::pointer_to should be constexpr (Status: WP)">3454</a>, <a href="lwg-defects.html#4015" title="LWG 3973 broke const overloads of std::optional monadic operations (Status: WP)">4015</a>.</li>
 <li>Changed the following 2 issues to WP (from LEWG): <a href="lwg-defects.html#4302" title="Problematic vector_sum_of_squares wording (Status: WP)">4302</a>, <a href="lwg-defects.html#4396" title="Improve inplace_vector(from_range_t, R&amp;&amp; rg) (Status: WP)">4396</a>.</li>
-<li>Changed the following 6 issues to Resolved (from New): <a href="lwg-defects.html#3537" title="&sect;[iterator.range] Missing noexcept for std::rbegin/rend for arrays and 
+<li>Changed the following 7 issues to Resolved (from New): <a href="lwg-defects.html#3210" title="allocate_shared is inconsistent about removing const from the pointer
+passed to allocator construct and destroy (Status: Resolved)">3210</a>, <a href="lwg-defects.html#3537" title="&sect;[iterator.range] Missing noexcept for std::rbegin/rend for arrays and 
 initializer_list (Status: Resolved)">3537</a>, <a href="lwg-defects.html#3624" title="Inconsistency of &lt;typeinfo&gt;, &lt;initializer_list&gt;, and 
 &lt;compare&gt; in the standard library (Status: Resolved)">3624</a>, <a href="lwg-defects.html#3638" title="vector&lt;bool&gt;::swap(reference, reference) is useless (Status: Resolved)">3638</a>, <a href="lwg-defects.html#4000" title="flat_map::insert_range's Effects is not quite right (Status: Resolved)">4000</a>, <a href="lwg-defects.html#4131" title="Including &lt;optional&gt; doesn't provide std::begin/end (Status: Resolved)">4131</a>, <a href="lwg-defects.html#4187" title="bitset::reference should be const-assignable (Status: Resolved)">4187</a>.</li>
 <li>Changed the following 2 issues to Resolved (from Open): <a href="lwg-defects.html#3625" title="Should &lt;stacktrace&gt; provide range access function templates? (Status: Resolved)">3625</a>, <a href="lwg-defects.html#4387" title="Including &lt;stacktrace&gt; doesn't provide std::begin/end
@@ -634,8 +635,8 @@ derived types as always equal (Status: C++23)">3170</a>.</li>
 <li><b>Details:</b><ul>
 <li>Added the following 6 Tentatively Ready issues: <a href="lwg-defects.html#3198" title="Bad constraint on std::span::span() (Status: C++20)">3198</a>, <a href="lwg-defects.html#3199" title="istream &gt;&gt; bitset&lt;0&gt; fails (Status: C++20)">3199</a>, <a href="lwg-defects.html#3202" title="P0318R1 was supposed to be revised (Status: C++20)">3202</a>, <a href="lwg-defects.html#3206" title="year_month_day conversion to sys_days uses not-existing member function (Status: C++20)">3206</a>, <a href="lwg-defects.html#3208" title="Boolean's expression requirements are ordered inconsistently (Status: C++20)">3208</a>, <a href="lwg-defects.html#3209" title="Expression in year::ok() returns clause is ill-formed (Status: C++20)">3209</a>.</li>
 <li>Added the following Tentatively NAD issue: <a href="lwg-closed.html#3207" title="N in ssize(const T (&amp;)[N]) should be size_t (Status: NAD)">3207</a>.</li>
-<li>Added the following 18 New issues: <a href="lwg-active.html#3197" title="std::prev should not require BidirectionalIterator (Status: New)">3197</a>, <a href="lwg-defects.html#3200" title="midpoint should not constrain T is complete (Status: C++20)">3200</a>, <a href="lwg-defects.html#3201" title="lerp should be marked as noexcept (Status: C++20)">3201</a>, <a href="lwg-defects.html#3203" title="span element access invalidation (Status: WP)">3203</a>, <a href="lwg-defects.html#3204" title="sub_match::swap only swaps the base class (Status: C++23)">3204</a>, <a href="lwg-active.html#3205" title="decay_t in the new common_type fallback should be remove_cvref_t (Status: New)">3205</a>, <a href="lwg-active.html#3210" title="allocate_shared is inconsistent about removing const from the pointer
-passed to allocator construct and destroy (Status: New)">3210</a>, <a href="lwg-defects.html#3211" title="std::tuple&lt;&gt; should be trivially constructible (Status: C++23)">3211</a>, <a href="lwg-defects.html#3212" title="tuple_element_t&lt;1, const span&lt;int, 42&gt;&gt; is const int (Status: Resolved)">3212</a>, <a href="lwg-defects.html#3213" title="for_each_n and copy_n missing requirements for Size (Status: Resolved)">3213</a>, <a href="lwg-active.html#3214" title="&sect;[facet.num.get.virtuals] doesn't say what it means for digit grouping to be consistent (Status: New)">3214</a>, <a href="lwg-active.html#3215" title="variant default constructor has vague constexpr requirements (Status: New)">3215</a>, <a href="lwg-defects.html#3216" title="Rebinding the allocator before calling construct/destroy in allocate_shared (Status: WP)">3216</a>, <a href="lwg-active.html#3217" title="&lt;memory&gt; and &lt;execution&gt; should define __cpp_lib_parallel_algorithm (Status: New)">3217</a>, <a href="lwg-defects.html#3218" title="Modifier for %d parse flag does not match POSIX and format specification (Status: C++20)">3218</a>, <a href="lwg-active.html#3219" title="std::array overview container requirements are incorrect (Status: New)">3219</a>, <a href="lwg-active.html#3220" title="P0558 broke conforming C++14 uses of atomic shared_ptr (Status: New)">3220</a>, <a href="lwg-defects.html#3221" title="Result of year_month arithmetic with months is ambiguous (Status: C++20)">3221</a>.</li>
+<li>Added the following 18 New issues: <a href="lwg-active.html#3197" title="std::prev should not require BidirectionalIterator (Status: New)">3197</a>, <a href="lwg-defects.html#3200" title="midpoint should not constrain T is complete (Status: C++20)">3200</a>, <a href="lwg-defects.html#3201" title="lerp should be marked as noexcept (Status: C++20)">3201</a>, <a href="lwg-defects.html#3203" title="span element access invalidation (Status: WP)">3203</a>, <a href="lwg-defects.html#3204" title="sub_match::swap only swaps the base class (Status: C++23)">3204</a>, <a href="lwg-active.html#3205" title="decay_t in the new common_type fallback should be remove_cvref_t (Status: New)">3205</a>, <a href="lwg-defects.html#3210" title="allocate_shared is inconsistent about removing const from the pointer
+passed to allocator construct and destroy (Status: Resolved)">3210</a>, <a href="lwg-defects.html#3211" title="std::tuple&lt;&gt; should be trivially constructible (Status: C++23)">3211</a>, <a href="lwg-defects.html#3212" title="tuple_element_t&lt;1, const span&lt;int, 42&gt;&gt; is const int (Status: Resolved)">3212</a>, <a href="lwg-defects.html#3213" title="for_each_n and copy_n missing requirements for Size (Status: Resolved)">3213</a>, <a href="lwg-active.html#3214" title="&sect;[facet.num.get.virtuals] doesn't say what it means for digit grouping to be consistent (Status: New)">3214</a>, <a href="lwg-active.html#3215" title="variant default constructor has vague constexpr requirements (Status: New)">3215</a>, <a href="lwg-defects.html#3216" title="Rebinding the allocator before calling construct/destroy in allocate_shared (Status: WP)">3216</a>, <a href="lwg-active.html#3217" title="&lt;memory&gt; and &lt;execution&gt; should define __cpp_lib_parallel_algorithm (Status: New)">3217</a>, <a href="lwg-defects.html#3218" title="Modifier for %d parse flag does not match POSIX and format specification (Status: C++20)">3218</a>, <a href="lwg-active.html#3219" title="std::array overview container requirements are incorrect (Status: New)">3219</a>, <a href="lwg-active.html#3220" title="P0558 broke conforming C++14 uses of atomic shared_ptr (Status: New)">3220</a>, <a href="lwg-defects.html#3221" title="Result of year_month arithmetic with months is ambiguous (Status: C++20)">3221</a>.</li>
 <li>Changed the following 2 issues to Tentatively Ready (from New): <a href="lwg-defects.html#3191" title="std::ranges::shuffle synopsis does not match algorithm definition (Status: C++20)">3191</a>, <a href="lwg-defects.html#3196" title="std::optional&lt;T&gt; is ill-formed is T is an array (Status: C++20)">3196</a>.</li>
 </ul></li>
 </ul>
@@ -27341,194 +27342,6 @@ it denotes the same type as <code>decay_t&lt;common_type&lt;T...&gt;::type&gt;</
 
 
 <hr>
-<h3 id="3210"><a href="#3210">3210</a><sup><a href="https://cplusplus.github.io/LWG/issue3210">(i)</a></sup>. <code>allocate_shared</code> is inconsistent about removing <code>const</code> from the pointer
-passed to allocator <code>construct</code> and <code>destroy</code></h3>
-<p><b>Section:</b> 20.3.2.2.7 <a href="https://wg21.link/util.smartptr.shared.create">[util.smartptr.shared.create]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Billy O'Neal III <b>Opened:</b> 2019-05-29 <b>Last modified:</b> 2024-10-02</p>
-<p><b>Priority: </b>3
-</p>
-<p><b>View all other</b> <a href="lwg-index.html#util.smartptr.shared.create">issues</a> in [util.smartptr.shared.create].</p>
-<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
-<p><b>Discussion:</b></p>
-<p>
-I implemented the fix for LWG <a href="lwg-defects.html#3008" title="make_shared (sub)object destruction semantics are not specified (Status: C++20)">3008</a><sup><a href="https://cplusplus.github.io/LWG/issue3008" title="Latest snapshot">(i)</a></sup> and Stephan pointed out there's an inconsistency here
-for <code>allocate_shared&lt;const T&gt;</code>.
-<p/>
-20.3.2.2.7 <a href="https://wg21.link/util.smartptr.shared.create">[util.smartptr.shared.create]</a> p3 says that the allocator construct call is done without removing
-<i>cv</i> qualifiers, but 20.3.2.2.7 <a href="https://wg21.link/util.smartptr.shared.create">[util.smartptr.shared.create]</a> p7.12 says that the <code>destroy</code>
-call is done with removed <i>cv</i> qualifiers.
-<p/>
-The fallback for <code>allocator_traits::construct</code> rejects <code>const T*</code> (since it <code>static_casts</code>
-to <code>void*</code>), so the most likely outcome of attempting to do this today is to fail to compile, which
-is a break with C++17.
-<p/>
-Our options are:
-</p>
-<ol>
-<li><p>Fix the allocator model to deal with <code>const</code> elements somehow, which breaks compatibility
-with existing allocators unprepared for <code>const</code> elements here. We would need to extend the allocator
-requirements to allow <code>const T*</code> to be passed here, and fix our default to <code>const_cast</code>.</p></li>
-<li><p>Fix <code>allocate_shared</code> to remove <code>const</code> before calling <code>construct</code>, which
-changes the experience for C++17 customers because <code>allocate_shared</code> constructs a <code>T</code>
-instead of a <code>const T</code>, but not in a way substantially different to edits
-<a href="https://wg21.link/p0674">P0674</a> already made here.</p></li>
-<li><p>Back out <code>allocate_shared</code>'s interaction with this part of the allocator model (reverting
-this part of <a href="https://wg21.link/p0674">P0674</a> and reopening LWG <a href="lwg-defects.html#3008" title="make_shared (sub)object destruction semantics are not specified (Status: C++20)">3008</a><sup><a href="https://cplusplus.github.io/LWG/issue3008" title="Latest snapshot">(i)</a></sup>).</p></li>
-<li><p>Go around the problem by prohibiting <code>allocate_shared&lt;const T&gt;</code>, which breaks
-existing C++17 customers.</p></li>
-</ol>
-<p>
-Billy O'Neal argues that only (2) preserves the design intent <a href="https://wg21.link/p0674">P0674</a>
-while maintaining compatibility for most allocators and most C++17 customers.
-<p/>
-Peter Dimov argues that (1) isn't likely to break enough to matter.
-</p>
-
-<p><i>[2019-06-16 Priority set to 3 based on reflector discussion]</i></p>
-
-
-<p><strong>Previous resolution [SUPERSEDED]:</strong></p>
-<blockquote class="note">
-
-<p>This wording is relative to <a href="https://wg21.link/N4810" title=" Working Draft, Standard for Programming Language C++">N4810</a>.</p>
-
-<blockquote class="note">
-<p>
-[<i>Drafting note:</i> As the issue submitter prefers option (2), this is wording for that.]
-</p>
-</blockquote>
-
-<ol>
-<li><p>Modify 20.3.2.2.7 <a href="https://wg21.link/util.smartptr.shared.create">[util.smartptr.shared.create]</a> as indicated:</p>
-
-<blockquote>
-<pre>
-template&lt;class T, ...&gt;
-  shared_ptr&lt;T&gt; make_shared(<i>args</i>);
-template&lt;class T, class A, ...&gt;
-  shared_ptr&lt;T&gt; allocate_shared(const A&amp; a, <i>args</i>);
-template&lt;class T, ...&gt;
-  shared_ptr&lt;T&gt; make_shared_default_init(<i>args</i>);
-template&lt;class T, class A, ...&gt;
-  shared_ptr&lt;T&gt; allocate_shared_default_init(const A&amp; a, <i>args</i>);
-</pre>
-<blockquote>
-<p>
--2- <i>Requires:</i> [&hellip;]
-<p/>
-[&hellip;]
-<p/>
--7- <i>Remarks:</i>
-</p>
-<ol style="list-style-type: none">
-<li><p>(7.1) &mdash; [&hellip;]</p></li>
-<li><p>[&hellip;]</p></li>
-<li><p>(7.5) &mdash; When a (sub)object of a non-array type <code>U</code> is specified to have an initial
-value of <code>v</code>, or <code>U(l...)</code>, where <code>l...</code> is a list of constructor arguments,
-<code>allocate_shared</code> shall initialize this (sub)object via the expression
-</p>
-<ol style="list-style-type: none">
-<li><p>(7.5.1) &mdash; <code>allocator_traits&lt;A2&gt;::construct(a2, pv, v)</code> or</p></li>
-<li><p>(7.5.2) &mdash; <code>allocator_traits&lt;A2&gt;::construct(a2, pv, l...)</code></p></li>
-</ol>
-<p>
-respectively, where <code>pv</code> points to storage suitable to hold an object of type
-<code><ins>remove_cv_t&lt;</ins>U<ins>&gt;</ins></code> and <code>a2</code> of type <code>A2</code> is a
-rebound copy of the allocator <code>a</code> passed to <code>allocate_shared</code> such that its <code>value_type</code>
-is <code>remove_cv_t&lt;U&gt;</code>.
-</p>
-</li>
-</ol>
-</blockquote>
-</blockquote>
-</li>
-
-</ol>
-</blockquote>
-
-<p><i>[2024-04-13; Jiang An comments and provides improved wording]</i></p>
-
-<p>
-The currently proposed resolution is meaningless, because "(allocated) storage suitable to hold an object of type
-<code>remove_cv_t&lt;U&gt;</code>" is always "storage suitable to hold an object of type <code>U</code>", and vice versa.
-Also, the current specification doesn't seem to specify the type of <code>pv</code> in the cases of <code>allocator_shared</code>,
-because <code>pv</code> is merely specified to point some storage instead of an object.
-</p>
-
-<p><i>[2024-10-02; will be resolved by issue <a href="lwg-defects.html#3216" title="Rebinding the allocator before calling construct/destroy in allocate_shared (Status: WP)">3216</a><sup><a href="https://cplusplus.github.io/LWG/issue3216" title="Latest snapshot">(i)</a></sup>.]</i></p>
-
-
-
-<p id="res-3210"><b>Proposed resolution:</b></p>
-<p>
-This wording is relative to <a href="https://wg21.link/N4971" title=" Working Draft, Programming Languages — C++">N4971</a>.
-</p>
-
-<ol>
-<li><p>Modify 20.3.2.2.7 <a href="https://wg21.link/util.smartptr.shared.create">[util.smartptr.shared.create]</a> as indicated:</p>
-
-<blockquote class="note">
-<p>
-[<i>Drafting note:</i> As the issue submitter prefers option (2), this is wording for that.]
-</p>
-</blockquote>
-
-<blockquote>
-<pre>
-template&amp;lt;class T, ...>
-  shared_ptr&amp;lt;T&amp;gt; make_shared(<i>args</i>);
-template&amp;lt;class T, class A, ...>
-  shared_ptr&amp;lt;T&amp;gt; allocate_shared(const A&amp; a, <i>args</i>);
-template&amp;lt;class T, ...>
-  shared_ptr&amp;lt;T&amp;gt; make_shared_for_overwrite(<i>args</i>);
-template&amp;lt;class T, class A, ...>
-  shared_ptr&amp;lt;T&amp;gt; allocate_shared_for_overwrite(const A&amp; a, <i>args</i>);
-</pre>
-<blockquote>
-<p>
--2- <i>Preconditions:</i> [&hellip;]
-<p/>
-[&hellip;]
-<p/>
--7- <i>Remarks:</i>
-</p>
-<ol style="list-style-type: none">
-<li><p>(7.1) &mdash; [&hellip;]</p></li>
-<li><p>[&hellip;]</p></li>
-<li><p>(7.5) &mdash; When a (sub)object of a non-array type <code>U</code> is specified to have an initial
-value of <code>v</code>, or <code>U(l...)</code>, where <code>l...</code> is a list of constructor arguments,
-<code>allocate_shared</code> shall initialize this (sub)object via the expression
-</p>
-<ol style="list-style-type: none">
-<li><p>(7.5.1) &mdash; <code>allocator_traits&lt;A2&gt;::construct(a2, pv, v)</code> or</p></li>
-<li><p>(7.5.2) &mdash; <code>allocator_traits&lt;A2&gt;::construct(a2, pv, l...)</code></p></li>
-</ol>
-<p>
-respectively, where <code>pv</code> <ins>has type <code>remove_cv_t&lt;U&gt;*</code> and</ins> points to storage
-suitable to hold an object of type <code>U</code> and <code>a2</code> of type <code>A2</code> is a rebound copy of
-the allocator a passed to <code>allocate_shared</code> such that its <code>value_type</code> is
-<code>remove_cv_t&lt;U&gt;</code>.
-</p>
-</li>
-<li><p>(7.6) &mdash; [&hellip;]</p></li>
-<li><p>(7.7) &mdash; When a (sub)object of non-array type <code>U</code> is specified to have a default
-initial value, <code>allocate_shared</code> shall initialize this (sub)object via the expression
-<code>allocator_traits&lt;A2&gt;::construct(a2, pv)</code>, where <code>pv</code> <ins>has type <code>remove_cv_t&lt;U&gt;*</code>
-and</ins> points to storage suitable to hold an object of type <code>U</code> and <code>a2</code> of type <code>A2</code>
-is a rebound copy of the allocator a passed to <code>allocate_shared</code> such that its <code>value_type</code>
-is <code>remove_cv_t&lt;U&gt;</code>.
-</p>
-</li>
-</ol>
-</blockquote>
-</blockquote>
-</li>
-</ol>
-
-
-
-
-<hr>
 <h3 id="3214"><a href="#3214">3214</a><sup><a href="https://cplusplus.github.io/LWG/issue3214">(i)</a></sup>. &sect;[facet.num.get.virtuals] doesn't say what it means for digit grouping to be consistent</h3>
 <p><b>Section:</b> 28.3.4.3.2.3 <a href="https://wg21.link/facet.num.get.virtuals">[facet.num.get.virtuals]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
  <b>Submitter:</b> Jonathan Wakely <b>Opened:</b> 2019-06-03 <b>Last modified:</b> 2019-08-23</p>
@@ -37120,7 +36933,7 @@ whichever comes first."
 <hr>
 <h3 id="3653"><a href="#3653">3653</a><sup><a href="https://cplusplus.github.io/LWG/issue3653">(i)</a></sup>. <code>&lt;coroutine&gt;</code> is freestanding, but uses <code>std::hash</code> which is not</h3>
 <p><b>Section:</b> 17.13.2 <a href="https://wg21.link/coroutine.syn">[coroutine.syn]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Jonathan Wakely <b>Opened:</b> 2021-12-17 <b>Last modified:</b> 2022-01-30</p>
+ <b>Submitter:</b> Jonathan Wakely <b>Opened:</b> 2021-12-17 <b>Last modified:</b> 2025-11-11</p>
 <p><b>Priority: </b>3
 </p>
 <p><b>View all other</b> <a href="lwg-index.html#coroutine.syn">issues</a> in [coroutine.syn].</p>
@@ -37142,8 +36955,33 @@ but it's still a defect in C++20.
 </p>
 
 
+<p><i>[2025-11-11; Jonathan adds wording for C++20.]</i></p>
+
+<p>
+This wording would resolve the defect for C++20,
+but the issue should be closed as Resolved in C++23.
+</p>
+
 
 <p id="res-3653"><b>Proposed resolution:</b></p>
+<p>
+This wording is relative to ISO/IEC 14882:2020(E).
+</p>
+
+<ol>
+<li>Modify 17.13.4.9 <a href="https://wg21.link/coroutine.handle.hash">[coroutine.handle.hash]</a> as indicated:
+<blockquote>
+<pre>
+template&lt;class P&gt; struct hash&lt;coroutine_handle&lt;P&gt;&gt;;
+</pre>
+<p>-1-
+The specialization is enabled (22.10.19 <a href="https://wg21.link/unord.hash">[unord.hash]</a>)
+<ins>in a hosted implementation</ins>.
+</p>
+</blockquote>
+</li>
+</ol>
+
 
 
 

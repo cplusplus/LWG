@@ -6,7 +6,7 @@
 passed to allocator construct and destroy</title>
 <meta property="og:title" content="Issue 3210: allocate_shared is inconsistent about removing const from the pointer
 passed to allocator construct and destroy">
-<meta property="og:description" content="C++ library issue. Status: New">
+<meta property="og:description" content="C++ library issue. Status: Resolved">
 <meta property="og:url" content="https://cplusplus.github.io/LWG/issue3210.html">
 <meta property="og:type" content="website">
 <meta property="og:image" content="http://cplusplus.github.io/LWG/images/cpp_logo.png">
@@ -63,15 +63,15 @@ passed to allocator construct and destroy">
 </head>
 <body>
 <hr>
-<p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#New">New</a> status.</em></p>
-<h3 id="3210"><a href="lwg-active.html#3210">3210</a>. <code>allocate_shared</code> is inconsistent about removing <code>const</code> from the pointer
+<p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#Resolved">Resolved</a> status.</em></p>
+<h3 id="3210"><a href="lwg-defects.html#3210">3210</a>. <code>allocate_shared</code> is inconsistent about removing <code>const</code> from the pointer
 passed to allocator <code>construct</code> and <code>destroy</code></h3>
-<p><b>Section:</b> 20.3.2.2.7 <a href="https://wg21.link/util.smartptr.shared.create">[util.smartptr.shared.create]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Billy O'Neal III <b>Opened:</b> 2019-05-29 <b>Last modified:</b> 2024-10-02</p>
+<p><b>Section:</b> 20.3.2.2.7 <a href="https://wg21.link/util.smartptr.shared.create">[util.smartptr.shared.create]</a> <b>Status:</b> <a href="lwg-active.html#Resolved">Resolved</a>
+ <b>Submitter:</b> Billy O'Neal III <b>Opened:</b> 2019-05-29 <b>Last modified:</b> 2025-11-11</p>
 <p><b>Priority: </b>3
 </p>
 <p><b>View all other</b> <a href="lwg-index.html#util.smartptr.shared.create">issues</a> in [util.smartptr.shared.create].</p>
-<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#Resolved">Resolved</a> status.</p>
 <p><b>Discussion:</b></p>
 <p>
 I implemented the fix for LWG <a href="lwg-defects.html#3008" title="make_shared (sub)object destruction semantics are not specified (Status: C++20)">3008</a><sup><a href="https://cplusplus.github.io/LWG/issue3008" title="Latest snapshot">(i)</a></sup> and Stephan pointed out there's an inconsistency here
@@ -179,6 +179,8 @@ because <code>pv</code> is merely specified to point some storage instead of an 
 </p>
 
 <p><i>[2024-10-02; will be resolved by issue <a href="lwg-defects.html#3216" title="Rebinding the allocator before calling construct/destroy in allocate_shared (Status: WP)">3216</a><sup><a href="https://cplusplus.github.io/LWG/issue3216" title="Latest snapshot">(i)</a></sup>.]</i></p>
+
+<p><i>[2025-11-11; LWG <a href="lwg-defects.html#3216" title="Rebinding the allocator before calling construct/destroy in allocate_shared (Status: WP)">3216</a><sup><a href="https://cplusplus.github.io/LWG/issue3216" title="Latest snapshot">(i)</a></sup> was accepted in Wrocław. Status changed: New &rarr; Resolved.]</i></p>
 
 
 
