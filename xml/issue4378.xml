@@ -71,9 +71,7 @@ has to return a reference to a terminator that's within the same array."
 Personally I'd like `*end()` to be valid, but that's certainly LEWG business
 requiring a paper."
 </p>
-</discussion>
-
-<resolution>
+<superseded>
 <p>
 This wording is relative to <paper num="N5014"/>.
 </p>
@@ -109,6 +107,100 @@ otherwise, the behavior is undefined</ins>
 </li>
 
 </ol>
+</superseded>
+
+<note>2025-11-11; Jonathan provides new wording</note>
+
+</discussion>
+
+<resolution>
+
+<ol>
+
+<li><p>Modify <sref ref="[basic.string.general]"/> as indicated:</p>
+
+<blockquote>
+<p>-3-
+In all cases, [`data()`, `data() + size()`] is a valid range,
+`data() + size()` points at an object with value `charT()`
+(a "null terminator"), and <tt>size() &lt;= capacity()</tt> is `true`.
+<ins>
+Non-const access to the null terminator is possible,
+e.g. using `*(data()+size())`, but the program has undefined behaviour
+if the null terminator is modified to any value other than `charT()`.
+</ins>
+</p>
+</blockquote>
+</li>
+
+<li><p>Modify <sref ref="[string.access]"/> as indicated:</p>
+
+<blockquote>
+<pre>
+constexpr const_reference operator[](size_type pos) const;
+constexpr reference       operator[](size_type pos);
+</pre>
+<blockquote>
+<p>-1- <i>Hardened Preconditions</i>: <tt>pos &lt;= size()</tt> is `true`.</p>
+<p>-2- <i>Returns</i>:
+<ins>`*(data() + pos)`.</ins>
+<del>
+`*(begin() + pos)` if <tt>pos &lt; size()</tt>.
+Otherwise, returns a reference to an object of type `charT`
+with value `charT()`,
+where modifying the object to any value other than `charT()`
+leads to undefined behavior.
+</del>
+</p>
+<p>-3- <i>Throws</i>: Nothing.</p>
+<p>-4- <i>Complexity</i>: Constant time.</p>
+</blockquote>
+</blockquote>
+</li>
+
+<li><p>Modify <sref ref="[string.accessors]"/> as indicated:</p>
+
+<blockquote>
+<pre>
+constexpr const charT* c_str() const noexcept;
+constexpr const charT* data() const noexcept;
+<ins>constexpr charT* data() noexcept;</ins>
+</pre>
+<blockquote>
+<p>-1- <i>Returns</i>:
+<ins>`to_address(begin())`.</ins>
+<del>
+A pointer `p` such that `p + i == addressof(operator[](i))`
+for each `i` in [`0`, `size()`].
+</del>
+</p>
+<p>-2- <i>Complexity</i>: Constant time.</p>
+<p><del>-3- <i>Remarks</i>:
+The program shall not modify any of the values stored in the character array;
+otherwise, the behavior is undefined.</del>
+</p>
+</blockquote>
+
+<pre>
+<del>constexpr charT* data() noexcept;</del>
+</pre>
+<blockquote>
+<p><del>-4- <i>Returns</i>:
+A pointer `p` such that `p + i == addressof(operator[](i))`
+for each `i` in [`0`, `size()`].
+</del>
+</p>
+<p><del>-5- <i>Complexity</i>: Constant time.</del></p>
+<p><del>-6- <i>Remarks</i>:
+The program shall not modify the value stored at `p + size()` to any
+value other than `charT()`; otherwise, the behavior is undefined.</del>
+</p>
+</blockquote>
+
+</blockquote>
+</li>
+</ol>
+
 </resolution>
 
 </issue>
