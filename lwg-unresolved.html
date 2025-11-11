@@ -54,7 +54,7 @@
 </style>
 </head>
 <body>
-<p>Revised 2025-11-11 at 15:36:21 UTC
+<p>Revised 2025-11-11 at 15:52:06 UTC
 </p><h2>Unresolved Issues</h2>
 <hr>
 <h3 id="423"><a href="#423">423</a><sup><a href="https://cplusplus.github.io/LWG/issue423">(i)</a></sup>. Effects of negative <code>streamsize</code> in iostreams</h3>
@@ -10873,126 +10873,6 @@ This is then unambiguously chosen over the other options in the preceding case. 
 
 
 <hr>
-<h3 id="2478"><a href="#2478">2478</a><sup><a href="https://cplusplus.github.io/LWG/issue2478">(i)</a></sup>. Unclear how <code>wstring_convert</code> uses <code>cvtstate</code></h3>
-<p><b>Section:</b> 99 [depr.conversions.string] <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Jonathan Wakely <b>Opened:</b> 2015-03-04 <b>Last modified:</b> 2017-04-22</p>
-<p><b>Priority: </b>4
-</p>
-<p><b>View other</b> <a href="lwg-index-open.html#depr.conversions.string">active issues</a> in [depr.conversions.string].</p>
-<p><b>View all other</b> <a href="lwg-index.html#depr.conversions.string">issues</a> in [depr.conversions.string].</p>
-<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
-<p><b>Discussion:</b></p>
-<p>
-How do <code>wstring_convert::from_bytes</code> and <code>wstring_convert::to_bytes</code> use
-the <code>cvtstate</code> member?
-<p/>
-Is it passed to the <code>codecvt</code> member functions? Is a copy of it passed
-to the member functions? "Otherwise it shall be left unchanged"
-implies a copy is used, but if that's really what's intended there are
-simpler ways to say so.
-</p>
-
-
-<p id="res-2478"><b>Proposed resolution:</b></p>
-
-
-
-
-
-<hr>
-<h3 id="2479"><a href="#2479">2479</a><sup><a href="https://cplusplus.github.io/LWG/issue2479">(i)</a></sup>. Unclear how <code>wbuffer_convert</code> uses <code>cvtstate</code></h3>
-<p><b>Section:</b> 99 [depr.conversions.buffer] <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Jonathan Wakely <b>Opened:</b> 2015-03-04 <b>Last modified:</b> 2017-04-22</p>
-<p><b>Priority: </b>4
-</p>
-<p><b>View other</b> <a href="lwg-index-open.html#depr.conversions.buffer">active issues</a> in [depr.conversions.buffer].</p>
-<p><b>View all other</b> <a href="lwg-index.html#depr.conversions.buffer">issues</a> in [depr.conversions.buffer].</p>
-<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
-<p><b>Discussion:</b></p>
-<p>
-How does <code>wbuffer_convert</code> use the <code>cvtstate</code> member?
-<p/>
-Is the same conversion state object used for converting both the get
-and put areas? That means a read which runs out of bytes halfway 
-through a multibyte character will leave some shift state in cvtstate, 
-which would then be used by a following write, even though the shift 
-state of the get area is unrelated to the put area.
-</p>
-
-
-<p id="res-2479"><b>Proposed resolution:</b></p>
-
-
-
-
-
-<hr>
-<h3 id="2480"><a href="#2480">2480</a><sup><a href="https://cplusplus.github.io/LWG/issue2480">(i)</a></sup>. Error handling of <code>wbuffer_convert</code> unclear</h3>
-<p><b>Section:</b> 99 [depr.conversions.buffer] <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Jonathan Wakely <b>Opened:</b> 2015-03-04 <b>Last modified:</b> 2017-04-22</p>
-<p><b>Priority: </b>4
-</p>
-<p><b>View other</b> <a href="lwg-index-open.html#depr.conversions.buffer">active issues</a> in [depr.conversions.buffer].</p>
-<p><b>View all other</b> <a href="lwg-index.html#depr.conversions.buffer">issues</a> in [depr.conversions.buffer].</p>
-<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
-<p><b>Discussion:</b></p>
-<p>
-If a <code>codecvt</code> conversion returns <code>codecvt_base::error</code> should that be
-treated as <code>EOF</code>? An exception? Should all the successfully converted
-characters before a conversion error be available to the users of the
-<code>wbuffer_convert</code> and/or the internal <code>streambuf</code>, or does a conversion
-error lose information?
-</p>
-
-
-<p id="res-2480"><b>Proposed resolution:</b></p>
-
-
-
-
-
-<hr>
-<h3 id="2481"><a href="#2481">2481</a><sup><a href="https://cplusplus.github.io/LWG/issue2481">(i)</a></sup>. <code>wstring_convert</code> should be more precise regarding "byte-error string" etc.</h3>
-<p><b>Section:</b> 99 [depr.conversions.string] <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Jonathan Wakely <b>Opened:</b> 2015-03-04 <b>Last modified:</b> 2017-04-22</p>
-<p><b>Priority: </b>4
-</p>
-<p><b>View other</b> <a href="lwg-index-open.html#depr.conversions.string">active issues</a> in [depr.conversions.string].</p>
-<p><b>View all other</b> <a href="lwg-index.html#depr.conversions.string">issues</a> in [depr.conversions.string].</p>
-<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
-<p><b>Discussion:</b></p>
-<p>
-Paragraph 4 of 99 [depr.conversions.string] introduces <code>byte_err_string</code> 
-as "a byte string to display on errors". What does display mean? The string is returned 
-on error, it's not displayed anywhere.
-<p/>
-Paragraph 14 says "Otherwise, if the object was constructed with a
-byte-error string, the member function shall return the byte-error
-string." The term byte-error string is not used anywhere else.
-<p/>
-Paragraph 17 talks about storing "default values in <code>byte_err_string</code>".
-What default value? Is "Hello, world!" allowed? If it means
-default-construction it should say so. If paragraph 14 says it won't
-be used what does it matter how it's initialized? The end of the
-paragraph refers to storing "<code>byte_err</code> in <code>byte_err_string</code>". This should
-be more clearly related to the wording in paragraph 14.
-<p/>
-It might help if the constructor (and destructor) was specified before
-the other member functions, so it can more formally define the
-difference between being "constructed with a byte-error string" and
-not.
-<p/>
-All the same issues apply to the <code>wide_err_string</code> member.
-</p>
-
-
-<p id="res-2481"><b>Proposed resolution:</b></p>
-
-
-
-
-
-<hr>
 <h3 id="2490"><a href="#2490">2490</a><sup><a href="https://cplusplus.github.io/LWG/issue2490">(i)</a></sup>. <code>&lt;regex&gt;</code> needs lots of <code>noexcept</code></h3>
 <p><b>Section:</b> 28.6 <a href="https://wg21.link/re">[re]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
  <b>Submitter:</b> Stephan T. Lavavej <b>Opened:</b> 2015-03-27 <b>Last modified:</b> 2015-05-05</p>
@@ -11412,45 +11292,6 @@ We would welcome a paper to make those definitions more explicit, and revise the
 
 
 <p id="res-2506"><b>Proposed resolution:</b></p>
-
-
-
-
-
-<hr>
-<h3 id="2507"><a href="#2507">2507</a><sup><a href="https://cplusplus.github.io/LWG/issue2507">(i)</a></sup>. <code>codecvt_mode</code> should be a bitmask type</h3>
-<p><b>Section:</b> 99 [depr.locale.stdcvt] <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Jonathan Wakely <b>Opened:</b> 2015-06-08 <b>Last modified:</b> 2017-04-22</p>
-<p><b>Priority: </b>3
-</p>
-<p><b>View all other</b> <a href="lwg-index.html#depr.locale.stdcvt">issues</a> in [depr.locale.stdcvt].</p>
-<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
-<p><b>Discussion:</b></p>
-<p>
-The enumeration type <code>codecvt_mode</code> is effectively a bitmask type
-(16.3.3.3.3 <a href="https://wg21.link/bitmask.types">[bitmask.types]</a>) with three elements, but isn't defined as
-such.
-<p/>
-This harms usability because bitmask types are required to work well
-with bitwise operators, but <code>codecvt_mode</code> doesn't have overloaded
-operators, making it very inconvenient to combine values:
-</p>
-<blockquote><pre>
-std::codecvt_utf16&lt;char32_t, 0x10FFFF,
-  static_cast&lt;std::codecvt_mode&gt;(std::little_endian|std::generate_header)&gt;
-cvt;
-</pre></blockquote>
-<p>
-The <code>static_cast</code> harms readability and should not be necessary.
-<p/>
-I suggest that either <code>codecvt_mode</code> is specified to be a bitmask type,
-or as a minimal fix we provide an overloaded <code>operator|</code> that returns
-the right type.
-</p>
-
-
-
-<p id="res-2507"><b>Proposed resolution:</b></p>
 
 
 
@@ -22299,65 +22140,6 @@ available whenever either <code>&lt;cstdlib&gt;</code> or <code>&lt;cinttypes&gt
 
 
 <hr>
-<h3 id="3095"><a href="#3095">3095</a><sup><a href="https://cplusplus.github.io/LWG/issue3095">(i)</a></sup>. <code>strstreambuf</code> refers to nonexistent member of <code>fpos</code>, <code>fpos::offset</code></h3>
-<p><b>Section:</b> 99 [depr.strstreambuf.virtuals] <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Billy O'Neal III <b>Opened:</b> 2018-04-04 <b>Last modified:</b> 2020-09-06</p>
-<p><b>Priority: </b>4
-</p>
-<p><b>View all other</b> <a href="lwg-index.html#depr.strstreambuf.virtuals">issues</a> in [depr.strstreambuf.virtuals].</p>
-<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
-<p><b>Discussion:</b></p>
-<p>
-<code>strstreambuf</code> refers to a nonexistent member function of <code>fpos</code> in the specification of the member function
-<code>seekpos</code>, 99 [depr.strstreambuf.virtuals]/18 (emphasize mine): 
-</p>
-<blockquote><p>
-For a sequence to be positioned, if its next pointer is a null pointer, the positioning operation fails.
-Otherwise, the function determines <code>newoff</code> from <span style="color:#C80000;font-weight:bold"><code>sp.offset()</code></span>:
-</p></blockquote>
-<p>
-The intent is clearly to get the corresponding <code>streamoff</code> from the <code>fpos</code>, as p19 says "the resultant 
-offset <code>newoff</code> (of type <code>off_type</code>)". The mechanism to make that conversion is a normal explicit conversion, 
-as indicated in the last row of the table in [fpos.operations].
-</p>
-
-<p><i>[2018-06-18 after reflector discussion]</i></p>
-
-<p>Priority set to 4</p>
-
-
-<p id="res-3095"><b>Proposed resolution:</b></p>
-<p>
-This wording is relative to <a href="https://wg21.link/n4727">N4727</a>.
-</p>
-
-<ol>
-<li>
-<p>Edit 99 [depr.strstreambuf.virtuals] as indicated:</p>
-<blockquote>
-<pre>
-pos_type seekpos(pos_type sp, ios_base::openmode which
-                 = ios_base::in | ios_base::out) override;
-</pre>
-<blockquote>
-<p>
--17- <i>Effects:</i> [&hellip;]
-<p/>
--18- For a sequence to be positioned, if its next pointer is a null pointer, the positioning operation fails.
-Otherwise, the function determines <code>newoff</code> from <code><ins>static_cast&lt;off_type&gt;(</ins>sp<ins>)</ins><del>.offset()</del></code>:
-<p/>
-[&hellip;]
-</p>
-</blockquote>
-</blockquote>
-</li>
-</ol>
-
-
-
-
-
-<hr>
 <h3 id="3097"><a href="#3097">3097</a><sup><a href="https://cplusplus.github.io/LWG/issue3097">(i)</a></sup>. <code>basic_stringbuf seekoff</code> effects trigger undefined behavior and have contradictory returns</h3>
 <p><b>Section:</b> 31.8.2.5 <a href="https://wg21.link/stringbuf.virtuals">[stringbuf.virtuals]</a> <b>Status:</b> <a href="lwg-active.html#New">New</a>
  <b>Submitter:</b> Billy O'Neal III <b>Opened:</b> 2018-04-07 <b>Last modified:</b> 2020-09-06</p>
@@ -22812,36 +22594,6 @@ namespace std {
 </blockquote>
 </li>
 </ol>
-
-
-
-
-
-<hr>
-<h3 id="3109"><a href="#3109">3109</a><sup><a href="https://cplusplus.github.io/LWG/issue3109">(i)</a></sup>. <code>strstreambuf</code> is copyable</h3>
-<p><b>Section:</b> 99 [depr.strstreambuf] <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Jonathan Wakely <b>Opened:</b> 2018-05-02 <b>Last modified:</b> 2018-06-19</p>
-<p><b>Priority: </b>4
-</p>
-<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
-<p><b>Discussion:</b></p>
-<p>
-In C++03 <code>strstreambuf</code> was not copyable, because <code>basic_streambuf</code> wasn't copyable. 
-In C++11 we made <code>basic_streambuf</code> copyable by derived classes, and <code>strstreambuf</code> 
-doesn't define any special members, so it (unintentionally?) became copyable, with completely 
-unspecified semantics.
-<p/>
-VC++ and libc++ make it movable not copyable, and libstdc++ still follows C++03, so it's neither 
-movable nor copyable. Making it movable seems to be the sane option, and consistent with 
-<code>filebuf</code> and <code>stringbuf</code>.
-</p>
-
-<p><i>[2018-06-18 after reflector discussion]</i></p>
-
-<p>Priority set to 4</p>
-
-
-<p id="res-3109"><b>Proposed resolution:</b></p>
 
 
 

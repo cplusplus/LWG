@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <title>Issue 3109: strstreambuf is copyable</title>
 <meta property="og:title" content="Issue 3109: strstreambuf is copyable">
-<meta property="og:description" content="C++ library issue. Status: New">
+<meta property="og:description" content="C++ library issue. Status: Resolved">
 <meta property="og:url" content="https://cplusplus.github.io/LWG/issue3109.html">
 <meta property="og:type" content="website">
 <meta property="og:image" content="http://cplusplus.github.io/LWG/images/cpp_logo.png">
@@ -61,28 +61,31 @@
 </head>
 <body>
 <hr>
-<p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#New">New</a> status.</em></p>
-<h3 id="3109"><a href="lwg-active.html#3109">3109</a>. <code>strstreambuf</code> is copyable</h3>
-<p><b>Section:</b> 99 [depr.strstreambuf] <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Jonathan Wakely <b>Opened:</b> 2018-05-02 <b>Last modified:</b> 2018-06-19</p>
+<p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#Resolved">Resolved</a> status.</em></p>
+<h3 id="3109"><a href="lwg-defects.html#3109">3109</a>. <code>strstreambuf</code> is copyable</h3>
+<p><b>Section:</b> 99 [depr.strstreambuf] <b>Status:</b> <a href="lwg-active.html#Resolved">Resolved</a>
+ <b>Submitter:</b> Jonathan Wakely <b>Opened:</b> 2018-05-02 <b>Last modified:</b> 2025-11-11</p>
 <p><b>Priority: </b>4
 </p>
-<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#Resolved">Resolved</a> status.</p>
 <p><b>Discussion:</b></p>
 <p>
-In C++03 <code>strstreambuf</code> was not copyable, because <code>basic_streambuf</code> wasn't copyable. 
-In C++11 we made <code>basic_streambuf</code> copyable by derived classes, and <code>strstreambuf</code> 
-doesn't define any special members, so it (unintentionally?) became copyable, with completely 
+In C++03 <code>strstreambuf</code> was not copyable, because <code>basic_streambuf</code> wasn't copyable.
+In C++11 we made <code>basic_streambuf</code> copyable by derived classes, and <code>strstreambuf</code>
+doesn't define any special members, so it (unintentionally?) became copyable, with completely
 unspecified semantics.
 <p/>
-VC++ and libc++ make it movable not copyable, and libstdc++ still follows C++03, so it's neither 
-movable nor copyable. Making it movable seems to be the sane option, and consistent with 
+VC++ and libc++ make it movable not copyable, and libstdc++ still follows C++03, so it's neither
+movable nor copyable. Making it movable seems to be the sane option, and consistent with
 <code>filebuf</code> and <code>stringbuf</code>.
 </p>
 
 <p><i>[2018-06-18 after reflector discussion]</i></p>
 
 <p>Priority set to 4</p>
+
+<p><i>[2025-11-10 Resolved by the removal of <code>strstreambuf</code> via paper <a href="https://wg21.link/P2867R2" title=" Remove Deprecated strstreams From C++26">P2867R2</a> in Tokyo, 2024. Status changed: New &rarr; Resolved.]</i></p>
+
 
 
 <p id="res-3109"><b>Proposed resolution:</b></p>

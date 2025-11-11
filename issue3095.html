@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <title>Issue 3095: strstreambuf refers to nonexistent member of fpos, fpos::offset</title>
 <meta property="og:title" content="Issue 3095: strstreambuf refers to nonexistent member of fpos, fpos::offset">
-<meta property="og:description" content="C++ library issue. Status: New">
+<meta property="og:description" content="C++ library issue. Status: Resolved">
 <meta property="og:url" content="https://cplusplus.github.io/LWG/issue3095.html">
 <meta property="og:type" content="website">
 <meta property="og:image" content="http://cplusplus.github.io/LWG/images/cpp_logo.png">
@@ -61,32 +61,35 @@
 </head>
 <body>
 <hr>
-<p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#New">New</a> status.</em></p>
-<h3 id="3095"><a href="lwg-active.html#3095">3095</a>. <code>strstreambuf</code> refers to nonexistent member of <code>fpos</code>, <code>fpos::offset</code></h3>
-<p><b>Section:</b> 99 [depr.strstreambuf.virtuals] <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Billy O'Neal III <b>Opened:</b> 2018-04-04 <b>Last modified:</b> 2020-09-06</p>
+<p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#Resolved">Resolved</a> status.</em></p>
+<h3 id="3095"><a href="lwg-defects.html#3095">3095</a>. <code>strstreambuf</code> refers to nonexistent member of <code>fpos</code>, <code>fpos::offset</code></h3>
+<p><b>Section:</b> 99 [depr.strstreambuf.virtuals] <b>Status:</b> <a href="lwg-active.html#Resolved">Resolved</a>
+ <b>Submitter:</b> Billy O'Neal III <b>Opened:</b> 2018-04-04 <b>Last modified:</b> 2025-11-11</p>
 <p><b>Priority: </b>4
 </p>
 <p><b>View all other</b> <a href="lwg-index.html#depr.strstreambuf.virtuals">issues</a> in [depr.strstreambuf.virtuals].</p>
-<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#Resolved">Resolved</a> status.</p>
 <p><b>Discussion:</b></p>
 <p>
 <code>strstreambuf</code> refers to a nonexistent member function of <code>fpos</code> in the specification of the member function
-<code>seekpos</code>, 99 [depr.strstreambuf.virtuals]/18 (emphasize mine): 
+<code>seekpos</code>, 99 [depr.strstreambuf.virtuals]/18 (emphasize mine):
 </p>
 <blockquote><p>
 For a sequence to be positioned, if its next pointer is a null pointer, the positioning operation fails.
 Otherwise, the function determines <code>newoff</code> from <span style="color:#C80000;font-weight:bold"><code>sp.offset()</code></span>:
 </p></blockquote>
 <p>
-The intent is clearly to get the corresponding <code>streamoff</code> from the <code>fpos</code>, as p19 says "the resultant 
-offset <code>newoff</code> (of type <code>off_type</code>)". The mechanism to make that conversion is a normal explicit conversion, 
+The intent is clearly to get the corresponding <code>streamoff</code> from the <code>fpos</code>, as p19 says "the resultant
+offset <code>newoff</code> (of type <code>off_type</code>)". The mechanism to make that conversion is a normal explicit conversion,
 as indicated in the last row of the table in [fpos.operations].
 </p>
 
 <p><i>[2018-06-18 after reflector discussion]</i></p>
 
 <p>Priority set to 4</p>
+
+<p><i>[2025-11-10 Resolved by the removal of <code>strstreambuf</code> via paper <a href="https://wg21.link/P2867R2" title=" Remove Deprecated strstreams From C++26">P2867R2</a> in Tokyo, 2024. Status changed: New &rarr; Resolved.]</i></p>
+
 
 
 <p id="res-3095"><b>Proposed resolution:</b></p>

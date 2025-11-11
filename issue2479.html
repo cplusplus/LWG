@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <title>Issue 2479: Unclear how wbuffer_convert uses cvtstate</title>
 <meta property="og:title" content="Issue 2479: Unclear how wbuffer_convert uses cvtstate">
-<meta property="og:description" content="C++ library issue. Status: New">
+<meta property="og:description" content="C++ library issue. Status: Resolved">
 <meta property="og:url" content="https://cplusplus.github.io/LWG/issue2479.html">
 <meta property="og:type" content="website">
 <meta property="og:image" content="http://cplusplus.github.io/LWG/images/cpp_logo.png">
@@ -61,25 +61,26 @@
 </head>
 <body>
 <hr>
-<p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#New">New</a> status.</em></p>
-<h3 id="2479"><a href="lwg-active.html#2479">2479</a>. Unclear how <code>wbuffer_convert</code> uses <code>cvtstate</code></h3>
-<p><b>Section:</b> 99 [depr.conversions.buffer] <b>Status:</b> <a href="lwg-active.html#New">New</a>
- <b>Submitter:</b> Jonathan Wakely <b>Opened:</b> 2015-03-04 <b>Last modified:</b> 2017-04-22</p>
+<p><em>This page is a snapshot from the LWG issues list, see the <a href="lwg-active.html">Library Active Issues List</a> for more information and the meaning of <a href="lwg-active.html#Resolved">Resolved</a> status.</em></p>
+<h3 id="2479"><a href="lwg-defects.html#2479">2479</a>. Unclear how <code>wbuffer_convert</code> uses <code>cvtstate</code></h3>
+<p><b>Section:</b> 99 [depr.conversions.buffer] <b>Status:</b> <a href="lwg-active.html#Resolved">Resolved</a>
+ <b>Submitter:</b> Jonathan Wakely <b>Opened:</b> 2015-03-04 <b>Last modified:</b> 2025-11-11</p>
 <p><b>Priority: </b>4
 </p>
-<p><b>View other</b> <a href="lwg-index-open.html#depr.conversions.buffer">active issues</a> in [depr.conversions.buffer].</p>
 <p><b>View all other</b> <a href="lwg-index.html#depr.conversions.buffer">issues</a> in [depr.conversions.buffer].</p>
-<p><b>View all issues with</b> <a href="lwg-status.html#New">New</a> status.</p>
+<p><b>View all issues with</b> <a href="lwg-status.html#Resolved">Resolved</a> status.</p>
 <p><b>Discussion:</b></p>
 <p>
 How does <code>wbuffer_convert</code> use the <code>cvtstate</code> member?
 <p/>
 Is the same conversion state object used for converting both the get
-and put areas? That means a read which runs out of bytes halfway 
-through a multibyte character will leave some shift state in cvtstate, 
-which would then be used by a following write, even though the shift 
+and put areas? That means a read which runs out of bytes halfway
+through a multibyte character will leave some shift state in cvtstate,
+which would then be used by a following write, even though the shift
 state of the get area is unrelated to the put area.
 </p>
+<p><i>[2025-11-10 Resolved by the removal of <code>wbuffer_convert</code> via paper <a href="https://wg21.link/P2872R3" title=" Remove `wstring_convert` From C++26">P2872R3</a> in Tokyo, 2024. Status changed: New &rarr; Resolved.]</i></p>
+
 
 
 <p id="res-2479"><b>Proposed resolution:</b></p>
