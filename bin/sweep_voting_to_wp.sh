@@ -12,7 +12,10 @@ today=$(date +%F)
 meeting=$1
 date=$2
 
-bin/list_issues Voting | while read inum
+# Change this to "Immediate" to sweep issues after ballot resolution meeting.
+sweep_status=Voting
+
+bin/list_issues "$sweep_status" | while read inum
 do
   bin/set_status $inum WP
   sed -i "s/^<note>$today /<note>$meeting $date; /" xml/issue$inum.xml
