@@ -9,7 +9,7 @@ issue=${1:?}
 
 xml=xml/issue$issue.xml
 
-if ! [ -w $xml ]
+if ! [ -w "$xml" ]
 then
   echo "$0: $xml: No such issue" >&2
   exit 1
