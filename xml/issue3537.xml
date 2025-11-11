@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="3537" status="New">
+<issue num="3537" status="Resolved">
 <title>&sect;[iterator.range] Missing <tt>noexcept</tt> for <tt>std::rbegin</tt>/<tt>rend</tt> for arrays and 
 <tt>initializer_list</tt></title>
 <section><sref ref="[iterator.range]"/></section>
@@ -64,6 +64,7 @@ conditionally noexcept.
 <note>2025-07-01; <paper num="P3623R0"/> would resolve this</note>
 <note>2025-11-03; <paper num="P3016R6"/> would resolve this (replacing P3623R0)</note>
 
+<note>2025-11-11; Resolved by <paper num="P3016R6"/>, approved in Kona. Status changed: New &rarr; Resolved.</note>
 </discussion>
 
 <resolution>

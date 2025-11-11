@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="3624" status="New">
+<issue num="3624" status="Resolved">
 <title>Inconsistency of <tt>&lt;typeinfo&gt;</tt>, <tt>&lt;initializer_list&gt;</tt>, and 
 <tt>&lt;compare&gt;</tt> in the standard library</title>
 <section><sref ref="[support.rtti]"/><sref ref="[support.initlist]"/><sref ref="[cmp]"/></section>
@@ -50,6 +50,7 @@ Set priority to 3 after reflector poll.
 
 
 <note>2025-10-22; Expected to be resolved by <paper num="P3016R6"/>.</note>
+<note>2025-11-11; Resolved by <paper num="P3016R6"/>, approved in Kona. Status changed: New &rarr; Resolved.</note>
 </discussion>
 
 <resolution>

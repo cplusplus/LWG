@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="3625" status="Open">
+<issue num="3625" status="Resolved">
 <title>Should <tt>&lt;stacktrace&gt;</tt> provide range access function templates?</title>
 <section><sref ref="[stacktrace.syn]"/><sref ref="[iterator.range]"/></section>
 <submitter>Jiang An</submitter>
@@ -32,6 +32,7 @@ This will be resolved by <paper num="P3016R6"/>.
 The <tt>&lt;initializer_list&gt;</tt> part is covered by <iref ref="3624"/>.
 </p>
 
+<note>2025-11-11; Resolved by <paper num="P3016R6"/>, approved in Kona. Status changed: Open &rarr; Resolved.</note>
 </discussion>
 
 <resolution>
