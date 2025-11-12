@@ -3583,7 +3583,18 @@ N5008 Working Draft, Programming Languages — C++
 N5009 Editors' Report, Programming Languages — C++
 N5010 WG21 agenda: 16-21 June 2025, Sofia Bulgaria
 N5012 WG21 2025-06 Sofia Admin telecon minutes
+N5013 Programming Languages - C++
+N5014 Working Draft, Standard for Programming Language C++
+N5015 Editors' Report - Programming Languages - C++
 N5016 WG21 June 2025 Sofia Hybrid meeting Minutes of Meeting
+N5019 Business Plan and Convener's Report: ISO/IEC JTC1/SC22/WG21 (C++)
+N5020 2026-11 Búzios Meeting Information
+N5021 2026-11 Búzios Meeting Information (rev. 1)
+N5022 WG21 agenda: 3-8 November 2025, Kona, HI, USA
+N5023 2025-11 Kona meeting information (rev. 1)
+N5024 2026-03 London meeting information
+N5027 2025-10 WG21 admin telecon meeting (revised 2025-09-29)
+N5028 C++26 CD summary of voting and comments
 P0001R0 Removing Deprecated Register Keyword
 P0001R1 Removing Deprecated Register Keyword
 P0002R0 Removing Deprecated Operator++ for bool
@@ -6787,6 +6798,7 @@ P1708R6 Simple Statistical Functions
 P1708R7 Basic Statistics
 P1708R8 Basic Statistics
 P1708R9 Basic Statistics
+P1708R10 Basic Statistics
 P1709R0 Graph Data Structures
 P1709R1 Graph Data Structures
 P1709R2 Graph Library
@@ -7314,6 +7326,7 @@ P2034R1 Partially Mutable Lambda Captures
 P2034R2 Partially Mutable Lambda Captures
 P2034R3 Partially Mutable Lambda Captures
 P2034R4 Partially Mutable Lambda Captures
+P2034R5 Partially Mutable Lambda Captures
 P2035R0 Value Proposition: Allocator-Aware (AA) Software
 P2036R0 Changing scope for lambda trailing-return-type
 P2036R1 Changing scope for lambda trailing-return-type
@@ -8013,6 +8026,7 @@ P2414R6 Pointer lifetime-end zap proposed solutions
 P2414R7 Pointer lifetime-end zap proposed solutions
 P2414R8 Pointer lifetime-end zap proposed solutions
 P2414R9 Pointer lifetime-end zap proposed solutions
+P2414R10 Pointer lifetime-end zap proposed solutions
 P2415R0 What is a view?
 P2415R1 What is a view?
 P2415R2 What is a view?
@@ -8615,6 +8629,7 @@ P2728R4 Unicode in the Library, Part 1: UTF Transcoding
 P2728R5 Unicode in the Library, Part 1: UTF Transcoding
 P2728R6 Unicode in the Library, Part 1: UTF Transcoding
 P2728R7 Unicode in the Library, Part 1: UTF Transcoding
+P2728R8 Unicode in the Library, Part 1: UTF Transcoding
 P2729R0 Unicode in the Library, Part 2: Normalization
 P2730R0 variable scope
 P2730R1 variable scope
@@ -8867,6 +8882,7 @@ P2842R0 Destructor Semantics Do Not Affect Constructible Traits
 P2843R0 Preprocessing is never undefined
 P2843R1 Preprocessing is never undefined
 P2843R2 Preprocessing is never undefined
+P2843R3 Preprocessing is never undefined
 P2845R0 Formatting of std::filesystem::path
 P2845R1 Formatting of std::filesystem::path
 P2845R2 Formatting of std::filesystem::path
@@ -9100,6 +9116,7 @@ P2952R1 auto& operator=(X&&) = default
 P2952R2 auto& operator=(X&&) = default
 P2953R0 Forbid defaulting operator=(X&&) &&
 P2953R1 Forbid defaulting operator=(X&&) &&
+P2953R2 Forbid defaulting operator=(X&&) &&
 P2954R0 Contracts and virtual functions for the Contracts MVP
 P2955R0 Safer Range Access
 P2955R1 Safer Range Access
@@ -9359,6 +9376,7 @@ P3086R1 Proxy: A Pointer-Semantics-Based Polymorphism Library
 P3086R2 Proxy: A Pointer-Semantics-Based Polymorphism Library
 P3086R3 Proxy: A Pointer-Semantics-Based Polymorphism Library
 P3086R4 Proxy: A Pointer-Semantics-Based Polymorphism Library
+P3086R5 Proxy: A Pointer-Semantics-Based Polymorphism Library
 P3087R0 Make direct-initialization for enumeration types at least as permissive as direct-list-initialization
 P3087R1 Make direct-initialization for enumeration types at least as permissive as direct-list-initializatio
 P3088R0 Attributes for contract assertions
@@ -9369,6 +9387,7 @@ P3091R1 Better lookups for `map` and `unordered_map`
 P3091R2 Better lookups for `map` and `unordered_map`
 P3091R3 Better lookups for `map` and `unordered_map`
 P3091R4 Better lookups for `map` , `unordered_map`, and `flat_map`
+P3091R5 Better lookups for `map` , `unordered_map`, and `flat_map`
 P3092R0 Modules ABI requirement
 P3093R0 Attributes on expressions
 P3094R0 std::basic_fixed_string
@@ -9395,10 +9414,12 @@ P3096R12 Function Parameter Reflection in Reflection for C++26
 P3097R0 Contracts for C++: Support for virtual functions
 P3098R0 Contracts for C++: Postcondition captures
 P3098R1 Contracts for C++: Postcondition captures
+P3099R0 User-defined error messages for contract assertions
 P3100R0 Undefined and erroneous behaviour are contract violations
 P3100R1 Undefined and erroneous behaviour are contract violations
 P3100R2 Implicit contract assertions
 P3100R3 Implicit contract assertions
+P3100R4 A framework for systematically addressing undefined behaviour in the C++ Standard
 P3101R0 Differentiating potentially throwing and nonthrowing violation handlers
 P3102R0 Refining Contract Violation Detection Modes
 P3103R0 More bitset operations
@@ -9668,6 +9689,7 @@ P3253R0 Distinguishing between member and free coroutines
 P3254R0 Reserve identifiers preceded by @ for non-ignorable annotation tokens
 P3255R0 Expose whether atomic notifying operations are lock-free
 P3255R1 Expose whether atomic notifying operations are lock-free
+P3255R2 Expose whether atomic notifying operations are lock-free
 P3257R0 Make the predicate of contract_assert more regular
 P3258R0 Formatting charN_t
 P3259R0 const by default
@@ -9806,6 +9828,7 @@ P3335R2 Structured Core Options
 P3335R3 Structured Core Options
 P3335R4 WITHDRAWN: Structured Core Options
 P3336R0 Usage Experience for Contracts with BDE
+P3337R0 Graph Library: Library Comparisons
 P3338R0 Observe and ignore semantics in constant evaluation
 P3339R0 C++ Ecosystem IS Open License
 P3339R1 WITHDRAWN: C++ Ecosystem IS Open License
@@ -9822,6 +9845,8 @@ P3347R0 Invalid/Prospective Pointer Operations
 P3347R1 Invalid/Prospective Pointer Operations
 P3347R2 Invalid/Prospective Pointer Operations
 P3347R3 Invalid/Prospective Pointer Operations
+P3347R4 Invalid/Prospective Pointer Operations
+P3347R5 Invalid/Prospective Pointer Operations
 P3348R0 C++26 should refer to C23 not C17
 P3348R1 C++26 should refer to C23 not C17
 P3348R2 C++26 should refer to C23 not C17
@@ -9832,6 +9857,7 @@ P3349R1 Converting contiguous iterators to pointers
 P3351R0 views::scan
 P3351R1 views::scan
 P3351R2 views::scan
+P3351R3 views::scan
 P3352R0 Taming the Demons (C++ version) - Undefined Behavior and Partial Program Correctness
 P3354R0 Slides for P3233R0
 P3355R0 Fix submdspan for C++26
@@ -9895,6 +9921,7 @@ P3385R2 Attributes reflection
 P3385R3 Attributes reflection
 P3385R4 Attributes reflection
 P3385R5 Attributes reflection
+P3385R6 Attributes reflection
 P3386R0 Static Analysis of Contracts with P2900
 P3386R1 Static Analysis of Contracts with P2900
 P3387R0 Contract assertions on coroutines
@@ -9924,6 +9951,7 @@ P3399R0 Adjusting Electronic Polls to a Hybrid Workflow
 P3400R0 Specifying Contract Assertion Properties with Labels
 P3400R1 Specifying Contract Assertion Properties with Labels
 P3401R0 Enrich Creation Functions for the Pointer-Semantics-Based Polymorphism Library - Proxy
+P3401R1 Proxy Creation Facilities: Enriching Proxy Construction for Pointer-Semantics Polymorphism
 P3402R0 A Safety Profile Verifying Class Initialization
 P3402R1 A Safety Profile Verifying Class Initialization
 P3402R2 A Safety Profile Verifying Initialization
@@ -9940,6 +9968,7 @@ P3411R0 `any_view`
 P3411R1 `any_view`
 P3411R2 `any_view`
 P3411R3 `any_view`
+P3411R4 `any_view`
 P3412R0 String interpolation
 P3412R1 String interpolation
 P3412R2 String interpolation
@@ -9961,8 +9990,10 @@ P3425R0 Reducing operation-state sizes for subobject child operations
 P3425R1 Reducing operation-state sizes for subobject child operations
 P3427R0 Hazard Pointer Synchronous Reclamation
 P3427R1 Hazard Pointer Synchronous Reclamation
+P3427R2 Hazard Pointer Synchronous Reclamation
 P3428R0 Hazard Pointer Batches
 P3428R1 Hazard Pointer Batches
+P3428R2 Hazard Pointer Batches
 P3429R0 Reflection header should minimize standard library dependencies
 P3429R1 Reflection header should minimize standard library dependencies
 P3430R0 simd issues: explicit, unsequenced, identity-element position, and members of disabled simd
@@ -10082,6 +10113,7 @@ P3503R2 Make type-erased allocator use in promise and packaged_task consistent
 P3503R3 Make type-erased allocator use in promise and packaged_task consistent
 P3504R0 C++ Standard Library Ready Issues to be moved in Wroclaw, Nov. 2024
 P3505R0 Fix the default floating-point representation in std::format
+P3505R1 Fix the default floating-point representation in std::format
 P3506R0 P2900 Is Still not Ready for C++26
 P3508R0 Wording for constexpr for specialized memory algorithms
 P3510R0 Leftover properties of `this` in constructor preconditions
@@ -10151,6 +10183,8 @@ P3566R0 You shall not pass `char*` - Safety concerns working with unbounded null
 P3566R1 You shall not pass `char*` - Safety concerns working with unbounded null-terminated strings
 P3566R2 You shall not pass `char*` - Safety concerns working with unbounded null-terminated strings
 P3567R0 `flat_meow` Fixes
+P3567R1 `flat_meow` Fixes
+P3567R2 `flat_meow` Fixes
 P3568R0 break label; and continue label;
 P3568R1 break label; and continue label;
 P3569R0 Split define_aggregate from Reflection
@@ -10164,13 +10198,16 @@ P3575R0 SG14: Low Latency/Games/Embedded/Financial Trading virtual Meeting Minut
 P3576R0 SG19: Machine Learning virtual Meeting Minutes to 2024/11/14-2024/12/12
 P3577R0 Require a non-throwing default contract-violation handler
 P3578R0 Language Safety and Grandma Safety
+P3578R1 What is "Safety"?
 P3579R0 Fix matching of non-type template parameters when matching template template parameters
 P3579R1 Fix matching of non-type template parameters when matching template template parameters
+P3579R2 Fix matching of constant template parameters when matching template template parameters
 P3580R0 The Naming of Things
 P3581R0 No, inplace_vector shouldn't have an Allocator
 P3582R0 Observed a contract violation? Skip subsequent assertions!
 P3583R0 Contracts, Types & Functions
 P3584R0 Enrich Facade Creation Facilities for the Pointer-Semantics-Based Polymorphism Library - Proxy
+P3584R1 Proxy Facade Builder: Enriching Facade Construction for Pointer-Semantics Polymorphism
 P3585R0 allocator_traits::is_internally_relocatable
 P3586R0 The Plethora of Problems With Profiles
 P3587R0 Reconsider reflection access for C++26
@@ -10185,10 +10222,13 @@ P3592R0 Resolving Concerns with const-ification
 P3599R0 Initial Implicit Contract Assertions
 P3601R0 Slides for P3407R1
 P3603R0 Consteval-only Values and Consteval Variables
+P3603R1 Consteval-only Values and Consteval Variables
 P3605R0 isqrt: A function to calculate integer square root of the nonnegative integer
 P3606R0 On Overload Resolution, Exact Matches and Clever Implementations
+P3606R1 On Overload Resolution, Exact Matches and Clever Implementations
 P3608R0 Contracts and profiles: what can we reasonably ship in C++26
 P3611R0 Dealing with pointer errors: Separating static and dynamic checking
+P3612R0 Harmonize proxy-reference operations (LWG 3638 and 4187)
 P3613R0 On the beating of horses, and other matters
 P3614R0 Do not remove nor postpone access_context::unchecked
 P3615R0 C++ Standard Library Ready Issues to be moved in Hagenberg, Feb. 2025
@@ -10219,6 +10259,8 @@ P3642R0 Carry-less product: std::clmul
 P3642R1 Carry-less product: std::clmul
 P3642R2 Carry-less product: std::clmul
 P3643R0 std::to_signed and std::to_unsigned
+P3643R1 std::to_signed and std::to_unsigned
+P3643R2 std::to_signed and std::to_unsigned
 P3647R0 Slides for P3642R1
 P3649R0 A principled approach to safety profiles
 P3650R0 21st Century C++
@@ -10229,6 +10271,7 @@ P3654R0 Slides for P3516
 P3655R0 zstring_view
 P3655R1 zstring_view
 P3655R2 zstring_view
+P3655R3 cstring_view
 P3656R0 Initial draft proposal for core language UB white paper: Process and major work items
 P3656R1 Initial draft proposal for core language UB white paper: Process and major work items
 P3657R0 A Grammar for Whitespace Characters
@@ -10240,8 +10283,11 @@ P3662R0 Improve Increment and Decrement Operator Syntax
 P3663R0 Future-proof `submdspan-mapping`?
 P3663R1 Future-proof `submdspan-mapping`
 P3663R2 Future-proof `submdspan-mapping`
+P3663R3 Future-proof `submdspan-mapping`
 P3664R0 Make variant_size SFINAE friendly
 P3665R0 Vertical Text Processing
+P3666R0 Bit-precise integers
+P3666R1 Bit-precise integers
 P3667R0 Extending range-for loop with an expression statement
 P3668R0 Defaulting Postfix Increment and Decrement Operations
 P3668R1 Defaulting Postfix Increment and Decrement Operations
@@ -10249,6 +10295,7 @@ P3668R2 Defaulting Postfix Increment and Decrement Operations
 P3669R0 Non-Blocking Support for `std::execution`
 P3669R1 Non-Blocking Support for `std::execution`
 P3669R2 Non-Blocking Support for `std::execution`
+P3669R3 Non-Blocking Support for `std::execution`
 P3670R0 Pack Indexing for Template Names
 P3670R1 Pack Indexing for Template Names
 P3671R0 Clarifying the interaction of the literal and execution encodings
@@ -10259,12 +10306,16 @@ P3678R0 Arbitrary attributes in define_aggregate
 P3679R0 SFINAEable constexpr exceptions
 P3681R0 char_traits: Stop the bleeding
 P3682R0 Remove std::execution::split
+P3684R0 Fix erroneous behaviour termination semantics for C++26
 P3685R0 Rename async_scope_token
 P3686R0 Allow named modules to export macros
 P3687R0 Final Adjustments to C++26 Reflection
 P3687R1 Final Adjustments to C++26 Reflection
 P3688R0 ASCII character utilities
 P3688R1 ASCII character utilities
+P3688R2 ASCII character utilities
+P3688R3 ASCII character utilities
+P3688R4 ASCII character utilities
 P3689R0 Convenience functions for Random number generation
 P3690R0 Consistency fix: Make simd reductions SIMD-generic
 P3690R1 Consistency fix: Make simd reductions SIMD-generic
@@ -10272,9 +10323,12 @@ P3691R0 Reconsider naming of the namespace for “std::simd”
 P3691R1 Reconsider naming of the namespace for "std::simd"
 P3692R0 How to Avoid OOTA Without Really Trying
 P3692R1 How to Avoid OOTA Without Really Trying
+P3692R2 How to Avoid OOTA Without Really Trying
 P3693R0 SG14: Low Latency/Games/Embedded/Financial Trading virtual Meeting Minutes 2025/04/09-2025/05/07
 P3694R0 SG19: Machine Learning virtual Meeting Minutes to 2025/03/13-2025/05/08
 P3695R0 Deprecate implicit conversions between Unicode character types
+P3695R1 Deprecate implicit conversions between Unicode character types
+P3695R2 Deprecate implicit conversions between char8_t and char16_t, char32_t, or wchar_t
 P3696R0 Discovering Header Units via Module Maps
 P3697R0 Minor additions to C++26 standard library hardening
 P3697R1 Minor additions to C++26 standard library hardening
@@ -10284,6 +10338,9 @@ P3699R1 Rename `conqueue_errc`
 P3700R0 Making Safe C++ happen
 P3701R0 Concepts for integer types, not integral types
 P3702R0 Stricter requirements for document submissions (SD-7)
+P3702R1 Stricter requirements for document submissions (SD-7)
+P3702R2 Stricter requirements for document submissions (SD-7)
+P3702R3 Stricter requirements for document submissions (SD-7)
 P3703R0 Constness and Locking
 P3704R0 What are profiles?
 P3705R0 A Sentinel for Null-Terminated Strings
@@ -10305,9 +10362,11 @@ P3716R0 Subsetting
 P3717R0 Update Annex E onto Unicode 16
 P3718R0 Fixing Lazy Sender Algorithm Customization, Again
 P3719R0 std::is_vector_bool_reference
+P3719R1 std::is_vector_bool_reference
 P3721R0 Slides for P3639R0
 P3722R0 Slides for P3568R1
 P3724R0 Integer division
+P3724R1 Integer division
 P3725R0 Filter View Extensions for Input Ranges
 P3725R1 Filter View Extensions for Input Ranges
 P3726R0 Adjustments to Union Lifetime Rules
@@ -10316,14 +10375,19 @@ P3729R0 Aligning span and string_view
 P3730R0 Slides for P3104R3
 P3731R0 #embed Preprocessor Parameter Order
 P3732R0 Numeric Range Algorithms
+P3732R1 Numeric Range Algorithms
 P3733R0 More named universal character escapes
+P3733R1 More named universal character escapes
 P3734R0 Not all predicates must be regular
 P3735R0 partial_sort_n, nth_element_n
 P3736R0 Slides against P2971R3 - No implication for C++
 P3737R0 std::array is a wrapper for an array!
+P3737R1 std::array is a wrapper for an array!
 P3738R0 Make std::make_from_tuple SFINAE friendly
 P3739R0 Standard Library Hardening - using std::optional
 P3739R1 Standard Library Hardening - using std::optional
+P3739R2 Standard Library Hardening - using std::optional
+P3739R3 Standard Library Hardening - using std::optional
 P3740R0 Last chance to fix std::nontype
 P3740R1 Last chance to fix std::nontype
 P3741R0 views::set_operations
@@ -10337,6 +10401,7 @@ P3752R0 Core Language Working Group "ready" Issues for the June, 2025 meeting
 P3753R0 Slides for P3740R0 - Last chance to fix std::nontype
 P3753R1 Slides for P3740R1 - Last chance to fix std::nontype
 P3754R0 Slides for P3100R2 presentation to EWG
+P3754R1 Slides for P3100R2 presentation to EWG
 P3757R0 Remove value-type invocability requirement from indirect unary callable concepts
 P3760R0 Presentation: constexpr 'Parallel' Algorithms
 P3763R0 Remove redundant reserve_hint members from view classes
@@ -10346,24 +10411,96 @@ P3769R0 Clarification of placement new deallocation
 P3771R0 constexpr mutex, locks, and condition variable
 P3772R0 std::simd overloads for bit permutations
 P3774R0 Rename std::nontype, and make it broadly useful
+P3774R1 Rename std::nontype, and make it broadly useful
+P3775R0 Slides for P3774R0 - Rename std::nontype
+P3776R0 More trailing commas
+P3776R1 More trailing commas
 P3778R0 Fixing `type_order` template definition
+P3779R0 reserve() and capacity() for flat containers
+P3779R1 reserve() and capacity() for flat containers
 P3780R0 Detecting bitwise trivially relocatable types
 P3781R0 is_*_type should imply is_type
 P3784R0 range-if
+P3784R1 range-if
 P3785R0 Library Wording Changes for Defaulted Postfix Increment and Decrement Operators
+P3786R0 Tuple protocol for fixed-size spans
+P3786R1 Tuple protocol for fixed-size spans
 P3787R0 Adjoints to "Enabling list-initialization for algorithms": uninitialized_fill
 P3788R0 Fixing `std::complex` binary operators
 P3790R0 Pointer lifetime-end zap proposed solutions: Bag-of-bits pointer class
+P3790R1 Pointer lifetime-end zap proposed solutions: Bag-of-bits pointer class
 P3791R0 constexpr deterministic random
 P3792R0 Why `constant_wrapper` is not a usable replacement for `nontype`
 P3793R0 Better shifting
 P3794R0 An idea or two on renaming the nontype tag
 P3795R0 Miscellaneous Reflection Cleanup
 P3796R0 Coroutine Task Issues
+P3796R1 Coroutine Task Issues
 P3798R0 The unexpected in std::expected
+P3798R1 The unexpected in std::expected
 P3799R0 2025-07 Library Evolution Polls
+P3800R0 2025-07 Library Evolution Poll Outcomes
 P3801R0 Concerns about the design of std::execution::task
 P3802R0 Poor Functions
+P3804R0 Iterating on parallel_scheduler
+P3806R0 views::cycle
+P3809R0 Should we make std::linalg reductions deduce return types like fold algorithms?
+P3810R0 hardened memory safety guarantees
+P3810R1 hardened memory safety guarantees
+P3811R0 default comparison memory safety
+P3812R0 const and & in default member functions
+P3813R0 execution::task::valueless()
+P3815R0 Add scope_association concept to P3149
+P3816R0 Hashing meta::info
+P3818R0 constexpr exception fix for potentially constant initialization
+P3818R1 constexpr exception fix for potentially constant initialization
+P3819R0 Remove evaluation_exception() from contract-violation handling for C++26
+P3820R0 Split constexpr uncaught_exceptions into distinct runtime and consteval functions
+P3820R1 Fix constexpr uncaught_exceptions and current_exception
+P3822R0 Conditional noexcept specifiers in compound requirements
+P3823R0 Wording for US NB comment 10
+P3824R0 Static storage for braced initializers NBC examples
+P3824R1 Static storage for braced initializers NBC examples
+P3826R0 Defer Sender Algorithm Customization to C++29
+P3827R0 Wording for US NB comment 9
+P3828R0 Rename the "to_input" view to "as_input"
+P3829R0 Contracts do not belong in the language
+P3830R0 NB-Commenting is Not a Vehicle for Redesigning inplace_vector
+P3831R0 Contract Labels Should Use Annotation Syntax
+P3832R0 Timed lock algorithms for multiple lockables
+P3834R0 Defaulting the Compound Assignment Operators
+P3834R1 Defaulting the Compound Assignment Operators
+P3835R0 Contracts make C++ less safe — full stop
+P3836R0 Make optional<T&> trivially copyable
+P3836R1 Make optional<T&> trivially copyable (US NB comment 134)
+P3838R0 Restoring Private Module Fragments
+P3841R0 Proposal for std::constructor Function Object
+P3842R0 A conservative fix for constexpr uncaught_exceptions() and current_exception()
+P3843R0 Reconsider R0 of P3774 (Rename std::nontype) for C++26
+P3844R0 Restore simd::vec broadcast from int
+P3845R0 Make std::execution's monadic operations naming scheme consistent
+P3846R0 C++26 Contracts, reasserted
+P3849R0 SIS/TK611 considerations on Contract Assertions
+P3851R0 Position on contracts assertion for C++26
+P3853R0 A thesis+antithesis=synthesis rumination on Contracts
+P3855R0 New Reflection metafunction - is_destructurable_type
+P3856R0 New Reflection metafunction - is_destructurable_type
+P3857R0 Policy: A function named `get` should return only on success
+P3858R0 A Lifetime-Management Primitive for Trivially Relocatable Types
+P3859R0 Assertions are not necessarily for changing program behavior
+P3860R0 Proposed Resolution for NB Comment GB13-309 atomic_ref is not convertible to atomic_ref
+P3861R0 Pragmatic approach to standard structural types
+P3862R0 Postpone `basic_string::subview` and wait for `cstring_view`
+P3863R0 Minimal fix for CWG3003 (CTAD from template template parameters)
+P3864R0 Correctly rounded floating-point maths functions
+P3865R0 Class template argument deduction (CTAD) for type template template parameters
+P3866R0 V2: An Evolution Path for the Standard Library
+P3867R0 define_static_string as a STATICALLY_WIDEN replacement
+P3868R0 Allow #line before module declarations
+P3870R0 Renaming std::nontype to std::tag
+P3872R0 2025-10 Library Evolution Polls
+P3874R0 Safety Strategy Requirements for C++
+P3875R0 Defining -ffast-math is hard!
 P4000R0 To TS or not to TS: that is the question
 P0001 Removing Deprecated Register Keyword
 P0002 Removing Deprecated Operator++ for bool
@@ -12926,7 +13063,8 @@ P3095 ABI comparison with reflection
 P3096 Function Parameter Reflection in Reflection for C++26
 P3097 Contracts for C++: Support for virtual functions
 P3098 Contracts for C++: Postcondition captures
-P3100 Implicit contract assertions
+P3099 User-defined error messages for contract assertions
+P3100 A framework for systematically addressing undefined behaviour in the C++ Standard
 P3101 Differentiating potentially throwing and nonthrowing violation handlers
 P3102 Refining Contract Violation Detection Modes
 P3103 More bitset operations
@@ -13134,6 +13272,7 @@ P3332 A simpler notation for PM
 P3334 Cross Static Variables
 P3335 WITHDRAWN: Structured Core Options
 P3336 Usage Experience for Contracts with BDE
+P3337 Graph Library: Library Comparisons
 P3338 Observe and ignore semantics in constant evaluation
 P3339 WITHDRAWN: C++ Ecosystem IS Open License
 P3340 A Consistent Grammar for Sequences
@@ -13191,7 +13330,7 @@ P3397 Clarify requirements on extended floating point types
 P3398 User specified type decay
 P3399 Adjusting Electronic Polls to a Hybrid Workflow
 P3400 Specifying Contract Assertion Properties with Labels
-P3401 Enrich Creation Functions for the Pointer-Semantics-Based Polymorphism Library - Proxy
+P3401 Proxy Creation Facilities: Enriching Proxy Construction for Pointer-Semantics Polymorphism
 P3402 A Safety Profile Verifying Initialization
 P3403 The Undefined Behavior Question
 P3404 std::at : Range-checked accesses to arbitrary containers
@@ -13329,13 +13468,13 @@ P3574 Constexpr Callables
 P3575 SG14: Low Latency/Games/Embedded/Financial Trading virtual Meeting Minutes 2024/11/13
 P3576 SG19: Machine Learning virtual Meeting Minutes to 2024/11/14-2024/12/12
 P3577 Require a non-throwing default contract-violation handler
-P3578 Language Safety and Grandma Safety
-P3579 Fix matching of non-type template parameters when matching template template parameters
+P3578 What is "Safety"?
+P3579 Fix matching of constant template parameters when matching template template parameters
 P3580 The Naming of Things
 P3581 No, inplace_vector shouldn't have an Allocator
 P3582 Observed a contract violation? Skip subsequent assertions!
 P3583 Contracts, Types & Functions
-P3584 Enrich Facade Creation Facilities for the Pointer-Semantics-Based Polymorphism Library - Proxy
+P3584 Proxy Facade Builder: Enriching Facade Construction for Pointer-Semantics Polymorphism
 P3585 allocator_traits::is_internally_relocatable
 P3586 The Plethora of Problems With Profiles
 P3587 Reconsider reflection access for C++26
@@ -13351,6 +13490,7 @@ P3605 isqrt: A function to calculate integer square root of the nonnegative inte
 P3606 On Overload Resolution, Exact Matches and Clever Implementations
 P3608 Contracts and profiles: what can we reasonably ship in C++26
 P3611 Dealing with pointer errors: Separating static and dynamic checking
+P3612 Harmonize proxy-reference operations (LWG 3638 and 4187)
 P3613 On the beating of horses, and other matters
 P3614 Do not remove nor postpone access_context::unchecked
 P3615 C++ Standard Library Ready Issues to be moved in Hagenberg, Feb. 2025
@@ -13383,7 +13523,7 @@ P3650 21st Century C++
 P3651 Note to the C++ standards committee members
 P3652 Constexpr floating-point <charconv> functions
 P3654 Slides for P3516
-P3655 zstring_view
+P3655 cstring_view
 P3656 Initial draft proposal for core language UB white paper: Process and major work items
 P3657 A Grammar for Whitespace Characters
 P3658 Adjust identifier following new Unicode recommendations
@@ -13393,6 +13533,7 @@ P3662 Improve Increment and Decrement Operator Syntax
 P3663 Future-proof `submdspan-mapping`
 P3664 Make variant_size SFINAE friendly
 P3665 Vertical Text Processing
+P3666 Bit-precise integers
 P3667 Extending range-for loop with an expression statement
 P3668 Defaulting Postfix Increment and Decrement Operations
 P3669 Non-Blocking Support for `std::execution`
@@ -13405,6 +13546,7 @@ P3678 Arbitrary attributes in define_aggregate
 P3679 SFINAEable constexpr exceptions
 P3681 char_traits: Stop the bleeding
 P3682 Remove std::execution::split
+P3684 Fix erroneous behaviour termination semantics for C++26
 P3685 Rename async_scope_token
 P3686 Allow named modules to export macros
 P3687 Final Adjustments to C++26 Reflection
@@ -13415,7 +13557,7 @@ P3691 Reconsider naming of the namespace for "std::simd"
 P3692 How to Avoid OOTA Without Really Trying
 P3693 SG14: Low Latency/Games/Embedded/Financial Trading virtual Meeting Minutes 2025/04/09-2025/05/07
 P3694 SG19: Machine Learning virtual Meeting Minutes to 2025/03/13-2025/05/08
-P3695 Deprecate implicit conversions between Unicode character types
+P3695 Deprecate implicit conversions between char8_t and char16_t, char32_t, or wchar_t
 P3696 Discovering Header Units via Module Maps
 P3697 Minor additions to C++26 standard library hardening
 P3698 Cross-capacity comparisons for inplace_vector
@@ -13476,11 +13618,15 @@ P3769 Clarification of placement new deallocation
 P3771 constexpr mutex, locks, and condition variable
 P3772 std::simd overloads for bit permutations
 P3774 Rename std::nontype, and make it broadly useful
+P3775 Slides for P3774R0 - Rename std::nontype
+P3776 More trailing commas
 P3778 Fixing `type_order` template definition
+P3779 reserve() and capacity() for flat containers
 P3780 Detecting bitwise trivially relocatable types
 P3781 is_*_type should imply is_type
 P3784 range-if
 P3785 Library Wording Changes for Defaulted Postfix Increment and Decrement Operators
+P3786 Tuple protocol for fixed-size spans
 P3787 Adjoints to "Enabling list-initialization for algorithms": uninitialized_fill
 P3788 Fixing `std::complex` binary operators
 P3790 Pointer lifetime-end zap proposed solutions: Bag-of-bits pointer class
@@ -13492,6 +13638,60 @@ P3795 Miscellaneous Reflection Cleanup
 P3796 Coroutine Task Issues
 P3798 The unexpected in std::expected
 P3799 2025-07 Library Evolution Polls
+P3800 2025-07 Library Evolution Poll Outcomes
 P3801 Concerns about the design of std::execution::task
 P3802 Poor Functions
+P3804 Iterating on parallel_scheduler
+P3806 views::cycle
+P3809 Should we make std::linalg reductions deduce return types like fold algorithms?
+P3810 hardened memory safety guarantees
+P3811 default comparison memory safety
+P3812 const and & in default member functions
+P3813 execution::task::valueless()
+P3815 Add scope_association concept to P3149
+P3816 Hashing meta::info
+P3818 constexpr exception fix for potentially constant initialization
+P3819 Remove evaluation_exception() from contract-violation handling for C++26
+P3820 Fix constexpr uncaught_exceptions and current_exception
+P3822 Conditional noexcept specifiers in compound requirements
+P3823 Wording for US NB comment 10
+P3824 Static storage for braced initializers NBC examples
+P3826 Defer Sender Algorithm Customization to C++29
+P3827 Wording for US NB comment 9
+P3828 Rename the "to_input" view to "as_input"
+P3829 Contracts do not belong in the language
+P3830 NB-Commenting is Not a Vehicle for Redesigning inplace_vector
+P3831 Contract Labels Should Use Annotation Syntax
+P3832 Timed lock algorithms for multiple lockables
+P3834 Defaulting the Compound Assignment Operators
+P3835 Contracts make C++ less safe — full stop
+P3836 Make optional<T&> trivially copyable (US NB comment 134)
+P3838 Restoring Private Module Fragments
+P3841 Proposal for std::constructor Function Object
+P3842 A conservative fix for constexpr uncaught_exceptions() and current_exception()
+P3843 Reconsider R0 of P3774 (Rename std::nontype) for C++26
+P3844 Restore simd::vec broadcast from int
+P3845 Make std::execution's monadic operations naming scheme consistent
+P3846 C++26 Contracts, reasserted
+P3849 SIS/TK611 considerations on Contract Assertions
+P3851 Position on contracts assertion for C++26
+P3853 A thesis+antithesis=synthesis rumination on Contracts
+P3855 New Reflection metafunction - is_destructurable_type
+P3856 New Reflection metafunction - is_destructurable_type
+P3857 Policy: A function named `get` should return only on success
+P3858 A Lifetime-Management Primitive for Trivially Relocatable Types
+P3859 Assertions are not necessarily for changing program behavior
+P3860 Proposed Resolution for NB Comment GB13-309 atomic_ref is not convertible to atomic_ref
+P3861 Pragmatic approach to standard structural types
+P3862 Postpone `basic_string::subview` and wait for `cstring_view`
+P3863 Minimal fix for CWG3003 (CTAD from template template parameters)
+P3864 Correctly rounded floating-point maths functions
+P3865 Class template argument deduction (CTAD) for type template template parameters
+P3866 V2: An Evolution Path for the Standard Library
+P3867 define_static_string as a STATICALLY_WIDEN replacement
+P3868 Allow #line before module declarations
+P3870 Renaming std::nontype to std::tag
+P3872 2025-10 Library Evolution Polls
+P3874 Safety Strategy Requirements for C++
+P3875 Defining -ffast-math is hard!
 P4000 To TS or not to TS: that is the question
