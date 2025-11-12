@@ -35,14 +35,8 @@ jobs:
         # the gh-pages branch (which avoids fetching 99% of the objects).
         fetch-depth: 2147483647
 
-    - name: Update issue timestamps
-      run: make dates
-
-    - name: Build programs
-      run: make CXX=g++-14 pgms -j $(getconf _NPROCESSORS_ONLN)
-
     - name: Generate HTML lists
-      run: make lists
+      run: make CXX=g++-14 -j $(getconf _NPROCESSORS_ONLN) lists
 
     # Make the HTML pages available to the deploy job below.
     - name: Upload artifacts
