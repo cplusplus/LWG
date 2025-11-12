@@ -65,12 +65,17 @@ history: bin/lists
 mailing:
 	mkdir $@
 
-LISTREV := $(shell type xpath >/dev/null 2>&1 && xpath -q -e 'substring(issueslist/@revision,2)' xml/lwg-issues.xml)
+optcmd = $(shell command -v $(1) || echo :)
+
+LISTREV := $(shell $(call optcmd,xpath) -q -e 'substring(issueslist/@revision,2)' xml/lwg-issues.xml)
 
 zip-file: lwg$(LISTREV).zip
 
 lwg$(LISTREV).zip: lists
-	@test -z "$(LISTREV)" && echo "Install 'xpath' to create zip file" >&2 && false
+	@if [ -z "$(LISTREV)" ]; then \
+	  echo "Install 'xpath' to create zip file" >&2 ; \
+	  false ; \
+	fi
 	@cd mailing && zip ../$@ \
 		lwg-active.html lwg-closed.html lwg-defects.html \
 		lwg-index.html lwg-index-open.html lwg-status.html lwg-toc.html
@@ -130,8 +135,6 @@ meta-data/section.data: meta-data/annex-f meta-data/networking-section.data bin/
 
 dates: meta-data/dates
 
-optcmd = $(shell command -v $(1) || echo :)
-
 # Generate file with issue number and unix timestamp of last change.
 python := $(call optcmd,python)
 meta-data/dates: xml/issue[0-9]*.xml bin/make_dates.py
@@ -156,7 +159,7 @@ new-papers:
 
 # If curl is not installed then create an empty meta-data/index.json
 meta-data/index.json:
-	$(call optcmd,curl) https://wg21.link/index.json > $@
+	$(call optcmd,curl) --silent https://wg21.link/index.json > $@
 
 # If python is not installed then create an empty meta-data/paper_titles.txt
 meta-data/paper_titles.txt: | meta-data/index.json
