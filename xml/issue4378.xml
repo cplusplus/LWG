@@ -119,9 +119,15 @@ instead of repeating it in `operator[]` and `c_str()`.
 </p>
 <p>
 We can also permit modifying the string contents through
-<code>const_cast&lt;charT*&gt;(str.c_str())</code>,
-since there's no reason for that to be undefined when
-<code>const_cast&lt;string&amp;&gt;(str).data()</code> is allowed.
+<code>const_cast&lt;char*&gt;(str.c_str())[0]</code>.
+There's no reason for that to be undefined when
+<code>const_cast&lt;string&amp;&gt;(str)[0]</code> and
+<code>const_cast&lt;string&amp;&gt;(str).data()[0]</code>
+are both allowed.
+The only restriction should be on changing the null terminator.
+Changing any other characters through `c_str() const` or `data() const`
+is no different to changing them through the non-const `data()`,
+and does not need to cause undefined behaviour.
 </p>
 
 </discussion>
@@ -139,7 +145,7 @@ In all cases, [`data()`, `data() + size()`] is a valid range,
 (a "null terminator"), and <tt>size() &lt;= capacity()</tt> is `true`.
 <ins>
 Non-const access to the null terminator is possible,
-e.g. using `*(data()+size())`, but the program has undefined behaviour
+e.g. using `*(data()+size())`, but the program has undefined behavior
 if the null terminator is modified to any value other than `charT()`.
 </ins>
 </p>
