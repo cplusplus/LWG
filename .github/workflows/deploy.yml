@@ -48,7 +48,7 @@ jobs:
     - name: Upload artifacts
       uses: actions/upload-pages-artifact@v3
       with:
-        patch: mailing/
+        path: mailing/
 
   # Deployment job
   deploy:
