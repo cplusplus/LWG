@@ -227,6 +227,20 @@ return std::forward&lt;U&gt;(v);</ins>
 
 <blockquote>
 <pre>
+constexpr T&amp; value() const;
+</pre>
+<blockquote>
+<p>-7- <i>Effects</i>: Equivalent to:
+</p>
+<blockquote><pre>
+<del>return has_value() ? *<i>val</i> : throw bad_optional_access();</del>
+<ins>if (has_value())
+  return *<i>val</i>;
+throw bad_optional_access();</ins>
+</pre></blockquote>
+</blockquote>
+
+<pre>
 template&lt;class U = remove_cv_t&lt;T&gt;&gt; constexpr remove_cv_t&lt;T&gt; value_or(U&amp;&amp; u) const;
 </pre>
 <blockquote>
@@ -242,8 +256,7 @@ is `true`.
 <del>return has_value() ? *<i>val</i> : static_cast&lt;X&gt;(std::forward&lt;U&gt;(u));</del>
 <ins>if (has_value())
   return *<i>val</i>;
-return std::forward&lt;U&gt;(u);
-</ins>
+return std::forward&lt;U&gt;(u);</ins>
 </pre></blockquote>
 </blockquote>
 </blockquote>
