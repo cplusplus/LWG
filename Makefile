@@ -65,7 +65,7 @@ history: bin/lists
 mailing:
 	mkdir $@
 
-LISTREV := $(shell type xpath 2>/dev/null && xpath -q -e 'substring(issueslist/@revision,2)' xml/lwg-issues.xml)
+LISTREV := $(shell type xpath >/dev/null 2>&1 && xpath -q -e 'substring(issueslist/@revision,2)' xml/lwg-issues.xml)
 
 zip-file: lwg$(LISTREV).zip
 
