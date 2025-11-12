@@ -12,40 +12,13 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Use cached git repo
-      # Try to use a cached copy of the repository to avoid cloning it again,
-      # as cloning the full history (needed for timestamps) takes two minutes.
-      id: cache-repo
-      uses: actions/cache@v4
-      with:
-        path: |
-          .git
-          xml
-          meta-data
-          src
-        key: cached-repo
-
-    - if: ${{ steps.cache-repo.outputs.cache-hit == 'true' }}
-      # Using cached git repo, so sync with the latest changes.
-      name: Update cached repo
-      run: |
-        # Make sure we are in a clean worktree on the right branch.
-        git reset --hard HEAD
-        git checkout master
-        # Fetch changes since the cache was saved.
-        git fetch
-        # Update timestamp of this file so only issue files that get
-        # changed by the next command will be newer than it.
-        touch meta-data/dates
-        # Do a hard reset instead of merge, just in case there has been
-        # a force push since the cache was last updated.
-        git reset --hard @{u}
-
-    - if: ${{ steps.cache-repo.outputs.cache-hit != 'true' }}
-      # Not using cached git repo, so clone it (with full history).
+    - name: Clone XML sources
       uses: actions/checkout@v5
       with:
-        fetch-depth: 0
+        ref: ${{ env.BRANCH }}
+        # Using fetch-depth implies --single-branch so we don't fetch
+        # the gh-pages branch (which avoids fetching 99% of the objects).
+        fetch-depth: 2147483647
 
     - name: Update issue timestamps
       run: make dates
@@ -56,8 +29,7 @@ jobs:
     - name: Generate HTML lists
       run: make lists
 
-    # The cached repo might have a stale API token that can't push changes.
-    # Clone a fresh repo that has valid credentials to push to gh-pages.
+    # Clone the gh-pages branch into a sub-directory.
     # The default fetch-depth:1 is OK for this step.
     - name: Clone repo again in order to push
       uses: actions/checkout@v5
