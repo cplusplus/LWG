@@ -1,6 +1,11 @@
 https://github.com/cplusplus/LWG is the repository for the C++ Standards Committee's
 Library Working Group issues lists files. 
 
+When cloning this repo you should use the `--single-branch` option to
+avoid fetching the automatically generated HTML pages in the `gh-pages`
+branch. The contents of the `gh-pages` branch are 100 times larger than
+the `master` branch, but only the `master` branch is useful.
+
 For the most recent draft of the lists generated from these files, see
 https://cplusplus.github.io/LWG/lwg-active.html
 
