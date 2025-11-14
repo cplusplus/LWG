@@ -1,0 +1,47 @@
+<?xml version='1.0' encoding='utf-8' standalone='no'?>
+<!DOCTYPE issue SYSTEM "lwg-issue.dtd">
+
+<issue num="4469" status="New">
+<title>Names of parameters of addressable function shall remain unspecified</title>
+<section><sref ref="[namespace.std]"/></section>
+<submitter>Tomasz Kamiński</submitter>
+<date>14 Nov 2025</date>
+<priority>99</priority>
+
+<discussion>
+<p>The wording in <sref ref="[namespace.std]"/> p7 guarantees that reflection of the
+addressable function can be reliably produced. With the addition of the function
+parameter name, it is possible to access the parameter name of such functions:</p>
+<pre>
+constexpr auto p = parameters_of(^^std::endl)[0];
+static_assert( identifier_of(p) == "os" ); // guaranteed?
+</pre>
+
+<p>We should clarify that parameter names used by standard library implementation
+remain unspecified, by making behavior of `has_identifier` and `identifier_of`
+unspecified on reflection of such parameter. Marking the behavior
+rather than result unspecified, allows implementations to reject such calls.</p>
+</discussion>
+
+<resolution>
+<p>
+This wording is relative to <paper num="N5014"/>.
+</p>
+
+<ol>
+<li><p>Modify <sref ref="[namespace.std]"/>, as indicated:</p>
+
+<blockquote>
+<p>Let <i>F</i> denote a standard library function or function template.
+Unless <i>F</i> is designated an addressable function, it is unspecified if or
+how a reflection value designating the associated entity can be formed.
+<ins>For any value <tt><i>p</i></tt> of type `meta::info` that represents a
+reflection of a parameter of <i>F</i>, the behavior of <tt>has_identifier(<i>p</i>)</tt>
+and <tt>has_identifier(<i>p</i>)</tt> is unspecified.</ins></p>
+</blockquote>
+</li>
+</ol>
+
+</resolution>
+
+</issue>
