@@ -37,7 +37,7 @@ how a reflection value designating the associated entity can be formed.
 <ins>For any value <tt><i>p</i></tt> of type `meta::info` that represents a
 reflection of a parameter of <i>F</i>, it is unspecified if <tt>has_identifier(<i>p</i>)</tt>
 returns `true` or `false`, and if <tt>meta::has_identifier(<i>p</i>)</tt> is `true`,
-then the `NTBMS` produced by <tt>meta::identifier_of(<i>p</i>)</tt> and <tt>meta::u8identifier_of(<i>p</i>)</tt>
+then the `NTMBS` produced by <tt>meta::identifier_of(<i>p</i>)</tt> and <tt>meta::u8identifier_of(<i>p</i>)</tt>
 is unspecified.</ins></p>
 </blockquote>
 </li>
