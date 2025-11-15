@@ -1,0 +1,131 @@
+<?xml version='1.0' encoding='utf-8' standalone='no'?>
+<!DOCTYPE issue SYSTEM "lwg-issue.dtd">
+
+<issue num="4472" status="New">
+<title><tt>std::atomic_ref&lt;const T&gt;</tt> can be constructed from temporaries</title>
+<section><sref ref="[atomics.ref.generic]"/></section>
+<submitter>Jiang An</submitter>
+<date>11 Nov 2025</date>
+<priority>99</priority>
+
+<discussion>
+<p>
+<tt>std::atomic_ref&lt;T&gt;</tt> has a constructor taking <tt>T&amp;</tt>, so when `T` is a `const` 
+but not `volatile` object type, the constructor parameter can be bound to a temporary expression, 
+which doesn't seem to make sense. Even after <paper num="P3860R1"/>, explicitly constructing 
+<tt>std::atomic_ref&lt;const T&gt;</tt> from <tt>std::atomic_ref&lt;volatile T&gt;</tt> can be 
+well-formed with the undesired semantics when it is well-formed to instantiate 
+<tt>std::atomic_ref&lt;volatile T&gt;</tt> and its operator `T` conversion function, because the 
+construction calls the conversion function and creates a temporary object. Probably it's better 
+to disallow such reference binding.
+</p>
+</discussion>
+
+<resolution>
+<p>
+This wording is relative to <paper num="N5014"/> after application of <paper num="P3860R1"/>.
+</p>
+
+<blockquote class="note">
+<p>
+[<i>Drafting note</i>: The deleted overloads were mirrored from the design of `reference_wrapper` before 
+LWG <iref ref="2993"/>. As these overloads don't participate in implicit conversion, I don't think there 
+will be any similar issue introduced.]
+</p>
+</blockquote>
+
+<ol>
+<li><p>Modify <sref ref="[atomics.ref.generic.general]"/>, primary class template `atomic_ref` synopsis, as indicated:</p>
+
+<blockquote>
+<pre>
+namespace std {
+  template&lt;class T&gt; struct atomic_ref {
+  private:
+    T* ptr;               <i>// exposition only</i>
+  public:
+    [&hellip;]
+    constexpr explicit atomic_ref(T&amp;);
+    <ins>explicit atomic_ref(T&amp;&amp;) = delete;</ins>
+    constexpr atomic_ref(const atomic_ref&amp;) noexcept;
+    template&lt;class U&gt;
+      constexpr atomic_ref(const atomic_ref&lt;U&gt;&amp;) noexcept;
+    [&hellip;]
+  };
+}
+</pre>
+</blockquote>
+</li>
+
+<li><p>Modify <sref ref="[atomics.ref.int]"/>, class template `atomic_ref` <tt><i>integral-type</i></tt> 
+specialization synopsis, as indicated:</p>
+
+<blockquote>
+<pre>
+namespace std {
+  template&lt;&gt; struct atomic_ref&lt;<i>integral-type</i>&gt; {
+  private:
+    <i>integral-type</i>* ptr;               <i>// exposition only</i>
+  public:
+    [&hellip;]
+    constexpr explicit atomic_ref(<i>integral-type</i>&amp;);
+    <ins>explicit atomic_ref(<i>integral-type</i>&amp;&amp;) = delete;</ins>
+    constexpr atomic_ref(const atomic_ref&amp;) noexcept;
+    template&lt;class U&gt;
+      constexpr atomic_ref(const atomic_ref&lt;U&gt;&amp;) noexcept;
+    [&hellip;]
+  };
+}
+</pre>
+</blockquote>
+</li>
+
+<li><p>Modify <sref ref="[atomics.ref.float]"/>, class template `atomic_ref` <tt><i>floating-point-type</i></tt> 
+specialization synopsis, as indicated:</p>
+
+<blockquote>
+<pre>
+namespace std {
+  template&lt;&gt; struct atomic_ref&lt;<i>floating-point-type</i>&gt; {
+  private:
+    <i>floating-point-type</i>* ptr;               <i>// exposition only</i>
+  public:
+    [&hellip;]
+    constexpr explicit atomic_ref(<i>floating-point-type</i>&amp;);
+    <ins>explicit atomic_ref(<i>floating-point-type</i>&amp;&amp;) = delete;</ins>
+    constexpr atomic_ref(const atomic_ref&amp;) noexcept;
+    template&lt;class U&gt;
+      constexpr atomic_ref(const atomic_ref&lt;U&gt;&amp;) noexcept;
+    [&hellip;]
+  };
+}
+</pre>
+</blockquote>
+</li>
+
+<li><p>Modify <sref ref="[atomics.ref.pointer]"/>, class template `atomic_ref` <tt><i>pointer-type</i></tt> 
+specialization synopsis, as indicated:</p>
+
+<blockquote>
+<pre>
+namespace std {
+  template&lt;&gt; struct atomic_ref&lt;<i>pointer-type</i>&gt; {
+  private:
+    <i>pointer-type</i>* ptr;               <i>// exposition only</i>
+  public:
+    [&hellip;]
+    constexpr explicit atomic_ref(<i>pointer-type</i>&amp;);
+    <ins>explicit atomic_ref(<i>pointer-type</i>&amp;&amp;) = delete;</ins>
+    constexpr atomic_ref(const atomic_ref&amp;) noexcept;
+    template&lt;class U&gt;
+      constexpr atomic_ref(const atomic_ref&lt;U&gt;&amp;) noexcept;
+    [&hellip;]
+  };
+}
+</pre>
+</blockquote>
+</li>
+</ol>
+</resolution>
+
+</issue>
