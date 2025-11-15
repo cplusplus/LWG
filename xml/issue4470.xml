@@ -1,0 +1,23 @@
+<?xml version='1.0' encoding='utf-8' standalone='no'?>
+<!DOCTYPE issue SYSTEM "lwg-issue.dtd">
+
+<issue num="4470" status="New">
+<title>The use of <tt><i>integer-from</i>&lt;Bytes&gt;</tt> all over [simd] is incorrect for <tt>Bytes=sizeof(complex&lt;double&gt;)</tt></title>
+<section><sref ref="[simd]"/></section>
+<submitter>Matthias Kretz</submitter>
+<date>04 Nov 2025</date>
+<priority>99</priority>
+
+<discussion>
+<p>
+After the introduction of <tt>complex&lt;double&gt;</tt> to the set of vectorizable types,
+the <tt><i>integer-from</i>&lt;Bytes&gt;</tt> trait does not work as intended anymore. All uses of
+<tt><i>integer-from</i></tt> need to be reviewed and the wording needs to be adjusted to work
+for <tt>Bytes=16</tt>.
+</p>
+</discussion>
+
+<resolution>
+</resolution>
+
+</issue>
