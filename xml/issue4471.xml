@@ -1,0 +1,62 @@
+<?xml version='1.0' encoding='utf-8' standalone='no'?>
+<!DOCTYPE issue SYSTEM "lwg-issue.dtd">
+
+<issue num="4471" status="New">
+<title>Remove test for `get_env noexcept`-ness from `inline_scheduler`</title>
+<section><sref ref="[exec.inline.scheduler]"/></section>
+<submitter>Eric Niebler</submitter>
+<date>05 Nov 2025</date>
+<priority>99</priority>
+
+<discussion>
+<p>
+<sref ref="[exec.inline.scheduler]"/> bullet (3.2) reads:
+</p>
+<blockquote>
+<ul style="list-style-type: none">
+<li>(3.2) &mdash; 
+the expression <tt>get_completion_scheduler&lt;set_value_t&gt;(get_env(sndr))</tt> has type 
+`inline_scheduler` and is potentially-throwing if and only if `get_env(sndr)` is potentially-throwing.
+</li>
+</ul>
+</blockquote>
+<p>
+`get_env(sndr)` is never potentially-throwing because it mandates that `sndr.get_env()` cannot throw, 
+see <sref ref="[exec.get.env]"/>.
+<p/>
+also, <tt>get_completion_scheduler&lt;set_*_t&gt;(attrs)</tt> mandates that 
+<tt>attrs.query(get_completion_scheduler&lt;set_*_t&gt;)</tt> cannot throw.
+</p>
+</discussion>
+
+<resolution>
+<p>
+This wording is relative to <paper num="N5014"/>.
+</p>
+
+<ol>
+<li><p>Modify <sref ref="[exec.inline.scheduler]"/> as indicated:</p>
+
+<blockquote>
+<p>
+-3- Let `sndr` be an expression of type <tt><i>inline-sender</i></tt>, let `rcvr` be an expression such that 
+<tt>receiver_of&lt;decltype((rcvr)), CS&gt;</tt> is `true` where `CS` is <tt>completion_signatures&lt;set_value_t()&gt;</tt>, 
+then:
+</p>
+<ul style="list-style-type: none">
+<li>(3.1) &mdash; 
+the expression `connect(sndr, rcvr)` has type <tt><i>inline-state</i>&lt;remove_cvref_t&lt;decltype((rcvr))&gt;&gt;</tt>
+and is potentially-throwing if and only if `((void)sndr, auto(rcvr))` is potentially-throwing, and
+</li>
+<li>(3.2) &mdash; 
+the expression <tt>get_completion_scheduler&lt;set_value_t&gt;(get_env(sndr))</tt> has type 
+`inline_scheduler` <del>and is potentially-throwing if and only if `get_env(sndr)` is potentially-throwing</del>.
+</li>
+</ul>
+
+</blockquote>
+</li>
+</ol>
+</resolution>
+
+</issue>
