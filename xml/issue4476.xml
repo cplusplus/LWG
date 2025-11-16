@@ -1,0 +1,176 @@
+<?xml version='1.0' encoding='utf-8' standalone='no'?>
+<!DOCTYPE issue SYSTEM "lwg-issue.dtd">
+
+<issue num="4476" status="New">
+<title>`run_loop` should not have a `set_error` completion</title>
+<section><sref ref="[exec.run.loop.general]"/></section>
+<submitter>Eric Niebler</submitter>
+<date>16 Nov 2025</date>
+<priority>99</priority>
+
+<discussion>
+<p>
+When `run_loop` was proposed, the only implementation we had synchronized with a mutex and a condition variable. 
+Operations on those can theoretically throw exceptions, so `run_loop` got a `set_error_t(exception_ptr)` 
+completion signature.
+<p/>
+Since then, <a href="https://github.com/NVIDIA/cccl/blob/main/cudax/include/cuda/experimental/__execution/run_loop.cuh">a 
+lock-free implementation of `run_loop` has been found</a>. Atomic operations cannot fail with an exception, 
+so an atomic `run_loop` can never complete with an error.
+</p>
+</discussion>
+
+<resolution>
+<p>
+This wording is relative to <paper num="N5014"/>.
+</p>
+
+<ol>
+<li><p>Modify <sref ref="[exec.run.loop.general]"/>, class `run_loop` synopsis, as indicated:</p>
+
+<blockquote>
+<pre>
+namespace std::execution {
+  class run_loop {
+    <i>// <sref ref="[exec.run.loop.types]"/>, associated types</i>
+    class <i>run-loop-scheduler</i>;                        <i>// exposition only</i>
+    class <i>run-loop-sender</i>;                           <i>// exposition only</i>
+    struct <i>run-loop-opstate-base</i> {                   <i>// exposition only</i>
+      virtual void <i>execute</i>() <ins>noexcept</ins> = 0;           <i>// exposition only</i>
+      run_loop* <i>loop</i>;                                <i>// exposition only</i>
+      <i>run-loop-opstate-base</i>* <i>next</i>;                   <i>// exposition only</i>
+    };
+    template&lt;class Rcvr&gt;
+      using <i>run-loop-opstate</i> = <i>unspecified</i>;          <i>// exposition only</i>
+      
+    <i>// <sref ref="[exec.run.loop.members]"/>, member functions</i>
+    <i>run-loop-opstate-base</i>* <i>pop-front</i>() <ins>noexcept</ins>;     <i>// exposition only</i>
+    void <i>push-back</i>(<i>run-loop-opstate-base</i>*) <ins>noexcept</ins>; <i>// exposition only</i>
+    
+  public:
+    <i>// <sref ref="[exec.run.loop.ctor]"/>, constructor and destructor</i>
+    run_loop() noexcept;
+    run_loop(run_loop&amp;&amp;) = delete;
+    ~run_loop();
+    
+    <i>// <sref ref="[exec.run.loop.members]"/> member functions</i>
+    <i>run-loop-scheduler</i> get_scheduler() <ins>noexcept</ins>;
+    void run() <ins>noexcept</ins>;
+    void finish() <ins>noexcept</ins>;
+  };
+}
+</pre>
+</blockquote>
+</li>
+
+<li><p>Modify <sref ref="[exec.run.loop.types]"/> as indicated:</p>
+
+<blockquote>
+<pre>
+class <i>run-loop-sender</i>;
+</pre>
+<p>
+-5- <tt><i>run-loop-sender</i></tt> is an exposition-only type that satisfies sender. 
+<tt>completion_signatures_of_t&lt;<i>runloop-sender</i>&gt;</tt> is
+</p>
+<blockquote><pre>
+completion_signatures&lt;set_value_t(), <del>set_error_t(exception_ptr),</del> set_stopped_t()&gt;
+</pre></blockquote>
+<p>
+[&hellip;]
+<p/>
+-9- Let <tt><i>o</i></tt> be a non-const lvalue of type <tt><i>run-loop-opstate</i>&lt;Rcvr&gt;</tt>, 
+and let <tt>REC(<i>o</i>)</tt> be a non-const lvalue reference to an instance of type `Rcvr` that 
+was initialized with the expression <tt><i>rcvr</i></tt> passed to the invocation of connect that 
+returned <tt><i>o</i></tt>. Then:
+</p>
+<ul style="list-style-type: none">
+<li>(9.1) &mdash; [&hellip;]
+</li>
+<li>(9.2) &mdash; [&hellip;]
+</li>
+<li>(9.3) &mdash; 
+The expression <tt>start(<i>o</i>)</tt> is equivalent to:
+<blockquote><pre>
+<del>try {</del>
+  <i>o</i>.<i>loop</i>-&gt;<i>push-back</i>(addressof(<i>o</i>));
+<del>} catch(...) {
+  set_error(std::move(<i>REC</i>(<i>o</i>)), current_exception());
+}</del>
+</pre></blockquote>
+</li>
+</ul>
+</blockquote>
+</li>
+
+
+<li><p>Modify <sref ref="[exec.run.loop.members]"/> as indicated:</p>
+
+<blockquote>
+<pre>
+<i>run-loop-opstate-base</i>* <i>pop-front</i>() <ins>noexcept</ins>;
+</pre>
+<blockquote>
+<p>
+-1- <i>Effects</i>: Blocks (<sref ref="[defns.block]"/>) until one of the following conditions is `true`: [&hellip;]
+</p>
+</blockquote>
+<pre>
+void <i>push-back</i>(<i>run-loop-opstate-base</i>* item) <ins>noexcept</ins>;
+</pre>
+<blockquote>
+<p>
+-2- <i>Effects</i>: Adds `item` to the back of the queue and increments <tt><i>count</i></tt> by `1`.
+<p/>
+-3- <i>Synchronization</i>: This operation synchronizes with the <tt><i>pop-front</i></tt> operation that 
+obtains `item`.
+</p>
+</blockquote>
+<pre>
+<i>run-loop-scheduler</i> get_scheduler() <ins>noexcept</ins>;
+</pre>
+<blockquote>
+<p>
+-4- <i>Returns</i>: An instance of <tt><i>run-loop-scheduler</i></tt> that can be used to schedule work onto 
+this `run_loop` instance.
+</p>
+</blockquote>
+<pre>
+void run() <ins>noexcept</ins>;
+</pre>
+<blockquote>
+<p>
+-5- <i>Preconditions</i>:  is either <tt><i>starting</i></tt> or <tt><i>finishing</i></tt>.
+<p/>
+-6- <i>Effects</i>: If <tt><i>state</i></tt> is <tt><i>starting</i></tt>, sets the <tt><i>state</i></tt> to 
+<tt><i>running</i></tt>, otherwise leaves <tt><i>state</i></tt> unchanged. Then, equivalent to:
+</p>
+<blockquote><pre>
+while (auto* op = <i>pop-front</i>()) {
+  op-&gt;<i>execute</i>();
+}
+</pre></blockquote>
+<p>
+-7- <i>Remarks</i>: When <tt><i>state</i></tt> changes, it does so without introducing data races.
+</p>
+</blockquote>
+<pre>
+void finish() <ins>noexcept</ins>;
+</pre>
+<blockquote>
+<p>
+-8- <i>Preconditions</i>: <tt><i>state</i></tt> is either <tt><i>starting</i></tt> or <tt><i>running</i></tt>.
+<p/>
+-9- <i>Effects</i>: Changes <tt><i>state</i></tt> to <tt><i>finishing</i></tt>.
+<p/>
+-10- <i>Synchronization</i>: `finish` synchronizes with the <tt><i>pop-front</i></tt> operation that 
+returns `nullptr`.
+</p>
+</blockquote>
+</blockquote>
+</li>
+
+</ol>
+</resolution>
+
+</issue>
