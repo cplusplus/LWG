@@ -25,6 +25,13 @@ so an atomic `run_loop` can never complete with an error.
 This wording is relative to <paper num="N5014"/>.
 </p>
 
+<blockquote class="note">
+<p>
+[<i>Drafting note</i>: It should be pointed out that member function <tt>finish</tt> should be `noexcept`
+for other reasons as well, see LWG <iref ref="4215"/>.]
+</p>
+</blockquote>
+
 <ol>
 <li><p>Modify <sref ref="[exec.run.loop.general]"/>, class `run_loop` synopsis, as indicated:</p>
 
