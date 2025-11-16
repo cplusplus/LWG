@@ -1,0 +1,84 @@
+<?xml version='1.0' encoding='utf-8' standalone='no'?>
+<!DOCTYPE issue SYSTEM "lwg-issue.dtd">
+
+<issue num="4475" status="New">
+<title>The description to single total order in [thread.mutex.requirements.mutex.general] is hollow</title>
+<section><sref ref="[thread.mutex.requirements.mutex.general]"/></section>
+<submitter>jim x</submitter>
+<date>14 Nov 2025</date>
+<priority>99</priority>
+
+<discussion>
+<p>
+<sref ref="[thread.mutex.requirements.mutex.general]"/> p4 says:
+</p>
+<blockquote style="border-left: 3px solid #ccc;padding-left: 15px;">
+<p>
+For purposes of determining the existence of a data race, these behave as atomic operations 
+(<sref ref="[intro.multithread]"/>). The lock and unlock operations on a single mutex appears 
+to occur in a single total order.
+</p>
+</blockquote>
+<p>
+Even for atomic operations, the precondition for ordering them in a single total order is that 
+they must be `memory_order::seq_cst` operations, such that we can form the total order to reason. 
+<p/>
+Put aside the fact that we impose the preconditions on `unlock` and `lock`. Is this a possible 
+total order if `lock` reads `unlock_1`, but there is a `unlock_2` between them
+</p>
+<blockquote>
+<p>
+`unlock_1` &lt; `unlock_2` &lt; `lock`
+</p>
+</blockquote>
+<p>
+First, although we have said that lock and unlock operations behave as atomic operations, 
+and `lock` reads `unlock_1`, meaning that `unlock_1` is coherence-ordered before `lock`, 
+however, we don't specify that they are `memory_order::seq_cst` operations, so 
+<sref ref="[atomics.order]"/> p4 doesn't apply here
+</p>
+<blockquote style="border-left: 3px solid #ccc;padding-left: 15px;">
+<p>
+Second, for every pair of atomic operations <tt><i>A</i></tt> and <tt><i>B</i></tt> on an 
+object <tt><i>M</i></tt>, where <tt><i>A</i></tt> is coherence-ordered before <tt><i>B</i></tt>, 
+the following four conditions are required to be satisfied by <tt><i>S</i></tt>:
+</p>
+<ul style="list-style-type: none">
+<li>(4.1) &mdash; 
+if <tt><i>A</i></tt> and <tt><i>B</i></tt> are both `memory_order::seq_cst` operations, 
+then <tt><i>A</i></tt> precedes <tt><i>B</i></tt> in <tt><i>S</i></tt>; and
+</li>
+</ul>
+</blockquote>
+<p>
+So, it is not helpful to decide that `unlock_1` precedes `lock` in a single total order. 
+Similarly, excluding `unlock_1` &lt; `unlock_2` &lt; `lock` is not possible.
+<p/>
+<b>Suggested resolution:</b>
+<p/>
+The lock and unlock operations on a single mutex appears to occur in a single total order; 
+for this purpose, these operations are considered as `memory_order::seq_cst` operations 
+</p>
+</discussion>
+
+<resolution>
+<p>
+This wording is relative to <paper num="N5014"/>.
+</p>
+
+<ol>
+<li><p>Modify <sref ref="[thread.mutex.requirements.mutex.general]"/> as indicated:</p>
+
+<blockquote>
+<p>
+-4- The implementation provides lock and unlock operations, as described below. For purposes of determining
+the existence of a data race, these behave as atomic operations (<sref ref="[intro.multithread]"/>). 
+The lock and unlock operations on a single mutex appears to occur in a single total order<ins>; for 
+this purpose, these operations are considered as `memory_order::seq_cst` operations</ins>.
+</p>
+</blockquote>
+</li>
+</ol>
+</resolution>
+
+</issue>
