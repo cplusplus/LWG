@@ -25,7 +25,7 @@ This wording is relative to <paper num="N5014"/>.
 </p>
 
 <ol>
-<li><p>Modify <sref ref="[const.wrap.class]"/>, class template `constant_wrapper`synopsis, as indicated:</p>
+<li><p>Modify <sref ref="[const.wrap.class]"/>, class template `constant_wrapper` synopsis, as indicated:</p>
 
 <blockquote>
 <pre>
