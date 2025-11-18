@@ -30,6 +30,16 @@ This wording is relative to <paper num="N5014"/>.
 </p>
 
 <ol>
+<li><p>Modify <sref ref="[new.syn]"/> as indicated:</p>
+
+<pre>
+constexpr void* operator new  (std::size_t size, void* ptr) noexcept;
+constexpr void* operator new[](std::size_t size, void* ptr) noexcept;
+<ins>constexpr</ins> void operator delete  (void* ptr, void*) noexcept;
+<ins>constexpr</ins> void operator delete[](void* ptr, void*) noexcept;
+</pre>
+</li>
+
 <li><p>Modify <sref ref="[new.delete.placement]"/> as indicated:</p>
 
 <blockquote>
