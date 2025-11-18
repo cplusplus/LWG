@@ -1,0 +1,78 @@
+<?xml version='1.0' encoding='utf-8' standalone='no'?>
+<!DOCTYPE issue SYSTEM "lwg-issue.dtd">
+
+<issue num="4477" status="New">
+<title>Placement `operator delete` should be constexpr</title>
+<section><sref ref="[new.delete.placement]"/></section>
+<submitter>Jakub Jelinek</submitter>
+<date>18 Nov 2025</date>
+<priority>99</priority>
+
+<discussion>
+<p>
+The <paper num="P2747R2"/> paper made placement operator new constexpr.
+At that time constexpr exceptions weren't in C++26,
+so that was all that was needed.
+But later on when <paper num="P3068R5"/> was voted in,
+the P2747R2 changes look insufficient.
+The problem is that when you throw from a constructor during operator new,
+it invokes placement operator delete.  And P2747R2 didn't touch that.
+</p>
+<p>
+This makes it impossible to handle an exception thrown by a placement
+new-expression during constant evaluation.
+</p>
+</discussion>
+
+<resolution>
+<p>
+This wording is relative to <paper num="N5014"/>.
+</p>
+
+<ol>
+<li><p>Modify <sref ref="[new.delete.placement]"/> as indicated:</p>
+
+<blockquote>
+<pre>
+constexpr void* operator new(std::size_t size, void* ptr) noexcept;
+</pre>
+<blockquote>
+<p>[&hellip;]</p>
+</blockquote>
+<pre>
+constexpr void* operator new[](std::size_t size, void* ptr) noexcept;
+</pre>
+<blockquote>
+<p>[&hellip;]</p>
+</blockquote>
+<pre>
+<ins>constexpr</ins> void operator delete(void* ptr, void*) noexcept;
+</pre>
+<blockquote>
+<p>-7- <i>Effects</i>: Intentionally performs no action. </p>
+<p>-8- <i>Remarks</i>:
+Default function called when any part of the initialization in a
+placement <i>new-expression</i> that invokes the library's non-array
+placement operator new terminates by throwing an exception
+(<sref ref="[expr.new]"/>).
+</p>
+</blockquote>
+<pre>
+<ins>constexpr</ins> void operator delete[](void* ptr, void*) noexcept;
+</pre>
+<blockquote>
+<p>-9- <i>Effects</i>: Intentionally performs no action. </p>
+<p>-10- <i>Remarks</i>:
+Default function called when any part of the initialization in a
+placement <i>new-expression</i> that invokes the library's array
+placement operator new terminates by throwing an exception
+(<sref ref="[expr.new]"/>).
+</p>
+</blockquote>
+</blockquote>
+</li>
+</ol>
+
+</resolution>
+
+</issue>
