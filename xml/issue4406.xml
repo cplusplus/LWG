@@ -173,6 +173,10 @@ return std::forward&lt;U&gt;(v);</ins>
 Rebase after LWG <iref ref="4015"/> which was approved in Kona.
 This would also resolve LWG <iref ref="4281"/>.
 </p>
+<note>2025-11-19; Jonathan provides updated wording</note>
+<p>
+Incorporate proposed resolution of <iref ref="3424"/> as well.
+</p>
 
 </discussion>
 
@@ -183,15 +187,35 @@ This wording is relative to <b>the working draft after <paper num="N5014"/></b>.
 
 <ol>
 
+<li><p>Modify <sref ref="[optional.optional.general]"/> as indicated:</p>
+
+<blockquote>
+<pre>
+[&hellip;]
+template&lt;class U = remove_cv_t&lt;T&gt;&gt; constexpr <ins>remove_cv_t&lt;</ins>T<ins>&gt;</ins> value_or(U&amp;&amp;) const &amp;;
+template&lt;class U = remove_cv_t&lt;T&gt;&gt; constexpr <ins>remove_cv_t&lt;</ins>T<ins>&gt;</ins> value_or(U&amp;&amp;) &amp;&amp;;
+[&hellip;]
+</pre>
+</blockquote>
+</li>
+
 <li><p>Modify <sref ref="[optional.observe]"/> as indicated:</p>
 
 <blockquote>
 <pre>
-template&lt;class U = remove_cv_t&lt;T&gt;&gt; constexpr T value_or(U&amp;&amp; v) const &amp;;
+template&lt;class U = remove_cv_t&lt;T&gt;&gt; constexpr <ins>remove_cv_t&lt;</ins>T<ins>&gt;</ins> value_or(U&amp;&amp; v) const &amp;;
 </pre>
 <blockquote>
 <p>
--15- <i>Mandates</i>: <code>is_copy_constructible_v&lt;T&gt; &amp;&amp; is_convertible_v&lt;U&amp;&amp;, T&gt;</code>
+<ins>-?- Let <code>X</code> be <code>remove_cv_t&lt;T&gt;</code>.</ins>
+</p>
+<p>
+-15- <i>Mandates</i>:
+<code>
+<del>is_copy_constructible_v&lt;T&gt;</del> <ins>is_convertible_v&lt;const T&amp;, X&gt;</ins>
+&amp;&amp;
+is_convertible_v&lt;U<del>&amp;&amp;</del>, <del>T</del> <ins>X</ins>&gt;
+</code>
 is `true`.
 <p/>
 -16- <i>Effects</i>: Equivalent to:
@@ -204,11 +228,19 @@ return std::forward&lt;U&gt;(v);</ins>
 </pre></blockquote>
 </blockquote>
 <pre>
-template&lt;class U = remove_cv_t&lt;T&gt;&gt; constexpr T value_or(U&amp;&amp; v) &amp;&amp;;
+template&lt;class U = remove_cv_t&lt;T&gt;&gt; constexpr <ins>remove_cv_t&lt;</ins>T<ins>&gt;</ins> value_or(U&amp;&amp; v) &amp;&amp;;
 </pre>
 <blockquote>
 <p>
--17- <i>Mandates</i>: <code>is_move_constructible_v&lt;T&gt; &amp;&amp; is_convertible_v&lt;U&amp;&amp;, T&gt;</code>
+<ins>-?- Let <code>X</code> be <code>remove_cv_t&lt;T&gt;</code>.</ins>
+</p>
+<p>
+-17- <i>Mandates</i>:
+<code>
+<del>is_move_constructible_v&lt;T&gt;</del> <ins>is_convertible_v&lt;T, X&gt;</ins>
+&amp;&amp;
+is_convertible_v&lt;U<del>&amp;&amp;</del>, <del>T</del> <ins>X</ins>&gt;
+</code>
 is `true`.
 <p/>
 -18- <i>Effects</i>: Equivalent to:
@@ -247,7 +279,12 @@ template&lt;class U = remove_cv_t&lt;T&gt;&gt; constexpr remove_cv_t&lt;T&gt; va
 <p>
 -8- Let <code>X</code> be <code>remove_cv_t&lt;T&gt;</code>.
 <p/>
--9- <i>Mandates</i>: <code>is_constructible_v&lt;X, T&amp;&gt; &amp;&amp; is_convertible_v&lt;U, X&gt;</code>
+-9- <i>Mandates</i>:
+<code>
+<del>is_constructible_v&lt;T&gt;</del> <ins>is_convertible_v&lt;T&amp;, X&gt;</ins>
+&amp;&amp;
+is_convertible_v&lt;U, X&gt;
+</code>
 is `true`.
 <p/>
 -10- <i>Effects</i>: Equivalent to:
@@ -262,16 +299,34 @@ return std::forward&lt;U&gt;(u);</ins>
 </blockquote>
 </li>
 
+<li><p>Modify <sref ref="[expected.object.general]"/> as indicated:</p>
+
+<blockquote>
+<pre>
+[&hellip;]
+template&lt;class U = remove_cv_t&lt;T&gt;&gt; constexpr <ins>remove_cv_t&lt;</ins>T<ins>&gt;</ins> value_or(U&amp;&amp;) const &amp;;
+template&lt;class U = remove_cv_t&lt;T&gt;&gt; constexpr <ins>remove_cv_t&lt;</ins>T<ins>&gt;</ins> value_or(U&amp;&amp;) &amp;&amp;;
+[&hellip;]
+</pre>
+</blockquote>
+</li>
+
 <li><p>Modify <sref ref="[expected.object.obs]"/> as indicated:</p>
 
 <blockquote>
 <pre>
-template&lt;class U = remove_cv_t&lt;T&gt;&gt; constexpr T value_or(U&amp;&amp; v) const &amp;;
+template&lt;class U = remove_cv_t&lt;T&gt;&gt; constexpr <ins>remove_cv_t&lt;</ins>T<ins>&gt;</ins> value_or(U&amp;&amp; v) const &amp;;
 </pre>
 <blockquote>
 <p>
--18- <i>Mandates</i>: <code>is_copy_constructible_v&lt;T&gt;</code> is `true` and
-<code>is_convertible_v&lt;U, T&gt;</code> is `true`.
+<ins>-?- Let <code>X</code> be <code>remove_cv_t&lt;T&gt;</code>.</ins>
+</p>
+<p>
+-18- <i>Mandates</i>:
+<del><code>is_copy_constructible_v&lt;T&gt;</code> is `true` and</del>
+<ins><code>is_convertible_v&lt;const T&amp;, X&gt; &amp;&amp;</code></ins>
+<code>is_convertible_v&lt;U, T&gt;</code>
+is `true`.
 <p/>
 <del>-19- <i>Returns</i>: <code>has_value() ? **this : static_cast&lt;T&gt;(std::forward&lt;U&gt;(v))</code>.</del>
 <p/>
@@ -284,12 +339,18 @@ return std::forward&lt;U&gt;(v);</ins>
 </pre></blockquote>
 </blockquote>
 <pre>
-template&lt;class U = remove_cv_t&lt;T&gt;&gt; constexpr T value_or(U&amp;&amp; v) &amp;&amp;;
+template&lt;class U = remove_cv_t&lt;T&gt;&gt; constexpr <ins>remove_cv_t&lt;</ins>T<ins>&gt;</ins> value_or(U&amp;&amp; v) &amp;&amp;;
 </pre>
 <blockquote>
 <p>
--20- <i>Mandates</i>: <code>is_move_constructible_v&lt;T&gt;</code> is `true` and
-<code>is_convertible_v&lt;U, T&gt;</code> is `true`.
+<ins>-?- Let <code>X</code> be <code>remove_cv_t&lt;T&gt;</code>.</ins>
+</p>
+<p>
+-20- <i>Mandates</i>:
+<del><code>is_move_constructible_v&lt;T&gt;</code> is `true` and</del>
+<ins><code>is_convertible_v&lt;T, X&gt; &amp;&amp;</code></ins>
+<code>is_convertible_v&lt;U, T&gt;</code>
+is `true`.
 <p/>
 <del>-21- <i>Returns</i>: <code>has_value() ? std::move(**this) : static_cast&lt;T&gt;(std::forward&lt;U&gt;(v))</code>.</del>
 <p/>
