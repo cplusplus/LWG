@@ -175,7 +175,8 @@ This would also resolve LWG <iref ref="4281"/>.
 </p>
 <note>2025-11-19; Jonathan provides updated wording</note>
 <p>
-Incorporate proposed resolution of <iref ref="3424"/> as well.
+Incorporate proposed resolution of <iref ref="3424"/> as well,
+so that the return type is never cv-qualified.
 </p>
 
 </discussion>
