@@ -1,0 +1,23 @@
+<?xml version='1.0' encoding='utf-8' standalone='no'?>
+<!DOCTYPE issue SYSTEM "lwg-issue.dtd">
+
+<issue num="4479" status="New">
+<title>No restrictions on which types can be `tuple` elements</title>
+<section><sref ref="[tuple.tuple.general]"/></section>
+<submitter>Davis Herring</submitter>
+<date>21 Nov 2025</date>
+<priority>99</priority>
+
+<discussion>
+<p>
+We do not prohibit nonsense like <code>std::tuple&lt;void&gt;</code>
+or <code>std::tuple&lt;int()&gt;</code>.
+</p>
+</discussion>
+
+<resolution>
+<p>
+</p>
+</resolution>
+
+</issue>
