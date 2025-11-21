@@ -1,0 +1,1416 @@
+<html><head>
+<meta http-equiv="Content-Language" content="en-us">
+<meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+<base href="http://www.open-std.org/jtc1/sc22/wg21/docs/papers/" />
+<title>Library Proposals Status List</title>
+    <style type="text/css">
+      /* <![CDATA[*/
+        tr.BASIC { background:white}
+        tr.ALTERNATE { background: #ffffcc}
+        tr.CRITICAL { background: #ccffcc}
+
+        tr.ADVANCED { color: 339900}
+        tr.DEMOTED { color: red}
+        tr.UPDATED { color: orange}
+
+        tr.TITLE_ROW {height: 26pt; text-align: center; font-weight: bold }
+     /* ]]> */
+    </style>
+</head>
+
+<body>
+
+  <table border="0" cellpadding="0" cellspacing="0" style="border-collapse: collapse" bordercolor="#111111" width="607">
+    <tr>
+      <td width="172" align="left" valign="top">Document number:</td>
+      <td width="435">&nbsp;</td>
+    </tr>
+    <tr>
+      <td width="172" align="left" valign="top">Date:</td>
+      <td width="435">
+      <!--webbot bot="Timestamp" S-Type="EDITED" S-Format="%Y-%m-%d" startspan -->2013-04-24<!--webbot bot="Timestamp" endspan i-checksum="12248" --></td>
+    </tr>
+    <tr>
+      <td width="172" align="left" valign="top">Project:</td>
+      <td width="435">Programming Language C++</td>
+    </tr>
+    <tr>
+      <td width="172" align="left" valign="top">Reply-to:</td>
+      <td width="435">Beman Dawes &lt;bdawes@acm.org&gt;</td>
+    </tr>
+  </table>
+
+
+<h1>Library Proposals Status List (Revision 1)
+<span style="background-color: #FFFF00">DRAFT</span></h1>
+<p>
+This  status list tracks the progress of <a href="#Post-C++11">post-C++11 
+standard library proposals</a> and lists <a href="#Pre-C++11-Proposals">
+pre-C++11 library proposals</a> of still of interest. See the 
+current
+<a href="http://cplusplus.github.com/LWG/call-for-library-proposals.html">Call for Library Proposals</a> for information about how to submit a 
+proposal to the C++ standards committee.</p>
+<p>
+Proposals are tracked regardless of which working or study group is responsible.</p>
+
+
+<h3>
+Groups responsible for proposals</h3>
+
+
+  <ul>
+    <li><b><a name="LEWG">LEWG</a></b> - Library Evolution Working Group (Beman Dawes)</li>
+    <li><b><a name="LWG">LWG</a></b> - Library Working Group (Alisdair Meredith)</li>
+    <li><b><a name="SG1">SG1</a></b> - Concurrency and Parallelism (Hans Boehm)</li>
+    <li><b><a name="SG2">SG2</a></b>- Modules (Doug Gregor)</li>
+    <li><b><a name="SG3">SG3</a></b> - File System (Beman Dawes)</li>
+    <li><b><a name="SG4">SG4</a></b> - Networking (Kyle Kloepper)</li>
+    <li><b><a name="SG5">SG5</a></b> - Transactional Memory (Michael Wong)</li>
+    <li><b><a name="SG6">SG6</a></b> - Numerics (Lawrence Crowl)</li>
+    <li><b><a name="SG7">SG7</a></b> - Reflection (Chandler Carruth)</li>
+    <li><b><a name="SG8">SG8</a></b> - Concepts (Matt Austern)</li>
+    <li><b><a name="SG9">SG9</a></b> - Ranges (Marshall Clow)</li>
+    <li><b><a name="SG10">SG10</a></b> - Feature Test (Clark Nelson)</li>
+  </ul>
+<h3>
+Status</h3>
+
+
+  <ul>
+    <li><b><a name="New">New</a></b> - A proposal that is awaiting review by the appropriate WG or SG.
+    </li>
+    <li><b><a name="Active">Active</a></b> - A proposal that has been reviewed and is 
+    undergoing refinement.</li>
+    <li><b><a name="Review">Review</a></b> - A revised proposal  document that is awaiting review.
+    </li>
+    <li><b><a name="Ready">Ready</a></b> - A proposal ready for a formal vote. Note: this is normally an intra 
+      meeting status.</li>
+    <li><b><a name="Adopted">Adopted</a></b> - A proposal that has been formally accepted for inclusion in an 
+      official working paper.</li>
+    <li><b><a name="Tabled">Tabled</a></b> - A proposal that is set aside, 
+    perhaps temporarily, because of lack of interest, lack of experts, or more 
+    pressing work. </li>
+    <li><b><a name="Closed">Closed</a></b> - A proposal that does not have sufficient support to move forward and 
+      will not be given further consideration.</li>
+    <li><b><a name="Future">Future</a></b> - A proposal that does not have sufficient support to move forward for 
+      this revision cycle of the standard or applicable Technical Specification, but may be of interest for a future 
+      standard or TS.</li>
+  </ul>
+
+  <h3>Procedures</h3>
+  <p>Proposals accepted by the LEWG are then passed to the LWG for review.</p>
+
+<h2><a name="Post-C++11">Post-C++11</a> Library Proposals</h2>
+<table cellspacing="0" cellpadding="5" border="1" style="border-collapse: collapse" bordercolor="#111111">
+<tbody>
+
+   <tr>
+      <td width="15%" align="center" bgcolor="#CCFFCC">
+         <b>Document Number</b></td>
+      <td align="center" bgcolor="#CCFFCC"> 
+            <b>Status</b></td>
+      <td align="center" bgcolor="#CCFFCC"> <b>Owner</b></td>
+      <td align="center" bgcolor="#CCFFCC"> <b>Title / Annotation</b></td>
+      <td align="center" bgcolor="#CCFFCC" width="15%"> <b>Authors</b></td>
+   </tr>
+
+
+   <tr>
+      <td width="15%">
+         <a href="2010/n3230.html">N3230</a>
+      </td>
+      <td> <a href="#Active">Active</a></td>
+      <td> <a href="#LWG">LWG</a></td>
+      <td> Constexpr Library Additions: future</td>
+      <td width="15%"> Benjamin Kosnik</td>
+   </tr>
+
+
+   <tr> <td colspan="5" bgcolor="#CCFFCC">
+     <p align="center"><b>2012-01-pre-Kona</b></td></tr>
+   <tr>
+      <td width="15%">
+         <a href="2012/n3333.html">N3333</a>
+      </td>
+      <td> 
+            <a href="#Active">Active</a></td>
+      <td> &nbsp;</td>
+      <td> Hashing User-Defined Types in C++1y</td>
+      <td width="15%"> J. Yasskin, C. Carruth</td>
+   </tr>
+   <tr>
+      <td width="15%">
+         <a href="2012/n3339.pdf">N3339</a>
+      </td>
+      <td> 
+            <a href="#Active">Active</a></td>
+      <td> &nbsp;</td>
+      <td> A Preliminary Proposal for a Deep-Copying Smart Pointer</td>
+      <td width="15%"> Walter E. Brown</td>
+   </tr>
+   <tr>
+      <td width="15%">
+         <a href="2012/n3344.pdf">N3344</a>
+      </td>
+      <td> <a href="#Closed">Closed</a></td>
+      <td> N/A</td>
+      <td> Toward a Standard C++ 'Date' Class</td>
+      <td width="15%"> S. Pacifico, A. Meredith, J. Lakos</td>
+   </tr>
+   <tr>
+      <td width="15%">
+         <a href="2012/n3350.html">N3350</a>
+      </td>
+      <td> <a href="#Active">Active</a></td>
+      <td> <a href="#SG9">SG9</a></td>
+      <td> A minimal std::range&lt;Iter></td>
+      <td width="15%"> Jeffrey Yasskin</td>
+   </tr>
+   <tr>
+      <td width="15%">
+         <a href="2012/n3352.html">N3352</a>
+      </td>
+      <td> 
+            <a href="#Active">Active</a></td>
+      <td> <a href="#SG7">SG6</a></td>
+      <td> C++ Binary Fixed-Point Arithmetic</td>
+      <td width="15%"> Lawrence Crowl</td>
+   </tr>
+   <tr>
+      <td width="15%">
+         <a href="2012/n3355.html">N3355</a>
+      </td>
+      <td> &nbsp;</td>
+      <td>  
+            <a href="#SG1">SG1</a></td>
+      <td> C++ Distributed Counters</td>
+      <td width="15%"> Lawrence Crowl</td>
+   </tr>
+   <tr>
+      <td width="15%">
+         <a href="2012/n3356.html">N3356</a>
+      </td>
+      <td> &nbsp;</td>
+      <td> 
+            <a href="#SG1">SG1</a></td>
+      <td> C++ Mutable Threads</td>
+      <td width="15%"> Chris Mysen</td>
+   </tr>
+
+   <tr> <td colspan="5" bgcolor="#CCFFCC">
+     <p align="center"><b>2012-02-post-Kona</b></td></tr>
+
+   <tr>
+      <td width="15%">
+         <a href="2012/n3360.pdf">N3360</a></td>
+      <td> &nbsp;</td>
+      <td> <a href="#SG4">SG4</a></td>
+      <td> Networking Library Status Report</td>
+      <td width="15%"> Christopher Kohlhoff</td>
+   </tr>
+		<tr>
+			<td width="15%"><a href="2012/n3374.htm">N3374</a></td>
+			<td>&nbsp;</td>
+			<td> <a href="#SG4">SG4</a></td>
+			<td>SG4: Networking</td>
+			<td width="15%">K.&nbsp;Kloepper, N.&nbsp;Meyer</td>
+		</tr>
+   <tr> <td colspan="5" bgcolor="#CCFFCC">
+     <p align="center"><b>2012-09-pre-Portland</b></td></tr>
+            <tr>
+			<td width="15%">
+            <p>
+            <a href="2012/n3388.pdf">N3388</a></td>
+			<td>
+            &nbsp;</td>
+			<td>
+            <a href="#SG4">SG4</a></td>
+			<td>
+            <p>Using Asio with C++11</td>
+			<td width="15%">
+            <p>Christopher Kohlhoff</td>
+		</tr>
+		<tr>
+			<td width="15%">
+            <p>
+            <a href="2012/n3389.pdf">N3389</a></td>
+			<td>
+            &nbsp;</td>
+			<td>
+            <a href="#SG4">SG4</a></td>
+			<td>
+            <p>Urdl: a simple library for accessing web content</td>
+			<td width="15%">
+            <p>Christopher Kohlhoff</td>
+		</tr>
+		<tr>
+			<td width="15%">
+            <p>
+            <a href="2012/n3398.html">N3398</a>
+         <a href="2012/n3336.html">N3336</a> </td>
+			<td>
+            <a href="#Active">Active</a></td>
+			<td>
+            <a href="#LWG">LWG</a></td>
+			<td>
+            <p>String Interoperation Library</td>
+			<td width="15%">
+            <p>Beman Dawes</td>
+		</tr>
+		<tr>
+			<td width="15%">
+            <p>
+            <a href="2012/n3407.html">N3407</a></td>
+			<td>
+            &nbsp;</td>
+			<td>
+            <a href="#SG6">SG6</a></td>
+			<td>
+            <p>Proposal to Add Decimal Floating Point Support to C++</td>
+			<td width="15%">
+            <p>Dietmar K&uuml;hl</td>
+		</tr>
+		<tr>
+			<td width="15%">
+            <p>
+            <a href="2012/n3408.pdf">N3408</a></td>
+			<td>
+            <a href="#Active">Active</a>
+            Merge with<br>
+            <a href="2012/n3429.pdf">N3429</a></td>
+			<td>
+            <a href="#SG1">SG1</a></td>
+			<td>
+            <p>Parallelizing The Standard Algorithms Library</td>
+			<td width="15%">
+            <p>J.&nbsp;Hoberock, O.&nbsp;Giroux, V.&nbsp;Grover, J.&nbsp;Marathe, et al.</td>
+		</tr>
+		<tr>
+			<td width="15%">
+            <p>
+            <a href="2012/n3415.html">N3415</a></td>
+			<td>
+            <a href="#Tabled">Tabled</a></td>
+			<td>
+            &nbsp;</td>
+			<td>
+            <p>A Database Access Library <i>[<a href="#Note-1">Note 1</a>]</i></td>
+			<td width="15%">
+            <p>Bill Seymour</td>
+		</tr>
+		<tr>
+			<td width="15%">
+            <p>
+            <a href="2012/n3419.pdf">N3419</a></td>
+			<td>
+            &nbsp;</td>
+			<td>
+            <a href="#SG1">SG1</a></td>
+			<td>
+            <p>Vector loops and Parallel Loops</td>
+			<td width="15%">
+            <p>Robert Geva</td>
+		</tr>
+		<tr>
+			<td width="15%">
+            <p>
+            <a href="2012/n3425.html">N3425</a></td>
+			<td>
+            &nbsp;</td>
+			<td>
+            <a href="#SG1">SG1</a></td>
+			<td>
+            <p>Concurrent Unordered Associative Containers for C++</td>
+			<td width="15%">
+            <p>A.&nbsp;Robison, A.&nbsp;Malakhov, A.&nbsp;Laksberg</td>
+		</tr>
+		<tr>
+			<td width="15%">
+            <p>
+            <a href="2012/n3429.pdf">N3429</a></td>
+			<td>
+            <a href="#Active">Active</a>
+            Merge with<br>
+            <a href="2012/n3408.pdf">N3408</a></td>
+			<td>
+            <a href="#SG1">SG1</a></td>
+			<td>
+            <p>A C++ Library Solution To Parallelism</td>
+			<td width="15%">
+            <p>A.&nbsp;Laksberg, H.&nbsp;Sutter, A.&nbsp;Robison, S.&nbsp;Mithani</td>
+		</tr>
+		<tr>
+			<td width="15%">
+            <p>
+            <a href="2012/n3441.html">N3441</a></td>
+			<td>
+            <a href="#New">New</a></td>
+			<td bgcolor="#E1E9FD">
+            <a href="#LEWG">LEWG</a></td>
+			<td>
+            <p>Call Stack Utilities and std::exception Extension Proposal</td>
+			<td width="15%">
+            <p>Aurelian Melinte</td>
+		</tr>
+		<tr>
+			<td width="15%">
+            <p>
+            <a href="2012/n3451.pdf">N3451</a></td>
+			<td>
+            &nbsp;</td>
+			<td>
+            <a href="#SG1">SG1</a></td>
+			<td>
+            <p>async and ~future</td>
+			<td width="15%">
+            <p>Herb Sutter</td>
+   </tr>
+   <tr> <td colspan="5" bgcolor="#CCFFCC">
+     <p align="center"><b>2012-11-post-Portland</b></td></tr>
+		<tr>
+			<td width="15%">
+            <p>
+            <a href="2012/n3457.txt">N3457</a></td>
+			<td>
+            <a href="#New">New</a></td>
+			<td bgcolor="#E1E9FD">
+            <p> <a href="#LWG">LWG</a></td>
+			<td>
+            <p>Algorithm std::iota and its modifications. </td>
+			<td width="15%">
+            <p>Vladimir Grigoriev</td>
+		</tr>
+		<tr>
+			<td width="15%">
+            <p>
+            <a href="2012/n3458.pdf">N3458</a></td>
+			<td>
+            <a href="#Tabled">Tabled</a></td>
+			<td>
+            <p>&nbsp;</td>
+			<td>
+            <p>Simple Database Integration in C++11<i> [<a href="#Note-1">Note 1</a>]</i></td>
+			<td width="15%">
+            <p>Thomas Neumann</td>
+		</tr>
+		<tr>
+			<td width="15%">
+            <p>
+            <a href="2012/n3459.html">N3459</a></td>
+			<td>
+            <a href="#Tabled">Tabled</a></td>
+			<td>
+            <p>&nbsp;</td>
+			<td>
+            <p>Comparison of Two Database Access Methodologies <i>[<a href="#Note-1">Note 1</a>]</i></td>
+			<td width="15%">
+            <p>Bill Seymour</td>
+		</tr>
+		<tr>
+			<td width="15%">
+            <p>
+            <a href="2012/n3465.pdf">N3465</a>
+            <a href="2009/n2882.pdf">N2882</a></td>
+			<td>
+            <a href="#Review">Review</a></td>
+			<td bgcolor="#E1E9FD">
+            <p> <a href="#LWG">LWG</a></td>
+			<td>
+            <p>Adding heterogeneous comparison lookup to associative containers for TR2 (Rev 2)
+            <i>[Handle with <a href="2013/n3573.html">N3573</a>]</i></td>
+			<td width="15%">
+            <p>Joaqu&iacute;n M&ordf; L&oacute;pez Mu&ntilde;oz</td>
+		</tr>
+		<tr>
+			<td width="15%">
+            <p>
+            <a href="2012/n3477.pdf">N3477</a></td>
+			<td>
+            &nbsp;</td>
+			<td>
+            <p> <a href="#SG4">SG4</a></td>
+			<td>
+            <p>C++ Internet Protocol Classes</td>
+			<td width="15%">
+            <p>A.&nbsp;Fabijanic, G.&nbsp;Obiltschnig</td>
+		</tr>
+		<tr>
+			<td width="15%">
+            <p>
+            <a href="2012/n3487.pdf">N3487</a></td>
+			<td>
+            &nbsp;</td>
+			<td>
+            <p><a href="#SG1">SG1</a></td>
+			<td>
+            <p>TLS and Parallelism</td>
+			<td width="15%">
+            <p>Pablo Halpern</td>
+		</tr>
+   <tr> <td colspan="5" bgcolor="#CCFFCC">
+     <p align="center"><b>2013-01-Mid-Term</b></td></tr>
+		<tr>
+			<td width="15%"><a href="2013/n3494.pdf">N3494</a></td>
+			<td><a href="#New">New</a></td>
+			<td><a href="#SG6">SG6</a></td>
+			<td>A proposal to add special mathematical functions according to the ISO/IEC 80000-2:2009
+				standard</td>
+			<td width="15%">Vincent Reverdy</td>
+		</tr>
+		<tr>
+			<td width="15%"><a href="2013/n3495.txt">N3495</a></td>
+			<td><a href="#New">New</a></td>
+			<td bgcolor="#E1E9FD"> <a href="#LEWG">LEWG</a></td>
+			<td>inplace realloc</td>
+			<td width="15%">Ariane van der Steldt</td>
+		</tr>
+		<tr>
+			<td width="15%"><a href="2013/n3500.txt">N3500</a></td>
+			<td><a href="#New">New</a></td>
+			<td bgcolor="#E1E9FD"><a href="#LEWG">LEWG</a></td>
+			<td>New assert variants <i>[Handle with <a href="2013/n3604.pdf">N3604</a>]</i></td>
+			<td width="15%">Olaf van der Spek</td>
+		</tr>
+   <tr>
+      <td width="15%">
+         <a href="2013/n3505.html">N3505</a>
+         <a href="2012/n3399.html">N3399</a>
+         <a href="2012/n3365.html">N3365</a>
+         <a href="2012/n3335.html">N3335</a>
+         <a href="2011/n3239.html">N3239</a> etc.&nbsp; </td>
+      <td> <a href="#Review">Review</a></td>
+      <td bgcolor="#E1E9FD"> <a href="#LWG">LWG</a></td>
+      <td> Filesystem Library Proposal</td>
+      <td width="15%"> Beman Dawes</td>
+   </tr>
+		<tr>
+			<td width="15%"><a href="2013/n3506.html">N3506</a></td>
+			<td><a href="#New">New</a></td>
+			<td bgcolor="#E1E9FD"><a href="#LEWG">LEWG</a></td>
+			<td>A printf-like Interface for the Streams Library <i>
+            [Discussion to include other potential proposals]</i></td>
+			<td width="15%">Zhihao Yuan</td>
+		</tr>
+		<tr>
+			<td width="15%"><a href="2013/n3508.html">N3508</a>
+            <a href="2012/n3390.html">N3390</a>
+            <a href="2006/n1939.html">N1939</a></td>
+			<td><a href="#Review">Review</a></td>
+			<td bgcolor="#E1E9FD"> <a href="#LEWG">LEWG</a></td>
+			<td>Any Library Proposal (Revision 2)</td>
+			<td width="15%">B.&nbsp;Dawes, K.&nbsp;Henney</td>
+		</tr>
+		<tr>
+			<td width="15%"><a href="2013/n3509.txt">N3509</a></td>
+			<td><a href="#New">New</a></td>
+			<td><a href="#SG9">SG9</a></td>
+			<td>Operator Bool for Ranges</td>
+			<td width="15%">Olaf van der Spek</td>
+		</tr>
+		<tr>
+			<td width="15%"><a href="2013/n3513.html">N3513</a>
+            <a href="2012/n3456.html">N3456</a></td>
+			<td><a href="#Review">Review</a></td>
+			<td bgcolor="#E1E9FD"> <a href="#SG9">SG9</a></td>
+			<td>Range arguments for container constructors and methods, wording revision 2
+            <i>[Handle in a time slot when <a href="#LWG">LWG</a> and <a href="#LEWG">LEWG</a> 
+            folks are available]</i></td>
+			<td width="15%">Jeffrey Yasskin</td>
+		</tr>
+		<tr>
+			<td width="15%"><a href="2013/n3514.pdf">N3514</a></td>
+			<td><a href="#New">New</a></td>
+			<td bgcolor="#E1E9FD">
+            <p dir="ltr"><a href="#LEWG">LEWG</a></td>
+			<td>A Proposal for the World's Dumbest Smart Pointer</td>
+			<td width="15%">Walter Brown</td>
+		</tr>
+		<tr>
+			<td width="15%"><a href="2013/n3521.html">N3521</a></td>
+			<td><a href="#New">New</a></td>
+			<td bgcolor="#E1E9FD"><a href="#LEWG">LEWG</a></td>
+			<td>convert() utility function</td>
+			<td width="15%">Jeffrey Yasskin</td>
+		</tr>
+   <tr> <td colspan="5" bgcolor="#CCFFCC">
+     <p align="center"><b>2013-03-pre-Bristol</b></td></tr>
+
+		<tr>
+			<td width="15%"><a href="2013/n3525.pdf">N3525</a></td>
+			<td><a href="#New">New</a></td>
+			<td bgcolor="#E1E9FD"><a href="#LEWG">LEWG</a></td>
+			<td>Polymorphic Allocators <i>[Handle with <a href="2013/n3575.html">N3575</a> 
+            and any other allocator proposals]</i></td>
+			<td width="15%">Pablo Halpern</td>
+		</tr>
+		<tr>
+			<td width="15%"><a href="2013/n3527.html">N3527</a>
+            <a href="2012/n3406.html">N3406</a>
+          <a href="2005/n1878.htm">N1878</a></td>
+			<td> <a href="#Review">Review</a></td>
+			<td bgcolor="#E1E9FD"><a href="#LEWG">LEWG</a></td>
+			<td>A proposal to add a utility class to represent optional objects (Revision 2)
+			</td>
+			<td width="15%">F.&nbsp;Cacciola, A.&nbsp;Krzemie&#324;ski</td>
+		</tr>
+		<tr>
+			<td width="15%"><a href="2013/n3530.pdf">N3530</a></td>
+			<td><a href="#New">New</a></td>
+			<td><a href="#SG1">SG1</a></td>
+			<td>Leveraging OpenMP infrastructure for language level parallelisation</td>
+			<td width="15%">D.&nbsp;Gove, N.&nbsp;Copty, M.&nbsp;Wong</td>
+		</tr>
+		<tr>
+			<td width="15%"><a href="2013/n3531.pdf">N3531</a>
+            <a href="2012/3468.pdf">N3468</a>
+            <a href="2012/n3402.pdf">N3402</a></td>
+			<td> <a href="#Review">Review</a></td>
+			<td bgcolor="#E1E9FD"> <a href="#LWG">LWG</a></td>
+			<td>User-defined Literals for Standard Library Types (version 3)</td>
+			<td width="15%">Peter Sommerlad</td>
+		</tr>
+		<tr>
+			<td width="15%"><a href="2013/n3532.html">N3532</a>
+            <a href="2008/n2648.html">N2648</a></td>
+			<td> <a href="#Review">Review</a></td>
+			<td bgcolor="#E1E9FD"><a href="#LEWG">LEWG</a></td>
+			<td>C++ Dynamic Arrays</td>
+			<td width="15%">L.&nbsp;Crowl, M.&nbsp;Austern</td>
+		</tr>
+		<tr>
+			<td width="15%"><a href="2013/n3533.html">N3533</a>
+            <a href="2012/n3434.html">N3434</a>
+         <a href="2012/n3353.html">N3353</a></td>
+			<td> <a href="#Review">Review</a></td>
+			<td><a href="#SG1">SG1</a></td>
+			<td>C++ Concurrent Queues</td>
+			<td width="15%">L.&nbsp;Crowl, C.&nbsp;Mysen</td>
+		</tr>
+		<tr>
+			<td width="15%"><a href="2013/n3534.html">N3534</a></td>
+			<td><a href="#New">New</a></td>
+			<td><a href="#SG1">SG1</a></td>
+			<td>C++ Pipelines</td>
+			<td width="15%">A.&nbsp;Mackintosh, A.&nbsp;Berkan</td>
+		</tr>
+		<tr>
+			<td width="15%"><a href="2013/n3535.html">N3535</a>
+            <a href="2012/n3395.html">N3395</a>
+         <a href="2012/n3354.html">N3354</a></td>
+			<td> <a href="#Review">Review</a></td>
+			<td><a href="#SG1">SG1</a></td>
+			<td>C++ Stream Mutexes</td>
+			<td width="15%">Lawrence Crowl</td>
+		</tr>
+		<tr>
+			<td width="15%"><a href="2013/n3542.html">N3542</a>
+            <a href="2012/n3417.html">N3417</a> <a href="2012/n3375.html">N3375</a></td>
+			<td> <a href="#Review">Review</a></td>
+			<td><a href="#SG6">SG6</a></td>
+			<td>Proposal for Unbounded-Precision Integer Types</td>
+			<td width="15%">Pete Becker</td>
+		</tr>
+		<tr>
+			<td width="15%"><a href="2013/n3543.pdf">N3543</a>
+            <a href="2012/n3479.pdf">N3479</a>
+            <a href="2012/n3443.pdf">N3443</a></td>
+			<td> <a href="#Review">Review</a></td>
+			<td bgcolor="#E1E9FD"> <a href="#LWG">LWG</a></td>
+			<td>Priority Queue, Queue and Stack: Changes and Additions
+            <i>[LWG will consult LEWG before acting]</i></td>
+			<td width="15%">G.&nbsp;Powell, T.&nbsp;Blechmann</td>
+		</tr>
+		<tr>
+			<td width="15%"><a href="2013/n3546.pdf">N3546</a></td>
+			<td><a href="#New">New</a></td>
+			<td bgcolor="#E1E9FD"> <a href="#LWG">LWG</a></td>
+			<td>TransformationTraits Redux <i>[LWG will consult LEWG 
+            before acting]</i></td>
+			<td width="15%">Walter E. Brown</td>
+		</tr>
+		<tr>
+			<td width="15%"><a href="2013/n3547.pdf">N3547</a></td>
+			<td><a href="#New">New</a></td>
+			<td><a href="#SG6">SG6</a></td>
+			<td>Three &lt;random&gt;-related Proposals <i>[SG6 
+            pinged]</i></td>
+			<td width="15%">Walter E. Brown</td>
+		</tr>
+		<tr>
+			<td width="15%"><a href="2013/n3548.pdf">N3548</a></td>
+			<td><a href="#New">New</a></td>
+			<td><a href="#SG6">SG6</a></td>
+			<td>Conditionally-supported Special Math Functions for C++14
+            <i>[SG6 pinged]</i></td>
+			<td width="15%">Walter E. Brown</td>
+		</tr>
+		<tr>
+			<td width="15%"><a href="2013/n3554.pdf">N3554</a></td>
+			<td><a href="#New">New</a></td>
+			<td><a href="#SG1">SG1</a></td>
+			<td>A Parallel Algorithms Library</td>
+			<td width="15%">J.&nbsp;Hoberock, O.&nbsp;Giroux, V.&nbsp;Grover, H.&nbsp;Sutter, et&nbsp;al.
+			</td>
+		</tr>
+		<tr>
+			<td width="15%"><a href="2013/n3555.html">N3555</a> <a href="2013/n3507.html">N3507</a>
+            <a href="2012/n3484.html">N3484</a>
+            <a href="2012/n3420.html">N3420</a></td>
+			<td> <a href="#Review">Review</a></td>
+			<td> <a href="#SG4">SG4</a></td>
+			<td>A URI Library for C++</td>
+			<td width="15%">&nbsp;G. Matthews, D. Berris</td>
+		</tr>
+		<tr>
+			<td width="15%"><a href="2013/n3556.pdf">N3556</a></td>
+			<td><a href="#New">New</a></td>
+			<td><a href="#SG1">SG1</a></td>
+			<td>Thread-Local Storage in X-Parallel Computations</td>
+			<td width="15%">P.&nbsp;Halpern, C.&nbsp;Leiserson</td>
+		</tr>
+		<tr>
+			<td width="15%"><a href="2013/n3557.pdf">N3557</a></td>
+			<td><a href="#New">New</a></td>
+			<td><a href="#SG1">SG1</a></td>
+			<td>Considering a Fork-Join Parallelism Library</td>
+			<td width="15%">Pablo Halpern</td>
+		</tr>
+		<tr>
+			<td width="15%"><a href="2013/n3558.pdf">N3558</a>
+            <a href="2012/n3428.pdf">N3428</a>
+            <a href="2012/n3327.pdf">N3327</a></td>
+			<td> <a href="#Review">Review</a></td>
+			<td><a href="#SG1">SG1</a></td>
+			<td>A Standardized Representation of Asynchronous Operations</td>
+			<td width="15%">N.&nbsp;Gustafsson, A.&nbsp;Laksberg, H.&nbsp;Sutter, S.&nbsp;Mithani</td>
+		</tr>
+		<tr>
+			<td width="15%"><a href="2013/n3561.pdf">N3561</a></td>
+			<td><a href="#New">New</a></td>
+			<td><a href="#SG1">SG1</a></td>
+			<td>Semantics of Vector Loops</td>
+			<td width="15%">R.&nbsp;Geva, C.&nbsp;Nelson</td>
+		</tr>
+		<tr>
+			<td width="15%"><a href="2013/n3562.pdf">N3562</a> <a href="2012/n3378.pdf">N3378</a></td>
+			<td> <a href="#Review">Review</a></td>
+			<td><a href="#SG1">SG1</a></td>
+			<td>Executors and schedulers, revision 1</td>
+			<td width="15%">M.&nbsp;Austern, L.&nbsp;Crowl, C.&nbsp;Carruth, N.&nbsp;Gustaffson, et&nbsp;al.
+			</td>
+		</tr>
+		<tr>
+			<td width="15%"><a href="2013/n3563.pdf">N3563</a>
+            <a href="2012/n3446.pdf">N3446</a></td>
+			<td> <a href="#Review">Review</a></td>
+			<td><a href="#SG1">SG1</a></td>
+			<td>C++ Mapreduce</td>
+			<td width="15%">C.&nbsp;Mysen, L.&nbsp;Crowl, A.&nbsp;Berkan</td>
+		</tr>
+		<tr>
+			<td width="15%"><a href="2013/n3564.pdf">N3564</a>
+            <a href="2012/n3328.pdf">N3328</a></td>
+			<td> <a href="#Review">Review</a></td>
+			<td><a href="#SG1">SG1</a></td>
+			<td>Resumable Functions</td>
+			<td width="15%">N.&nbsp;Gustafsson, D.&nbsp;Brewis, H.&nbsp;Sutter, S.&nbsp;Mithani</td>
+		</tr>
+		<tr>
+			<td width="15%"><a href="2013/n3565.pdf">N3565</a></td>
+			<td><a href="#New">New</a></td>
+			<td> <a href="#SG4">SG4</a></td>
+			<td>IP Address Design Constraints</td>
+			<td width="15%">Aleksandar Fabijanic</td>
+		</tr>
+		<tr>
+			<td width="15%"><a href="2013/n3568.html">N3568</a>
+            <a href="2012/n3427.html">N3427</a>
+            <a href="2006/n2094.html">N2094</a></td>
+			<td> <a href="#Review">Review</a></td>
+			<td><a href="#SG1">SG1</a></td>
+			<td>Shared locking in C++</td>
+			<td width="15%">Howard Hinnant</td>
+		</tr>
+		<tr>
+			<td width="15%"><a href="2013/n3570.html">N3570</a>
+            <a href="2012/n3431.html">N3431</a></td>
+			<td> <a href="#Review">Review</a></td>
+			<td bgcolor="#E1E9FD"><a href="#LWG">LWG</a></td>
+			<td>Quoted Strings Library Proposal (Revision 1)</td>
+			<td width="15%">Beman Dawes</td>
+		</tr>
+		<tr>
+			<td width="15%"><a href="2013/n3571.pdf">N3571</a></td>
+			<td><a href="#New">New</a></td>
+			<td><a href="#SG1">SG1</a></td>
+			<td>A Proposal to add Single Instruction Multiple Data Computation to the Standard Library
+			</td>
+			<td width="15%">P.&nbsp;Est&eacute;rie, M.&nbsp;Gaunard, J.&nbsp;Falcou</td>
+		</tr>
+		<tr>
+			<td width="15%"><a href="2013/n3572.html">N3572</a></td>
+			<td><a href="#New">New</a></td>
+			<td bgcolor="#E1E9FD"><a href="#LEWG">LEWG</a></td>
+			<td>Unicode Support in the Standard Library</td>
+			<td width="15%">Mark Boyall</td>
+		</tr>
+		<tr>
+			<td width="15%"><a href="2013/n3573.html">N3573</a></td>
+			<td><a href="#New">New</a></td>
+			<td bgcolor="#E1E9FD"><a href="#LWG">LWG</a></td>
+			<td>Heterogenous extensions to unordered containers <i>
+            [Handle with
+            <a href="2012/n3465.pdf">N3465</a>]</i></td>
+			<td width="15%">Mark Boyall</td>
+		</tr>
+		<tr>
+			<td width="15%"><a href="2013/n3574.html">N3574</a></td>
+			<td><a href="#New">New</a></td>
+			<td bgcolor="#E1E9FD">
+            <span style="background-color: #FFFF00">EWG???</span></td>
+			<td>Binding stateful functions as function pointers <i>[EWG 
+            pinged.]</i></td>
+			<td width="15%">Mark Boyall</td>
+		</tr>
+		<tr>
+			<td width="15%"><a href="2013/n3575.html">N3575</a></td>
+			<td><a href="#New">New</a></td>
+			<td bgcolor="#E1E9FD"><a href="#LEWG">LEWG</a></td>
+			<td>Additional Standard allocation schemes <i>[Handle 
+            with <a href="2013/n3525.pdf">N3525</a> and any other allocator 
+            proposals]</i></td>
+			<td width="15%">Mark Boyall</td>
+		</tr>
+		<tr>
+			<td width="15%"><a href="2013/n3579.html">N3579</a>
+            <a href="2012/n3466.html">N3466</a></td>
+			<td> <a href="#Review">Review</a></td>
+			<td bgcolor="#E1E9FD"><a href="#LWG">LWG</a></td>
+			<td>A type trait for signatures <i>[LWG may pass it back 
+            to LEWG]</i></td>
+			<td width="15%">Mike Spertus</td>
+		</tr>
+		<tr>
+			<td width="15%"><a href="2013/n3581.html">N3581</a></td>
+			<td><a href="#New">New</a></td>
+			<td bgcolor="#E1E9FD"><a href="#LWG">LWG</a></td>
+			<td>Delimited iterators</td>
+			<td width="15%">Mike Spertus</td>
+		</tr>
+		<tr>
+			<td width="15%"><a href="2013/n3584.html">N3584</a>
+            <a href="2012/n3404.html">N3404</a></td>
+			<td> <a href="#Review">Review</a></td>
+			<td bgcolor="#E1E9FD"> <a href="#LWG">LWG</a></td>
+			<td>Wording for Accessing Tuple Fields by Type</td>
+			<td width="15%">Mike Spertus</td>
+		</tr>
+		<tr>
+			<td width="15%"><a href="2013/n3585.pdf">N3585</a>
+            <a href="2012/n3450.pdf">N3450</a></td>
+			<td> <a href="#Review">Review</a></td>
+			<td bgcolor="#E1E9FD"> <a href="#LWG">LWG</a></td>
+			<td>Iterator-Related Improvements to Containers (Revision 2)</td>
+			<td width="15%">Alan Talbot</td>
+		</tr>
+		<tr>
+			<td width="15%"><a href="2013/n3586.pdf">N3586</a></td>
+			<td><a href="#New">New</a></td>
+			<td bgcolor="#E1E9FD"> <a href="#LWG">LWG</a></td>
+			<td>Splicing Maps and Sets</td>
+			<td width="15%">A.&nbsp;Talbot, H.&nbsp;Hinnant</td>
+		</tr>
+		<tr>
+			<td width="15%"><a href="2013/n3588.txt">N3588</a></td>
+			<td><a href="#New">New</a></td>
+			<td bgcolor="#E1E9FD"> <a href="#LWG">LWG</a></td>
+			<td>make_unique</td>
+			<td width="15%">Stephan T. Lavavej</td>
+		</tr>
+		<tr>
+			<td width="15%"><a href="2013/n3593.html">N3593</a> <a href="2013/n3510.html">N3510</a>
+            <a href="2012/n3430.html">N3430</a></td>
+			<td> <a href="#Review">Review</a></td>
+			<td bgcolor="#E1E9FD"><a href="#LEWG">LEWG</a></td>
+			<td>std::split(): An algorithm for splitting strings <i>
+            [Schedule after N3609 (string_view) and N3513 (Range support). Do 
+            not schedule when SG9 is meeting.]</i></td>
+			<td width="15%">Greg Miller</td>
+		</tr>
+		<tr>
+			<td width="15%"><a href="2013/n3594.html">N3594</a></td>
+			<td><a href="#New">New</a></td>
+			<td bgcolor="#E1E9FD"><a href="#LEWG">LEWG</a></td>
+			<td>std::join(): An algorithm for joining a range of elements
+            <i>[Schedule after N3593 (split), N3609 (string_view), and N3513 
+            (Range support). Do not schedule when SG9 is meeting.]</i></td>
+			<td width="15%">Greg Miller</td>
+		</tr>
+		<tr>
+			<td width="15%"><a href="2013/n3600.html">N3600</a></td>
+			<td><a href="#New">New</a></td>
+			<td><a href="#SG1">SG1</a></td>
+			<td>C++ Latches and Barriers</td>
+			<td width="15%">Alasdair Mackintosh</td>
+		</tr>
+		<tr>
+			<td width="15%"><a href="2013/n3603.html">N3603</a></td>
+			<td><a href="#New">New</a></td>
+			<td> <a href="#SG4">SG4</a></td>
+			<td>A Three-Class IP Address Proposal</td>
+			<td width="15%">Christopher Kohlhoff</td>
+		</tr>
+		<tr>
+			<td width="15%"><a href="2013/n3604.pdf">N3604</a></td>
+			<td><a href="#New">New</a></td>
+			<td bgcolor="#E1E9FD"><a href="#LEWG">LEWG</a></td>
+			<td>Centralized Defensive-Programming Support for Narrow Contracts
+            <i>[Handle with <a href="2013/n3500.txt">N3500</a>]</i></td>
+			<td width="15%">J.&nbsp;Lakos, A.&nbsp;Zakharov</td>
+		</tr>
+		<tr>
+			<td width="15%"><a href="2013/n3606.html">N3606</a>
+            <a href="2012/n3411.pdf">N3411</a></td>
+			<td> <a href="#Review">Review</a></td>
+			<td bgcolor="#E1E9FD"> <a href="#LWG">LWG</a></td>
+			<td>Extending std::search to use Additional Searching Algorithms</td>
+			<td width="15%">Marshall Clow</td>
+		</tr>
+		<tr>
+			<td width="15%"><a href="2013/n3607.html">N3607</a></td>
+			<td><a href="#New">New</a></td>
+			<td bgcolor="#E1E9FD"> <a href="#LWG">LWG</a></td>
+			<td>Making non-modifying sequence operations more robust
+            <i>[Assigned to LWG as it fixes a defect in existing standard 
+            library components and the proposed resolution is intertwined with 
+            existing library wording.]</i></td>
+			<td width="15%">M.&nbsp;Spertus, A.&nbsp;Pall</td>
+		</tr>
+		<tr>
+			<td width="15%"><a href="2013/n3609.html">N3609</a> <a href="2013/n3512.html">N3512</a>
+            <a href="2012/n3442.html">N3442</a>
+         <a href="2012/n3334.html">N3334</a></td>
+			<td> <a href="#Review">Review</a></td>
+			<td bgcolor="#E1E9FD"><a href="#LEWG">LEWG</a></td>
+			<td>string_view: a non-owning reference to a string, revision 3<i> 
+            [Much LWG interest, so may wish to schedule when LWG folks 
+            available]</i></td>
+			<td width="15%">Jeffrey Yasskin</td>
+		</tr>
+		<tr>
+			<td width="15%"><a href="2013/n3611.html">N3611</a>
+            <a href="2012/n3489.html">N3489</a>
+            <a href="2012/n3414.html">N3414</a> <a href="2012/n3363.html">N3363</a></td>
+			<td> <a href="#Review">Review</a></td>
+			<td><a href="#SG6">SG6</a></td>
+			<td>A Rational Number Library for C++</td>
+			<td width="15%">Bill Seymour</td>
+		</tr>
+		<tr>
+			<td width="15%"><a href="2013/n3612.pdf">N3612</a></td>
+			<td><a href="#New">New</a></td>
+			<td bgcolor="#E1E9FD"><a href="#LEWG">LEWG</a></td>
+			<td>Desiderata of a C++11 Database Interface <i>[<a href="#Note-1">Note 1</a>]</i></td>
+			<td width="15%">Thomas Neumann</td>
+		</tr>
+		<tr>
+			<td width="15%"><a href="2013/n3618.html">N3618</a></td>
+			<td><a href="#New">New</a></td>
+			<td><a href="#SG1">SG1</a></td>
+			<td>What can signal handlers do? (CWG 1441)</td>
+			<td width="15%">Hans Boehm</td>
+		</tr>
+		<tr>
+			<td width="15%"><a href="2013/n3619.html">N3619</a></td>
+			<td><a href="#New">New</a></td>
+			<td bgcolor="#E1E9FD"> <a href="#LWG">LWG</a></td>
+			<td>A proposal to add swappability traits to the standard library</td>
+			<td width="15%">Andrew Morrow</td>
+		</tr>
+		<tr>
+			<td width="15%"><a href="2013/n3620.pdf">N3620</a></td>
+			<td><a href="#New">New</a></td>
+			<td> <a href="#SG4">SG4</a></td>
+			<td>Network byte order conversion</td>
+			<td width="15%">Kyle Kloepper</td>
+		</tr>
+</table>
+
+<h2><a name="Post-C++11-accepted">Post-C++11 Accepted</a> Library Proposals</h2>
+
+<table cellspacing="0" cellpadding="5" border="1" style="border-collapse: collapse" bordercolor="#111111">
+<tbody>
+
+   <tr>
+      <td width="15%" align="center" bgcolor="#CCFFCC">
+         <b>Document Number</b></td>
+      <td align="center" bgcolor="#CCFFCC"> 
+            <b>Date<br>
+            Adopted</b></td>
+      <td align="center" bgcolor="#CCFFCC"> <b>Owner</b></td>
+      <td align="center" bgcolor="#CCFFCC"> <b>Title / Annotation</b></td>
+      <td align="center" bgcolor="#CCFFCC" width="15%"> <b>Authors</b></td>
+   </tr>
+
+   <tr>
+      <td width="15%">
+         <a href="2012/n3346.pdf">N3346</a>
+         <a href="2011/n3301.pdf">N3301</a>
+      </td>
+      <td> 
+            2012-10</td>
+      <td> N/A</td>
+      <td> Defect Report: Terminology for Container Element Requirements</td>
+      <td width="15%"> Pablo Halpern</td>
+   </tr>
+		<tr>
+			<td width="15%">
+            <p>
+            <a href="2012/n3421.txt">N3421</a></td>
+			<td>
+            2012-10</td>
+			<td>
+            N/A</td>
+			<td>
+            <p>Making Operator Functors greater&lt;&gt;</td>
+			<td width="15%">
+            <p>Stephan T. Lavavej</td>
+		</tr>
+   <tr>
+      <td width="15%">
+         <a href="2011/n3302.html">N3302</a>
+         <a href="2010/n3228.html">N3228</a>
+      </td>
+      <td>  
+            2012-10</td>
+      <td> N/A</td>
+      <td> Constexpr Library Additions: complex</td>
+      <td width="15%"> B. Kosnik, G. Dos Reis, D. Krügler</td>
+   </tr>
+		<tr>
+			<td width="15%">
+            <p>
+            <a href="2012/n3462.html">N3462</a>
+            <a href="2012/n3436.html">N3436</a></td>
+			<td>
+            2012-10</td>
+			<td>
+            <p> N/A</td>
+			<td>
+            <p>std::result_of and SFINAE</td>
+			<td width="15%">
+            <p>E.&nbsp;Niebler, D.&nbsp;Walker, J.&nbsp;de&nbsp;Guzman</td>
+		</tr>
+		<tr>
+			<td width="15%" dir="ltr">
+            <p dir="ltr">
+            <a href="2012/n3469.html">N3469</a>
+            <a href="2011/n3303.html">N3303</a>
+         <a href="2010/n3229.html">N3229</a></td>
+			<td dir="ltr">
+            2012-10</td>
+			<td dir="ltr">
+            <p dir="ltr"> N/A</td>
+			<td dir="ltr">
+            <p dir="ltr">Constexpr Library Additions: chrono, v3</td>
+			<td width="15%" dir="ltr">
+            <p dir="ltr">B.&nbsp;Kosnik, D.&nbsp;Kr&uuml;gler</td>
+		</tr>
+		<tr>
+			<td width="15%" dir="ltr">
+            <p dir="ltr">
+            <a href="2012/n3470.html">N3470</a>
+            <a href="2011/n3304.html">N3304</a></td>
+			<td dir="ltr">
+            2012-10</td>
+			<td dir="ltr">
+            <p dir="ltr"> N/A</td>
+			<td dir="ltr">
+            <p dir="ltr">Constexpr Library Additions: containers, v2</td>
+			<td width="15%" dir="ltr">
+            <p dir="ltr">B.&nbsp;Kosnik, D.&nbsp;Kr&uuml;gler</td>
+		</tr>
+		<tr>
+			<td width="15%" dir="ltr">
+            <p dir="ltr">
+            <a href="2012/n3471.html">N3471</a>
+            <a href="2011/n3305.html">N3305</a>
+         <a href="2010/n3228.html">N3231</a> </td>
+			<td dir="ltr">
+            2012-10</td>
+			<td dir="ltr">
+            <p dir="ltr"> N/A</td>
+			<td dir="ltr">
+            <p dir="ltr">Constexpr Library Additions: utilities, v3</td>
+			<td width="15%" dir="ltr">
+            <p dir="ltr">B.&nbsp;Kosnik, D.&nbsp;Kr&uuml;gler</td>
+		</tr>
+		<tr>
+			<td width="15%"><a href="2013/n3545.pdf">N3545</a></td>
+			<td>2013-04</td>
+			<td> N/A</td>
+			<td>An Incremental Improvement to integral_constant</td>
+			<td width="15%">Walter E. Brown</td>
+		</tr>
+		<tr>
+			<td width="15%" dir="ltr">
+            N3644 <a href="2013/n3585.pdf">N3585</a>
+            <a href="2012/n3450.pdf">N3450</a></td>
+			<td dir="ltr">
+            2013-04</td>
+			<td dir="ltr">
+            N/A</td>
+			<td dir="ltr">
+            Null Forward Iterators</td>
+			<td width="15%" dir="ltr">
+            Alan Talbot</td>
+		</tr>
+		<tr>
+			<td width="15%">N3668 <a href="2013/n3608.html">N3608</a> <a href="2013/n3511.html">N3511</a></td>
+			<td> 2013-04</td>
+			<td> N/A</td>
+			<td>exchange() utility function</td>
+			<td width="15%">Jeffrey Yasskin</td>
+		</tr>
+		<tr>
+			<td width="15%">N3658 <a href="2013/n3493.html">N3493</a></td>
+			<td>2013-04</td>
+			<td>N/A</td>
+			<td>Compile-time integer sequences</td>
+			<td width="15%">Jonathan Wakely</td>
+		</tr>
+
+<!--webbot bot="PurpleText" PREVIEW="$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$" -->
+
+
+</table>
+
+<h2> <a name="Pre-C++11-Proposals">Pre-C++11 Library Proposals</a></h2>
+
+<table>
+   <tr class="TITLE_ROW">
+      <td colspan="4">New Library Components Previously Considered for Future 
+      Inclusion</td>
+   </tr>
+   <tr>
+      <td colspan="4">
+         These papers present libraries that were actively under consideration for a
+         future TR, when work on TR2 was deferred pending completion of C++11. These papers were viewed
+         positively at the time, but were due at least one more revision before any
+         adoption, and most will need some reworking to reflect the addition of C++11
+         language facilities.
+      </td>
+   </tr>
+
+   <tr>
+      <td>
+         <a href="2006/n1974.html">N1974</a>
+         <a href="2006/n2054.pdf">N2054</a>
+         <a href="2007/n2175.pdf">N2175</a>
+      </td>
+      <td> &nbsp;</td>
+      <td> Networking Library Proposal for TR2</td>
+      <td> Christopher Kohlhoff</td>
+   </tr>
+   <tr>
+      <td>
+         <a href="2005/n1843.pdf">N1843</a>
+         <a href="2006/n2067.pdf">N2067</a>
+         <a href="2006/n2137.pdf">N2137</a>
+      </td>
+      <td>
+         &nbsp;</td>
+      <td>
+         A Proposal to add Interval Arithmetic to the C++ Standard Library
+      </td>
+      <td> H. Brönnimann, G. Melquiond, S. Pion</td>
+   </tr>
+   <tr>
+      <td>
+         <a href="2005/n1871.html">N1871</a>
+      </td>
+      <td> &nbsp;</td>
+      <td> Range Library Proposal</td>
+      <td> Thorsten Ottosen</td>
+   </tr>
+   <tr>
+      <td>
+         <a href="2006/n2068.html">N2068</a>
+      </td>
+      <td> &nbsp;</td>
+      <td> Range Library Core</td>
+      <td> Thorsten Ottosen</td>
+   </tr>
+   <tr>
+       <td>
+          <a href="2005/n1872.html">N1872</a>
+          <a href="2006/n2059.html">N2059</a>
+       </td>
+       <td> &nbsp;</td>
+       <td> Proposal for new string algorithms</td>
+       <td> P. Droba, T. Ottosen</td>
+   </tr>
+   <tr>
+       <td>
+          <a href="2005/n1873.html">N1873</a>
+       </td>
+       <td> &nbsp;</td>
+       <td> The Cursor/Property Map Abstraction</td>
+       <td> D. Kühl, D. Abrahams</td>
+   </tr>
+   <tr>
+       <td>
+          &nbsp;</td>
+      <td>
+         &nbsp;</td>
+      <td>
+         &nbsp;</td>
+      <td> &nbsp;</td>
+   </tr>
+   <tr>
+      <td>
+         <a href="2005/n1879.html">N1879</a>
+      </td>
+      <td>
+         &nbsp;</td>
+      <td>
+         A proposal to add a general purpose ranged-checked
+         numeric_cast&lt;>
+      </td>
+      <td> Fernando Cacciola</td>
+   </tr>
+   <tr>
+      <td>
+         <a href="2005/n1900.pdf">N1900</a>
+         <a href="2006/n2058.html">N2058</a>
+      </td>
+      <td> &nbsp;</td>
+      <td> Proposal to Add Date-Time to the C++ Standard Library</td>
+      <td> Jeff Garland</td>
+   </tr>
+   <tr>
+      <td>
+         &nbsp;</td>
+      <td> &nbsp;</td>
+      <td> &nbsp;</td>
+      <td> &nbsp;</td>
+   </tr>
+   <tr>
+      <td>
+         <a href="2006/n1973.html">N1973</a>
+      </td>
+      <td> &nbsp;</td>
+      <td> Lexical Conversion Library Proposal for TR2</td>
+      <td> K. Henney, B. Dawes</td>
+   </tr>
+   <tr>
+      <td>
+         <a href="2006/n2044.html">N2044</a>
+      </td>
+      <td> &nbsp;</td>
+      <td> Memory Mapped Files And Shared Memory For C++</td>
+      <td> Ion Gaztañaga</td>
+   </tr>
+   <tr>
+      <td>
+         <a href="2006/n2046.pdf">N2046</a>
+         <a href="2006/n2136.pdf">N2136</a>
+      </td>
+      <td> &nbsp;</td>
+      <td> Bool_set: multi-valued logic</td>
+      <td> H. Brönnimann, G. Melquiond, S. Pion</td>
+   </tr>
+   <tr>
+      <td>
+         <a href="2006/n2065.pdf">N2065</a>
+      </td>
+      <td>
+         &nbsp;</td>
+      <td>
+         A proposal to add stream objects based on fixed memory buffers
+      </td>
+      <td> Alberto Ganesh Barbati</td>
+   </tr>
+   <tr>
+      <td>
+         <a href="2006/n2086.pdf">N2086</a>
+      </td>
+      <td> &nbsp;</td>
+      <td> Signals and Slots for Library TR2</td>
+      <td> Douglas Gregor</td>
+   </tr>
+   <tr>
+      <td>
+         <a href="2006/n2101.html">N2101</a>
+      </td>
+      <td>
+         &nbsp;</td>
+      <td>
+         Hierarchical Data Structures and Related Concepts for the C++
+         Standard Library
+      </td>
+      <td> B. Reiter, R. Rivera</td>
+   </tr>
+   <tr>
+      <td>
+         <a href="2006/n2104.pdf">N2104</a>
+      </td>
+      <td>
+         &nbsp;</td>
+      <td>
+         A Proposal to Add Parallel Iteration to the Standard Library
+      </td>
+      <td> Arch D. Robison</td>
+   </tr>
+   <tr>
+      <td>
+         <a href="2006/n2050.pdf">N2050</a>
+      </td>
+      <td>
+         &nbsp;</td>
+      <td>
+         Proposal to Add a Dynamically Sizeable Bitset to the Standard
+         Library
+      </td>
+      <td> J. Allsop, A. Meredith, G. Prota</td>
+   </tr>
+   <tr>
+      <td>
+         <a href="2008/n2648.html">N2648</a>
+      </td>
+      <td> &nbsp;</td>
+      <td> C++ Dynamic Arrays</td>
+      <td> L. Crowl, M. Austern</td>
+   </tr>
+   <tr>
+      <td>
+         <a href="2008/n2639.pdf">N2639</a>
+      </td>
+      <td>
+         &nbsp;</td>
+      <td>
+         Algorithms for permutations and combinations, with and without
+         repetitions
+      </td>
+      <td> Hervé Brönnimann</td>
+   </tr>
+
+
+   <tr class="TITLE_ROW">
+      <td colspan="4">Papers With an Open Status</td>
+   </tr>
+   <tr>
+      <td colspan="4">
+         These papers have been reviewed by the LWG, and were not deemed
+         compelling enough to plan for a future TR, but had not been
+         outright rejected either.
+      </td>
+   </tr>
+
+   <tr>
+      <td>
+         <a href="2004/n1668.pdf">N1668</a>
+      </td>
+      <td>
+         &nbsp;</td>
+      <td>
+         A Proposal to add Mathematical Functions for Statistics to the C++
+         Standard Library
+      </td>
+      <td> Paul A Bristow</td>
+   </tr>
+   <tr>
+      <td>
+         <a href="2003/n1425.pdf">N1425</a>
+      </td>
+      <td>
+         &nbsp;</td>
+      <td>
+         Proposal for Technical Report on C++ Standard Library Security
+      </td>
+      <td> Martyn Lovell</td>
+   </tr>
+   <tr>
+      <td>
+         <a href="2003/n1461.pdf">N1461</a>
+      </td>
+      <td> &nbsp;</td>
+      <td> Security and Standard C Libraries</td>
+      <td> Martyn Lovell</td>
+   </tr>
+   <tr>
+      <td>
+         <a href="2005/n1744.pdf">N1744</a>
+      </td>
+      <td> &nbsp;</td>
+      <td> Big Integer Library Proposal for C++0x</td>
+      <td> Michiel Salters</td>
+   </tr>
+   <tr>
+      <td>
+         <a href="2003/n1476.html">N1476</a>
+         <a href="2003/n1530.html">N1530</a>
+         <a href="2004/n1641.html">N1641</a>
+      </td>
+      <td> &nbsp;</td>
+      <td> Iterator Facade and Adaptor</td>
+      <td> D. Abrahams, J. Siek, T. Witt</td>
+   </tr>
+   <tr>
+      <td>
+         <a href="2007/n2225.html">N2225</a>
+      </td>
+      <td> &nbsp;</td>
+      <td> Improved integration with C arrays and strings</td>
+      <td> Thorsten Ottosen</td>
+   </tr>
+   <tr>
+      <td>
+         <a href="2007/n2388.html">N2388</a>
+      </td>
+      <td> &nbsp;</td>
+      <td> Pointer Arithmetic for <code>shared_ptr</code></td>
+      <td> Pablo Halpern</td>
+   </tr>
+   <tr>
+      <td>
+         <a href="2008/n2533.html">N2533</a>
+      </td>
+      <td> &nbsp;</td>
+      <td> Tuples and Pairs</td>
+      <td> Alisdair Meredith</td>
+   </tr>
+   <tr>
+      <td>
+         <a href="2007/n2486.pdf">N2486</a>
+      </td>
+      <td> &nbsp;</td>
+      <td> Alternative Allocators and Standard Containers</td>
+      <td> Lance Diduck</td>
+   </tr>
+   <tr>
+      <td>
+         <a href="2007/n2233.html">N2233</a>
+      </td>
+      <td> &nbsp;</td>
+      <td> <code>basic_string operator &lt;&lt;</code></td>
+      <td> Lawrence Crowl</td>
+   </tr>
+   <tr>
+      <td>
+         <a href="2008/n2698.html">N2698</a>
+         <a href="2008/n2718.html">N2718</a>
+         <a href="2008/n2754.html">N2754</a>
+      </td>
+      <td> &nbsp;</td>
+      <td> Additional type traits: has_trivial_destructor_after_move and has_trivial_reallocation</td>
+      <td> Rodrigo Castro Campos</td>
+   </tr>
+</table>
+<h2>Notes</h2>
+<p><b><a name="Note-1">Note 1</a></b> - There is currently insufficient support 
+for database bindings to merit further work in this area. Should sufficient 
+support arise, along with people willing to do the work, work will resume.</p>
+<hr>
+	</body>
+</html>

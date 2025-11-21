@@ -36,13 +36,15 @@ jobs:
         fetch-depth: 2147483647
 
     - name: Generate HTML lists
-      run: make CXX=g++-14 -j $(getconf _NPROCESSORS_ONLN) lists
+      run: |
+        make CXX=g++-14 -j $(getconf _NPROCESSORS_ONLN) lists
+        mv mailing/* static-pages/
 
     # Make the HTML pages available to the deploy job below.
     - name: Upload artifacts
       uses: actions/upload-pages-artifact@v3
       with:
-        path: mailing/
+        path: static-pages/
 
   # Deployment job
   deploy:

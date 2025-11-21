@@ -1,0 +1,331 @@
+<html><head>
+<meta http-equiv="Content-Language" content="en-us">
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>Call for Library Proposals</title>
+</head>
+
+<body>
+
+  <table border="0" cellpadding="0" cellspacing="0" style="border-collapse: collapse" bordercolor="#111111" width="607">
+    <tr>
+      <td width="172" align="left" valign="top">Document number:</td>
+      <td width="435"><span style="background-color: #FFFF00">Nxxxx=12-xxxx</span></td>
+    </tr>
+    <tr>
+      <td width="172" align="left" valign="top">Date:</td>
+      <td width="435">
+      <!--webbot bot="Timestamp" S-Type="EDITED" S-Format="%Y-%m-%d" startspan -->2012-03-06<!--webbot bot="Timestamp" endspan i-checksum="12178" --></td>
+    </tr>
+    <tr>
+      <td width="172" align="left" valign="top">Project:</td>
+      <td width="435">Programming Language C++, Library Working Group</td>
+    </tr>
+    <tr>
+      <td width="172" align="left" valign="top">Reply-to:</td>
+      <td width="435">Alisdair Meredith &lt;<a href="mailto:lwgchair@gmail.com">lwgchair@gmail.com</a>&gt;</td>
+    </tr>
+  </table>
+
+
+<h1>Call for Library Proposals</h1>
+
+
+  <div align="center">
+    <center>
+    <table border="1" cellpadding="5" cellspacing="0" style="border-collapse: collapse" bordercolor="#111111">
+      <tr>
+        <td>
+        <p align="center">Revised document: ISO terminology has changed and this 
+        document has been updated accordingly.<br>
+        See <a href="iso-alphabet-soup.html">ISO Alphabet Soup</a>.</td>
+      </tr>
+    </table>
+    </center>
+  </div>
+
+
+<p><a href="#Introduction">Introduction</a><br>
+<a href="#Increasing-chance-acceptance">Increasing the chance of acceptance</a><br>
+<a href="#Existing-practice">Existing practice</a><br>
+<a href="#Guidelines">Guidelines for a proposal document</a><br>
+<a href="#Organization">Organization of a typical proposal</a><br>
+<a href="#Proposal-examples">Proposal examples</a><br>
+<a href="#Submission-procedures">Submission procedures</a><br>
+<a href="#Acknowledgements">Acknowledgements</a></p>
+
+
+<h2><a name="Introduction">Introduction</a></h2>
+
+<p>The C++ standards committee is soliciting proposals for additional library 
+components. Such proposals can range from small (addition of a single 
+signature to an existing library) to large (something bigger than any 
+current standard library component). </p>
+
+<p>In a change from past practice, the committee is processing multiple library 
+work items in parallel, and any resulting domain specific technical 
+specifications will 
+ship when ready rather than waiting for completion of single large technical 
+specification.</p>
+
+<p>This call for proposals in open ended; there is no cutoff date. As a 
+practical matter, the committee is early in the post-C++11 revision cycle, and so 
+the next year is a particularly good window of opportunity for library proposals.</p>
+
+<p>The committee welcomes proposals with or without formal standard wording (often known 
+as &quot;standardese&quot;). This is a change from past practice, and is intended to 
+encourage library developers to step forward with proposals.</p>
+
+<h2><a name="Increasing-chance-acceptance">Increasing the chance of acceptance</a></h2>
+
+<p>The committee evaluates each proposal on its own merits. Here 
+are some suggestions to increase the chance of acceptance.</p>
+
+<ul>
+  <li>Base the proposal on existing practice. See the
+  <a href="#Existing-practice">Existing practice</a> section below. </li>
+  <li>Avoid breaking existing code. Breaking existing code puts a proposal at 
+  extreme risk. If existing code has to be broken, provide an analysis 
+  identifying what code breaks, whether the breakage is silent or noisy, and 
+  what a user would have to do to mitigate the breakage.</li>
+  <li>Avoid modifications to existing headers unless you are willing to see your 
+  proposal held until the next standard. The committee will consider both 
+  proposals that address entirely new domains, and proposals to modify the 
+  existing standard library, but modification of existing headers is viewed as 
+  unsuitable for TRs. This is a change from past guidance.</li>
+  <li>Avoid dependencies on libraries other than the C++ and C standard 
+  libraries. That does not mean that implementations can't have dependencies on 
+  third party libraries, but these dependencies should not be exposed in your 
+  library's interface or specification.</li>
+  <li>Check the
+  <a href="http://cplusplus.github.com/LWG/lwg-proposal-status.html">Library 
+  Proposal Status Report</a>. While you are welcome to submit a proposal that 
+  competes with an existing proposal, you can also submit suggestions for 
+  changes to the existing proposal.</li>
+  <li>The committee is particularly interested in high-level libraries that solve 
+  day-to-day problems for application programmers.</li>
+  <li>The committee is particularly interested in features that add usability 
+  for novices and occasional programmers.</li>
+</ul>
+
+<h2><a name="Existing-practice">Existing practice</a></h2>
+<p>The committee prefers proposals  based on existing
+practice. Existing practice is not an absolute rule, but it is an
+important guideline that the committee  use to judge the value of a
+proposal.  A proposal must be implementable, and the best
+evidence that something is implementable is that it has been
+implemented. A proposal based on existing practice gives the committee more confidence that the proposal solves a real
+problem and that its interface has evolved to serve the needs of real users.</p>
+
+<p>The preference for existing practice does not necessarily mean that
+  a proposal has to be exactly the same as some existing library.  A
+  proposal might adjust an existing library's interface to match the style of the C++ standard 
+library, or a
+  proposal might attempt to reconcile the interfaces of several preexisting 
+libraries, or a proposal might be based on existing practice in some other 
+language.</p>
+
+<p>The committee does occasionally adopt a completely experimental library, even 
+without widespread existing practice. Such proposals are usually small enough 
+and 
+simple enough that there is low risk that widespread usage will turn up serious 
+additional problems. And even these really simple proposals need to have been 
+implemented. </p>
+
+<h2><a name="Guidelines">Guidelines</a> for a proposal document</h2>
+<p>A proposal is more than a wish. "C++ should support JPEG
+  manipulation" is not a proposal. A class synopsis is not a
+  proposal. Even the documentation for a widely used library is not
+  a proposal. </p>
+
+<p>A proposal must provide the C++ committee with the information it needs to 
+determine if the proposed library component is suitable for standardization. The 
+most straightforward way to do this is to answer the questions asked in the
+<a href="#Organization">Organization of a typical proposal</a> section below.</p>
+
+<p>These things are important so that the standardization committee
+  can evaluate the proposal. A clear overall proposal is more important than finalizing
+  the exact standardese wording.  You should expect a proposal to go
+  through at least one revision before it is accepted, so if the
+  committee likes a proposal, there will be a later opportunity to
+  adjust the precise wording based on feedback from the committee.</p>
+
+<p>Assume that the target for your proposal is a library technical specification, unless 
+it modifies an existing standard library component or header. In that case, 
+assume your proposal is targeted at the standard itself. The Library Working 
+Group's procedure is now to wait until technical work is complete before making 
+a final decision on which route will be taken to publication, but the clear preference
+is for new library components to go into TRs, while modifications go into the standard.</p>
+
+<h2><a name="Organization">Organization</a> of a typical proposal</h2>
+
+<p>This is a template for a typical proposal for a medium to high complexity 
+feature. Proposals for simpler features will go into less detail.</p>
+
+<p>In addition to the section 
+headings given in the template, feel free to use the questions as sub-headings.
+<i>Italicized text</i> should be replaced by the indicated content.</p>
+<blockquote>
+  <table border="0" cellpadding="0" cellspacing="0" style="border-collapse: collapse" bordercolor="#111111" width="619">
+    <tr>
+      <td width="167" align="left" valign="top">Document number:</td>
+      <td width="452"><i>Nnnnn=yy-nnnn</i></td>
+    </tr>
+    <tr>
+      <td width="167" align="left" valign="top">Date:</td>
+      <td width="452"><i>yyyy-mm-dd</i></td>
+    </tr>
+    <tr>
+      <td width="167" align="left" valign="top">Project:</td>
+      <td width="452">Programming Language C++, Library Working Group</td>
+    </tr>
+    <tr>
+      <td width="167" align="left" valign="top">Reply-to:</td>
+      <td width="452"><i>Your name and email address; list multiple authors if 
+      applicable. It is OK to obfuscate the address like this: &quot;Jane Proposer &lt;jane 
+      at somewhere dot com&gt;</i></td>
+    </tr>
+  </table>
+
+
+    <p><b>I. Table of Contents</b></p>
+    <p><b>II. Introduction</b></p>
+    <p><i>A very brief high level view of your proposal, understandable by C++ 
+    committee members who are not necessarily experts in whatever domain you are 
+    addressing. </i> </p>
+    <p><b>III. Motivation and Scope</b></p>
+    <p>Why is this important? What kinds of problems does it
+    address? What is the intended user community? What level of programmers 
+    (novice, experienced, expert) is it intended to support? 
+    What existing practice is it based on? How widespread is its use? How long 
+    has it been in use? Is there a reference
+    implementation and test suite available for inspection?</p>
+    <p><b>IV. Impact On the Standard</b></p>
+    <p>What other library components does does it depend on, and what depends on it? Is it a pure
+    extension, or does it require changes to standard components? Can
+    it be implemented using C++11 compilers and libraries, or does it require
+    language or library features that are not part of C++11?</p>
+    <p><b>V. Design Decisions</b></p>
+    <p>Why did you choose the specific design that you did? What
+    alternatives did you consider, and what are the tradeoffs? What
+    are the consequences of your choice, for users and implementers?
+    What decisions are left up to implementers? If there are any
+    similar libraries in use, how do their design decisions compare to
+    yours?</p>
+    <p><b>VI. Technical Specifications</b></p>
+    <p><i>The committee needs technical specifications to be able to fully 
+    evaluate your proposal. Eventually these technical specifications will have 
+    to be in the form of full text for the standard or technical specification, often 
+    known as &quot;Standardese&quot;, but for an initial proposal there are several 
+    possibilities:</i></p>
+    <blockquote>
+      <ul>
+        <li><i>Provide some limited technical documentation. This might be OK 
+        for a very simple proposal such as a single function, but for anything 
+        beyond that the committee will likely ask for more detail. <br>
+&nbsp;</i></li>
+        <li><i>Provide technical documentation that is complete enough to fully 
+        evaluate your proposal. This documentation can be in the proposal itself 
+        or you can provide a link to documentation available on the web. If the 
+        committee likes your proposal, they will ask for a revised proposal with formal 
+        standardese wording. The committee recognizes that writing the formal 
+        ISO 
+    specification for a library component can be daunting and will make 
+    additional information and help available to get you started.<br>
+&nbsp;</i></li>
+        <li><i>Provide full &quot;Standardese.&quot; A standard is a contract between 
+        implementers and users, to make it possible for users to write portable 
+        code with specified semantics. It says what implementers are permitted 
+        to do, what they are required to do, and what users can and can't count 
+        on. The &quot;standardese&quot; should match the general style of exposition of 
+        the standard, and the specific rules set out in </i>17.5, Method of 
+        description (Informative) [description]<i>, but it does not have to match 
+        the exact margins or fonts or section numbering; those things will all 
+        be changed anyway.</i></li>
+      </ul>
+    </blockquote>
+    <p><b>VII. Acknowledgements</b></p>
+    <p><b>VIII. References</b></p>
+</blockquote>
+<h2><a name="Proposal-examples">Proposal examples</a></h2>
+<p>Successful proposals for TR1 can be used as models. Examples include:</p>
+<ul>
+<li>A Proposal to Add a Fixed Size Array Wrapper to the Standard Library,
+    WG21 Document N15458=03-0131, 2003.
+  <a href="http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2003/n1548.htm">
+  www.open-std.org/jtc1/sc22/wg21/docs/papers/2003/n1548.htm</a></li>
+
+<li>A Proposal to Add General Purpose Smart Pointers to the Library
+  Technical Report, WG21 Document N1450=03-0033, 2003. 
+  <a href="http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2003/n1450.html">
+  www.open-std.org/jtc1/sc22/wg21/docs/papers/2003/n1450.html</a></li>
+
+<li>A Proposal to add Regular Expressions to the Standard Library,
+  WG21 Document 03-0011=N1429, 2003. 
+  <a href="http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2003/n1429.htm">
+  www.open-std.org/jtc1/sc22/wg21/docs/papers/2003/n1429.htm</a></li>
+
+<li>A Proposal to Add an Extensible Random Number Facility to the
+  Standard Library (Revision 2), WG21 Document N1452, 2003.
+  <a href="http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2003/n1452.html">
+  www.open-std.org/jtc1/sc22/wg21/docs/papers/2003/n1452.html</a></li>
+</ul>
+
+<h2><a name="Submission-procedures">Submission procedures</a></h2>
+
+<p>Please note that details of these procedures are likely to change. Please 
+check the <a href="http://cplusplus.github.com/LWG">Library Working Group web 
+site</a> for the latest update to submission procedures.</p>
+<p>The proposal may be in PDF, HTML, or plain text formats. To submit a proposal:</p>
+
+<ul>
+  <li>Once you have written the proposal document, email it as an attachment to
+  <a href="mailto:lwgchair@gmail.com">lwgchair@gmail.com</a>, requesting a document 
+  number. You will get a reply in a few days with the document 
+  number, which will be in the form Nnnnn=yy-nnnn.&nbsp; If you circulate or otherwise 
+  publish the document before it has appeared in an official committee mailing, 
+  replace the N with a D (for draft). Make sure the date on the document is in 
+  the form yyyy-mm-dd. These are formal ISO requirements.<br>
+&nbsp;</li>
+  <li dir="ltr">
+<p dir="ltr">Add the document number to the document, and email it as an 
+attachment to <a href="mailto:lwgchair@gmail.com">lwgchair@gmail.com</a>. You 
+will get a reply in a few days acknowledging receipt.</p>
+
+  </li>
+</ul>
+<p dir="ltr">The proposal document will then appear in the next official 
+committee mailing.  The term &quot;mailing&quot; dates from when documents were
+circulated by physical mail. Mailings are published roughly three weeks before
+and two weeks after committee meetings, with mid-term mailings half way between
+meetings added to the schedule when needed.  Remember to allow a couple of weeks
+before the meeting to request a document number, otherwise your proposal may not
+go out until the following mailing, especially if this will be your first
+submission.</p>
+
+<p>
+  The proposal is then presented to the LWG at the next C++ committee meeting 
+  (see <a href="http://www.open-std.org/jtc1/sc22/wg21/docs/meetings">
+  www.open-std.org/jtc1/sc22/wg21/docs/meetings</a> for meeting schedules).
+  You should plan to attend and present your proposal yourself , or ensure that someone who 
+  understands your
+  proposal can present it for you.  Getting a proposal accepted is an interactive
+  process, and it is almost certain that the committee will have
+  questions.  At the least, you need to be willing to respond to email
+  queries.
+</p>
+
+<h2>
+  <a name="Acknowledgements">Acknowledgements</a></h2>
+
+<p>
+  This document is based on
+  <a href="http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2005/n1810.html">
+  N1810, Library Extension TR2 Call for Proposals</a>, by Howard Hinnant, Beman 
+  Dawes, and Matt Austern.</p>
+
+<hr>
+
+
+
+
+</body></html>
