@@ -1,0 +1,104 @@
+<?xml version='1.0' encoding='utf-8' standalone='no'?>
+<!DOCTYPE issue SYSTEM "lwg-issue.dtd">
+
+<issue num="4480" status="New">
+<title>`sender_concept` tags should use `_tag`, not `_t`</title>
+<section><sref ref="[execution.syn]"/></section>
+<submitter>Arthur O'Dwyer</submitter>
+<date>12 Nov 2025</date>
+<priority>99</priority>
+
+<discussion>
+<p>
+In November 2025 it was observed that the STL has exactly two places where member typedefs 
+are used to specify what concepts a type claims to conform to. The first is iterator concept 
+tags, and the second is sender/receiver concept tags. The former match widespread Boost 
+practice in using the suffix "`_tag`", e.g.
+</p>
+<blockquote><pre>
+struct forward_iterator_tag {};
+using iterator_category = std::forward_iterator_tag;
+using iterator_concept = std::forward_iterator_tag;
+</pre></blockquote>
+<p>
+The latter, adopted for C++26, currently use the suffix "_t", e.g.
+</p>
+<blockquote><pre>
+struct sender_t {};
+struct receiver_t {};
+struct scheduler_t {};
+struct operation_state_t {};
+using sender_concept = sender_t;
+using receiver_concept = receiver_t;
+using scheduler_concept = scheduler_t;
+using operation_state_concept = operation_state_t;
+</pre></blockquote>
+<p>
+For consistency with the existing STL and with Boost, we should rename each of these four C++26 types:
+</p>
+<ul>
+<li><p>`sender_t` ==> `sender_tag`</p></li>
+<li><p>`receiver_t` ==> `receiver_tag`</p></li>
+<li><p>`scheduler_t` ==> `scheduler_tag`</p></li>
+<li><p>`operation_state_t` ==> `operation_state_tag`</p></li>
+</ul>
+<p>
+Note the distinction between member-typedef "concept tags" like `forward_iterator_tag` and 
+`execution::sender_t(ag)`, as opposed to "tag constants" used in function signatures like 
+`defer_lock_t` and `execution::get_allocator_t`.
+<p/>
+Concept tags:
+</p>
+<ul>
+<li><p>intended for use as member typedefs</p></li>
+<li><p>member typedef's name ends in `_category` or `_concept`</p></li>
+<li><p>tag type's name ends in `_tag`</p></li>
+<li><p>unsuffixed form is a concept, e.g. `concept forward_iterator`, `concept execution::sender`, `concept execution::operation_state`</p></li>
+<li><p>always a 1:1 relationship between a tag and a concept</p></li>
+<li><p>frequently used as a base class for more tag types</p></li>
+</ul>
+<p>
+Tag constants:
+</p>
+<ul>
+<li><p>never used as member typedefs</p></li>
+<li><p>tag type's name ends in `_t`</p></li>
+<li><p>unsuffixed form is a constant global variable, e.g. `constexpr auto allocator_arg`, `in_place_type`, 
+`defer_lock`, `adopt_lock`, `execution::set_value`, `execution::get_allocator`</p></li>
+<li><p>never represent a concept</p></li>
+<li><p>never used as a base class for more tag types</p></li>
+</ul>
+<p>
+Examples of "concept tags" from outside the STL include these from Boost:
+</p>
+<ul>
+<li><p>Boost.Graph has member typedef `directed_category` corresponding to `directed_tag`, `undirected_tag`, etc.</p></li>
+<li><p>Boost.Graph has member typedef `traversal_category` corresponding to `vertex_list_graph_tag`, etc.</p></li>
+<li><p>Boost.Fusion has member typedef `fusion_tag` corresponding to `deque_tag`, `vector_tag`, etc.</p></li>
+<li><p>Boost.Numeric.Odeint has member typedef `stepper_category` corresponding to `stepper_tag`, etc.</p></li>
+<li><p>Boost.Numeric.Ublas has member typedef `dispatch_category` corresponding to `row_major_tag`, `column_major_tag`, etc.</p></li>
+<li><p>Boost.Numeric.Ublas has member typedef `type_category` corresponding to `tensor_tag`, etc.</p></li>
+<li><p>Boost.Numeric.Ublas has member typedef `storage_category` corresponding to `dense_tag`, `packed_tag`, 
+`sparse_tag`, etc.</p></li>
+</ul>
+<p>
+A few more examples can be found via GitHub search:
+</p>
+<ul>
+<li><p><a href="https://github.com/search?q=language%3AC%2B%2B+%2F%28%3F-i%29using+.*_concept+%3D+.*_tag%3B%2F+NOT+%2Fitera%3Ftor_concept%2F&amp;type=code">[search-results A]</a></p></li>
+<li><p><a href="https://github.com/search?q=language%3AC%2B%2B+%2F%28%3F-i%29using+.*_category+%3D+.*_tag%3B%2F+NOT+%2Fiterator_category%2F&amp;type=code">[search-results B]</a></p></li>
+</ul>
+<p>
+(Notably Jared Hoberock's Croquet, a "prototype implementation of C++ executors, senders, &amp; receivers" from ~2019, 
+used `sender_tag` in place of `sender_t`.)
+<p/>
+For consistency with the existing library, we should rename each of these four C++26 types, e.g. `sender_t` to 
+`sender_tag`... and this needs to be done now, in the C++26 cycle, because it cannot be done later (in which case 
+we will have failed the community).
+</p>
+</discussion>
+
+<resolution>
+</resolution>
+
+</issue>
