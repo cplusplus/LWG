@@ -1,0 +1,67 @@
+<?xml version='1.0' encoding='utf-8' standalone='no'?>
+<!DOCTYPE issue SYSTEM "lwg-issue.dtd">
+
+<issue num="4481" status="New">
+<title>Disallow <tt>chrono::duration&lt;const T, P&gt;</tt></title>
+<section><sref ref="[time.duration.general]"/></section>
+<submitter>Jonathan Wakely</submitter>
+<date>26 Nov 2025</date>
+<priority>99</priority>
+
+<discussion>
+<p>
+Using a const type as the `rep` for a `chrono::duration` causes various problems
+but there seems to be no rule preventing it.
+</p>
+<p>
+The non-const member operators that modify a `duration` don't work if
+the `rep` type is const, e.g.
+<code>duration&lt;const int&gt;::operator++()</code> 
+is typically ill-formed (unless the implementation chooses to store
+<code>remove_cv_t&lt;rep&gt;</code> as the data member).
+<code>hash&lt;duration&lt;const int&gt;&gt;</code> uses
+<code>hash&lt;const int&gt;</code> which is not enabled,
+so you can't hash a `duration` with a const rep.
+Generic code that wants to perform arithmetic with the `rep` type
+would need to remember to consistently use <code>remove_cv_t&lt;rep&gt;</code>
+to work correctly with const types.
+</p>
+<p>
+We should just disallow const `rep` types.
+If you want a non-modifiable duration,
+use <code>const duration&lt;R,P&gt;</code>
+not <code>duration&lt;const R, P&gt;</code>
+</p>
+
+</discussion>
+
+<resolution>
+<p>
+This wording is relative to <paper num="N5014"/>.
+</p>
+
+<ol>
+<li><p>Modify <sref ref="[time.duration.general]"/> as indicated:</p>
+
+<blockquote>
+<p>-2-
+`Rep` shall be an arithmetic type or a class emulating an arithmetic type.
+If <ins>a specialization of</ins> `duration` is instantiated with a
+<ins>cv-qualified type or a specialization of</ins> `duration` <del>type</del>
+as the argument for the template parameter `Rep`, the program is ill-formed.
+</p>
+<p>-3-
+If `Period` is not a specialization of `ratio`, the program is ill-formed.
+If `Period::num` is not positive, the program is ill-formed.
+</p>
+<p>-4-
+Members of `duration` do not throw exceptions other than those thrown by
+the indicated operations on their representations.
+</p>
+</blockquote>
+</li>
+</ol>
+
+</resolution>
+
+</issue>
