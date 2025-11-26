@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="4477" status="New">
+<issue num="4477" status="Tentatively Ready">
 <title>Placement `operator delete` should be constexpr</title>
 <section><sref ref="[new.delete.placement]"/></section>
 <submitter>Jakub Jelinek</submitter>
@@ -21,6 +21,11 @@ it invokes placement operator delete.  And P2747R2 didn't touch that.
 <p>
 This makes it impossible to handle an exception thrown by a placement
 new-expression during constant evaluation.
+</p>
+
+<note>2025-11-26; Reflector poll.</note>
+<p>
+Set status to Tentatively Ready after six votes in favour during reflector poll.
 </p>
 </discussion>
 
