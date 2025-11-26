@@ -1,0 +1,151 @@
+<?xml version='1.0' encoding='utf-8' standalone='no'?>
+<!DOCTYPE issue SYSTEM "lwg-issue.dtd">
+
+<issue num="4482" status="New">
+<title>`adjacent_view::{begin,end}` const overloads are under-constrained</title>
+<section><sref ref="[range.adjacent.view]"/></section>
+<submitter>Hui Xie</submitter>
+<date>23 Nov 2025</date>
+<priority>99</priority>
+
+<discussion>
+<p>
+Currently `adjacent_view::begin` and `end const` overloads are constrained as follows
+</p>
+<blockquote><pre>
+constexpr auto begin() const requires range&lt;const V&gt;
+constexpr auto end() const requires range&lt;const V&gt;
+</pre></blockquote>
+<p>
+However, `adjacent_view` itself requires `forward_range`: 
+</p>
+<blockquote><pre>
+template&lt;forward_range V, size_t N&gt;
+  requires view&lt;V&gt; &amp;&amp; (N &gt; 0)
+class adjacent_view;
+</pre></blockquote>
+<p>
+This means that if the underlying range's `const begin/end` returns input-only iterator, 
+the `adjacent_view`'s `const begin/end` are invocable, but they will result in some hard error
+(<a href="https://godbolt.org/z/zs4aoPfjj">demo</a>):
+</p>
+<blockquote><pre>
+#include &lt;ranges&gt;
+
+struct input_iter 
+{
+  const int* iter;
+
+  input_iter(const int* ii) : iter(ii) {}
+  input_iter(const input_iter&amp;) = delete;
+  input_iter(input_iter&amp;&amp;) = default;
+  input_iter&amp; operator=(input_iter const&amp;) = delete;
+  input_iter&amp; operator=(input_iter&amp;&amp;) = default;
+
+  using iterator_concept = std::input_iterator_tag;
+  using difference_type = std::ptrdiff_t;
+  using value_type = int;
+
+  const int&amp; operator*() const { return *iter; }
+  input_iter&amp; operator++() { ++iter; return *this; }
+  void operator++(int) { ++iter; }
+};
+
+struct sent 
+{
+  const int* iter;
+  
+  friend bool operator==(const input_iter&amp; i, const sent&amp; s) {
+    return i.iter == s.iter;
+  }
+
+};
+
+static_assert(std::input_iterator&lt;input_iter&gt;);
+static_assert(!std::forward_iterator&lt;input_iter&gt;);
+static_assert(std::sentinel_for&lt;sent, input_iter&gt;);
+
+struct r : std::ranges::view_base 
+{
+  int* iter;
+  size_t size;
+
+  template&lt;std::size_t N&gt;
+  r(int (&amp;i)[N]) : iter(i), size(N){}
+
+  auto begin() { return iter; }
+  auto end() { return iter + size; }
+
+  auto begin() const { return input_iter{iter}; }
+  auto end() const { return sent{iter + size}; }
+
+};
+
+static_assert(std::ranges::range&lt;r&gt;);
+static_assert(std::ranges::range&lt;const r&gt;);
+
+int main() {
+  int input[] = { 1, 2, 3, 4, 5 };
+  auto v = r{input} | std::views::adjacent&lt;2&gt;;
+  for (auto&amp;&amp; t : v) {} // ok
+  auto it = std::as_const(v).begin(); // <span style="color:#C80000;font-weight:bold">ill-formed</span>
+}
+</pre></blockquote>
+<p>
+<b>Daniel:</b>
+<p/>
+This issue has considerable wording overlap with LWG <iref ref="3731"/>.
+</p>
+</discussion>
+
+<resolution>
+<p>
+This wording is relative to <paper num="N5014"/>.
+</p>
+
+<ol>
+<li><p>Modify <sref ref="[range.adjacent.view]"/>, class template `adjacent_view` synopsis, as indicated:</p>
+
+<blockquote>
+<pre>
+namespace std::ranges {
+  template&lt;forward_range V, size_t N&gt;
+    requires view&lt;V&gt; &amp;&amp; (N &gt; 0)
+  class adjacent_view : public view_interface&lt;adjacent_view&lt;V, N&gt;&gt; {
+    [&hellip;]
+  public:
+    [&hellip;]
+    constexpr auto begin() requires (!<i>simple-view</i>&lt;V&gt;) {
+      return <i>iterator</i>&lt;false&gt;(ranges::begin(<i>base_</i>), ranges::end(<i>base_</i>));
+    }
+    
+    constexpr auto begin() const requires <ins>forward_</ins>range&lt;const V&gt; {
+      return <i>iterator</i>&lt;true&gt;(ranges::begin(<i>base_</i>), ranges::end(<i>base_</i>));
+    }
+    
+    constexpr auto end() requires (!<i>simple-view</i>&lt;V&gt;) {
+      if constexpr (common_range&lt;V&gt;) {
+        return <i>iterator</i>&lt;false&gt;(<i>as-sentinel</i>{}, ranges::begin(<i>base_</i>), ranges::end(<i>base_</i>));
+      } else {    
+        return <i>sentinel</i>&lt;false&gt;(ranges::end(<i>base_</i>));
+      }
+    }
+    
+    constexpr auto end() const requires <ins>forward_</ins>range&lt;const V&gt; {
+      if constexpr (common_range&lt;const V&gt;) {
+        return <i>iterator</i>&lt;true&gt;(<i>as-sentinel</i>{}, ranges::begin(<i>base_</i>), ranges::end(<i>base_</i>));
+      } else {
+        return <i>sentinel</i>&lt;true&gt;(ranges::end(<i>base_</i>));
+      }
+    }
+    [&hellip;]
+  };
+}
+</pre>
+</blockquote>
+</li>
+</ol>
+
+</resolution>
+
+</issue>
