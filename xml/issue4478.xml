@@ -6,7 +6,7 @@
 <section><sref ref="[meta.reflection.names]"/></section>
 <submitter>Jakub Jelinek</submitter>
 <date>18 Nov 2025</date>
-<priority>99</priority>
+<priority>1</priority>
 
 <discussion>
 <p>
@@ -18,6 +18,14 @@ things in the list.
 <p>
 We should add an item to the list for annotations,
 or just add a catch-all "Otherwise false" to the end of the list.
+</p>
+
+<note>2025-11-26; Reflector poll.</note>
+<p>
+Set priority to 1 after reflector poll.
+</p>
+<p>
+'value' and 'object' are missing too.
 </p>
 </discussion>
 
