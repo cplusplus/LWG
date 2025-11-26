@@ -2,7 +2,7 @@
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
 <issue num="4479" status="New">
-<title>No restrictions on which types can be `tuple` elements</title>
+<title>Missing restrictions on which types can be `tuple` elements</title>
 <section><sref ref="[tuple.tuple.general]"/></section>
 <submitter>Davis Herring</submitter>
 <date>21 Nov 2025</date>
@@ -10,8 +10,28 @@
 
 <discussion>
 <p>
-We do not prohibit nonsense like <code>std::tuple&lt;void&gt;</code>
-or <code>std::tuple&lt;int()&gt;</code>.
+We do not say that instantiating types like <code>std::tuple&lt;void&gt;</code>
+or <code>std::tuple&lt;int()&gt;</code> won't work.
+</p>
+
+
+<note>2025-11-26; Jonathan comments.</note>
+<p>
+<sref ref="[res.on.functions]"/> already makes it undefined behaviour to
+instantiate `tuple` with an incomplete type, which includes `void` and `int[]`.
+It would be better if it was ill-formed not undefined though, and that doesn't
+say anything about <code>tuple&lt;int()&gt;</code> or
+<code>tuple&lt;AbstractClassType&gt;</code>.
+Any restrictions should only apply when `tuple` is instantiated,
+not just when it's declared, as that would prevent using it as a typelist.
+</p>
+<p>
+We might need to specify that `tuple_size` and `tuple_element` can be
+instantiated with incomplete types that are specializations of `tuple`,
+because otherwise <sref ref="[res.on.functions]"/> makes that undefined.
+`tuple_size` and `tuple_element` don't need a complete `tuple` type
+to give an answer, and they don't need to instantiate a `tuple` type.
+So <code>tuple_element_t&lt;0, tuple&lt;void&gt;&gt;</code> should work.
 </p>
 </discussion>
 
