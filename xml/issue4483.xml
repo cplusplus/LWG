@@ -22,7 +22,7 @@ rejected.</p>
 
 <p>Furthermore, `define_static_object` currently uses <tt>define_static_array(span(addressof(t), 1)).data()</tt>,
 for array types. As for `T[N]` input this creates an multidimensional `T[1][N]` constant parameter
-object, this function does not support array at all. Furthermore creating an distinct template 
+object, this function does not support array at all. Furthermore creating a distinct template 
 parameter object leads to emission of (otherwise unnecessary) additional symbols, and breaks the
 invariant that for all supported object types <tt>&amp;constant_of(o) == define_static_object(o)</tt>.
 We should use `reflect_constant_array` for arrays directly.</p>
