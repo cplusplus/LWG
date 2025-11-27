@@ -1,0 +1,91 @@
+<?xml version='1.0' encoding='utf-8' standalone='no'?>
+<!DOCTYPE issue SYSTEM "lwg-issue.dtd">
+
+<issue num="4484" status="New">
+<title>`std::meta::reflect_constant_{string,array}` talks about template parameter objects of built-in array types</title>
+<section>
+<sref ref="[meta.define.static]"/>
+</section>
+<submitter>Jiang An</submitter>
+<date>25 Nov 2025</date>
+<priority>99</priority>
+
+<discussion>
+<p>
+Currently, <sref ref="[meta.define.static]"/> is talking about template parameter objects of built-in array types, 
+but per <sref ref="[temp.param]"/>/13, a template parameter object must be of a class type. So 
+`std::meta::reflect_constant_{string,array}` are perhaps mis-specified.
+</p>
+</discussion>
+
+<resolution>
+<p>
+This wording is relative to <paper num="N5014"/>.
+</p>
+
+<ol>
+
+<li><p>Modify <sref ref="[meta.define.static]"/> as indicated:</p>
+
+<blockquote>
+<pre>
+template&lt;ranges::input_range R&gt;
+  consteval info reflect_constant_string(R&amp;&amp; r);
+</pre>
+<blockquote>
+<p>
+-2- Let `CharT` be <tt>ranges::range_value_t&lt;R&gt;</tt>.
+<p/>
+-3- <i>Mandates</i>: `CharT` is one of `char`, `wchar_t`, `char8_t`, `char16_t`, `char32_t`.
+<p/>
+-4- Let <tt><i>V</i></tt> be the pack of values of type `CharT` whose elements 
+are the corresponding elements of `r`, except that if `r` refers to a string literal object, 
+then <tt><i>V</i></tt> does not include the trailing null terminator of `r`.
+<p/>
+-5- Let <tt><i>P</i></tt> be <del>the template parameter object 
+(<sref ref="[temp.param]"/>)</del><ins>a constexpr object with static storage duration 
+(<sref ref="[basic.stc.general]"/>)</ins> of type <tt>const CharT[sizeof...(<i>V</i>) + 1]</tt> 
+initialized with <tt>{<i>V</i> ..., CharT()}</tt>.
+<p/>
+[&hellip;]
+</p>
+</blockquote>
+<pre>
+template&lt;ranges::input_range R&gt;
+  consteval info reflect_constant_array(R&amp;&amp; r);
+</pre>
+<blockquote>
+<p>
+-8- Let `T` be <tt>ranges::range_value_t&lt;R&gt;</tt>.
+<p/>
+-9- <i>Mandates</i>: `T` is a structural type (<sref ref="[temp.param]"/>), [&hellip;].
+<p/>
+-10- Let <tt><i>V</i></tt> be the pack of values [&hellip;].
+<p/>
+-11- Let <tt><i>P</i></tt> be
+</p>
+<ul style="list-style-type: none">
+<li>(11.1) &mdash; 
+If <tt>sizeof...(<i>V</i>) &gt; 0</tt> is `true`, then <del>the template parameter object 
+(<sref ref="[temp.param]"/>)</del><ins>a constexpr object with static storage duration 
+(<sref ref="[basic.stc.general]"/>)</ins> of type <tt>const T[sizeof...(<i>V</i>)]</tt> 
+initialized with <tt>{[:<i>V</i>:]...}</tt>.
+</li>
+<li>(11.2) &mdash; 
+Otherwise, the template parameter object of type <tt>array&lt;T, 0&gt;</tt> initialized with `{}`.
+</li>
+</ul>
+<p>
+[&hellip;]
+</p>
+</blockquote>
+</blockquote>
+
+</li>
+</ol>
+
+</resolution>
+
+
+
+</issue>
