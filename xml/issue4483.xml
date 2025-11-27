@@ -68,7 +68,7 @@ where the <i>i<sup>th</sup></i> element is
 <ins>and <i>it<sub>i</sub></i> is an iterator to the <i>i<sup>th</sup></i> element of `r`</ins>.</p>
 <p>-11- Let <tt><i>P</i></tt> be
 <ul style="list-style-type: none">
-<li>(11.1) &mdash; If <tt>sizeof...(V) > 0</tt> is true, then the template parameter object (<sref ref="[temp.param]"/>) of type const `T[sizeof...(V)]` 
+<li>(11.1) &mdash; If <tt>sizeof...(V) > 0</tt> is `true`, then the template parameter object (<sref ref="[temp.param]"/>) of type const `T[sizeof...(V)]` 
    <del>initialized with `{[:V:]...}`</del><ins>, such that <tt>constant_of(<i>P</i>[<i>I</i>]) == V...[<i>I</i>]</tt> is `true`
    for all <tt><i>I</i></tt> in range [`0`, `sizeof...(V)`)</ins>.</li>
 <li>(11.2) &mdash; Otherwise, the template parameter object of type <tt>const array&lt;T, 0&gt;</tt> initialized with `{}`.</li>
