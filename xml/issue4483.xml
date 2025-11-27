@@ -55,7 +55,7 @@ where <i>it<sub>i</sub></i> is an iterator to the <i>i<sup>th</sup></i> element 
 <li><ins>(9.1) &mdash;</ins> <tt>T</tt> is a structural type (<sref ref="[temp.param]"/>), 
  <del><tt>is_constructible_v&lt;T, ranges::range_reference_t&lt;R&gt;&gt;</tt> is `true`, and</del>
 </li>
-<li><ins>(9.2) &mdash;</ins> <tt>T</tt> satisfies <tt>copy_constructible</tt><ins>, and</ins></li>
+<li><ins>(9.2) &mdash;</ins> `T` satisfies `copy_constructible`<ins>, and</ins></li>
 <li><ins>(9.3) &mdash;</ins> <tt>U</tt> does not denote array type, then <tt>is_constructible_v&lt;T, ranges::range_reference_t&lt;R&gt;&gt;</tt> is <tt>true</tt>.</li>
 </ul>
 </p>
