@@ -76,7 +76,7 @@ where the <i>i<sup>th</sup></i> element is
 <p>-12- <i>Returns</i>: <tt>^^<i>P</i></tt>.</p>
 <p>-13- <i>Throws</i>: Any <ins>of</ins>
 <ul style="list-style-type: none">
-<li><ins>(10.1) &mdash; exception thrown by incerement and dereference operations on iterator to `r` and comparision of such iterator to sentinel,</ins></li>
+<li><ins>(10.1) &mdash; exception thrown by increment and dereference operations on iterator to `r` and comparison of such iterator to sentinel,</ins></li>
 <li><ins>(10.2) &mdash;</ins> exception thrown by the evaluation of any <ins>argument of reflect_constant</ins><del><i>e<sub>i</sub></i></del>, or</li>
 <li><ins>(10.3) &mdash;</ins> `meta::exception` if evaluation of any <del><tt>reflect_constant(<i>e<sub>i</sub></i>)</tt></del><ins>evaluation of
 <tt>reflect_constant</tt> or <tt>reflect_constant_array</tt></ins> would exit via an exception.</li>
