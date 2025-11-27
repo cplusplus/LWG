@@ -62,7 +62,7 @@ where <i>it<sub>i</sub></i> is an iterator to the <i>i<sup>th</sup></i> element 
 <p>-10- Let <tt>V</tt> be the pack of values of type `info` of the same size as <tt>r</tt>,
 where the <i>i<sup>th</sup></i> element is
 <ul style="list-style-type: none">
- <li><ins>(10.1) &mdash; <tt>reflect_constant_array(*<i>it<sub>i</sub></i>)</tt> if <tt>U</tt> is array type,</ins></li>
+ <li><ins>(10.1) &mdash; <tt>reflect_constant_array(*<i>it<sub>i</sub></i>)</tt> if <tt>U</tt> is an array type,</ins></li>
  <li><ins>(10.2) &mdash;</ins> <tt>reflect_constant(<ins>static_cast&lt;T&gt;(*<i>it<sub>i</sub></i>)</ins><del><i>e<sub>i</sub></i></del>)</tt><ins> otherwise,</ins></li>
 </ul>
 <ins>and <i>it<sub>i</sub></i> is an iterator to the <i>i<sup>th</sup></i> element of `r`</ins>.</p>
