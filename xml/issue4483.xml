@@ -20,7 +20,7 @@ with multidimensional array or `span` of arrays is ill formed due <i>Mandate</i>
 (<tt>reflect_constant_arry</tt> strips outermost extents), while multi-dimensional array are
 rejected.</p>
 
-<p>Futhremore, `define_static_object` currently uses <tt>define_static_array(span(addressof(t), 1)).data()</tt>,
+<p>Furthermore, `define_static_object` currently uses <tt>define_static_array(span(addressof(t), 1)).data()</tt>,
 for array types. As for `T[N]` input this creates an multidimensional `T[1][N]` constant parameter
 object, this function does not support array at all. Futhermore creating an distinct template 
 parameter object leads to emission of (otherwise uncessary) additional symbols, and breaks the
