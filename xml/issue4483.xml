@@ -22,7 +22,7 @@ rejected.</p>
 
 <p>Furthermore, `define_static_object` currently uses <tt>define_static_array(span(addressof(t), 1)).data()</tt>,
 for array types. Since for `T[N]` input this creates an multidimensional `T[1][N]` constant parameter
-object, this function does not support arrays at all. Furthermore creating a distinct template 
+object, this function does not support arrays at all. Creating a distinct template 
 parameter object leads to emission of (otherwise unnecessary) additional symbols, and breaks the
 invariant that for all supported object types <tt>&amp;constant_of(o) == define_static_object(o)</tt>.
 We should use `reflect_constant_array` for arrays directly.</p>
@@ -52,11 +52,11 @@ where <i>it<sub>i</sub></i> is an iterator to the <i>i<sup>th</sup></i> element 
 </p>
 <p>-9- <i>Mandates</i>:
 <ul style="list-style-type: none">
-<li><ins>(9.1) &mdash;</ins> <tt>T</tt> is a structural type (<sref ref="[temp.param]"/>), 
+<li><ins>(9.1) &mdash;</ins> <tt>T</tt> is a structural type (<sref ref="[temp.param]"/>),
  <del><tt>is_constructible_v&lt;T, ranges::range_reference_t&lt;R&gt;&gt;</tt> is `true`, and</del>
 </li>
 <li><ins>(9.2) &mdash;</ins> `T` satisfies `copy_constructible`<ins>, and</ins></li>
-<li><ins>(9.3) &mdash;</ins> if `U` does is not an array type, then <tt>is_constructible_v&lt;T, ranges::range_reference_t&lt;R&gt;&gt;</tt> is `true`.</li>
+<li><ins>(9.3) &mdash;</ins> if `U` is not an array type, then <tt>is_constructible_v&lt;T, ranges::range_reference_t&lt;R&gt;&gt;</tt> is `true`.</li>
 </ul>
 </p>
 <p>-10- Let `V` be the pack of values of type `info` of the same size as `r`,
@@ -68,19 +68,18 @@ where the <i>i<sup>th</sup></i> element is
 <ins>and <i>it<sub>i</sub></i> is an iterator to the <i>i<sup>th</sup></i> element of `r`</ins>.</p>
 <p>-11- Let <tt><i>P</i></tt> be
 <ul style="list-style-type: none">
-<li>(11.1) &mdash; If <tt>sizeof...(V) > 0</tt> is `true`, then the template parameter object (<sref ref="[temp.param]"/>) of type const `T[sizeof...(V)]` 
+<li>(11.1) &mdash; If <tt>sizeof...(V) > 0</tt> is `true`, then the template parameter object (<sref ref="[temp.param]"/>) of type const `T[sizeof...(V)]`
    <del>initialized with `{[:V:]...}`</del><ins>, such that <tt>constant_of(<i>P</i>[<i>I</i>]) == V...[<i>I</i>]</tt> is `true`
    for all <tt><i>I</i></tt> in range [`0`, `sizeof...(V)`)</ins>.</li>
 <li>(11.2) &mdash; Otherwise, the template parameter object of type <tt>const array&lt;T, 0&gt;</tt> initialized with `{}`.</li>
 </ul></p>
 <p>-12- <i>Returns</i>: <tt>^^<i>P</i></tt>.</p>
-<p>-13- <i>Throws</i>: Any <ins>of</ins>
-<ul style="list-style-type: none">
-<li><ins>(10.1) &mdash; exception thrown by increment and dereference operations on iterator to `r` and comparison of such iterator to sentinel,</ins></li>
-<li><ins>(10.2) &mdash;</ins> exception thrown by the evaluation of any <ins>argument of reflect_constant</ins><del><i>e<sub>i</sub></i></del>, or</li>
-<li><ins>(10.3) &mdash;</ins> `meta::exception` if evaluation of any <del><tt>reflect_constant(<i>e<sub>i</sub></i>)</tt></del><ins>evaluation of
-<tt>reflect_constant</tt> or <tt>reflect_constant_array</tt></ins> would exit via an exception.</li>
-</ul></p>
+<p>-13- <i>Throws</i>:
+<ins>Any exception thrown by increment and dereference operations on iterator to `r` and comparison of such iterator to sentinel.</ins>
+Any exception thrown by the evaluation of any <ins>argument of `reflect_constant`.</ins><del><i>e<sub>i</sub></i>, or</del>
+`meta::exception` if evaluation of any <del><tt>reflect_constant(<i>e<sub>i</sub></i>)</tt></del><ins>evaluation of
+<tt>reflect_constant</tt> or <tt>reflect_constant_array</tt></ins> would exit via an exception.
+</p>
 </blockquote>
 [&hellip;]
 
@@ -95,7 +94,7 @@ using U = remove_cvref_t&lt;T&gt;;
 if constexpr (meta::is_class_type(^^U)) {
   return addressof(meta::extract&lt;const U&amp;&gt;(meta::reflect_constant(std::forward&lt;T&gt;(t))));
 <ins>} else if constexpr (meta::is_array_type(^^U)) {
- return addressof(meta::extract&lt;const U&amp;&gt;(meta::reflect_constant_array(std::forward&lt;T&gt;(t))));</ins>
+  return addressof(meta::extract&lt;const U&amp;&gt;(meta::reflect_constant_array(std::forward&lt;T&gt;(t))));</ins>
 } else {
   return define_static_array(span(addressof(t), 1)).data();
 }
