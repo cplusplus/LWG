@@ -13,7 +13,7 @@
 <discussion>
 <p>As any array type (even of structural types) is not considered an structural type, per
 <sref ref="[temp.param]"/> p12, any invocation of `reflect_constant_array`/`define_static_array`
-with multidimensional array or `span` of arrays is ill formed due <i>Mandate</i> in
+with multidimensional array or `span` of arrays is ill formed due to the <i>Mandates</i> in
 <sref ref="meta.define.static"/> p8 that requires range value type to be structural.</p>
 
 <p>As a consequence, `constant_of` currently supports only single-dimensional array
