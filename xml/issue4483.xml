@@ -59,7 +59,7 @@ where <i>it<sub>i</sub></i> is an iterator to the <i>i<sup>th</sup></i> element 
 <li><ins>(9.3) &mdash;</ins> if `U` does is not an array type, then <tt>is_constructible_v&lt;T, ranges::range_reference_t&lt;R&gt;&gt;</tt> is `true`.</li>
 </ul>
 </p>
-<p>-10- Let <tt>V</tt> be the pack of values of type `info` of the same size as <tt>r</tt>,
+<p>-10- Let `V` be the pack of values of type `info` of the same size as `r`,
 where the <i>i<sup>th</sup></i> element is
 <ul style="list-style-type: none">
  <li><ins>(10.1) &mdash; <tt>reflect_constant_array(*<i>it<sub>i</sub></i>)</tt> if <tt>U</tt> is an array type,</ins></li>
