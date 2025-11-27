@@ -17,7 +17,7 @@ with multidimensional array or `span` of arrays is ill formed due to the <i>Mand
 <sref ref="meta.define.static"/> p8 that requires range value type to be structural.</p>
 
 <p>As a consequence, `constant_of` currently supports only single-dimensional array
-(<tt>reflect_constant_arry</tt> strips outermost extents), while multi-dimensional array are
+(<tt>reflect_constant_array</tt> strips outermost extents), while multi-dimensional array are
 rejected.</p>
 
 <p>Furthermore, `define_static_object` currently uses <tt>define_static_array(span(addressof(t), 1)).data()</tt>,
