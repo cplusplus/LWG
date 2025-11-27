@@ -16,6 +16,11 @@ Currently, <sref ref="[meta.define.static]"/> is talking about template paramete
 but per <sref ref="[temp.param]"/>/13, a template parameter object must be of a class type. So 
 `std::meta::reflect_constant_{string,array}` are perhaps mis-specified.
 </p>
+
+<note>2025-11-27; Tomasz comments</note>
+<p>
+This was on core side by LWG <iref ref="4437"/>. The usage of the term template parameter object is intended (uniqueness).
+</p>
 </discussion>
 
 <resolution>
