@@ -1,0 +1,112 @@
+<?xml version='1.0' encoding='utf-8' standalone='no'?>
+<!DOCTYPE issue SYSTEM "lwg-issue.dtd">
+
+<issue num="4483" status="New">
+<title>Multidimensional arrays are not supported by <tt>meta::reflect_constant_array</tt> and related functions</title>
+<section>
+<sref ref="[meta.define.static]"/>
+</section>
+<submitter>Tomasz Kamiński</submitter>
+<date>27 Nov 2025</date>
+<priority>99</priority>
+
+<discussion>
+<p>As any array type (even of structural types) is not considered an structural type, per
+<sref ref="[temp.param]"/> p12, any invocation of `reflect_constant_array`/`define_static_array`
+with multidimensional array or `span` of arrays is ill formed due <i>Mandate</i> in
+<sref ref="meta.define.static"/> p8 that requires range value type to be structural.</p>
+
+<p>As a consequence, `constant_of` currently supports only single-dimensional array
+(<tt>reflect_constant_arry</tt> strips outermost extents), while multi-dimensional array are
+rejected.</p>
+
+<p>Futhremore, `define_static_object` currently uses <tt>define_static_array(span(addressof(t), 1)).data()</tt>,
+for array types. As for `T[N]` input this creates an multidimensional `T[1][N]` constant parameter
+object, this function does not support array at all. Futhermore creating an distinct template 
+parameter object leads to emission of (otherwise uncessary) additional symbols, and breaks the
+invariant that for all supported object types `&amp;constant_of(o) == define_static_object(o)`.
+We should use `reflect_constant_array` for arrays directly.</p>
+
+<p>The <i>Throws</i> clause of `reflect_constant_array` was updated to include any exception
+thrown by iteration over range.</p>
+</discussion>
+
+<resolution>
+<p>
+This wording is relative to <paper num="N5014"/> ammended with changes from LWG <iref ref="4432"/>.
+</p>
+
+<ol>
+
+<li><p>Modify <sref ref="[meta.define.static]"/> as indicated:</p>
+
+<pre>
+template&lt;ranges::input_range R&gt;
+  consteval info reflect_constant_array(R&amp;&amp; r);
+</pre>
+<blockquote>
+<p>-8- Let <tt><del>T</del><ins>U</ins></tt> be <tt>ranges::range_value_t&lt;R&gt;</tt>
+and <ins><tt>T</tt> be <tt>remove_all_extents_&lt;U&gt;</tt></ins>
+<del><i>e<sub>i</sub></i> be <tt>static_cast&lt;T&gt;(*<i>it<sub>i</sub></i>)</tt>,
+where <i>it<sub>i</sub></i> is an iterator to the <i>i<sup>th</sup></i> element of `r`</del>.
+</p>
+<p>-9- <i>Mandates</i>:
+<ul style="list-style-type: none">
+<li><ins>(9.1) &mdash;</ins> <tt>T</tt> is a structural type (<sref ref="[temp.param]"/>), 
+ <del><tt>is_constructible_v&lt;T, ranges::range_reference_t&lt;R&gt;&gt;</tt> is <tt>true</tt>, and</del>
+</li>
+<li><ins>(9.2) &mdash;</ins> <tt>T</tt> satisfies <tt>copy_constructible</tt><ins>, and</ins></li>
+<li><ins>(9.3) &mdash;</ins> <tt>U</tt> does not denote array type, then <tt>is_constructible_v&lt;T, ranges::range_reference_t&lt;R&gt;&gt;</tt> is <tt>true</tt>.</li>
+</ul>
+</p>
+<p>-10- Let <tt>V</tt> be the pack of values of type `info` of the same size as <tt>r</tt>,
+where the <i>i<sup>th</sup></i> element is
+<ul style="list-style-type: none">
+ <li><ins>(10.1) &mdash; <tt>reflect_constant_array(*<i>it<sub>i</sub></i>)</tt> if <tt>U</tt> is array type,</ins></li>
+ <li><ins>(10.2) &mdash;</ins> <tt>reflect_constant(<ins>static_cast&lt;T&gt;(*<i>it<sub>i</sub></i>)</ins><del><i>e<sub>i</sub></i></del>)</tt><ins> otherwise,</ins></li>
+</ul>
+<ins>and <i>it<sub>i</sub></i> is an iterator to the <i>i<sup>th</sup></i> element of `r`</ins>.</p>
+<p>-11- Let <tt><i>P</i></tt> be
+<ul style="list-style-type: none">
+<li>(11.1) &mdash; If <tt>sizeof...(V) > 0</tt> is true, then the template parameter object (<sref ref="[temp.param]"/>) of type const `T[sizeof...(V)]` 
+   <del>initialized with `{[:V:]...}`</del><ins>, such that <tt>constant_of(<i>P</i>[<i>I</i>]) == V...[<i>I</i>]</tt> is `true`
+   for all <tt><i>I</i></tt> in range [`0`, `sizeof...(V)`)</ins>.</li>
+<li>(11.2) &mdash; Otherwise, the template parameter object of type <tt>const array&lt;T, 0&gt;</tt> initialized with `{}`.</li>
+</ul></p>
+<p>-12- <i>Returns</i>: <tt>^^<i>P</i></tt>.</p>
+<p>-13- <i>Throws</i>: Any <ins>of</ins>
+<ul style="list-style-type: none">
+<li><ins>(10.1) &mdash; exception thrown by incerement and dereference operations on iterator to `r` and comparision of such iterator to sentinel,</ins></li>
+<li><ins>(10.2) &mdash;</ins> exception thrown by the evaluation of any <ins>argument of reflect_constant</ins><del><i>e<sub>i</sub></i></del>, or</li>
+<li><ins>(10.3) &mdash;</ins> `meta::exception` if evaluation of any <del><tt>reflect_constant(<i>e<sub>i</sub></i>)</tt></del><ins>evaluation of
+<tt>reflect_constant</tt> or <tt>reflect_constant_array</tt></ins> would exit via an exception.</li>
+</ul></p>
+</blockquote>
+[&hellip;]
+
+<pre>
+template&lt;class T&gt;
+  consteval const remove_cvref_t&lt;T&gt;* define_static_object(T&amp;&amp; t);
+</pre>
+<blockquote>
+<p>-15- <i>Effects</i>:Equivalent to:</p>
+<pre>
+using U = remove_cvref_t&lt;T&gt;;
+if constexpr (meta::is_class_type(^^U)) {
+  return addressof(meta::extract&lt;const U&amp;&gt;(meta::reflect_constant(std::forward&lt;T&gt;(t))));
+<ins>} else if constexpr (meta::is_array_type(^^U)) {
+ return addressof(meta::extract&lt;const U&amp;&gt;(meta::reflect_constant_array(std::forward&lt;T&gt;(t))));</ins>
+} else {
+  return define_static_array(span(addressof(t), 1)).data();
+}
+</pre>
+</blockquote>
+
+</li>
+</ol>
+
+</resolution>
+
+
+
+</issue>
