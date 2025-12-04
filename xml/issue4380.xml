@@ -37,6 +37,9 @@ Set priority to 3 after reflector poll.
 An explicit objection was raised that the <i>Effects:</i> should state
 whether `reserve()` is allowed, or even required, to deallocate blocks.
 </p>
+<p>
+Related to LWG <iref ref="4323"/>.
+</p>
 </discussion>
 
 <resolution>
