@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="4259" status="New">
+<issue num="4259" status="Tentatively Ready">
 <title>P1148R0 changed the return values of searching functions of `std::basic_string` on some platforms</title>
 <section><sref ref="[string.find]"/></section>
 <submitter>Jiang An</submitter>
@@ -68,6 +68,11 @@ proposed wording to use `s.npos` instead of `size_t(-1)`.
 <note>2025-10-21; Reflector poll.</note>
 <p>
 Set priority to 3 after reflector poll.
+</p>
+
+<note>2025-12-04; Reflector poll.</note>
+<p>
+Set status to Tentatively Ready after five votes in favour during reflector poll.
 </p>
 </discussion>
 
