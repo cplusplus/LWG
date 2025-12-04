@@ -47,7 +47,10 @@ then
   sed -i -e '/^<issue /s/ status=".*">$/ status="Tentatively Ready">/' $xml
   bin/add_note.sh $issue "Reflector poll" - <<< "Set status to Tentatively Ready after $votes votes in favour during reflector poll."
 
-  do_commit=$([[ $3 == --commit ]] && echo Ready)
+  if [[ $3 == --commit ]]
+  then
+    do_commit=Ready
+  fi
 
 elif [[ $priority = NAD ]]
 then
@@ -55,7 +58,10 @@ then
   sed -i -e '/^<issue /s/ status=".*">$/ status="Tentatively NAD">/' $xml
   bin/add_note.sh $issue "Reflector poll. Status &rarr; Tentatively NAD "
 
-  do_commit=$([[ $3 == --commit ]] && echo NAD)
+  if [[ $3 == --commit ]]
+  then
+    do_commit=NAD
+  fi
 
 else
 
