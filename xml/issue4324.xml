@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="4324" status="New">
+<issue num="4324" status="Tentatively Ready">
 <title><code>unique_ptr&lt;void&gt;::operator*</code> is not SFINAE-friendly</title>
 <section>
 <sref ref="[unique.ptr.single.observers]"/>
@@ -86,6 +86,11 @@ During reflector triaging it had been pointed out that a better solution would b
 <note>2025-10-22; Reflector poll.</note>
 <p>
 Set priority to 3 after reflector poll.
+</p>
+
+<note>2025-12-04; Reflector poll.</note>
+<p>
+Set status to Tentatively Ready after eight votes in favour during reflector poll.
 </p>
 </discussion>
 
