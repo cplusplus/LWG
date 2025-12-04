@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="4480" status="New">
+<issue num="4480" status="Tentatively Ready">
 <title><tt>&lt;stdatomic.h&gt;</tt> should provide `ATOMIC_CHAR8_T_LOCK_FREE`</title>
 <section><sref ref="[stdatomic.h.syn]"/></section>
 <submitter>Jiang An</submitter>
@@ -15,6 +15,11 @@ corresponding `ATOMIC_CHAR8_T_LOCK_FREE` macro, which is self-inconsistent. Also
 <a href="https://www.open-std.org/jtc1/sc22/wg14/www/docs/n2653.htm">WG14 N2653</a> added 
 `ATOMIC_CHAR8_T_LOCK_FREE` to C's <tt>&lt;stdatomic.h&gt;</tt> in C23, perhaps C++ should do 
 the same thing in the spirit of <paper num="P3348R4"/>.
+</p>
+
+<note>2025-12-04; Reflector poll.</note>
+<p>
+Set status to Tentatively Ready after seven votes in favour during reflector poll.
 </p>
 </discussion>
 
