@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="4468" status="New">
+<issue num="4468" status="Tentatively Ready">
 <title>&sect;[const.wrap.class] "`operator decltype(auto)`" is ill-formed</title>
 <section><sref ref="[const.wrap.class]"/></section>
 <submitter>Jiang An</submitter>
@@ -17,6 +17,11 @@ is ill-formed:
 <blockquote><pre>
 constexpr operator decltype(auto)() const noexcept { return value; }
 </pre></blockquote>
+
+<note>2025-12-04; Reflector poll.</note>
+<p>
+Set status to Tentatively Ready after seven votes in favour during reflector poll.
+</p>
 </discussion>
 
 <resolution>
