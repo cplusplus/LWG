@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="4460" status="New">
+<issue num="4460" status="Tentatively Ready">
 <title>Missing <i>Throws</i>: for last `variant` constructor</title>
 <section><sref ref="[variant.ctor]"/></section>
 <submitter>Jonathan Wakely</submitter>
@@ -68,6 +68,11 @@ this constructor is a constexpr constructor.
 
 <note>2025-11-11; Jonathan provides improved wording</note>
 
+
+<note>2025-12-04; Reflector poll.</note>
+<p>
+Set status to Tentatively Ready after six votes in favour during reflector poll.
+</p>
 </discussion>
 
 <resolution>
