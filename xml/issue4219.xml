@@ -32,8 +32,6 @@ should suffer the same drawback.
 <p>
 "This is a design change and needs a paper."
 </p>
-
-<note>2025-10-21; .</note>
 <p>
 "Paper should discuss whether <code>std::erase_if(c, &amp;T::mf)</code> works on paper,
 currently works on STL implementations in the field, and whether it <i>should</i> work."
