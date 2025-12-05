@@ -72,7 +72,8 @@ where the <i>i<sup>th</sup></i> element is
 <ul style="list-style-type: none">
 <li>(11.1) &mdash; If <tt>sizeof...(V) > 0</tt> is `true`, then the template parameter object (<sref ref="[temp.param]"/>) of type const `T[sizeof...(V)]`
    <del>initialized with `{[:V:]...}`</del><ins>, such that
-   `P[I]` is template argument equivalent (<sref ref="[temp.type]"/>) to the object represented by `V...[I]`
+   <tt>P[<i>I</i>]</tt> is template argument equivalent (<sref ref="[temp.type]"/>)
+   to the object represented by <tt>V...[<i>I</i>]</tt>
    for all <tt><i>I</i></tt> in the range [`0`, `sizeof...(V)`)</ins>.</li>
 <li>(11.2) &mdash; Otherwise, the template parameter object of type <tt>const array&lt;T, 0&gt;</tt> initialized with `{}`.</li>
 </ul></p>
