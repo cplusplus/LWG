@@ -70,7 +70,7 @@ where the <i>i<sup>th</sup></i> element is
 <ul style="list-style-type: none">
 <li>(11.1) &mdash; If <tt>sizeof...(V) > 0</tt> is `true`, then the template parameter object (<sref ref="[temp.param]"/>) of type const `T[sizeof...(V)]`
    <del>initialized with `{[:V:]...}`</del><ins>, such that <tt>constant_of(<i>P</i>[<i>I</i>]) == V...[<i>I</i>]</tt> is `true`
-   for all <tt><i>I</i></tt> in range [`0`, `sizeof...(V)`)</ins>.</li>
+   for all <tt><i>I</i></tt> in the range [`0`, `sizeof...(V)`)</ins>.</li>
 <li>(11.2) &mdash; Otherwise, the template parameter object of type <tt>const array&lt;T, 0&gt;</tt> initialized with `{}`.</li>
 </ul></p>
 <p>-12- <i>Returns</i>: <tt>^^<i>P</i></tt>.</p>
