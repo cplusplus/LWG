@@ -75,7 +75,7 @@ where the <i>i<sup>th</sup></i> element is
 </ul></p>
 <p>-12- <i>Returns</i>: <tt>^^<i>P</i></tt>.</p>
 <p>-13- <i>Throws</i>:
-<ins>Any exception thrown by increment and dereference operations on iterator to `r` and comparison of such iterator to sentinel.</ins>
+<ins>Any exception thrown by operations on `r` or on iterators and sentinels referring to `r`.</ins>
 Any exception thrown by the evaluation of any <ins>argument of `reflect_constant`.</ins><del><i>e<sub>i</sub></i>, or</del>
 `meta::exception` if evaluation of any <del><tt>reflect_constant(<i>e<sub>i</sub></i>)</tt></del><ins>evaluation of
 <tt>reflect_constant</tt> or <tt>reflect_constant_array</tt></ins> would exit via an exception.
