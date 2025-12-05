@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="4484" status="New">
+<issue num="4484" status="NAD">
 <title>`std::meta::reflect_constant_{string,array}` talks about template parameter objects of built-in array types</title>
 <section>
 <sref ref="[meta.define.static]"/>
@@ -23,6 +23,9 @@ The template argument object defintion was extended to cover objects of array ty
 The usage of the term "template parameter object" is intentional here, as it guarantees that
 `reflect_constant_string` produces the same objects, where their content is the same.
 </p>
+<note>2025-12-05 Status changed: New &rarr; NAD.</note>
+<p>Will be resovled by CWG 3111.</p>
+
 </discussion>
 
 <resolution>
