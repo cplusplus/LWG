@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="2746" status="New">
+<issue num="2746" status="Ready">
 <title>Inconsistency between requirements for <tt>emplace</tt> between <tt>optional</tt> and <tt>variant</tt></title>
 <section><sref ref="[optional.assign]"/><sref ref="[variant.mod]"/><sref ref="[any.modifiers]"/></section>
 <submitter>Richard Smith</submitter>
@@ -117,9 +117,7 @@ precondition violation, I recommend that its <tt>emplace</tt> functions use the 
 them also in consistency with their corresponding type-based <tt>emplace</tt> forms that are 
 <i>Mandates:</i>-free but delegate to the index-based forms.
 </p>
-</discussion>
-
-<resolution>
+<superseded>
 <p>This wording is relative to <a href="https://wg21.link/n4861">N4861</a>.</p>
 
 <ol>
@@ -205,6 +203,53 @@ template&lt;size_t I, class U, class... Args&gt;
 </blockquote>
 </li>
 
-</ol></resolution>
+</ol>
+
+</superseded>
+
+<note>2025-12-05; Jonathan provides new wording</note>
+<p>
+There's no need to use SFINAE to check if a `variant` with N alternatives
+allows you to emplace the N+1<sup>th</sup> alternative.
+</p>
+
+<note>2025-12-05; LWG telecon. Moved to Ready</note>
+
+</discussion>
+
+<resolution>
+
+<p>This wording is relative to <paper num="N5014"/>.</p>
+
+<ol>
+<li><p>Modify <sref ref="[optional.assign]"/>, as indicated:</p>
+
+<blockquote>
+<pre>
+template&lt;class... Args&gt; T&amp; emplace(Args&amp;&amp;... args);
+</pre>
+<blockquote>
+<p>
+-29- <i><del>Mandates</del><ins>Constraints</ins>:</i> <tt>is_constructible_v&lt;T, Args...&gt;</tt> is <tt>true</tt>.
+<p/>
+[&hellip;]
+</p>
+</blockquote>
+<pre>
+template&lt;class U, class... Args&gt; T&amp; emplace(initializer_list&lt;U&gt; il, Args&amp;&amp;... args);
+</pre>
+<blockquote>
+<p>
+-35- <i>Constraints:</i> <tt>is_constructible_v&lt;T, initializer_list&lt;U&gt;&amp;, Args...&gt;</tt> is <tt>true</tt>.
+<p/>
+[&hellip;]
+</p>
+</blockquote>
+</blockquote>
+</li>
+
+</ol>
+
+</resolution>
 
 </issue>
