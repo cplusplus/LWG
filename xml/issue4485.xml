@@ -19,6 +19,9 @@ but if so, this paragraph is a poor place for it.
 <p>The paragraph expresses requirements on user supplied `Environment::stop_source_type`,
 that needs to model <tt><i>stoppable-source</i></tt>, which includes <tt><i>stoppable-callback-for</i></tt>
 on associated token. We should also require that `Environment::scheduler_type` shall satisfy `scheduler`.</p>
+
+<p>We also need to clarify that `stop_possible` and `stop_requested` on <tt><i>prom</i>.token</tt> returns
+same value as `st` during lifetime of asynchronous operation.</p>
 </discussion>
 
 <resolution>
@@ -51,6 +54,7 @@ Associates <tt><i>STATE</i>(<i>prom</i>)</tt>, <tt><i>RCVR</i>(<i>prom</i>)</tt>
 <li>-4.3- [&hellip;]</li>
 </ul>
 Let `st` be `get_stop_token(get_env(rcvr))`. Initializes <tt><i>prom</i>.token</tt> and <tt><i>prom</i>.source</tt> such that
+<ins>during lifetime of assynchrous operation (<sref ref="[exec.async.ops]"/>) associated with `*this`</ins>
 <ul>
 <li>-4.4- <tt><i>prom</i>.token.stop_requested()</tt> returns <tt>st.stop_requested()</tt>;</li>
 <li>-4.5- <tt><i>prom</i>.token.stop_possible()</tt> returns <tt>st.stop_possible()</tt><del>;</del><ins>.</ins></li>
