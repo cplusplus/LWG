@@ -53,7 +53,7 @@ Let `st` be `get_stop_token(get_env(rcvr))`. Initializes <tt><i>prom</i>.token</
 <li>-4.4- <tt><i>prom</i>.token.stop_requested()</tt> returns <tt>st.stop_requested()</tt>;</li>
 <li>-4.5- <tt><i>prom</i>.token.stop_requested()</tt> returns <tt>st.stop_requested()</tt><del>;</del><ins>.</ins></li>
 <li><del>-4.6- for types `Fn` and `Init` such that both <tt>invocable&lt;Fn&gt;</tt> and <tt>constructible_from&lt;Fn, Init&gt;</tt> are modeled,
-  <tt>stop_token_type::callback_type&lt;Fn&gt;</tt> modes l<tt>stoppable-callback-for&lt;Fn, stop_token_type, Init&gt;</tt>.</del></li>
+  <tt>stop_token_type::callback_type&lt;Fn&gt;</tt> models <tt><i>stoppable-callback-for</i>&lt;Fn, stop_token_type, Init&gt;</tt>.</del></li>
 </ul></p>
 </blockquote>
 </li>
