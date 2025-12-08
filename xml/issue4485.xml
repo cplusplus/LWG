@@ -54,7 +54,7 @@ Associates <tt><i>STATE</i>(<i>prom</i>)</tt>, <tt><i>RCVR</i>(<i>prom</i>)</tt>
 <li>-4.3- [&hellip;]</li>
 </ul>
 Let `st` be `get_stop_token(get_env(rcvr))`. Initializes <tt><i>prom</i>.token</tt> and <tt><i>prom</i>.source</tt> such that
-<ins>during lifetime of assynchrous operation (<sref ref="[exec.async.ops]"/>) associated with `*this`</ins>
+<ins>during lifetime of the assynchrous operation (<sref ref="[exec.async.ops]"/>) associated with `*this`</ins>
 <ul>
 <li>-4.4- <tt><i>prom</i>.token.stop_requested()</tt> returns <tt>st.stop_requested()</tt>;</li>
 <li>-4.5- <tt><i>prom</i>.token.stop_possible()</tt> returns <tt>st.stop_possible()</tt><del>;</del><ins>.</ins></li>
