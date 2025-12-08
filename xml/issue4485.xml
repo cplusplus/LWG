@@ -15,6 +15,10 @@ It is not clear what bullet <sref ref="task.state"/> p4.6 is – it reads like a
 but if so, this paragraph is a poor place for it.
 </p>
 
+<note>2025-12-05 Tomasz comments</note>
+<p>The paragraph expresses requirements on user supplied `Environment::stop_source_type`,
+that needs to model <tt><i>stoppable-source</i></tt>, which includes <tt><i>stoppable-callback-for</i></tt>
+on associated token. We should also require that `Environment::scheduler_type` shall satisfy `scheduler`.</p>
 </discussion>
 
 <resolution>
@@ -27,11 +31,9 @@ This wording is relative to <paper num="N5014"/>.
 
 <blockquote>
 <p>-5-
-`allocator_type` shall meet the <i>Cpp17Allocator</i> requirements.
-<ins>
-	For types `Fn` nad `Init` such that both <tt>invocable&lt;Fn&gt;</tt> and <tt>constructible_from&lt;Fn, Init&gt;</tt> are modeled,
-<tt>stop_token_type::callback_type&lt;Fn&gt;</tt> shall model <tt>stoppable-callback-for&lt;Fn, stop_token_type, Init&gt;</tt>.
-</ins></p>
+`allocator_type` shall meet the <i>Cpp17Allocator</i> requirements<ins>,
+`scheduler_type` shall model `scheduler`, and `stop_source_type` shall model <tt><i>stoppable-source</i></tt>.
+</ins>.</p>
 </blockquote>
 </li>
 
@@ -51,7 +53,7 @@ Associates <tt><i>STATE</i>(<i>prom</i>)</tt>, <tt><i>RCVR</i>(<i>prom</i>)</tt>
 Let `st` be `get_stop_token(get_env(rcvr))`. Initializes <tt><i>prom</i>.token</tt> and <tt><i>prom</i>.source</tt> such that
 <ul>
 <li>-4.4- <tt><i>prom</i>.token.stop_requested()</tt> returns <tt>st.stop_requested()</tt>;</li>
-<li>-4.5- <tt><i>prom</i>.token.stop_requested()</tt> returns <tt>st.stop_requested()</tt><del>;</del><ins>.</ins></li>
+<li>-4.5- <tt><i>prom</i>.token.stop_possible()</tt> returns <tt>st.stop_possible()</tt><del>;</del><ins>.</ins></li>
 <li><del>-4.6- for types `Fn` and `Init` such that both <tt>invocable&lt;Fn&gt;</tt> and <tt>constructible_from&lt;Fn, Init&gt;</tt> are modeled,
   <tt>stop_token_type::callback_type&lt;Fn&gt;</tt> models <tt><i>stoppable-callback-for</i>&lt;Fn, stop_token_type, Init&gt;</tt>.</del></li>
 </ul></p>
