@@ -95,7 +95,7 @@ auto read_issues(fs::path const & issues_path, lwg::metadata & meta) -> std::vec
 }
 
 
-auto read_issues_from_toc(std::string const & s) -> std::vector<std::tuple<int, std::string> > {
+auto read_issues_from_toc(std::string const & s) -> std::vector<std::tuple<int, std::string>> {
    // parse all issues from the specified stream, 'is'.
    // Throws 'runtime_error' if *any* parse step fails
    //
@@ -126,7 +126,7 @@ auto read_issues_from_toc(std::string const & s) -> std::vector<std::tuple<int, 
    };
 
    // Read all issues in table
-   std::vector<std::tuple<int, std::string> > issues;
+   std::vector<std::tuple<int, std::string>> issues;
    for(;;) {
       i = s.find("<tr>", i+4);
       if (i == std::string::npos) {
@@ -509,8 +509,8 @@ void prepare_issues(std::vector<lwg::issue> & issues, lwg::metadata & meta) {
 
 // ============================================================================================================
 
-auto prepare_issues_for_diff_report(std::vector<lwg::issue> const & issues) -> std::vector<std::tuple<int, std::string> > {
-   std::vector<std::tuple<int, std::string> > result;
+auto prepare_issues_for_diff_report(std::vector<lwg::issue> const & issues) -> std::vector<std::tuple<int, std::string>> {
+   std::vector<std::tuple<int, std::string>> result;
    std::transform( issues.begin(), issues.end(), back_inserter(result),
 #if 1
                    [](lwg::issue const & iss) { return std::make_tuple(iss.num, iss.stat); }
@@ -546,14 +546,14 @@ struct find_num {
 
 
 struct discover_new_issues {
-   std::vector<std::tuple<int, std::string> > const & old_issues;
-   std::vector<std::tuple<int, std::string> > const & new_issues;
+   std::vector<std::tuple<int, std::string>> const & old_issues;
+   std::vector<std::tuple<int, std::string>> const & new_issues;
 };
 
 
 auto operator<<( std::ostream & out, discover_new_issues const & x) -> std::ostream & {
-   std::vector<std::tuple<int, std::string> > const & old_issues = x.old_issues;
-   std::vector<std::tuple<int, std::string> > const & new_issues = x.new_issues;
+   std::vector<std::tuple<int, std::string>> const & old_issues = x.old_issues;
+   std::vector<std::tuple<int, std::string>> const & new_issues = x.new_issues;
 
    struct status_order {
       // predicate for 'map'
@@ -591,14 +591,14 @@ auto operator<<( std::ostream & out, discover_new_issues const & x) -> std::ostr
 
 
 struct discover_changed_issues {
-   std::vector<std::tuple<int, std::string> > const & old_issues;
-   std::vector<std::tuple<int, std::string> > const & new_issues;
+   std::vector<std::tuple<int, std::string>> const & old_issues;
+   std::vector<std::tuple<int, std::string>> const & new_issues;
 };
 
 
 auto operator << (std::ostream & out, discover_changed_issues x) -> std::ostream & {
-   std::vector<std::tuple<int, std::string> > const & old_issues = x.old_issues;
-   std::vector<std::tuple<int, std::string> > const & new_issues = x.new_issues;
+   std::vector<std::tuple<int, std::string>> const & old_issues = x.old_issues;
+   std::vector<std::tuple<int, std::string>> const & new_issues = x.new_issues;
 
    struct status_transition_order {
       using status_string = std::string;
@@ -639,7 +639,7 @@ auto operator << (std::ostream & out, discover_changed_issues x) -> std::ostream
 }
 
 
-void count_issues(std::vector<std::tuple<int, std::string> > const & issues, int & n_open, int & n_reassigned, int & n_closed) {
+void count_issues(std::vector<std::tuple<int, std::string>> const & issues, int & n_open, int & n_reassigned, int & n_closed) {
    n_open = 0;
    n_reassigned = 0;
    n_closed = 0;
@@ -659,14 +659,14 @@ void count_issues(std::vector<std::tuple<int, std::string> > const & issues, int
 
 
 struct write_summary {
-   std::vector<std::tuple<int, std::string> > const & old_issues;
-   std::vector<std::tuple<int, std::string> > const & new_issues;
+   std::vector<std::tuple<int, std::string>> const & old_issues;
+   std::vector<std::tuple<int, std::string>> const & new_issues;
 };
 
 
 auto operator << (std::ostream & out, write_summary const & x) -> std::ostream & {
-   std::vector<std::tuple<int, std::string> > const & old_issues = x.old_issues;
-   std::vector<std::tuple<int, std::string> > const & new_issues = x.new_issues;
+   std::vector<std::tuple<int, std::string>> const & old_issues = x.old_issues;
+   std::vector<std::tuple<int, std::string>> const & new_issues = x.new_issues;
 
    int n_open_new = 0;
    int n_open_old = 0;
@@ -704,8 +704,8 @@ auto operator << (std::ostream & out, write_summary const & x) -> std::ostream &
 
 
 void print_current_revisions( std::ostream & out
-                            , std::vector<std::tuple<int, std::string> > const & old_issues
-                            , std::vector<std::tuple<int, std::string> > const & new_issues
+                            , std::vector<std::tuple<int, std::string>> const & old_issues
+                            , std::vector<std::tuple<int, std::string>> const & new_issues
                             ) {
    out << "<ul>\n"
           "<li><b>Summary:</b><ul>\n"
