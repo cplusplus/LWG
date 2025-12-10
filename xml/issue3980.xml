@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="3980" status="Tentatively NAD">
+<issue num="3980" status="NAD">
 <title>The read exclusive ownership of an atomic read-modify-write operation and whether its read and write are two operations are unclear</title>
 <section><sref ref="[atomics.order]"/></section>
 <submitter>jim x</submitter>
@@ -95,6 +95,7 @@ Relevant discussion can be seen <a href="https://github.com/cplusplus/CWG/issues
 <note>2023-11-03; Reflector poll</note>
 <p>NAD. The first reading isn't plausible. </p>
 
+<note>2025-12-10 Status changed: Tentatively NAD &rarr; NAD.</note>
 </discussion>
 
 <resolution>

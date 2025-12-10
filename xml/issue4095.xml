@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="4095" status="Tentatively NAD">
+<issue num="4095" status="NAD">
 <title><tt>ranges::fold_<i>meow</i></tt> should explicitly spell out the return type</title>
 <section><sref ref="[algorithm.syn]"/><sref ref="[alg.fold]"/></section>
 <submitter>Hewill Kang</submitter>
@@ -31,6 +31,7 @@ to seek minimal changes.
 <note>2024-06-24; Reflector poll: NAD</note>
 <p>Implementations are free to spell this out if desired.</p>
 
+<note>2025-12-10 Status changed: Tentatively NAD &rarr; NAD.</note>
 </discussion>
 
 <resolution>

@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="4228" status="Tentatively NAD">
+<issue num="4228" status="NAD">
 <title>Does <tt>vector&lt;bool, Allocator&gt;</tt> mandate that `Allocator::value_type` is `bool`?</title>
 <section>
 <sref ref="[vector.bool.pspc]"/>
@@ -50,6 +50,7 @@ Set status to Tentatively NAD. This is just a bug in some implementations
 (now fixed in libstdc++).
 </p>
 
+<note>2025-12-10 Status changed: Tentatively NAD &rarr; NAD.</note>
 </discussion>
 
 <resolution>

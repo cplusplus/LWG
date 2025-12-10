@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="3908" status="Tentatively NAD">
+<issue num="3908" status="NAD">
 <title><code>enumerate_view::<i>iterator</i></code> constructor is explicit</title>
 <section><sref ref="[range.enumerate.iterator]"/></section>
 <submitter>Jonathan Wakely</submitter>
@@ -33,6 +33,7 @@ The constructor is exposition-only, it doesn't make any difference to anything
 whether it's explicit or not.
 </p>
 
+<note>2025-12-10 Status changed: Tentatively NAD &rarr; NAD.</note>
 </discussion>
 
 <resolution>

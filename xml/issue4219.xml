@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="4219" status="Tentatively NAD">
+<issue num="4219" status="NAD">
 <title><tt>std::vector::erase[_if]</tt> should be based on ranges `remove`</title>
 <section>
 <sref ref="[vector.erasure]"/>
@@ -36,6 +36,7 @@ should suffer the same drawback.
 "Paper should discuss whether <code>std::erase_if(c, &amp;T::mf)</code> works on paper,
 currently works on STL implementations in the field, and whether it <i>should</i> work."
 </p>
+<note>2025-12-10 Status changed: Tentatively NAD &rarr; NAD.</note>
 </discussion>
 
 <resolution>

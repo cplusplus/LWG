@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="4321" status="Tentatively NAD">
+<issue num="4321" status="NAD">
 <title>How are evaluations occurring within a store and a load operation ordered where the store synchronized with the load</title>
 <section>
 <sref ref="[atomics.types.operations]"/>
@@ -77,6 +77,7 @@ occurring within `v.store(...)` synchronize with all evaluations occurring withi
 The load/store functions invocations participate in happens-before as
 atomic (indivisible) units.
 </p>
+<note>2025-12-10 Status changed: Tentatively NAD &rarr; NAD.</note>
 </discussion>
 
 <resolution>

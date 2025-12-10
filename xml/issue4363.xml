@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="4363" status="Tentatively NAD">
+<issue num="4363" status="NAD">
 <title>`transform_sender` comparing types ignoring <i>cv</i>-qualifiers doesn't take into account differences in value category</title>
 <section>
 <sref ref="[exec.snd.transform]"/>
@@ -62,6 +62,7 @@ The wording should be modified to use a phrase that removes both reference and c
 <p>
 "NAD, expressions never have reference type."
 </p>
+<note>2025-12-10 Status changed: Tentatively NAD &rarr; NAD.</note>
 </discussion>
 
 <resolution>

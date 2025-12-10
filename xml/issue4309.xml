@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="4309" status="Tentatively NAD">
+<issue num="4309" status="NAD">
 <title>How are two `seq_cst` operations ordered in the single total order if these two operations are unsequenced?</title>
 <section>
 <sref ref="[atomics.order]"/>
@@ -61,6 +61,7 @@ either <i>A</i> precedes <i>B</i> or <i>B</i> precedes <i>A</i>, but it is unspe
 The loads are both done within functions calls, so are at worst indeterminately sequenced.
 So we already say what the suggested resolution wants.
 </p>
+<note>2025-12-10 Status changed: Tentatively NAD &rarr; NAD.</note>
 </discussion>
 
 <resolution>

@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="4194" status="Tentatively NAD">
+<issue num="4194" status="NAD">
 <title><tt>atomic&lt;void*&gt;</tt> should use generic class template</title>
 <section><sref ref="[atomics.types.pointer]"/></section>
 <submitter>Gonzalo Brito</submitter>
@@ -48,6 +48,7 @@ and a note explaining that this means arithmetic on `void*` is ill-formed.
 So implementations are expected to use the partial specialization for `void*`
 but to reject attempts at arithmetic. They all do this correctly today.
 </p>
+<note>2025-12-10 Status changed: Tentatively NAD &rarr; NAD.</note>
 </discussion>
 
 <resolution>

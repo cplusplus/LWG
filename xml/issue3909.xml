@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="3909" status="Tentatively NAD">
+<issue num="3909" status="NAD">
 <title>Issues about <code>viewable_range</code></title>
 <section><sref ref="[range.refinements]"/><sref ref="[range.adaptor.object]"/></section>
 <submitter>Jiang An</submitter>
@@ -40,6 +40,7 @@ Range adaptors return a view over their first argument, so they need to
 require it's a <code>viewable_range</code>."
 </p>
 
+<note>2025-12-10 Status changed: Tentatively NAD &rarr; NAD.</note>
 </discussion>
 
 <resolution>

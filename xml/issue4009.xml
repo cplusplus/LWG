@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="4009" status="Tentatively NAD">
+<issue num="4009" status="NAD">
 <title><tt>drop_view::begin const</tt> may have &#x1d4aa;(n) complexity</title>
 <section><sref ref="[range.drop.view]"/></section>
 <submitter>Hewill Kang</submitter>
@@ -34,6 +34,7 @@ Set priority to 3 after reflector poll, status to Tentatively NAD.
 implementations need to implement it to return that while meeting the
 amortized &#x1d4aa;(1) guarantee."
 </p>
+<note>2025-12-10 Status changed: Tentatively NAD &rarr; NAD.</note>
 </discussion>
 
 <resolution>

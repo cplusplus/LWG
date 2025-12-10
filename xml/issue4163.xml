@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="4163" status="Tentatively NAD">
+<issue num="4163" status="NAD">
 <title>Can the overload of <tt>std::num_get::do_get</tt> for <tt>bool</tt> call the overload for <tt>long</tt>?</title>
 <section><sref ref="[facet.num.get.virtuals]"/></section>
 <submitter>Jiang An</submitter>
@@ -35,6 +35,7 @@ the code from `do_get` for `long`, or make a non-virtual (i.e. qualified) call
 to `num_get::do_get`.
 </p>
 
+<note>2025-12-10 Status changed: Tentatively NAD &rarr; NAD.</note>
 </discussion>
 
 <resolution>

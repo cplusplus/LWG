@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="4184" status="Tentatively NAD">
+<issue num="4184" status="NAD">
 <title>Domain of <code>ranges::c<i>meow</i></code> doesn't match <code>ranges::<i>meow</i></code></title>
 <section><sref ref="[range.access]"/></section>
 <submitter>Hewill Kang</submitter>
@@ -51,6 +51,7 @@ int main() {
 "Seems to be very similar to LWG <iref ref="3913"/> which LWG closed as NAD."
 </p>
 
+<note>2025-12-10 Status changed: Tentatively NAD &rarr; NAD.</note>
 </discussion>
 
 <resolution>

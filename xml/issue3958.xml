@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="3958" status="Tentatively NAD">
+<issue num="3958" status="NAD">
 <title><tt>ranges::to</tt> should prioritize the "<tt>reserve</tt>" branch</title>
 <section><sref ref="[range.utility.conv.to]"/></section>
 <submitter>Hewill Kang</submitter>
@@ -44,6 +44,7 @@ Set status to Tentatively NAD after reflector poll.
 "This optimizes exotic cases at the expense of realistic cases."
 </p>
 
+<note>2025-12-10 Status changed: Tentatively NAD &rarr; NAD.</note>
 </discussion>
 
 <resolution>

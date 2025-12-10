@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="4006" status="Tentatively NAD">
+<issue num="4006" status="NAD">
 <title><tt>chunk_view::<i>outer-iterator</i>::value_type</tt> should provide <tt>empty</tt></title>
 <section><sref ref="[range.chunk.outer.value]"/></section>
 <submitter>Hewill Kang</submitter>
@@ -48,6 +48,7 @@ Set status to Tentatively NAD after reflector poll in November 2023.
 is an implementation detail and not supposed to be observable."
 </p>
 
+<note>2025-12-10 Status changed: Tentatively NAD &rarr; NAD.</note>
 </discussion>
 
 <resolution>

@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="3982" status="Tentatively NAD">
+<issue num="3982" status="NAD">
 <title><tt><i>is-derived-from-view-interface</i></tt> should require that <tt>T</tt> is derived from <tt>view_interface&lt;T&gt;</tt></title>
 <section><sref ref="[range.view]"/></section>
 <submitter>Hewill Kang</submitter>
@@ -27,6 +27,7 @@ but it was changed when <code>view_interface</code> stopped inheriting from
 <code>view_base</code>.
 </p>
 
+<note>2025-12-10 Status changed: Tentatively NAD &rarr; NAD.</note>
 </discussion>
 
 <resolution>
