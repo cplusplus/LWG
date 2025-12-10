@@ -60,8 +60,8 @@ auto read_file_into_string(fs::path const & filename) -> std::string {
 
 auto is_issue_xml_file(fs::directory_entry const & e) {
    if (e.is_regular_file()) {
-      fs::path f = e.path().filename();
-      return f.string().starts_with("issue") && f.extension() == ".xml";
+      auto f = e.path().filename().string();
+      return f.starts_with("issue") && f.ends_with(".xml");
    }
    return false;
 }
