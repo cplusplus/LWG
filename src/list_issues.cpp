@@ -82,9 +82,8 @@ void filter_issues(fs::path const & issues_path, lwg::metadata & meta, std::func
      }
   }
   // Write the sorted issue numbers to stdout.
-  std::sort(nums.begin(), nums.end());
-  for (auto num : nums)
-    std::cout << num << '\n';
+  std::ranges::sort(nums);
+  std::ranges::copy(nums, std::ostream_iterator<int>(std::cout, "\n"));
 }
 
 // ============================================================================================================
