@@ -87,7 +87,7 @@ auto is_active(std::string_view stat) -> bool {
 }
 
 
-auto read_issues(std::istream& is) -> std::vector<std::pair<int, std::string> > {
+auto read_issues(std::istream& is) -> std::vector<std::pair<int, std::string>> {
    // parse all issues from the specified stream, 'is'.
    // Throws 'runtime_error' if *any* parse step fails
    //
@@ -112,7 +112,7 @@ auto read_issues(std::istream& is) -> std::vector<std::pair<int, std::string> > 
    }
 
    // Read all issues in table
-   std::vector<std::pair<int, std::string> > issues;
+   std::vector<std::pair<int, std::string>> issues;
    while (true) {
       i = s.find("<tr>", i+4);
       if (i == std::string::npos) {
@@ -168,16 +168,16 @@ struct find_num {
 
 
 struct discover_new_issues {
-   std::vector<std::pair<int, std::string> > const & old_issues;
-   std::vector<std::pair<int, std::string> > const & new_issues;
+   std::vector<std::pair<int, std::string>> const & old_issues;
+   std::vector<std::pair<int, std::string>> const & new_issues;
 };
 
 
 auto operator<<( std::ostream & out, discover_new_issues const & x) -> std::ostream & {
-   std::vector<std::pair<int, std::string> > const & old_issues = x.old_issues;
-   std::vector<std::pair<int, std::string> > const & new_issues = x.new_issues;
+   std::vector<std::pair<int, std::string>> const & old_issues = x.old_issues;
+   std::vector<std::pair<int, std::string>> const & new_issues = x.new_issues;
 
-   std::map<std::string, std::vector<int> > added_issues;
+   std::map<std::string, std::vector<int>> added_issues;
    for( auto const & i : new_issues) {
       auto j = std::lower_bound(old_issues.cbegin(), old_issues.cend(), i.first, find_num{});
       if(j == old_issues.end()) {
@@ -213,14 +213,14 @@ struct reverse_pair {
 };
 
 struct discover_changed_issues {
-   std::vector<std::pair<int, std::string> > const & old_issues;
-   std::vector<std::pair<int, std::string> > const & new_issues;
+   std::vector<std::pair<int, std::string>> const & old_issues;
+   std::vector<std::pair<int, std::string>> const & new_issues;
 };
 
 
 auto operator<<( std::ostream & out, discover_changed_issues x) -> std::ostream & {
-   std::vector<std::pair<int, std::string> > const & old_issues = x.old_issues;
-   std::vector<std::pair<int, std::string> > const & new_issues = x.new_issues;
+   std::vector<std::pair<int, std::string>> const & old_issues = x.old_issues;
+   std::vector<std::pair<int, std::string>> const & new_issues = x.new_issues;
 
    std::map<std::pair<std::string, std::string>, std::vector<int>, reverse_pair> changed_issues;
    for (auto const & i : new_issues) {
@@ -258,8 +258,8 @@ std::pair<unsigned, unsigned> count_issues(std::span<const std::pair<int, std::s
 
 
 struct write_summary {
-   std::vector<std::pair<int, std::string> > const & old_issues;
-   std::vector<std::pair<int, std::string> > const & new_issues;
+   std::vector<std::pair<int, std::string>> const & old_issues;
+   std::vector<std::pair<int, std::string>> const & new_issues;
 };
 
 
@@ -301,8 +301,8 @@ auto operator<<( std::ostream & out, write_summary const & x) -> std::ostream & 
 
 
 void print_current_revisions( std::ostream & out
-                            , std::vector<std::pair<int, std::string> > const & old_issues
-                            , std::vector<std::pair<int, std::string> > const & new_issues
+                            , std::vector<std::pair<int, std::string>> const & old_issues
+                            , std::vector<std::pair<int, std::string>> const & new_issues
                             ) {
    out << "<ul>\n"
        << "<li><b>Summary:</b><ul>\n"
@@ -316,7 +316,7 @@ void print_current_revisions( std::ostream & out
 }
 
 
-auto read_issues(fs::path const & filename) -> std::vector<std::pair<int, std::string> > {
+auto read_issues(fs::path const & filename) -> std::vector<std::pair<int, std::string>> {
    std::ifstream new_html{filename};
    if(!new_html.is_open()) {
       throw std::runtime_error{"Unable to open toc file: " + filename.string()};
