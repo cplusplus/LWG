@@ -25,31 +25,31 @@ void display_issues(std::span<const std::pair<int, std::string>> issues) {
 
 // PRODUCTION CODE STARTS HERE
 
-auto remove_pending(std::string stat) -> std::string {
-   typedef std::string::size_type size_type;
-   if( 0 == stat.find("Pending")) {
-      stat.erase(size_type{0}, size_type{8});
+auto remove_prefix(std::string_view stat, std::string_view prefix) -> std::string_view {
+   if (stat.starts_with(prefix)) {
+      stat.remove_prefix(prefix.size());
    }
    return stat;
 }
 
 
-auto remove_tentatively(std::string stat) -> std::string {
-    typedef std::string::size_type size_type;
-    if( 0 == stat.find("Tentatively")) {
-        stat.erase(size_type{0}, size_type{12});
-    }
-    return stat;
+auto remove_pending(std::string_view stat) -> std::string_view {
+   return remove_prefix(stat, "Pending");
 }
 
 
-auto remove_qualifier(std::string const & stat) -> std::string {
+auto remove_tentatively(std::string_view stat) -> std::string_view {
+   return remove_prefix(stat, "Tentatively");
+}
+
+
+auto remove_qualifier(std::string_view stat) -> std::string_view {
     return remove_tentatively(remove_pending(stat));
 }
 
 
-auto find_file(std::string const & status) -> std::string {
-    if( 0 == status.find("Tentatively")) {
+auto find_file(std::string_view status) -> std::string_view {
+    if (status.starts_with("Tentatively")) {
         return "lwg-active.html";
     }
 
@@ -77,11 +77,11 @@ auto find_file(std::string const & status) -> std::string {
          : stat == "Review"         ?  "lwg-active.html"
          : stat == "New"            ?  "lwg-active.html"
          : stat == "Open"           ?  "lwg-active.html"
-         : throw std::runtime_error{"unknown status " + stat};
+         : throw std::runtime_error{"unknown status " + std::string(stat)};
 }
 
 
-auto is_active(std::string const & stat) -> bool {
+auto is_active(std::string_view stat) -> bool {
     return find_file(stat) == "lwg-active.html";
 }
 
