@@ -59,6 +59,8 @@ because the result cannot "overflow" an unsigned integer type,
 but can certainly be outside its range.
 </p>
 
+<note>2025-12-10; <paper num="P2827R1"/> addresses this</note>
+
 </discussion>
 
 <resolution>
