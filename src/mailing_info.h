@@ -3,7 +3,7 @@
 
 #include <iosfwd>
 #include <string>
-#include <vector>
+#include <span>
 
 namespace lwg
 {
@@ -17,7 +17,7 @@ struct mailing_info {
    auto get_intro(std::string doc) const -> std::string;
    auto get_maintainer() const -> std::string;
    auto get_revision() const -> std::string;
-   auto get_revisions(std::vector<issue> const & issues, std::string const & diff_report) const -> std::string;
+   auto get_revisions(std::span<const issue> issues, std::string const & diff_report) const -> std::string;
    auto get_statuses() const -> std::string;
    auto get_date() const -> std::string;
    auto get_title() const -> std::string;

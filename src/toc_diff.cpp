@@ -8,13 +8,14 @@
 #include <stdexcept>
 #include <map>
 #include <algorithm>
-#include <string>
+#include <string_view>
 #include <filesystem>
+#include <span>
 
 namespace fs = std::filesystem;
 
 // DEBUG VISUALIZATION TOOL ONLY
-void display_issues(std::vector<std::pair<int, std::string> > const & issues) {
+void display_issues(std::span<const std::pair<int, std::string>> issues) {
    for( auto const & x : issues) {
       std::cout << x.first << "\t" << x.second << '\n';
    }
@@ -249,7 +250,7 @@ auto operator<<( std::ostream & out, discover_changed_issues x) -> std::ostream 
 }
 
 
-void count_issues(std::vector<std::pair<int, std::string> > const & issues, unsigned & n_open, unsigned & n_closed) {
+void count_issues(std::span<const std::pair<int, std::string>> issues, unsigned & n_open, unsigned & n_closed) {
    n_open = 0;
    n_closed = 0;
 

@@ -10,7 +10,7 @@
 
 namespace {
 
-void replace_all_irefs(std::vector<lwg::issue> const & issues, std::string & s) {
+void replace_all_irefs(std::span<const lwg::issue> issues, std::string & s) {
    // Replace all tagged "issues references" in string 's' with an HTML anchor-link to the live issue
    // in its appropriate issue list, as determined by the issue's status.
    // Format of an issue reference: <iref ref="ISS"/>
@@ -153,7 +153,7 @@ auto mailing_info::get_revision() const -> std::string {
 }
 
 
-auto mailing_info::get_revisions(std::vector<issue> const & issues, std::string const & diff_report) const -> std::string {
+auto mailing_info::get_revisions(std::span<const issue> issues, std::string const & diff_report) const -> std::string {
    auto i = m_data.find("<revision_history>");
    if (i == std::string::npos) {
       throw std::runtime_error{"Unable to find <revision_history> in lwg-issues.xml"};
