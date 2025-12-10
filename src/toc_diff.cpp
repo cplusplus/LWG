@@ -11,6 +11,7 @@
 #include <string_view>
 #include <filesystem>
 #include <span>
+#include <ranges>
 
 namespace fs = std::filesystem;
 
@@ -250,18 +251,9 @@ auto operator<<( std::ostream & out, discover_changed_issues x) -> std::ostream 
 }
 
 
-void count_issues(std::span<const std::pair<int, std::string>> issues, unsigned & n_open, unsigned & n_closed) {
-   n_open = 0;
-   n_closed = 0;
-
-   for (auto const & elem : issues) {
-      if (is_active(elem.second)) {
-         ++n_open;
-      }
-      else {
-         ++n_closed;
-      }
-   }
+std::pair<unsigned, unsigned> count_issues(std::span<const std::pair<int, std::string>> issues) {
+   auto n_open = std::ranges::count_if(issues | std::views::elements<1>, is_active);
+   return { n_open, issues.size() - n_open };
 }
 
 
@@ -272,15 +264,8 @@ struct write_summary {
 
 
 auto operator<<( std::ostream & out, write_summary const & x) -> std::ostream & {
-   std::vector<std::pair<int, std::string> > const & old_issues = x.old_issues;
-   std::vector<std::pair<int, std::string> > const & new_issues = x.new_issues;
-
-   unsigned n_open_new = 0;
-   unsigned n_open_old = 0;
-   unsigned n_closed_new = 0;
-   unsigned n_closed_old = 0;
-   count_issues(old_issues, n_open_old, n_closed_old);
-   count_issues(new_issues, n_open_new, n_closed_new);
+   auto [n_open_old, n_closed_old] = count_issues(x.old_issues);
+   auto [n_open_new, n_closed_new] = count_issues(x.new_issues);
 
    out << "<li>" << n_open_new << " open issues, ";
    if (n_open_new >= n_open_old) {
