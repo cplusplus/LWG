@@ -509,13 +509,9 @@ void prepare_issues(std::span<lwg::issue> issues, lwg::metadata & meta) {
 
 auto prepare_issues_for_diff_report(std::vector<lwg::issue> const & issues) -> std::vector<std::tuple<int, std::string>> {
    std::vector<std::tuple<int, std::string>> result;
+   result.reserve(issues.size());
    std::transform( issues.begin(), issues.end(), back_inserter(result),
-#if 1
                    [](lwg::issue const & iss) { return std::make_tuple(iss.num, iss.stat); }
-#else
-                   // This form does not work because tuple constructors are explicit
-                   [](lwg::issue const & iss) -> std::tuple<int, std::string> { return {iss.num, iss.stat}; }
-#endif
                  );
    return result;
 }
