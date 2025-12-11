@@ -637,10 +637,10 @@ auto operator << (std::ostream & out, discover_changed_issues x) -> std::ostream
 }
 
 
-void count_issues(std::vector<std::tuple<int, std::string>> const & issues, int & n_open, int & n_reassigned, int & n_closed) {
-   n_open = 0;
-   n_reassigned = 0;
-   n_closed = 0;
+auto count_issues(std::span<const std::tuple<int, std::string>> issues) -> std::tuple<int, int, int> {
+   int n_open = 0;
+   int n_reassigned = 0;
+   int n_closed = 0;
 
    for(auto const & elem : issues) {
       if (lwg::is_assigned_to_another_group(std::get<1>(elem))) {
@@ -653,6 +653,7 @@ void count_issues(std::vector<std::tuple<int, std::string>> const & issues, int 
          ++n_closed;
       }
    }
+   return {n_open, n_reassigned, n_closed};
 }
 
 
@@ -663,17 +664,10 @@ struct write_summary {
 
 
 auto operator << (std::ostream & out, write_summary const & x) -> std::ostream & {
-   std::vector<std::tuple<int, std::string>> const & old_issues = x.old_issues;
-   std::vector<std::tuple<int, std::string>> const & new_issues = x.new_issues;
 
-   int n_open_new = 0;
-   int n_open_old = 0;
-   int n_reassigned_new = 0;
-   int n_reassigned_old = 0;
-   int n_closed_new = 0;
-   int n_closed_old = 0;
-   count_issues(old_issues, n_open_old, n_reassigned_old, n_closed_old);
-   count_issues(new_issues, n_open_new, n_reassigned_new, n_closed_new);
+   auto [n_open_old, n_reassigned_old, n_closed_old] = count_issues(x.old_issues);
+   auto [n_open_new, n_reassigned_new, n_closed_new] = count_issues(x.new_issues);
+
    auto write_change = [&out](int n_new, int n_old){
       out << (n_new >= n_old ? "up by " : "down by ")
           << std::abs(n_new - n_old);
