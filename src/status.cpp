@@ -170,18 +170,12 @@ auto lwg::get_status_priority(std::string_view stat) noexcept -> std::ptrdiff_t 
    };
 
 
+   auto const i = std::ranges::find(status_priority, stat);
 #if !defined(DEBUG_SUPPORT)
-   static auto const first = std::begin(status_priority);
-   static auto const last  = std::end(status_priority);
-   return std::find_if( first, last, [&](std::string_view str){ return str == stat; } ) - first;
-#else
    // Diagnose when unknown status strings are passed
-   static auto const first = std::begin(status_priority);
-   static auto const last  = std::end(status_priority);
-   auto const i = std::find_if( first, last, [&](std::string_view str){ return str == stat; } );
-   if(last == i) {
+   if(std::end(status_priority) == i) {
       std::cout << "Unknown status: " << stat << std::endl;
    }
-   return i - first;
 #endif
+   return i - std::begin(status_priority);
 }
