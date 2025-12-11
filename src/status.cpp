@@ -5,14 +5,15 @@
 #include "status.h"
 
 #include <string>
+#include <string_view>
 #include <stdexcept>
 #include <iostream>  // eases debugging
 #include <algorithm>
 
 namespace {
-constexpr char const * LWG_ACTIVE {"lwg-active.html" };
-constexpr char const * LWG_CLOSED {"lwg-closed.html" };
-constexpr char const * LWG_DEFECTS{"lwg-defects.html"};
+constexpr std::string_view LWG_ACTIVE {"lwg-active.html" };
+constexpr std::string_view LWG_CLOSED {"lwg-closed.html" };
+constexpr std::string_view LWG_DEFECTS{"lwg-defects.html"};
 }
 
 auto lwg::filename_for_status(std::string_view stat) -> std::string_view {
