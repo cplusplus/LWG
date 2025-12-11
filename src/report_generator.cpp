@@ -18,7 +18,8 @@
 #include <sstream>
 #include <stdexcept>
 #include <tuple>
-#include <regex>
+#include <ranges>
+#include <functional>
 
 namespace
 {
@@ -473,7 +474,7 @@ namespace lwg
 // While nothing disasterous will happen if this precondition is violated, the published issues list will list items
 // in the wrong order.
 void report_generator::make_active(std::span<const issue> issues, fs::path const & path, std::string const & diff_report) {
-   assert(std::is_sorted(issues.begin(), issues.end(), order_by_issue_number{}));
+   assert(std::ranges::is_sorted(issues, {}, &issue::num));
 
    fs::path filename{path / "lwg-active.html"};
    std::ofstream out{filename};
@@ -492,7 +493,7 @@ void report_generator::make_active(std::span<const issue> issues, fs::path const
 
 
 void report_generator::make_defect(std::span<const issue> issues, fs::path const & path, std::string const & diff_report) {
-   assert(std::is_sorted(issues.begin(), issues.end(), order_by_issue_number{}));
+   assert(std::ranges::is_sorted(issues, {}, &issue::num));
 
    fs::path filename{path / "lwg-defects.html"};
    std::ofstream out(filename);
@@ -510,7 +511,7 @@ void report_generator::make_defect(std::span<const issue> issues, fs::path const
 
 
 void report_generator::make_closed(std::span<const issue> issues, fs::path const & path, std::string const & diff_report) {
-   assert(std::is_sorted(issues.begin(), issues.end(), order_by_issue_number{}));
+   assert(std::ranges::is_sorted(issues, {}, &issue::num));
 
    fs::path filename{path / "lwg-closed.html"};
    std::ofstream out{filename};
@@ -530,7 +531,7 @@ void report_generator::make_closed(std::span<const issue> issues, fs::path const
 // Additional non-standard documents, useful for running LWG meetings
 void report_generator::make_tentative(std::span<const issue> issues, fs::path const & path) {
    // publish a document listing all tentative issues that may be acted on during a meeting.
-   assert(std::is_sorted(issues.begin(), issues.end(), order_by_issue_number{}));
+   assert(std::ranges::is_sorted(issues, {}, &issue::num));
 
    fs::path filename{path / "lwg-tentative.html"};
    std::ofstream out{filename};
@@ -550,7 +551,7 @@ void report_generator::make_tentative(std::span<const issue> issues, fs::path co
 
 void report_generator::make_unresolved(std::span<const issue> issues, fs::path const & path) {
    // publish a document listing all non-tentative, non-ready issues that must be reviewed during a meeting.
-   assert(std::is_sorted(issues.begin(), issues.end(), order_by_issue_number{}));
+   assert(std::ranges::is_sorted(issues, {}, &issue::num));
 
    fs::path filename{path / "lwg-unresolved.html"};
    std::ofstream out{filename};
@@ -569,7 +570,7 @@ void report_generator::make_unresolved(std::span<const issue> issues, fs::path c
 
 void report_generator::make_immediate(std::span<const issue> issues, fs::path const & path) {
    // publish a document listing all non-tentative, non-ready issues that must be reviewed during a meeting.
-   assert(std::is_sorted(issues.begin(), issues.end(), order_by_issue_number{}));
+   assert(std::ranges::is_sorted(issues, {}, &issue::num));
 
    fs::path filename{path / "lwg-immediate.html"};
    std::ofstream out{filename};
@@ -604,7 +605,7 @@ out << R"(<h1>C++ Standard Library Issues Resolved Directly In [INSERT CURRENT M
 
 void report_generator::make_ready(std::span<const issue> issues, fs::path const & path) {
    // publish a document listing all ready issues for a formal vote
-   assert(std::is_sorted(issues.begin(), issues.end(), order_by_issue_number{}));
+   assert(std::ranges::is_sorted(issues, {}, &issue::num));
 
    fs::path filename{path / "lwg-ready.html"};
    std::ofstream out{filename};
@@ -639,7 +640,7 @@ out << R"(<h1>C++ Standard Library Issues to be moved in [INSERT CURRENT MEETING
 
 void report_generator::make_editors_issues(std::span<const issue> issues, fs::path const & path) {
    // publish a single document listing all 'Voting' and 'Immediate' resolutions (only).
-   assert(std::is_sorted(issues.begin(), issues.end(), order_by_issue_number{}));
+   assert(std::ranges::is_sorted(issues, {}, &issue::num));
 
    fs::path filename{path / "lwg-issues-for-editor.html"};
    std::ofstream out{filename};
@@ -653,7 +654,7 @@ void report_generator::make_editors_issues(std::span<const issue> issues, fs::pa
 }
 
 void report_generator::make_sort_by_num(std::span<issue> issues, fs::path const & filename) {
-   sort(issues.begin(), issues.end(), order_by_issue_number{});
+   std::ranges::sort(issues, {}, &issue::num);
 
    std::ofstream out{filename};
    if (!out)
@@ -697,9 +698,10 @@ sorted by priority.</p>
 
 //   print_table(out, issues, section_db);
 
-   for (auto i = issues.begin(), e = issues.end(); i != e;) {
-      int px = i->priority;
-      auto j = std::find_if(i, e, [&](issue const & iss){ return iss.priority != px; } );
+   while (!issues.empty())
+   {
+      int px = issues.front().priority;
+      auto end = std::ranges::find_if(issues, std::bind_front(std::ranges::not_equal_to{}, px), &issue::priority);
       out << "<h2 id=\"Priority_" << px << "\">";
       if (px == 99) {
          out << "Not Prioritized";
@@ -707,9 +709,10 @@ sorted by priority.</p>
       else {
          out << "Priority " << px;
       }
-      out << " (" << (j-i) << " issues)</h2>\n";
-      print_table(out, {i, j}, section_db);
-      i = j;
+      auto count = end - issues.begin();
+      out << " (" << count << " issues)</h2>\n";
+      print_table(out, issues.first(count), section_db);
+      issues = issues.subspan(count);
    }
 
    print_file_trailer(out);
@@ -734,14 +737,15 @@ This document is the Index by )" << title << R"( for the <a href="lwg-active.htm
 )";
    out << "<p>" << build_timestamp << "</p>";
 
-   for (auto i = issues.begin(), e = issues.end(); i != e;) {
-      auto const & current_status = i->stat;
-      auto idattr = current_status;
-      std::replace(idattr.begin(), idattr.end(), ' ', '_');
-      auto j = std::find_if(i, e, [&](issue const & iss){ return iss.stat != current_status; } );
-      out << "<h2 id=\"" << idattr << "\">" << current_status << " (" << (j-i) << " issues)</h2>\n";
-      print_table(out, {i, j}, section_db);
-      i = j;
+   while (!issues.empty())
+   {
+      auto const & current_status = issues.front().stat;
+      auto idattr = spaces_to_underscores(current_status);
+      auto end = std::ranges::find_if(issues, std::bind_front(std::ranges::not_equal_to{}, current_status), &issue::stat);
+      auto count = end - issues.begin();
+      out << "<h2 id=\"" << idattr << "\">" << current_status << " (" << count << " issues)</h2>\n";
+      print_table(out, issues.first(count), section_db);
+      issues = issues.subspan(count);
    }
 
    print_file_trailer(out);
@@ -844,7 +848,7 @@ void report_generator::make_sort_by_section(std::span<issue> issues, fs::path co
 
 // Create individual HTML files for each issue, to make linking easier
 void report_generator::make_individual_issues(std::span<const issue> issues, fs::path const & path) {
-   assert(std::is_sorted(issues.begin(), issues.end(), order_by_issue_number{}));
+   assert(std::ranges::is_sorted(issues, {}, &issue::num));
    issue_set_by_first_tag const  all_issues{ issues.begin(), issues.end()} ;
    issue_set_by_status    const  issues_by_status{ issues.begin(), issues.end() };
 
