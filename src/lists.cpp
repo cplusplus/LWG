@@ -508,12 +508,15 @@ void prepare_issues(std::span<lwg::issue> issues, lwg::metadata & meta) {
 // ============================================================================================================
 
 auto prepare_issues_for_diff_report(std::vector<lwg::issue> const & issues) -> std::vector<std::tuple<int, std::string>> {
+   auto make_tuple = [](lwg::issue const & iss) { return std::make_tuple(iss.num, iss.stat); };
+#ifdef __cpp_lib_ranges_to_container
+   return std::ranges::to<std::vector>(issues | std::views::transform(make_tuple));
+#else
    std::vector<std::tuple<int, std::string>> result;
    result.reserve(issues.size());
-   std::transform( issues.begin(), issues.end(), back_inserter(result),
-                   [](lwg::issue const & iss) { return std::make_tuple(iss.num, iss.stat); }
-                 );
+   std::ranges::transform(issues, back_inserter(result), make_tuple);
    return result;
+#endif
 }
 
 struct list_issues {
