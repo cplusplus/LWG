@@ -1,7 +1,8 @@
 # The binaries that we want to build
 PGMS := bin/lists bin/section_data bin/toc_diff bin/list_issues bin/set_status
-CXXFLAGS := -std=c++20 -Wall -g -O2 -D_GLIBCXX_ASSERTIONS
-CPPFLAGS := -MMD
+CXXSTD := -std=c++20
+CXXFLAGS := $(CXXSTD) -Wall -g -O2
+CPPFLAGS := -MMD -D_GLIBCXX_ASSERTIONS
 
 # Running 'make debug' is equivalent to 'make DEBUG=1'
 ifeq "$(MAKECMDGOALS)" "debug"
