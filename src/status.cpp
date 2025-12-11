@@ -61,7 +61,7 @@ auto lwg::is_active(std::string_view stat) -> bool {
 }
 
 auto lwg::is_active_not_ready(std::string_view stat) -> bool {
-   return is_active(stat)  and  stat != "Ready";
+   return stat != "Ready" and is_active(stat);
 }
 
 auto lwg::is_defect(std::string_view stat) -> bool {
