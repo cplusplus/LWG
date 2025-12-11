@@ -33,12 +33,6 @@ struct issue {
    bool                       has_resolution; // 'true' if 'text' contains a proposed resolution
 };
 
-struct order_by_issue_number {
-    bool operator()(issue const & x, issue const & y) const noexcept   {  return x.num < y.num;   }
-    bool operator()(issue const & x, int y)           const noexcept   {  return x.num < y;       }
-    bool operator()(int x,           issue const & y) const noexcept   {  return x     < y.num;   }
-};
-
 auto parse_issue_from_file(std::string file_contents, std::string const & filename, lwg::metadata & meta) -> issue;
   // Seems appropriate constructor behavior.
   //
