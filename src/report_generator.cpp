@@ -715,24 +715,19 @@ sorted by priority.</p>
    print_file_trailer(out);
 }
 
-
-void report_generator::make_sort_by_status(std::span<issue> issues, fs::path const & filename) {
-   auto proj = [this](const auto& i) {
-      return std::make_tuple(lwg::get_status_priority(i.stat), ordered_section(section_db, i), ordered_date(i), i.num);
-   };
-   std::ranges::sort(issues, {}, proj);
-
+void report_generator::make_sort_by_status_impl(std::span<issue> issues, fs::path const & filename, std::string title) {
    std::ofstream out{filename};
    if (!out)
      throw std::runtime_error{"Failed to open " + filename.string()};
-   print_file_header(out, "LWG Index by Status and Section");
+   print_file_header(out, "LWG Index by " + title, filename.filename().string(),
+         "C++ standard library issues list");
 
    out <<
 R"(<h1>C++ Standard Library Issues List (Revision )" << lwg_issues_xml.get_revision() << R"()</h1>
-<h1>Index by Status and Section</h1>
+<h1>Index by )" << title << R"(</h1>
 <p>Reference )" << is14882_docno << R"(</p>
 <p>
-This document is the Index by Status and Section for the <a href="lwg-active.html">Library Active Issues List</a>,
+This document is the Index by )" << title << R"( for the <a href="lwg-active.html">Library Active Issues List</a>,
 <a href="lwg-defects.html">Library Defect Reports and Accepted Issues</a>, and <a href="lwg-closed.html">Library Closed Issues List</a>.
 </p>
 
@@ -753,39 +748,21 @@ This document is the Index by Status and Section for the <a href="lwg-active.htm
 }
 
 
+void report_generator::make_sort_by_status(std::span<issue> issues, fs::path const & filename) {
+   auto proj = [this](const auto& i) {
+      return std::make_tuple(lwg::get_status_priority(i.stat), ordered_section(section_db, i), ordered_date(i), i.num);
+   };
+   std::ranges::sort(issues, {}, proj);
+   make_sort_by_status_impl(issues, filename, "Status and Section");
+}
+
+
 void report_generator::make_sort_by_status_mod_date(std::span<issue> issues, fs::path const & filename) {
    auto proj = [this](const auto& i) {
       return std::make_tuple(lwg::get_status_priority(i.stat), ordered_date(i), ordered_section(section_db, i), i.num);
    };
    std::ranges::sort(issues, {}, proj);
-
-   std::ofstream out{filename};
-   if (!out)
-     throw std::runtime_error{"Failed to open " + filename.string()};
-   print_file_header(out, "LWG Index by Status and Date", filename.filename().string(),
-         "C++ standard library issues list");
-
-   out <<
-R"(<h1>C++ Standard Library Issues List (Revision )" << lwg_issues_xml.get_revision() << R"()</h1>
-<h1>Index by Status and Date</h1>
-<p>Reference )" << is14882_docno << R"(</p>
-<p>
-This document is the Index by Status and Date for the <a href="lwg-active.html">Library Active Issues List</a>,
-<a href="lwg-defects.html">Library Defect Reports and Accepted Issues</a>, and <a href="lwg-closed.html">Library Closed Issues List</a>.
-</p>
-)";
-   out << "<p>" << build_timestamp << "</p>";
-
-   for (auto i = issues.begin(), e = issues.end(); i != e;) {
-      std::string const & current_status = i->stat;
-      auto const idattr = spaces_to_underscores(current_status);
-      auto j = find_if(i, e, [&](issue const & iss){ return iss.stat != current_status; } );
-      out << "<h2 id=\"" << idattr << "\">" << current_status << " (" << (j-i) << " issues)</h2>\n";
-      print_table(out, {i, j}, section_db);
-      i = j;
-   }
-
-   print_file_trailer(out);
+   make_sort_by_status_impl(issues, filename, "Status and Date");
 }
 
 
@@ -884,7 +861,7 @@ void report_generator::make_individual_issues(std::span<const issue> issues, fs:
       std::ofstream out{filename};
       if (!out)
          throw std::runtime_error{"Failed to open " + filename.string()};
-      print_file_header(out, std::string("Issue ") + num + ": " + lwg::strip_xml_elements(iss.title),
+      print_file_header(out, "Issue " + num + ": " + lwg::strip_xml_elements(iss.title),
             // XXX should we use e.g. lwg-active.html#num as the canonical URL for the issue?
             filename.filename().string(),
             "C++ library issue. Status: " + iss.stat);
