@@ -489,7 +489,7 @@ void format_issue_as_html(lwg::issue & is,
 
 void prepare_issues(std::span<lwg::issue> issues, lwg::metadata & meta) {
    // Initially sort the issues by issue number, so each issue can be correctly 'format'ted
-  std::ranges::sort(issues, lwg::order_by_issue_number{});
+  std::ranges::sort(issues, {}, &lwg::issue::num);
 
    // Then we format the issues, which should be the last time we need to touch the issues themselves
    // We may turn this into a two-stage process, analysing duplicates and then applying the links
@@ -781,7 +781,7 @@ int main(int argc, char* argv[]) {
 
 
       // issues must be sorted by number before making the mailing list documents
-      //sort(issues.begin(), issues.end(), order_by_issue_number{});
+      // std::ranges::sort(issues, {}, &lwg::issue::num);
 
       // Collect a report on all issues that have changed status
       // This will be added to the revision history of the 3 standard documents

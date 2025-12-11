@@ -40,7 +40,7 @@ void replace_all_irefs(std::span<const lwg::issue> issues, std::string & s) {
          throw std::runtime_error{"bad number in iref"};
       }
 
-      auto n = std::lower_bound(issues.begin(), issues.end(), num, lwg::order_by_issue_number{});
+      auto n = std::ranges::lower_bound(issues, num, {}, &lwg::issue::num);
       if (n == issues.end() || n->num != num) {
          std::ostringstream er;
          er << "couldn't find number " << num << " in iref";
