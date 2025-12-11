@@ -231,8 +231,7 @@ std::string paper_title_attr(std::string paper_number, lwg::metadata& meta) {
 }
 
 void format_issue_as_html(lwg::issue & is,
-                          std::vector<lwg::issue>::iterator first_issue,
-                          std::vector<lwg::issue>::iterator last_issue,
+                          std::span<lwg::issue> issues,
                           lwg::metadata & meta) {
 
    auto& section_db = meta.section_db;
@@ -289,7 +288,6 @@ void format_issue_as_html(lwg::issue & is,
       return std::isalpha(c) || c == '/' || c == '!';
    };
 
-
    // Reformat the issue text for the specified 'is' as valid HTML, replacing all the issue-list
    // specific XML markup as appropriate:
    //   tag             replacement
@@ -310,7 +308,7 @@ void format_issue_as_html(lwg::issue & is,
    // (unknown) section is discovered, it will be inserted into the supplied
    // section index, 'section_db'.
    //
-   // The behavior is undefined unless the issues in the supplied vector range are sorted by issue-number.
+   // The behavior is undefined unless the issues in the supplied span are sorted by issue-number.
    //
    // Essentially, this function is a tiny xml-parser driven by a stack of open tags, that pops as tags
    // are closed.
@@ -411,8 +409,8 @@ void format_issue_as_html(lwg::issue & is,
                   }
                }
 
-               auto n = std::lower_bound(first_issue, last_issue, num, lwg::order_by_issue_number{});
-               if (n == last_issue  or  n->num != num) {
+               auto n = std::ranges::lower_bound(issues, num, {}, &lwg::issue::num);
+               if (n == issues.end()  or  n->num != num) {
                   fail("Could not find issue " + r + " for <iref>", context);
                }
 
@@ -489,17 +487,17 @@ void format_issue_as_html(lwg::issue & is,
 }
 
 
-void prepare_issues(std::vector<lwg::issue> & issues, lwg::metadata & meta) {
+void prepare_issues(std::span<lwg::issue> issues, lwg::metadata & meta) {
    // Initially sort the issues by issue number, so each issue can be correctly 'format'ted
-   sort(issues.begin(), issues.end(), lwg::order_by_issue_number{});
+  std::ranges::sort(issues, lwg::order_by_issue_number{});
 
    // Then we format the issues, which should be the last time we need to touch the issues themselves
    // We may turn this into a two-stage process, analysing duplicates and then applying the links
    // This will allow us to better express constness when the issues are used purely for reference.
-   // Currently, the 'format' function takes a reference-to-non-const-vector-of-issues purely to
+   // Currently, the 'format' function takes a span of non-const-issues purely to
    // mark up information related to duplicates, so processing duplicates in a separate pass may
    // clarify the code.
-   for (auto & i : issues) { format_issue_as_html(i, issues.begin(), issues.end(), meta); }
+   for (auto & i : issues) { format_issue_as_html(i, issues, meta); }
 
    // Issues will be routinely re-sorted in later code, but contents should be fixed after formatting.
    // This suggests we may want to be storing some kind of issue handle in the functions that keep
