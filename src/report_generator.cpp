@@ -55,6 +55,16 @@ struct order_by_first_tag {
    }
 };
 
+// Similar to lwg::section_num but only looks at the first num in e.g. 17.5.2
+using major_section_key = std::pair<std::string_view, int>;
+
+// Find key for major section (i.e. Clause number, within a given IS or TS)
+auto lookup_major_section(lwg::section_map& db, const lwg::issue& i) -> major_section_key {
+   assert(!i.tags.empty());
+   const lwg::section_num& sect = db[i.tags[0]];
+   return { sect.prefix, sect.num[0] };
+}
+
 struct order_by_major_section {
    explicit order_by_major_section(lwg::section_map & sections)
       : section_db(sections)
@@ -62,11 +72,7 @@ struct order_by_major_section {
       }
 
    auto operator()(lwg::issue const & x, lwg::issue const & y) const -> bool {
-      assert(!x.tags.empty());
-      assert(!y.tags.empty());
-      lwg::section_num const & xn = section_db[x.tags[0]];
-      lwg::section_num const & yn = section_db[y.tags[0]];
-      return std::tie(xn.prefix, xn.num[0]) < std::tie(yn.prefix, yn.num[0]);
+      return lookup_major_section(section_db, x) < lookup_major_section(section_db, y);
    }
 
 private:
@@ -125,17 +131,17 @@ inline std::string spaces_to_underscores(std::string s) {
 }
 
 
-auto major_section(lwg::section_num const & sn) -> std::string {
-   std::string const prefix{sn.prefix};
+auto to_string(major_section_key sn) -> std::string {
+   auto [prefix, num] = sn;
    std::ostringstream out;
    if (!prefix.empty()) {
       out << prefix << " ";
    }
-   if (sn.num[0] < 100) {
-      out << sn.num[0];
+   if (num < 100) {
+      out << num;
    }
    else {
-      out << char(sn.num[0] - 100 + 'A');
+      out << char(num - 100 + 'A');
    }
    return out.str();
 }
@@ -776,17 +782,22 @@ void report_generator::make_sort_by_section(std::span<issue> issues, fs::path co
    };
    std::ranges::sort(issues, {}, proj);
 
-   auto b = issues.begin();
-   auto e = issues.end();
    if(active_only) {
-      b = std::upper_bound(b, e, "Ready", order_by_status{});
-      e = find_if(b, e, [](issue const & iss){ return !is_active(iss.stat); });
+      auto status_priority = [](const issue& i) { return lwg::get_status_priority(i.stat); };
+      // Find the first issue not in Voting, Immediate, or Ready status:
+      auto first = std::ranges::upper_bound(issues, lwg::get_status_priority("Ready"), {}, status_priority);
+      // Find the end of the active issues:
+      auto last = std::ranges::find_if_not(first, issues.end(), is_active, &issue::stat);
+      // Trim the span to only those active issues:
+      issues = std::span<issue>(first, last);
    }
-   stable_sort(b, e, order_by_section{section_db});
+   std::ranges::stable_sort(issues, order_by_section{section_db});
    std::set<issue, order_by_major_section> mjr_section_open{order_by_major_section{section_db}};
-   for (auto const & elem : issues) {
-      if (is_active_not_ready(elem.stat)) {
-         mjr_section_open.insert(elem);
+   if (!active_only) {
+      for (auto const & elem : issues) {
+         if (is_active_not_ready(elem.stat)) {
+            mjr_section_open.insert(elem);
+         }
       }
    }
 
@@ -817,30 +828,29 @@ void report_generator::make_sort_by_section(std::span<issue> issues, fs::path co
    }
    out << "<p>" << build_timestamp << "</p>";
 
-   // Would prefer to use const_iterators from here, but oh well....
-   for (auto i = b; i != e;) {
-      assert(!i->tags.empty());
-      std::string current_prefix = section_db[i->tags[0]].prefix;
-      int current_num = section_db[i->tags[0]].num[0];
-      auto j = i;
-      for (; j != e; ++j) {
-        if (section_db[j->tags[0]].prefix != current_prefix
-           || section_db[j->tags[0]].num[0] != current_num) {
-             break;
-         }
-      }
-      std::string const msn{major_section(section_db[i->tags[0]])};
+   auto lookup_section = [this](const issue& i) {
+      return lookup_major_section(section_db, i);
+   };
+
+   while (!issues.empty())
+   {
+      const issue& i = issues.front();
+      major_section_key current = lookup_section(i);
+      auto is_same_section = std::bind_front(std::ranges::equal_to{}, current);
+      auto j = std::ranges::find_if_not(issues, is_same_section, lookup_section);
+      auto count = j - issues.begin();
+      std::string const msn = to_string(current);
       auto idattr = spaces_to_underscores(msn);
-      out << "<h2 id=\"Section_" << idattr << "\">Section " << msn << " (" << (j-i) << " issues)</h2>\n";
+      out << "<h2 id=\"Section_" << idattr << "\">Section " << msn << " (" << count << " issues)</h2>\n";
       if (active_only) {
          out << "<p><a href=\"lwg-index.html#Section_" << idattr << "\">(view all issues)</a></p>\n";
       }
-      else if (mjr_section_open.count(*i) > 0) {
+      else if (mjr_section_open.count(i) > 0) {
          out << "<p><a href=\"lwg-index-open.html#Section_" << idattr << "\">(view only non-Ready open issues)</a></p>\n";
       }
 
-      print_table(out, {i, j}, section_db, true);
-      i = j;
+      print_table(out, issues.first(count), section_db, true);
+      issues = issues.subspan(count);
    }
 
    print_file_trailer(out);
