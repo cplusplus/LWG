@@ -142,7 +142,8 @@ Change the specification of <code>unhandled_stopped</code> to destroy the corout
 Incorporate change from LWG <iref ref="4466"/> and add `_v` to `is_void`.
 </p>
 <p>
-Still needs update w.r.t `unhandled_exception`.
+LWG moved this to Ready but then reopened it because it still needs
+an update w.r.t `unhandled_exception`.
 </p>
 
 </discussion>
