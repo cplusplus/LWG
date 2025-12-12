@@ -1,0 +1,70 @@
+<?xml version='1.0' encoding='utf-8' standalone='no'?>
+<!DOCTYPE issue SYSTEM "lwg-issue.dtd">
+
+<issue num="4485" status="New">
+<title>Move specification for `task::stop_token_type`</title>
+<section><sref ref="[task.state]"/></section>
+<submitter>Tomasz Kamiński</submitter>
+<date>08 Dec 2025</date>
+<priority>99</priority>
+
+<discussion>
+<b>Addresses <a href="https://github.com/cplusplus/nbballot/issues/954">US 249-379</a></b>
+<p>
+It is not clear what bullet <sref ref="task.state"/> p4.6 is – it reads like a requirement on `stop_token_type`,
+but if so, this paragraph is a poor place for it.
+</p>
+
+<note>2025-12-05 Tomasz comments</note>
+<p>The paragraph expresses requirements on user supplied `Environment::stop_source_type`,
+that needs to model <tt><i>stoppable-source</i></tt>, which includes <tt><i>stoppable-callback-for</i></tt>
+on associated token. We should also require that `Environment::scheduler_type` shall satisfy `scheduler`.</p>
+
+<p>We also need to clarify that `stop_possible` and `stop_requested` on <tt><i>prom</i>.token</tt> returns
+same value as `st` during lifetime of asynchronous operation.</p>
+</discussion>
+
+<resolution>
+<p>
+This wording is relative to <paper num="N5014"/>.
+</p>
+
+<ol>
+<li><p>Modify <sref ref="[exec.task]"/> as indicated:</p>
+
+<blockquote>
+<p>-5-
+`allocator_type` shall meet the <i>Cpp17Allocator</i> requirements<ins>,
+`scheduler_type` shall model `scheduler`, and `stop_source_type` shall model <tt><i>stoppable-source</i></tt>.
+</ins>.</p>
+</blockquote>
+</li>
+
+<li><p>Modify <sref ref="[task.state]"/> as indicated:</p>
+
+<pre>
+void start() &amp; noexcept;
+</pre>
+<blockquote>
+<p>-4- <i>Effects</i>: Effects: Let <tt><i>prom</i></tt> be the object `handle.<i>prom</i>ise()`.
+Associates <tt><i>STATE</i>(<i>prom</i>)</tt>, <tt><i>RCVR</i>(<i>prom</i>)</tt>, and <tt><i>SCHED</i>(<i>prom</i>)</tt> with `*this` as follows: 
+<ul>
+<li>-4.1- [&hellip;]</li>
+<li>-4.2- [&hellip;]</li>
+<li>-4.3- [&hellip;]</li>
+</ul>
+Let `st` be `get_stop_token(get_env(rcvr))`. Initializes <tt><i>prom</i>.token</tt> and <tt><i>prom</i>.source</tt> such that
+<ins>during lifetime of the assynchrous operation (<sref ref="[exec.async.ops]"/>) associated with `*this`</ins>
+<ul>
+<li>-4.4- <tt><i>prom</i>.token.stop_requested()</tt> returns <tt>st.stop_requested()</tt>;</li>
+<li>-4.5- <tt><i>prom</i>.token.stop_possible()</tt> returns <tt>st.stop_possible()</tt><del>;</del><ins>.</ins></li>
+<li><del>-4.6- for types `Fn` and `Init` such that both <tt>invocable&lt;Fn&gt;</tt> and <tt>constructible_from&lt;Fn, Init&gt;</tt> are modeled,
+  <tt>stop_token_type::callback_type&lt;Fn&gt;</tt> models <tt><i>stoppable-callback-for</i>&lt;Fn, stop_token_type, Init&gt;</tt>.</del></li>
+</ul></p>
+</blockquote>
+</li>
+
+</ol>
+</resolution>
+
+</issue>
