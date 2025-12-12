@@ -82,7 +82,8 @@ where the <i>i<sup>th</sup></i> element is
 <p>-13- <i>Throws</i>:
 <ins>Any exception thrown by operations on `r` or on iterators and sentinels referring to `r`.</ins>
 Any exception thrown by the evaluation of any <ins>argument of `reflect_constant`.</ins><del><i>e<sub>i</sub></i>, or</del>
-`meta::exception` if <del>evaluation of</del> any <del><tt>reflect_constant(<i>e<sub>i</sub></i>)</tt></del><ins>invocation of
+`meta::exception` if <del>evaluation of any <tt>reflect_constant(<i>e<sub>i</sub></i>)</tt></del>
+<ins>any invocation of
 <tt>reflect_constant</tt> or <tt>reflect_constant_array</tt></ins> would exit via an exception.
 </p>
 </blockquote>
