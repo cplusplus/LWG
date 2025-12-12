@@ -2,7 +2,7 @@
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
 <issue num="4486" status="New">
-<title><code><i>integral-constant-like</i></code> and <i><code>constexpr-wrapper-like</i></code> exposition-only concept duplication</title>
+<title><code><i>integral-constant-like</i></code> and <code><i>constexpr-wrapper-like</i></code> exposition-only concept duplication</title>
 <section><sref ref="[span.syn]"/><sref ref="[simd.expos]"/></section>
 <submitter>Jonathan Wakely</submitter>
 <date>12 Dec 2025</date>
