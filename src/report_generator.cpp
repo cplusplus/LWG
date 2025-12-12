@@ -477,7 +477,7 @@ namespace lwg
 
 // Functions to make the 3 standard published issues list documents
 // A precondition for calling any of these functions is that the list of issues is sorted in numerical order, by issue number.
-// While nothing disasterous will happen if this precondition is violated, the published issues list will list items
+// While nothing disastrous will happen if this precondition is violated, the published issues list will list items
 // in the wrong order.
 void report_generator::make_active(std::span<const issue> issues, fs::path const & path, std::string const & diff_report) {
    assert(std::ranges::is_sorted(issues, {}, &issue::num));
