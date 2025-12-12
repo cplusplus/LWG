@@ -13,6 +13,8 @@
 #include <span>
 #include <ranges>
 
+#include "status.h"
+
 namespace fs = std::filesystem;
 
 // DEBUG VISUALIZATION TOOL ONLY
@@ -26,66 +28,7 @@ void display_issues(std::span<const std::pair<int, std::string>> issues) {
 
 // PRODUCTION CODE STARTS HERE
 
-auto remove_prefix(std::string_view stat, std::string_view prefix) -> std::string_view {
-   if (stat.starts_with(prefix)) {
-      stat.remove_prefix(prefix.size());
-   }
-   return stat;
-}
-
-
-auto remove_pending(std::string_view stat) -> std::string_view {
-   return remove_prefix(stat, "Pending");
-}
-
-
-auto remove_tentatively(std::string_view stat) -> std::string_view {
-   return remove_prefix(stat, "Tentatively");
-}
-
-
-auto remove_qualifier(std::string_view stat) -> std::string_view {
-    return remove_tentatively(remove_pending(stat));
-}
-
-
-auto find_file(std::string_view status) -> std::string_view {
-    if (status.starts_with("Tentatively")) {
-        return "lwg-active.html";
-    }
-
-    auto stat = remove_qualifier(status);
-    return stat == "TC1"            ?  "lwg-defects.html"
-         : stat == "CD1"            ?  "lwg-defects.html"
-         : stat == "TS"             ?  "lwg-defects.html"
-         : stat == "WP"             ?  "lwg-defects.html"
-         : stat == "C++23"          ?  "lwg-defects.html"
-         : stat == "C++20"          ?  "lwg-defects.html"
-         : stat == "C++17"          ?  "lwg-defects.html"
-         : stat == "C++14"          ?  "lwg-defects.html"
-         : stat == "C++11"          ?  "lwg-defects.html"
-         : stat == "Resolved"       ?  "lwg-defects.html"
-         : stat == "DR"             ?  "lwg-defects.html"
-         : stat == "TRDec"          ?  "lwg-defects.html"
-         : stat == "Dup"            ?  "lwg-closed.html"
-         : stat == "NAD"            ?  "lwg-closed.html"
-         : stat == "NAD Future"     ?  "lwg-closed.html"
-         : stat == "NAD Editorial"  ?  "lwg-closed.html"
-         : stat == "NAD Concepts"   ?  "lwg-closed.html"
-         : stat == "NAD Arrays"     ?  "lwg-closed.html"
-         : stat == "Deferred"       ?  "lwg-active.html"
-         : stat == "Ready"          ?  "lwg-active.html"
-         : stat == "Review"         ?  "lwg-active.html"
-         : stat == "New"            ?  "lwg-active.html"
-         : stat == "Open"           ?  "lwg-active.html"
-         : throw std::runtime_error{"unknown status " + std::string(stat)};
-}
-
-
-auto is_active(std::string_view stat) -> bool {
-    return find_file(stat) == "lwg-active.html";
-}
-
+using lwg::is_active;
 
 auto read_issues(std::istream& is) -> std::vector<std::pair<int, std::string>> {
    // parse all issues from the specified stream, 'is'.
