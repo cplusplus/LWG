@@ -230,7 +230,7 @@ std::string paper_title_attr(std::string paper_number, lwg::metadata& meta) {
 }
 
 void format_issue_as_html(lwg::issue & is,
-                          std::span<lwg::issue> issues,
+                          std::span<const lwg::issue> issues,
                           lwg::metadata & meta) {
 
    auto& section_db = meta.section_db;
@@ -302,10 +302,10 @@ void format_issue_as_html(lwg::issue & is,
    //   note            <p><i>[NOTE CONTENTS]</i></p>
    //   !--             comments are simply erased
    //
-   // In addition, as duplicate issues are discovered, the duplicates are marked up
-   // in the supplied range [first_issue,last_issue).  Similarly, if an unexpected
-   // (unknown) section is discovered, it will be inserted into the supplied
-   // section index, 'section_db'.
+   // In addition, as duplicate issues are discovered, the duplicates are recorded
+   // in the issue for later processing.
+   // Similarly, if an unexpected (unknown) section is discovered,
+   // it will be inserted into the supplied section index, 'section_db'.
    //
    // The behavior is undefined unless the issues in the supplied span are sorted by issue-number.
    //
@@ -414,8 +414,7 @@ void format_issue_as_html(lwg::issue & is,
                }
 
                if (!tag_stack.empty()  and  tag_stack.back() == "duplicate") {
-                  n->duplicates.insert(make_html_anchor(is));
-                  is.duplicates.insert(make_html_anchor(*n));
+                  is.duplicates[num] = make_html_anchor(*n);
                   r.clear();
                }
                else {
@@ -488,15 +487,21 @@ void format_issue_as_html(lwg::issue & is,
 
 void prepare_issues(std::span<lwg::issue> issues, lwg::metadata & meta) {
    // Initially sort the issues by issue number, so each issue can be correctly 'format'ted
-  std::ranges::sort(issues, {}, &lwg::issue::num);
+   std::ranges::sort(issues, {}, &lwg::issue::num);
 
-   // Then we format the issues, which should be the last time we need to touch the issues themselves
-   // We may turn this into a two-stage process, analysing duplicates and then applying the links
-   // This will allow us to better express constness when the issues are used purely for reference.
-   // Currently, the 'format' function takes a span of non-const-issues purely to
-   // mark up information related to duplicates, so processing duplicates in a separate pass may
-   // clarify the code.
+   // Then we format the issues, which should be the last time we need to touch the issues themselves.
+   // The full list of issues is passed so that <iref> elements can be resolved to an issue.
    for (auto & i : issues) { format_issue_as_html(i, issues, meta); }
+
+   // Process the duplicates found while formatting the HTML.
+   // Ensure that each issue in i->duplicates has i in its own set of duplicates.
+   for (auto& i : issues) {
+      for (auto& dup : i.duplicates) {
+         auto& dupi = *std::ranges::lower_bound(issues, dup.first, {}, &lwg::issue::num);
+         if (auto& rev = dupi.duplicates[i.num]; rev.empty())
+            rev = make_html_anchor(i);
+      }
+   }
 
    // Issues will be routinely re-sorted in later code, but contents should be fixed after formatting.
    // This suggests we may want to be storing some kind of issue handle in the functions that keep

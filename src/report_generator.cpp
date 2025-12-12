@@ -146,16 +146,6 @@ auto to_string(major_section_key sn) -> std::string {
    return out.str();
 }
 
-template<typename Container>
-void print_list(std::ostream & out, Container const & source, char const * separator) {
-   char const * sep{""};
-   for (auto const & x : source) {
-      out << sep << x;
-      sep = separator;
-   }
-}
-
-
 
 void print_file_header(std::ostream& out, std::string const & title, std::string url_filename = {}, std::string desc = {}) {
    out <<
@@ -301,7 +291,11 @@ R"(<table class="issues-index">
 
       // Duplicates
       out << "<td>";
-      print_list(out, i.duplicates, ", ");
+      char const* sep = "";
+      for (auto const& x : i.duplicates) {
+        out << sep << x.second;
+        sep = ", ";
+      }
       out << "</td>\n"
           << "</tr>\n";
    }
@@ -380,7 +374,11 @@ void print_issue(std::ostream & out, lwg::issue const & iss, lwg::section_map & 
          // duplicates
          if (!iss.duplicates.empty()) {
             out << "<p><b>Duplicate of:</b> ";
-            print_list(out, iss.duplicates, ", ");
+            char const* sep = "";
+            for (auto const& x : iss.duplicates) {
+              out << sep << x.second;
+              sep = ", ";
+            }
             out << "</p>\n";
          }
 
