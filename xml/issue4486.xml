@@ -41,11 +41,11 @@ This wording is relative to <paper num="N5014"/>.
     decltype(synth-three-way(declval&lt;T&amp;&gt;(), declval&lt;U&amp;&gt;()));
 <ins>
   template&lt;class T&gt;
-      concept <i>constexpr-wrapper-like</i> =                  <i>// exposition only</i>
-        convertible_to&lt;T, decltype(T::value)&gt; &amp;&amp;
-        equality_comparable_with&lt;T, decltype(T::value)&gt; &amp;&amp;
-        bool_constant&lt;T() == T::value&gt;::value &amp;&amp;
-        bool_constant&lt;static_cast&lt;decltype(T::value)&gt;(T()) == T::value&gt;::value;</ins>
+    concept <i>constexpr-wrapper-like</i> =                  <i>// exposition only</i>
+      convertible_to&lt;T, decltype(T::value)&gt; &amp;&amp;
+      equality_comparable_with&lt;T, decltype(T::value)&gt; &amp;&amp;
+      bool_constant&lt;T() == T::value&gt;::value &amp;&amp;
+      bool_constant&lt;static_cast&lt;decltype(T::value)&gt;(T()) == T::value&gt;::value;</ins>
 }
 </code></pre>
 </blockquote>
@@ -55,14 +55,14 @@ This wording is relative to <paper num="N5014"/>.
 
 <blockquote>
 <pre><code>template&lt;class T&gt;
-    concept <i>integral-constant-like</i> =                    <i>// exposition only</i>
-      is_integral_v&lt;remove_cvref_t&lt;decltype(T::value)&gt;&gt; &amp;&amp;
-      !is_same_v&lt;bool, remove_const_t&lt;decltype(T::value)&gt;&gt; &amp;&amp;
-<ins>      <i>constexpr-wrapper-like</i>&lt;T&gt;;</ins>
-<del>      convertible_to&lt;T, decltype(T::value)&gt; &amp;&amp;
-      equality_comparable_with&lt;T, decltype(T::value)&gt; &amp;&amp;
-      bool_constant&lt;T() == T::value&gt;::value &amp;&amp;
-      bool_constant&lt;static_cast&lt;decltype(T::value)&gt;(T()) == T::value&gt;::value;</del>
+  concept <i>integral-constant-like</i> =                    <i>// exposition only</i>
+    is_integral_v&lt;remove_cvref_t&lt;decltype(T::value)&gt;&gt; &amp;&amp;
+    !is_same_v&lt;bool, remove_const_t&lt;decltype(T::value)&gt;&gt; &amp;&amp;
+<ins>    <i>constexpr-wrapper-like</i>&lt;T&gt;;</ins>
+<del>    convertible_to&lt;T, decltype(T::value)&gt; &amp;&amp;
+    equality_comparable_with&lt;T, decltype(T::value)&gt; &amp;&amp;
+    bool_constant&lt;T() == T::value&gt;::value &amp;&amp;
+    bool_constant&lt;static_cast&lt;decltype(T::value)&gt;(T()) == T::value&gt;::value;</del>
 </code></pre>
 </blockquote>
 </li>
@@ -71,11 +71,11 @@ This wording is relative to <paper num="N5014"/>.
 
 <blockquote>
 <pre><code><del>template&lt;class T&gt;
-    concept <i>constexpr-wrapper-like</i> =                    <i>// exposition only</i>
-      convertible_to&lt;T, decltype(T::value)&gt; &amp;&amp;
-      equality_comparable_with&lt;T, decltype(T::value)&gt; &amp;&amp;
-      bool_constant&lt;T() == T::value&gt;::value &amp;&amp;
-      bool_constant&lt;static_cast&lt;decltype(T::value)&gt;(T()) == T::value&gt;::value;</del>
+  concept <i>constexpr-wrapper-like</i> =                    <i>// exposition only</i>
+    convertible_to&lt;T, decltype(T::value)&gt; &amp;&amp;
+    equality_comparable_with&lt;T, decltype(T::value)&gt; &amp;&amp;
+    bool_constant&lt;T() == T::value&gt;::value &amp;&amp;
+    bool_constant&lt;static_cast&lt;decltype(T::value)&gt;(T()) == T::value&gt;::value;</del>
 </code></pre>
 </blockquote>
 </li>
