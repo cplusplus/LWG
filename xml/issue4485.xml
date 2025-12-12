@@ -35,8 +35,9 @@ This wording is relative to <paper num="N5014"/>.
 <blockquote>
 <p>-5-
 `allocator_type` shall meet the <i>Cpp17Allocator</i> requirements<ins>,
-`scheduler_type` shall model `scheduler`, and `stop_source_type` shall model <tt><i>stoppable-source</i></tt>
-</ins>.</p>
+`scheduler_type` shall model `scheduler`,
+and `stop_source_type` shall model <tt><i>stoppable-source</i></tt></ins>.
+</p>
 </blockquote>
 </li>
 
