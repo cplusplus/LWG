@@ -1,0 +1,86 @@
+<?xml version='1.0' encoding='utf-8' standalone='no'?>
+<!DOCTYPE issue SYSTEM "lwg-issue.dtd">
+
+<issue num="4486" status="New">
+<title><code><i>integral-constant-like</i></code> and <i><code>constexpr-wrapper-like</i></code> exposition-only concept duplication</title>
+<section><sref ref="[span.syn]"/><sref ref="[simd.expos]"/></section>
+<submitter>Jonathan Wakely</submitter>
+<date>12 Dec 2025</date>
+<priority>99</priority>
+
+<discussion>
+<b>Addresses <a href="https://github.com/cplusplus/nbballot/issues/814">US 151-242</a></b>
+
+<p>
+NB comment:
+<blockquote>
+We have two exposition-only concepts for similar things
+(<i><code>integral-constant-like</code></i>
+and <i><code>constant-wrapper-like</code></i>).
+The former can be expressed in terms of the latter.
+<br/>
+Proposed change:
+Move <i><code>constant-wrapper-like</code></i> to the library introduction
+and update <i><code>integral-constant-like</code></i> to use it.
+</blockquote>
+</p>
+</discussion>
+
+<resolution>
+<p>
+This wording is relative to <paper num="N5014"/>.
+</p>
+
+<ol>
+<li><p>Modify <sref ref="[expos.only.entity]"/> as indicated:</p>
+
+<blockquote>
+<pre><code>
+  template&lt;class T, class U = T&gt;
+  using <i>synth-three-way-result</i> =                        <i>// exposition only</i>
+    decltype(synth-three-way(declval&lt;T&amp;&gt;(), declval&lt;U&amp;&gt;()));
+<ins>
+  template&lt;class T&gt;
+      concept <i>constexpr-wrapper-like</i> =                  <i>// exposition only</i>
+        convertible_to&lt;T, decltype(T::value)&gt; &amp;&amp;
+        equality_comparable_with&lt;T, decltype(T::value)&gt; &amp;&amp;
+        bool_constant&lt;T() == T::value&gt;::value &amp;&amp;
+        bool_constant&lt;static_cast&lt;decltype(T::value)&gt;(T()) == T::value&gt;::value;</ins>
+}
+</code></pre>
+</blockquote>
+</li>
+
+<li><p>Modify <sref ref="[span.syn]"/> as indicated:</p>
+
+<blockquote>
+<pre><code>template&lt;class T&gt;
+    concept <i>integral-constant-like</i> =                    <i>// exposition only</i>
+      is_integral_v&lt;remove_cvref_t&lt;decltype(T::value)&gt;&gt; &amp;&amp;
+      !is_same_v&lt;bool, remove_const_t&lt;decltype(T::value)&gt;&gt; &amp;&amp;
+<ins>      <i>constexpr-wrapper-like</i>&lt;T&gt;;</ins>
+<del>      convertible_to&lt;T, decltype(T::value)&gt; &amp;&amp;
+      equality_comparable_with&lt;T, decltype(T::value)&gt; &amp;&amp;
+      bool_constant&lt;T() == T::value&gt;::value &amp;&amp;
+      bool_constant&lt;static_cast&lt;decltype(T::value)&gt;(T()) == T::value&gt;::value;</del>
+</code></pre>
+</blockquote>
+</li>
+
+<li><p>Modify <sref ref="[simd.expos]"/> as indicated:</p>
+
+<blockquote>
+<pre><code><del>template&lt;class T&gt;
+    concept <i>constexpr-wrapper-like</i> =                    <i>// exposition only</i>
+      convertible_to&lt;T, decltype(T::value)&gt; &amp;&amp;
+      equality_comparable_with&lt;T, decltype(T::value)&gt; &amp;&amp;
+      bool_constant&lt;T() == T::value&gt;::value &amp;&amp;
+      bool_constant&lt;static_cast&lt;decltype(T::value)&gt;(T()) == T::value&gt;::value;</del>
+</code></pre>
+</blockquote>
+</li>
+</ol>
+
+</resolution>
+
+</issue>
