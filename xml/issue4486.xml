@@ -32,7 +32,8 @@ This wording is relative to <paper num="N5014"/>.
 </p>
 
 <ol>
-<li><p>Modify <sref ref="[expos.only.entity]"/> as indicated:</p>
+<li><p>Modify <sref ref="[expos.only.entity]"/> by moving the concept (unchanged) from
+<sref ref="[simd.expos]"/>:</p>
 
 <blockquote>
 <pre><code>
