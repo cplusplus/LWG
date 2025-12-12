@@ -823,7 +823,7 @@ int main(int argc, char* argv[]) {
       // Note that each of these functions is going to re-sort the 'issues' vector for its own purposes
       generator.make_sort_by_num            (issues, {target_path / "lwg-toc.html"});
       generator.make_sort_by_status         (issues, {target_path / "lwg-status.html"});
-      generator.make_sort_by_status_mod_date(issues, {target_path / "lwg-status-date.html"});  // this report is useless, as git checkouts touch filestamps
+      generator.make_sort_by_status_mod_date(issues, {target_path / "lwg-status-date.html"});
       generator.make_sort_by_section        (issues, {target_path / "lwg-index.html"});
 
       // Note that this additional document is very similar to unresolved-index.html below
