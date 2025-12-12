@@ -5,16 +5,15 @@
 // Based on code originally donated by Howard Hinnant.
 // Since modified by Alisdair Meredith and modernised by Jonathan Wakely.
 
-// Note that this program requires a C++17 compiler supporting std::filesystem.
+// Note that this program requires a C++20 compiler.
 
 // TODO
 // .  Better handling of TR "sections", and grouping of issues in "Clause X"
 // .  Sort the Revision comments in the same order as the 'Status' reports, rather than alphabetically
 // .  Lots of tidy and cleanup after merging the revision-generating tool
 // .  Refactor more common text
-// .  Split 'format' function and usage to that the issues vector can pass by const-ref in the common cases
-// .  Document the purpose and contract on each function
-// .  Waiting on external fix for preserving file-dates
+// .  Split 'format' function and usage so that the issues vector can pass by const-ref in the common cases
+// .  Document the purpose and contract of each function
 // .  sort-by-last-modified-date should offer some filter or separation to see only the issues modified since the last meeting
 
 // Missing standard facilities that we work around
