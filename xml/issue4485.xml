@@ -46,7 +46,7 @@ This wording is relative to <paper num="N5014"/>.
 void start() &amp; noexcept;
 </pre>
 <blockquote>
-<p>-4- <i>Effects</i>: Effects: Let <tt><i>prom</i></tt> be the object `handle.promise()`.
+<p>-4- <i>Effects</i>: Effects: Let <tt><i>prom</i></tt> be the object <code><i>handle</i>.promise()</code>.
 Associates <tt><i>STATE</i>(<i>prom</i>)</tt>, <tt><i>RCVR</i>(<i>prom</i>)</tt>, and <tt><i>SCHED</i>(<i>prom</i>)</tt> with `*this` as follows: 
 <ul>
 <li>-4.1- [&hellip;]</li>
