@@ -856,7 +856,7 @@ void report_generator::make_sort_by_section(std::span<issue> issues, fs::path co
    print_file_trailer(out);
 }
 
-// Create individual HTML files for each issue, to make linking easier
+// Create individual HTML files for each issue, to make linking to a single issue easier.
 void report_generator::make_individual_issues(std::span<const issue> issues, fs::path const & path) {
    assert(std::ranges::is_sorted(issues, {}, &issue::num));
    issue_set_by_first_tag const  all_issues{ issues.begin(), issues.end()} ;
