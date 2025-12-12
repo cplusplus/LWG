@@ -18,7 +18,7 @@ constexpr std::string_view LWG_DEFECTS{"lwg-defects.html"};
 
 auto lwg::filename_for_status(std::string_view stat) -> std::string_view {
    // Tentative issues are always active
-   if(is_tentative(stat)) {
+   if (is_tentative(stat)) {
       return LWG_ACTIVE;
    }
 
@@ -78,21 +78,21 @@ auto lwg::is_tentative(std::string_view stat) -> bool {
 }
 
 auto lwg::is_assigned_to_another_group(std::string_view stat) -> bool {
-   for( auto s : {"Core", "EWG", "LEWG", "SG1", "SG9", "SG16" }) {
-     if(s == stat) return true;
+   for (auto s : {"Core", "EWG", "LEWG", "SG1", "SG9", "SG16" }) {
+     if (s == stat) return true;
    }
    return false;
 }
 
 auto lwg::is_not_resolved(std::string_view stat) -> bool {
    if (is_assigned_to_another_group(stat)) return true;
-   for( auto s : {"Deferred", "New", "Open", "Review"}) { if(s == stat) return true; }
+   for (auto s : {"Deferred", "New", "Open", "Review"}) { if (s == stat) return true; }
    return false;
 }
 
 auto lwg::is_votable(std::string_view stat) -> bool {
    stat = remove_tentatively(stat);
-   for( auto s : {"Immediate", "Voting"}) { if(s == stat) return true; }
+   for (auto s : {"Immediate", "Voting"}) { if (s == stat) return true; }
    return false;
 }
 
@@ -173,7 +173,7 @@ auto lwg::get_status_priority(std::string_view stat) noexcept -> std::ptrdiff_t 
    auto const i = std::ranges::find(status_priority, stat);
 #if !defined(DEBUG_SUPPORT)
    // Diagnose when unknown status strings are passed
-   if(std::end(status_priority) == i) {
+   if (std::end(status_priority) == i) {
       std::cout << "Unknown status: " << stat << std::endl;
    }
 #endif

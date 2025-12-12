@@ -564,14 +564,14 @@ auto operator<<( std::ostream & out, discover_new_issues const & x) -> std::ostr
    std::map<std::string, std::vector<int>, status_order> added_issues;
    for (auto const & i : new_issues) {
       auto j = std::lower_bound(old_issues.cbegin(), old_issues.cend(), std::get<0>(i), find_num{});
-      if(j == old_issues.end() or std::get<0>(*j) != std::get<0>(i)) {
+      if (j == old_issues.end() or std::get<0>(*j) != std::get<0>(i)) {
          added_issues[std::get<1>(i)].push_back(std::get<0>(i));
       }
    }
 
    for (auto const & i : added_issues) {
       auto const item_count = std::get<1>(i).size();
-      if(1 == item_count) {
+      if (1 == item_count) {
          out << "<li>Added the following " << std::get<0>(i) << " issue: <iref ref=\"" << std::get<1>(i).front() << "\"/>.</li>\n";
       }
       else {
@@ -618,7 +618,7 @@ auto operator << (std::ostream & out, discover_changed_issues x) -> std::ostream
 
    for (auto const & i : changed_issues) {
       auto const item_count = std::get<1>(i).size();
-      if(1 == item_count) {
+      if (1 == item_count) {
          out << "<li>Changed the following issue to " << std::get<1>(std::get<0>(i))
              << " (from " << std::get<0>(std::get<0>(i)) << "): <iref ref=\"" << std::get<1>(i).front() << "\"/>.</li>\n";
       }

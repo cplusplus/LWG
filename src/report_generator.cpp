@@ -324,7 +324,7 @@ void print_issue(std::ostream & out, lwg::issue const & iss, lwg::section_map & 
 
          // When printing for the list, also emit an absolute link to the individual file.
          // Absolute link so that copying only the big lists elsewhere doesn't result in broken links.
-         if(type == print_issue_type::in_list) {
+         if (type == print_issue_type::in_list) {
               out << "<h3 id=\"" << iss.num << "\"><a href=\"#" << iss.num << "\">" << iss.num << "</a>";
               out << "<sup><a href=\"https://cplusplus.github.io/LWG/issue" << iss.num << "\">(i)</a></sup>";
          }
@@ -782,7 +782,7 @@ void report_generator::make_sort_by_section(std::span<issue> issues, fs::path co
    };
    std::ranges::sort(issues, {}, proj);
 
-   if(active_only) {
+   if (active_only) {
       auto status_priority = [](const issue& i) { return lwg::get_status_priority(i.stat); };
       // Find the first issue not in Voting, Immediate, or Ready status:
       auto first = std::ranges::upper_bound(issues, lwg::get_status_priority("Ready"), {}, status_priority);
@@ -811,7 +811,7 @@ void report_generator::make_sort_by_section(std::span<issue> issues, fs::path co
    out << "<h1>Index by Section</h1>\n";
    out << "<p>Reference " << is14882_docno << "</p>\n";
    out << "<p>This document is the Index by Section for the <a href=\"lwg-active.html\">Library Active Issues List</a>";
-   if(!active_only) {
+   if (!active_only) {
       out << ", <a href=\"lwg-defects.html\">Library Defect Reports and Accepted Issues</a>, and <a href=\"lwg-closed.html\">Library Closed Issues List</a>";
    }
    out << ".</p>\n";

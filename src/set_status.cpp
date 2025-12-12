@@ -109,10 +109,10 @@ int main(int argc, char const * argv[]) {
       auto old_status = issue_data.substr(k, l-k);
       issue_data.replace(k, l-k, new_status);
 
-      if(lwg::filename_for_status(new_status) != lwg::filename_for_status(old_status)) {
+      if (lwg::filename_for_status(new_status) != lwg::filename_for_status(old_status)) {
          // when performing a major status change, record the date and change as a note
          auto eod = issue_data.find("</discussion>");
-         if(eod == std::string::npos) {
+         if (eod == std::string::npos) {
              throw bad_issue_file{filename, "Unable to find end of discussion"};
          }
          std::ostringstream note;
