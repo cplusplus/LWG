@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="4486" status="New">
+<issue num="4486" status="Ready">
 <title><code><i>integral-constant-like</i></code> and <code><i>constexpr-wrapper-like</i></code> exposition-only concept duplication</title>
 <section><sref ref="[span.syn]"/><sref ref="[simd.expos]"/></section>
 <submitter>Jonathan Wakely</submitter>
@@ -24,6 +24,8 @@ Move <i><code>constant-wrapper-like</code></i> to the library introduction
 and update <i><code>integral-constant-like</code></i> to use it.
 </blockquote>
 </p>
+
+<note>2025-12-12; LWG telecon; Status changed: New &rarr; Ready.</note>
 </discussion>
 
 <resolution>
