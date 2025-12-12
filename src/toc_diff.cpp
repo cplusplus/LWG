@@ -55,13 +55,15 @@ auto read_issues(std::istream& is) -> std::vector<std::pair<int, std::string>> {
    }
 
    // Read all issues in table
+   // Expected format:
+   // <tr><td><a>1234</a><a>(i)</a></td><td><a>STATUS</a></td>...</tr>
    std::vector<std::pair<int, std::string>> issues;
    while (true) {
       i = s.find("<tr>", i+4);
       if (i == std::string::npos) {
          break;
       }
-      i = s.find("</a>", i);
+      i = s.find("</a>", i+4);
       auto j = s.rfind('>', i);
       if (j == std::string::npos) {
          throw std::runtime_error{"unable to parse issue number: can't find beginning bracket"};
@@ -72,7 +74,7 @@ auto read_issues(std::istream& is) -> std::vector<std::pair<int, std::string>> {
       if (instr.fail()) {
          throw std::runtime_error{"unable to parse issue number"};
       }
-      i = s.find("</a>", i+4);
+      i = s.find("</a>", s.find("<td>", i+4));
       if (i == std::string::npos) {
          throw std::runtime_error{"partial issue found"};
       }
