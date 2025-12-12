@@ -680,6 +680,26 @@ R"(<h1>C++ Standard Library Issues List (Revision )" << lwg_issues_xml.get_revis
    print_file_trailer(out);
 }
 
+#ifndef __cpp_lib_ranges_chunk_by
+template<typename T>
+auto chop(std::span<T>& s, std::size_t n)
+{
+   auto first = s.first(n);
+   s = s.subspan(n);
+   return first;
+}
+
+// Chop off and return  a subspan from the front of `issues`,
+// consisting of all values that are equivalent under `pred`.
+auto chunk_by(std::span<issue>& issues, auto pred) -> std::span<const issue> {
+   std::size_t n = 0;
+   if (!issues.empty()) {
+      auto end = std::ranges::find_if_not(issues, std::bind_front(pred, std::ref(issues.front())));
+      n = end - issues.begin();
+   }
+   return chop(issues, n);
+}
+#endif
 
 void report_generator::make_sort_by_priority(std::span<issue> issues, fs::path const & filename) {
    auto proj = [this](const auto& i) {
@@ -704,10 +724,17 @@ sorted by priority.</p>
 
 //   print_table(out, issues, section_db);
 
-   while (!issues.empty())
+   auto same_prio = [](const issue& lhs, const issue& rhs) {
+     return lhs.priority == rhs.priority;
+   };
+#ifdef __cpp_lib_ranges_chunk_by
+   for (auto chunk : issues | std::views::chunk_by(same_prio))
+#else
+   for (auto chunk = chunk_by(issues, same_prio); !chunk.empty();
+       chunk = chunk_by(issues, same_prio))
+#endif
    {
-      int px = issues.front().priority;
-      auto end = std::ranges::find_if(issues, std::bind_front(std::ranges::not_equal_to{}, px), &issue::priority);
+      const int px = chunk.front().priority;
       out << "<h2 id=\"Priority_" << px << "\">";
       if (px == 99) {
          out << "Not Prioritized";
@@ -715,10 +742,8 @@ sorted by priority.</p>
       else {
          out << "Priority " << px;
       }
-      auto count = end - issues.begin();
-      out << " (" << count << " issues)</h2>\n";
-      print_table(out, issues.first(count), section_db);
-      issues = issues.subspan(count);
+      out << " (" << chunk.size() << " issues)</h2>\n";
+      print_table(out, chunk, section_db);
    }
 
    print_file_trailer(out);
@@ -743,15 +768,21 @@ This document is the Index by )" << title << R"( for the <a href="lwg-active.htm
 )";
    out << "<p>" << build_timestamp << "</p>";
 
-   while (!issues.empty())
+   auto same_status = [](const issue& lhs, const issue& rhs) {
+     return lhs.stat == rhs.stat;
+   };
+#ifdef __cpp_lib_ranges_chunk_by
+   for (auto chunk : issues | std::views::chunk_by(same_status))
+#else
+   for (auto chunk = chunk_by(issues, same_status); !chunk.empty();
+       chunk = chunk_by(issues, same_status))
+#endif
    {
-      auto const & current_status = issues.front().stat;
+      std::string current_status = chunk.front().stat;
       auto idattr = spaces_to_underscores(current_status);
-      auto end = std::ranges::find_if(issues, std::bind_front(std::ranges::not_equal_to{}, current_status), &issue::stat);
-      auto count = end - issues.begin();
-      out << "<h2 id=\"" << idattr << "\">" << current_status << " (" << count << " issues)</h2>\n";
-      print_table(out, issues.first(count), section_db);
-      issues = issues.subspan(count);
+      out << "<h2 id=\"" << idattr << "\">" << current_status
+        << " (" << chunk.size() << " issues)</h2>\n";
+      print_table(out, chunk, section_db);
    }
 
    print_file_trailer(out);
@@ -832,25 +863,29 @@ void report_generator::make_sort_by_section(std::span<issue> issues, fs::path co
       return lookup_major_section(section_db, i);
    };
 
-   while (!issues.empty())
+   auto same_section = [&](const issue& lhs, const issue& rhs) {
+     return lookup_section(lhs) == lookup_section(rhs);
+   };
+#ifdef __cpp_lib_ranges_chunk_by
+   for (auto chunk : issues | std::views::chunk_by(same_section))
+#else
+   for (auto chunk = chunk_by(issues, same_section); !chunk.empty();
+       chunk = chunk_by(issues, same_section))
+#endif
    {
-      const issue& i = issues.front();
+      const issue& i = chunk.front();
       major_section_key current = lookup_section(i);
-      auto is_same_section = std::bind_front(std::ranges::equal_to{}, current);
-      auto j = std::ranges::find_if_not(issues, is_same_section, lookup_section);
-      auto count = j - issues.begin();
       std::string const msn = to_string(current);
       auto idattr = spaces_to_underscores(msn);
-      out << "<h2 id=\"Section_" << idattr << "\">Section " << msn << " (" << count << " issues)</h2>\n";
+      out << "<h2 id=\"Section_" << idattr << "\">Section " << msn
+         << " (" << chunk.size() << " issues)</h2>\n";
       if (active_only) {
          out << "<p><a href=\"lwg-index.html#Section_" << idattr << "\">(view all issues)</a></p>\n";
       }
       else if (mjr_section_open.count(i) > 0) {
          out << "<p><a href=\"lwg-index-open.html#Section_" << idattr << "\">(view only non-Ready open issues)</a></p>\n";
       }
-
-      print_table(out, issues.first(count), section_db, true);
-      issues = issues.subspan(count);
+      print_table(out, chunk, section_db, true);
    }
 
    print_file_trailer(out);
