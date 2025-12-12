@@ -1,5 +1,5 @@
 # The binaries that we want to build
-PGMS := bin/lists bin/section_data bin/toc_diff bin/list_issues bin/set_status
+PGMS := bin/lists bin/section_data bin/list_issues bin/set_status
 CXXSTD := -std=c++20
 CXXFLAGS := $(CXXSTD) -Wall -g -O2
 CPPFLAGS := -MMD -D_GLIBCXX_ASSERTIONS
@@ -39,8 +39,6 @@ pgms: $(PGMS)
 bin/lists: src/issues.o src/status.o src/sections.o src/mailing_info.o src/report_generator.o src/lists.o src/metadata.o
 
 bin/section_data: src/section_data.o
-
-bin/toc_diff: src/toc_diff.o src/status.o
 
 bin/list_issues: src/issues.o src/status.o src/sections.o src/list_issues.o src/metadata.o
 
