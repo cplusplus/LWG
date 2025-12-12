@@ -35,7 +35,7 @@ This wording is relative to <paper num="N5014"/>.
 <blockquote>
 <p>-5-
 `allocator_type` shall meet the <i>Cpp17Allocator</i> requirements<ins>,
-`scheduler_type` shall model `scheduler`, and `stop_source_type` shall model <tt><i>stoppable-source</i></tt>.
+`scheduler_type` shall model `scheduler`, and `stop_source_type` shall model <tt><i>stoppable-source</i></tt>
 </ins>.</p>
 </blockquote>
 </li>
@@ -46,7 +46,7 @@ This wording is relative to <paper num="N5014"/>.
 void start() &amp; noexcept;
 </pre>
 <blockquote>
-<p>-4- <i>Effects</i>: Effects: Let <tt><i>prom</i></tt> be the object `handle.<i>prom</i>ise()`.
+<p>-4- <i>Effects</i>: Effects: Let <tt><i>prom</i></tt> be the object `handle.promise()`.
 Associates <tt><i>STATE</i>(<i>prom</i>)</tt>, <tt><i>RCVR</i>(<i>prom</i>)</tt>, and <tt><i>SCHED</i>(<i>prom</i>)</tt> with `*this` as follows: 
 <ul>
 <li>-4.1- [&hellip;]</li>
@@ -54,7 +54,7 @@ Associates <tt><i>STATE</i>(<i>prom</i>)</tt>, <tt><i>RCVR</i>(<i>prom</i>)</tt>
 <li>-4.3- [&hellip;]</li>
 </ul>
 Let `st` be `get_stop_token(get_env(rcvr))`. Initializes <tt><i>prom</i>.token</tt> and <tt><i>prom</i>.source</tt> such that
-<ins>during lifetime of the assynchrous operation (<sref ref="[exec.async.ops]"/>) associated with `*this`</ins>
+<ins>during lifetime of the asynchronous operation (<sref ref="[exec.async.ops]"/>) associated with `*this`</ins>
 <ul>
 <li>-4.4- <tt><i>prom</i>.token.stop_requested()</tt> returns <tt>st.stop_requested()</tt>;</li>
 <li>-4.5- <tt><i>prom</i>.token.stop_possible()</tt> returns <tt>st.stop_possible()</tt><del>;</del><ins>.</ins></li>
