@@ -218,8 +218,10 @@ namespace
 }
 
 // The title of the specified paper, formatted as an HTML title="..." attribute.
-std::string paper_title_attr(std::string paper_number, lwg::metadata& meta) {
-   auto title = meta.paper_titles[paper_number];
+std::string paper_title_attr(std::string const& paper_number, lwg::metadata const& meta) {
+   std::string title;
+   if (auto pos = meta.paper_titles.find(paper_number); pos != meta.paper_titles.end())
+      title = pos->second;
    if (!title.empty())
    {
       title = lwg::replace_reserved_char(std::move(title), '&', "&amp;");
@@ -720,6 +722,18 @@ void check_is_directory(fs::path const & directory) {
       throw std::runtime_error(directory.string() + " is not an existing directory");
    }
 }
+
+// Notes on performance (as of December 2025):
+// Reading the XML files for each issues takes about 7% of the total run time.
+// Converting the issue text to HTML takes about 7%.
+// Generating the three main lists (active, defects, closed) takes about 50%.
+// Generating the individual HTML pages for each issue takes about 25%.
+//
+// The cost of copying the vectors of issues and sorting them repeatedly is insignificant.
+//
+// Converting issues to HTML cannot be parallelized currently because it
+// involves non-const accesses to the section_db, but it's not worth doing
+// when it only takes 7% of the total time anyway.
 
 int main(int argc, char* argv[]) {
    try {
