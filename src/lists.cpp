@@ -29,6 +29,7 @@
 #include <chrono>
 #include <cstdlib>
 #include <fstream>
+#include <future>
 #include <iostream>
 #include <iterator>
 #include <map>
@@ -40,6 +41,7 @@
 #include <string>
 #include <tuple>
 #include <unordered_map>
+#include <utility>
 #include <vector>
 
 #include <filesystem>
@@ -724,16 +726,16 @@ void check_is_directory(fs::path const & directory) {
 }
 
 // Notes on performance (as of December 2025):
-// Reading the XML files for each issues takes about 7% of the total run time.
-// Converting the issue text to HTML takes about 7%.
-// Generating the three main lists (active, defects, closed) takes about 50%.
-// Generating the individual HTML pages for each issue takes about 25%.
+// Reading the XML files for each issues takes about 10% of the total run time.
+// Converting the issue text to HTML takes about 10%.
+// Generating the three main lists (active, defects, closed) takes about 20%.
+// Generating the individual HTML pages for each issue takes about 35%.
 //
 // The cost of copying the vectors of issues and sorting them repeatedly is insignificant.
 //
 // Converting issues to HTML cannot be parallelized currently because it
 // involves non-const accesses to the section_db, but it's not worth doing
-// when it only takes 7% of the total time anyway.
+// when it only takes 10% of the total time anyway.
 
 int main(int argc, char* argv[]) {
    try {
@@ -823,20 +825,34 @@ int main(int argc, char* argv[]) {
                           : std::back_inserter(unresolved_issues);
       std::copy_if(issues.begin(), issues.end(), ready_inserter, [](lwg::issue const & iss){ return lwg::is_ready(iss.stat); } );
 
+      using span = std::span<const lwg::issue>;
+      const auto launch = std::launch::async; // use deferred to serialize
+
       // First generate the primary 3 standard issues lists
-      generator.make_active(issues, target_path, diff_report);
-      generator.make_defect(issues, target_path, diff_report);
-      generator.make_closed(issues, target_path, diff_report);
+
+      auto fut_active = std::async(launch, &lwg::report_generator::make_active,
+            std::cref(generator), span(issues), std::cref(target_path), std::cref(diff_report));
+      auto fut_defects = std::async(launch, &lwg::report_generator::make_defect,
+            std::cref(generator), span(issues), std::cref(target_path), std::cref(diff_report));
+      auto fut_closed = std::async(launch, &lwg::report_generator::make_closed,
+            std::cref(generator), span(issues), std::cref(target_path), std::cref(diff_report));
 
       // unofficial documents
-      generator.make_tentative (issues, target_path);
-      generator.make_unresolved(issues, target_path);
-      generator.make_immediate (issues, target_path);
-      generator.make_ready     (issues, target_path);
-      generator.make_editors_issues(issues, target_path);
+      std::as_const(generator).make_tentative (issues, target_path);
+      std::as_const(generator).make_unresolved(issues, target_path);
+      std::as_const(generator).make_immediate (issues, target_path);
+      std::as_const(generator).make_ready     (issues, target_path);
+      std::as_const(generator).make_editors_issues(issues, target_path);
+
+      // We need to join the concurrent tasks because make_individual_issues is non-const
+      // We could run the three make_sort_by_num calls before joining the futures,
+      // because those are const, except for re-sorting the issues span by issue number,
+      // but as they run first the issues are actually already sorted.
+      fut_active.wait();
+      fut_defects.wait();
+      fut_closed.wait();
+
       generator.make_individual_issues(issues, target_path);
-
-
 
       // Now we have a parsed and formatted set of issues, we can write the standard set of HTML documents
       // Note that each of these functions is going to re-sort the 'issues' vector for its own purposes
