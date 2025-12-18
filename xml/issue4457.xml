@@ -21,8 +21,34 @@ This wording is relative to <paper num="N5014"/>.
 </p>
 
 <ol>
-<li><p>Modify <sref ref="[algorithm.syn]"/>, as indicated:</p>
 
+<li><p>Modify <sref ref="[algorithm.syn]"/>, as indicated:</p>
+<blockquote><pre>
+namespace ranges {
+  template&lt;random_access_iterator I, sentinel_for&lt;I&gt; S, class Comp = ranges::less,
+           class Proj = identity&gt;
+    requires sortable&lt;I, Comp, Proj&gt;
+    constexpr I stable_sort(I first, S last, Comp comp = {}, Proj proj = {});         // hosted
+  template&lt;random_access_range R, class Comp = ranges::less, class Proj = identity&gt;
+    requires sortable&lt;iterator_t&lt;R&gt;, Comp, Proj&gt;
+    constexpr borrowed_iterator_t&lt;R&gt;
+      stable_sort(R&amp;&amp; r, Comp comp = {}, Proj proj = {});                             // hosted
+
+  template&lt;execution-policy Ep, random_access_iterator I, sized_sentinel_for&lt;I&gt; S,
+           class Comp = ranges::less, class Proj = identity&gt;
+    requires sortable&lt;I, Comp, Proj&gt;
+    I stable_sort(Ep&amp;&amp; exec, I first, S last, Comp comp = {},
+                  Proj proj = {});                                        // <del>freestanding-deleted</del><ins>hosted</ins>
+  template&lt;execution-policy Ep, sized-random-access-range R, class Comp = ranges::less,
+           class Proj = identity&gt;
+    requires sortable&lt;iterator_t&lt;R&gt;, Comp, Proj&gt;
+    borrowed_iterator_t&lt;R&gt;
+      stable_sort(Ep&amp;&amp; exec, R&amp;&amp; r, Comp comp = {}, Proj proj = {});      // <del>freestanding-deleted</del><ins>hosted</ins>
+}
+</pre></blockquote>
+</li>
+
+<li><p>Modify <sref ref="[algorithm.syn]"/>, as indicated:</p>
 <blockquote><pre>
 namespace ranges {
   template&lt;bidirectional_iterator I, sentinel_for&lt;I&gt; S, class Proj = identity,
@@ -41,12 +67,40 @@ namespace ranges {
     requires permutable&lt;I&gt;
     subrange&lt;I&gt;
       stable_partition(Ep&amp;&amp; exec, I first, S last, Pred pred,
-                       Proj proj = {});                                   // <del>freestanding-deleted</del><ins>hosted</ins>;
+                       Proj proj = {});                                   // <del>freestanding-deleted</del><ins>hosted</ins>
   template&lt;execution-policy Ep, sized-random-access-range R, class Proj = identity,
            indirect_unary_predicate&lt;projected&lt;iterator_t&lt;R&gt;, Proj&gt;&gt; Pred&gt;
     requires permutable&lt;iterator_t&lt;R&gt;&gt;
     borrowed_subrange_t&lt;R&gt;
-      stable_partition(Ep&amp;&amp; exec, R&amp;&amp; r, Pred pred, Proj proj = {});      // <del>freestanding-deleted</del><ins>hosted</ins>;
+      stable_partition(Ep&amp;&amp; exec, R&amp;&amp; r, Pred pred, Proj proj = {});      // <del>freestanding-deleted</del><ins>hosted</ins>
+}
+</pre></blockquote>
+</li>
+
+<li><p>Modify <sref ref="[algorithm.syn]"/>, as indicated:</p>
+<blockquote><pre>
+namespace ranges {
+  template&lt;bidirectional_iterator I, sentinel_for&lt;I&gt; S, class Comp = ranges::less,
+           class Proj = identity&gt;
+    requires sortable&lt;I, Comp, Proj&gt;
+    constexpr I
+      inplace_merge(I first, I middle, S last, Comp comp = {}, Proj proj = {});       // hosted
+  template&lt;bidirectional_range R, class Comp = ranges::less, class Proj = identity&gt;
+    requires sortable&lt;iterator_t&lt;R&gt;, Comp, Proj&gt;
+    constexpr borrowed_iterator_t&lt;R&gt;
+      inplace_merge(R&amp;&amp; r, iterator_t&lt;R&gt; middle, Comp comp = {}, Proj proj = {});     // hosted
+
+  template&lt;execution-policy Ep, random_access_iterator I, sized_sentinel_for&lt;I&gt; S,
+           class Comp = ranges::less, class Proj = identity&gt;
+    requires sortable&lt;I, Comp, Proj&gt;
+    I inplace_merge(Ep&amp;&amp; exec, I first, I middle, S last, Comp comp = {},
+                    Proj proj = {});                          // <del>freestanding-deleted</del><ins>hosted</ins>
+  template&lt;execution-policy Ep, sized-random-access-range R, class Comp = ranges::less,
+           class Proj = identity&gt;
+    requires sortable&lt;iterator_t&lt;R&gt;, Comp, Proj&gt;
+    borrowed_iterator_t&lt;R&gt;
+      inplace_merge(Ep&amp;&amp; exec, R&amp;&amp; r, iterator_t&lt;R&gt; middle, Comp comp = {},
+                    Proj proj = {});                          // <del>freestanding-deleted</del><ins>hosted</ins>
 }
 </pre></blockquote>
 </li>
