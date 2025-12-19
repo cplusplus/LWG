@@ -1,0 +1,63 @@
+<?xml version='1.0' encoding='utf-8' standalone='no'?>
+<!DOCTYPE issue SYSTEM "lwg-issue.dtd">
+
+<issue num="4488" status="New">
+<title>Undesired status for some functions in <tt>&lt;cmath&gt;</tt></title>
+<section><sref ref="[headers]"/></section>
+<submitter>Jiang An</submitter>
+<date>08 Dec 2025</date>
+<priority>99</priority>
+
+<discussion>
+<p>
+Originally reported in <a href="https://github.com/cplusplus/draft/issues/8579">cplusplus/draft#8579</a>.
+<p/>
+Currently, <sref ref="[headers]"/> p5 specially mentions "except for names which are defined as macros in C", 
+which covers `std::fpclassify` and its friends. Perhaps we don't want to require them to be initially declared 
+in namespace `std`. Moreover, <sref ref="[headers]"/> p6 seemingly requires them to be also defined as macros 
+in C++, which doesn't seem intentional.
+<p/>
+Perhaps we want to exactly specify whether a name denotes a function (overload set) or a macro in C++, 
+while no name should denote both a function and a macro, and to allow a function name from C initially declared 
+in the global namespace.
+</p>
+</discussion>
+
+<resolution>
+<p>
+This wording is relative to <paper num="N5032"/>.
+</p>
+
+<ol>
+<li><p>Modify <sref ref="[headers]"/> as indicated:</p>
+
+<blockquote>
+<p>
+[&hellip;]
+<p/>
+-5- Except as noted in <sref ref="[library]"/> through <sref ref="[exec]"/> and <sref ref="[depr]"/>, 
+the contents of each header <tt>c<i>name</i></tt> is the same as that of the corresponding header 
+<tt><i>name</i>.h</tt> as specified in the C standard library (<sref ref="[intro.refs]"/>). In the 
+C++ standard library, however, the declarations (except for names which are defined as macros 
+in C<ins>++</ins>) are within namespace scope (<sref ref="[basic.scope.namespace]"/>) of the namespace 
+`std`. It is unspecified whether these names (including any overloads added in <sref ref="[support]"/> 
+through <sref ref="[exec]"/> and <sref ref="[depr]"/>) are first declared within the global namespace 
+scope and are then injected into namespace `std` by explicit <i>using-declarations</i> 
+(<sref ref="[namespace.udecl]"/>).
+<p/>
+-6- Names which are defined as macros in <del>C shall be defined as macros in the C++ standard 
+library</del><ins>the C++ standard library shall not be defined as functions</ins>, even if C 
+grants license for implementation as functions.
+[<i>Note 2</i>: The names defined as macros in C include the following: `assert`, `offsetof`, `setjmp`, 
+`va_arg`, `va_end`, and `va_start`. &mdash; <i>end note</i>]
+<p/>
+-7- Names that are defined as functions in <del>C shall be defined as functions in the C++ standard 
+library</del><ins>the C++ standard library shall not be defined as macros</ins>.(138)
+</p>
+</blockquote>
+</li>
+</ol>
+
+</resolution>
+
+</issue>
