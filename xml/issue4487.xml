@@ -1,0 +1,144 @@
+<?xml version='1.0' encoding='utf-8' standalone='no'?>
+<!DOCTYPE issue SYSTEM "lwg-issue.dtd">
+
+<issue num="4487" status="New">
+<title>Is member `is_steady` of a <i>Cpp17Clock</i> type required to be usable in constant expressions?</title>
+<section><sref ref="[time.clock.req]"/></section>
+<submitter>Jiang An</submitter>
+<date>26 Nov 2025</date>
+<priority>99</priority>
+
+<discussion>
+<p>
+In <sref ref="[time.clock.req]"/>/[tab:time.clock], the static data member `C1::is_steady` seemingly 
+indicates the property of the clock statically, as the requirements say "always".
+<p/>
+However, it is not clear whether `C1::steady` should be usable in a constant expression. A hostile 
+reading may indicate that it is allowed to make `C1::steady` only defined in some separated translated 
+unit and/or initialized from some non-constant expression.
+<p/>
+Also, it is not very clear that the "always" means the conditions always hold in all executions, 
+or only always hold in the current execution. The latter reading allows `C1::steady` to vary between 
+executions.
+</p>
+</discussion>
+
+<resolution>
+<p>
+This wording is relative to <paper num="N5032"/>.
+</p>
+
+<blockquote class="note">
+<p>
+[<i>Drafting Note:</i> Two mutually exclusive options are prepared, depicted below by <b>Option A</b> and 
+<b>Option B</b>, respectively.] 
+</p>
+</blockquote>
+
+<p>
+<b>Option A</b>: Requiring usability in constant expressions.
+</p>
+
+<ol>
+<li><p>Modify Table [tab:time.clock] &mdash; <i>Cpp17Clock</i> requirements as indicated:</p>
+
+<blockquote>
+<table border="1">
+<caption>Table 131 &mdash; <i>Cpp17Clock</i> requirements [tab:time.clock]</caption>
+<tr align="center">
+<th>Expression</th>
+<th>Return type</th>
+<th>Operational semantics</th>
+</tr> 
+
+<tr>
+<td colspan="4" align="center">
+<tt>[&hellip;]</tt>
+</td>
+</tr>
+
+<tr>
+<td>
+<tt>C1::is_steady</tt>
+</td>
+<td>
+<tt>const bool</tt>
+</td>
+<td>
+`true` if <tt>t1 &lt;= t2</tt> is always
+`true` and the time between<br/>
+clock ticks is constant,<br/>
+otherwise `false`.<br/>
+<ins>`C1::is_steady` shall be usable in constant expressions (<sref ref="[expr.const]"/>).</ins>
+</td>
+</tr>
+
+<tr>
+<td colspan="4" align="center">
+<tt>[&hellip;]</tt>
+</td>
+</tr>
+
+</table>
+
+</blockquote>
+</li>
+
+</ol>
+
+
+<p>
+<b>Option B</b>: Allowing varying between executions.
+</p>
+
+<ol>
+<li><p>Modify Table [tab:time.clock] &mdash; <i>Cpp17Clock</i> requirements as indicated:</p>
+
+<blockquote>
+<table border="1">
+<caption>Table 131 &mdash; <i>Cpp17Clock</i> requirements [tab:time.clock]</caption>
+<tr align="center">
+<th>Expression</th>
+<th>Return type</th>
+<th>Operational semantics</th>
+</tr> 
+
+<tr>
+<td colspan="4" align="center">
+<tt>[&hellip;]</tt>
+</td>
+</tr>
+
+<tr>
+<td>
+<tt>C1::is_steady</tt>
+</td>
+<td>
+<tt>const bool</tt>
+</td>
+<td>
+`true` if <tt>t1 &lt;= t2</tt> is always
+`true` and the time between<br/>
+clock ticks is constant<br/>
+<ins>for the duration of the current program execution</ins>,<br/>
+otherwise `false`.<br/>
+<ins>[<i>Note</i> ?: `C1::is_steady` is not required to be usable in constant expressions 
+(<sref ref="[expr.const]"/>) and can vary between different executions. &mdash; <i>end note</i>]</ins>
+</td>
+</tr>
+
+<tr>
+<td colspan="4" align="center">
+<tt>[&hellip;]</tt>
+</td>
+</tr>
+
+</table>
+
+</blockquote>
+</li>
+</ol>
+
+</resolution>
+
+</issue>
