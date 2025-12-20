@@ -1,0 +1,24 @@
+<?xml version='1.0' encoding='utf-8' standalone='no'?>
+<!DOCTYPE issue SYSTEM "lwg-issue.dtd">
+
+<issue num="4489" status="New">
+<title><tt>concat_view::<i>iterator</i></tt>'s `iter_swap` has tautologically `false noexcept` specification</title>
+<section><sref ref="[range.concat.iterator]"/></section>
+<submitter>Nhat Nguyen</submitter>
+<date>10 Dec 2025</date>
+<priority>99</priority>
+
+<discussion>
+<p>
+The `noexcept` specification of <tt>concat_view::<i>iterator</i></tt>'s `iter_swap` has 
+<tt>noexcept(ranges::swap(*x, *y))</tt>, where `x` and `y` is <tt>concat_view::<i>iterator</i></tt>. 
+However, <tt>concat_view::<i>iterator</i></tt>'s `operator*` does not have a `noexcept` specification, 
+therefore <tt>noexcept(ranges::swap(*x, *y))</tt> is always `false` and then the `noexcept` specification 
+of <tt>concat_view::<i>iterator</i></tt>'s `iter_swap` is always `noexcept(false)`.
+</p>
+</discussion>
+
+<resolution>
+</resolution>
+
+</issue>
