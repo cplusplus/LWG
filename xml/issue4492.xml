@@ -1,0 +1,138 @@
+<?xml version='1.0' encoding='utf-8' standalone='no'?>
+<!DOCTYPE issue SYSTEM "lwg-issue.dtd">
+
+<issue num="4492" status="New">
+<title>`std::generate` and `std::ranges::generate` wording is unclear for parallel algorithms</title>
+<section><sref ref="[alg.generate]"/></section>
+<submitter>Ruslan Arutyunyan</submitter>
+<date>12 Dec 2025</date>
+<priority>99</priority>
+
+<discussion>
+<p>
+`std::generate` and `std::ranges::generate` are confusing for parallel algorithms. For both of those 
+<i>Effects</i> says "Assigns the result of successive evaluations of `gen()` through each iterator 
+in the range `[first, first + N)`." The word "successive" is confusing when we talk about parallelism. 
+This wording was the preexisting one; <paper num="P3179"/> "Parallel Range Algorithms" didn't modify 
+that, so the problem existed even before.
+<p/>
+Another problem is that there is nothing about what is allowed to do with the `Generator` template 
+parameter type for C++17 parallel `generate`. Intel, NVIDIA, and GNU libstdc++ implementations do 
+multiple copies of `Generator` object to maximize parallelism, while it's not technically allowed if 
+I am reading the standard correctly. But without `Generator` being copyable we have point of contention 
+and extra synchronization (or we put synchronization part as users' responsibility, which is also not 
+obvious).
+<p/>
+There is no clear solution right away. We could try to fix the wording for both ranges and C++17 parallel 
+generate but it seems like it requires extra effort because we need to at least verify the new behavior 
+with LLVM libc++ implementation if we want to make `Generator` copyable; libc++ currently does not 
+create per-thread copy of `gen` object. Perhaps, the best strategy for now is to remove 
+`ranges::generate` and `ranges::generate_n` and return them back in C++29 time frame when we figure 
+out the proper fix.
+</p>
+</discussion>
+
+<resolution>
+<p>
+This wording is relative to <paper num="N5032"/>.
+</p>
+
+<ol>
+<li><p>Modify <sref ref="[algorithm.syn]"/>, header <tt>&lt;algorithm&gt;</tt> synopsis, as indicated:</p>
+
+<blockquote>
+<pre>
+[&hellip;]
+<i>// <sref ref="[alg.generate]"/>, generate</i>
+template&lt;class ForwardIterator, class Generator&gt;
+  constexpr void generate(ForwardIterator first, ForwardIterator last,
+                          Generator gen);
+template&lt;class ExecutionPolicy, class ForwardIterator, class Generator&gt;
+  void generate(ExecutionPolicy&amp;&amp; exec,   <i>// freestanding-deleted, see <sref ref="[algorithms.parallel.overloads]"/></i>
+                ForwardIterator first, ForwardIterator last,
+                Generator gen);
+template&lt;class OutputIterator, class Size, class Generator&gt;
+  constexpr OutputIterator generate_n(OutputIterator first, Size n, Generator gen);
+template&lt;class ExecutionPolicy, class ForwardIterator, class Size, class Generator&gt;
+  ForwardIterator generate_n(ExecutionPolicy&amp;&amp; exec,   <i>// freestanding-deleted, see <sref ref="[algorithms.parallel.overloads]"/></i>
+                             ForwardIterator first, Size n, Generator gen);
+                             
+namespace ranges {
+  template&lt;input_or_output_iterator O, sentinel_for&lt;O&gt; S, copy_constructible F&gt;
+    requires invocable&lt;F&amp;&gt; &amp; indirectly_writable&lt;O, invoke_result_t&lt;F&amp;&gt;&gt;
+    constexpr O generate(O first, S last, F gen);
+  template&lt;class R, copy_constructible F&gt;
+    requires invocable&lt;F&amp;&gt; &amp; output_range&lt;R, invoke_result_t&lt;F&amp;&gt;&gt;
+    constexpr borrowed_iterator_t&lt;R&gt; generate(R&amp;&amp; r, F gen);
+  template&lt;input_or_output_iterator O, copy_constructible F&gt;
+    requires invocable&lt;F&amp;&gt; &amp; indirectly_writable&lt;O, invoke_result_t&lt;F&amp;&gt;&gt;
+    constexpr O generate_n(O first, iter_difference_t&lt;O&gt; n, F gen);
+  <del>template&lt;<i>execution-policy</i> Ep, random_access_iterator O, sized_sentinel_for&lt;O&gt; S,
+           copy_constructible F&gt;
+    requires invocable&lt;F&amp;&gt; &amp; indirectly_writable&lt;O, invoke_result_t&lt;F&amp;&gt;&gt;
+    O generate(Ep&amp;&amp; exec, O first, S last, F gen); <i>// freestanding-deleted</i>
+  template&lt;<i>execution-policy</i> Ep, <i>sized-random-access-range</i> R, copy_constructible F&gt;
+    requires invocable&lt;F&amp;&gt; &amp; indirectly_writable&lt;iterator_t&lt;R&gt;, invoke_result_t&lt;F&amp;&gt;&gt;
+    borrowed_iterator_t&lt;R&gt; generate(Ep&amp;&amp; exec, R&amp;&amp; r, F gen); <i>// freestanding-deleted</i>
+  template&lt;<i>execution-policy</i> Ep, random_access_iterator O, copy_constructible F&gt;
+    requires invocable&lt;F&amp;&gt; &amp; indirectly_writable&lt;O, invoke_result_t&lt;F&amp;&gt;&gt;
+    O generate_n(Ep&amp;&amp; exec, O first, iter_difference_t&lt;O&gt; n, F gen); <i>// freestanding-deleted</i></del>
+}
+[&hellip;]
+</pre>
+</blockquote>
+</li>
+
+<li><p>Modify <sref ref="[alg.generate]"/> as indicated:</p>
+
+<blockquote>
+<pre>
+template&lt;class ForwardIterator, class Generator&gt;
+  constexpr void generate(ForwardIterator first, ForwardIterator last,
+                          Generator gen);
+template&lt;class ExecutionPolicy, class ForwardIterator, class Generator&gt;
+  void generate(ExecutionPolicy&amp;&amp; exec,
+                ForwardIterator first, ForwardIterator last,
+                Generator gen);
+
+template&lt;class OutputIterator, class Size, class Generator&gt;
+  constexpr OutputIterator generate_n(OutputIterator first, Size n, Generator gen);
+template&lt;class ExecutionPolicy, class ForwardIterator, class Size, class Generator&gt;
+  ForwardIterator generate_n(ExecutionPolicy&amp;&amp; exec,
+                             ForwardIterator first, Size n, Generator gen);
+                             
+template&lt;input_or_output_iterator O, sentinel_for&lt;O&gt; S, copy_constructible F&gt;
+  requires invocable&lt;F&amp;&gt; &amp; indirectly_writable&lt;O, invoke_result_t&lt;F&amp;&gt;&gt;
+  constexpr O ranges::generate(O first, S last, F gen);
+template&lt;class R, copy_constructible F&gt;
+  requires invocable&lt;F&amp;&gt; &amp; output_range&lt;R, invoke_result_t&lt;F&amp;&gt;&gt;
+  constexpr borrowed_iterator_t&lt;R&gt; ranges::generate(R&amp;&amp; r, F gen);
+template&lt;input_or_output_iterator O, copy_constructible F&gt;
+  requires invocable&lt;F&amp;&gt; &amp; indirectly_writable&lt;O, invoke_result_t&lt;F&amp;&gt;&gt;
+  constexpr O ranges::generate_n(O first, iter_difference_t&lt;O&gt; n, F gen);
+<del>template&lt;<i>execution-policy</i> Ep, random_access_iterator O, sized_sentinel_for&lt;O&gt; S,
+         copy_constructible F&gt;
+  requires invocable&lt;F&amp;&gt; &amp; indirectly_writable&lt;O, invoke_result_t&lt;F&amp;&gt;&gt;
+  O ranges::generate(Ep&amp;&amp; exec, O first, S last, F gen);
+template&lt;<i>execution-policy</i> Ep, <i>sized-random-access-range</i> R, copy_constructible F&gt;
+  requires invocable&lt;F&amp;&gt; &amp; indirectly_writable&lt;iterator_t&lt;R&gt;, invoke_result_t&lt;F&amp;&gt;&gt;
+  borrowed_iterator_t&lt;R&gt; ranges::generate(Ep&amp;&amp; exec, R&amp;&amp; r, F gen);
+template&lt;<i>execution-policy</i> Ep, random_access_iterator O, copy_constructible F&gt;
+  requires invocable&lt;F&amp;&gt; &amp; indirectly_writable&lt;O, invoke_result_t&lt;F&amp;&gt;&gt;
+  O ranges::generate_n(Ep&amp;&amp; exec, O first, iter_difference_t&lt;O&gt; n, F gen);</del>
+</pre>
+<blockquote>
+<p>
+-1- Let <tt><i>N</i></tt> be `max(0, n)` for the `generate_n` algorithms, and `last - first` for the `generate` algorithms.
+<p/>
+[&hellip;]
+</p>
+</blockquote>
+</blockquote>
+</li>
+
+</ol>
+
+</resolution>
+
+</issue>
