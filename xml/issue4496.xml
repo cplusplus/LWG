@@ -1,0 +1,177 @@
+<?xml version='1.0' encoding='utf-8' standalone='no'?>
+<!DOCTYPE issue SYSTEM "lwg-issue.dtd">
+
+<issue num="4496" status="New">
+<title>Precedes vs Reachable in [meta.reflection]</title>
+<section><sref ref="[meta.reflection]"/></section>
+<submitter>Daniel Katz</submitter>
+<date>11 Dec 2025</date>
+<priority>99</priority>
+
+<discussion>
+<p>
+Discussion on the <a href="https://lists.isocpp.org/core/2025/12/19003.php">Core mailing list</a> 
+surfaced a handful of places in <sref ref="[meta.reflection]"/> that use the "precedes" relation 
+(defined in <sref ref="[basic.lookup]"/> and primarily used for name lookup) when the "reachable" 
+relation (defined in <sref ref="[module.reach]"/>) is really what we want.
+</p>
+</discussion>
+
+<resolution>
+<p>
+This wording is relative to <paper num="N5032"/>.
+</p>
+
+<ol>
+<li><p>Modify <sref ref="[meta.reflection.names]"/> as indicated:</p>
+
+<blockquote>
+<pre>
+consteval bool has_identifier(info r);
+</pre>
+<blockquote>
+<p>
+-1- <i>Returns</i>:
+</p>
+<ul style="list-style-type: none">
+<li><p>
+(1.1) &mdash; [&hellip;]
+</p></li>
+<li><p>
+[&hellip;] 
+</p></li>
+<li><p>
+(1.8) &mdash; Otherwise, if `r` represents the parameter <tt><i>P</i></tt> of a function <tt><i>F</i></tt>, 
+then let <tt><i>S</i></tt> be the set of declarations, ignoring any explicit instantiations, that 
+<del>precede some</del><ins>are reachable from a</ins> point in the evaluation context and that declare 
+either <tt><i>F</i></tt> or a templated function of which <tt><i>F</i></tt> is a specialization; [&hellip;] 
+</p></li>
+<li><p>
+[&hellip;] 
+</p></li>
+</ul>
+</blockquote>
+<pre>
+consteval string_view identifier_of(info r);
+consteval u8string_view u8identifier_of(info r);
+</pre>
+<blockquote>
+<p>
+-2- Let <tt><i>E</i></tt> be UTF-8 for `u8identifier_of`, and otherwise the ordinary literal encoding.
+<p/>
+-3- <i>Returns</i>: An <span style="font-variant: small-caps">ntmbs</span>, encoded with <tt><i>E</i></tt>, determined as follows:
+</p>
+<ul style="list-style-type: none">
+<li><p>
+(3.1) &mdash; [&hellip;]
+</p></li>
+<li><p>
+(3.2) &mdash; [&hellip;]
+</p></li>
+<li><p>
+(3.3) &mdash; Otherwise, if `r` represents the parameter <tt><i>P</i></tt> of a function <tt><i>F</i></tt>, 
+then let <tt><i>S</i></tt> be the set of declarations, ignoring any explicit instantiations, that 
+<del>precede some</del><ins>are reachable from a</ins> point in the evaluation context and that
+declare either <tt><i>F</i></tt> or a templated function of which <tt><i>F</i></tt> is a specialization; 
+the name that was introduced by a declaration in <tt><i>S</i></tt> for the parameter corresponding to 
+<tt><i>P</i></tt>. 
+</p></li>
+<li><p>
+[&hellip;] 
+</p></li>
+</ul>
+
+</blockquote>
+</blockquote>
+</li>
+
+<li><p>Modify <sref ref="[meta.reflection.queries]"/> as indicated:</p>
+
+<blockquote>
+<pre>
+consteval info type_of(info r);
+</pre>
+<blockquote>
+<p>
+-2- <i>Returns</i>:
+</p>
+<ul style="list-style-type: none">
+<li><p>
+(2.1) &mdash; [&hellip;]
+</p></li>
+<li><p>
+[&hellip;] 
+</p></li>
+<li><p>
+(2.4) &mdash; Otherwise, if `r` represents an enumerator <tt><i>N</i></tt> of an enumeration <tt><i>E</i></tt>, then:
+</p>
+<ul style="list-style-type: none">
+<li><p>
+(2.4.1) &mdash; If <tt><i>E</i></tt> is defined by a declaration <tt><i>D</i></tt> that 
+<del>precedes</del><ins>is reachable from</ins> a point <tt><i>P</i></tt> in the evaluation context and 
+<tt><i>P</i></tt> does not occur within an <i>enum-specifier</i> of <tt><i>D</i></tt>, then a reflection of 
+<tt><i>E</i></tt>.
+</p></li>
+<li><p>
+(2.4.2) &mdash; Otherwise, a reflection of the type of <tt><i>N</i></tt> prior to the closing brace of the 
+<i>enum-specifier</i> as specified in <sref ref="[dcl.enum]"/>.
+</p></li>
+</ul>
+</li>
+<li><p>
+[&hellip;] 
+</p></li>
+</ul>
+</blockquote>
+[&hellip;]
+<pre>
+consteval bool has_default_argument(info r);
+</pre>
+<blockquote>
+<p>
+-41- <i>Returns</i>: If `r` represents a parameter <tt><i>P</i></tt> of a function <tt><i>F</i></tt>, then:
+</p>
+<ul style="list-style-type: none">
+<li><p>
+(41.1) &mdash; If <tt><i>F</i></tt> is a specialization of a templated function <tt><i>T</i></tt>, 
+then `true` if there exists a declaration <tt><i>D</i></tt> of <tt><i>T</i></tt> that 
+<del>precedes some</del><ins>is reachable from a</ins> point in the evaluation context and 
+<tt><i>D</i></tt> specifies a default argument for the parameter of <tt><i>T</i></tt> 
+corresponding to <tt><i>P</i></tt>. Otherwise, `false`.
+</p></li>
+<li><p>
+(41.2) &mdash; Otherwise, if there exists a declaration <tt><i>D</i></tt> of <tt><i>F</i></tt> that 
+<del>precedes some</del><ins>is reachable from a</ins> point in the evaluation context and <tt><i>D</i></tt> 
+specifies a default argument for <tt><i>P</i></tt>, then `true`.
+</p></li>
+</ul>
+</blockquote>
+</blockquote>
+</li>
+
+<li><p>Modify <sref ref="[meta.reflection.annotation]"/> as indicated:</p>
+
+<blockquote>
+<pre>
+consteval vector&lt;info&gt; annotations_of(info item);
+</pre>
+<blockquote>
+<p>
+-1- Let <tt><i>E</i></tt> be [&hellip;]
+<p/>
+-2- <i>Returns</i>: A `vector` containing all of the reflections <tt><i>R</i></tt> representing 
+each annotation applying to each declaration of <tt><i>E</i></tt> that 
+<del>precedes</del><ins>is reachable from</ins> either <del>some</del><ins>a</ins> point in the 
+evaluation context (<sref ref="[expr.const]"/>) or a point immediately following the 
+<i>class-specifier</i> of the outermost class for which such a point is in a complete-class context.
+[&hellip;]
+</p>
+</blockquote>
+</blockquote>
+</li>
+
+</ol>
+
+</resolution>
+
+</issue>
