@@ -1,0 +1,115 @@
+<?xml version='1.0' encoding='utf-8' standalone='no'?>
+<!DOCTYPE issue SYSTEM "lwg-issue.dtd">
+
+<issue num="4493" status="New">
+<title>Specification for some functions of bit reference types seems missing</title>
+<section><sref ref="[template.bitset.general]"/><sref ref="[vector.bool.pspc]"/></section>
+<submitter>Jiang An</submitter>
+<date>16 Dec 2025</date>
+<priority>99</priority>
+
+<discussion>
+<p>
+We haven't explicitly specified the return values of <tt>bitset&lt;N&gt;::reference::operator bool()</tt> and 
+<tt>vector&lt;bool, A&gt;::reference::operator bool()</tt>, although the intended return values can be inferred 
+from "a class that simulates a reference to a single bit in the sequence". Moreover, specification for 
+<tt>bitset&lt;N&gt;::reference::operator~</tt> seems completely missing, and the comment "flip the bit" seems 
+misleading. Implementations consistently make the `operator~` return `!operator bool()`.
+</p>
+</discussion>
+
+<resolution>
+<p>
+This wording is relative to <paper num="N5032"/>.
+</p>
+
+<ol>
+<li><p>Modify <sref ref="[template.bitset.general]"/> as indicated:</p>
+
+<blockquote>
+<blockquote>
+<pre>
+[&hellip;]
+<i>// bit reference</i>
+class reference {
+public:
+  constexpr reference(const reference&amp; x) noexcept;
+  constexpr ~reference();
+  constexpr reference&amp; operator=(bool x) noexcept; // for b[i] = x;
+  constexpr reference&amp; operator=(const reference&amp; x) noexcept; // for b[i] = b[j];
+  constexpr const reference&amp; operator=(bool x) const noexcept;
+  constexpr operator bool() const noexcept; // for x = b[i];
+  constexpr bool operator~() const noexcept; <del>// flips the bit</del>
+  constexpr reference&amp; flip() noexcept; // for b[i].flip();
+  
+  friend constexpr void swap(reference x, reference y) noexcept;
+  friend constexpr void swap(reference x, bool&amp; y) noexcept;
+  friend constexpr void swap(bool&amp; x, reference y) noexcept;
+};
+[&hellip;]
+</pre>
+</blockquote>
+[&hellip;]
+<pre>
+constexpr reference&amp; reference::operator=(bool x) noexcept;
+constexpr reference&amp; reference::operator=(const reference&amp; x) noexcept;
+constexpr const reference&amp; reference::operator=(bool x) const noexcept;
+</pre>
+<blockquote>
+<p>
+-6- <i>Effects</i>: Sets the bit referred to by `*this` if `bool(x)` is `true`, and clears it otherwise.
+<p/>
+-7- <i>Returns</i>: `*this`.
+</p>
+</blockquote>
+<pre>
+<ins>constexpr reference::operator bool() const noexcept;</ins>
+</pre>
+<blockquote>
+<p>
+<ins>-?- <i>Returns</i>: `true` if the value of the referred to bit is one, `false` otherwise.</ins>
+</p>
+</blockquote>
+<pre>
+<ins>constexpr bool reference::operator~() const noexcept;</ins>
+</pre>
+<blockquote>
+<p>
+<ins>-?- <i>Returns</i>: `!bool(*this)`.</ins>
+</p>
+</blockquote>
+</blockquote>
+</li>
+
+<li><p>Modify <sref ref="[vector.bool.pspc]"/> as indicated:</p>
+
+<blockquote>
+[&hellip;]
+<pre>
+constexpr reference&amp; reference::operator=(bool x) noexcept;
+constexpr reference&amp; reference::operator=(const reference&amp; x) noexcept;
+constexpr const reference&amp; reference::operator=(bool x) const noexcept;
+</pre>
+<blockquote>
+<p>
+-7- <i>Effects</i>: Sets the bit referred to by `*this` when `bool(x)` is `true`, and clears it otherwise.
+<p/>
+-8- <i>Returns</i>: `*this`.
+</p>
+</blockquote>
+<pre>
+<ins>constexpr reference::operator bool() const noexcept;</ins>
+</pre>
+<blockquote>
+<p>
+<ins>-?- <i>Returns</i>: `true` if the value of the referred to bit is one, `false` otherwise.</ins>
+</p>
+</blockquote>
+</blockquote>
+</li>
+
+</ol>
+
+</resolution>
+
+</issue>
