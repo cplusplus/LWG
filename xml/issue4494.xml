@@ -10,10 +10,10 @@
 
 <discussion>
 <p>
-<a href="https://wg21.link/cwg3115">CWG 3115</a> states that every function of consteval-only type shall be an
+<a href="https://cplusplus.github.io/CWG/issues/cwg_defects.html#3115">CWG 3115</a> states that every function of consteval-only type shall be an
 immediate function.  This caused a problem for `std::meta::exception::what()` which was marked `constexpr` 
 but not `consteval`. To be able to mark it `consteval`, we had to tweak the rules about overriding by a consteval
-virtual function (<a href="https://wg21.link/cwg3117">CWG 3117</a> ).
+virtual function (<a href="https://cplusplus.github.io/CWG/issues/cwg_defects.html#3117">CWG 3117</a> ).
 <p/>
 But <sref ref="[meta.reflection.exception]"/> still defines `std::meta::exception` such that it contains these 
 defaulted special member functions:
