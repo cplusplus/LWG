@@ -1,0 +1,93 @@
+<?xml version='1.0' encoding='utf-8' standalone='no'?>
+<!DOCTYPE issue SYSTEM "lwg-issue.dtd">
+
+<issue num="4495" status="New">
+<title>&sect;[meta.reflection.queries] `is_deleted` on function templates</title>
+<section><sref ref="[meta.reflection.queries]"/></section>
+<submitter>Jakub Jelinek</submitter>
+<date>18 Dec 2025</date>
+<priority>99</priority>
+
+<discussion>
+<p>
+In <a href="https://gcc.gnu.org/pipermail/gcc-patches/2025-December/704059.html">gcc-patches/2025-December/704059</a>
+Jason Merrill mentioned that `std::meta::is_deleted` should be able to query also deleted function templates, 
+not just deleted functions.
+<p/>
+According to <sref ref="[meta.reflection.queries]"/> p15
+</p>
+<blockquote>
+<pre>
+consteval bool is_deleted(info r);
+consteval bool is_defaulted(info r);
+</pre>
+<blockquote>
+<p>
+<i>Returns</i>: `true` if `r` represents a function that is a deleted function (<sref ref="[dcl.fct.def.delete]"/>) 
+or defaulted function (<sref ref="[dcl.fct.def.default]"/>), respectively. Otherwise, `false`.
+</p>
+</blockquote>
+</blockquote>
+<p>
+and as I think `is_defaulted` on function templates makes no sense, that would mean changing that to
+</p>
+<blockquote>
+<pre>
+consteval bool is_deleted(info r);
+</pre>
+<blockquote>
+<p>
+<i>Returns</i>: `true` if `r` represents a function <ins>or function template</ins> that is a deleted function 
+(<sref ref="[dcl.fct.def.delete]"/>) <del>or defaulted function (<sref ref="[dcl.fct.def.default]"/>), respectively</del>. 
+Otherwise, `false`.
+</p>
+</blockquote>
+<pre>
+consteval bool is_defaulted(info r);
+</pre>
+<blockquote>
+<p>
+<i>Returns</i>: `true` if `r` represents a function that is a <del>deleted function (<sref ref="[dcl.fct.def.delete]"/>) 
+or</del> defaulted function (<sref ref="[dcl.fct.def.default]"/>)<del>, respectively</del>. Otherwise, `false`.
+</p>
+</blockquote>
+</blockquote>
+</discussion>
+
+<resolution>
+<p>
+This wording is relative to <paper num="N5032"/>.
+</p>
+
+<ol>
+<li><p>Modify <sref ref="[meta.reflection.queries]"/> as indicated:</p>
+
+<blockquote>
+<pre>
+consteval bool is_deleted(info r);
+<del>consteval bool is_defaulted(info r);</del>
+</pre>
+<blockquote>
+<p>
+-15- <i>Returns</i>: `true` if `r` represents a function <ins>or function template</ins> that is a deleted function 
+(<sref ref="[dcl.fct.def.delete]"/>) <del>or defaulted function (<sref ref="[dcl.fct.def.default]"/>), respectively</del>. 
+Otherwise, `false`.
+</p>
+</blockquote>
+<pre>
+<ins>consteval bool is_defaulted(info r);</ins>
+</pre>
+<blockquote>
+<p>
+<ins>-?- <i>Returns</i>: `true` if `r` represents a function that is a defaulted function (<sref ref="[dcl.fct.def.default]"/>). 
+Otherwise, `false`.</ins>
+</p>
+</blockquote>
+</blockquote>
+</li>
+
+</ol>
+
+</resolution>
+
+</issue>
