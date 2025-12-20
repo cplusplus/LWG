@@ -1,0 +1,116 @@
+<?xml version='1.0' encoding='utf-8' standalone='no'?>
+<!DOCTYPE issue SYSTEM "lwg-issue.dtd">
+
+<issue num="4491" status="New">
+<title>Rename `submdspan_extents` and `submdspan_canonicalize_slices`</title>
+<section><sref ref="[mdspan.sub]"/></section>
+<submitter>Tomasz Kamiński</submitter>
+<date>16 Dec 2025</date>
+<priority>99</priority>
+
+<discussion>
+<b>Addresses <a href="https://github.com/cplusplus/nbballot/issues/815">US 152-243</a>
+and <a href="https://github.com/cplusplus/nbballot/issues/817">PL-008</a>.</b>
+
+<p>Rename `submdspan_extents` to `subextents` and `submdspan_canonicalize_slices` to `canonical_slices`.</p>
+</discussion>
+
+<resolution>
+<p>
+This wording is relative to <paper num="N5032"/>.
+</p>
+
+<ol>
+<li><p>Modify <sref ref="[mdspan.syn]"/> as follows:</p>
+
+<blockquote>
+<pre>
+// <sref ref="[mdspan.sub]"/>, submdspan creation
+template&lt;class OffsetType, class LengthType, class StrideType&gt;
+  struct strided_slice;
+
+template&lt;class LayoutMapping&gt;
+  struct submdspan_mapping_result;
+
+struct full_extent_t { explicit full_extent_t() = default; };
+inline constexpr full_extent_t full_extent{};
+
+template&lt;class IndexType, size_t... Extents, class... SliceSpecifiers&gt;
+  constexpr auto sub<del>mdspan_</del>extents(const extents&lt;IndexType, Extents...&gt;&amp;, SliceSpecifiers...);
+
+// <sref ref="[mdspan.sub.canonical]"/>, submdspan slice canonicalization
+template&lt;class IndexType, size_t... Extents, class... Slices&gt;
+  constexpr auto <del>submdspan_canonicalize</del><ins>canonical</ins>_slices(const extents&lt;IndexType, Extents...&gt;&amp; src,
+                                               Slices... slices);
+</pre>
+</blockquote>
+</li>
+
+<li><p>Modify <sref ref="[mdspan.sub.canonical]"/> as follows:</p>
+
+<blockquote>
+<h4>`submdspan` slice canonicalization</h4>
+<pre>
+template&lt;class IndexType, size_t... Extents, class... Slices&gt;
+  constexpr auto <del>submdspan_canonicalize</del><ins>canonical</ins>_slices(const extents&lt;IndexType, Extents...&gt;&amp; src,
+                                               Slices... slices);
+</pre>
+</blockquote>
+</li>
+
+<li><p>Modify <sref ref="[mdspan.sub.extents]"/> as follows:</p>
+
+<blockquote>
+<h4><sref ref="[mdspan.sub.extents]"/> <tt>sub<del>mdspan_</del>extents</tt> function</h4>
+
+<pre>
+template&lt;class IndexType, size_t... Extents, class... SliceSpecifiers&gt;
+  constexpr auto sub<del>mdspan_</del>extents(const extents&lt;IndexType, Extents...&gt;&amp; src,
+                                   SliceSpecifiers... raw_slices);
+</pre>
+<blockquote>
+<p>-1- Let `slices` be the pack introduced by the following declaration:
+<pre>
+  auto [...slices] = <del>submdspan_canonicalize</del><ins>canonical</ins>_slices(src, raw_slices...)
+</pre></p>
+</blockquote>
+</blockquote>
+</li>
+
+<li><p>Modify <sref ref="[mdspan.sub.map.sliceable]"/> as follows:</p>
+<blockquote>
+<blockquote>
+<p>-5- <i>Returns</i>: An object `smr` of type `SMR` such that
+<ul>
+<li>-5.1- <tt>smr.mapping.extents() == sub<del>mdspan_</del>extents(m.extents(), valid_slices...)</tt> is `true`; and</li>
+<li>-5.2- [&hellip;]</li>
+</ul></p>
+</blockquote>
+</blockquote>
+</li>
+
+<li><p>Modify <sref ref="[mdspan.sub.map.common]"/> as follows:</p>
+<blockquote>
+<blockquote>
+<p>-5- Let `sub_ext` be the result of <tt>sub<del>mdspan_</del>extents(extents(), slices...)</tt>
+and let `SubExtents` be `decltype(sub_ext)`.</p>
+</blockquote>
+</blockquote>
+</li>
+
+<li><p>Modify <sref ref="[mdspan.sub.sub]"/> as follows:</p>
+<blockquote>
+<blockquote>
+<p>-2- Let `slices` be the pack introduced by the following declaration:
+<pre>
+  auto [...slices] = <del>submdspan_canonicalize</del><ins>canonical</ins>_slices(src, raw_slices...)
+</pre></p>
+</blockquote>
+</blockquote>
+</li>
+
+</ol>
+
+</resolution>
+
+</issue>
