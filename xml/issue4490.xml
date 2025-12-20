@@ -1,0 +1,96 @@
+<?xml version='1.0' encoding='utf-8' standalone='no'?>
+<!DOCTYPE issue SYSTEM "lwg-issue.dtd">
+
+<issue num="4490" status="New">
+<title>Allow calling `std::ranges::size` in ranges algorithms</title>
+<section><sref ref="[algorithms.requirements]"/></section>
+<submitter>Ruslan Arutyunyan</submitter>
+<date>12 Dec 2025</date>
+<priority>99</priority>
+
+<discussion>
+<p>
+<sref ref="[algorithms.requirements]"/> paragraph 14 says that the algorithms in `ranges` namespace are implemented 
+as if they are dispatched to the corresponding overload with iterator and sentinel. However, there are two problems 
+with the current wording:
+</p>
+<ol>
+<li><p>
+We only allow to call either `std::ranges::end(r)` or `std::ranges::next(std::ranges::begin(r)`, `std::ranges::end())` 
+to calculate a corresponding sentinel. However, this is a pessimization for some ranges because we can have sized 
+ranges without sized_sentinel_for. Consider the following example:</p>
+<blockquote><pre>
+const char str[] = "something";
+ranges::subrange&lt;const char*,
+                null_sentinel_t,
+                subrange_kind::sized> sr(ranges::begin(str),
+                                          null_sentinel,
+                                          ranges::size(str) - 1);
+my::ranges::next(sr.begin(), sr.end()); // <span style="color:green;font-weight:bolder">this line serially calculates iterator that is equal to sr.end()</span>
+</pre></blockquote>
+<p>
+Despite the fact that we know the size of the range and that the range is the random access one, 
+`std::ranges::next` calculates the iterator serially, because it only has constant time complexity 
+optimization for `sized_sentinel_for`. We could clearly achieve better complexity with a different 
+API or with the different overload of the same API.
+</p></li>
+<li><p>
+It is unclear when an algorithm calls `std::ranges::end(r)` and when it calls 
+`std::ranges::next(std::ranges::begin(r), std::ranges::end())` to calculate the 
+corresponding sentinel because there is no established priority between them. 
+Maybe, it's smaller problem but still it's worth clarifying in my opinion.
+</p></li>
+</ol>
+</discussion>
+
+<resolution>
+<p>
+This wording is relative to <paper num="N5032"/>.
+</p>
+
+<ol>
+<li><p>Modify <sref ref="[algorithms.requirements]"/> as indicated:</p>
+
+<blockquote>
+<p>
+[&hellip;]
+<p/>
+-14- Overloads of algorithms that take `range` arguments (<sref ref="[range.range]"/>) behave as if 
+they are implemented by dispatching to the overload in namespace `ranges` that takes separate iterator 
+and sentinel arguments, where for each range argument `r`
+</p>
+<ul style="list-style-type: none">
+<li><p>
+(14.1) &mdash; a corresponding iterator argument is initialized with `ranges::begin(r)` and
+</p></li>
+<li><p>
+(14.2) &mdash; a corresponding sentinel argument is initialized with <del>`ranges::end(r)`, or 
+`ranges::next(ranges::begin(r), ranges::end(r))` if the type of `r` models `forward_range` 
+and computing `ranges::next` meets the specified complexity requirements.</del><ins>one of the following:</ins>
+</p>
+<ul style="list-style-type: none">
+<li><p>
+<ins>(14.2.1) &mdash; if the type of `r` models `forward_range` and computing `ranges::next` 
+meets the specified complexity requirements then</ins> 
+</p>
+<ul style="list-style-type: none">
+<li><p>
+<ins>(14.2.1.1) &mdash; `ranges::next(ranges::begin(r), ranges::size(r))` if `r` models `sized_range`, otherwise</ins> 
+</p></li>
+<li><p>
+<ins>(14.2.1.2) &mdash; `ranges::next(ranges::begin(r), ranges::end(r))`.</ins>
+</p></li>
+</ul></li>
+<li><p>
+<ins>(14.2.2) &mdash; Otherwise, `std::ranges::end(s)`.</ins>
+</p></li>
+</ul>
+</li>
+</ul>
+</blockquote>
+</li>
+</ol>
+
+</resolution>
+
+</issue>
