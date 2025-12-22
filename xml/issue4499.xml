@@ -1,0 +1,78 @@
+<?xml version='1.0' encoding='utf-8' standalone='no'?>
+<!DOCTYPE issue SYSTEM "lwg-issue.dtd">
+
+<issue num="4499" status="New">
+<title>`flat_set::insert_range` specification may be problematic</title>
+<section><sref ref="[flat.set.modifiers]"/><sref ref="[flat.multiset.modifiers]"/></section>
+<submitter>Hewill Kang</submitter>
+<date>22 Dec 2025</date>
+<priority>99</priority>
+
+<discussion>
+<p>
+The function adds elements via:
+</p>
+<blockquote><pre>
+ranges::for_each(rg, [&amp;](auto&amp;&amp; e) {
+  <i>c</i>.insert(<i>c</i>.end(), std::forward&lt;decltype(e)&gt;(e));
+});
+</pre></blockquote>
+<p>
+Here, `e` is an element of the input range.
+<p/>
+However, this can lead to ambiguity when `e` can also be converted to `initializer_list`,
+as `vector::insert` has an overload of <code>insert(const_iterator, initializer_list&lt;T&gt;)</code>.
+</p>
+</discussion>
+
+<resolution>
+<p>
+This wording is relative to <paper num="N5032"/>.
+</p>
+
+<ol>
+
+<li><p>Modify <sref ref="[flat.set.modifiers]"/> as indicated:</p>
+
+<blockquote>
+<pre>
+template&lt;<i>container-compatible-range</i>&lt;value_type&gt; R&gt;
+  constexpr void insert_range(R&amp;&amp; rg);
+</pre>
+<blockquote>
+<p>
+-10- <i>Effects</i>: Adds elements to <code><i>c</i></code> as if by:
+</p>
+<blockquote><pre>
+ranges::for_each(rg, [&amp;](<ins>value_type</ins><del>auto&amp;&amp;</del> e) {
+  <i>c</i>.insert(<i>c</i>.end(), <ins>std::move</ins><del>std::forward&lt;decltype(e)&gt;</del>(e));
+});
+</pre></blockquote>
+</blockquote>
+</blockquote>
+</li>
+
+<li><p>Modify <sref ref="[flat.multiset.modifiers]"/> as indicated:</p>
+
+<blockquote>
+<pre>
+template&lt;<i>container-compatible-range</i>&lt;value_type&gt; R&gt;
+  void insert_range(R&amp;&amp; rg);
+</pre>
+<blockquote>
+<p>
+-9- <i>Effects</i>: Adds elements to <code><i>c</i></code> as if by:
+</p>
+<blockquote><pre>
+ranges::for_each(rg, [&amp;](<ins>value_type</ins><del>auto&amp;&amp;</del> e) {
+  <i>c</i>.insert(<i>c</i>.end(), <ins>std::move</ins><del>std::forward&lt;decltype(e)&gt;</del>(e));
+});
+</pre></blockquote>
+</blockquote>
+</blockquote>
+</li>
+
+</ol>
+</resolution>
+
+</issue>
