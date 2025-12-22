@@ -1,0 +1,27 @@
+<?xml version='1.0' encoding='utf-8' standalone='no'?>
+<!DOCTYPE issue SYSTEM "lwg-issue.dtd">
+
+<issue num="4497" status="New">
+<title>`std::nullopt_t` should be comparable</title>
+<section><sref ref="[optional.nullopt]"/></section>
+<submitter>Barry Revzin</submitter>
+<date>21 Dec 2025</date>
+<priority>99</priority>
+
+<discussion>
+<p>
+`std::nullopt_t` currently has no comparison operators. This prevents perfectly reasonable code from working, 
+like `ranges::find(v, nullopt)` where `v` is a <tt>vector&lt;optional&lt;T&gt;&gt;</tt>, for no good reason. 
+<p/>
+Additionally, <tt>optional&lt;T&gt;</tt> has the full set of comparisons. But <tt>optional&lt;T&gt;</tt> is 
+conceptually a <tt>variant&lt;nullopt_t, T&gt;</tt>, which wouldn't be comparable... because of `nullopt_t`. 
+Other empty types like <tt>tuple&lt;&gt;</tt> and `monostate` are also comparable.
+<p/>
+Proposed resolution: Add a defaulted member <tt>operator&lt;=&gt;</tt> to `nullopt_t`. 
+</p>
+</discussion>
+
+<resolution>
+</resolution>
+
+</issue>
