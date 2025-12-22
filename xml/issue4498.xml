@@ -1,0 +1,116 @@
+<?xml version='1.0' encoding='utf-8' standalone='no'?>
+<!DOCTYPE issue SYSTEM "lwg-issue.dtd">
+
+<issue num="4498" status="New">
+<title>&sect;[atomics.order] The total order should be intended to be a strict total order</title>
+<section><sref ref="[atomics.order]"/></section>
+<submitter>jim x</submitter>
+<date>09 Dec 2025</date>
+<priority>99</priority>
+
+<discussion>
+<p>
+The <a href="https://en.wikipedia.org/wiki/Total_order">definition of (non-strict) total order</a> in says:
+</p>
+<blockquote style="border-left: 3px solid #ccc;padding-left: 15px;">
+<p>
+In mathematics, a <b>total order</b> or <b>linear order</b> is a 
+<a href="https://en.wikipedia.org/wiki/Partial_order">partial order</a> in which <b>any two elements are comparable</b>. 
+That is, a total order is a binary relation <tt>&le;</tt> on some set X, which satisfies the following for all `a`, `b` 
+and `c` in X:
+</p>
+<ul>
+<li><p><tt>a &le; a</tt></p></li>
+<li><p>if <tt>a &le; b</tt> and <tt>b &le; c</tt>, then <tt>a &le; c</tt></p></li>
+<li><p>if <tt>a &le; b</tt> and <tt>b &le; a</tt>, then <tt>a = b</tt></p></li>
+<li><p><tt>a &le; b</tt> or <tt>b &le; a</tt></p></li>
+</ul>
+</blockquote>
+<p>
+According to the second bullet of (non-strict) total order, we can get `#3 &le; #3`, which is also valid according 
+to the first bullet. Then we instead use the third bullet to claim `#3 = #2` in that valid total order. However, 
+`#3` and `#2` are different modifications, so that the total order is not possible, which is quite indirect. It's a 
+bit overcomplicated for reasoning. 
+<p/>
+Instead, the definition of a strict total order is
+</p>
+<blockquote style="border-left: 3px solid #ccc;padding-left: 15px;">
+<p>
+a <b>strict total order</b> on a set X is a <a href="https://en.wikipedia.org/wiki/Strict_partial_order">strict partial</a> 
+order on X  in which any two distinct elements are comparable. That is, a strict total order is a binary relation 
+<tt>&lt;</tt> on some set X, which satisfies the following for all `a`, `b` and `c` in X:
+</p>
+<ul>
+<li><p>Not <tt>a &lt; a</tt></p></li>
+<li><p>if <tt>a &lt; b</tt> then not <tt>b &lt; a</tt></p></li>
+<li><p>if <tt>a &lt; b</tt> and <tt>b &lt; c</tt>, then <tt>a &lt; c</tt></p></li>
+<li><p>if <tt>a &ne; b</tt>, then <tt>a &lt; b</tt> or <tt>b &lt; a</tt></p></li>
+</ul>
+</blockquote>
+<p>
+Consider this example:
+</p>
+<blockquote><pre>
+std::atomic&lt;int&gt; val;
+
+// thread 1:
+auto r = val.load(relaxed); // #1
+val.store(1,relaxed); // #2
+
+// thread 2:
+val.fetch_add(1,relaxed); // #3
+</pre></blockquote>
+<p>
+To determine whether this is a valid path: `#3` reads `#2` and `#1` reads `#3`, we should check whether 
+this path can form a valid modification order. According to <sref ref="[intro.races]"/> p13
+</p>
+<blockquote><p>
+If a value computation <tt><i>A</i></tt> of an atomic object <tt><i>M</i></tt> happens before an operation 
+<tt><i>B</i></tt> that modifies <tt><i>M</i></tt>, then <tt><i>A</i></tt> takes its value from a side effect 
+<tt><i>X</i></tt> on <tt><i>M</i></tt>, where <tt><i>X</i></tt> precedes <tt><i>B</i></tt> in the modification 
+order of <tt><i>M</i></tt>. 
+</p></blockquote>
+<p>
+If `#1` reads `#3`, this implies `#3` precedes `#2` in the modification order. Then, in the assumption, 
+we say `#3` reads `#2`, which together forms the below modification order
+</p>
+<blockquote><pre>
+#3 &le; #2 &le; #3
+</pre></blockquote>
+<p>
+According to the second bullet of the definition of the (non-strict) total order, we can get `#3 &le; #3`, 
+which is also valid according to the first bullet. Then we instead use the third bullet to claim `#3 = #2` 
+in that valid total order.  However, `#3` and `#2` are different modifications, so that the total order is 
+not possible, which is quite indirect. It's a bit overcomplicated for reasoning. 
+Moreover, (non-strict) single total says
+</p>
+<blockquote style="border-left: 3px solid #ccc;padding-left: 15px;">
+<p>
+any two distinct elements are comparable
+</p>
+</blockquote>
+<p>
+This is what we want.
+<p/>
+Moreover, if we use the definition of strict total order, the above modification order would be
+</p>
+<blockquote><pre>
+#3 &lt; #2 &lt; #3
+</pre></blockquote>
+<p>
+This is an invalid strict total order, so the assumption of execution is not possible. 
+<p/>
+Suggested Resolution:
+<p/>
+A strict total order is more direct in expressing what we want. It doesn't exist the case where it 
+is only explained by a non-strict total order, but not by a strict total order, within the bounds 
+of modification order.
+<p/>
+Moreover, the single total order in <sref ref="[atomics.order]"/> should be a single strict total order.
+</p>
+</discussion>
+
+<resolution>
+</resolution>
+
+</issue>
