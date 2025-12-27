@@ -1,0 +1,241 @@
+<?xml version='1.0' encoding='utf-8' standalone='no'?>
+<!DOCTYPE issue SYSTEM "lwg-issue.dtd">
+
+<issue num="4501" status="New">
+<title><code>std::execution::let_</code>* Unconditionally Potentially Evaluates <code>std::execution::set_error</code></title>
+<section><sref ref="[exec.let]"/></section>
+<submitter>Robert Leahy</submitter>
+<date>11 Jan 2026</date>
+<priority>99</priority>
+
+<discussion>
+<p>
+The adoption of
+<paper num="P3388"/>
+as a resolution to
+<a href="https://github.com/cplusplus/nbballot/issues/909">CA-334</a>
+allowed asynchronous operations to determine, without a concrete receiver, whether connecting some sub-operation thereof can throw an exception.
+</p>
+
+<p>
+The above-described capability is critical when an asynchronous operation connects another asynchronous operation as part of its asynchronous execution,
+which is exactly what
+<code>std::execution::set_value</code>,
+<code>::set_error</code>, and
+<code>::set_stopped</code> do.
+Enabling the aforementioned algorithms to correctly advertise a
+<code>std::execution::set_error_t(std::exception_ptr)</code>
+completion signature was the concrete motivation for
+<paper num="P3388"/>
+</p>
+
+<p>
+Unfortunately the current library wording for the above-enumerated algorithms prohibits them from taking advantage of
+<paper num="P3388"/>.
+</p>
+
+<p>
+<sref ref="[exec.snd.expos]"/> paragraph 43.1 describes the process by which the completion signatures of an algorithm are determined:</p>
+
+<blockquote>
+<p>
+[...]
+<code>CS</code>
+is the specialization of
+<code>completion_signatures</code>
+the set of whose template arguments correspond to the set of completion operations that are potentially evaluated as a result of evaluating
+<code>op.start()</code>.
+</p>
+</blockquote>
+
+<p>
+With this in mind we look to the specification of
+<code>std::execution::let_value</code>
+et al. in
+<sref ref="[exec.let]"/>.
+Connection of the sub-operation is performed via
+<code><i>let-bind</i></code>
+whose signature is (paragraph 5):
+</p>
+
+<blockquote>
+<pre>
+template&lt;class State, class Rcvr, class... Args&gt;
+void <i>let-bind</i>(State&amp; state, Rcvr&amp; rcvr, Args&amp;&amp; args);
+</pre>
+</blockquote>
+
+<p>
+Note there is no
+<code>noexcept</code>,
+conditionally or otherwise.
+</p>
+
+<p>
+The effects of
+<code><i>let-bind</i></code>
+are equivalent to (paragraph 12):
+</p>
+
+<blockquote>
+<pre>
+using args_t = <i>decayed-tuple</i>&lt;Args...&gt;;
+auto mkop2 = [&amp;] {
+  return connect(
+    apply(std::move(state.fn),
+          state.args.template emplace&lt;args_t&gt;(std::forward&lt;Args&gt;(args)...)),
+    <i>receiver2</i>{rcvr, std::move(state.env)});
+};
+start(state.ops2.template emplace&lt;decltype(mkop2())&gt;(<i>emplace-from</i>{mkop2}));
+</pre>
+</blockquote>
+
+<p>
+Note that
+<code>mkop2</code>
+is not
+<code>noexcept</code>,
+conditionally or otherwise.
+</p>
+
+<p>
+The point of use of
+<code><i>let-bind</i></code>
+is (paragraph 13):
+</p>
+
+<blockquote>
+<pre>
+<i>TRY-EVAL</i>(rcvr, <i>let-bind</i>(state, rcvr, std::forward&lt;Args&gt;(args)...));
+</pre>
+</blockquote>
+
+<p>
+Where
+<code><i>TRY-EVAL</i></code>
+is described in
+<sref ref="[exec.snd.expos]"/>
+paragraph 7:
+</p>
+
+<blockquote>
+<p>
+<code><i>TRY-EVAL</i>(rcvr, expr)</code>
+is equivalent to:
+</p>
+<pre>
+try {
+  expr;
+} catch(...) {
+  set_error(std::move(rcvr), current_exception());
+}
+</pre>
+<p>
+if
+<code>expr</code> is potentially-throwing; otherwise,
+<code>expr</code>.
+</p>
+</blockquote>
+
+<p>
+The meaning of &quot;potentially-throwing&quot; is drawn from
+<sref ref="[except.spec]"/>
+paragraph 5:
+</p>
+
+<blockquote>
+<p>
+An expression <i>E</i> is <i>potentially-throwing</i> if
+</p>
+<ul>
+<li>
+<i>E</i>
+is a function call whose
+<i>postfix-expression</i>
+has a function type, or a pointer-to-function type, with a potentially-throwing exception specification, or
+</li>
+<li>[...]</li>
+</ul>
+</blockquote>
+
+<p>
+As such even if connecting the sub-operation cannot throw
+<code>std::execution::let_value</code>
+et al. all potentially evaluate a potentially throwing expression and therefore must advertise
+<code>std::execution::set_error_t(std::exception_ptr)</code>
+as a possible completion signature.
+</p>
+
+<p>
+Note that the wording proposed by
+<paper num="P3373"/>
+obsoletes this issue.
+</p>
+
+</discussion>
+
+<resolution>
+
+<p>
+Update
+<sref ref="[exec.let]"/>
+as follows:
+</p>
+
+<blockquote>
+<p>[...]</p>
+
+<pre>
+namespace std::execution {
+  template&lt;class State, class Rcvr, class... Args&gt;
+  void <i>let-bind</i>(State&amp; state, Rcvr&amp; rcvr, Args&amp;&amp;... args)<ins> noexcept(<i>see below</i>)</ins>; <i>// exposition only</i>
+
+  template&lt;&gt;
+  struct <i>impls-for</i>&lt;<i>decayed-typeof</i>&lt;<i>let-cpo</i>&gt;&gt; : <i>default-impls</i> {
+    static constexpr auto <i>get-state</i> = <i>see below</i>;
+    static constexpr auto <i>complete</i> = <i>see below</i>;
+
+    template&lt;class Sndr, class... Env&gt;
+      static consteval void <i>check-types</i>();
+  };
+}
+</pre>
+
+<p>[...]</p>
+
+<p>The exposition-only function template <code><i>let-bind</i></code> has effects equivalent to:</p>
+
+<pre>
+using args_t = <i>decayed-tuple</i>&lt;Args...&gt;;
+auto mkop2 = [&amp;]<ins> noexcept(<i>see below</i>)</ins> {
+  return connect(
+    apply(std::move(state.fn),
+          state.args.template emplace&lt;args_t&gt;(std::forward&lt;Args&gt;(args)...)),
+    <i>receiver2</i>{rcvr, std::move(state.env)});
+};
+start(state.ops2.template emplace&lt;decltype(mkop2())&gt;(<i>emplace-from</i>{mkop2}));
+</pre>
+
+<p>
+<ins>
+Where the
+<i>exception specification</i> of
+<code>mkop2</code>
+and
+<code><i>let-bind</i></code>
+evaluates to
+<code>true</code>
+if each expression contained thereby is not
+<i>potentially-throwing</i>,
+<code>false</code>
+otherwise.
+</ins>
+</p>
+
+<p>[...]</p>
+
+</blockquote>
+
+</resolution>
+
+</issue>
