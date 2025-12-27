@@ -29,6 +29,7 @@
 #include <chrono>
 #include <cstdlib>
 #include <fstream>
+#include <future>
 #include <iostream>
 #include <iterator>
 #include <map>
@@ -40,6 +41,7 @@
 #include <string>
 #include <tuple>
 #include <unordered_map>
+#include <utility>
 #include <vector>
 
 #include <filesystem>
@@ -218,8 +220,10 @@ namespace
 }
 
 // The title of the specified paper, formatted as an HTML title="..." attribute.
-std::string paper_title_attr(std::string paper_number, lwg::metadata& meta) {
-   auto title = meta.paper_titles[paper_number];
+std::string paper_title_attr(std::string const& paper_number, lwg::metadata const& meta) {
+   std::string title;
+   if (auto pos = meta.paper_titles.find(paper_number); pos != meta.paper_titles.end())
+      title = pos->second;
    if (!title.empty())
    {
       title = lwg::replace_reserved_char(std::move(title), '&', "&amp;");
@@ -230,7 +234,7 @@ std::string paper_title_attr(std::string paper_number, lwg::metadata& meta) {
 }
 
 void format_issue_as_html(lwg::issue & is,
-                          std::span<lwg::issue> issues,
+                          std::span<const lwg::issue> issues,
                           lwg::metadata & meta) {
 
    auto& section_db = meta.section_db;
@@ -302,10 +306,10 @@ void format_issue_as_html(lwg::issue & is,
    //   note            <p><i>[NOTE CONTENTS]</i></p>
    //   !--             comments are simply erased
    //
-   // In addition, as duplicate issues are discovered, the duplicates are marked up
-   // in the supplied range [first_issue,last_issue).  Similarly, if an unexpected
-   // (unknown) section is discovered, it will be inserted into the supplied
-   // section index, 'section_db'.
+   // In addition, as duplicate issues are discovered, the duplicates are recorded
+   // in the issue for later processing.
+   // Similarly, if an unexpected (unknown) section is discovered,
+   // it will be inserted into the supplied section index, 'section_db'.
    //
    // The behavior is undefined unless the issues in the supplied span are sorted by issue-number.
    //
@@ -414,8 +418,7 @@ void format_issue_as_html(lwg::issue & is,
                }
 
                if (!tag_stack.empty()  and  tag_stack.back() == "duplicate") {
-                  n->duplicates.insert(make_html_anchor(is));
-                  is.duplicates.insert(make_html_anchor(*n));
+                  is.duplicates[num] = make_html_anchor(*n);
                   r.clear();
                }
                else {
@@ -488,15 +491,21 @@ void format_issue_as_html(lwg::issue & is,
 
 void prepare_issues(std::span<lwg::issue> issues, lwg::metadata & meta) {
    // Initially sort the issues by issue number, so each issue can be correctly 'format'ted
-  std::ranges::sort(issues, {}, &lwg::issue::num);
+   std::ranges::sort(issues, {}, &lwg::issue::num);
 
-   // Then we format the issues, which should be the last time we need to touch the issues themselves
-   // We may turn this into a two-stage process, analysing duplicates and then applying the links
-   // This will allow us to better express constness when the issues are used purely for reference.
-   // Currently, the 'format' function takes a span of non-const-issues purely to
-   // mark up information related to duplicates, so processing duplicates in a separate pass may
-   // clarify the code.
+   // Then we format the issues, which should be the last time we need to touch the issues themselves.
+   // The full list of issues is passed so that <iref> elements can be resolved to an issue.
    for (auto & i : issues) { format_issue_as_html(i, issues, meta); }
+
+   // Process the duplicates found while formatting the HTML.
+   // Ensure that each issue in i->duplicates has i in its own set of duplicates.
+   for (auto& i : issues) {
+      for (auto& dup : i.duplicates) {
+         auto& dupi = *std::ranges::lower_bound(issues, dup.first, {}, &lwg::issue::num);
+         if (auto& rev = dupi.duplicates[i.num]; rev.empty())
+            rev = make_html_anchor(i);
+      }
+   }
 
    // Issues will be routinely re-sorted in later code, but contents should be fixed after formatting.
    // This suggests we may want to be storing some kind of issue handle in the functions that keep
@@ -716,6 +725,18 @@ void check_is_directory(fs::path const & directory) {
    }
 }
 
+// Notes on performance (as of December 2025):
+// Reading the XML files for each issues takes about 10% of the total run time.
+// Converting the issue text to HTML takes about 10%.
+// Generating the three main lists (active, defects, closed) takes about 20%.
+// Generating the individual HTML pages for each issue takes about 35%.
+//
+// The cost of copying the vectors of issues and sorting them repeatedly is insignificant.
+//
+// Converting issues to HTML cannot be parallelized currently because it
+// involves non-const accesses to the section_db, but it's not worth doing
+// when it only takes 10% of the total time anyway.
+
 int main(int argc, char* argv[]) {
    try {
       fs::path path;
@@ -804,20 +825,34 @@ int main(int argc, char* argv[]) {
                           : std::back_inserter(unresolved_issues);
       std::copy_if(issues.begin(), issues.end(), ready_inserter, [](lwg::issue const & iss){ return lwg::is_ready(iss.stat); } );
 
+      using span = std::span<const lwg::issue>;
+      const auto launch = std::launch::async; // use deferred to serialize
+
       // First generate the primary 3 standard issues lists
-      generator.make_active(issues, target_path, diff_report);
-      generator.make_defect(issues, target_path, diff_report);
-      generator.make_closed(issues, target_path, diff_report);
+
+      auto fut_active = std::async(launch, &lwg::report_generator::make_active,
+            std::cref(generator), span(issues), std::cref(target_path), std::cref(diff_report));
+      auto fut_defects = std::async(launch, &lwg::report_generator::make_defect,
+            std::cref(generator), span(issues), std::cref(target_path), std::cref(diff_report));
+      auto fut_closed = std::async(launch, &lwg::report_generator::make_closed,
+            std::cref(generator), span(issues), std::cref(target_path), std::cref(diff_report));
 
       // unofficial documents
-      generator.make_tentative (issues, target_path);
-      generator.make_unresolved(issues, target_path);
-      generator.make_immediate (issues, target_path);
-      generator.make_ready     (issues, target_path);
-      generator.make_editors_issues(issues, target_path);
+      std::as_const(generator).make_tentative (issues, target_path);
+      std::as_const(generator).make_unresolved(issues, target_path);
+      std::as_const(generator).make_immediate (issues, target_path);
+      std::as_const(generator).make_ready     (issues, target_path);
+      std::as_const(generator).make_editors_issues(issues, target_path);
+
+      // We need to join the concurrent tasks because make_individual_issues is non-const
+      // We could run the three make_sort_by_num calls before joining the futures,
+      // because those are const, except for re-sorting the issues span by issue number,
+      // but as they run first the issues are actually already sorted.
+      fut_active.wait();
+      fut_defects.wait();
+      fut_closed.wait();
+
       generator.make_individual_issues(issues, target_path);
-
-
 
       // Now we have a parsed and formatted set of issues, we can write the standard set of HTML documents
       // Note that each of these functions is going to re-sort the 'issues' vector for its own purposes
