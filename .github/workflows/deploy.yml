@@ -42,7 +42,7 @@ jobs:
 
     # Make the HTML pages available to the deploy job below.
     - name: Upload artifacts
-      uses: actions/upload-pages-artifact@v3
+      uses: actions/upload-pages-artifact@v4
       with:
         path: static-pages/
 

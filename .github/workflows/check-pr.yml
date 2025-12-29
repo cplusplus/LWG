@@ -48,7 +48,7 @@ jobs:
         done
 
     - name: Upload new HTML files for inspection
-      uses: actions/upload-artifact@v5
+      uses: actions/upload-artifact@v6
       with:
         name: pull-${{ github.event.number }}-html
         path: html/issue*.html
