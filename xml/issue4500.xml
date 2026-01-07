@@ -1,0 +1,92 @@
+<?xml version='1.0' encoding='utf-8' standalone='no'?>
+<!DOCTYPE issue SYSTEM "lwg-issue.dtd">
+
+<issue num="4500" status="New">
+<title>`constant_wrapper` wording problems</title>
+<section><sref ref="[const.wrap.class]"/></section>
+<submitter>Matthias Wippich</submitter>
+<date>07 Jan 2026</date>
+<priority>99</priority>
+
+<discussion>
+<p>
+During resolution of LWG <iref ref="4383"/> prefix and postfix increment and
+decrement operators were changed to
+</p>
+<blockquote><pre>
+template&lt;<i>constexpr-param</i> T&gt;
+  constexpr auto operator++(this T) noexcept -&gt; constant_wrapper&lt;++Y&gt;
+{ return {}; }
+template&lt;<i>constexpr-param</i> T&gt;
+  constexpr auto operator++(this T, int) noexcept ->
+constant_wrapper&lt;Y++&gt; { return {}; }
+template&lt;<i>constexpr-param</i> T&gt;
+  constexpr auto operator--(this T) noexcept -&gt; constant_wrapper&lt;--Y&gt;
+{ return {}; }
+template&lt;<i>constexpr-param</i> T&gt;
+  constexpr auto operator--(this T, int) noexcept -&gt;
+constant_wrapper&lt;Y--&gt; { return {}; }
+</pre></blockquote>
+<p>
+However, we do not actually specify what `Y` is. Additionally, the
+assignment operator has been changed to
+</p>
+<blockquote><pre>
+template&lt;<i>constexpr-param</i> R&gt;
+  constexpr auto operator=(R) const noexcept
+    -&gt; constant_wrapper&lt;X = R::value&gt; { return {}; }
+</pre></blockquote>
+<p>
+This is grammatically not valid C++. The assignment must be parenthesized.
+</p>
+</discussion>
+
+<resolution>
+<p>
+This wording is relative to <paper num="N5032"/>.
+</p>
+
+<ol>
+
+<li><p>Modify <sref ref="[const.wrap.class]"/>,
+class template `constant_wrapper` synopsis, as indicated:</p>
+
+<blockquote><pre>
+struct <i>cw-operators</i> { <i>// exposition only</i>
+  &hellip;
+
+  <i>// pseudo-mutators</i>
+  template&lt;<i>constexpr-param</i> T&gt;
+    constexpr auto operator++(this T) noexcept
+     -&gt; constant_wrapper&lt;<del>++Y</del> <ins>(++T::value)</ins>&gt; { return {}; }
+  template&lt;<i>constexpr-param</i> T&gt;
+    constexpr auto operator++(this T, int) noexcept
+  -    -&gt; constant_wrapper&lt;<del>Y++</del> <ins>(T::value++)</ins>&gt; { return {}; }
+  template&lt;<i>constexpr-param</i> T&gt;
+    constexpr auto operator--(this T) noexcept
+     -&gt; constant_wrapper&lt;<del>--Y</del> <ins>(--T::value)</ins>&gt; { return {}; }
+  template&lt;<i>constexpr-param</i> T&gt;
+    constexpr auto operator--(this T, int) noexcept
+     -&gt; constant_wrapper&lt;<del>Y--</del> <ins>(T::value--)</ins>&gt; { return {}; }
+
+  &hellip;
+};
+
+template&lt;<i>cw-fixed-value</i> X, class&gt;
+struct constant_wrapper : <i>cw-operators</i> {
+  static constexpr const auto &amp; value = X.data;
+  using type = constant_wrapper;
+  using value_type = decltype(X)::type;
+
+  template&lt;<i>constexpr-param</i> R&gt;
+    constexpr auto operator=(R) const noexcept
+     -&gt; constant_wrapper&lt;<ins>(</ins>X = R::value<ins>)</ins>&gt; { return {}; }
+  constexpr operator decltype(auto)() const noexcept { return value; }
+};
+</pre></blockquote>
+</li>
+</ol>
+
+</resolution>
+
+</issue>
