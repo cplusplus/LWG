@@ -26,6 +26,8 @@
 #include <filesystem>
 namespace fs = std::filesystem;
 
+using std::size_t;
+
 namespace {
 auto parse_date(std::istream & temp) -> std::chrono::year_month_day {
 #if __cpp_lib_chrono >= 201803L
