@@ -16,16 +16,16 @@ decrement operators were changed to
 <blockquote><pre>
 template&lt;<i>constexpr-param</i> T&gt;
   constexpr auto operator++(this T) noexcept -&gt; constant_wrapper&lt;++Y&gt;
-{ return {}; }
+    { return {}; }
 template&lt;<i>constexpr-param</i> T&gt;
   constexpr auto operator++(this T, int) noexcept ->
-constant_wrapper&lt;Y++&gt; { return {}; }
+    constant_wrapper&lt;Y++&gt; { return {}; }
 template&lt;<i>constexpr-param</i> T&gt;
   constexpr auto operator--(this T) noexcept -&gt; constant_wrapper&lt;--Y&gt;
-{ return {}; }
+    { return {}; }
 template&lt;<i>constexpr-param</i> T&gt;
   constexpr auto operator--(this T, int) noexcept -&gt;
-constant_wrapper&lt;Y--&gt; { return {}; }
+    constant_wrapper&lt;Y--&gt; { return {}; }
 </pre></blockquote>
 <p>
 However, we do not actually specify what `Y` is. Additionally, the
@@ -54,33 +54,31 @@ class template `constant_wrapper` synopsis, as indicated:</p>
 <blockquote><pre>
 struct <i>cw-operators</i> { <i>// exposition only</i>
   &hellip;
-
   <i>// pseudo-mutators</i>
   template&lt;<i>constexpr-param</i> T&gt;
     constexpr auto operator++(this T) noexcept
-     -&gt; constant_wrapper&lt;<del>++Y</del> <ins>(++T::value)</ins>&gt; { return {}; }
+      -&gt; constant_wrapper&lt;<del>++Y</del> <ins>(++T::value)</ins>&gt; { return {}; }
   template&lt;<i>constexpr-param</i> T&gt;
     constexpr auto operator++(this T, int) noexcept
-  -    -&gt; constant_wrapper&lt;<del>Y++</del> <ins>(T::value++)</ins>&gt; { return {}; }
+      -&gt; constant_wrapper&lt;<del>Y++</del> <ins>(T::value++)</ins>&gt; { return {}; }
   template&lt;<i>constexpr-param</i> T&gt;
     constexpr auto operator--(this T) noexcept
-     -&gt; constant_wrapper&lt;<del>--Y</del> <ins>(--T::value)</ins>&gt; { return {}; }
+      -&gt; constant_wrapper&lt;<del>--Y</del> <ins>(--T::value)</ins>&gt; { return {}; }
   template&lt;<i>constexpr-param</i> T&gt;
     constexpr auto operator--(this T, int) noexcept
-     -&gt; constant_wrapper&lt;<del>Y--</del> <ins>(T::value--)</ins>&gt; { return {}; }
-
+      -&gt; constant_wrapper&lt;<del>Y--</del> <ins>(T::value--)</ins>&gt; { return {}; }
   &hellip;
 };
 
 template&lt;<i>cw-fixed-value</i> X, class&gt;
 struct constant_wrapper : <i>cw-operators</i> {
-  static constexpr const auto &amp; value = X.data;
+  static constexpr const auto &amp; value = X.<i>data</i>;
   using type = constant_wrapper;
-  using value_type = decltype(X)::type;
+  using value_type = decltype(X)::<i>type</i>;
 
   template&lt;<i>constexpr-param</i> R&gt;
     constexpr auto operator=(R) const noexcept
-     -&gt; constant_wrapper&lt;<ins>(</ins>X = R::value<ins>)</ins>&gt; { return {}; }
+      -&gt; constant_wrapper&lt;<ins>(</ins>X = R::value<ins>)</ins>&gt; { return {}; }
   constexpr operator decltype(auto)() const noexcept { return value; }
 };
 </pre></blockquote>
