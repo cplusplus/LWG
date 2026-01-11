@@ -1,0 +1,270 @@
+<?xml version='1.0' encoding='utf-8' standalone='no'?>
+<!DOCTYPE issue SYSTEM "lwg-issue.dtd">
+
+<issue num="4502" status="New">
+<title><code>std::execution::when_all</code> Is Never Nothrow Connectable</title>
+<section><sref ref="[exec.when.all]"/></section>
+<submitter>Robert Leahy</submitter>
+<date>11 Jan 2026</date>
+<priority>99</priority>
+
+<discussion>
+<p>
+The behavior of algorithms in the standard is described in terms of exposition-only machinery
+<sref ref="[exec.snd.expos]"/>.
+Particularly the behavior of
+<code>std::execution::connect</code>
+<sref ref="[exec.connect]"/>
+for such algorithms is described in terms of
+<code><i>basic-sender</i>::connect</code>
+which is conditionally
+<code>noexcept</code>:
+</p>
+
+<blockquote>
+<p>
+The expression in the
+<code>noexcept</code>
+clause of the
+<code>connect</code> member function of
+<code><i>basic-sender</i></code>
+is:
+</p>
+<pre>
+is_nothrow_constructible_v&lt;<i>basic-operation</i>&lt;Self, Rcvr&gt;, Self, Rcvr&gt;
+</pre>
+</blockquote>
+
+<p>
+The constructor of
+<code><i>basic-operation</i></code>
+is also conditionally
+<code>noexcept</code>:
+</p>
+
+<blockquote>
+<p>
+The expression in the
+<code>noexcept</code>
+clause of the constructor of
+<code><i>basic-operation</i></code>
+is:
+</p>
+<pre>
+is_nothrow_constructible_v&lt;<i>basic-state</i>&lt;Self, Rcvr&gt;, Self, Rcvr> &amp;&amp;
+noexcept(<i>connect-all</i>(this, std::forward&lt;Sndr&gt;(sndr), <i>indices-for</i>&lt;Sndr&gt;()))
+</pre>
+</blockquote>
+
+<p>
+This cascade of chasing conditional
+<code>noexcept</code>
+doesn't end there, instead moving to
+<code><i>basic-state</i></code>:
+</p>
+
+<blockquote>
+<p>
+The expression in the
+<code>noexcept</code> clause of the constructor of
+<code><i>basic-state</i></code>
+is
+</p>
+<pre>
+is_nothrow_move_constructible_v&lt;Rcvr&gt; &amp;&amp;
+nothrow-callable&gt;decltype(<i>impls-for</i>&lt;tag_of_t&lt;Sndr&gt;&gt;::<i>get-state</i>), Sndr, Rcvr&amp;> &amp;&amp;
+(same_as&lt;<i>state-type</i>&lt;Sndr, Rcvr&gt;, <i>get-state-result</i>&gt; ||
+ is_nothrow_constructible_v&lt;<i>state-type</i>&lt;Sndr, Rcvr&gt;, <i>get-state-result</i>&gt;)
+</pre>
+<p>
+where
+<code><i>get-state-result</i></code> is
+</p>
+<p>
+<code><i>call-result-t</i>&lt;decltype(<i>impls-for</i>&lt;tag_of_t&lt;Sndr&gt;&gt;::<i>get-state</i>), Sndr, Rcvr&amp;&gt;</code>.
+</p>
+</blockquote>
+
+<p>
+This finally implicates something in
+<sref ref="[exec.when.all]"/>
+as we must now look to the
+<code>noexcept</code>
+clause of its
+<code><i>get-state</i></code> implementation:
+</p>
+
+<blockquote>
+<p>
+The member
+<code><i>impls-for</i>&lt;when_all_t&gt;::<i>get-state</i></code>
+is initialized with a callable object equivalent to the following lambda expression:
+</p>
+<pre>
+[]&lt;class Sndr, class Rcvr&gt;(Sndr&amp;&amp; sndr, Rcvr&amp; rcvr) noexcept(noexcept(<i>e</i>)) -> decltype(<i>e</i>) {
+  return <i>e</i>;
+}
+</pre>
+<p>
+where
+<code><i>e</i></code>
+is the expression
+</p>
+<pre>
+std::forward&lt;Sndr&gt;(sndr).apply(<i>make-state</i>&lt;Rcvr&gt;())
+</pre>
+<p>
+and where
+<code><i>make-state</i></code>
+is the following exposition-only class template:
+</p>
+<pre>
+enum class <i>disposition</i> { <i>started</i>, <i>error</i>, <i>stopped</i> };             <i>// exposition only</i>
+
+template&lt;class Rcvr&gt;
+struct <i>make-state</i> {
+  template&lt;class... Sndrs&gt;
+  auto operator()(auto, auto, Sndrs&amp;&amp;... sndrs) const {
+    using values_tuple = <i>see below</i>;
+    using errors_variant = <i>see below</i>;
+    using stop_callback = stop_callback_for_t&lt;stop_token_of_t&lt;env_of_t&lt;Rcvr&gt;&gt;, <i>on-stop-request</i>&gt;;
+
+    struct <i>state-type</i> {
+      void <i>arrive</i>(Rcvr&amp; rcvr) noexcept {                        <i>// exposition only</i>
+        if (0 == --count) {
+          <i>complete</i>(rcvr);
+        }
+      }
+
+      void <i>complete</i>(Rcvr&amp; rcvr) noexcept;                       <i>// exposition only</i>
+
+      atomic&lt;size_t&gt; <i>count</i>{sizeof...(sndrs)};                   <i>// exposition only</i>
+      inplace_stop_source <i>stop_src</i>{};                           <i>// exposition only</i>
+      atomic&lt;disposition&gt; <i>disp</i>{<i>disposition</i>::<i>started</i>};           <i>// exposition only</i>
+      errors_variant <i>errors</i>{};                                  <i>// exposition only</i>
+      values_tuple <i>values</i>{};                                    <i>// exposition only</i>
+      optional&lt;stop_callback&gt; <i>on_stop</i>{nullopt};                 <i>// exposition only</i>
+    };
+
+    return <i>state-type</i>{};
+  }
+};
+</pre>
+</blockquote>
+
+<p>
+Notice that the overloaded function call operator does not have a
+<code>noexcept</code>
+clause meaning connecting a
+<code>std::execution::when_all</code>
+sender is never
+<code>noexcept</code>.
+</p>
+
+<p>
+This is a library wording issue because if the design intent was for the above-described operation to be unconditionally
+<code>noexcept(false)</code>
+there would be no reason for
+<code><i>get-state</i></code>
+to feature
+<code>noexcept(noexcept(e))</code>
+(since that expression would've been intended to be a contradiction).
+</p>
+
+<p>
+Moreover in returning a default-initialized
+<code><i>state-type</i></code>
+the above-discussed function call operator performs the following operations:
+</p>
+<ul>
+<li>
+Initializes an
+<code>atomic&lt;size_t&gt;</code>
+with an initial value, which does not throw,
+</li>
+<li>
+Default-constructs an
+<code>inplace_stop_source</code>,
+which is
+<code>noexcept(true)</code>
+per
+<sref ref="[stopsource.inplace.mem]"/>,
+</li>
+<li>
+Initializes an
+<code>atomic&lt;<i>disposition</i>&gt;</code>
+with an initial value, which does not throw,
+</li>
+<li>
+Initializes two variants by default constructing a
+<code>monostate</code>
+alternative, which does not throw, and
+</li>
+<li>
+Initializes a disengaged optioanal, which does not throw
+</li>
+</ul>
+<p>
+Since none of these throw the overloaded function call operator can be made
+<code>noexcept(true)</code>.
+</p>
+
+</discussion>
+
+<resolution>
+
+<p>
+Update
+<sref ref="[exec.when.all]"/>
+as follows:
+</p>
+
+<blockquote>
+
+<p>[...]</p>
+
+<p>
+and where
+<code><i>make-state</i></code>
+is the following exposition-only class template:
+</p>
+<pre>
+enum class <i>disposition</i> { <i>started</i>, <i>error</i>, <i>stopped</i> };             <i>// exposition only</i>
+
+template&lt;class Rcvr&gt;
+struct <i>make-state</i> {
+  template&lt;class... Sndrs&gt;
+  auto operator()(auto, auto, Sndrs&amp;&amp;... sndrs) const<ins> noexcept</ins> {
+    using values_tuple = <i>see below</i>;
+    using errors_variant = <i>see below</i>;
+    using stop_callback = stop_callback_for_t&lt;stop_token_of_t&lt;env_of_t&lt;Rcvr&gt;&gt;, <i>on-stop-request</i>&gt;;
+
+    struct <i>state-type</i> {
+      void <i>arrive</i>(Rcvr&amp; rcvr) noexcept {                        <i>// exposition only</i>
+        if (0 == --count) {
+          <i>complete</i>(rcvr);
+        }
+      }
+
+      void <i>complete</i>(Rcvr&amp; rcvr) noexcept;                       <i>// exposition only</i>
+
+      atomic&lt;size_t&gt; <i>count</i>{sizeof...(sndrs)};                   <i>// exposition only</i>
+      inplace_stop_source <i>stop_src</i>{};                           <i>// exposition only</i>
+      atomic&lt;disposition&gt; <i>disp</i>{<i>disposition</i>::<i>started</i>};           <i>// exposition only</i>
+      errors_variant <i>errors</i>{};                                  <i>// exposition only</i>
+      values_tuple <i>values</i>{};                                    <i>// exposition only</i>
+      optional&lt;stop_callback&gt; <i>on_stop</i>{nullopt};                 <i>// exposition only</i>
+    };
+
+    return <i>state-type</i>{};
+  }
+};
+</pre>
+
+<p>[...]</p>
+
+</blockquote>
+
+</resolution>
+
+</issue>
