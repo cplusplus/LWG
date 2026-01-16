@@ -6,7 +6,7 @@
 <section><sref ref="[exec.inline.scheduler]"/></section>
 <submitter>Eric Niebler</submitter>
 <date>05 Nov 2025</date>
-<priority>99</priority>
+<priority>4</priority>
 
 <discussion>
 <p>
@@ -26,6 +26,14 @@ see <sref ref="[exec.get.env]"/>.
 <p/>
 also, <tt>get_completion_scheduler&lt;set_*_t&gt;(attrs)</tt> mandates that 
 <tt>attrs.query(get_completion_scheduler&lt;set_*_t&gt;)</tt> cannot throw.
+</p>
+
+<note>2026-01-16; Reflector poll.</note>
+<p>
+Set priority to 4 after reflector poll.
+</p>
+<p>
+"<sref ref="[exec.run.loop.types]"/> (7.2) has the same redundancy."
 </p>
 </discussion>
 

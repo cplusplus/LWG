@@ -6,7 +6,7 @@
 <section><sref ref="[namespace.std]"/></section>
 <submitter>Tomasz Kamiński</submitter>
 <date>14 Nov 2025</date>
-<priority>99</priority>
+<priority>2</priority>
 
 <discussion>
 <p>The wording in <sref ref="[namespace.std]"/> p7 guarantees that reflection of the
@@ -20,6 +20,11 @@ static_assert( identifier_of(p) == "os" ); // guaranteed?
 <p>We should clarify that parameter names used by standard library implementation
 remain unspecified, by making result of `has_identifier` and `identifier_of`
 unspecified on reflection of such parameter.</p>
+
+<note>2026-01-16; Reflector poll.</note>
+<p>
+Set priority to 2 after reflector poll.
+</p>
 </discussion>
 
 <resolution>
