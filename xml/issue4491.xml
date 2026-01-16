@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="4491" status="New">
+<issue num="4491" status="Tentatively Ready">
 <title>Rename `submdspan_extents` and `submdspan_canonicalize_slices`</title>
 <section><sref ref="[mdspan.sub]"/></section>
 <submitter>Tomasz Kamiński</submitter>
@@ -13,6 +13,11 @@
 and <a href="https://github.com/cplusplus/nbballot/issues/817">PL-008</a>.</b>
 
 <p>Rename `submdspan_extents` to `subextents` and `submdspan_canonicalize_slices` to `canonical_slices`.</p>
+
+<note>2026-01-16; Reflector poll.</note>
+<p>
+Set status to Tentatively Ready after six votes in favour during reflector poll.
+</p>
 </discussion>
 
 <resolution>
