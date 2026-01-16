@@ -19,7 +19,7 @@ The problem is that <code>std::exchange(x, v)</code> expects
 no requirement for scheduler to be assignable.
 </p>
 
-<note>2025-10-23; Reflector poll. Status &rarr; Tentatively NAD .</note>
+<note>2025-10-23; Reflector poll. Status &rarr; Tentatively NAD.</note>
 <p>
 "`scheduler` requires `copyable` which requires assignment."
 </p>

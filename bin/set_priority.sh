@@ -56,7 +56,7 @@ elif [[ $priority = NAD ]]
 then
 
   sed -i -e '/^<issue /s/ status=".*">$/ status="Tentatively NAD">/' $xml
-  bin/add_note.sh $issue "Reflector poll. Status &rarr; Tentatively NAD "
+  bin/add_note.sh $issue "Reflector poll. Status &rarr; Tentatively NAD."
 
   if [[ $3 == --commit ]]
   then
