@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="4485" status="New">
+<issue num="4485" status="Tentatively Ready">
 <title>Move specification for `task::stop_token_type`</title>
 <section><sref ref="[task.state]"/></section>
 <submitter>Tomasz Kamiński</submitter>
@@ -11,7 +11,7 @@
 <discussion>
 <b>Addresses <a href="https://github.com/cplusplus/nbballot/issues/954">US 249-379</a></b>
 <p>
-It is not clear what bullet <sref ref="task.state"/> p4.6 is – it reads like a requirement on `stop_token_type`,
+It is not clear what bullet <sref ref="[task.state]"/> p4.6 is – it reads like a requirement on `stop_token_type`,
 but if so, this paragraph is a poor place for it.
 </p>
 
@@ -22,6 +22,11 @@ on associated token. We should also require that `Environment::scheduler_type` s
 
 <p>We also need to clarify that `stop_possible` and `stop_requested` on <tt><i>prom</i>.token</tt> returns
 same value as `st` during lifetime of asynchronous operation.</p>
+
+<note>2026-01-16; Reflector poll.</note>
+<p>
+Set status to Tentatively Ready after six votes in favour during reflector poll.
+</p>
 </discussion>
 
 <resolution>
@@ -55,7 +60,7 @@ Associates <tt><i>STATE</i>(<i>prom</i>)</tt>, <tt><i>RCVR</i>(<i>prom</i>)</tt>
 <li>-4.3- [&hellip;]</li>
 </ul>
 Let `st` be `get_stop_token(get_env(rcvr))`. Initializes <tt><i>prom</i>.token</tt> and <tt><i>prom</i>.source</tt> such that
-<ins>during lifetime of the asynchronous operation (<sref ref="[exec.async.ops]"/>) associated with `*this`</ins>
+<ins>during the lifetime of the asynchronous operation (<sref ref="[exec.async.ops]"/>) associated with `*this`</ins>
 <ul>
 <li>-4.4- <tt><i>prom</i>.token.stop_requested()</tt> returns <tt>st.stop_requested()</tt>;</li>
 <li>-4.5- <tt><i>prom</i>.token.stop_possible()</tt> returns <tt>st.stop_possible()</tt><del>;</del><ins>.</ins></li>
