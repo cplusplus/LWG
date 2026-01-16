@@ -6,7 +6,7 @@
 <section><sref ref="[cfloat.syn]"/></section>
 <submitter>Jan Schultke</submitter>
 <date>13 Nov 2025</date>
-<priority>99</priority>
+<priority>3</priority>
 
 <discussion>
 <p>
@@ -20,9 +20,19 @@ The header <tt>&lt;climits&gt;</tt> defines all macros the same as the C standar
 Similarly, <tt>&lt;cfloat&gt;</tt> is missing various macros from C's <tt>&lt;float.h&gt;</tt>, 
 but this is not stated.
 </p>
-</discussion>
 
-<resolution>
+<note>2026-01-16; Reflector poll.</note>
+<p>
+Set priority to 3 after reflector poll.
+</p>
+<p>
+"Could be just 'The header <code>&lt;cfloat&gt;</code> defines all macros <ins>shown above</ins> the same as the C standard library header <code>&lt;float.h&gt;</code>."
+</p>
+<p>
+"That would resolve my concern to require C++ implementations to actively `#undef` things from <code>&lt;float.h&gt;</code>.
+It should be up to the implementation."
+</p>
+<superseded>
 <p>
 This wording is relative to <paper num="N5014"/>.
 </p>
@@ -39,6 +49,30 @@ of C decimal floating types or C interchange floating types</ins>.
 </blockquote>
 </li>
 </ol>
+</superseded>
+
+<note>2026-01-16; Jonathan provides improved wording</note>
+
+</discussion>
+
+<resolution>
+<p>
+This wording is relative to <paper num="N5032"/>.
+</p>
+
+<ol>
+<li><p>Modify <sref ref="[cfloat.syn]"/> as indicated:</p>
+
+<blockquote>
+<p>
+-1- The header <tt>&lt;cfloat&gt;</tt> defines all macros
+<ins>shown above</ins>
+the same as the C standard library header <tt>&lt;float.h&gt;</tt>.
+</p>
+</blockquote>
+</li>
+</ol>
+
 </resolution>
 
 </issue>
