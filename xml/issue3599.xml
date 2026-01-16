@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="3599" status="New">
+<issue num="3599" status="Ready">
 <title>The <tt>const</tt> overload of <tt>lazy_split_view::begin</tt> should be constrained by <tt>const Pattern</tt></title>
 <section><sref ref="[range.lazy.split.view]"/></section>
 <submitter>Hewill Kang</submitter>
@@ -46,6 +46,8 @@ This issue is related to LWG <iref ref="3592"/>.
 <p>
 Set priority to 3 after reflector poll.
 </p>
+
+<note>2026-01-16; LWG telecon. Move to Ready</note>
 
 </discussion>
 
