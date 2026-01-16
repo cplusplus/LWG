@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="4090" status="Open">
+<issue num="4090" status="Tentatively Ready">
 <title>Underspecified use of locale facets for locale-dependent <tt>std::format</tt></title>
 <section><sref ref="[format.string.std]"/></section>
 <submitter>Jens Maurer</submitter>
@@ -104,6 +104,11 @@ The new wording incorporates similar wording as added by <paper num="P2419R2"/>
 to address <iref ref="3565"/>. Status updated SG16 &rarr; Open.
 </p>
 
+
+<note>2026-01-16; Reflector poll.</note>
+<p>
+Set status to Tentatively Ready after six votes in favour during reflector poll.
+</p>
 </discussion>
 
 <resolution>
