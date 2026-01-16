@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="4500" status="New">
+<issue num="4500" status="Tentatively Ready">
 <title>`constant_wrapper` wording problems</title>
 <section><sref ref="[const.wrap.class]"/></section>
 <submitter>Matthias Wippich</submitter>
@@ -38,6 +38,11 @@ template&lt;<i>constexpr-param</i> R&gt;
 </pre></blockquote>
 <p>
 This is grammatically not valid C++. The assignment must be parenthesized.
+</p>
+
+<note>2026-01-16; Reflector poll.</note>
+<p>
+Set status to Tentatively Ready after five votes in favour during reflector poll.
 </p>
 </discussion>
 
