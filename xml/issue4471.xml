@@ -66,6 +66,16 @@ the expression <tt>get_completion_scheduler&lt;set_value_t&gt;(get_env(sndr))</t
 </superseded>
 
 <note>2026-01-16; Jonathan provides updated wording</note>
+<p>
+LWG believes the original issue discussion is wrong to say that
+`get_env(sndr)` can never throw, because the expression `sndr` itself
+could throw.
+However, we already state that `get_env` and `get_completion_scheduler`
+do not throw, so it's redundant to say that
+`get_completion_scheduler(get_env(sndr))` only throws if `sndr` throws.
+If nothing except `sndr` in that expression is allowed to throw,
+then it's just stating the obvious.
+</p>
 
 </discussion>
 
