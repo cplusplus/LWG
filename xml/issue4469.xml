@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="4469" status="New">
+<issue num="4469" status="Ready">
 <title>Names of parameters of addressable function shall remain unspecified</title>
 <section><sref ref="[namespace.std]"/></section>
 <submitter>Tomasz Kamiński</submitter>
@@ -25,6 +25,8 @@ unspecified on reflection of such parameter.</p>
 <p>
 Set priority to 2 after reflector poll.
 </p>
+
+<note>2026-01-16; LWG telecon. Move to Ready</note>
 </discussion>
 
 <resolution>
