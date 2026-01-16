@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="4475" status="New">
+<issue num="4475" status="Tentatively NAD">
 <title>The description to single total order in [thread.mutex.requirements.mutex.general] is hollow</title>
 <section><sref ref="[thread.mutex.requirements.mutex.general]"/></section>
 <submitter>jim x</submitter>
@@ -58,6 +58,12 @@ Similarly, excluding `unlock_1` &lt; `unlock_2` &lt; `lock` is not possible.
 <p/>
 The lock and unlock operations on a single mutex appears to occur in a single total order; 
 for this purpose, these operations are considered as `memory_order::seq_cst` operations 
+</p>
+
+<note>2026-01-16; Reflector poll. Status &rarr; Tentatively NAD.</note>
+<p>
+For atomic objects, the modification order is already a single total order, `seq_cst` or not.
+This isn't a useful change.
 </p>
 </discussion>
 
