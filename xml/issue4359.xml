@@ -8,7 +8,7 @@
 </section>
 <submitter>Lewis Baker</submitter>
 <date>27 Aug 2025</date>
-<priority>99</priority>
+<priority>2</priority>
 
 <discussion>
 <p>
@@ -18,6 +18,11 @@ where `p` is an lvalue. However, it does not specify what the behaviour is if `p
 We should probably say that `as_awaitable(expr, p)` is ill-formed if `p` is not an lvalue.
 </p>
 
+
+<note>2026-01-16; Reflector poll.</note>
+<p>
+Set priority to 2 after reflector poll.
+</p>
 </discussion>
 
 <resolution>

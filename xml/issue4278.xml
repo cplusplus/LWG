@@ -8,7 +8,7 @@
 </section>
 <submitter>Jonathan Wakely</submitter>
 <date>16 Jun 2025</date>
-<priority>99</priority>
+<priority>2</priority>
 
 <discussion>
 <p>
@@ -25,6 +25,14 @@ using <i>get-domain-early-t</i> = decltype(<i>get-domain-early</i>(declval&lt;co
 </pre></blockquote>
 <p>
 then we wouldn't need to use `sndr` twice in expressions that currently use <tt><i>get-domain-early</i>(sndr)</tt>.
+</p>
+
+<note>2026-01-16; Reflector poll.</note>
+<p>
+Set priority to 2 after reflector poll.
+</p>
+<p>
+A re-design, but we're already doing it for <i>get-domain-late</i>.
 </p>
 </discussion>
 

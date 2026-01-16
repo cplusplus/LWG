@@ -6,7 +6,7 @@
 <section><sref ref="[simd.ctor]"/></section>
 <submitter>Matthias Kretz</submitter>
 <date>28 Oct 2025</date>
-<priority>99</priority>
+<priority>1</priority>
 
 <discussion>
 <p>
@@ -18,6 +18,15 @@ the current wording we don't arrive at bullet (4.3) which allows
 not-value-preserving conversions if the value is known to not change on conversion. 
 The `convertible_to` constraint is implicit in bullet (4.2), not needed/wrong for 
 bullet (4.3) and thus needs to be moved into bullet (4.1).
+</p>
+
+<note>2026-01-16; Reflector poll.</note>
+<p>
+Set priority to 1 after reflector poll.
+</p>
+<p>
+"Resolution should be rebased on LWG <iref ref="4420"/>, constraint was already changed to not use `constructible_from`.
+Might as well drive-by fix 4.3 to use `remove_cvref_t` so it works for `constant_wrapper`.
 </p>
 </discussion>
 

@@ -6,7 +6,7 @@
 <section><sref ref="[exec.run.loop.general]"/></section>
 <submitter>Eric Niebler</submitter>
 <date>16 Nov 2025</date>
-<priority>99</priority>
+<priority>2</priority>
 
 <discussion>
 <p>
@@ -17,6 +17,18 @@ completion signature.
 Since then, <a href="https://github.com/NVIDIA/cccl/blob/main/cudax/include/cuda/experimental/__execution/run_loop.cuh">a 
 lock-free implementation of `run_loop` has been found</a>. Atomic operations cannot fail with an exception, 
 so an atomic `run_loop` can never complete with an error.
+</p>
+
+<note>2026-01-16; Reflector poll.</note>
+<p>
+Set priority to 2 after reflector poll.
+</p>
+<p>
+"Very helpful to know if something completes without exceptions,
+it affects whether completions on some types of scheduler are correct."
+</p>
+<p>
+"Want confirmation from LEWG as `run()` and `finish()` have narrow contracts."
 </p>
 </discussion>
 

@@ -6,7 +6,7 @@
 <section><sref ref="[headers]"/></section>
 <submitter>Jiang An</submitter>
 <date>08 Dec 2025</date>
-<priority>99</priority>
+<priority>3</priority>
 
 <discussion>
 <p>
@@ -20,6 +20,17 @@ in C++, which doesn't seem intentional.
 Perhaps we want to exactly specify whether a name denotes a function (overload set) or a macro in C++, 
 while no name should denote both a function and a macro, and to allow a function name from C initially declared 
 in the global namespace.
+</p>
+
+<note>2026-01-16; Reflector poll.</note>
+<p>
+Set priority to 3 after reflector poll.
+</p>
+<p>
+"Seems consistent with what all the implementation actually do."
+</p>
+<p>
+"Macros aren't 'declared' so saying 'declarations except macros' is confusing."
 </p>
 </discussion>
 

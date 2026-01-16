@@ -6,7 +6,7 @@
 <section><sref ref="[tuple.tuple.general]"/></section>
 <submitter>Davis Herring</submitter>
 <date>21 Nov 2025</date>
-<priority>99</priority>
+<priority>3</priority>
 
 <discussion>
 <p>
@@ -32,6 +32,11 @@ because otherwise <sref ref="[res.on.functions]"/> makes that undefined.
 `tuple_size` and `tuple_element` don't need a complete `tuple` type
 to give an answer, and they don't need to instantiate a `tuple` type.
 So <code>tuple_element_t&lt;0, tuple&lt;void&gt;&gt;</code> should work.
+</p>
+
+<note>2026-01-16; Reflector poll.</note>
+<p>
+Set priority to 3 after reflector poll.
 </p>
 </discussion>
 

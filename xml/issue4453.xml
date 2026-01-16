@@ -6,7 +6,7 @@
 <section><sref ref="[atomics.ref.ops]"/></section>
 <submitter>Jonathan Wakely</submitter>
 <date>06 Nov 2025</date>
-<priority>99</priority>
+<priority>2</priority>
 
 <discussion>
 <p>
@@ -32,6 +32,18 @@ for cv `T`, so that users can use <tt>atomic_ref&lt;const T&gt;</tt>
 on any object that is referenced by a <tt>atomic_ref&lt;T&gt;</tt>.
 </p>
 
+
+<note>2026-01-16; Reflector poll.</note>
+<p>
+Set priority to 2 after reflector poll.
+</p>
+<p>
+"Should be broaded to include all similar types, not just top-level <i>cv</i>."
+</p>
+<p>
+"Should we have the same guarantee for `is_always_lock_free`?
+Would allow checking if <code>atomic&lt;volatile T&gt;</code> is usable by checking <code>atomic&lt;T&gt;</code>."
+</p>
 </discussion>
 
 <resolution>
