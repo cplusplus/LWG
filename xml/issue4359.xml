@@ -23,9 +23,7 @@ We should probably say that `as_awaitable(expr, p)` is ill-formed if `p` is not 
 <p>
 Set priority to 2 after reflector poll.
 </p>
-</discussion>
-
-<resolution>
+<superseded>
 <p>
 This wording is relative to <paper num="N5014"/>.
 </p>
@@ -47,6 +45,43 @@ except that the evaluations of `expr` and `p` are indeterminately sequenced:
 </li>
 
 </ol>
+</superseded>
+
+<note>2026-01-16; Jonathan provides updated wording</note>
+
+</discussion>
+
+<resolution>
+
+<p>
+This wording is relative to <paper num="N5032"/>.
+</p>
+
+<ol>
+
+<li><p>Modify <sref ref="[exec.as.awaitable]"/> as indicated:</p>
+
+<blockquote>
+<p>
+-7-
+`as_awaitable` is a customization point object.
+For subexpressions `expr` and `p` where
+<del>`p` is an lvalue,</del>
+`Expr` names the type `decltype((expr))`
+and `Promise` names the type <tt>decay_t&lt;decltype((p))&gt;</tt>,
+<ins>
+`as_awaitable(expr, p)` is ill-formed if `p` is not an lvalue, otherwise
+</ins>
+`as_awaitable(expr, p)` is expression-equivalent to
+<ins>the expression specified below</ins>, 
+except that the evaluations of `expr` and `p` are indeterminately sequenced:
+</p>
+</blockquote>
+
+</li>
+
+</ol>
+
 </resolution>
 
 </issue>
