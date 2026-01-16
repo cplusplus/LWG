@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="4474" status="New">
+<issue num="4474" status="Tentatively Ready">
 <title>"`round_to_nearest`" rounding mode is unclear</title>
 <section><sref ref="[round.style]"/></section>
 <submitter>Jan Schultke</submitter>
@@ -37,6 +37,15 @@ This is also the default ISO/IEC 60559 rounding mode, and chosen by standard lib
 libstdc++ for `numeric_limits` under that assumption. Do note that C23 no longer references 
 ISO/IEC 10967 in any normative wording, so presumably, matching `FLT_ROUNDS` values means to match 
 the value that exists in C23, including its meaning.
+</p>
+
+<note>2026-01-16; Reflector poll.</note>
+<p>
+Set status to Tentatively Ready after seven votes in favour during reflector poll.
+</p>
+<p>
+"IEEE 754-2019 talks about what to do in case of a tie for single digit precision types,
+such as FP4 (E2M1). Will raise this with WG14." [E2M1 is 1 sign bit, 2 exponent bits, 1 explicit mantissa bit]
 </p>
 </discussion>
 
