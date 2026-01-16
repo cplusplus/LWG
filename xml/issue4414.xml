@@ -7,7 +7,7 @@ from `rebind` and `resize`</title>
 <section><sref ref="[simd.expos.abi]"/><sref ref="[simd.traits]"/></section>
 <submitter>Matthias Kretz</submitter>
 <date>15 Oct 2025</date>
-<priority>99</priority>
+<priority>1</priority>
 
 <discussion>
 <p>
@@ -88,6 +88,11 @@ template&lt;<i>simd-size-type</i> N, class V&gt; struct resize { using type = <i
 </superseded>
 
 <note>2025-10-21; Matthias Kretz improves discussion and proposed wording</note>
+
+<note>2026-01-16; Reflector poll.</note>
+<p>
+Set priority to 1 after reflector poll.
+</p>
 </discussion>
 
 <resolution>

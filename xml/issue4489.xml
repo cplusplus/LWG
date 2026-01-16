@@ -6,7 +6,7 @@
 <section><sref ref="[range.concat.iterator]"/></section>
 <submitter>Nhat Nguyen</submitter>
 <date>10 Dec 2025</date>
-<priority>99</priority>
+<priority>3</priority>
 
 <discussion>
 <p>
@@ -15,6 +15,15 @@ The `noexcept` specification of <tt>concat_view::<i>iterator</i></tt>'s `iter_sw
 However, <tt>concat_view::<i>iterator</i></tt>'s `operator*` does not have a `noexcept` specification, 
 therefore <tt>noexcept(ranges::swap(*x, *y))</tt> is always `false` and then the `noexcept` specification 
 of <tt>concat_view::<i>iterator</i></tt>'s `iter_swap` is always `noexcept(false)`.
+</p>
+
+<note>2026-01-16; Reflector poll.</note>
+<p>
+Set priority to 3 after reflector poll.
+</p>
+<p>
+"Might want to add `noexcept` to `operator*`."
+"Yes, even though it has a narrow contract."
 </p>
 </discussion>
 
