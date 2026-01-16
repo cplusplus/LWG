@@ -146,6 +146,8 @@ LWG moved this to Ready but then reopened it because it still needs
 an update w.r.t `unhandled_exception`.
 </p>
 
+<note>2026-01-16; LWG telecon. Dietmar will add a paragraph changing how `unhandled_exception` reports errors.</note>
+
 </discussion>
 
 <resolution>
