@@ -6,7 +6,7 @@
 <section><sref ref="[time.clock.req]"/></section>
 <submitter>Jiang An</submitter>
 <date>26 Nov 2025</date>
-<priority>99</priority>
+<priority>3</priority>
 
 <discussion>
 <p>
@@ -20,6 +20,14 @@ unit and/or initialized from some non-constant expression.
 Also, it is not very clear that the "always" means the conditions always hold in all executions, 
 or only always hold in the current execution. The latter reading allows `C1::steady` to vary between 
 executions.
+</p>
+
+<note>2026-01-16; Reflector poll.</note>
+<p>
+Set priority to 3 after reflector poll.
+</p>
+<p>
+Unanimous preference for Option A.
 </p>
 </discussion>
 

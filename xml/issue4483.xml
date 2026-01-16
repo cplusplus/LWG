@@ -8,7 +8,7 @@
 </section>
 <submitter>Tomasz Kamiński</submitter>
 <date>27 Nov 2025</date>
-<priority>99</priority>
+<priority>2</priority>
 
 <discussion>
 <p>As any array type (even of structural types) is not considered an structural type, per
@@ -32,6 +32,49 @@ thrown by iteration over range.</p>
 
 <note>2025-12-05; LWG telecon. Wording tweaks</note>
 <note>2025-12-12; LWG telecon. Further wording tweaks</note>
+
+<note>2026-01-16; Reflector poll.</note>
+<p>
+Set priority to 2 after reflector poll.
+</p>
+<p>
+"The new <i>Throws</i>: paragraph implies that `meta::exception` is thrown if
+a copy constructor of an array element throws, but we want to propagate the
+thrown exception not catch it an throw a `meta::exception`.
+Maybe something like:"
+<blockquote>
+If evaluation of `reflect_constant`
+(including evaluation resulting from `reflect_constant_array` invocations)
+would result in an exception `E` being thrown, then:
+<ul>
+<li>
+`E` if an exception was thrown by evaluation of an argument (if any),
+and
+</li>
+<li>`meta::exception` otherwise.</li>
+</ul>
+</blockquote>
+</p>
+<p>
+"I suggest:"
+<blockquote>
+<i>Throws</i>: Any of
+<ul>
+<li>
+an exception thrown by any operation on `r`
+or on iterators and sentinels referring to `r`,
+</li>
+<li>
+an exception thrown by the evaluation of any argument of `reflect_constant`
+or by any evaluation of `reflect_constant_array`, or
+</li>
+<li>
+`meta::exception` if any invocation of `reflect_constant`
+would exit via an exception.
+</li>
+</ul>
+</blockquote>
+</p>
 </discussion>
 
 <resolution>

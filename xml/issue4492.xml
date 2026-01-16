@@ -6,7 +6,7 @@
 <section><sref ref="[alg.generate]"/></section>
 <submitter>Ruslan Arutyunyan</submitter>
 <date>12 Dec 2025</date>
-<priority>99</priority>
+<priority>2</priority>
 
 <discussion>
 <p>
@@ -29,6 +29,11 @@ with LLVM libc++ implementation if we want to make `Generator` copyable; libc++ 
 create per-thread copy of `gen` object. Perhaps, the best strategy for now is to remove 
 `ranges::generate` and `ranges::generate_n` and return them back in C++29 time frame when we figure 
 out the proper fix.
+</p>
+
+<note>2026-01-16; Reflector poll.</note>
+<p>
+Set priority to 2 after reflector poll.
 </p>
 </discussion>
 

@@ -6,7 +6,7 @@
 <section><sref ref="[algorithms.requirements]"/></section>
 <submitter>Ruslan Arutyunyan</submitter>
 <date>12 Dec 2025</date>
-<priority>99</priority>
+<priority>3</priority>
 
 <discussion>
 <p>
@@ -41,6 +41,20 @@ corresponding sentinel because there is no established priority between them.
 Maybe, it's smaller problem but still it's worth clarifying in my opinion.
 </p></li>
 </ol>
+
+<note>2026-01-16; Reflector poll.</note>
+<p>
+Set priority to 3 after reflector poll.
+</p>
+<p>
+"Should be 'the type of `r` models `sized_range`"
+</p>
+<p>
+"It's a lot of words, could be shorter. Would prefer not to establish priority, but let implementation decide if/when to use `ranges::next`."
+</p>
+<p>
+"Would `counted_iterator(ranges::begin(r), ranges::distance(r))` and `default_sentinel` be better?"
+</p>
 </discussion>
 
 <resolution>
