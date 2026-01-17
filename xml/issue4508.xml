@@ -1,0 +1,63 @@
+<?xml version='1.0' encoding='utf-8' standalone='no'?>
+<!DOCTYPE issue SYSTEM "lwg-issue.dtd">
+
+<issue num="4508" status="New">
+<title>Meaning of "compatible" and C++ desire for C23 changes unclear for `va_arg`</title>
+<section><sref ref="[cstdarg.syn]"/></section>
+<submitter>Hubert Tong</submitter>
+<date>15 Dec 2025</date>
+<priority>99</priority>
+
+<discussion>
+<p>
+The wording in subclause 7.16.1.1 of both C17 and C23 has 
+</p>
+<blockquote><p>
+"[if] type is not compatible with the type of the actual next argument (as promoted according to the default argument promotions) [...]".
+</p></blockquote>
+<p>
+<sref ref="[cstdarg.syn]"/> only clarifies that the default argument promotions are replaced with the C++ version, 
+seemingly leaving the C definition of "compatible" as operative for C++ in this context.
+<p/>
+Consider, for example, the topic of <a href="https://cplusplus.github.io/CWG/issues/3046.html">CWG 3046</a>, 
+"Enumerations as part of the common initial sequence": Enumerations with the same underlying type need not 
+have equivalent sets of values in C++, whereas C enumerations with the same underlying type are compatible 
+and capable of representing the same values. Thus, enumerations should only be defined by C++ as being 
+layout-compatible if, in addition to having the same underlying type, they also have equivalent sets of values. 
+This difference between C++'s "layout-compatible" types and C's "compatible" types means that we should avoid 
+using C's "compatible" in C++ contexts.
+<p/>
+Furthermore, C23 expanded the bullets.
+<p/>
+It now reads:
+</p>
+<blockquote>
+<p>
+[&hellip;] except for the following cases:
+</p>
+<ul>
+<li><p>both types are pointers to qualified or unqualified versions of compatible types;</p></li>
+<li><p>one type is compatible with a signed integer type, the other type is compatible with the 
+corresponding unsigned integer type, and the value is representable in both types;</p></li>
+<li><p>one type is pointer to qualified or unqualified void and the other is a pointer to a 
+qualified or unqualified character type;</p></li>
+<li><p>or, the type of the next argument is nullptr_t and type is a pointer type that has the 
+same representation and alignment requirements as a pointer to a character type.</p></li>
+</ul>
+</blockquote>
+<p>
+Assuming that "compatible" is read as "layout-compatible", the first bullet, whose effect in C is 
+to allow limited differences in qualification, allows further differences in the pointee types in 
+C++ because pointers are not layout-compatible in C++ when the pointee types are layout-compatible 
+but not the same type.
+<p/>
+Clearer wording, likely with more restrictions than C, is needed. A question, though, is whether 
+"compatible" should generally be replaced (for `va_arg`) with "layout-compatible" or a requirement 
+for being the same type. In the specific case of the first bullet, I believe the latter is the right choice.
+</p>
+</discussion>
+
+<resolution>
+</resolution>
+
+</issue>
