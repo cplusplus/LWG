@@ -1,0 +1,110 @@
+<?xml version='1.0' encoding='utf-8' standalone='no'?>
+<!DOCTYPE issue SYSTEM "lwg-issue.dtd">
+
+<issue num="4507" status="New">
+<title>The order of side effects initiated by I/O functions is not described by happen-before</title>
+<section><sref ref="[input.output]"/></section>
+<submitter>jim x</submitter>
+<date>29 Dec 2025</date>
+<priority>99</priority>
+
+<discussion>
+<p>
+<sref ref="[intro.execution]"/> p7 says (emphasis mine)
+</p>
+<blockquote style="border-left: 3px solid #ccc;padding-left: 15px;">
+<p>
+Reading an object designated by a `volatile` glvalue (<sref ref="[basic.lval]"/>), modifying an object, 
+producing an injected declaration (<sref ref="[expr.const]"/>), <b>calling a library I/O function</b>, 
+or calling a function that does any of those operations are all <i>side effects</i>, 
+which are changes in the state of the execution or translation environment. 
+<i>Evaluation</i> of an expression (or a subexpression) in general includes both value computations 
+(including determining the identity of an object for glvalue evaluation and 
+fetching a value previously assigned to an object for prvalue evaluation) and 
+initiation of side effects. When a call to a library I/O function returns or an access 
+through a `volatile` glvalue is evaluated, the side effect is considered complete, 
+even though some external actions implied by the call (such as the I/O itself) or 
+by the `volatile` access may not have completed yet.
+</p>
+</blockquote>
+<p>
+Consider this example:
+</p>
+<blockquote><pre>
+#include &lt;thread&gt;
+#include &lt;atomic&gt;
+#include &lt;stream&gt;
+
+int main(){
+  std::ofstream outFile("example.txt", std::ios::out | std::ios::trunc);
+  std::atomic&lt;bool&gt; flag = false;
+  auto t1 = std::thread([&amp;](){
+    outFile &lt;&lt; "ab"; // #1
+    flag.store(true, std::memory_order::release); // #2
+  });
+  auto t2 = std::thread([&amp;](){
+    while (!flag.load(std::memory_order::acquire)); // #3
+    outFile &lt;&lt; "cd"; // #4
+  });
+  t1.join();
+  t2.join();
+}
+</pre></blockquote>
+<p>
+Because `#2` synchronizes with `#3`, then `#1` happens before `#4`. 
+According to <sref ref="[intro.abstract]"/> p8
+</p>
+<blockquote style="border-left: 3px solid #ccc;padding-left: 15px;">
+<p>
+The following specify the observable behavior of the program:
+</p>
+<ul style="list-style-type: none">
+<li><p>(8.1) &mdash; [&hellip;]</p></li>
+<li><p>(8.2) &mdash; Data is delivered to the host environment to be written into files (See also: ISO/IEC 9899:2024, 7.23.3).</p></li>
+<li><p>(8.3) &mdash; [&hellip;]</p></li>
+</ul>
+</blockquote>
+<p>
+So, writing data to files is observable behavior. Are data guaranteed to be delivered to the file `example.txt` 
+in the order "abcd"? I don't find a relevant rule in both subclauses <sref ref="[intro.races]"/> and 
+<sref ref="[input.output]"/> that specifies the order of delivery of data to files depends on the happen-before 
+relationship.
+<p/>
+<sref ref="[intro.races]"/> only states how <b>memory visibility</b> is defined according to happen-before. 
+Both reading an object designated by a `volatile` glvalue and modifying an object can be categories 
+to <b>side effects on memory locations</b>, <sref ref="[intro.races]"/> does define that. However, the side 
+effects produced by the call to a library I/O function might not be about memory visibility. 
+<sref ref="[input.output]"/> only mentions when a data race happens. 
+<sref ref="[intro.execution]"/> p7 only says that when the calling of a function at `#1` returns, 
+the side effect is considered complete. However, it lacks how the completion is related to the expression 
+that is sequenced after it, let alone how the completion is ordered relative to `#3` that 
+inter-threaded happens after it.
+<p/>
+In the whole standard, there is only one informal note specifying this at the end of <sref ref="[intro.races]"/> p8:
+</p>
+<blockquote style="border-left: 3px solid #ccc;padding-left: 15px;">
+<p>
+[<i>Note 8</i>: Informally, if <i>A</i> strongly happens before <i>B</i>, then <i>A</i> 
+appears to be evaluated before <i>B</i> in all contexts. &mdash; <i>end note</i>]
+</p>
+</blockquote>
+<p>
+However, this is an informal note, and I didn't find a formal rule corresponding to this note.
+<p/>
+<b>Suggested Resolution:</b>
+<p/>
+The English meaning of happen before means one thing has done before the other. However, 
+<i>happen-before</i> as the term of the C++ standard, we didn't give it that meaning. 
+IIUC, the intended meaning should be that: if <i>A</i> happens before <i>B</i>, then <i>A</i> 
+will finish before <i>B</i> starts. This meaning is not embodied in the formal rules. 
+We only describe memory visibility in terms of <i>happen-before</i>, but don't for 
+other kinds of side effects or observable behaviors.
+<p/>
+We should define how the order of side effects produced by I/O functions is defined by <i>happen-before</i>.
+</p>
+</discussion>
+
+<resolution>
+</resolution>
+
+</issue>
