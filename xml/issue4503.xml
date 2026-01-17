@@ -1,0 +1,54 @@
+<?xml version='1.0' encoding='utf-8' standalone='no'?>
+<!DOCTYPE issue SYSTEM "lwg-issue.dtd">
+
+<issue num="4503" status="New">
+<title>Use of `std::common_reference_with` in `std::assignable_from` seems incorrect</title>
+<section><sref ref="[concept.assignable]"/></section>
+<submitter>Jiang An</submitter>
+<date>24 Dec 2025</date>
+<priority>99</priority>
+
+<discussion>
+<p>
+Currently, <tt>std::assignable_from&lt;std::unique_ptr&lt;int&gt;&amp;, std::nullptr_t&gt;</tt> is `false`, 
+because the common reference type of <tt>unique_ptr&lt;int&gt;&amp;</tt> and `nullptr_t` is 
+<tt>unique_ptr&lt;int&gt;</tt>, and a const <tt>unique_ptr&lt;int&gt;</tt> lvalue can't be converted to the 
+common reference type.
+<p/>
+Such design seems counter-intuitive and valueless. When `common_reference_with` is modeled, 
+one can use the common reference type in some non-generic, homogeneous interfaces. However, 
+it should be clear enough that the type isn't expected to be used in assignment.
+<p/>
+The earliest form of the design can be found in 
+<a href="https://github.com/ericniebler/stl2/pull/150">ericniebler/stl2#150</a>, where cases 
+involving move-only types didn't seem analyzed. In any case, if we want `ranges::advance` to perform 
+assignment only when `I` and `S` are common enough, we should just limit the `common_reference_with` 
+requirements to `ranges::advance`.
+</p>
+</discussion>
+
+<resolution>
+<p>
+This wording is relative to <paper num="N5032"/>.
+</p>
+
+<ol>
+<li><p>Modify <sref ref="[concept.assignable]"/> as indicated:</p>
+
+<blockquote>
+<pre>
+template&lt;class LHS, class RHS&gt;
+  concept assignable_from =
+    is_lvalue_reference_v&lt;LHS&gt; &amp;&amp;
+    <del>common_reference_with&lt;const remove_reference_t&lt;LHS&gt;&amp;, const remove_reference_t&lt;RHS&gt;&amp;&gt; &amp;&amp;</del>
+    requires(LHS lhs, RHS&amp;&amp; rhs) {
+      { lhs = std::forward&lt;RHS&gt;(rhs) } -&gt; same_as&lt;LHS&gt;;
+    };
+</pre>
+</blockquote>
+</li>
+
+</ol>
+</resolution>
+
+</issue>
