@@ -1,0 +1,58 @@
+<?xml version='1.0' encoding='utf-8' standalone='no'?>
+<!DOCTYPE issue SYSTEM "lwg-issue.dtd">
+
+<issue num="4504" status="New">
+<title>Wording problem in `{simple_}counting_scope`</title>
+<section><sref ref="[exec.simple.counting.mem]"/></section>
+<submitter>Ian Petersen</submitter>
+<date>24 Dec 2025</date>
+<priority>99</priority>
+
+<discussion>
+<p>
+I discovered while implementing 
+<a href="https://github.com/NVIDIA/stdexec/pull/1713">P3149 + P3815 in NVIDIA's stdexec</a> 
+that there's a bug in <sref ref="[exec.simple.counting.mem]"/>, paragraph 9. The status quo says:
+</p>
+<blockquote>
+<pre>
+template&lt;class State&gt;
+  bool <i>start-join-sender</i>(State&amp; st) noexcept;
+</pre>
+<blockquote>
+<p>
+-9- <i>Effects</i>: If <tt><i>state</i></tt> is
+</p>
+<ul style="list-style-type: none">
+<li><p>(9.1) &mdash; <tt><i>unused</i></tt>, <tt><i>unused-and-closed</i></tt>, or <tt><i>joined</i></tt>, 
+then changes <tt><i>state</i></tt> to <tt><i>joined</i></tt> and returns `true`;</p></li>
+<li><p>(9.2) &mdash; <tt><i>open</i></tt> or <tt><i>open-and-joining</i></tt>, then changes 
+<tt><i>state</i></tt> to <tt><i>open-and-joining</i></tt>, registers `st` with `*this` and returns `false`;</p></li>
+<li><p>(9.3) &mdash; <tt><i>closed</i></tt> or <tt><i>closed-and-joining</i></tt>, then changes 
+<tt><i>state</i></tt> to <tt><i>closed-and-joining</i></tt>, registers `st` with `*this` and returns `false`.</p></li>
+</ul>
+</blockquote>
+</blockquote>
+<p>
+The problem is that if either bullet 9.2 or 9.3 applies when <tt><i>count</i></tt> happens to be zero 
+then there's nothing to guarantee that `st.complete()` is ever invoked, leading to deadlock unless 
+another sender is associated and disassociated with the scope (because the subsequent disassociation 
+will trigger the join-sender's completion).
+<p/>
+One fix is to change bullet 9.1 of the <i>Effects</i> element such that <tt><i>start-join-sender</i></tt> 
+changes <tt><i>state</i></tt> to <tt><i>joined</i></tt> and returns `true` if <tt><i>count</i></tt> is zero, 
+regardless of the value of <tt><i>state</i></tt>; bullets 9.2 and 9.3 can be left alone. I might add a note 
+that points out that, when <tt><i>state</i></tt> is <tt><i>unused</i></tt>, <tt><i>unused-and-closed</i></tt>, 
+or <tt><i>joined</i></tt>, <tt><i>count</i></tt> must be zero.
+<p/>
+Another fix would be to delete bullet 9.1, to modify bullets 9.2 and 9.3 by adding 
+"and <tt><i>count</i></tt> is greater than zero", 
+and to add a trailing bullet that says 
+"otherwise, changes <tt><i>state</i></tt> to <tt><i>joined</i></tt> and returns `true`."
+</p>
+</discussion>
+
+<resolution>
+</resolution>
+
+</issue>
