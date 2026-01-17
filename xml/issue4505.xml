@@ -1,0 +1,62 @@
+<?xml version='1.0' encoding='utf-8' standalone='no'?>
+<!DOCTYPE issue SYSTEM "lwg-issue.dtd">
+
+<issue num="4505" status="New">
+<title>The `std::make_optional` overload taking `std::initializer_list` should not accept a reference type as its template argument</title>
+<section><sref ref="[optional.specalg]"/></section>
+<submitter>Jiang An</submitter>
+<date>25 Dec 2025</date>
+<priority>99</priority>
+
+<discussion>
+<p>
+<tt>std::make_optional&lt;std::initializer_list&lt;int&gt;&amp;&gt;({1, 2})</tt> is currently valid, 
+but the returned `optional` object contains a dangling reference, because the stored reference used to 
+refer to the <tt>initializer_list&lt;int&gt;</tt> parameter object of that `make_optional` overload.
+<p/>
+Moreover, when there's already an <tt>initializer_list&lt;T&gt;</tt> variable `il`, 
+<tt>std::make_optional&lt;std::initializer_list&lt;T&gt;&amp;>(il)</tt> also returns an `optional` 
+containing a dangling reference, because the third `make_optional` overload in 
+<sref ref="[optional.specalg]"/> is more specialized than the second and thus gets selected.
+<p/>
+Given <tt>optional&lt;T&amp;&gt;</tt> has no specific initializer-list constructor, perhaps we should 
+make the `make_optional` overload taking `initializer_list` not accept <tt>T&amp;</tt> as its first template 
+argument.
+</p>
+</discussion>
+
+<resolution>
+<p>
+This wording is relative to <paper num="N5032"/>.
+</p>
+
+<ol>
+<li><p>Modify <sref ref="[optional.specalg]"/> as indicated:</p>
+
+<blockquote class="note">
+<p>
+[<i>Drafting note</i>: This also make the implicit SFINAE constraints introduced by 
+<sref ref="[structure.specifications]"/> p4 explicit.]
+</p>
+</blockquote>
+
+<blockquote>
+<pre>
+template&lt;class T, class U, class... Args&gt;
+  constexpr optional&lt;T&gt; make_optional(initializer_list&lt;U&gt; il, Args&amp;&amp;... args);
+</pre>
+<blockquote>
+<p>
+<ins>-?- <i>Constraints</i>: <tt>is_lvalue_reference_v&lt;T&gt;</tt> is `false` and 
+<tt>is_constructible_v&lt;T, initializer_list&lt;U&gt;&amp;, Args...&gt;</tt> is `true`.</ins>
+<p/>
+-6- <i>Effects</i>: Equivalent to: <tt>return optional&lt;T&gt;(in_place, il, std::forward&lt;Args&gt;(args)...);</tt>
+</p>
+</blockquote>
+</blockquote>
+</li>
+
+</ol>
+</resolution>
+
+</issue>
