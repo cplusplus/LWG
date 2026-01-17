@@ -1,0 +1,46 @@
+<?xml version='1.0' encoding='utf-8' standalone='no'?>
+<!DOCTYPE issue SYSTEM "lwg-issue.dtd">
+
+<issue num="4506" status="New">
+<title>`source_location` is explicitly unspecified if is constexpr or not</title>
+<section><sref ref="[support.srcloc.class]"/></section>
+<submitter>Hana Dusíková</submitter>
+<date>27 Dec 2025</date>
+<priority>99</priority>
+
+<discussion>
+<p>
+Basically in <sref ref="[support.srcloc.class.general]"/> following p1 there is a note from Jens 
+from six years ago which says (emphasis mine):
+</p>
+<blockquote style="border-left: 3px solid #ccc;padding-left: 15px;">
+<p>
+[<i>Note 1</i>: The intent of `source_location` is to have a small size and efficient copying. 
+It is unspecified whether the copy/move constructors and the copy/move assignment operators 
+are trivial <b>and/or constexpr</b>. &mdash; <i>end note</i>]
+</p>
+</blockquote>
+<p>
+But also reflection's `std::meta::source_location_of` returns it by value and is `consteval`. 
+This means `source_location` needs to be specified to constexpr. And good news is ... all three 
+major implementations have it constexpr implicitly.
+<p/>
+Options are (from my perspective) to remove that part of the note "and/or constexpr" and 
+just call it a day, or add
+</p>
+<blockquote><pre>
+constexpr source_location(const source_location&amp;) = default;
+constexpr source_location(source_location&amp;&amp;) noexcept = default;
+constexpr source_location&amp; operator=(const source_location&amp;) = default;
+constexpr source_location&amp; operator=(source_location&amp;&amp;) noexcept = default;
+</pre></blockquote>
+<p>
+AFAIK this is how to explicitly say it must be constexpr but it can still be trivial, see
+<a href="https://compiler-explorer.com/z/5v5ndd7z1">demo</a>.
+</p>
+</discussion>
+
+<resolution>
+</resolution>
+
+</issue>
