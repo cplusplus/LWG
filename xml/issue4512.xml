@@ -1,0 +1,165 @@
+<?xml version='1.0' encoding='utf-8' standalone='no'?>
+<!DOCTYPE issue SYSTEM "lwg-issue.dtd">
+
+<issue num="4512" status="New">
+<title>The `system_encoded_string()` and `generic_system_encoded_string()` member functions 
+of `std::filesystem::path` are misnamed</title>
+<section><sref ref="[fs.class.path.general]"/><sref ref="[fs.path.type.cvt]"/>
+<sref ref="[fs.path.native.obs]"/><sref ref="[fs.path.generic.obs]"/>
+<sref ref="[depr.fs.path.obs]"/></section>
+<submitter>Tom Honermann</submitter>
+<date>11 Jan 2026</date>
+<priority>99</priority>
+
+<discussion>
+<p>
+<b>Addresses <a href="https://github.com/cplusplus/nbballot/issues/879">US 189-304</a></b>
+<p/>
+The `system_encoded_string()` and `generic_system_encoded_string()` member functions of 
+`std::filesystem::path` are misnamed. These functions were added as renamed versions of 
+`string()` and `generic_string()` respectively by <paper num="P2319R5"/> ("Prevent path 
+presentation problems"). The original function names are now deprecated.
+<p/>
+The C++ standard does not define "system encoding" and casual use of such a term is at best 
+ambiguous. In common language, one might expect the "system encoding" to correspond to the 
+environment encoding (for which `std::text_encoding::environment()` provides a definition) 
+or the encoding of the current locale. However, neither of these encodings corresponds to 
+the encoding these functions are expected to use. <sref ref="[fs.path.type.cvt]"/> defines 
+"native encoding" and, for `char`-based filesystem paths, states (in a note) that 
+"For Windows-based operating systems, the native ordinary encoding is determined by calling 
+a Windows API function." It is not specified which Windows API function is consulted, but 
+existing implementations call `AreFileApisANSI()` to choose between the Active Code Page 
+(`CP_ACP`) and the OEM Code Page (`CP_OEMCP`). Microsoft's implementation also checks for 
+a thread-local locale and, if the locale encoding is UTF-8, prefers that (`CP_UTF8`) over 
+either of the other two.
+</p>
+</discussion>
+
+<resolution>
+<p>
+This wording is relative to <paper num="N5032"/>.
+</p>
+
+<ol>
+<li><p>Modify <sref ref="[fs.class.path.general]"/>, class <tt>path</tt> synopsis, as indicated:</p>
+
+<blockquote>
+<pre>
+namespace std::filesystem {
+  class path {
+  public:
+    [&hellip;]
+    // <i><sref ref="[fs.path.native.obs]"/>, native format observers</i>
+    [&hellip;]
+    std::string display_string() const;
+    std::string <del>system</del><ins>native</ins>_encoded_string() const;
+    std::wstring wstring() const;
+    [&hellip;]
+    
+    // <i><sref ref="[fs.path.generic.obs]"/>, generic format observers</i>
+    [&hellip;]
+    std::string generic_display_string() const;
+    std::string generic_<del>system</del><ins>native</ins>_encoded_string() const;
+    std::wstring generic_wstring() const;
+    [&hellip;]
+  };
+}
+</pre>
+</blockquote>
+</li>
+
+<li><p>Modify <sref ref="[fs.path.type.cvt]"/> as indicated:</p>
+
+<blockquote>
+<p>
+-2- For member function arguments that take character sequences representing paths and for member functions
+returning strings, value type and encoding conversion is performed if the value type of the argument or return
+value differs from `path::value_type`. For the argument or return value, the method of conversion and the
+encoding to be converted to is determined by its value type:
+</p>
+<ul style="list-style-type: none">
+<li><p>(2.1) &mdash; `char`: The encoding is the native ordinary encoding. The method of conversion, if any, 
+is operating system dependent.
+<p/>
+[<i>Note 1</i>: For POSIX-based operating systems `path::value_type` is `char` so no conversion from 
+`char` value type arguments or to `char` value type return values is performed. For Windows-based operating systems, 
+the native ordinary encoding is determined by <del>calling a Windows API function</del><ins>the current locale 
+encoding and the Windows `AreFileApisANSI` function</ins>. &mdash; end note]
+<p/>
+[&hellip;]
+</p></li>
+<li><p>(2.2) &mdash; [&hellip;]</p></li>
+<li><p>[&hellip;]</p></li>
+</ul>
+
+</blockquote>
+</li>
+
+<li><p>Modify <sref ref="[fs.path.native.obs]"/> as indicated:</p>
+
+<blockquote>
+<pre>
+std::string <del>system</del><ins>native</ins>_encoded_string() const;
+std::wstring wstring() const;
+std::u8string u8string() const;
+std::u16string u16string() const;
+std::u32string u32string() const;
+</pre>
+<blockquote>
+<p>
+-7- <i>Returns</i>: `native()`.
+<p/>
+-8- <i>Remarks</i>: Conversion, if any, is performed as specified by <sref ref="[fs.path.cvt]"/>.
+</p>
+</blockquote>
+</blockquote>
+</li>
+
+<li><p>Modify <sref ref="[fs.path.generic.obs]"/> as indicated:</p>
+
+<blockquote>
+<pre>
+std::string generic_<del>system</del><ins>native</ins>_encoded_string() const;
+std::wstring generic_wstring() const;
+std::u8string generic_u8string() const;
+std::u16string generic_u16string() const;
+std::u32string generic_u32string() const;
+</pre>
+<blockquote>
+<p>
+-5- <i>Returns</i>: The pathname in the generic format.
+<p/>
+-6- <i>Remarks</i>: Conversion, if any, is specified by <sref ref="[fs.path.cvt]"/>.
+</p>
+</blockquote>
+</blockquote>
+</li>
+
+<li><p>Modify <sref ref="[depr.fs.path.obs]"/> as indicated:</p>
+
+<blockquote>
+<pre>
+std::string string() const;
+</pre>
+<blockquote>
+<p>
+-2- <i>Returns</i>: <tt><del>system</del><ins>native</ins>_encoded_string()</tt>.
+</p>
+</blockquote>
+<pre>
+std::string generic_string() const;
+</pre>
+<blockquote>
+<p>
+-3- <i>Returns</i>: <tt>generic_<del>system</del><ins>native</ins>_encoded_string()</tt>.
+</p>
+</blockquote>
+</blockquote>
+</li>
+
+</ol>
+
+
+</resolution>
+
+</issue>
