@@ -1,0 +1,152 @@
+<?xml version='1.0' encoding='utf-8' standalone='no'?>
+<!DOCTYPE issue SYSTEM "lwg-issue.dtd">
+
+<issue num="4510" status="New">
+<title>Ambiguity of `std::ranges::advance` and `std::ranges::next` when the difference type is also a sentinel type</title>
+<section><sref ref="[range.iter.op.advance]"/><sref ref="[range.iter.op.next]"/></section>
+<submitter>Jiang An</submitter>
+<date>09 Jan 2026</date>
+<priority>99</priority>
+
+<discussion>
+<p>
+Currently, `ranges::advance` and `ranges::next` have `operator()` overloads that accept 
+`(iterator, sentinel)` and `(iterator, difference)`. However, when the difference type 
+of the iterator is also a sentinel type, there may be ambiguity in both overloads.
+<p/>
+E.g. the following example is rejected when compiling with libc++ or libstdc++ 
+(<a href="https://godbolt.org/z/z3rPEhjjs">demo</a>):
+</p>
+<blockquote><pre>
+#include &lt;cstddef&gt;
+#include &lt;iterator&gt;
+#include &lt;type_traits&gt;
+
+template&lt;class T&gt;
+struct FwdIter { // triggers ADL for T
+  FwdIter();
+
+  using value_type      = std::remove_cv_t&lt;T&gt;;
+  using difference_type = int;
+
+  T&amp; operator*() const;
+
+  FwdIter&amp; operator++();
+  FwdIter operator++(int);
+
+  friend bool operator==(const FwdIter&amp;, const FwdIter&amp;);
+};
+
+static_assert(std::forward_iterator&lt;FwdIter&lt;int&gt;&gt;);
+
+struct OmniConv {
+  OmniConv(const auto&amp;);
+  friend bool operator==(OmniConv, OmniConv); // found by ADL via things related to OmniConv
+};
+
+int main() {
+  FwdIter&lt;OmniConv&gt; it{};
+  std::ranges::advance(it, 0); // ambiguous
+  std::ranges::next(it, 0); // ambiguous
+}
+</pre></blockquote>
+<p>
+Perhaps it would be better to ensure that calling `ranges::advance` or `ranges::next` 
+with an iterator value and a value of the difference type is unambiguous. Note that 
+wrapping iterators that trigger ADL for the value type like the `FwdIter` in this example 
+are common in standard library implementations, so ambiguity can be easily raised from 
+containers with such `OmniConv` being their element type.
+</p>
+</discussion>
+
+<resolution>
+<p>
+This wording is relative to <paper num="N5032"/>.
+</p>
+
+<ol>
+<li><p>Modify <sref ref="[iterator.synopsis]"/>, header <tt>&lt;iterator&gt;</tt> synopsis, as indicated:</p>
+
+<blockquote>
+<pre>
+[&hellip;]
+namespace std {
+  template&lt;class T&gt; using <i>with-reference</i> = T&amp;amp;; <i>// exposition only</i>
+  template&lt;class T&gt; concept <i>can-reference</i>      <i>// exposition only</i>
+    = requires { typename <i>with-reference</i>&lt;T&gt;; };
+  template&lt;class T&gt; concept <i>dereferenceable</i>    <i>// exposition only</i>
+    = requires(T&amp;amp; t) {
+      { *t } -&gt; <i>can-reference</i>; <i>// not required to be equality-preserving</i>
+    };
+  
+  <ins>template&lt;class T&gt;
+    constexpr bool <i>is-integer-like</i> = <i>see below</i>;           <i>// exposition only</i></ins>
+
+  [&hellip;]
+  <i>// <sref ref="[range.iter.ops]"/>, range iterator operations</i>
+  namespace ranges {
+    <i>// <sref ref="[range.iter.op.advance]"/>,</i> ranges::advance
+    template&lt;input_or_output_iterator I&gt;
+      constexpr void advance(I&amp; i, iter_difference_t&lt;I&gt; n);                <i>// freestanding</i>
+    template&lt;input_or_output_iterator I, <del>sentinel_for&lt;I&gt;</del><ins>class</ins> S&gt;
+      <ins>requires (!<i>is-integer-like</i>&lt;S&gt;) &amp;&amp; sentinel_for&lt;S, I&gt;</ins>
+      constexpr void advance(I&amp; i, S bound);                               <i>// freestanding</i>
+    template&lt;input_or_output_iterator I, sentinel_for&lt;I&gt; S&gt;
+      constexpr iter_difference_t&lt;I&gt; advance(I&amp; i, iter_difference_t&lt;I&gt; n, <i>// freestanding</i>
+                                             S bound);    
+   [&hellip;]
+    <i>// <sref ref="[range.iter.op.next]"/>,</i> ranges::next
+    template&lt;input_or_output_iterator I&gt;
+      constexpr I next(I x);                                  <i>// freestanding</i>
+    template&lt;input_or_output_iterator I&gt;
+      constexpr I next(I x, iter_difference_t&lt;I&gt; n);          <i>// freestanding</i>
+    template&lt;input_or_output_iterator I, <del>sentinel_for&lt;I&gt;</del><ins>class</ins> S&gt;
+      <ins>requires (!<i>is-integer-like</i>&lt;S&gt;) &amp;&amp; sentinel_for&lt;S, I&gt;</ins>
+      constexpr I next(I x, S bound);                         <i>// freestanding</i>
+    template&lt;input_or_output_iterator I, sentinel_for&lt;I&gt; S&gt;
+      constexpr I next(I x, iter_difference_t&lt;I&gt; n, S bound); <i>// freestanding</i>    
+  }
+  [&hellip;]
+}
+</pre>
+</blockquote>
+</li>
+
+<li><p>Modify <sref ref="[range.iter.op.advance]"/> as indicated:</p>
+
+<blockquote>
+<pre>
+template&lt;input_or_output_iterator I, <del>sentinel_for&lt;I&gt;</del><ins>class</ins> S&gt;
+  <ins>requires (!<i>is-integer-like</i>&lt;S&gt;) &amp;&amp; sentinel_for&lt;S, I&gt;</ins>
+  constexpr void advance(I&amp; i, S bound);
+</pre>
+<blockquote>
+<p>
+-3- <i>Preconditions</i>: [&hellip;]
+</p>
+</blockquote>
+</blockquote>
+</li>
+
+<li><p>Modify <sref ref="[range.iter.op.next]"/> as indicated:</p>
+
+<blockquote>
+<pre>
+template&lt;input_or_output_iterator I, <del>sentinel_for&lt;I&gt;</del><ins>class</ins> S&gt;
+  <ins>requires (!<i>is-integer-like</i>&lt;S&gt;) &amp;&amp; sentinel_for&lt;S, I&gt;</ins>
+  constexpr I next(I x, S bound);
+</pre>
+<blockquote>
+<p>
+-3- <i>Effects</i>: [&hellip;]
+</p>
+</blockquote>
+</blockquote>
+</li>
+
+</ol>
+
+
+</resolution>
+
+</issue>
