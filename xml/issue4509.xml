@@ -1,0 +1,349 @@
+<?xml version='1.0' encoding='utf-8' standalone='no'?>
+<!DOCTYPE issue SYSTEM "lwg-issue.dtd">
+
+<issue num="4509" status="New">
+<title><tt>std::optional&lt;T&gt;::transform</tt> cannot be implemented while supporting program-defined specializations</title>
+<section><sref ref="[optional.monadic]"/></section>
+<submitter>Rasheeq Azad</submitter>
+<date>24 Dec 2025</date>
+<priority>99</priority>
+
+<discussion>
+<p>
+Currently (that is, as of the draft at <paper num="N5032"/>), <sref ref="[optional.monadic]"/> 
+specifies that <tt>std::optional&lt;T&gt;::transform(F&amp;&amp;f)&amp;</tt> shall do the following 
+(and similar for the other overloads):
+</p>
+<blockquote style="border-left: 3px solid #ccc;padding-left: 15px;">
+<p>
+Let `U` be <tt>remove_cv_t&lt;invoke_result_t&lt;F, decltype((<i>val</i>))&gt;&gt;</tt>.
+<p/>
+<i>Mandates</i>: [&hellip;]
+<p/>
+[<i>Note 1</i>: There is no requirement that `U` is movable (<sref ref="[dcl.init.general]"/>).
+&mdash; <i>end note</i>]
+<p/>
+<i>Returns</i>: If `*this` contains a value, an <tt>optional&lt;U&gt;</tt> object whose
+contained value is direct-non-list-initialized with <tt>invoke(std::forward&lt;F&gt;(f), <i>val</i>)</tt>; 
+otherwise, <tt>optional&lt;U&gt;()</tt>.
+</p>
+</blockquote>
+<p>
+However, none of the standard constructors or other member functions of
+<tt>optional&lt;U&gt;</tt> provide a surefire way to initialize the contained `U` value with
+an expression like <tt>invoke(std::forward&lt;F&gt;(f), <i>val</i>)</tt>. The closest are the
+`in_place_t`/`emplace` overloads, which almost but not quite admit a generic
+implementation of `transform`. This looks roughly like:
+</p>
+<blockquote><pre>
+namespace std {
+  template&lt;class _F&gt; struct __later {
+    _F __f;
+    operator decltype(std::move(__f)())() &amp;&amp; { return std::move(__f)(); }
+  };
+
+  template&lt;class _T&gt; class optional {
+    // etc.
+  public:
+    template&lt;class _F&gt; constexpr auto transform(_F &amp;&amp;__f) &amp; {
+      using _U = remove_cv_t&lt;invoke_result_t&lt;_F, _T&amp;&gt;&gt;;
+      if(!has_value()) return optional&lt;_U&gt;();
+      return optional&lt;_U&gt;(in_place, __later([&amp;] -&gt; _U {
+        return std::invoke(std::forward&lt;_F&gt;(__f), value());
+      }));
+    }
+  };
+}
+</pre></blockquote>
+<p>
+Unfortunately, this does not quite meet the specification. The issue is if `U`
+is a type with a <tt>U(auto&amp;&amp;)</tt> constructor:
+</p>
+<blockquote><pre>
+struct oops {
+  oops() = default;
+  oops(auto&amp;&amp;) { std::cout &lt;&lt; "launching missiles\n"; }
+};
+
+int main() {
+  std::optional&lt;int&gt; oi(5);
+  oi.transform([](auto&amp; i) { return oops(); });
+  // missiles get launched when they shouldn't
+}
+</pre></blockquote>
+<p>
+In this case, the rules for direct-initialization (see <sref ref="[dcl.init]"/> bullet 16.6.2) 
+will select the template constructor over the conversion function on the `__later`
+specialization. [<a href="https://godbolt.org/z/G6vjM4K63">Complete example 1</a>]
+<p/>
+To avoid this problem, standard library implementors generally implement
+<tt>std::optional&lt;T&gt;::transform</tt> with a non-standard constructor on their
+<tt>std::optional&lt;T&gt;</tt> primary template; roughly:
+</p>
+<blockquote><pre>
+namespace std {
+  struct __optional_from_invocable_tag {
+    constexpr explicit __optional_from_invocable_tag() { }
+  };
+  
+  template&lt;typename _T&gt;
+  class optional {
+    // etc.
+  public:
+    template&lt;typename _F, typename _V&gt;
+    constexpr optional(__optional_from_invocable_tag, _F &amp;&amp;__f, _V &amp;&amp;__v)
+      : __present(true)
+      , __val(std::invoke(std::forward&lt;_F&gt;(__f), std::forward&lt;_V&gt;(__v)))
+    { }
+
+    template&lt;class _F&gt; constexpr auto transform(_F &amp;&amp;__f) &amp; {
+      using _U = remove_cv_t&lt;invoke_result_t&lt;_F, _T&amp;&gt;&gt;;
+      if(!has_value()) return optional&lt;_U&gt;();
+      return optional&lt;_U&gt;(
+        __optional_from_invocable_tag(),
+        std::forward&lt;_F&gt;(__f), value());
+    }
+  };
+}
+</pre></blockquote>
+<p>
+[<a href="https://godbolt.org/z/5qsnesbdh">Complete example 2</a>]. Note that the missiles are not launched.
+<p/>
+Now for the real issue: if a user program wants to specialize `std::optional`
+for a program-defined type, it will have to explicitly rely on these details of
+its standard library implementation in order to be supported by the standard
+library's `transform` implementation. Specifically, it will have to provide a
+non-standard constructor with a signature matching the library implementation's
+expectations. (A portable implementation of `transform` itself is more-or-less
+possible for a program-defined specialization by using a circumlocution like
+<tt>std::optional&lt;std::monostate&gt;(std::in_place).transform(/* ... */)</tt>.)
+<p/>
+The root problem is that the standard interface of <tt>std::optional&lt;U&gt;</tt> 
+provides for direct-initialization of the contained `U` by arbitrary glvalues, but not
+by an arbitrary prvalue (that is, by calling an arbitrary invocable). This
+forces library implementations to invent their own non-standard interfaces for
+doing so, which then makes it impossible for those implementations to support
+program-defined specializations of `std::optional` that only meet the minimal
+requirements of the standard, and do not support those non-standard interfaces.
+<p/>
+The fact that <tt>std::optional&lt;T&gt;::transform</tt> makes implementing `std::optional`
+while supporting program-defined specializations basically impossible does not
+appear to be intentional. <paper num="P0798R8"/>, which introduced
+<tt>std::optional&lt;T&gt;::transform</tt>, does not mention this side-effect of its
+standardization.
+<p/>
+There are at least two different resolutions that immediately come to mind.
+<p/>
+<b>Option A</b>: Forbid program-defined <tt>std::optional&lt;T&gt;</tt> specializations
+<p/>
+Taking this option would immediately solve the problem. However, in my opinion,
+this would be unnecessarily restrictive. Specializing `std::optional` is a
+useful thing to allow, as it allows replacing the common <tt>struct optional&lt;T&gt; {
+union { T val; }; bool present; }</tt> representation with something more compact
+when `T` has unused values/unused bits.
+<p/>
+<b>Option B</b>: Add a <tt>std::optional&lt;T&gt;</tt> constructor taking an invocable
+<p/>
+This option more-or-less formalizes existing practice, using a type tag to gate
+the new constructor. It would be ideal to extend this idea to `emplace` and
+then to the various `in_place_t` constructors and `emplace` functions in other
+parts of the standard, but the wording presented here is restricted to fixing
+this issue.
+<p/>
+Changing <tt>std::optional&lt;T&amp;&gt;</tt> doesn't seem strictly necessary, 
+but introducing a nonuniformity seems like a bad idea. I'm not 100% certain about 
+the wording for the new constructors.
+</p>
+</discussion>
+
+<resolution>
+<p>
+This wording is relative to <paper num="N5032"/>.
+</p>
+
+<blockquote class="note">
+<p>
+[<i>Drafting Note:</i> Two mutually exclusive options are prepared, depicted below by <b>Option A</b> and 
+<b>Option B</b>, respectively.] 
+</p>
+</blockquote>
+
+<p>
+<b>Option A</b>: Forbid program-defined <tt>std::optional&lt;T&gt;</tt> specializations
+</p>
+
+<ol>
+<li><p>Modify <sref ref="[optional.optional.general]"/> as indicated:</p>
+
+<blockquote>
+<p>
+-2- A type `X` is a <i>valid contained type</i> for `optional` [&hellip;]. If `T` is an object type, 
+`T` shall meet the <i>Cpp17Destructible</i> requirements (Table 35).
+<p/>
+<ins>-?- The behavior of a program that adds a specialization for `optional` is undefined.</ins>
+</p>
+</blockquote>
+</li>
+
+</ol>
+
+<p>
+<b>Option B</b>: Add a <tt>std::optional&lt;T&gt;</tt> constructor taking an invocable
+</p>
+
+<ol>
+<li><p>Modify <sref ref="[utility.syn]"/>, header <tt>&lt;utility&gt;</tt> synopsis, as indicated:</p>
+
+<blockquote>
+<pre>
+[&hellip;]
+namespace std {
+  [&hellip;]
+  template&lt;size_t I&gt;
+    struct in_place_index_t {
+      explicit in_place_index_t() = default;
+    };
+  template&lt;size_t I&gt; constexpr in_place_index_t&lt;I&gt; in_place_index{};
+  
+  <ins><i>// construction from arbitrary initializers</i></ins>
+  
+  <ins>struct from_continuation_t {
+    explicit from_continuation_t() = default;
+  };
+  inline constexpr from_continuation_t from_continuation{};</ins>
+  [&hellip;]
+}
+</pre>
+</blockquote>
+</li>
+
+<li><p>Modify <sref ref="[optional.optional.general]"/> as indicated:</p>
+
+<blockquote>
+<pre>
+namespace std {
+  template&lt;class T&gt;
+  class optional {
+  public:
+    [&hellip;]
+    <i>// <sref ref="[optional.ctor]"/>, constructors</i>
+    constexpr optional() noexcept;
+    constexpr optional(nullopt_t) noexcept;
+    [&hellip;]
+    template&lt;class... Args&gt;
+      constexpr explicit optional(in_place_t, Args&amp;&amp;...);
+    template&lt;class U, class... Args&gt;
+      constexpr explicit optional(in_place_t, initializer_list&lt;U&gt;, Args&amp;&amp;...);
+    <ins>template&lt;class F, class... Args&gt;
+      constexpr explicit optional(from_continuation_t, F&amp;&amp;, Args&amp;&amp;...);</ins>
+    template&lt;class U = remove_cv_t&lt;T&gt;&gt;
+      constexpr explicit(<i>see below</i>) optional(U&amp;&amp;);
+    [&hellip;]
+  };
+  [&hellip;]
+}
+</pre>
+</blockquote>
+</li>
+
+<li><p>Modify <sref ref="[optional.ctor]"/> as indicated:</p>
+
+<blockquote>
+<pre>
+template&lt;class U, class... Args&gt;
+  constexpr explicit optional(in_place_t, initializer_list&lt;U&gt; il, Args&amp;&amp;... args);
+</pre>
+<blockquote>
+<p>
+-18- <i>Constraints</i>: [&hellip;]
+<p/>
+[&hellip;]
+<p/>
+-22- <i>Remarks</i>: If `T`'s constructor selected for the initialization is a constexpr constructor, 
+this constructor is a constexpr constructor.
+</p>
+</blockquote>
+<pre>
+<ins>template&lt;class F, class... Args&gt;
+  constexpr explicit optional(from_continuation_t, F&amp;&amp; f, Args&amp;&amp;... args);</ins>
+</pre>
+<blockquote>
+<p>
+<ins>-?- <i>Mandates</i>: <tt>decltype(std::invoke(std::forward&lt;F&gt;(f), std::forward&lt;Args&gt;(args)...))</tt> is `T`.</ins>
+<p/>
+<ins>-?- <i>Effects</i>:  Direct-non-list-initializes <tt><i>val</i></tt> with 
+<tt>std::invoke(std::forward&lt;F&gt;(f), std::forward&lt;Args&gt;(args)...)</tt>.</ins>
+<p/>
+<ins>-?- <i>Postconditions</i>: `*this` contains a value.</ins>
+</p>
+</blockquote>
+</blockquote>
+</li>
+
+<li><p>Modify <sref ref="[optional.optional.ref.general]"/> as indicated:</p>
+
+<blockquote>
+<pre>
+namespace std {
+  template&lt;class T&gt;
+  class optional&lt;T&amp;&gt; {
+  public:
+    [&hellip;]
+    <i>// <sref ref="[optional.ref.ctor]"/>, constructors</i>
+    constexpr optional() noexcept = default;
+    constexpr optional(nullopt_t) noexcept : optional() {}
+    [&hellip;]
+    template&lt;class Arg&gt;
+      constexpr explicit optional(in_place_t, Arg&amp;&amp; arg);
+    <ins>template&lt;class F, class... Args&gt;
+      constexpr explicit optional(from_continuation_t, F&amp;&amp; f, Args&amp;&amp;... args);</ins>
+    template&lt;class U&gt;
+      constexpr explicit(<i>see below</i>) optional(U&amp;&amp; u) noexcept(<i>see below</i>);
+    [&hellip;]
+  };
+  [&hellip;]
+}
+</pre>
+</blockquote>
+</li>
+
+<li><p>Modify <sref ref="[optional.ref.ctor]"/> as indicated:</p>
+
+<blockquote>
+<pre>
+template&lt;class U, class Arg&gt;
+  constexpr explicit optional(in_place_t, Arg&amp;&amp; arg);
+</pre>
+<blockquote>
+<p>
+-1- <i>Constraints</i>: [&hellip;]
+<p/>
+-2- <i>Effects</i>: [&hellip;]
+<p/>
+-3- <i>Postconditions</i>: [&hellip;]
+</p>
+</blockquote>
+<pre>
+<ins>template&lt;class F, class Arg&gt;
+  constexpr explicit optional(from_continuation_t, F&amp;&amp; f, Arg&amp;&amp; arg);</ins>
+</pre>
+<blockquote>
+<p>
+<ins>-?- <i>Mandates</i>: <tt>decltype(std::invoke(std::forward&lt;F&gt;(f), std::forward&lt;Args&gt;(args)...))</tt> 
+is <tt>T&amp;</tt>.</ins>
+<p/>
+<ins>-?- <i>Effects</i>: Equivalent to: <tt><i>convert-ref-init-val</i>(std::invoke(std::forward&lt;F&gt;(f), 
+std::forward&lt;Args&gt;(args)...))</tt>.</ins>
+<p/>
+<ins>-?- <i>Postconditions</i>: `*this` contains a value.</ins>
+</p>
+</blockquote>
+</blockquote>
+</li>
+
+</ol>
+
+
+</resolution>
+
+</issue>
