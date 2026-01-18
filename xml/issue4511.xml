@@ -1,0 +1,88 @@
+<?xml version='1.0' encoding='utf-8' standalone='no'?>
+<!DOCTYPE issue SYSTEM "lwg-issue.dtd">
+
+<issue num="4511" status="New">
+<title>Inconsistency between the deduction guide of `std::mdspan` taking `(data_handle_type, mapping_type, accessor_type)` 
+and the corresponding constructor</title>
+<section><sref ref="[mdspan.mdspan.overview]"/></section>
+<submitter>Jiang An</submitter>
+<date>09 Jan 2026</date>
+<priority>99</priority>
+
+<discussion>
+<p>
+Currently, the following deduction guide of std::mdspan takes the data handle by reference:
+</p>
+<blockquote><pre>
+template&lt;class MappingType, class AccessorType&gt;
+  mdspan(const typename AccessorType::data_handle_type&amp;, const MappingType&amp;,
+         const AccessorType&amp;)
+    -&gt; mdspan&lt;typename AccessorType::element_type, typename MappingType::extents_type,
+              typename MappingType::layout_type, AccessorType&gt;;
+</pre></blockquote>
+<p>
+But the corresponding constructor takes the data handle by value:
+</p>
+<blockquote><pre>
+constexpr mdspan(data_handle_type p, const mapping_type&amp; m, const accessor_type&amp; a);
+</pre></blockquote>
+<p>
+The distinction is observable with `volatile` glvalues. E.g., in the following example, 
+CTAD fails but explicitly specifying template arguments works 
+(<a href="https://godbolt.org/z/fPKb9869M">demo</a>):
+</p>
+<blockquote><pre>
+#include &lt;cstddef&gt;
+#include &lt;mdspan&gt;
+
+int main() {
+  int a[1]{};
+  int * volatile p = a;
+  std::mdspan(
+    p,
+    std::layout_right::mapping&lt;std::extents&lt;std::size_t, 1&gt;&gt;{},
+    std::default_accessor&lt;int&gt;{}); // <span style="color:red;font-weight:bolder">error (but accidentally accepted by libc++)</span>
+  std::mdspan&lt;int, std::extents&lt;std::size_t, 1&gt;&gt;(
+    p,
+    std::layout_left::mapping&lt;std::extents&lt;std::size_t, 1&gt;&gt;{},
+    std::default_accessor&lt;int&gt;{}); // OK
+}
+</pre></blockquote>
+<p>
+Given we're generally passing data handle by value, it seems better to remove <tt>const &amp;</tt> from 
+<tt>const typename AccessorType::data_handle_type&amp;</tt> in the deduction guide, which is more 
+consistent with the constructor and accept more seemingly valid uses.
+<p/>
+Note that libc++ is accidentally doing this now by forgetting adding the <tt>&amp;</tt>, 
+see <a href="https://github.com/llvm/llvm-project/pull/175024">llvm/llvm-project#175024</a>.
+</p>
+</discussion>
+
+<resolution>
+<p>
+This wording is relative to <paper num="N5032"/>.
+</p>
+
+<ol>
+<li><p>Modify <sref ref="[mdspan.mdspan.overview]"/>, class template <tt>mdspan</tt> synopsis, as indicated:</p>
+
+<blockquote>
+<pre>
+namespace std {
+  [&hellip;]
+  template&lt;class MappingType, class AccessorType&gt;
+  mdspan(<del>const</del> typename AccessorType::data_handle_type<del>&amp;</del>, const MappingType&amp;,
+         const AccessorType&amp;)
+    -&gt; mdspan&lt;typename AccessorType::element_type, typename MappingType::extents_type,
+              typename MappingType::layout_type, AccessorType&gt;;
+}
+</pre>
+</blockquote>
+</li>
+
+</ol>
+
+
+</resolution>
+
+</issue>
