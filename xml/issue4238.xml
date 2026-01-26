@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="4238" status="New">
+<issue num="4238" status="Resolved">
 <title><tt>simd_mask&lt;complex&lt;double&gt;&gt;::operator+/-/~</tt> return a disabled `simd` specialization</title>
 <section>
 <sref ref="[simd.mask.unary]"/>
@@ -55,6 +55,7 @@ Set priority to 1 after reflector poll.
 
 
 <note>2025-10-17; related to <iref ref="4376"/>.</note>
+<note>2026-01-26; Resolved by LWG <iref ref="4376"/>. Status changed: New &rarr; Resolved.</note>
 </discussion>
 
 <resolution>
