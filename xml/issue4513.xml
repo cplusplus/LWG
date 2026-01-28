@@ -1,0 +1,132 @@
+<?xml version='1.0' encoding='utf-8' standalone='no'?>
+<!DOCTYPE issue SYSTEM "lwg-issue.dtd">
+
+<issue num="4513" status="New">
+<title><code>expected</code> copy and move assigment should be trivial</title>
+<section>
+<sref ref="[expected.object.assign]"/>
+<sref ref="[expected.void.assign]"/>
+</section>
+<submitter>Tomasz Kamiński</submitter>
+<date>28 Jan 2026</date>
+<priority>99</priority>
+
+<discussion>
+<p>
+<b>Addresses <a href="https://github.com/cplusplus/nbballot/issues/786">US 135-216</a>
+and <a href="https://github.com/cplusplus/nbballot/issues/787">US 136-217</a></b>
+</p>
+
+<p>Currently both copy and move assigment operators of <code>expected&lt;T, E&gt;</code>
+are not required to be trivial if the required operations on <code>T</code> and
+<code>E</code> are trivial. In consequence <code>expected&lt;int, std::error_code&gt;</code>
+is not required to be trivially copyable, and thus cannot be portably memcopied.</p>
+
+<p>Furthermore it make its design inconsistent with <code>optional</code> and
+<code>variant</code>.</p>
+</discussion>
+
+<resolution>
+<p>
+This wording is relative to <paper num="N5032"/>.
+</p>
+
+<ol>
+<li><p>Modify <sref ref="[expected.object.assign]"/>, as indicated:</p>
+
+<blockquote>
+<pre>
+constexpr expected&amp; operator=(const expected&amp; rhs);
+</pre>
+<blockquote>
+<p>
+-2- <i>Effects</i>: [&hellip;]
+<p/>
+-3- <i>Returns</i>; `*this`.
+<p/>
+-4- <i>Remarks</i>: This operator is defined as deleted unless:<ul>
+<li>-4.1- <tt>is_copy_assignable_v&lt;T&gt;</tt> is `true` and</li>
+<li>-4.2- <tt>is_copy_constructible_v&lt;T&gt;</tt> is `true` and</li>
+<li>-4.3- <tt>is_copy_assignable_v&lt;E&gt;</tt> is `true` and</li>
+<li>-4.4- <tt>is_copy_constructible_v&lt;E&gt;</tt> is `true` and</li>
+<li>-4.5- <tt>is_nothrow_move_constructible_v&lt;T&gt;
+          || is_nothrow_move_constructible_v&lt;E&gt;</tt> is `true`.</li>
+</ul><ins>This operator is trivial, if for `X` denoting both `T` and `E`,
+<tt>is_trivially_copy_assignable_v&lt;X&gt; &amp;&amp; is_trivially_copy_constructible_v&lt;X&gt;
+&amp;&amp; is_trivially_destructible_v&lt;X&gt;</tt> is `true`.</ins>
+</p>
+</blockquote>
+</blockquote>
+
+<blockquote>
+<pre>
+constexpr expected&amp; operator=(expected&amp;&amp; rhs);
+</pre>
+<blockquote>
+<p>
+-5- <i>Constraints</i>: [&hellip;]
+<p/>
+-6- <i>Effects</i>: [&hellip;]
+<p/>
+-7- <i>Returns</i>: `*this`.
+<p/>
+-8- <i>Remarks</i>: The exception specification is equivalent to:
+<pre>
+  is_nothrow_move_assignable_v&lt;T&gt; &amp;&amp; is_nothrow_move_constructible_v&lt;T&gt; &amp;&amp;
+  is_nothrow_move_assignable_v&lt;E&gt; &amp;&amp; is_nothrow_move_constructible_v&lt;E&gt;
+</pre>
+<ins>This operator is trivial, if for `X` denoting both `T` and `E`,
+<tt>is_trivially_move_assignable_v&lt;X&gt; &amp;&amp; is_trivially_move_constructible_v&lt;X&gt;
+ &amp;&amp; is_destructible_v&lt;X&gt;</tt> is `true`.</ins>
+</p>
+</blockquote>
+</blockquote>
+</li>
+
+<li><p>Modify <sref ref="[expected.void.assign]"/>, as indicated:</p>
+
+<blockquote>
+<pre>
+constexpr expected&amp; operator=(const expected&amp; rhs);
+</pre>
+<blockquote>
+<p>
+-2- <i>Effects</i>: [&hellip;]
+<p/>
+-3- <i>Returns</i>; `*this`.
+<p/>
+-4- <i>Remarks</i>: This operator is defined as deleted unless <tt>is_copy_assignable_v&lt;E&gt;</tt>
+is `true` and  <tt>is_copy_constructible_v&lt;E&gt;</tt> is `true`.
+<ins>This operator is trivial, if <tt>is_trivially_copy_assignable_v&lt;E&gt; &amp;&amp;
+is_trivially_copy_constructible_v&lt;E&gt;  &amp;&amp; is_trivially_destructible_v&lt;E&gt;</tt>
+is `true`.</ins>
+</p>
+</blockquote>
+</blockquote>
+
+<blockquote>
+<pre>
+constexpr expected&amp; operator=(expected&amp;&amp; rhs);
+</pre>
+<blockquote>
+<p>
+-5- <i>Constraints</i>: [&hellip;]
+<p/>
+-6- <i>Effects</i>: [&hellip;]
+<p/>
+-7- <i>Returns</i>: `*this`.
+<p/>
+-8- <i>Remarks</i>: The exception specification is equivalent to
+<tt>is_nothrow_move_assignable_v&lt;E&gt; &amp;&amp; is_nothrow_move_constructible_v&lt;E&gt;</tt>.
+<ins>This operator is trivial, if <tt>is_trivially_move_assignable_v&lt;E&gt; &amp;&amp;
+is_trivially_move_constructible_v&lt;E&gt;  &amp;&amp; is_trivially_destructible_v&lt;E&gt;</tt> is `true`.</ins>
+</p>
+</blockquote>
+</blockquote>
+</li>
+
+</ol>
+
+</resolution>
+
+</issue>
