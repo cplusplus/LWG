@@ -20,9 +20,9 @@ and <a href="https://github.com/cplusplus/nbballot/issues/787">US 136-217</a></b
 <p>Currently both copy and move assigment operators of <code>expected&lt;T, E&gt;</code>
 are not required to be trivial if the required operations on <code>T</code> and
 <code>E</code> are trivial. In consequence <code>excepted&lt;int, std::error_code&gt;</code>
-are not required to be trivially copyable, and thus cannot be portably memcopied.</p>
+is not required to be trivially copyable, and thus cannot be portably memcopied.</p>
 
-<p>Furthermore it make it's design inconsistent with <code>optional</code> and
+<p>Furthermore it make its design inconsistent with <code>optional</code> and
 <code>variant</code>.</p>
 </discussion>
 
@@ -119,7 +119,7 @@ constexpr expected&amp; operator=(expected&amp;&amp; rhs);
 -8- <i>Remarks</i>: The exception specification is equivalent to
 <tt>is_nothrow_move_assignable_v&lt;E&gt; &amp;&amp; is_nothrow_move_constructible_v&lt;E&gt;</tt>.
 <ins>This operator is trivial, if <tt>is_trivially_move_assignable_v&lt;E&gt; &amp;&amp;
-is_trivially_move_constructible_v&lt;E&gt;  &amp;&amp; is_destructible_v&lt;E&gt;</tt> is `true`.</ins>
+is_trivially_move_constructible_v&lt;E&gt;  &amp;&amp; is_trivially_destructible_v&lt;E&gt;</tt> is `true`.</ins>
 </p>
 </blockquote>
 </blockquote>
