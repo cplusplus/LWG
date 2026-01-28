@@ -1,0 +1,65 @@
+<?xml version='1.0' encoding='utf-8' standalone='no'?>
+<!DOCTYPE issue SYSTEM "lwg-issue.dtd">
+
+<issue num="4514" status="New">
+<title>`meta::exception::what()` should be `consteval`</title>
+<section><sref ref="[meta.reflection.exception]"/></section>
+<submitter>Jonathan Wakely</submitter>
+<date>28 Jan 2026</date>
+<priority>99</priority>
+
+<discussion>
+<p>
+As mentioned in LWG <iref ref="4494"/>, `meta::exception::what()` can be
+(and should be) marked `consteval` now that
+<a href="https://cplusplus.github.io/CWG/issues/3117.html">CWG 3117</a>
+has been approved.
+</p>
+</discussion>
+
+<resolution>
+<p>
+This wording is relative to <paper num="N5032"/>.
+</p>
+
+<ol>
+<li><p>Modify <sref ref="[meta.reflection.exception]"/> as indicated:</p>
+
+<blockquote>
+<pre>
+namespace std::meta {
+  class exception : public std::exception {
+  private:
+    optional&lt;string&gt; <i>what_</i>;  <i>// exposition only</i>
+    u8string <i>u8what_</i>;        <i>// exposition only</i>
+    info <i>from_</i>;              <i>// exposition only</i>
+    source_location <i>where_</i>;  <i>// exposition only</i>
+  public:
+    consteval exception(u8string_view what, info from,
+                        source_location where = source_location::current()) noexcept;
+
+    consteval exception(string_view what, info from,
+                        source_location where = source_location::current()) noexcept;
+
+    exception(const exception&amp;) = default;
+    exception(exception&amp;&amp;) = default;
+
+    exception&amp; operator=(const exception&amp;) = default;
+    exception&amp; operator=(exception&amp;&amp;) = default;
+
+    <del>constexpr</del> <ins>consteval</ins> const char* what() const noexcept override;
+    consteval u8string_view u8what() const noexcept;
+    consteval info from() const noexcept;
+    consteval source_location where() const noexcept;
+  };
+}
+</pre>
+</blockquote>
+</li>
+
+</ol>
+
+
+</resolution>
+
+</issue>
