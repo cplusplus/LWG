@@ -51,7 +51,7 @@ constexpr expected&amp; operator=(const expected&amp; rhs);
 <li>-4.4- <tt>is_copy_constructible_v&lt;E&gt;</tt> is `true` and</li>
 <li>-4.5- <tt>is_nothrow_move_constructible_v&lt;T&gt;
           || is_nothrow_move_constructible_v&lt;E&gt;</tt> is `true`.</li>
-</ul><ins>This operator is trivial, if for `X` denoting each of `T` and `E`,
+</ul><ins>This operator is trivial, if for `X` denoting both `T` and `E`,
 <tt>is_trivially_copy_assignable_v&lt;X&gt; &amp;&amp; is_trivially_copy_constructible_v&lt;X&gt;
 &amp;&amp; is_trivially_destructible_v&lt;X&gt;</tt> is `true`.</ins>
 </p>
@@ -75,7 +75,7 @@ constexpr expected&amp; operator=(expected&amp;&amp; rhs);
   is_nothrow_move_assignable_v&lt;T&gt; &amp;&amp; is_nothrow_move_constructible_v&lt;T&gt; &amp;&amp;
   is_nothrow_move_assignable_v&lt;E&gt; &amp;&amp; is_nothrow_move_constructible_v&lt;E&gt;
 </pre>
-<ins>This operator is trivial, if for `X` denoting each of `T` and `E`,
+<ins>This operator is trivial, if for `X` denoting both `T` and `E`,
 <tt>is_trivially_move_assignable_v&lt;X&gt; &amp;&amp; is_trivially_move_constructible_v&lt;X&gt;
  &amp;&amp; is_destructible_v&lt;X&gt;</tt> is `true`.</ins>
 </p>
