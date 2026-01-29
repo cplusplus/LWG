@@ -10,6 +10,11 @@
 
 <discussion>
 <p>
+<b>Addresses <a href="https://github.com/cplusplus/nbballot/issues/786">US 135-216</a>
+and <a href="https://github.com/cplusplus/nbballot/issues/787">US 136-217</a></b>
+</p>
+
+<p>
 Currently, only copy and move constructors of <tt>std::expected</tt> are required to propagate triviality, 
 while copy and move assignment operators are not. Given that the assignment operators of <tt>std::optional</tt> 
 and <tt>std::variant</tt> are already required to propagate triviality, it seems to me that we should also 
@@ -24,6 +29,8 @@ And it may be desired to make the triviality improvement portable.
 Set priority to 2 after reflector poll in January 2024.
 A few votes for Tentatively Ready, others thought it needed more consideration.
 </p>
+
+<note>2026-01-29; added links to C++26 NB comments.</note>
 
 </discussion>
 

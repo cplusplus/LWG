@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="4195" status="New">
+<issue num="4195" status="Dup">
 <title><tt>expected&lt;int, int&gt;</tt> isn't specified to be trivially assignable</title>
 <section><sref ref="[expected.object.assign]"/><sref ref="[expected.void.assign]"/></section>
 <submitter>Barry Revzin</submitter>
@@ -9,6 +9,8 @@
 <priority>2</priority>
 
 <discussion>
+<duplicate><iref ref="4026"/></duplicate>
+
 <p>
 Currently, we specify that the copy constructor, move constructor, and destructor <tt>expected&lt;int, int&gt;</tt> 
 are trivial operations. But we do not specify that the copy assignment operator or move assignment operator are. 
@@ -32,6 +34,7 @@ Set priority to 2 after reflector poll.
 "This is an ABI break for something that shipped in C++23, NAD."
 </p>
 
+<note>2026-01-29 Duplicate of LWG <iref ref="4026"/>. Status changed: New &rarr; Dup.</note>
 </discussion>
 
 <resolution>
