@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="4492" status="New">
+<issue num="4492" status="Ready">
 <title>`std::generate` and `std::ranges::generate` wording is unclear for parallel algorithms</title>
 <section><sref ref="[alg.generate]"/></section>
 <submitter>Ruslan Arutyunyan</submitter>
@@ -35,6 +35,8 @@ out the proper fix.
 <p>
 Set priority to 2 after reflector poll.
 </p>
+
+<note>2026-01-30; LWG telecon. Status &rarr; Ready.</note>
 </discussion>
 
 <resolution>
