@@ -18,7 +18,7 @@ sed -i -e '/<\/discussion>/i\
 <superseded>' -e '/<\/discussion>/,/^<resolution>/d' -e '/^<\/resolution>/i\
 </superseded>\
 \
-<note>'$date'; <<AUTHOR>> provides improved wording</note>\
+<note>'$date'; <<AUTHOR>> provides new wording</note>\
 \
 </discussion>\
 \
