@@ -55,9 +55,7 @@ Set priority to 3 after reflector poll.
 <p>
 "Would `counted_iterator(ranges::begin(r), ranges::distance(r))` and `default_sentinel` be better?"
 </p>
-</discussion>
-
-<resolution>
+<superseded>
 <p>
 This wording is relative to <paper num="N5032"/>.
 </p>
@@ -99,6 +97,51 @@ meets the specified complexity requirements then</ins>
 <ins>(14.2.2) &mdash; Otherwise, `std::ranges::end(s)`.</ins>
 </p></li>
 </ul>
+</li>
+</ul>
+</blockquote>
+</li>
+</ol>
+
+</superseded>
+
+<note>2026-01-30; Jonathan provides new wording</note>
+<note>2026-01-30; LWG telecon. Status &rarr; Ready.</note>
+
+</discussion>
+
+<resolution>
+<p>
+This wording is relative to <paper num="N5032"/>.
+</p>
+
+<ol>
+<li><p>Modify <sref ref="[algorithms.requirements]"/> as indicated:</p>
+
+<blockquote>
+<p>
+[&hellip;]
+<p/>
+-14- Overloads of algorithms that take `range` arguments (<sref ref="[range.range]"/>) behave as if 
+they are implemented by dispatching to the overload in namespace `ranges` that takes separate iterator 
+and sentinel arguments, where for each range argument `r`
+</p>
+<ul style="list-style-type: none">
+<li><p>
+(14.1) &mdash; a corresponding iterator argument is initialized with `ranges::begin(r)` and
+</p></li>
+<li><p>
+(14.2) &mdash; a corresponding sentinel argument is initialized with
+`ranges::end(r)`, or
+<del>
+`ranges::next(ranges::begin(r), ranges::end(r))`
+if the type of `r` models `forward_range` and computing `ranges::next` meets
+the specified complexity requirements.
+</del>
+<ins>
+`ranges::begin(r) + N` where `N` is equal to `ranges::distance(r)`.
+</ins>
+</p>
 </li>
 </ul>
 </blockquote>
