@@ -36,9 +36,7 @@ Set priority to 2 after reflector poll.
 The <i>Mandates</i> of <tt>Alignment &gt;= alignof(T)</tt> was put into
 question, as being too restrictive for general purpose free function.
 </p>
-</discussion>
-
-<resolution>
+<superseded>
 <p>
 This wording is relative to <paper num="N5008"/>.
 </p>
@@ -73,6 +71,45 @@ template&lt;size_t Alignment, class T&gt;
 </li>
 
 </ol>
+</superseded>
+
+<note>2026-01-30; Jonathan provides new wording</note>
+<note>2026-01-30; LWG telecon. Status &rarr; Ready.</note>
+
+</discussion>
+
+<resolution>
+<p>
+This wording is relative to <paper num="N5032"/>.
+</p>
+
+<ol>
+
+<li><p>Modify <sref ref="[ptr.align]"/> as indicated:</p>
+
+<blockquote>
+<pre>
+template&lt;size_t Alignment, class T&gt;
+  bool is_sufficiently_aligned(T* ptr);
+</pre>
+<blockquote>
+<p>
+<ins>-?- <i>Mandates</i>: `Alignment` is a power of two.</ins>
+</p>
+<p>
+-10- <i>Preconditions</i>: `p` points to an object `X` of a type similar 
+(<sref ref="[conv.qual]"/>) to `T`.
+<p/>
+-11- <i>Returns</i>: `true` if `X` has alignment at least `Alignment`, otherwise `false`.
+<p/>
+-12- <i>Throws</i>: Nothing.
+</p>
+</blockquote>
+</blockquote>
+</li>
+
+</ol>
+
 </resolution>
 
 </issue>
