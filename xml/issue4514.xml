@@ -1,0 +1,150 @@
+<?xml version='1.0' encoding='utf-8' standalone='no'?>
+<!DOCTYPE issue SYSTEM "lwg-issue.dtd">
+
+<issue num="4514" status="New">
+<title>Missing absolute value of `init` in `vector_two_norm` and `matrix_frob_norm`</title>
+<section><sref ref="[linalg.algs.blas1.nrm2]"/><sref ref="[linalg.algs.blas1.matfrobnorm]"/></section>
+<submitter>Mark Hoemmen</submitter>
+<date>28 Jan 2026</date>
+<priority>99</priority>
+
+<discussion>
+<p>
+<a href="https://github.com/kokkos/stdBLAS/pull/321#discussion_r2737915864">This pull request discussion</a> 
+points out two issues with the current wording of `vector_two_norm`:
+</p>
+<ol>
+<li><p>
+If `Scalar` is the complex number `1 + i`, then the current wording
+would make `vector_two_norm` return <tt>sqrt(2i + <i>nonnegative_real_number</i>)</tt>. 
+This would have nonzero imaginary part.
+</p></li>
+<li><p>
+If `Scalar` is the real number `-1.0`, then the current wording would
+make `vector_two_norm` return <tt>sqrt(-1.0 + <i>nonnegative_real_number</i>)</tt>.
+If <tt><i>nonnegative_real_number</i></tt> is less than `1`, then the result would be
+imaginary.
+</p></li>
+</ol>
+<p>
+The analogous issues would also apply to `matrix_frob_norm`.
+<p/>
+It's acceptable for the return type `Scalar` to be `complex`.
+However, the point of letting `init` be nonzero is to support
+computing the 2-norm of a vector (or the Frobenius norm of a matrix)
+in multiple steps. The value of `init` should thus always represent a
+valid 2-norm (or Frobenius norm) result.
+<p/>
+There are two ways to fix this:
+</p>
+<ol>
+<li><p>
+Impose a precondition on `init`, that it have nonnegative real part
+and zero imaginary part.
+</p></li>
+<li><p>
+Change the <i>Returns</i> element to take the absolute value of `init`.
+(The <sref ref="[linalg]"/> clause generally uses "absolute value" to mean the
+magnitude of a complex number, or the absolute value of a non-complex
+number.)
+</p></li>
+</ol>
+<p>
+We offer (2) as the Proposed Fix, as it is consistent with the
+approach we took for fixing LWG <iref ref="4136"/>.
+</p>
+</discussion>
+
+<resolution>
+<p>
+This wording is relative to <paper num="N5032"/>.
+</p>
+
+<ol>
+<li><p>Modify <sref ref="[linalg.algs.blas1.nrm2]"/> as indicated:</p>
+
+<blockquote class="note">
+<p>
+[<i>Drafting note</i>: As a drive-by fix the missing closing parenthesis of the
+<tt>decltype</tt> form has been added.]
+</p>
+</blockquote>
+
+<blockquote>
+<pre>
+template&lt;<i>in-vector</i> InVec, <i>scalar</i> Scalar&gt;
+  Scalar vector_two_norm(InVec v, Scalar init);
+template&lt;class ExecutionPolicy, <i>in-vector</i> InVec, <i>scalar</i> Scalar&gt;
+  Scalar vector_two_norm(ExecutionPolicy&amp;&amp; exec, InVec v, Scalar init);
+</pre>
+<blockquote>
+<p>
+-1- [<i>Note 1</i>: These functions correspond to the BLAS function <tt>xNRM2</tt>[17]. &mdash; <i>end note</i>]
+<p/>
+-2- <i>Mandates</i>: `InVec::value_type` and `Scalar` are either a floating-point type, or a specialization of
+`complex`. Let `a` be <tt><i>abs-if-needed</i>(declval&lt;typename InVec::value_type&gt;())</tt> 
+<ins>and let `init_abs` be <tt><i>abs-if-needed</i>(init)</tt></ins>. Then, 
+<tt>decltype(init<ins>_abs * init_abs</ins> + a * a<ins>)</ins></tt> is convertible to `Scalar`.
+<p/>
+-3- <i>Returns</i>: The square root of the sum <del>of the square of `init` and the squares of the 
+absolute values of the elements of `v`.</del><ins>whose terms are the following:</ins>
+</p>
+<ul style="list-style-type: none">
+<li><p><ins>(3.1) &mdash; the square of the absolute value of `init`, and</ins></p></li>
+<li><p><ins>(3.2) &mdash; the squares of the absolute values of the elements of `v`.</ins></p></li>
+</ul>
+<p>
+[<i>Note 2</i>: For `init` equal to zero, this is the Euclidean norm (also called 2-norm) of the vector 
+`v`. &mdash; <i>end note</i>]
+<p/>
+-4- <i>Remarks</i>: If `Scalar` has higher precision than `InVec::value_type`, then intermediate terms in the
+sum use `Scalar`'s precision or greater.
+</p>
+</blockquote>
+</blockquote>
+</li>
+
+<li><p>Modify <sref ref="[linalg.algs.blas1.matfrobnorm]"/> as indicated:</p>
+
+<blockquote class="note">
+<p>
+[<i>Drafting note</i>: As a drive-by fix one spurious `InVec` has been changed to `InMat`]
+</p>
+</blockquote>
+
+<blockquote>
+<pre>
+template&lt;<i>in-matrix</i> InMat, <i>scalar</i> Scalar&gt;
+  Scalar matrix_frob_norm(InMat A, Scalar init);
+template&lt;class ExecutionPolicy, <i>in-matrix</i> InMat, <i>scalar</i> Scalar&gt;
+  Scalar matrix_frob_norm(ExecutionPolicy&amp;&amp; exec, InMat A, Scalar init);
+</pre>
+<blockquote>
+<p>
+-2- <i>Mandates</i>: <tt><del>InVec</del><ins>InMat</ins>::value_type</tt> and `Scalar` 
+are either a floating-point type, or a specialization of `complex`. 
+Let `a` be <tt><i>abs-if-needed</i>(declval&lt;typename InMat::value_type&gt;())</tt> 
+<ins>and let `init_abs` be <tt><i>abs-if-needed</i>(init)</tt></ins>. Then, 
+<tt>decltype(init<ins>_abs * init_abs</ins> + a * a)</tt> is convertible to `Scalar`.
+<p/>
+-3- <i>Returns</i>: The square root of the sum <del>of the squares of `init` and the absolute values 
+of the elements of `A`.</del><ins>whose terms are the following:</ins>
+</p>
+<ul style="list-style-type: none">
+<li><p><ins>(3.1) &mdash; the square of the absolute value of `init`, and</ins></p></li>
+<li><p><ins>(3.2) &mdash; the squares of the absolute values of the elements of `A`.</ins></p></li>
+</ul>
+<p>
+[<i>Note 2</i>: For `init` equal to zero, this is the Frobenius norm of the matrix `A`. &mdash; <i>end note</i>]
+<p/>
+-4- <i>Remarks</i>: If `Scalar` has higher precision than `InMat::value_type`, then intermediate terms in the
+sum use `Scalar`'s precision or greater.
+</p>
+</blockquote>
+</blockquote>
+</li>
+
+</ol>
+</resolution>
+
+</issue>
