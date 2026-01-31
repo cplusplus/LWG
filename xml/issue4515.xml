@@ -1,0 +1,91 @@
+<?xml version='1.0' encoding='utf-8' standalone='no'?>
+<!DOCTYPE issue SYSTEM "lwg-issue.dtd">
+
+<issue num="4515" status="New">
+<title>`format`: `a` and `A` should insert the `0x` or `0X` prefix</title>
+<section><sref ref="[format.string.std]"/></section>
+<submitter>Tianying Chen</submitter>
+<date>30 Jan 2026</date>
+<priority>99</priority>
+
+<discussion>
+<p>
+In `format`, the floating-point presentation types `a` and `A` are
+specified in terms of `to_chars` in `chars_format::hex` format.
+However, `to_chars` explicitly specifies that there's no leading `0x`
+in the result if `fmt` is `chars_format::hex`. This causes
+inconsistency in the presence of `0x` or `0X` prefix between
+`format`/`print` and `printf`/`iostream`:
+</p>
+<blockquote><pre>
+std::println("{:a} {:A}", std::numbers::e, -std::numbers::phi);
+std::printf("%a %A\n", std::numbers::e, -std::numbers::phi);
+</pre></blockquote>
+<p>
+may produce
+</p>
+<blockquote><pre>
+1.5bf0a8b145769p+1 -1.9E3779B97F4A8P+0
+0x1.5bf0a8b145769p+1 -0X1.9E3779B97F4A8P+0
+</pre></blockquote>
+<p>
+We should fix the behavior of `a` and `A` in `format` to include the
+`0x` and `0X` prefix respectively.
+<p/>
+Victor Zverovich <a href="https://github.com/fmtlib/fmt/issues/4657#issuecomment-3819671052">noted</a>
+that `format` intended to print hexfloat with `0x` like other text formatting facilities, 
+and that an unintentional change of behavior was introduced in 
+<paper num="P0645R4"/> when switching to `to_chars`-based wording.
+</p>
+</discussion>
+
+<resolution>
+<p>
+This wording is relative to <paper num="N5032"/>.
+</p>
+
+<ol>
+<li><p>Modify Table [tab:format.type.float] in <sref ref="[format.string.std]"/> as indicated:</p>
+
+<blockquote>
+<table border="1">
+<caption>Table 100 &mdash; Meaning of <i>type</i> options for floating-point types [tab:format.type.float]</caption>
+<tr style="text-align:center">
+<th>Type</th>
+<th>Meaning</th>
+</tr>
+<tr>
+<td><tt>a</tt></td>
+<td>If <i>precision</i> is specified, equivalent to
+<blockquote><pre>
+to_chars(first, last, value, chars_format::hex, precision)
+</pre></blockquote>
+where <tt>precision</tt> is the specified formatting precision; equivalent to
+<blockquote><pre>
+to_chars(first, last, value, chars_format::hex)
+</pre></blockquote>
+otherwise. <ins>In either case, when <tt>value</tt> is finite, the base prefix<br/> 
+<tt>0x</tt> is inserted after the sign character (possibly space) if there is one,<br/> 
+or before the output of <tt>to_chars</tt> otherwise.</ins>
+</td>
+</tr>
+<tr>
+<td><tt>A</tt></td>
+<td>The same as <tt>a</tt>, except that it uses uppercase letters for digits above 9 and <tt>P</tt> to indicate<br/>
+the exponent<ins>, and that the base prefix is <tt>0X</tt></ins>.</td>
+</tr>
+<tr>
+<td colspan="2" align="center">
+<tt>[&hellip;]</tt>
+</td>
+</tr>
+
+</table>
+
+</blockquote>
+</li>
+
+</ol>
+</resolution>
+
+</issue>
