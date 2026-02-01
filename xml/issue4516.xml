@@ -1,0 +1,49 @@
+<?xml version='1.0' encoding='utf-8' standalone='no'?>
+<!DOCTYPE issue SYSTEM "lwg-issue.dtd">
+
+<issue num="4516" status="New">
+<title>`ranges` namespace is used inconsistently in [algorithms]</title>
+<section><sref ref="[algorithms]"/></section>
+<submitter>Ruslan Arutyunyan</submitter>
+<date>12 Dec 2025</date>
+<priority>99</priority>
+
+<discussion>
+<p>
+`ranges` namespace is used inconsistently in <sref ref="[algorithms]"/>. One example is:
+</p>
+<blockquote><pre>
+template&lt;random_access_range R, class Comp = ranges::less, class Proj = identity&gt;
+  requires sortable&lt;iterator_t&lt;R&gt;, Comp, Proj&gt;
+  constexpr borrowed_iterator_t&lt;R&gt;
+    ranges::push_heap(R&amp;&amp; r, Comp comp = {}, Proj proj = {});
+</pre></blockquote>
+<p>
+where we can see `ranges::` before `push_heap` name itself, also before `less` but not before 
+`random_access_range`. It's all over the place. The same is with `sort`:
+</p>
+<blockquote><pre>
+template&lt;random_access_range R, class Comp = ranges::less, class Proj = identity&gt;
+  requires sortable&lt;iterator_t&lt;R&gt;, Comp, Proj&gt;
+  constexpr borrowed_iterator_t&lt;R&gt;
+    ranges::sort(R&amp;&amp; r, Comp comp = {}, Proj proj = {});
+</pre></blockquote>
+<p>
+Another example is `for_each` where we don't have `ranges` namespace before `borrowed_iterator_t`:
+</p>
+<blockquote><pre>
+template&lt;input_range R, class Proj = identity,
+         indirectly_unary_invocable&lt;projected&lt;iterator_t&lt;R&gt;, Proj&gt;&gt; Fun&gt;
+  constexpr ranges::for_each_result&lt;borrowed_iterator_t&lt;R&gt;, Fun&gt;
+    ranges::for_each(R&amp;&amp; r, Fun f, Proj proj = {});
+</pre></blockquote>
+<p>
+There is no clear resolution for that, but during an LWG session is was decided to create an LWG
+issue for this.
+</p>
+</discussion>
+
+<resolution>
+</resolution>
+
+</issue>
