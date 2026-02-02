@@ -106,6 +106,16 @@ meets the specified complexity requirements then</ins>
 </superseded>
 
 <note>2026-01-30; Jonathan provides new wording</note>
+<p>
+We can just say that the value is either the end iterator, or begin+N,
+without saying when or how the implementation obtains begin+N.
+It might use `ranges::next(ranges::begin(r), std::ranges::end(r))` or
+`ranges::next(ranges::begin(r), ranges::distance(r))` or something else,
+only the value matters not how it's obtained.
+Paragraph 11 in the same subclause defines what begin+N means if the
+iterator is not a random access iterator.
+</p>
+
 <note>2026-01-30; LWG telecon. Status &rarr; Open.</note>
 
 </discussion>
