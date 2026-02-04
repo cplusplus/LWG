@@ -54,6 +54,15 @@ namespace std::meta {
   };
 }
 </pre>
+<p>&hellip;</p>
+<pre>
+<del>constexpr</del> <ins>consteval</ins> const char* what() const noexcept override;
+</pre>
+<blockquote>
+<p> -5- <i>Constant when</i>:
+<code><i>what_</i>.has_value()</code> is `true`.
+</p>
+</blockquote>
 </blockquote>
 </li>
 
