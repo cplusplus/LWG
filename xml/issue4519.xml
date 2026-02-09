@@ -1,0 +1,75 @@
+<?xml version='1.0' encoding='utf-8' standalone='no'?>
+<!DOCTYPE issue SYSTEM "lwg-issue.dtd">
+
+<issue num="4519" status="New">
+<title>No formal rule associates the total order of a mutex object with the rule for modification order</title>
+<section><sref ref="[thread.mutex.requirements.mutex.general]"/></section>
+<submitter>jim x</submitter>
+<date>05 Feb 2026</date>
+<priority>99</priority>
+
+<discussion>
+<p>
+<sref ref="[thread.mutex.requirements.mutex.general]"/> p4 says (emphasis mine):
+</p>
+<blockquote>
+<p>
+For purposes of determining the existence of a data race, these behave as <b>atomic operations</b> 
+(<sref ref="[intro.multithread]"/>). The lock and unlock operations on a single 
+mutex appears to occur in <b>a single total order</b>.
+</p>
+</blockquote>
+<p>
+The second note in <sref ref="[thread.mutex.requirements.mutex.general]"/> p4
+</p>
+<blockquote><p>
+[<i>Note 2</i>: This can be viewed as the modification order of the mutex. &mdash; <i>end note</i>]
+</p></blockquote>
+<p>
+wants to inform the reader to interpret the single total order as a modification order. The review in 
+LWG <iref ref="4475"/> says:
+</p>
+<blockquote><p>
+For atomic objects, the modification order is already a single total order, `seq_cst` or not. This isn't a useful change.
+</p></blockquote>
+<p>
+This implies that we want the single total order of a mutex object to be considered as the modification 
+order of an atomic object for defining the order of the single total order by existing rules (especially, 
+<sref ref="[intro.races]"/> p11-p14).
+<p/>
+However, the wording in <sref ref="[thread.mutex.requirements.mutex.general]"/> p1 (emphasis mine)
+</p>
+<blockquote><p>
+In this description, `m` denotes <b>an object of a mutex type</b>.
+</p></blockquote>
+<p>
+strongly implies that there is a difference between atomic objects and mutex objects. 
+Except for the note, there is no formal wording to state that `lock()` and `unlock()` operations are 
+modifications to the mutex object as if they were modifications to an atomic object for the purpose 
+of determining the total order, that is, the rules defined in <sref ref="[intro.races]"/> that 
+applies to an atomic object can also apply to an mutex object.
+</p>
+</discussion>
+
+<resolution>
+<p>
+This wording is relative to <paper num="N5032"/>.
+</p>
+
+<ol>
+<li><p>Modify <sref ref="[thread.mutex.requirements.mutex.general]"/> as indicated:</p>
+
+<blockquote>
+<p>
+-4- The implementation provides lock and unlock operations, as described below. For purposes of determining
+the existence of a data race, these behave as atomic operations (<sref ref="[intro.multithread]"/>) 
+<ins>as if they were modifications to an atomic object</ins>. The lock and unlock operations on a single mutex 
+appears to occur in a single total order<ins>, this can be viewed as the modification order of the atomic object</ins>.
+</p>
+</blockquote>
+</li>
+
+</ol>
+</resolution>
+
+</issue>
