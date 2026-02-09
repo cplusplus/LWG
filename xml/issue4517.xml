@@ -1,0 +1,101 @@
+<?xml version='1.0' encoding='utf-8' standalone='no'?>
+<!DOCTYPE issue SYSTEM "lwg-issue.dtd">
+
+<issue num="4517" status="New">
+<title>`data_member_spec` should throw for <i>cv</i>-qualified unnamed bit-fields</title>
+<section><sref ref="[meta.reflection.define.aggregate]"/></section>
+<submitter>Marek Polacek</submitter>
+<date>05 Feb 2026</date>
+<priority>99</priority>
+
+<discussion>
+<p>
+<a href="https://cplusplus.github.io/CWG/issues/cwg_defects.html#2229">DR 2229</a> 
+changed <sref ref="[class.bit]"/> p2 to say: 
+</p>
+<blockquote style="border-left: 3px solid #ccc;padding-left: 15px;">
+<p>
+An unnamed bit-field shall not be declared with a <i>cv</i>-qualified type.
+</p>
+</blockquote>
+<p>
+It follows that `define_aggregate` should have the same limitation, and thus in:
+</p>
+<blockquote><pre>
+#include &lt;meta&gt;
+
+constexpr auto d1 = std::meta::data_member_spec(^^const int, { .bit_width = 1 });
+constexpr auto d2 = std::meta::data_member_spec(^^volatile int, { .bit_width = 1 });
+constexpr auto d3 = std::meta::data_member_spec(^^const volatile int, { .bit_width = 1 });
+</pre></blockquote>
+<p>
+all three `data_member_spec` should throw.
+</p>
+</discussion>
+
+<resolution>
+<p>
+This wording is relative to <paper num="N5032"/>.
+</p>
+
+<ol>
+<li><p>Modify <sref ref="[meta.reflection.define.aggregate]"/> as indicated:</p>
+
+<blockquote>
+<pre>
+consteval info data_member_spec(info type, data_member_options options);
+</pre>
+<blockquote>
+<p>
+-4- <i>Returns</i>: [&hellip;]
+<p/>
+-5- <i>Throws</i>: `meta::exception` unless the following conditions are met:
+</p>
+<ul style="list-style-type: none">
+<li><p>
+(5.1) &mdash; `dealias(type)` represents either an object type or a reference type;
+</p></li>
+<li><p>
+(5.2) &mdash; if `options.name` contains a value, then: [&hellip;]
+</p></li>
+<li><p>
+(5.3) &mdash; if `options.name` does not contain a value, then `options.bit_width` contains a value;
+</p></li>
+<li><p>
+(5.4) &mdash; if `options.bit_width` contains a value <tt><i>V</i></tt>, then
+</p>
+<ul style="list-style-type: none">
+<li><p>
+(5.4.1) &mdash; `is_integral_type(type) || is_enum_type(type)` is `true`,
+</p></li>
+<li><p>
+(5.4.2) &mdash; `options.alignment` does not contain a value,
+</p></li>
+<li><p>
+(5.4.3) &mdash; `options.no_unique_address` is `false`,
+</p></li>
+<li><p>
+(5.4.4) &mdash; <tt><i>V</i></tt> is not negative, and
+</p></li>
+<li><p>
+(5.4.5) &mdash; if <tt><i>V</i></tt> equals `0`, then `options.name` does not contain a value; and
+</p></li>
+<li><p>
+<ins>(5.4.?) &mdash; if `options.name` does not contain a value, then 
+`is_const(type) || is_volatile(type)` is `false`; and</ins>
+</p></li>
+</ul>
+</li>
+<li><p>
+(5.5) &mdash; if `options.alignment` contains a value, it is an alignment value (<sref ref="[basic.align]"/>) 
+not less than `alignment_of(type)`.
+</p></li>
+</ul>
+</blockquote>
+</blockquote>
+</li>
+
+</ol>
+</resolution>
+
+</issue>
