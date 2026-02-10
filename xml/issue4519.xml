@@ -48,6 +48,35 @@ Except for the note, there is no formal wording to state that `lock()` and `unlo
 modifications to the mutex object as if they were modifications to an atomic object for the purpose 
 of determining the total order, that is, the rules defined in <sref ref="[intro.races]"/> that 
 applies to an atomic object can also apply to an mutex object.
+<p/>
+For example:
+</p>
+<blockquote><pre>
+#include &lt;mutex&gt;
+
+std::mutex m;
+
+int main(){
+  m.lock(); // #1
+  m.unlock(); // #2
+}
+</pre></blockquote>
+<p>
+The current formal wording only says `m` has a single total order. There is no formal wording 
+that would associate the order of these operations in the total order of `m` with happens-before. 
+We do want write-write coherence to apply to the total order of a mutex object. However, 
+<sref ref="[intro.races]"/> p11 (emphasis mine),
+</p>
+<blockquote><p>
+If an operation <tt><i>A</i></tt> that modifies <b>an atomic object <tt><i>M</i></tt></b> happens before 
+an operation <tt><i>B</i></tt> that modifies <tt><i>M</i></tt>, then <tt><i>A</i></tt> is earlier 
+than <tt><i>B</i></tt> in the modification order of <tt><i>M</i></tt>.
+</p></blockquote>
+<p>
+only applies to <b>an atomic object</b>, as shown in the emphasized text. The definition of total order 
+only says the order can be either <tt>#1 &lt; #2</tt> or <tt>#2 &lt; #1</tt>, either one of which is 
+valid. Presumably, the intended meaning should be that the total order of the mutex object `m` in this 
+program is <tt>#1 &lt; #2</tt> according to happens-before and <sref ref="[intro.races]"/> p11. 
 </p>
 </discussion>
 
