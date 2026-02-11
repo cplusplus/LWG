@@ -91,9 +91,15 @@ This wording is relative to <paper num="N5032"/>.
 <blockquote>
 <p>
 -4- The implementation provides lock and unlock operations, as described below. For purposes of determining
-the existence of a data race, these behave as atomic operations (<sref ref="[intro.multithread]"/>) 
-<ins>as if they were modifications to an atomic object</ins>. The lock and unlock operations on a single mutex 
-appears to occur in a single total order<ins>, this can be viewed as the modification order of the atomic object</ins>.
+the existence of a data race, these behave as atomic operations (<sref ref="[intro.multithread]"/>). 
+T<ins>herefore, t</ins>he lock and unlock operations on a single mutex 
+appears to occur in a single total order <ins>as if they were modifications to a hypothetical atomic 
+object corresponding to the mutex object</ins>.
+<p/>
+[<i>Note 2</i>: This can be viewed as the modification order <del>(<sref ref="[intro.multithread]"/>)</del> of the 
+mutex. <ins>Specifically, the requirements in <sref ref="[intro.races]"/> that are imposed on the 
+modification order of an atomic object are also imposed on the total order of the mutex.</ins> &mdash; 
+<i>end note</i>]
 </p>
 </blockquote>
 </li>
