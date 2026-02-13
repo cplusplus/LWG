@@ -6,7 +6,7 @@
 <section><sref ref="[meta.reflection.exception]"/></section>
 <submitter>Jonathan Wakely</submitter>
 <date>28 Jan 2026</date>
-<priority>99</priority>
+<priority>2</priority>
 
 <discussion>
 <p>
@@ -15,6 +15,12 @@ As mentioned in LWG <iref ref="4494"/>, `meta::exception::what()` can be
 <a href="https://cplusplus.github.io/CWG/issues/3117.html">CWG 3117</a>
 has been approved.
 </p>
+
+<note>2026-02-13; Reflector poll.</note>
+<p>
+Set priority to 2 after reflector poll.
+</p>
+<p>Discussion about whether this is really necessary, or redundant.</p>
 </discussion>
 
 <resolution>
