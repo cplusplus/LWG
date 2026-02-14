@@ -1,0 +1,65 @@
+<?xml version='1.0' encoding='utf-8' standalone='no'?>
+<!DOCTYPE issue SYSTEM "lwg-issue.dtd">
+
+<issue num="4522" status="New">
+<title>Clarify that `std::format` transcodes for `std::wformat_strings`</title>
+<section><sref ref="[format.string.std]"/></section>
+<submitter>Jan Schultke</submitter>
+<date>12 Feb 2026</date>
+<priority>99</priority>
+
+<discussion>
+<p>
+The current wording in <sref ref="[format.string.std]"/> paragraph 20 suggests that 
+the expression `format(L"{}", 0)` could produce a garbage or malformed string:
+</p>
+<blockquote><p>
+[&hellip;] Formatting is done as if by calling `to_chars` as specified and copying the 
+output through the output iterator of the format context.
+</p></blockquote>
+<p>
+It is not stated that transcoding takes place, so a plausible interpretation is that the output of 
+`to_chars` is copied to the output iterator directly. If the ordinary literal encoding is, say, 
+EBCDIC and the wide literal encoding is, say, UTF-32, simply converting `char` to `wchar_t` is 
+not meaningful.
+<p/>
+During the 2026-02-11 SG16 Telecon, when reviewing <paper num="P3876R0"/>, SG16 examined this issue 
+and concluded that transcoding is intended here, affirmed by the author of <paper num="P0645R10"/> 
+Text Formatting. An LWG issue was requested.
+</p>
+</discussion>
+
+<resolution>
+<p>
+This wording is relative to <paper num="N5032"/>.
+</p>
+
+<ol>
+
+<li><p>Modify <sref ref="[format.string.std]"/> as indicated:</p>
+
+<blockquote class="note">
+<p>
+[<i>Drafting note</i>: <sref ref="[format.string.escaped]"/> paragraph 2 similarly references 
+the wide literal encoding (as the associated character encoding for `charT = wchar_t`. ]
+</p>
+</blockquote>
+
+<blockquote>
+<p>
+-20- The meaning of some non-string presentation types is defined in terms of a call to `to_chars`. 
+In such cases, let `[first, last)` be a range large enough to hold the `to_chars` output and value 
+be the formatting argument value. Formatting is done as if by calling `to_chars` as specified
+<ins>, transcoding the `to_chars` output to the wide literal encoding if `charT` is `wchar_t`,</ins> 
+and copying the output through the output iterator of the format context.
+<p/>
+[<i>Note 7</i>: Additional padding and adjustments are performed prior to copying the output through 
+the output iterator as specified by the format specifiers. &mdash; <i>end note</i>]
+</p>
+</blockquote>
+</li>
+</ol>
+
+</resolution>
+
+</issue>
