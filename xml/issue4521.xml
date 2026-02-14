@@ -86,7 +86,7 @@ written before the write associated with the read-modify-write operation</del>.
 
 <blockquote>
 <p>
--10- A<ins>n a</ins>tomic read-modify-write operations shall always read the <del>last</del> value 
+-10- A<ins>n a</ins>tomic read-modify-write operation<del>s</del> shall always read the <del>last</del> value 
 <ins>of a side effect that immediately precedes the side effect of the read-modify-write operation</ins> 
 <del>(</del>in the modification order<del>) written before the write associated with the 
 read-modify-write operation</del>.
