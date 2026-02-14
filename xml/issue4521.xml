@@ -1,0 +1,99 @@
+<?xml version='1.0' encoding='utf-8' standalone='no'?>
+<!DOCTYPE issue SYSTEM "lwg-issue.dtd">
+
+<issue num="4521" status="New">
+<title>Improve [atomics.order] p10 to have a consistent way with [intro.races]</title>
+<section><sref ref="[atomics.order]"/></section>
+<submitter>jim x</submitter>
+<date>10 Feb 2026</date>
+<priority>99</priority>
+
+<discussion>
+<p>
+<sref ref="[atomics.order]"/> p10 says:
+</p>
+<blockquote><p>
+Atomic read-modify-write operations shall always read the last value (in the modification order) 
+written before the write associated with the read-modify-write operation.
+</p></blockquote>
+<p>
+We do not write side effects to the modification order, instead we write side effects to an 
+atomic object. These modifications occur in a single total order, called the modification order. 
+That is, the modification order describes how these operations are ordered. 
+<p/>
+Moreover, we called the compared element in the modification order "modification" or "side effect", 
+as shown in <sref ref="[intro.races]"/>. In addition, we don't use "a side effect <tt><i>X</i></tt> 
+written before <tt><i>Y</i></tt> in the modification order"; we use "<tt><i>X</i></tt> precedes/follows 
+<tt><i>Y</i></tt> in the modification order" to describe the relationship of order between two modifications. 
+</p>
+Suggested Resolution:
+<p>
+To make the wording more formal and have a consistent way with <sref ref="[intro.races]"/>, 
+the proposed wording is:
+</p>
+<blockquote><p>
+An atomic read-modify-write operation shall always read the value of a side effect <tt><i>X</i></tt>, 
+where <tt><i>X</i></tt> is the last side effect that precedes the side effect of the read-modify-write 
+operation in the modification order.
+</p></blockquote>
+<p>
+Another option is:
+</p>
+<blockquote><p>
+An atomic read-modify-write operation shall always read the value of a side effect that immediately 
+precedes the side effect of the read-modify-write operation in the modification order.
+</p></blockquote>
+</discussion>
+
+<resolution>
+<p>
+This wording is relative to <paper num="N5032"/>.
+</p>
+
+<blockquote class="note">
+<p>
+[<i>Drafting Note:</i> Two mutually exclusive options are prepared, depicted below by <b>Option A</b> and 
+<b>Option B</b>, respectively.] 
+</p>
+</blockquote>
+
+<p>
+<b>Option A:</b>
+</p>
+
+<ol>
+
+<li><p>Modify <sref ref="[atomics.order]"/> as indicated:</p>
+
+<blockquote>
+<p>
+-10- A<ins>n a</ins>tomic read-modify-write operation<del>s</del> shall always read the <del>last</del> 
+value <ins>of a side effect <tt><i>X</i></tt>, where <tt><i>X</i></tt> is the last side effect that 
+precedes the side effect of the read-modify-write operation</ins> <del>(</del>in the modification order<del>) 
+written before the write associated with the read-modify-write operation</del>.
+</p>
+</blockquote>
+</li>
+</ol>
+
+<p>
+<b>Option B:</b>
+</p>
+
+<ol>
+
+<li><p>Modify <sref ref="[atomics.order]"/> as indicated:</p>
+
+<blockquote>
+<p>
+-10- A<ins>n a</ins>tomic read-modify-write operations shall always read the <del>last</del> value 
+<ins>of a side effect that immediately precedes the side effect of the read-modify-write operation</ins> 
+<del>(</del>in the modification order<del>) written before the write associated with the 
+read-modify-write operation</del>.
+</p>
+</blockquote>
+</li>
+</ol>
+</resolution>
+
+</issue>
