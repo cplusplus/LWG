@@ -1,0 +1,56 @@
+<?xml version='1.0' encoding='utf-8' standalone='no'?>
+<!DOCTYPE issue SYSTEM "lwg-issue.dtd">
+
+<issue num="4523" status="New">
+<title>`constant_wrapper` should assign to `value`</title>
+<section><sref ref="[const.wrap.class]"/></section>
+<submitter>Tomasz Kamiński</submitter>
+<date>07 Jan 2026</date>
+<priority>99</priority>
+
+<discussion>
+<p>
+During resolution of LWG <iref ref="4383"/> assignment operator of <code>constant_wrapper</code>,
+was changed to:
+</p>
+<blockquote><pre>
+template&lt;constexpr-param R&gt;
+  constexpr auto operator=(R) const noexcept -&gt; constant_wrapper&lt;X = R::value&gt; { return {}; }
+</pre></blockquote>
+<p>
+This is incorrect (and inconsistent with other operators), as we assign to
+`X` that is object of specialization of exposition only <tt><i>cw-fixed-value</i></tt>,
+instead of `value`.
+</p>
+</discussion>
+
+<resolution>
+<p>
+This wording is relative to <paper num="N5032"/> with changes from <iref ref="4500"/>.
+</p>
+
+<ol>
+
+<li><p>Modify <sref ref="[const.wrap.class]"/>,
+class template `constant_wrapper` synopsis, as indicated:</p>
+
+<blockquote><pre>
+template&lt;<i>cw-fixed-value</i> X, class&gt;
+struct constant_wrapper : <i>cw-operators</i> {
+  static constexpr const auto &amp; value = X.<i>data</i>;
+  using type = constant_wrapper;
+  using value_type = decltype(X)::<i>type</i>;
+
+  template&lt;<i>constexpr-param</i> R&gt;
+    constexpr auto operator=(R) const noexcept
+  -&gt; constant_wrapper&lt;(<ins>value</ins><del>X</del> = R::value)&gt; { return {}; }
+
+  constexpr operator decltype(auto)() const noexcept { return value; }
+};
+</pre></blockquote>
+</li>
+</ol>
+
+</resolution>
+
+</issue>
