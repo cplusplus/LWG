@@ -6,7 +6,7 @@
 <section><sref ref="[optional.nullopt]"/></section>
 <submitter>Barry Revzin</submitter>
 <date>21 Dec 2025</date>
-<priority>99</priority>
+<priority>2</priority>
 
 <discussion>
 <p>
@@ -18,6 +18,16 @@ conceptually a <tt>variant&lt;nullopt_t, T&gt;</tt>, which wouldn't be comparabl
 Other empty types like <tt>tuple&lt;&gt;</tt> and `monostate` are also comparable.
 <p/>
 Proposed resolution: Add a defaulted member <tt>operator&lt;=&gt;</tt> to `nullopt_t`. 
+</p>
+
+<note>2026-02-18; Reflector poll.</note>
+<p>
+Set priority to 2 after reflector poll.
+</p>
+<p>
+Discussion whether this needs LEWG approval.
+Paper <paper num="P2405"/>, for which <code>nullopt</code>
+part received LEWG support, is revelant here.
 </p>
 </discussion>
 
