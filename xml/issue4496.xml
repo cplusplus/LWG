@@ -6,7 +6,7 @@
 <section><sref ref="[meta.reflection]"/></section>
 <submitter>Daniel Katz</submitter>
 <date>11 Dec 2025</date>
-<priority>99</priority>
+<priority>2</priority>
 
 <discussion>
 <p>
@@ -14,6 +14,11 @@ Discussion on the <a href="https://lists.isocpp.org/core/2025/12/19003.php">Core
 surfaced a handful of places in <sref ref="[meta.reflection]"/> that use the "precedes" relation 
 (defined in <sref ref="[basic.lookup]"/> and primarily used for name lookup) when the "reachable" 
 relation (defined in <sref ref="[module.reach]"/>) is really what we want.
+</p>
+
+<note>2026-02-18; Reflector poll.</note>
+<p>
+Set priority to 2 after reflector poll.
 </p>
 </discussion>
 
