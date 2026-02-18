@@ -6,7 +6,7 @@
 <section><sref ref="[support.srcloc.class]"/></section>
 <submitter>Hana Dusíková</submitter>
 <date>27 Dec 2025</date>
-<priority>99</priority>
+<priority>2</priority>
 
 <discussion>
 <p>
@@ -38,6 +38,12 @@ constexpr source_location&amp; operator=(source_location&amp;&amp;) noexcept = d
 AFAIK this is how to explicitly say it must be constexpr but it can still be trivial, see
 <a href="https://compiler-explorer.com/z/5v5ndd7z1">demo</a>.
 </p>
+
+<note>2026-02-18; Reflector poll.</note>
+<p>
+Set priority to 2 after reflector poll.
+</p>
+
 </discussion>
 
 <resolution>
