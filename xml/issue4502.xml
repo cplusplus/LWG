@@ -6,7 +6,7 @@
 <section><sref ref="[exec.when.all]"/></section>
 <submitter>Robert Leahy</submitter>
 <date>11 Jan 2026</date>
-<priority>99</priority>
+<priority>2</priority>
 
 <discussion>
 <p>
@@ -209,6 +209,15 @@ Since none of these throw the overloaded function call operator can be made
 <code>noexcept(true)</code>.
 </p>
 
+
+<note>2026-02-18; Reflector poll.</note>
+<p>
+Set priority to 2 after reflector poll.
+</p>
+<p>
+Wording needs additional tightening because `value_type` isn't a variant
+and `errors_variant` does not use `monostate`.
+</p>
 </discussion>
 
 <resolution>
