@@ -111,7 +111,7 @@ constexpr const reference&amp; reference::operator=(bool x) const noexcept;
 </pre>
 <blockquote>
 <p>
-<ins>-?- <i>Returns</i>: `true` if the value of the referred to bit is one, `false` otherwise.</ins>
+<ins>-?- <i>Returns</i>: `true` if the value of the bit referred to by `*this` is one, `false` otherwise.</ins>
 </p>
 </blockquote>
 </blockquote>
