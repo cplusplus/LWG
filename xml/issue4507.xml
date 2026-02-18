@@ -1,12 +1,12 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="4507" status="New">
+<issue num="4507" status="Core">
 <title>The order of side effects initiated by I/O functions is not described by happen-before</title>
 <section><sref ref="[input.output]"/></section>
 <submitter>jim x</submitter>
 <date>29 Dec 2025</date>
-<priority>99</priority>
+<priority>4</priority>
 
 <discussion>
 <p>
@@ -101,6 +101,14 @@ We only describe memory visibility in terms of <i>happen-before</i>, but don't f
 other kinds of side effects or observable behaviors.
 <p/>
 We should define how the order of side effects produced by I/O functions is defined by <i>happen-before</i>.
+</p>
+
+<note>2026-02-18; Reflector poll.</note>
+<p>
+Set status to Core and priority to 4 after reflector poll.
+</p>
+<p>
+Low participation.
 </p>
 </discussion>
 
