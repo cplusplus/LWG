@@ -93,9 +93,8 @@ template&lt;<i>simd-size-type</i> N, class V&gt; struct resize { using type = <i
 <p>
 Set priority to 1 after reflector poll.
 </p>
-</discussion>
 
-<resolution>
+<superseded>
 <p>
 This wording is relative to <paper num="N5014"/>.
 </p>
@@ -204,6 +203,13 @@ template&lt;<i>simd-size-type</i> N, class V&gt; struct resize { using type = <i
 </li>
 </ol>
 
+</superseded>
+
+<note>2026-02-13; LWG telecon.</note>
+<p><paper num="P3932R0"/> resolving the issue was approved.</p>
+</discussion>
+
+<resolution>
 </resolution>
 
 </issue>

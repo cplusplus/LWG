@@ -20,6 +20,10 @@ for <tt>Bytes=16</tt>.
 <p>
 Set priority to 1 after reflector poll.
 </p>
+
+<note>2026-02-13; LWG telecon.</note>
+<p><paper num="P3932R0"/> resolving the issue was approved.</p>
+
 </discussion>
 
 <resolution>
