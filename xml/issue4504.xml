@@ -6,7 +6,7 @@
 <section><sref ref="[exec.simple.counting.mem]"/></section>
 <submitter>Ian Petersen</submitter>
 <date>24 Dec 2025</date>
-<priority>99</priority>
+<priority>2</priority>
 
 <discussion>
 <p>
@@ -49,6 +49,11 @@ Another fix would be to delete bullet 9.1, to modify bullets 9.2 and 9.3 by addi
 "and <tt><i>count</i></tt> is greater than zero", 
 and to add a trailing bullet that says 
 "otherwise, changes <tt><i>state</i></tt> to <tt><i>joined</i></tt> and returns `true`."
+</p>
+
+<note>2026-02-18; Reflector poll.</note>
+<p>
+Set priority to 2 after reflector poll.
 </p>
 </discussion>
 
