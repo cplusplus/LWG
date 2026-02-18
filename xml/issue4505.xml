@@ -6,7 +6,7 @@
 <section><sref ref="[optional.specalg]"/></section>
 <submitter>Jiang An</submitter>
 <date>25 Dec 2025</date>
-<priority>99</priority>
+<priority>4</priority>
 
 <discussion>
 <p>
@@ -22,6 +22,16 @@ containing a dangling reference, because the third `make_optional` overload in
 Given <tt>optional&lt;T&amp;&gt;</tt> has no specific initializer-list constructor, perhaps we should 
 make the `make_optional` overload taking `initializer_list` not accept <tt>T&amp;</tt> as its first template 
 argument.
+</p>
+
+<note>2026-02-18; Reflector poll.</note>
+<p>
+Set priority to 4 after reflector poll.
+</p>
+<p>
+This only affects edge cases like
+<tt>make_optional&lt;initializer_list&lt;int&gt;&amp;&gt;({....})</tt>.
+The <code>is_constructible_v</code> constraint seems unmotivated by the issue.
 </p>
 </discussion>
 
