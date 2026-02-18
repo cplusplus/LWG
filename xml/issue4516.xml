@@ -6,7 +6,7 @@
 <section><sref ref="[algorithms]"/></section>
 <submitter>Ruslan Arutyunyan</submitter>
 <date>12 Dec 2025</date>
-<priority>99</priority>
+<priority>4</priority>
 
 <discussion>
 <p>
@@ -40,6 +40,15 @@ template&lt;input_range R, class Proj = identity,
 <p>
 There is no clear resolution for that, but during an LWG session is was decided to create an LWG
 issue for this.
+</p>
+
+<note>2026-02-18; Reflector poll.</note>
+<p>
+Set priority to 4 after reflector poll.
+</p>
+<p>
+Recolection of intended rule was to use `std::` and `ranges::` if same name is in both namespaces (`less`, ...).
+This is result of editorial decision.
 </p>
 </discussion>
 
