@@ -6,7 +6,7 @@
 <section><sref ref="[exec.let]"/></section>
 <submitter>Robert Leahy</submitter>
 <date>11 Jan 2026</date>
-<priority>99</priority>
+<priority>2</priority>
 
 <discussion>
 <p>
@@ -172,6 +172,14 @@ Note that the wording proposed by
 obsoletes this issue.
 </p>
 
+
+<note>2026-02-18; Reflector poll.</note>
+<p>
+Set priority to 2 after reflector poll.
+</p>
+<p>
+The wordings needs to account for `emplace` not having `noexcept` specification.
+</p>
 </discussion>
 
 <resolution>
