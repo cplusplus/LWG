@@ -8,7 +8,7 @@
 </section>
 <submitter>Matt Bentley</submitter>
 <date>19 Aug 2025</date>
-<priority>99</priority>
+<priority>3</priority>
 
 <discussion>
 <p>
@@ -323,6 +323,18 @@ Having looked into it and sought feedback I think a blanket note on <sref ref="[
 would be sufficient, such that the time complexity is limited to "techniques to identify the memory 
 locations of erased elements". Otherwise we need to stay with the previous resolution that this 
 is in fact constant time behaviour.
+</p>
+
+<note>2026-02-18; Reflector poll.</note>
+<p>
+Set priority to 3 after reflector poll.
+</p>
+<p>
+We probably want to consider all container complexity specifications holistically.
+</p>
+<p>
+The note in the proposed resolution is granting permission that is not
+stated by any normative wording; an alternative was suggested.
 </p>
 </discussion>
 
