@@ -6,7 +6,7 @@
 <section><sref ref="[range.adjacent.view]"/></section>
 <submitter>Hui Xie</submitter>
 <date>23 Nov 2025</date>
-<priority>99</priority>
+<priority>3</priority>
 
 <discussion>
 <p>
@@ -95,6 +95,18 @@ int main() {
 <b>Daniel:</b>
 <p/>
 This issue has considerable wording overlap with LWG <iref ref="3731"/>.
+</p>
+
+<note>2026-02-18; Reflector poll.</note>
+<p>
+Set priority to 3 after reflector poll.
+</p>
+<p>
+Split between NAD and P0 votes. 
+</p>
+<p>	
+We assume that <tt>input_range&lt;V&gt; &amp;&amp; range&lt;const V&gt;</tt> implies <tt>input_range&lt;const V&gt;</tt>,
+and <tt>forward</tt> should be the same.
 </p>
 </discussion>
 
