@@ -6,7 +6,7 @@
 <section><sref ref="[cstdarg.syn]"/></section>
 <submitter>Hubert Tong</submitter>
 <date>15 Dec 2025</date>
-<priority>99</priority>
+<priority>2</priority>
 
 <discussion>
 <p>
@@ -55,6 +55,12 @@ Clearer wording, likely with more restrictions than C, is needed. A question, th
 "compatible" should generally be replaced (for `va_arg`) with "layout-compatible" or a requirement 
 for being the same type. In the specific case of the first bullet, I believe the latter is the right choice.
 </p>
+
+<note>2026-02-18; Reflector poll.</note>
+<p>
+Set priority to 2 after reflector poll.
+</p>
+
 </discussion>
 
 <resolution>
