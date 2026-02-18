@@ -6,7 +6,7 @@
 <section><sref ref="[meta.reflection.queries]"/></section>
 <submitter>Jakub Jelinek</submitter>
 <date>18 Dec 2025</date>
-<priority>99</priority>
+<priority>2</priority>
 
 <discussion>
 <p>
@@ -52,6 +52,16 @@ or</del> defaulted function (<sref ref="[dcl.fct.def.default]"/>)<del>, respecti
 </p>
 </blockquote>
 </blockquote>
+
+<note>2026-02-18; Reflector poll.</note>
+<p>
+Set priority to 2 after reflector poll.
+</p>
+<p>
+Split between P1 and NAD votes. Not supporting `is_deleted` for
+templates is consistent with the current design, as we also do not support
+parameter reflection or allow querying `has_ellipsis_parameter`.
+</p>
 </discussion>
 
 <resolution>
