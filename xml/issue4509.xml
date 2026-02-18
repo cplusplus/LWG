@@ -1,12 +1,12 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="4509" status="New">
+<issue num="4509" status="LEWG">
 <title><tt>std::optional&lt;T&gt;::transform</tt> cannot be implemented while supporting program-defined specializations</title>
 <section><sref ref="[optional.monadic]"/></section>
 <submitter>Rasheeq Azad</submitter>
 <date>24 Dec 2025</date>
-<priority>99</priority>
+<priority>3</priority>
 
 <discussion>
 <p>
@@ -153,6 +153,14 @@ this issue.
 Changing <tt>std::optional&lt;T&amp;&gt;</tt> doesn't seem strictly necessary, 
 but introducing a nonuniformity seems like a bad idea. I'm not 100% certain about 
 the wording for the new constructors.
+</p>
+
+<note>2026-02-18; Reflector poll.</note>
+<p>
+Set status to LEWG and priority to 3 after reflector poll.
+</p>
+<p>
+Either option needs LEWG confirmation. Option A reflects existing practice.
 </p>
 </discussion>
 
