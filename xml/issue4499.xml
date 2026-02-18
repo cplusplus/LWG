@@ -6,7 +6,7 @@
 <section><sref ref="[flat.set.modifiers]"/><sref ref="[flat.multiset.modifiers]"/></section>
 <submitter>Hewill Kang</submitter>
 <date>22 Dec 2025</date>
-<priority>99</priority>
+<priority>2</priority>
 
 <discussion>
 <p>
@@ -22,6 +22,14 @@ Here, `e` is an element of the input range.
 <p/>
 However, this can lead to ambiguity when `e` can also be converted to `initializer_list`,
 as `vector::insert` has an overload of <code>insert(const_iterator, initializer_list&lt;T&gt;)</code>.
+</p>
+
+<note>2026-02-18; Reflector poll.</note>
+<p>
+Set priority to 2 after reflector poll.
+</p>
+<p>
+Pessimizing a very common case (matching type), for uncommon one.
 </p>
 </discussion>
 
