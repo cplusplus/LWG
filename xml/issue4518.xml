@@ -6,7 +6,7 @@
 <section><sref ref="[simd.syn]"/><sref ref="[simd.creation]"/></section>
 <submitter>Matthias Kretz</submitter>
 <date>25 Nov 2025</date>
-<priority>99</priority>
+<priority>2</priority>
 
 <discussion>
 <p>
@@ -20,6 +20,13 @@ auto y = simd::cat(vs...);
 static_assert(is_same_v&lt;decltype(x), decltype(y)&gt;); // <span style="color:red;font-weight:bolder">can fail</span>
 </pre></blockquote>
 <p>
+</p>
+
+<note>2026-02-13; LWG telecon.</note>
+<p>
+Setting priority to P2, after <paper num="P3932R0"/>
+(Fix LWG4470: Fix integer-from in [simd]),
+resolving the issue was accepted on telecon.
 </p>
 </discussion>
 
