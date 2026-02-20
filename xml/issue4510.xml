@@ -71,11 +71,11 @@ This wording is relative to <paper num="N5032"/>.
 <pre>
 [&hellip;]
 namespace std {
-  template&lt;class T&gt; using <i>with-reference</i> = T&amp;amp;; <i>// exposition only</i>
+  template&lt;class T&gt; using <i>with-reference</i> = T&amp;; <i>// exposition only</i>
   template&lt;class T&gt; concept <i>can-reference</i>      <i>// exposition only</i>
     = requires { typename <i>with-reference</i>&lt;T&gt;; };
   template&lt;class T&gt; concept <i>dereferenceable</i>    <i>// exposition only</i>
-    = requires(T&amp;amp; t) {
+    = requires(T&amp; t) {
       { *t } -&gt; <i>can-reference</i>; <i>// not required to be equality-preserving</i>
     };
   
