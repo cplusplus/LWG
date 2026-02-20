@@ -47,9 +47,7 @@ Set priority to 3 during reflector discussions.
 </p>
 
 <note>2024-06-18; Jonathan adds wording</note>
-</discussion>
-
-<resolution>
+<superseded>
 <p>
 This wording is relative to <paper num="N4981"/>.
 </p>
@@ -138,6 +136,122 @@ return wait_until(lock, <del>chrono::steady_clock::now() + rel_time</del> <ins><
 </blockquote>
 </li>
 </ol>
+</superseded>
+
+<note>2026-02-20; Jonathan provides new wording</note>
+<p>Need to add another change for the interruptible `wait_for`.</p>
+
+</discussion>
+
+<resolution>
+
+<p>
+This wording is relative to <paper num="N5032"/>.
+</p>
+<ol>
+<li>
+<p>Modify <sref ref="[thread.condition.general]"/> as indicated,
+adding a new paragraph to the end:</p>
+<blockquote>
+<ins>-6-
+The definitions in <sref ref="[thread.condition]"/> make use of the
+following exposition-only function:
+</ins>
+<blockquote>
+<pre><code><ins>template&lt;class Dur&gt;
+  chrono::steady_clock::time_point <em>rel-to-abs</em>(const Dur&amp; rel_time)
+  { return chrono::steady_clock::now() + chrono::ceil&lt;chrono::steady_clock::duration&gt;(rel_time); }
+</ins>
+</code></pre>
+</blockquote>
+</blockquote>
+</li>
+
+<li>
+<p>Modify <sref ref="[thread.condition.condvar]"/> as indicated:</p>
+<blockquote>
+<pre><code>
+template&lt;class Rep, class Period&gt;
+  cv_status wait_for(unique_lock&lt;mutex&gt;&amp; lock,
+                     const chrono::duration&lt;Rep, Period&gt;&amp; rel_time);
+</code></pre>
+<p>-23- <i>Preconditions</i>:
+`lock.owns_lock()` is `true` and `lock.mutex()` is locked by the calling thread,
+and either [...]
+</p>
+<p>-24- <i>Effects</i>: Equivalent to:
+<blockquote><code>
+return wait_until(lock, <del>chrono::steady_clock::now() + rel_time</del> <ins><em>rel-to-abs</em>(rel_time)</ins>);
+</code></blockquote>
+</p>
+<p>[...]</p>
+<pre><code>
+template&lt;class Rep, class Period, class Predicate&gt;
+  cv_status wait_for(unique_lock&lt;mutex&gt;&amp; lock,
+                     const chrono::duration&lt;Rep, Period&gt;&amp; rel_time,
+                     Predicate pred);
+</code></pre>
+<p>-35- <i>Preconditions</i>:
+`lock.owns_lock()` is `true` and `lock.mutex()` is locked by the calling thread,
+and either [...]
+</p>
+<p>-36- <i>Effects</i>: Equivalent to:
+<blockquote><code>
+return wait_until(lock, <del>chrono::steady_clock::now() + rel_time</del> <ins><em>rel-to-abs</em>(rel_time)</ins>, std::move(pred));
+</code></blockquote>
+</p>
+<p>
+[<i>Note 8</i>:
+There is no blocking if `pred()` is initially `true`, even if the timeout has already expired.
+&mdash; <i>end note</i>]
+</p>
+</blockquote>
+</li>
+
+<li>
+<p>Modify <sref ref="[thread.condvarany.wait]"/> as indicated:</p>
+<blockquote>
+<pre><code>
+template&lt;class Lock, class Rep, class Period&gt;
+  cv_status wait_for(Lock&amp; lock, const chrono::duration&lt;Rep, Period&gt;&amp; rel_time);
+</code></pre>
+<p>-11- <i>Effects</i>: Equivalent to:
+<blockquote><code>
+return wait_until(lock, <del>chrono::steady_clock::now() + rel_time</del> <ins><em>rel-to-abs</em>(rel_time)</ins>);
+</code></blockquote>
+</p>
+<p>[...]</p>
+<pre><code>
+template&lt;class Lock, class Rep, class Period, class Predicate&gt;
+  cv_status wait_for(Lock&amp; lock, const chrono::duration&lt;Rep, Period&gt;&amp; rel_time, Predicate pred);
+</code></pre>
+<p>-19- <i>Effects</i>: Equivalent to:
+<blockquote><code>
+return wait_until(lock, <del>chrono::steady_clock::now() + rel_time</del> <ins><em>rel-to-abs</em>(rel_time)</ins>, std::move(pred));
+</code></blockquote>
+</p>
+</blockquote>
+</li>
+
+<li>
+<p>Modify <sref ref="[thread.condvarany.intwait]"/> as indicated:</p>
+<blockquote>
+<pre><code>
+template&lt;class Lock, class Rep, class Period, class Predicate&gt;
+  bool wait_for(Lock&amp; lock, stop_token stoken,
+                const chrono::duration&lt;Rep, Period&gt;&amp; rel_time, Predicate pred);
+</code></pre>
+<p>-13- <i>Effects</i>: Equivalent to:
+<blockquote><code>
+return wait_until(lock, std::move(stoken), <del>chrono::steady_clock::now() + rel_time</del> <ins><em>rel-to-abs</em>(rel_time)</ins>,
+                  std::move(pred));
+</code></blockquote>
+</p>
+</blockquote>
+</li>
+
+</ol>
+
 </resolution>
 
 </issue>
