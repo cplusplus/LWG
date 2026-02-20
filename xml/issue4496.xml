@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="4496" status="New">
+<issue num="4496" status="Ready">
 <title>Precedes vs Reachable in [meta.reflection]</title>
 <section><sref ref="[meta.reflection]"/></section>
 <submitter>Daniel Katz</submitter>
@@ -20,6 +20,8 @@ relation (defined in <sref ref="[module.reach]"/>) is really what we want.
 <p>
 Set priority to 2 after reflector poll.
 </p>
+
+<note>2026-02-20; LWG telecon; Status changed: New &rarr; Ready.</note>
 </discussion>
 
 <resolution>
