@@ -6,7 +6,7 @@
 <section><sref ref="[range.iter.op.advance]"/><sref ref="[range.iter.op.next]"/></section>
 <submitter>Jiang An</submitter>
 <date>09 Jan 2026</date>
-<priority>99</priority>
+<priority>3</priority>
 
 <discussion>
 <p>
@@ -57,9 +57,25 @@ wrapping iterators that trigger ADL for the value type like the `FwdIter` in thi
 are common in standard library implementations, so ambiguity can be easily raised from 
 containers with such `OmniConv` being their element type.
 </p>
-</discussion>
 
-<resolution>
+<note>2026-02-20; Reflector poll.</note>
+<p>
+Set priority to 3 after reflector poll.
+</p>
+<p>
+The type in the example is basically a `std::any` that additionally type-erases
+equality. That causes a problem for templated iterators that have their
+value type's namespace as an associated namespace for ADL.
+</p>
+<p>
+Instead of allowing integers to be sentinels in general but just restricting
+them from being used with these overloads, we could just change the concept
+so that integers do not model `sentinel_for`.
+That's similar to what we did for `span`'s constructor which has a similar
+problem (though that one's more aggressive due to compatibility constraints).
+</p>
+
+<superseded>
 <p>
 This wording is relative to <paper num="N5032"/>.
 </p>
@@ -146,6 +162,32 @@ template&lt;input_or_output_iterator I, <del>sentinel_for&lt;I&gt;</del><ins>cla
 
 </ol>
 
+</superseded>
+
+<note>2026-02-20; Jonathan provides new wording</note>
+
+</discussion>
+
+<resolution>
+<p>
+This wording is relative to <paper num="N5032"/>.
+</p>
+
+<ol>
+<li><p>Modify <sref ref="[iterator.concept.sentinel]"/> as indicated:</p>
+
+<blockquote>
+<pre>
+template&lt;class S, class I&gt;
+  concept sentinel_for =
+    semiregular&lt;S&gt; &amp;&amp;
+    <ins>!<i>is-integer-like</i>&lt;S&gt; &amp;&amp;</ins>
+    input_or_output_iterator&lt;I&gt; &amp;&amp;
+    weakly-equality-comparable-with&lt;S, I&gt;; <i>// see <sref ref="[concept.equalitycomparable]"/></i>
+</pre>
+</blockquote>
+</li>
+</ol>
 
 </resolution>
 
