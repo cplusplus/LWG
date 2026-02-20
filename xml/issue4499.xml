@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="4499" status="New">
+<issue num="4499" status="Ready">
 <title>`flat_set::insert_range` specification may be problematic</title>
 <section><sref ref="[flat.set.modifiers]"/><sref ref="[flat.multiset.modifiers]"/></section>
 <submitter>Hewill Kang</submitter>
@@ -31,6 +31,13 @@ Set priority to 2 after reflector poll.
 <p>
 Pessimizing a very common case (matching type), for uncommon one.
 </p>
+
+<note>2026-02-20; LWG telecon; Status changed: New &rarr; Ready.</note>
+<p>
+Implementations can optimize away the extra move for the case where
+the range's value type is already the same as the flat set's value type.
+</p>
+
 </discussion>
 
 <resolution>
