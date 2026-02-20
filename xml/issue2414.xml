@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='UTF-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="2414" status="Open">
+<issue num="2414" status="Ready">
 <title>Member function reentrancy should be implementation-defined</title>
 <section><sref ref="[reentrancy]"/></section>
 <submitter>Stephan T. Lavavej</submitter>
@@ -100,6 +100,8 @@ the behavior is undefined unless otherwise specified.</ins>
 <note>2026-02-20; Tim provides new wording</note>
 <p>Refer to "object parameter" not "`this` pointer".</p>
 
+
+<note>2026-02-20; LWG telecon; Status changed: Open &rarr; Ready.</note>
 </discussion>
 
 <resolution>
