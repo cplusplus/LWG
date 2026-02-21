@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="4495" status="New">
+<issue num="4495" status="NAD">
 <title>&sect;[meta.reflection.queries] `is_deleted` on function templates</title>
 <section><sref ref="[meta.reflection.queries]"/></section>
 <submitter>Jakub Jelinek</submitter>
@@ -61,6 +61,13 @@ Set priority to 2 after reflector poll.
 Split between P1 and NAD votes. Not supporting `is_deleted` for
 templates is consistent with the current design, as we also do not support
 parameter reflection or allow querying `has_ellipsis_parameter`.
+</p>
+
+<note>2026-02-20; LWG telecon; Status changed: New &rarr; NAD.</note>
+<p>
+The current design does not support querying anything about function templates.
+The ability to use these functions on function templates should be considered
+in tandem with querying other properties like parameters, etc.
 </p>
 </discussion>
 

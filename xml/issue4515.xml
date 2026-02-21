@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="4515" status="Tentatively Ready">
+<issue num="4515" status="Open">
 <title>`format`: `a` and `A` should insert the `0x` or `0X` prefix</title>
 <section><sref ref="[format.string.std]"/></section>
 <submitter>Tianying Chen</submitter>
@@ -40,7 +40,8 @@ and that an unintentional change of behavior was introduced in
 
 <note>2026-02-13; Reflector poll.</note>
 <p>
-Set status to Tentatively Ready after seven votes in favour during reflector poll.
+Several votes for Tentatively Ready, but also objections to a breaking change
+at this stage.
 </p>
 </discussion>
 
