@@ -1,0 +1,42 @@
+<?xml version='1.0' encoding='utf-8' standalone='no'?>
+<!DOCTYPE issue SYSTEM "lwg-issue.dtd">
+
+<issue num="4527" status="New">
+<title><code>await_transform</code> needs to use <code>as_awaitable</code></title>
+<section><sref ref="[task.promise]"/></section>
+<submitter>Dietmar Kühl</submitter>
+<date>21 Feb 2026</date>
+<priority>99</priority>
+
+<discussion>
+<p>
+In the <code>await_transform</code> overload for <code>change_coroutine_scheduler</code> the <code>return</code> statement repeats the function name instead of using <code>as_awaitable</code>. The <code>return</code> statement needs to be fixed. The change may be editorial.
+</p>
+<p>
+Note that <paper num="P3941"/> recommends removing <code>change_routine_scheduler</code> and the corresponding overload of <code>await_transform</code> entirely.
+</p>
+</discussion>
+
+<resolution>
+<p>
+This wording is relative to <paper num="N5032"/>.
+</p>
+
+<ol>
+<li>
+<p>Change <sref ref="[task.promise]"/> p10 to use <code>as_awaitable</code> in the <i>Effects</i> clause:</p>
+<blockquote>
+<pre>
+template&lt;class Sch&gt;
+  auto await_transform(change_coroutine_scheduler&lt;Sch&gt; sch) noexcept;
+</pre>
+<p>-10- <i>Effects</i>: Equivalent to:</p>
+<pre>
+return <del>await_transform</del><ins>as_awaitable</ins>(just(exchange(<i>SCHED</i>(*this), scheduler_type(sch.scheduler))), *this);
+</pre>
+</blockquote>
+</li>
+</ol>
+</resolution>
+
+</issue>
