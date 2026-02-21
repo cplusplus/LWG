@@ -13,7 +13,7 @@
 In the <code>await_transform</code> overload for <code>change_coroutine_scheduler</code> the <code>return</code> statement repeats the function name instead of using <code>as_awaitable</code>. The <code>return</code> statement needs to be fixed. The change may be editorial.
 </p>
 <p>
-Note that <paper num="P3941"/> recommends removing <code>change_routine_scheduler</code> and the corresponding overload of <code>await_transform</code> entirely.
+Note that <paper num="P3941"/> recommends removing <code>change_coroutine_scheduler</code> and the corresponding overload of <code>await_transform</code> entirely.
 </p>
 </discussion>
 
