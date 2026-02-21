@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='UTF-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="2414" status="Open">
+<issue num="2414" status="Ready">
 <title>Member function reentrancy should be implementation-defined</title>
 <section><sref ref="[reentrancy]"/></section>
 <submitter>Stephan T. Lavavej</submitter>
@@ -79,9 +79,7 @@ char *last = (char*)(&amp;s + 1);
 s.append(first, last);
 </pre>
 </blockquote>
-</discussion>
-
-<resolution>
+<superseded>
 <p>This wording is relative to <paper num="N4892"/>.</p>
 
 <ol>
@@ -97,6 +95,32 @@ the behavior is undefined unless otherwise specified.</ins>
 </blockquote>
 </li>
 </ol>
+</superseded>
+
+<note>2026-02-20; Tim provides new wording</note>
+<p>Refer to "object parameter" not "`this` pointer".</p>
+
+
+<note>2026-02-20; LWG telecon; Status changed: Open &rarr; Ready.</note>
+</discussion>
+
+<resolution>
+<p>This wording is relative to <paper num="N5032"/>.</p>
+
+<ol>
+<li><p>Append the following paragraph to <sref ref="[reentrancy]"/>:</p>
+<blockquote>
+<p>
+<ins>-?- During the execution of a standard library non-static member function <i>F</i> on an object,
+if that object is accessed through a glvalue that is not obtained, directly or indirectly, from
+the object parameter of <i>F</i>, in a manner that can conflict (<sref ref="[intro.races]"/>)
+with any access that <i>F</i> is permitted to perform (<sref ref="[res.on.data.races]"/>),
+the behavior is undefined unless otherwise specified.</ins>
+</p>
+</blockquote>
+</li>
+</ol>
+
 </resolution>
 
 </issue>
