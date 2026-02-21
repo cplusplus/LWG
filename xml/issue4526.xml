@@ -1,0 +1,34 @@
+<?xml version='1.0' encoding='utf-8' standalone='no'?>
+<!DOCTYPE issue SYSTEM "lwg-issue.dtd">
+
+<issue num="4526" status="New">
+<title><code>std::monostate</code> could be a valid error for <code>task</code></title>
+<section><sref ref="[task.promise]"/></section>
+<submitter>Dietmar Kühl</submitter>
+<date>21 Feb 2026</date>
+<priority>99</priority>
+
+<discussion>
+<p>
+The current specification of the <code><i>error-variant</i></code> in <sref ref="[task.promise]"/> p2 uses <code>std::monostate</code> as a placeholder for the absence of an error: <code>variant&lt;<b>monostate</b>, remove_cvref_t&lt;E&gt;...&gt;</code>. However, <code>std::monostate</code> can be an actual error type. It should be a replace by an implementation-defined, default constructible type.
+</p>
+</discussion>
+
+<resolution>
+<p>
+This wording is relative to <paper num="N5032"/>.
+</p>
+
+<ol>
+<li>
+<p>
+In <sref ref="[task.promise]"/> p2 replace <code>monostate</code> with an implementation-defined, default constructible type:
+</p>
+<blockquote>
+-2- <code><i>error-variant</i></code> is a <code>variant&lt;<del>monostate</del><ins><i>empty</i></ins>, remove_cvref_t&lt;E&gt;...&gt;</code>, with duplicate types removed, where <ins><code><i>empty</i></code> is an implementation-defined, default constructible type and</ins> <code>E...</code> are the parameter types of the template arguments of the specialization of <code>execution::completion_signatures</code> denoted by <code>error_types</code>.
+</blockquote>
+</li>
+</ol>
+</resolution>
+
+</issue>
