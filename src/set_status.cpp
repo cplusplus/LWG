@@ -15,6 +15,7 @@
 #include <string>
 #include <chrono>
 #include <format>
+#include <cstring>
 
 #include <filesystem>
 namespace fs = std::filesystem;
@@ -107,6 +108,35 @@ int main(int argc, char const * argv[]) {
          throw bad_issue_file{filename, "Corrupt status attribute"};
       }
       auto old_status = issue_data.substr(k, l-k);
+
+      // Do not allow an IS status for TS issues, and vice versa.
+      if (new_status.starts_with("C++") or new_status == "TS")
+      {
+         auto t1 = issue_data.find("<title>", l);
+         auto t2 = issue_data.find("</title>", l);
+         if (t1 == std::string::npos or t2 == std::string::npos or t2 < t1)
+            throw bad_issue_file{filename, "Cannot find <title> element"};
+         t1 += std::strlen("<title>");
+         std::string_view title(issue_data);
+         title = title.substr(t1, t2 - t1);
+         bool is_ts_issue = false;
+         if (title.starts_with('['))
+         {
+            auto end = title.find(']');
+            if (end != title.npos)
+            {
+               auto tag = title.substr(0, end);
+#ifdef __cpp_lib_string_contains
+               is_ts_issue = tag.contains(".ts");
+#else
+               is_ts_issue = tag.find(".ts") != tag.npos;
+#endif
+            }
+         }
+         if (is_ts_issue != (new_status == "TS"))
+            throw std::runtime_error{std::format("Refusing to set status \"{}\" for issue in {}:\n\t{}: {}", new_status, is_ts_issue ? "a TS" : "the IS", issue_number, title)};
+      }
+
       issue_data.replace(k, l-k, new_status);
 
       if (lwg::filename_for_status(new_status) != lwg::filename_for_status(old_status)) {
