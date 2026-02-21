@@ -1,0 +1,50 @@
+<?xml version='1.0' encoding='utf-8' standalone='no'?>
+<!DOCTYPE issue SYSTEM "lwg-issue.dtd">
+
+<issue num="4525" status="New">
+<title>final_suspend should move the result</title>
+<section><sref ref="[task.promise]"/></section>
+<submitter>Dietmar Kühl</submitter>
+<date>18 Feb 2026</date>
+<priority>99</priority>
+
+<discussion>
+<p>
+In <sref ref="[task.promise]"/> p6.3 the `*result` is passed to
+`set_value` without `std::move`ing ig:
+<code>set_value(std::move(<i>RCVR</i>(*this)), *<i>result</i>)</code>.
+The second argument to `set_value` should be
+<code>std::move(*<i>result</i>)</code>. Once `set_value` is called
+operation state where <code><i>result</i></code> is stored just
+gets destroyed.
+</p>
+</discussion>
+
+<resolution>
+
+<ol>
+<li><p>Change <sref ref="[task.promise]"/> p6.3 to <code>std::move</code> the
+<code>*<i>result</i></code>:</p>
+
+<blockquote><pre>
+auto final_suspend() noexcept;
+</pre>
+<p>
+-6- <i>Returns</i>: An awaitable object of unspecified type (<sref ref="[expr.await]"/>) whose member functions arrange for the completion of the asynchronous operation associated with <code><i>STATE</i>(*this)</code> by invoking:
+</p>
+<p>
+-6.1- -- <code>set_error(std::move(<i>RCVR</i>(*this)), std::move(e))</code> if <code><i>errors</i>.index()</code> is greater than zero and <code>e</code> is the value held by <code><i>errors</i></code>, otherwise
+</p>
+<p>
+-6.2- -- <code>set_value(std::move(<i>RCVR</i>(*this)))</code> if <code>is_void&lt;T&gt;</code> is <code>true</code>, and otherwise
+</p>
+<p>
+-6.3- -- <code>set_value(std::move(<i>RCVR</i>(*this)), <ins>std::move(</ins>*<i>result</i><ins>)</ins>)</code>.
+</p>
+</blockquote>
+</li>
+</ol>
+
+</resolution>
+
+</issue>
