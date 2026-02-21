@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="3413" status="C++23">
+<issue num="3413" status="WP">
 <title>[fund.ts.v3] <tt>propagate_const</tt>'s <tt>swap</tt>'s <tt>noexcept</tt> specification needs to 
 be constrained and use a trait</title>
 <section><sref ref="[propagate_const.modifiers]"/><sref ref="[propagate_const.algorithms]"/></section>

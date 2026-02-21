@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="3002" status="C++23">
+<issue num="3002" status="WP">
 <title>[networking.ts] <tt>basic_socket_acceptor::is_open()</tt> isn't <tt>noexcept</tt></title>
 <section><sref ref="[socket.acceptor.ops]"/></section>
 <submitter>Jonathan Wakely</submitter>
