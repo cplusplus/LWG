@@ -10,7 +10,7 @@
 
 <discussion>
 <p>
-The current specification of the <code><i>error-variant</i></code> in <sref ref="[task.promise]"/> p2 uses <code>std::monostate</code> as a placeholder for the absence of an error: <code>variant&lt;<b>monostate</b>, remove_cvref_t&lt;E&gt;...&gt;</code>. However, <code>std::monostate</code> can be an actual error type. It should be a replace by an implementation-defined, default constructible type.
+The current specification of the <code><i>error-variant</i></code> in <sref ref="[task.promise]"/> p2 uses <code>std::monostate</code> as a placeholder for the absence of an error: <code>variant&lt;<b>monostate</b>, remove_cvref_t&lt;E&gt;...&gt;</code>. However, <code>std::monostate</code> can be an actual error type. It should be replaced by an implementation-defined, default constructible type.
 </p>
 </discussion>
 
