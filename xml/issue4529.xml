@@ -1,0 +1,92 @@
+<?xml version='1.0' encoding='utf-8' standalone='no'?>
+<!DOCTYPE issue SYSTEM "lwg-issue.dtd">
+
+<issue num="4529" status="New">
+<title><code>task::promise_type::await_transform</code> declaration and definition mismatch</title>
+<section><sref ref="[task.promise]"/></section>
+<submitter>Dietmar Kühl</submitter>
+<date>21 Feb 2026</date>
+<priority>99</priority>
+
+<discussion>
+<p>
+The declarations of <code>await_transform</code> mismatches between the 
+synopsis in <sref ref="[task.promise]"/> and the definition in
+<sref ref="[task.promise]"/> paragraph 9:
+</p>
+<pre>
+    template&lt;class A&gt;
+      auto await_transform(A&amp;&amp; a);
+    template&lt;class Sch&gt;
+      auto await_transform(change_coroutine_scheduler&lt;Sch&gt; sch);
+</pre>
+vs.
+<pre>
+    template&lt;sender Sender&gt;
+      auto await_transform(Sender&amp;&amp; sndr) noexcept;
+    template&lt;class Sch&gt;
+      auto await_transform(change_coroutine_scheduler&lt;Sch&gt; sch) noexcept;
+</pre>
+<p>
+The declaration should be fixed to match the definition.
+</p>
+</discussion>
+
+<resolution>
+<p>
+This wording is relative to <paper num="N5032"/>.
+</p>
+
+<ol>
+<li>
+<p>
+Change the declarations of <code>await_transform</code> in the synopsis of <code>promise_type</code> in <sref ref="[task.promise]"/> to match the definition in <sref ref="[task.promise]"/> p9 except for omitting the <code>noexcept</code> specifier:
+</p>
+<blockquote>
+<pre>
+namespace std::execution {
+  template&lt;class T, class Environment&gt;
+  class task&lt;T, Environment&gt;::promise_type {
+  public:
+    ... 
+    template&lt;class E&gt;
+      unspecified yield_value(with_error&lt;E&gt; error);
+
+    template&lt;<del>class A</del><ins>sender Sender</ins>&gt;
+      auto await_transform(<del>A&amp;&amp; a</del><ins>Sender&amp;&amp; sndr</ins>);
+    template&lt;class Sch&gt;
+      auto await_transform(change_coroutine_scheduler&lt;Sch&gt; sch);
+
+    <i>unspecified</i> get_env() const noexcept;
+    ...
+  };
+}
+</pre>
+</blockquote>
+</li>
+<li>
+<p>
+Remove the <code>noexcept</code> specifier from the declarations of <code>await_transform</code> in the definition of <code>promise_type</code> in <sref ref="[task.promise]"/> p9:
+</p>
+<blockquote>
+<pre>
+template&lt;sender Sender&gt;
+  auto await_transform(Sender&amp;&amp; sndr) <del>noexcept</del>;
+</pre>
+<p>
+-9- <i>Returns</i>: If <code>same_as&lt;inline_scheduler, scheduler_type&gt;</code> is <code>true</code> returns <code>as_awaitable(std::forward&lt;Sender&gt;(sndr), *this);</code> otherwise returns <code>as_awaitable(affine_on(std::forward&lt;Sender&gt;(sndr), <i>SCHED</i>(*this)), *this)</code>.
+</p>
+<pre>
+template&lt;class Sch&gt;
+  auto await_transform(change_coroutine_scheduler&lt;Sch&gt; sch) <del>noexcept</del>;
+</pre>
+-10- <i>Effects</i>: Equivalent to:
+<pre>
+     return await_transform(just(exchange(<i>SCHED(*this)</i>, scheduler_type(sch.scheduler))), *this);
+</pre>
+</blockquote>
+</li>
+</ol>
+</resolution>
+
+</issue>
