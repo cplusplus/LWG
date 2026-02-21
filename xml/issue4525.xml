@@ -2,25 +2,29 @@
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
 <issue num="4525" status="New">
-<title>final_suspend should move the result</title>
+<title><code>task</code>'s <code>final_suspend</code> should <code>move</code> the result</title>
 <section><sref ref="[task.promise]"/></section>
 <submitter>Dietmar Kühl</submitter>
-<date>18 Feb 2026</date>
+<date>21 Feb 2026</date>
 <priority>99</priority>
 
 <discussion>
 <p>
 In <sref ref="[task.promise]"/> p6.3 the `*result` is passed to
-`set_value` without `std::move`ing ig:
+`set_value` without `std::move`ing:
 <code>set_value(std::move(<i>RCVR</i>(*this)), *<i>result</i>)</code>.
-The second argument to `set_value` should be
-<code>std::move(*<i>result</i>)</code>. Once `set_value` is called
-operation state where <code><i>result</i></code> is stored just
-gets destroyed.
+Once `set_value` is called the operation state object where
+<code><i>result</i></code> is stored just gets destroyed.  The
+second argument to `set_value` should be
+<code>std::move(*<i>result</i>)</code>.
+
 </p>
 </discussion>
 
 <resolution>
+<p>
+This wording is relative to <paper num="N5032"/>.
+</p>
 
 <ol>
 <li><p>Change <sref ref="[task.promise]"/> p6.3 to <code>std::move</code> the
