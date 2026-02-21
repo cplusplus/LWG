@@ -1,0 +1,143 @@
+<?xml version='1.0' encoding='utf-8' standalone='no'?>
+<!DOCTYPE issue SYSTEM "lwg-issue.dtd">
+
+<issue num="4528" status="New">
+<title><code>task</code> needs <code>get_completion_signatures()</code></title>
+<section><sref ref="[task.class]"/></section>
+<submitter>Dietmar Kühl</submitter>
+<date>21 Feb 2026</date>
+<priority>99</priority>
+
+<discussion>
+<p>
+The changes made by <paper num="P3164"/> mean that it isn't sufficient
+to have a <code>completion_signatures</code> type alias in the
+<code>task</code> class. Instead, it needs to have a
+<code>static consteval get_completion_signatures()</code> member
+function that returns the completion signatures. Instead of defining
+a type alias, the function can return the same type.
+</p>
+</discussion>
+
+<resolution>
+<p>
+This wording is relative to <paper num="N5032"/>.
+</p>
+
+<ol>
+<li>
+<p>
+Change the <code>task</code> synopsis in <sref ref="[task.class]"/> to not have a <code>completion_signatures</code> type alias, but instead have a  <code>static consteval get_completion_signatures()</code> member function that returns the completion signatures:
+</p>
+<blockquote>
+<pre>
+namespace std::execution {
+  template&lt;class T = void, class Environment = env&lt;&gt;&gt;
+  class task {
+    // [task.state]
+    template&lt;receiver Rcvr&gt;
+      class state;                              // <i>exposition only</i>
+
+  public:
+    using sender_concept = sender_t;
+    <del>using completion_signatures = <i>see below</i>;</del>
+    using allocator_type = <i>see below</i>;
+    using scheduler_type = <i>see below</i>;
+    using stop_source_type = <i>see below</i>;
+    using stop_token_type = decltype(declval&lt;stop_source_type&gt;().get_token());
+    using error_types = <i>see below</i>;
+
+    // [task.promise]
+    class promise_type;
+
+    task(task&amp;&amp;) noexcept;
+    ~task();
+
+    <ins>template&lt;class Self, class... Env&gt;
+      static consteval auto get_completion_signatures();</ins>
+
+    template&lt;receiver Rcvr&gt;
+      state&lt;Rcvr&gt; connect(Rcvr&amp;&amp; rcvr) &amp;&amp;;
+
+  private:
+    coroutine_handle&lt;promise_type&gt; handle;      // <i>exposition only</i>
+  };
+}
+</pre>
+</blockquote>
+</li>
+<li>
+<p>
+Remove <sref ref="[task.class]"/> paragraph 4 (the specification moves to <sref ref="[task.members]"/>):
+</p>
+<blockquote>
+<p>
+<del>
+-4- The type alias <code>completion_signatures</code> is a specialization of <code>execution::completion_signatures</code> with the template arguments (in unspecified order):
+</del>
+</p>
+<p>
+<del>
+-4.1- --
+<code>set_value_t()</code> if <code>T</code> is <code>void</code>, and <code>set_value_t(T)</code> otherwise;
+</del>
+</p>
+<p>
+<del>
+-4.2- --
+template arguments of the specialization of <code>execution::completion_signatures</code> denoted by <code>error_types</code>; and
+</del>
+</p>
+<p>
+<del>
+-4.3- --
+<code>set_stopped_t()</code>.
+</del>
+</p>
+</blockquote>
+</li>
+<li>
+<p>
+Add a new paragraph to <sref ref="[task.members]"/> before the specification of the <code>connect</code> member function, with the specification of the new <code>get_completion_signatures</code> member function:
+</p>
+<blockquote>
+<ins>
+<pre>
+<ins>template&lt;class Self, class... Env&gt;
+  static consteval auto get_completion_signatures();</ins>
+</pre>
+</ins>
+<p>
+<ins>
+-?- Let the type <code>C</code> be a specialization of <code>execution::completion_signatures</code> with the template arguments (in unspecified order):
+</ins>
+</p>
+<p>
+<ins>
+-?.1- --
+<code>set_value_t()</code> if <code>T</code> is <code>void</code>, and <code>set_value_t(T)</code> otherwise;
+</ins>
+</p>
+<p>
+<ins>
+-?.2- --
+template arguments of the specialization of <code>execution::completion_signatures</code> denoted by <code>error_types</code>; and
+</ins>
+</p>
+<p>
+<ins>
+-?.3- --
+<code>set_stopped_t()</code>.
+</ins>
+</p>
+<p>
+<ins>
+-?- <i>Returns</i>: <code>C()</code>.
+</ins>
+</p>
+</blockquote>
+</li>
+</ol>
+</resolution>
+
+</issue>
