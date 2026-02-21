@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="2697" status="C++23">
+<issue num="2697" status="WP">
 <title>[concurr.ts] Behavior of <tt>future/shared_future</tt> unwrapping constructor when given an invalid <tt>future</tt></title>
 <section><sref ref="[futures.unique_future]"/><sref ref="[futures.shared_future]"/></section>
 <submitter>Tim Song</submitter>
