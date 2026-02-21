@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="4511" status="New">
+<issue num="4511" status="Ready">
 <title>Inconsistency between the deduction guide of `std::mdspan` taking `(data_handle_type, mapping_type, accessor_type)` 
 and the corresponding constructor</title>
 <section><sref ref="[mdspan.mdspan.overview]"/></section>
@@ -56,6 +56,8 @@ consistent with the constructor and accept more seemingly valid uses.
 Note that libc++ is accidentally doing this now by forgetting adding the <tt>&amp;</tt>, 
 see <a href="https://github.com/llvm/llvm-project/pull/175024">llvm/llvm-project#175024</a>.
 </p>
+
+<note>2026-02-20; LWG telecon; Status changed: New &rarr; Ready.</note>
 </discussion>
 
 <resolution>

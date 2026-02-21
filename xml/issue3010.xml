@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="3010" status="C++23">
+<issue num="3010" status="WP">
 <title>[networking.ts] <tt>uses_executor</tt> says "if a type <tt>T::executor_type</tt> exists"</title>
 <section><sref ref="[async.uses.executor.trait]"/></section>
 <submitter>Jonathan Wakely</submitter>

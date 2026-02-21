@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="3071" status="C++23">
+<issue num="3071" status="WP">
 <title>[networking.ts] <tt>read_until</tt> still refers to "input sequence"</title>
 <section><sref ref="[buffer.read.until]"/></section>
 <submitter>Christopher Kohlhoff</submitter>

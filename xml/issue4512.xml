@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="4512" status="New">
+<issue num="4512" status="Ready">
 <title>The `system_encoded_string()` and `generic_system_encoded_string()` member functions 
 of `std::filesystem::path` are misnamed</title>
 <section><sref ref="[fs.class.path.general]"/><sref ref="[fs.path.type.cvt]"/>
@@ -33,6 +33,8 @@ existing implementations call `AreFileApisANSI()` to choose between the Active C
 a thread-local locale and, if the locale encoding is UTF-8, prefers that (`CP_UTF8`) over 
 either of the other two.
 </p>
+
+<note>2026-02-20; LWG telecon; Status changed: New &rarr; Ready.</note>
 </discussion>
 
 <resolution>

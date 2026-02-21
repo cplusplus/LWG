@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="4482" status="New">
+<issue num="4482" status="NAD">
 <title>`adjacent_view::{begin,end}` const overloads are under-constrained</title>
 <section><sref ref="[range.adjacent.view]"/></section>
 <submitter>Hui Xie</submitter>
@@ -107,6 +107,14 @@ Split between NAD and P0 votes.
 <p>	
 We assume that <tt>input_range&lt;V&gt; &amp;&amp; range&lt;const V&gt;</tt> implies <tt>input_range&lt;const V&gt;</tt>,
 and <tt>forward</tt> should be the same.
+</p>
+
+<note>2026-02-20; LWG telecon; Status changed: New &rarr; NAD.</note>
+<p>
+There are many places that might need similar changes,
+and we would need to keep it in mind for every new ranges proposal too.
+We invite a paper that clarifies where we expect/require `R` and `const R`
+to behave consistently (see also LWG <iref ref="4221"/>).
 </p>
 </discussion>
 
