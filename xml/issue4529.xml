@@ -10,7 +10,7 @@
 
 <discussion>
 <p>
-The declarations of <code>await_transform</code> mismatches between the 
+The declarations of <code>await_transform</code> mismatch between the 
 synopsis in <sref ref="[task.promise]"/> and the definition in
 <sref ref="[task.promise]"/> paragraph 9:
 </p>
