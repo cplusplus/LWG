@@ -47,7 +47,7 @@ This wording is relative to <paper num="N5032"/>.
 <li>
 <p>
 Change the synopsis in <sref ref="[task.state]"/> to include an <code>optional&lt;stop_source_type&gt;</code> member
-and an exposition-only function to get a top token:
+and an exposition-only function to get a stop token:
 </p>
 <blockquote>
 <pre>
