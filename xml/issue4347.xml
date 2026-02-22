@@ -83,7 +83,7 @@ namespace std::execution {
 <p>
 In <sref ref="[task.state]"/> change paragraph 4 into two paragraphs:
 one for `start()` and one for <code><i>get-stop-token</i>()</code>
-such that the initializatoin of <code><i>source</i></code> is in
+such that the initialization of <code><i>source</i></code> is in
 the second paragraph:
 </p>
 <blockquote>
