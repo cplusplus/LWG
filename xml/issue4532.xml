@@ -4,9 +4,9 @@
 <issue num="4532" status="New">
 <title>Imprecise `std::polymorphic` wording seems to imply slicing</title>
 <section>
-<sref ref="[polymoprhic.ctor]"/>
-<sref ref="[polymoprhic.assign]"/>
-<sref ref="[polymoprhic.dtor]"/>
+<sref ref="[polymorphic.ctor]"/>
+<sref ref="[polymorphic.assign]"/>
+<sref ref="[polymorphic.dtor]"/>
 </section>
 <submitter>Fraser Gordon</submitter>
 <date>27 Feb 2026</date>
