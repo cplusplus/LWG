@@ -1,0 +1,140 @@
+<?xml version='1.0' encoding='utf-8' standalone='no'?>
+<!DOCTYPE issue SYSTEM "lwg-issue.dtd">
+
+<issue num="4536" status="New">
+<title>Type traits have inconsistent interactions with immediate functions</title>
+<section>
+<sref ref="[meta.unary.prop]"/>
+<sref ref="[meta.rel]"/>
+</section>
+<submitter>Tim Song</submitter>
+<date>5 Mar 2026</date>
+<priority>99</priority>
+
+<discussion>
+<p>
+Per <sref ref="[expr.const]"/>p23, calls to immediate functions are not immediate invocations,
+and therefore are not required to result in constant expressions, if the call occurs in an unevaluated operand.
+Currently, some type traits (e.g. `is_assignable`, `is_invocable`) specify that the construct at issue is treated as an unevaluated operand,
+while others (`is_constructible`, `is_convertible`) do not. This seems like a bad state of affairs.
+<p/>
+The wording below makes everything unevaluated (and hence not check for constant-ness) to match the behavior of `requires` expressions
+(and implementations). This arguably makes the traits less useful in some contexts where false negatives are tolerable
+but false positives are not.
+</p>
+</discussion>
+
+<resolution>
+<p>
+This wording is relative to <paper num="N5032"/>.
+</p>
+
+<ol>
+
+<li><p>Modify <sref ref="[tab:meta.unary.prop]"/>, Table 54 &mdash; Type property predicates as indicated:</p>
+
+<blockquote>
+<table border="1">
+<thead style="text-align: center">
+<tr><th>Template</th><th>Condition</th><th>Preconditions</th></tr>
+</thead>
+<tbody style="vertical-align: top">
+<tr><td>&hellip;</td><td>&hellip;</td><td>&hellip;</td></tr>
+<tr>
+<td>
+<pre><code>
+template&lt;class T, class U&gt;
+struct reference_constructs_from_temporary;</code></pre>
+</td>
+<td>
+`T` is a reference type, and the initialization <code>T t(<i>VAL</i>&lt;U&gt;);</code> is well-formed
+and binds `t` to a temporary object whose lifetime is extended (<sref ref="[class.temporary]"/>).
+<ins>The full-expression of the variable initialization is treated as an unevaluated operand (<sref ref="[expr.context]"/>).</ins>
+Access checking is performed as if in a context unrelated to `T` and `U`. Only the validity of
+the immediate context of the variable initialization is considered.
+[<i>Note 5:</i> &hellip; &mdash; <i>end note</i>]
+</td>
+<td>
+[&hellip;]
+</td>
+</tr>
+<tr>
+<td>
+<pre><code>
+template&lt;class T, class U&gt;
+struct reference_converts_from_temporary;</code></pre>
+</td>
+<td>
+`T` is a reference type, and the initialization <code>T t = <i>VAL</i>&lt;U&gt;;</code> is well-formed
+and binds `t` to a temporary object whose lifetime is extended (<sref ref="[class.temporary]"/>).
+<ins>The full-expression of the variable initialization is treated as an unevaluated operand (<sref ref="[expr.context]"/>).</ins>
+Access checking is performed as if in a context unrelated to `T` and `U`. Only the validity of
+the immediate context of the variable initialization is considered.
+[<i>Note 6:</i> &hellip; &mdash; <i>end note</i>]
+</td>
+<td>
+[&hellip;]
+</td>
+</tr>
+<tr><td>&hellip;</td><td>&hellip;</td><td>&hellip;</td></tr>
+</tbody>
+</table>
+</blockquote>
+</li>
+
+<li><p>Modify <sref ref="[meta.unary.prop]"/> p9 as indicated:</p>
+<blockquote>
+<p> -9- The predicate condition for a template specialization <code>is_constructible&lt;T, Args...&gt;</code> shall be satisfied
+if and only if the following variable definition would be well-formed for some invented variable `t`:
+</p>
+<blockquote>
+<pre>
+T t(declval&lt;Args&gt;()...);
+</pre>
+</blockquote>
+<p>
+[<i>Note 7:</i> &hellip; &mdash; <i>end note</i>]
+<p/>
+<ins>The full-expression of the variable initialization is treated as an unevaluated operand (<sref ref="[expr.context]"/>).</ins>
+Access checking is performed as if in a context unrelated to `T` and any of the `Args`.
+Only the validity of the immediate context of the variable initialization is considered.
+<p/>
+[<i>Note 8:</i> &hellip; &mdash; <i>end note</i>]
+</p>
+</blockquote>
+</li>
+
+
+<li><p>Modify <sref ref="[meta.rel]"/> p6 as indicated:</p>
+<blockquote>
+<p>-9- The predicate condition for a template specialization <code>is_convertible&lt;From, To&gt;</code> shall be satisfied
+if and only if the return <del>expression</del><ins>statement (<sref ref="[stmt.return]"/>)</ins>
+in the following code would be well-formed,
+including any implicit conversions to the return type of the function:
+</p>
+<blockquote>
+<pre>
+To test() {
+  return declval&lt;From&gt;();
+}
+</pre>
+</blockquote>
+<p>
+[<i>Note 4:</i> &hellip; &mdash; <i>end note</i>]
+<p/>
+Access checking is performed in a context unrelated to `To` and `From`.
+<ins>The <i>expression</i> of the `return` statement
+(including initialization of the returned object or reference, if any)
+is treated as an unevaluated operand (<sref ref="[expr.context]"/>), and only the validity of its immediate context is considered.</ins>
+<del>Only the validity of the immediate context of the <i>expression</i> of the `return` statement (<sref ref="[stmt.return]"/>)
+(including initialization of the returned object or reference) is considered.</del>
+<p/>
+[<i>Note 5:</i> &hellip; &mdash; <i>end note</i>]
+</p>
+</blockquote>
+</li>
+
+</ol>
+</resolution>
+
+</issue>
