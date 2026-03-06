@@ -1,0 +1,104 @@
+<?xml version='1.0' encoding='utf-8' standalone='no'?>
+<!DOCTYPE issue SYSTEM "lwg-issue.dtd">
+
+<issue num="4534" status="New">
+<title>`is_consteval_only` preconditions are too weak</title>
+<section>
+<sref ref="[meta.unary.prop]"/>
+</section>
+<submitter>Tim Song</submitter>
+<date>5 Mar 2026</date>
+<priority>99</priority>
+
+<discussion>
+<b>
+Addresses <a href="https://github.com/cplusplus/nbballot/issues/728">US 81-149</a>.
+</b>
+<p>
+The precondition for `is_consteval_only` is insufficient. A definitive false answer requires every type that `T` is compounded from to be complete or cv void.
+</p>
+</discussion>
+
+<resolution>
+<p>
+This wording is relative to <paper num="N5032"/>.
+</p>
+
+<ol>
+
+<li><p>Combine <sref ref="[meta.unary.prop]"/> p4-5 into one paragraph with a bullet list, then add a new bullet, as indicated:</p>
+<blockquote>
+<p>
+-4- For the purpose of defining the templates in this subclause<del>,</del><ins>:</ins>
+</p>
+<ul style="list-style-type: none">
+<li><p>
+<ins>(4.1) &mdash;</ins> a function call expression <code>declval&lt;T&gt;()</code> for any type `T` is
+considered to be a trivial (<sref ref="[depr.meta.types]"/>, <sref ref="[special]"/>)
+function call that is not an odr-use (<sref ref="[basic.def.odr]"/>) of `declval`
+in the context of the corresponding definition notwithstanding the restrictions of <sref ref="[declval]"/>.
+</p></li>
+<li><p>
+<ins>(4.2) &mdash;</ins> <del>-5- For the purpose of defining the templates in this subclause,</del>
+let <code><i>VAL</i>&lt;T&gt;</code> for some type `T` be an expression defined as follows:</p>
+<ul style="list-style-type: none">
+<li><p>(<del>5.1</del><ins>4.2.1</ins>) &mdash; [&hellip;]
+</p></li>
+<li><p>(<del>5.2</del><ins>4.2.2</ins>) &mdash; [&hellip;]
+</p></li>
+</ul>
+</li>
+<li><p>
+<ins>(4.3) &mdash; let `C(T)` be the set of types defined as follows:</ins></p>
+<ul style="list-style-type: none">
+<li><p><ins>(4.3.1) &mdash; if `T` is the type "array of `U`", "pointer to `U`", or "reference to `U`", then `C(T)` is `C(U)`;
+</ins></p></li>
+<li><p><ins>(4.2.2) &mdash; otherwise, if `T` is the type "pointer to member of class `X` of type `U`", then `C(T)` is the union of `C(X)` and `C(U)`;
+</ins></p></li>
+<li><p><ins>(4.2.3) &mdash; otherwise, if `T` is the type "`noexcept`<i><sub>opt</sub></i> function of parameter-type-list <i>cv-qualifier-seq<sub>opt</sub></i> <i>ref-qualifier<sub>opt</sub></i> returning `U`",
+then `C(T)` is the union of `C(U)` and `C(X)` for each type `X` in the parameter-type-list;
+</ins></p></li>
+<li><p><ins>(4.2.4) &mdash; otherwise, if `T` is a complete class type,
+then `C(T)` is the union of `C(U)`, where `U` is the type of each (possibly indirect) non-static data member of `T`;
+</ins></p></li>
+<li><p><ins>(4.2.5) &mdash; otherwise, `C(T)` is the set containing the single element <code>remove_cv_t&lt;T&gt;</code>.
+</ins></p></li>
+</ul>
+</li>
+</ul>
+</blockquote>
+</li>
+
+<li><p>Modify <sref ref="[tab:meta.unary.prop]"/>, Table 54 &mdash; Type property predicates as indicated:</p>
+
+<blockquote>
+<table border="1">
+<thead style="text-align: center">
+<tr><th>Template</th><th>Condition</th><th>Preconditions</th></tr>
+</thead>
+<tbody style="vertical-align: top">
+<tr><td>&hellip;</td><td>&hellip;</td><td>&hellip;</td></tr>
+<tr>
+<td>
+<pre><code>template&lt;class T&gt;
+struct is_consteval_only;</code></pre>
+</td>
+<td>
+T is consteval-only (<sref ref="[basic.types.general]"/>)
+</td>
+<td>
+<del><code>remove_all_extents_t&lt;T&gt;</code> shall be a complete type or _cv_ `void`.</del>
+<ins>If `C(T)` does not contain `std::meta::info`,
+then it shall not contain an incomplete class type.</ins>
+</td>
+</tr>
+<tr><td>&hellip;</td><td>&hellip;</td><td>&hellip;</td></tr>
+</tbody>
+</table>
+</blockquote>
+</li>
+
+</ol>
+</resolution>
+
+</issue>
