@@ -1,0 +1,49 @@
+<?xml version='1.0' encoding='utf-8' standalone='no'?>
+<!DOCTYPE issue SYSTEM "lwg-issue.dtd">
+
+<issue num="4535" status="New">
+<title>Disallow user specialization of <code>&lt;simd&gt;</code> templates</title>
+<section>
+<sref ref="[simd.general]"/>
+</section>
+<submitter>Tim Song</submitter>
+<date>5 Mar 2026</date>
+<priority>99</priority>
+
+<discussion>
+<b>
+Addresses <a href="https://github.com/cplusplus/nbballot/issues/855">US 176-280</a>.
+</b>
+<p>
+It does not appear that any of the class templates in <code>&lt;simd&gt;</code> can be profitably specialized by the user &ndash; or that the non-member functions can be used with such user specializations.
+</p>
+</discussion>
+
+<resolution>
+<p>
+This wording is relative to <paper num="N5032"/>.
+</p>
+
+<ol>
+
+<li><p>Add the following paragraph to the end of <sref ref="[simd.general]"/>:</p>
+<blockquote>
+<p>
+<ins>-?- If a program declares an explicit or partial specialization of any of the templates specified in subclause <sref ref="[simd]"/>,
+the program is ill-formed, no diagnostic required.</ins>
+</p>
+</blockquote>
+</li>
+
+<li><p>Strike <sref ref="[simd.traits]"/> p3 as redundant:</p>
+<blockquote>
+<p>
+<del>-3- The behavior of a program that adds specializations for `alignment` is undefined.</del>
+</p>
+</blockquote>
+</li>
+
+</ol>
+</resolution>
+
+</issue>
