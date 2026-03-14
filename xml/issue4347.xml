@@ -103,30 +103,32 @@ void start() &amp; noexcept;
 -4.3- -- <code><i>SCHED</i>(<i>prom</i>)</code> is the object initialized with <code>scheduler_type(get_scheduler(get_env(<i>rcvr</i>)))</code> if that expression is valid and <code>scheduler_type()</code> otherwise. If neither of these expressions is valid, the program is ill-formed.
 </p>
 <p>
-<ins>-5- After that invokes handle.resume().</ins>
+<del>Let <code>st</code> be <code>get_stop_token(get_env(<i>rcvr</i>))</code>. Initializes <code><i>prom</i>.<i>token</i></code> and <code><i>prom</i>.<i>source</i></code> such that</del>
+</p>
+<p>
+<del>-4.4- -- <code><i>prom</i>.token.stop_requested()</code> returns <code>st.stop_requested()</code></del>;
+</p>
+<p>
+<del>-4.5- -- <code><i>prom</i>.token.stop_possible()</code> returns <code>st.stop_possible()</code>; and</del>
+</p>
+<p>
+<del>-4.6- -- for types <code>Fn</code> and <code>Init</code> such that both <code>invocable&lt;Fn&gt;</code> and <code>constructible_from&lt;Fn, Init&gt; are modeled, </code>stop_token_type::callback_type&lt;Fn&gt; models <code><i>stoppable-callback-for</i>&lt;Fn, stop_token_type, Init&gt;</code>.</del>
+</p>
+<p>
+<ins>-5-</ins> After that invokes <code><i>handle</i>.resume()</code>.
 </p>
 <pre>
 <ins>stop_token_type <i>get-stop-token</i>();</ins>
 </pre>
 <p>
 <ins>-6- <i>Effects</i>: If <code>same_as&lt;decltype(declval&lt;stop_source_type&gt;().get_token()), decltype(get_stop_token(get_env(<i>rcvr</i>)))&gt;</code> is <code>true</code> returns <code>get_stop_token(get_env(<i>rcvr</i>))</code>.
-Otherwise, if <code><i>source</i>.has_value()</code> is <code>false</code>, l</ins><del>L</del>et <code>st</code> be <code>get_stop_token(get_env(<i>rcvr</i>))</code>. Initializes <del><code><i>prom</i>.<i>token</i></code> and <code><i>prom</i>.<i>source</i></code></del><ins><code><i>source</i></code></ins> such that
+Otherwise, if <code><i>source</i>.has_value()</code> is <code>false</code>, initializes <code><i>source</i></code> such that</ins>
 </p>
-<p>
--<del>4.4</del><ins>6.1</ins> - -- <code><del><i>prom</i>.token.</del><ins><i>source</i>-&gt;</ins>stop_requested()</code> returns <code>st.stop_requested()</code>;
-</p>
-<p>
--<del>4.5</del><ins>6.2</ins>- -- <code><del><i>prom</i>.token.</del><ins><i>source</i>-&gt;</ins>stop_possible()</code> returns <code>st.stop_possible()</code>; and
-</p>
-<p>
-<del>-4.6- -- for types <code>Fn</code> and <code>Init</code> such that both <code>invocable&lt;Fn&gt;</code> and <code>constructible_from&lt;Fn, Init&gt; are modeled, </code>stop_token_type::callback_type&lt;Fn&gt; models <code><i>stoppable-callback-for</i>&lt;Fn, stop_token_type, Init&gt;</code>.</del>
-</p>
-<p>
-<ins>-7- Returns <code><i>source</i>-&gt;get_token()</code>.</ins>
-</p>
-<p>
-<del>After that invokes handle.resume().</del>
-</p>
+<ul>
+<li><ins> -6.1- -- <code><i>source</i>-&gt;stop_requested()</code> returns <code>get_stop_token(get_env(<i>rcvr</i>))-&gt;stop_requested()</code>; and</ins></li>
+<li><ins> -6.2- -- <code><i>source</i>-&gt;stop_possible()</code> returns <code>get_stop_token(get_env(<i>rcvr</i>))-&gt;stop_possible()</code></ins></li>
+</ul>
+<p><ins> Finally, returns <code><i>source</i>-&gt;get_token()</code>.</ins></p>
 </blockquote>
 </li>
 <li>
