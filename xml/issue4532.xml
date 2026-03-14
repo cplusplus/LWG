@@ -1,0 +1,156 @@
+<?xml version='1.0' encoding='utf-8' standalone='no'?>
+<!DOCTYPE issue SYSTEM "lwg-issue.dtd">
+
+<issue num="4532" status="New">
+<title>Imprecise `std::polymorphic` wording seems to imply slicing</title>
+<section>
+<sref ref="[polymorphic.ctor]"/>
+<sref ref="[polymorphic.assign]"/>
+<sref ref="[polymorphic.dtor]"/>
+</section>
+<submitter>Fraser Gordon</submitter>
+<date>27 Feb 2026</date>
+<priority>99</priority>
+
+<discussion>
+<p>
+The wording for some member functions of `std::polymorphic` is imprecise, leading to plausible 
+interpretations that undermine the purpose of the type (i.e causing slicing on copy/move).
+<p/>
+The wording on most copy/assign methods includes a clause "of type `U`, where `U` is the type of 
+the owned object in `other`" but the copy/move assignment methods are missing this, which allows 
+a reading where <tt>allocator_traits&lt;Allocator&gt;::construct</tt> is called to construct 
+an instance of `value_type` instead of `U`.
+<p/>
+A similar reading of the destructor effects would cause `~value_type()` to be used instead of 
+`~U()`, so that should also be cleaned up.
+<p/>
+Finally, the last sentence of the effects of one of the constructors (<sref ref="[polymorphic.ctor]"/> p11) 
+doesn't make sense in context ("constructs an object of type `polymorphic`, considering the owned object 
+in `other` as an rvalue"). As written, this is creating a new polymorphic object and doing nothing 
+with it when the intended effect would be to construct a new owned object.
+</p>
+</discussion>
+
+<resolution>
+<p>
+This wording is relative to <paper num="N5032"/>.
+</p>
+
+<ol>
+
+<li><p>Modify <sref ref="[polymorphic.ctor]"/> as indicated:</p>
+
+<blockquote>
+<pre>
+constexpr polymorphic(allocator_arg_t, const Allocator&amp; a, polymorphic&amp;&amp; other)
+  noexcept(allocator_traits&lt;Allocator&gt;::is_always_equal::value);
+</pre>
+<blockquote>
+<p>
+-11- <i>Effects</i>: <tt><i>alloc</i></tt> is direct-non-list-initialized with `a`. 
+If `other` is valueless, `*this is valueless`. Otherwise, if <tt><i>alloc</i> == other.<i>alloc</i></tt> 
+is `true`, either constructs an object of type `polymorphic` that owns the
+owned object of `other`, making `other` valueless; or, owns an object of the same type constructed
+from the owned object of other considering that owned object as an rvalue. Otherwise, if 
+<tt><i>alloc</i> != other.<i>alloc</i></tt> is `true`, constructs an <del>object of type `polymorphic`, 
+considering</del><ins>owned object of type `U`, where `U` is the type of the owned object in 
+`other`, with</ins> the owned object in `other` as an rvalue, using the allocator <tt><i>alloc</i></tt>.
+</p>
+</blockquote>
+</blockquote>
+</li>
+
+<li><p>Modify <sref ref="[polymorphic.assign]"/> as indicated:</p>
+
+<blockquote>
+<pre>
+constexpr polymorphic&amp; operator=(const polymorphic&amp; other);
+</pre>
+<blockquote>
+<p>
+-1- <i>Mandates</i>: `T` is a complete type.
+<p/>
+-2- <i>Effects</i>: If `addressof(other) == this` is `true`, there are no effects. Otherwise:
+</p>
+<ul style="list-style-type: none">
+<li><p>
+(2.1) &mdash; [&hellip;]
+</p></li>
+<li><p>
+(2.2) &mdash; If `other` is not valueless, a new owned object <ins>of type `U`, where `U` is the type 
+of the owned object in other,</ins> is constructed in `*this` using 
+<tt>allocator_traits&lt;Allocator&gt;::construct</tt> with the owned object from `other` as the 
+argument, using either the allocator in `*this` or the allocator in `other` if the allocator needs 
+updating.
+</p></li>
+<li><p>
+(2.3) &mdash; [&hellip;]
+</p></li>
+<li><p>
+(2.4) &mdash; [&hellip;]
+</p></li>
+</ul>
+</blockquote>
+<pre>
+constexpr polymorphic&amp; operator=(polymorphic&amp;&amp; other)
+  noexcept(allocator_traits&lt;Allocator&gt;::propagate_on_container_move_assignment::value ||
+           allocator_traits&lt;Allocator&gt;::is_always_equal::value);
+</pre>
+<blockquote>
+<p>
+-5- <i>Mandates</i>: If <tt>allocator_traits&lt;Allocator&gt;::propagate_on_container_move_assignment::value</tt>
+is `false` and <tt>allocator_traits&lt;Allocator&gt;::is_always_equal::value</tt> is `false`, `T` 
+is a complete type.
+<p/>
+-6- <i>Effects</i>: If `addressof(other) == this` is `true`, there are no effects. Otherwise:
+</p>
+<ul style="list-style-type: none">
+<li><p>
+(6.1) &mdash; [&hellip;]
+</p></li>
+<li><p>
+(6.2) &mdash; [&hellip;]
+</p></li>
+<li><p>
+(6.3) &mdash; [&hellip;]
+</p></li>
+<li><p>
+(6.4) &mdash; Otherwise, constructs a new owned object <ins>of type `U`, where `U` is the type of the 
+owned object in `other`,</ins> with the owned object of `other` as the argument as an rvalue, 
+using the allocator in `*this`.
+</p></li>
+<li><p>
+(6.5) &mdash; [&hellip;]
+</p></li>
+<li><p>
+(6.6) &mdash; [&hellip;]
+</p></li>
+</ul>
+</blockquote>
+</blockquote>
+</li>
+
+<li><p>Modify <sref ref="[polymorphic.dtor]"/> as indicated:</p>
+
+<blockquote>
+<pre>
+constexpr ~polymorphic();
+</pre>
+<blockquote>
+<p>
+-1- <i>Mandates</i>: `T` is a complete type.
+<p/>
+-2- <i>Effects</i>: If `*this` is not valueless, <del>destroys the owned object using 
+<tt>allocator_traits&lt;Allocator&gt;::destroy and</tt></del><ins>calls 
+<tt>allocator_traits&lt;Allocator&gt;::destroy(p)</tt>, where `p` is a pointer of type 
+`U*` to the owned object and `U` is the type of the owned object;</ins> then the storage 
+is deallocated.
+</p>
+</blockquote>
+</blockquote>
+</li>
+</ol>
+</resolution>
+
+</issue>

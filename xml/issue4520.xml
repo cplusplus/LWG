@@ -1,12 +1,12 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="4520" status="New">
+<issue num="4520" status="LEWG">
 <title>Breaking change in `std::span` new `initializer_list` constructor</title>
 <section><sref ref="[span.cons]"/></section>
 <submitter>Michael Schellenberger Costa</submitter>
 <date>10 Feb 2026</date>
-<priority>99</priority>
+<priority>1</priority>
 
 <discussion>
 <p>
@@ -36,6 +36,18 @@ The issue is that the compiler tries a conversion sequence from `bool*` to `bool
 `size_t` to `bool`.
 <p/>
 We probably should disallow conversions to `bool` by that constructor.
+</p>
+
+<note>2026-02-27; Reflector poll.</note>
+<p>
+Set priority to 1 after reflector poll.
+</p>
+<p>
+Votes being split between LEWG/P1 and considering this new information from
+deployment experience, and NAD as the breakage in the paper was already covered
+in <sref ref="[diff.cpp23.containers]"/>. It was pointed out, that in contrast
+to the silent change of meaning already discussed with paper, this snippet becomes
+ill-formed.
 </p>
 </discussion>
 

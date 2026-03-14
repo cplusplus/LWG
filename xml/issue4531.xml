@@ -1,0 +1,73 @@
+<?xml version='1.0' encoding='utf-8' standalone='no'?>
+<!DOCTYPE issue SYSTEM "lwg-issue.dtd">
+
+<issue num="4531" status="New">
+<title>Should there be a feature-test macro update for constexpr `std::to_(w)string`?</title>
+<section><sref ref="[version.syn]"/></section>
+<submitter>Jiang An</submitter>
+<date>25 Feb 2026</date>
+<priority>99</priority>
+
+<discussion>
+<p>
+<paper num="P3391R2"/> added `constexpr` to integral overloads of `std::to_string` 
+and `std::to_wstring`. However, the paper only added one feature-test macro 
+`__cpp_lib_constexpr_format`, which doesn't seem clearly related to `std::to_(w)string`.
+<p/>
+Given that <paper num="P3391R2"/> contained the constexpr additions in 
+<paper num="P3438R0"/> which proposed to bump `__cpp_lib_to_string`, perhaps we should 
+bump that FTM. It might be also reasonable to bump `__cpp_lib_constexpr_string` for pure 
+constexpr additions.
+</p>
+</discussion>
+
+<resolution>
+<p>
+This wording is relative to <paper num="N5032"/>.
+</p>
+
+<blockquote class="note">
+<p>
+[<i>Drafting Note:</i> Two mutually exclusive options are prepared, depicted below by <b>Option A</b> and 
+<b>Option B</b>, respectively.] 
+</p>
+</blockquote>
+
+<p>
+<b>Option A:</b>
+</p>
+
+<ol>
+
+<li><p>Modify <sref ref="[version.syn]"/> as indicated:</p>
+
+<blockquote>
+<pre>
+[&hellip;]
+#define __cpp_lib_to_string                         <del>202306L</del><ins>202511L</ins> // <i>also in &lt;string&gt;</i>
+[&hellip;]
+</pre>
+</blockquote>
+</li>
+</ol>
+
+<p>
+<b>Option B:</b>
+</p>
+
+<ol>
+
+<li><p>Modify <sref ref="[version.syn]"/> as indicated:</p>
+
+<blockquote>
+<pre>
+[&hellip;]
+#define __cpp_lib_constexpr_string                  <del>201907L</del><ins>202511L</ins> // <i>also in &lt;string&gt;</i>
+[&hellip;]
+</pre>
+</blockquote>
+</li>
+</ol>
+</resolution>
+
+</issue>

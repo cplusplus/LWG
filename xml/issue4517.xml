@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="4517" status="New">
+<issue num="4517" status="Tentatively Ready">
 <title>`data_member_spec` should throw for <i>cv</i>-qualified unnamed bit-fields</title>
 <section><sref ref="[meta.reflection.define.aggregate]"/></section>
 <submitter>Marek Polacek</submitter>
@@ -30,6 +30,11 @@ constexpr auto d3 = std::meta::data_member_spec(^^const volatile int, { .bit_wid
 </pre></blockquote>
 <p>
 all three `data_member_spec` should throw.
+</p>
+
+<note>2026-02-27; Reflector poll.</note>
+<p>
+Set status to Tentatively Ready after 8 votes in favour during reflector poll.
 </p>
 </discussion>
 

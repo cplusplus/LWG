@@ -30,25 +30,34 @@ src/*.o: clean
 .DEFAULT_GOAL: all
 endif
 
-all: pgms
+all: check pgms
 
 pgms: $(PGMS)
 
 -include src/*.d
 
-bin/lists: src/issues.o src/status.o src/sections.o src/mailing_info.o src/report_generator.o src/lists.o src/metadata.o
+bin/lists: src/issues.o src/status.o src/sections.o src/mailing_info.o src/report_generator.o src/lists.o src/metadata.o src/html_utils.o
 
 bin/section_data: src/section_data.o
 
-bin/list_issues: src/issues.o src/status.o src/sections.o src/list_issues.o src/metadata.o
+bin/list_issues: src/issues.o src/status.o src/sections.o src/list_issues.o src/metadata.o src/html_utils.o
 
 bin/set_status: src/set_status.o src/status.o
 
+bin/self_test_%: CPPFLAGS += -DSELF_TEST
+bin/self_test_%: CXXFLAGS += -O0 -MF src/self_test_$*.d
+bin/self_test_%: src/%.cpp
+	$(LINK.C) $< $(LDLIBS) -o $@
+
+check: bin/self_test_html_utils
+	@x=0; for test in $^; do ./$$test || x=$$? ; done; exit $$x
+.PHONY: check
+
 $(PGMS):
-	$(CXX) $(CXXFLAGS) $(LDFLAGS) -o $@ $^ $(LDLIBS)
+	$(LINK.C) $^ $(LDLIBS) -o $@
 
 clean:
-	rm -f $(PGMS) src/*.o src/*.d
+	rm -f $(PGMS) src/*.o src/*.d bin/self_test_*
 
 # Remove everything.
 # Caution: Regenerating meta-data/dates will take about 30 minutes.

@@ -1,0 +1,68 @@
+<?xml version='1.0' encoding='utf-8' standalone='no'?>
+<!DOCTYPE issue SYSTEM "lwg-issue.dtd">
+
+<issue num="4530" status="New">
+<title>Unclear specification for <tt>formatter&lt;charT[N], charT&gt;</tt></title>
+<section><sref ref="[format.formatter.spec]"/></section>
+<submitter>Ivan Lazaric</submitter>
+<date>24 Feb 2026</date>
+<priority>99</priority>
+
+<discussion>
+<p>
+According to <sref ref="[format.formatter.spec]"/> p2 bullet (2.2), the C++ spec specifies 
+<tt>formatter&lt;charT[N], charT&gt;</tt> specialization as enabled, but it doesn’t specify 
+how it formats the array.
+<p/>
+Currently there is implementation divergence on this:
+</p>
+<ul>
+<li><p>libstdc++ formats all characters of the array,</p></li>
+<li><p>while libc++ and MSVC format up to the first null character.</p></li>
+</ul>
+<p>
+This can be observed by the following code example (See also <a href="https://godbolt.org/z/4eoad7o94">godbolt demo</a>,
+last one shows the outcome for fmt library):
+</p>
+<blockquote><pre>
+#include &lt;print&gt;
+
+template&lt;typename T&gt;
+struct wrapper {
+  const T&amp; ref;
+};
+
+template&lt;typename T&gt;
+struct std::formatter&lt;wrapper&lt;T&gt;, char&gt; {
+  std::formatter&lt;T, char&gt; underlying;
+  constexpr auto parse(auto&amp; ctx) { return underlying.parse(ctx); }
+  auto format(wrapper&lt;T&gt; w, auto&amp; ctx) const { return underlying.format(w.ref, ctx); }
+};
+
+int main() {
+  std::print("{:?}\n", "hello\nworld");
+  std::print("{:?}\n", wrapper("hello\nworld"));
+}
+</pre></blockquote>
+<p>
+Clarifying libstdc++ behaviour:
+<p/>
+First print statement decays the array into a pointer in basic_format_arg construction:
+<p/>
+<a href="https://github.com/gcc-mirror/gcc/blob/master/libstdc%2B%2B-v3/include/std/format#L4535-L4545">gcc/libstdc-v3/include/std/format#L4535-L4545</a>
+<p/>
+<a href="https://github.com/gcc-mirror/gcc/blob/master/libstdc%2B%2B-v3/include/std/format#L4440-L4443">gcc/libstdc-v3/include/std/format#L4440-L4443</a>
+<p/>
+So it gets formatted through <tt>formatter&lt;const char*, char&gt;</tt>. The second print 
+statement goes through <tt>formatter&lt;char[12], char&gt;</tt>, which emits the null 
+character at the end as well.
+<p/>
+In essence, libstdc++ <tt>formatter&lt;char[N], char&gt;</tt> formats it as `string_view(arr, N)`,
+while others format as `string_view(arr)`.
+</p>
+</discussion>
+
+<resolution>
+</resolution>
+
+</issue>

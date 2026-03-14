@@ -1,0 +1,51 @@
+<?xml version='1.0' encoding='utf-8' standalone='no'?>
+<!DOCTYPE issue SYSTEM "lwg-issue.dtd">
+
+<issue num="4538" status="New">
+<title>`member_offset::total_bits` should be `noexcept`</title>
+<section>
+<sref ref="[meta.reflection.layout]"/>
+</section>
+<submitter>Hewill Kang</submitter>
+<date>10 Mar 2026</date>
+<priority>99</priority>
+
+<discussion>
+<p>
+This member simply returns the result of integer calculations, which can be `noexcept`.
+</p>
+</discussion>
+
+<resolution>
+<p>
+This wording is relative to <paper num="N5032"/>.
+</p>
+
+<ol>
+
+<li><p>Modify <sref ref="[meta.reflection.layout]"/> as indicated:</p>
+
+<blockquote>
+<pre>
+struct member_offset {
+  ptrdiff_t bytes;
+  ptrdiff_t bits;
+  constexpr ptrdiff_t total_bits() const <ins>noexcept</ins>;
+  auto operator&lt;=&gt;(const member_offset&amp;) const = default;
+};
+</pre>
+<pre>
+constexpr ptrdiff_t member_offset::total_bits() const <ins>noexcept</ins>;
+</pre>
+<blockquote>
+<p>
+-1- <i>Returns</i>: `bytes * CHAR_BIT + bits`.
+</p>
+</blockquote>
+</blockquote>
+</li>
+
+</ol>
+</resolution>
+
+</issue>

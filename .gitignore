@@ -12,6 +12,7 @@
 /bin/list_issues
 /bin/set_status.exe
 /bin/set_status
+/bin/self_test_*
 /build
 /out
 /src/*.[do]

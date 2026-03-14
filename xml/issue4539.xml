@@ -1,0 +1,110 @@
+<?xml version='1.0' encoding='utf-8' standalone='no'?>
+<!DOCTYPE issue SYSTEM "lwg-issue.dtd">
+
+<issue num="4539" status="New">
+<title>Undefined behavior in `std::bit_cast` should be diagnosed during constant evaluation</title>
+<section>
+<sref ref="[bit.cast]"/>
+</section>
+<submitter>Jan Schultke</submitter>
+<date>10 Mar 2026</date>
+<priority>99</priority>
+
+<discussion>
+<p>
+Consider the following example with undefined behavior, which assumes that `sizeof(int)` equals `4`:
+</p>
+<blockquote><pre>
+struct alignas(4) E { };
+constexpr auto x = std::bit_cast&lt;int&gt;(E{});
+</pre></blockquote>
+<p>
+The example compiles with MSVC without any error or warning, where `x` has the value `0`, 
+which is valid if the UB is library UB; other compilers reject it.
+<p/>
+<sref ref="[bit.cast]"/> paragraph 4, bullet 2 explicitly states:
+</p>
+<blockquote style="border-left: 3px solid #ccc;padding-left: 15px;">
+<p>
+Otherwise, if <tt><i>b</i></tt> is indeterminate, the behavior is undefined.
+</p>
+</blockquote>
+<p>
+The fact that undefined behavior is called out explicitly within library wording suggests that this is 
+"library UB", not "core UB" that would prevent the initializer from being a constant expression because 
+it violates the requirement of <sref ref="[expr.const]"/> paragraph 21 bullet 2.3:
+</p>
+<blockquote style="border-left: 3px solid #ccc;padding-left: 15px;">
+<p>
+no constituent value of scalar type is an indeterminate or erroneous value (<sref ref="[basic.indet]"/>),
+</p>
+</blockquote>
+<p>
+Similarly, <sref ref="[bit.cast]"/> paragraph 4 states that forming a value representation that is not 
+valid for the type is undefined, which may also be seen as "library UB".  This can occur in 
+<tt>bit_cast&lt;bool&gt;(char{2})</tt> if `2` is not a valid representation of `bool`.
+<p/>
+During the 2026-03-10 LEWG telecon discussing <paper num="P3969R0"/>, LEWG polled whether this UB 
+should be diagnosed.
+</p>
+<blockquote>
+<p>
+POLL: The undefined behavior in `bit_cast` should be diagnosable during constexpr.<br/>
+Attendance: 19<br/>
+Authors' opinion: N/A<br/>
+Outcome: No objection to unanimous consent.
+</p>
+</blockquote>
+</discussion>
+
+<resolution>
+<p>
+This wording is relative to <paper num="N5032"/>.
+</p>
+
+<ol>
+
+<li><p>Modify <sref ref="[bit.cast]"/> as indicated:</p>
+
+<blockquote>
+<pre>
+template&lt;class To, class From&gt;
+  constexpr To bit_cast(const From&amp; from) noexcept;
+</pre>
+<blockquote>
+<p>
+-1- <i>Constraints</i>: [&hellip;]
+<p/>
+-2- <i>Mandates</i>: Neither `To` nor `From` are consteval-only types (<sref ref="[basic.types.general]"/>).
+<p/>
+-3- <i>Constant When</i>: `To`, `From`, and the types of all subobjects of `To` and `From` 
+are types `T` such that: [&hellip;]
+<p/>
+-4- <i>Returns</i>: An object of type `To`. Implicitly creates objects nested within the result 
+(<sref ref="[intro.object]"/>). Each bit of the value representation of the result is equal to the 
+corresponding bit in the object representation of from. Padding bits of the result are unspecified. 
+For the result and each object created within it, if there is no value of the object's type corresponding 
+to the value representation produced, the behavior is undefined. If there are multiple such values, which 
+value is produced is unspecified. A bit in the value representation of the result is indeterminate 
+if it does not correspond to a bit in the value representation of from or corresponds to a bit for 
+which the smallest enclosing object is not within its lifetime or has an indeterminate value 
+(<sref ref="[basic.indet]"/>). A bit in the value representation of the result is erroneous if it 
+corresponds to a bit for which the smallest enclosing object has an erroneous value. For each bit 
+<tt><i>b</i></tt> in the value representation of the result that is indeterminate or erroneous, 
+let <tt><i>u</i></tt> be the smallest object containing that bit enclosing <tt><i>b</i></tt>:
+<p/>
+[&hellip;]
+<p/>
+The result does not otherwise contain any indeterminate or erroneous values.
+<p/>
+<ins>-?- <i>Remarks</i>: A function call expression that has undefined or erroneous behavior as 
+described above is not a core constant expression.</ins>
+</p>
+</blockquote>
+</blockquote>
+</li>
+
+</ol>
+</resolution>
+
+</issue>

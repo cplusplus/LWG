@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="4510" status="New">
+<issue num="4510" status="Ready">
 <title>Ambiguity of `std::ranges::advance` and `std::ranges::next` when the difference type is also a sentinel type</title>
 <section><sref ref="[range.iter.op.advance]"/><sref ref="[range.iter.op.next]"/></section>
 <submitter>Jiang An</submitter>
@@ -165,6 +165,7 @@ template&lt;input_or_output_iterator I, <del>sentinel_for&lt;I&gt;</del><ins>cla
 </superseded>
 
 <note>2026-02-20; Jonathan provides new wording</note>
+<note>2026-02-27; LWG telecon: move to Ready</note>
 
 </discussion>
 

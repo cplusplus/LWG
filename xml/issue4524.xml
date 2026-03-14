@@ -6,7 +6,7 @@
 <section><sref ref="[exec.schedule.from]"/></section>
 <submitter>Brian Bi</submitter>
 <date>20 Jan 2026</date>
-<priority>99</priority>
+<priority>2</priority>
 
 <discussion>
 <p>
@@ -23,6 +23,11 @@ have a circular dependency.
 The return type should probably be written out explicitly as 
 <tt><i>FWD-ENV-T</i>(env_of_t&lt;Rcvr&gt;)</tt> or something like that (except that 
 it seems like `Rcvr` is already "out of scope" here, so I don't know how to word it exactly).
+</p>
+
+<note>2026-02-27; Reflector poll.</note>
+<p>
+Set priority to 2 after reflector poll.
 </p>
 </discussion>
 

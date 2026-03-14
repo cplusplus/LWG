@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="4523" status="New">
+<issue num="4523" status="Tentatively Ready">
 <title>`constant_wrapper` should assign to `value`</title>
 <section><sref ref="[const.wrap.class]"/></section>
 <submitter>Tomasz Kamiński</submitter>
@@ -21,6 +21,11 @@ template&lt;constexpr-param R&gt;
 This is incorrect (and inconsistent with other operators), as we assign to
 `X` that is object of specialization of exposition only <tt><i>cw-fixed-value</i></tt>,
 instead of `value`.
+</p>
+
+<note>2026-02-27; Reflector poll.</note>
+<p>
+Set status to Tentatively Ready after 9 votes in favour during reflector poll.
 </p>
 </discussion>
 

@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="4454" status="New">
+<issue num="4454" status="Ready">
 <title>`assert` should forbid `co_await` and `co_yield`</title>
 <section><sref ref="[assertions.assert]"/></section>
 <submitter>Jonathan Wakely</submitter>
@@ -23,10 +23,25 @@ are not valid in unevaluated contexts, unless we are certain that the
 new `assert` requirements can be implemented without such tricks using
 unevaluated contexts. "Ill-formed; no diagnostic required" seems appropriate.
 </p>
+<note>2026-03-06 Tim provides wording</note>
+<note>2026-03-06 LWG telecon; move to Ready</note>
 </discussion>
 
 <resolution>
 <p>
+This wording is relative to <paper num="N5032"/>.
+</p>
+
+<p>
+<li><p>Modify <sref ref="[assertions.assert]"/> as indicated:</p>
+<blockquote>
+<p>
+-3- If `__VA_ARGS__` does not expand to <del>an</del><ins>a well-formed</ins> <i>assignment-expression</i>, the program is ill-formed.
+<ins>If such an <i>assignment-expression</i> is ill-formed when treated as an unevaluated operand (<sref ref="[expr.await]"/>, <sref ref="[expr.yield]"/>),
+the program is ill-formed, no diagnostic required.</ins>
+</p>
+</blockquote>
+</li>
 </p>
 </resolution>
 

@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="4522" status="New">
+<issue num="4522" status="Tentatively Ready">
 <title>Clarify that `std::format` transcodes for `std::wformat_strings`</title>
 <section><sref ref="[format.string.std]"/></section>
 <submitter>Jan Schultke</submitter>
@@ -26,6 +26,14 @@ not meaningful.
 During the 2026-02-11 SG16 Telecon, when reviewing <paper num="P3876R0"/>, SG16 examined this issue 
 and concluded that transcoding is intended here, affirmed by the author of <paper num="P0645R10"/> 
 Text Formatting. An LWG issue was requested.
+</p>
+
+<note>2026-02-27; Reflector poll.</note>
+<p>
+Set status to Tentatively Ready after eight votes in favour during reflector poll.
+</p>
+<p>
+<paper num="P3876"/> would address that, but we need to clarify the wording for existing standards.
 </p>
 </discussion>
 

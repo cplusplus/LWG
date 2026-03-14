@@ -1,12 +1,12 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="4521" status="New">
+<issue num="4521" status="SG1">
 <title>Improve [atomics.order] p10 to have a consistent way with [intro.races]</title>
 <section><sref ref="[atomics.order]"/></section>
 <submitter>jim x</submitter>
 <date>10 Feb 2026</date>
-<priority>99</priority>
+<priority>4</priority>
 
 <discussion>
 <p>
@@ -43,6 +43,16 @@ Another option is:
 An atomic read-modify-write operation shall always read the value of a side effect that immediately 
 precedes the side effect of the read-modify-write operation in the modification order.
 </p></blockquote>
+
+<note>2026-02-27; Reflector poll.</note>
+<p>
+Set priority to 4 after reflector poll.
+</p>
+<p>
+The existing wording was considered to be correct.
+Support for option B as wording improvement was expressed,
+as making the wording more formal and "de-shalling".
+</p>
 </discussion>
 
 <resolution>

@@ -1,0 +1,111 @@
+<?xml version='1.0' encoding='utf-8' standalone='no'?>
+<!DOCTYPE issue SYSTEM "lwg-issue.dtd">
+
+<issue num="4533" status="New">
+<title><code>not_fn&lt;f&gt;</code> is unimplementable</title>
+<section>
+<sref ref="[func.not.fn]"/>
+<sref ref="[func.bind.partial]"/>
+</section>
+<submitter>Tim Song</submitter>
+<date>5 Mar 2026</date>
+<priority>99</priority>
+
+<discussion>
+<p>
+The current specification of <code>not_fn&lt;f&gt;</code> says that the perfect forwarding call wrapper
+it returns does not have state entities. <sref ref="[func.require]"/>p8 says that such
+wrappers "returned by a given standard library function template have the same type
+if the types of their corresponding state entities are the same." That condition is trivially true.
+<p/>
+It follows that <code>not_fn&lt;f&gt;()</code> must return the same type regardless of the value or type of `f`.
+This is, as far as I know, impossible to implement, and certainly not the intent.
+<p/>
+<code>bind_front&lt;f&gt;</code> and <code>bind_back&lt;f&gt;</code> suffer from the same problem.
+</p>
+</discussion>
+
+<resolution>
+<p>
+This wording is relative to <paper num="N5032"/>.
+</p>
+
+<ol>
+
+<li><p>Modify <sref ref="[func.def]"/> as indicated:</p>
+<blockquote>
+<p>
+-5- A <i>call wrapper</i> type is a type that holds <ins>a <i>target object</i>,
+which is either</ins> a callable object <ins>or an object representing a callable object,</ins>
+and supports a call operation that forwards to that <ins>callable</ins> object.
+<p/>
+-6- [&hellip;]
+<p/>
+<del>-7- A <i>target object</i> is the callable object held by a call wrapper.</del>
+<p/>
+-8- A call wrapper type may additionally hold a sequence of objects and references that
+may be passed as arguments to the <del>target</del><ins>callable</ins> object.
+These entities are collectively referred to as <i>bound argument entities</i>.
+</p>
+</blockquote>
+</li>
+
+<li><p>Modify <sref ref="[func.not.fn]"/> as indicated:</p>
+
+<blockquote>
+<pre>
+template&lt;auto f&gt; constexpr <i>unspecified</i> not_fn() noexcept;
+</pre>
+<blockquote>
+<p>
+-6- [&hellip;]
+<p/>
+-7- [&hellip;]
+<p/>
+-8- <i>Returns:</i> A perfect forwarding call wrapper (<sref ref="[func.require]"/>) `g`
+<del>that does not have state entities</del>
+<ins>whose target object is a copy of <code>constant_arg&lt;f&gt;</code></ins>,
+and <del>has the</del><ins>whose</ins> call pattern <ins>is</ins> `!invoke(f, call_args...)`.
+</p>
+</blockquote>
+</blockquote>
+</li>
+
+<li><p>Modify <sref ref="[func.bind.partial]"/> as indicated:</p>
+
+<blockquote>
+<pre>
+template&lt;auto f, class... Args&gt;
+  constexpr <i>unspecified</i> bind_front(Args&amp;&amp;... args);
+template&lt;auto f, class... Args&gt;
+  constexpr <i>unspecified</i> bind_back(Args&amp;&amp;... args);
+</pre>
+<blockquote>
+<p>
+-6- [&hellip;]
+<p/>
+-7- [&hellip;]
+<p/>
+-8- [&hellip;]
+<p/>
+-9- <i>Returns</i>: A perfect forwarding call wrapper (<sref ref="[func.require]"/>) `g`
+<del>that does not have a target object</del>
+<ins>whose target object is a copy of <code>constant_arg&lt;f&gt;</code></ins>,
+and <del>has the</del><ins>whose</ins> call pattern <ins>is</ins>:
+</p>
+<ul style="list-style-type: none">
+<li><p>
+(2.1) &mdash; `invoke(f, bound_args..., call_args...)` for a `bind_front` invocation, or
+</p></li>
+<li><p>
+(2.2) &mdash; `invoke(f, call_args..., bound_args...)` for a `bind_back` invocation.
+</p></li>
+</ul>
+</blockquote>
+</blockquote>
+</li>
+
+</ol>
+</resolution>
+
+</issue>

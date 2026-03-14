@@ -5,6 +5,7 @@
 #include "issues.h"
 #include "metadata.h"
 #include "status.h"
+#include "html_utils.h"
 
 #include <algorithm>
 #include <cassert>
@@ -36,23 +37,27 @@ auto parse_date(std::istream & temp) -> std::chrono::year_month_day {
       return date;
    throw std::runtime_error{"date format error"};
 #else
-   int d;
-   temp >> d;
-   if (temp.fail()) {
-      throw std::runtime_error{"date format error"};
-   }
-
-   std::string month;
-   temp >> month;
-
-   std::map<std::string_view, int> months{
-      {"Jan", 1}, {"Feb", 2}, {"Mar", 3}, {"Apr", 4}, {"May", 5}, {"Jun", 6},
-      {"Jul", 7}, {"Aug", 8}, {"Sep", 9}, {"Oct",10}, {"Nov",11}, {"Dec",12}
+   using month_idx = std::pair<std::string_view,int>;
+   constexpr month_idx months[] = {
+      {"Apr", 4},{"Aug", 8},{"Dec",12},{"Feb", 2},{"Jan", 1},{"Jul", 7},
+      {"Jun", 6},{"Mar", 3},{"May", 5},{"Nov",11},{"Oct",10},{"Sep", 9}
    };
 
-   int y{ 0 };
-   temp >> y;
-   return std::chrono::year{y}/months[month]/d;
+   int d;
+   std::string month;
+   int y;
+   if (temp >> d >> month >> y)
+   {
+      auto it = std::ranges::lower_bound(months, month, {}, &month_idx::first);
+
+      if (it != std::end(months) and it->first == month)
+      {
+         int m = it->second;
+         if (auto ymd = std::chrono::year{y}/m/d; ymd.ok())
+            return ymd;
+      }
+   }
+   throw std::runtime_error{"date format error"};
 #endif
 }
 
@@ -154,38 +159,30 @@ auto lwg::parse_issue_from_file(std::string tx, std::string const & filename,
 
    issue is;
 
+   auto get_or_throw = [&filename](const auto& opt, std::string_view what) {
+      return opt ? *opt : throw bad_issue_file(filename, "Unable to find issue " + std::string(what));
+   };
+
+   // Get value from "<issue attr='value'>"
+   auto get_attr = [&](std::string_view attr) {
+      return get_or_throw(lwg::get_attribute_of(attr, "issue", tx), attr);
+   };
+   // Get content from "<elem>content</elem>"
+   auto get_elem_content = [&](std::string_view elem) {
+      return get_or_throw(lwg::get_element_content(elem, tx), elem);
+   };
+
    // Get issue number
-   std::string_view match = "<issue num=\"";
-   auto k = tx.find(match);
-   if (k == std::string::npos) {
-      throw bad_issue_file{filename, "Unable to find issue number"};
-   }
-   k += match.size();
-   auto l = tx.find('\"', k);
-   auto num = tx.substr(k, l-k);
+   std::string_view num = get_attr("num");
    if (!filename.ends_with(std::format("issue{:0>4}.xml", num)))
      std::cerr << "warning: issue number " << num << " in " << filename << " does not match issue number\n";
-   is.num = lwg::stoi(num);
+   is.num = lwg::stoi(std::string(num));
 
    // Get issue status
-   match = "status=\"";
-   k = tx.find(match, l);
-   if (k == std::string::npos) {
-      throw bad_issue_file{filename, "Unable to find issue status"};
-   }
-   k += match.size();
-   l = tx.find('\"', k);
-   is.stat = tx.substr(k, l-k);
+   is.stat = get_attr("status");
 
    // Get issue title
-   match = "<title>";
-   k = tx.find(match, l);
-   if (k == std::string::npos) {
-      throw bad_issue_file{filename, "Unable to find issue title"};
-   }
-   k += match.size();
-   l = tx.find("</title>", k);
-   is.title = tx.substr(k, l-k);
+   is.title = get_elem_content("title");
 
    // Extract doc_prefix from title
    if (is.title[0] == '['
@@ -198,37 +195,33 @@ auto lwg::parse_issue_from_file(std::string tx, std::string const & filename,
    }
 
    // Get issue sections
-   match = "<section>";
-   k = tx.find(match, l);
-   if (k == std::string::npos) {
-      throw bad_issue_file{filename, "Unable to find issue section"};
-   }
-   k += match.size();
-   l = tx.find("</section>", k);
-   while (k < l) {
-      k = tx.find('\"', k);
-      if (k >= l) {
-          break;
+   std::string_view sections = get_elem_content("section");
+   while (auto sref = lwg::get_element("sref", sections))
+   {
+      if (auto attr = lwg::get_attribute("ref", sref->outer))
+      {
+         if (attr->starts_with('[') and attr->ends_with(']'))
+         {
+            attr->remove_prefix(1);
+            attr->remove_suffix(1);
+         }
+         else
+            throw bad_issue_file{filename, "Invalid section name in <sref>"};
+
+         section_tag tag;
+         tag.prefix = is.doc_prefix;
+         tag.name = *attr;
+         is.tags.emplace_back(tag);
+         if (section_db.find(is.tags.back()) == section_db.end()) {
+             section_num num{};
+             num.prefix = tag.prefix;
+             num.num.push_back(99);
+             section_db[is.tags.back()] = num;
+         }
       }
-      auto k2 = tx.find('\"', k+1);
-      if (k2 >= l) {
-         throw bad_issue_file{filename, "Unable to find issue section"};
-      }
-      ++k;
-      section_tag tag;
-      tag.prefix = is.doc_prefix;
-      tag.name = tx.substr(k+1, k2 - k - 2);
-//std::cout << "lookup tag=\"" << tag.prefix << "\", \"" << tag.name << "\"\n";
-      is.tags.emplace_back(tag);
-      if (section_db.find(is.tags.back()) == section_db.end()) {
-          section_num num{};
- //         num.num.push_back(100 + 'X' - 'A');
-          num.prefix = tag.prefix;
-          num.num.push_back(99);
-          section_db[is.tags.back()] = num;
-      }
-      k = k2;
-      ++k;
+      else
+         throw bad_issue_file{filename, "Missing ref attribute in <sref>"};
+      sections.remove_prefix(sref->outer.data() - sections.data() + sref->outer.size());
    }
 
    if (is.tags.empty()) {
@@ -236,26 +229,17 @@ auto lwg::parse_issue_from_file(std::string tx, std::string const & filename,
    }
 
    // Get submitter
-   match = "<submitter>";
-   k = tx.find(match, l);
-   if (k == std::string::npos) {
-      throw bad_issue_file{filename, "Unable to find issue submitter"};
-   }
-   k += match.size();
-   l = tx.find("</submitter>", k);
-   is.submitter = tx.substr(k, l-k);
+   is.submitter = get_elem_content("submitter");
 
    // Get date
-   match = "<date>";
-   k = tx.find(match, l);
-   if (k == std::string::npos) {
-      throw bad_issue_file{filename, "Unable to find issue date"};
-   }
-   k += match.size();
-   l = tx.find("</date>", k);
+   auto datestr = get_elem_content("date");
 
    try {
-      std::istringstream temp{tx.substr(k, l-k)};
+#ifdef __cpp_lib_sstream_from_string_view
+      std::istringstream temp{datestr};
+#else
+      std::istringstream temp{std::string{datestr}};
+#endif
       is.date = parse_date(temp);
    }
    catch(std::exception const & ex) {
@@ -266,42 +250,27 @@ auto lwg::parse_issue_from_file(std::string tx, std::string const & filename,
    is.mod_date = report_date_file_last_modified(filename, meta);
 
    // Get priority - this element is optional
-   match = "<priority>";
-   k = tx.find(match, l);
-   if (k != std::string::npos) {
-      k += match.size();
-      l = tx.find("</priority>", k);
-      if (l == std::string::npos) {
-         throw bad_issue_file{filename, "Corrupt 'priority' element: no closing tag"};
-      }
-      is.priority = lwg::stoi(tx.substr(k, l-k));
-   }
+   if (auto o = lwg::get_element_content("priority", tx))
+      is.priority = lwg::stoi(std::string(*o));
 
    // Trim text to <discussion>
-   k = tx.find("<discussion>", l);
-   if (k == std::string::npos) {
+   if (auto k = tx.find("<discussion>"); k != tx.npos)
+      tx.replace(0, k, "<issue>");
+   else
       throw bad_issue_file{filename, "Unable to find issue discussion"};
-   }
-   tx.erase(0, k);
 
    // Find out if issue has a proposed resolution
    if (is_active(is.stat)  or  "Pending WP" == is.stat) {
-     match = "<resolution>";
-      auto k2 = tx.find(match, 0);
-      if (k2 == std::string::npos) {
-         is.has_resolution = false;
-      }
-      else {
-         k2 += match.size();
-         auto l2 = tx.find("</resolution>", k2);
-         is.resolution = tx.substr(k2, l2 - k2);
-         if (is.resolution.length() < 15) {
-            // Filter small amounts of whitespace between tags, with no actual resolution
-            is.resolution.clear();
-         }
-//         is.has_resolution = l2 - k2 > 15;
-         is.has_resolution = !is.resolution.empty();
-      }
+      auto resolution = lwg::get_element_content("resolution", tx);
+      // Ignore small amounts of whitespace between tags, with no actual resolution
+      is.has_resolution = resolution.has_value() && resolution->length() >= 15;
+
+      // The is.text string already contains the <resolution> element,
+      // but is.resolution stores another copy of it.
+      // That was used to prepare a new report for the editor containing
+      // only the issues approved at a meeting.
+      // We don't currently do this.
+      // is.resolution = *resolution;
    }
    else {
       is.has_resolution = true;

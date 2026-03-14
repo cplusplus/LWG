@@ -1,0 +1,82 @@
+<?xml version='1.0' encoding='utf-8' standalone='no'?>
+<!DOCTYPE issue SYSTEM "lwg-issue.dtd">
+
+<issue num="4537" status="New">
+<title>Improve `define_static_array`</title>
+<section>
+<sref ref="[meta.define.static]"/>
+</section>
+<submitter>Hewill Kang</submitter>
+<date>09 Mar 2026</date>
+<priority>99</priority>
+
+<discussion>
+<p>
+`define_static_array` can transform any input range, even a non-contiguous one, into a `span`. 
+<p/>
+However, the returned `span` always has a dynamic extent. If the size of the input range is known at
+compile time, returning a static `span` seems reasonable and may offer slight runtime efficiency.
+</p>
+</discussion>
+
+<resolution>
+<p>
+This wording is relative to <paper num="N5032"/>.
+</p>
+
+<ol>
+
+<li><p>Modify <sref ref="[meta.syn]"/>, header <tt>&lt;meta&gt;</tt> synopsis, as indicated:</p>
+
+<blockquote>
+<pre>
+#include &lt;compare&gt;              // <i>see <sref ref="[compare.syn]"/></i>
+#include &lt;initializer_list&gt;     // <i>see <sref ref="[initializer.list.syn]"/></i>
+
+namespace std {
+  [&hellip;]
+  // <i><sref ref="[meta.define.static]"/>, promoting to static storage</i>
+  [&hellip;]
+  template&lt;ranges::input_range R&gt;
+    consteval span&lt;const ranges::range_value_t&lt;R&gt;<ins>, <i>see below</i></ins>&gt; define_static_array(R&amp;&amp; r);
+  [&hellip;]
+}
+</pre>
+</blockquote>
+</li>
+
+<li><p>Modify <sref ref="[meta.define.static]"/> as indicated:</p>
+
+<blockquote>
+<pre>
+template&lt;ranges::input_range R&gt;
+  consteval span&lt;const ranges::range_value_t&lt;R&gt;<ins>, <i>see below</i></ins>&gt; define_static_array(R&amp;&amp; r);
+</pre>
+<blockquote>
+<p>
+-16- <i>Effects</i>: Equivalent to:
+</p>
+<blockquote>
+<pre>
+using T = ranges::range_value_t&lt;R&gt;;
+meta::info array = meta::reflect_constant_array(r);
+if (meta::is_array_type(meta::type_of(array))) {
+  return span&lt;const T<ins>, <i>see below</i></ins>&gt;(meta::extract&lt;const T*&gt;(array), meta::extent(meta::type_of(array)));
+} else {
+  return span&lt;const T<ins>, <i>see below</i></ins>&gt;();
+}
+</pre>
+</blockquote>
+<p>
+<ins>-?- <i>Remarks</i>: The second template argument of the returned `span` type is
+<code>static_cast&lt;size_t&gt;(ranges::size(r))</code> if `ranges::size(r)` is a constant
+expression, and `dynamic_extent` otherwise.</ins>
+</p>
+</blockquote>
+</blockquote>
+</li>
+
+</ol>
+</resolution>
+
+</issue>

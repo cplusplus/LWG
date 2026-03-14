@@ -44,9 +44,8 @@ Set priority to 2 after reflector poll.
 "Should we have the same guarantee for `is_always_lock_free`?
 Would allow checking if <code>atomic&lt;volatile T&gt;</code> is usable by checking <code>atomic&lt;T&gt;</code>."
 </p>
-</discussion>
 
-<resolution>
+<superseded>
 <p>
 This wording is relative to <paper num="N5014"/>.
 </p>
@@ -84,6 +83,63 @@ could be supported only if aligned to `2*alignof(double)`.
 </li>
 </ol>
 
+</superseded>
+
+<note>2026-02-16; Tomasz provides updated resolution.</note>
+<p>Guarantee that `required_alignment` and `is_always_lock_free`
+values are the same for any similar types.</p>
+<p>We define equality to <code>atomic_ref&lt;remove_cv_t&lt;U&gt;</code>,
+as `volatile` atomics may be ill-formed.</p>
+</discussion>
+
+<resolution>
+<p>
+This wording is relative to <paper num="N5032"/>.
+</p>
+
+<ol>
+
+<li><p>Modify <sref ref="[atomics.refs.ops]"/>, as indicated:</p>
+
+<blockquote>
+<pre>
+static constexpr size_t required_alignment;
+</pre>
+<p>-1-
+The alignment required for an object to be referenced by an atomic reference,
+which is at least `alignof(T)`.
+<ins>
+For any type <tt>U</tt> similar to <tt>T</tt>, the value of
+<tt>required_alignment</tt> is the same as
+<tt>atomic_ref&lt;remove_cv_t&lt;U&gt;&gt;::required_alignment</tt>.
+</ins>
+</p>
+<p> -2-
+[<i>Note 1</i>:
+Hardware could require an object referenced by an `atomic_ref`
+to have stricter alignment (<sref ref="[basic.align]"/>)
+than other objects of type `T`.
+Further, whether operations on an `atomic_ref` are lock-free
+could depend on the alignment of the referenced object.
+For example, lock-free operations on <code>std::complex&lt;double&gt;</code>
+could be supported only if aligned to `2*alignof(double)`.
+&mdash; <i>end note</i>]
+</p>
+
+<pre>
+static constexpr bool is_always_lock_free;
+</pre>
+<p> -3-
+The static data member `is_always_lock_free` is `true` if the `atomic_ref` type's operations are always lock-free, and false otherwise.
+<ins>For any type <tt>U</tt> similar to <tt>T</tt> the value of
+<tt>is_always_lock_free</tt> is the same as
+<tt>atomic_ref&lt;remove_cv_t&lt;U&gt;&gt;::is_always_lock_free</tt>.</ins>
+</p>
+</blockquote>
+</li>
+</ol>
+
 </resolution>
+
 
 </issue>
