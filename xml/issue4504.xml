@@ -75,7 +75,7 @@ template&lt;class State&gt;
 </pre>
 <blockquote>
 <p>
--9- <i>Effects</i>: <ins>If <tt><i>count</i></tt> is zero, then changes 
+-9- <i>Effects</i>: If <ins><tt><i>count</i></tt> is zero, then changes 
    <tt><i>state</i></tt> to <tt><i>joined</i></tt> and returns `true`. Otherwise, if</ins>
    <tt><i>state</i></tt> is:</p>
 <ul style="list-style-type: none">
