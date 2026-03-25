@@ -1,0 +1,45 @@
+<?xml version='1.0' encoding='utf-8' standalone='no'?>
+<!DOCTYPE issue SYSTEM "lwg-issue.dtd">
+
+<issue num="4556" status="New">
+<title>Unclear properties of reflection strings</title>
+<section><sref ref="[meta.syn]"/></section>
+<submitter>Tim Song</submitter>
+<date>25 Mar 2026</date>
+<priority>99</priority>
+
+<discussion>
+<p>
+We are missing a statement about the lifetime and other properties 
+of the strings returned from the reflection functions.
+</p>
+</discussion>
+
+<resolution>
+<p>
+This wording is relative to <paper num="N5032"/>.
+</p>
+
+<ol>
+<li>
+<p>Modify <sref ref="[meta.syn]"/> as indicated:</p>
+
+<blockquote>
+<p>
+-3- Any function in namespace `std::meta` whose return type
+is `string_view` or `u8string_view` returns an object `V`
+such that `V.data()[V.size()]` equals `'\0'`. <ins>Each element
+of the range `V.data()` + [0, `V.size()`] is a potentially
+non-unique object of static storage duration (<sref ref="[intro.object]"/>);
+a pointer to such an element is not suitable for use
+as a template argument for a constant template parameter 
+of pointer type (<sref ref="[temp.arg.nontype]"/>).</ins>
+</p>
+</blockquote>
+</li>
+
+</ol>
+
+</resolution>
+
+</issue>
