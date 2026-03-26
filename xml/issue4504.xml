@@ -80,8 +80,8 @@ template&lt;class State&gt;
    <tt><i>state</i></tt> is:</p>
 <ul style="list-style-type: none">
 	
-<li><p>(9.1) &mdash; <tt><i>unused</i></tt>, <tt><i>unused-and-closed</i></tt>, or <tt><i>joined</i></tt>, 
-then changes <tt><i>state</i></tt> to <tt><i>joined</i></tt> and returns `true`;</p></li>
+<li><del><p>(9.1) &mdash; <tt><i>unused</i></tt>, <tt><i>unused-and-closed</i></tt>, or <tt><i>joined</i></tt>, 
+then changes <tt><i>state</i></tt> to <tt><i>joined</i></tt> and returns `true`;</p></del></li>
 <li><p>(9.2) &mdash; <tt><i>open</i></tt> or <tt><i>open-and-joining</i></tt>, then changes 
 <tt><i>state</i></tt> to <tt><i>open-and-joining</i></tt>, registers `st` with `*this` and returns `false`;</p></li>
 <li><p>(9.3) &mdash; <tt><i>closed</i></tt> or <tt><i>closed-and-joining</i></tt>, then changes 
