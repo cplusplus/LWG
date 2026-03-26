@@ -33,6 +33,7 @@
 #include <iterator>
 #include <map>
 #include <memory>
+#include <ranges>
 #include <regex>
 #include <set>
 #include <sstream>
