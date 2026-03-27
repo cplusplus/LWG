@@ -135,6 +135,7 @@ namespace std::execution {
     void <i>complete</i>() noexcept override;          // <i>exposition only</i>
     void <i>consume</i>(receiver auto&amp; rcvr) noexcept; // <i>exposition only</i>
     void <i>abandon</i>() noexcept;                    // <i>exposition only</i>
+    <ins>void <i>should-stop-request</i>() noexcept override;  // <i>exposition only</i></ins>
     <ins>void <i>try-cancel</i>() noexcept override;        // <i>exposition only</i></ins>
     [&hellip;]
   };
@@ -143,7 +144,7 @@ namespace std::execution {
 </pre></blockquote>
 <p>
 -8- For purposes of determining the existence of a data race, <tt><i>complete</i></tt>, <tt><i>consume</i></tt>, 
-<ins><tt><i>try-cancel</i></tt>,</ins> and <tt><i>abandon</i></tt> behave as atomic operations 
+<ins><tt><i>try-stop-request</i></tt>,</ins> and <tt><i>abandon</i></tt> behave as atomic operations 
 (<sref ref="[intro.multithread]"/>). These operations on a single object of a type that is a specialization of
 <tt><i>spawn-future-state</i></tt> appear to occur in a single total order.
 </p>
@@ -156,7 +157,7 @@ void <i>complete</i>() noexcept;
 </p>
 <ul style="list-style-type: none">
 <li><p>(9.1) &mdash; No effects if this invocation of <tt><i>complete</i></tt> happens before an invocation of 
-<tt><i>consume</i></tt><ins>, <tt><i>try-cancel</i></tt>,</ins> or <tt><i>abandon</i></tt> on `*this`;</p></li>
+<tt><i>consume</i></tt><ins>, <tt><i>should-cancel</i></tt>,</ins> or <tt><i>abandon</i></tt> on `*this`;</p></li>
 <li><p>(9.2) &mdash; otherwise, if an invocation of <tt><i>consume</i></tt> on `*this` happens before 
 this invocation of <tt><i>complete</i></tt> <ins>and no invocation of <tt><i>try-cancel</i></tt> on `*this` 
 happened before this invocation of <tt><i>complete</i></tt></ins> then there is a receiver, `rcvr`, registered 
@@ -437,6 +438,7 @@ namespace std::execution {
     void <i>complete</i>() noexcept override;          // <i>exposition only</i>
     void <i>consume</i>(receiver auto&amp; rcvr) noexcept; // <i>exposition only</i>
     void <i>abandon</i>() noexcept;                    // <i>exposition only</i>
+    <ins>bool <i>try-request-stop</i>() noexcept override;  // <i>exposition only</i></ins>
     <ins>void <i>try-cancel</i>() noexcept override;        // <i>exposition only</i></ins>
     [&hellip;]
   };
@@ -445,7 +447,7 @@ namespace std::execution {
 </pre></blockquote>
 <p>
 -8- For purposes of determining the existence of a data race, <tt><i>complete</i></tt>, <tt><i>consume</i></tt>, 
-<ins><tt><i>try-cancel</i></tt>,</ins> and <tt><i>abandon</i></tt> behave as atomic operations 
+<ins><tt><i>try-request-stop</i></tt>,</ins> and <tt><i>abandon</i></tt> behave as atomic operations 
 (<sref ref="[intro.multithread]"/>). These operations on a single object of a type that is a specialization of
 <tt><i>spawn-future-state</i></tt> appear to occur in a single total order.
 </p>
@@ -458,10 +460,13 @@ void <i>complete</i>() noexcept;
 </p>
 <ul style="list-style-type: none">
 <li><p>(9.1) &mdash; No effects if this invocation of <tt><i>complete</i></tt> happens before an invocation of 
-<tt><i>consume</i></tt><ins>, <tt><i>try-cancel</i></tt>,</ins> or <tt><i>abandon</i></tt> on `*this`;</p></li>
+<tt><i>consume</i></tt> or <tt><i>abandon</i></tt> on `*this`;</p></li>
+<li><p><ins>(9.?) &mdash; otherwise, if an invocation of <tt><i>consume</i></tt> on `*this` happens before 
+this invocation of <tt><i>complete</i></tt> <ins>and invocation of <tt><i>try-request-stop</i></tt> on `*this` 
+happened after this invocation of <tt><i>complete</i></tt></ins> then there is a receiver, `rcvr`, registered 
+and that receiver is <ins>deregistered and</ins> completed as if by <tt>set-stopped(std::move(rcvr))</tt>;</ins></p></li>
 <li><p>(9.2) &mdash; otherwise, if an invocation of <tt><i>consume</i></tt> on `*this` happens before 
-this invocation of <tt><i>complete</i></tt> <ins>and no invocation of <tt><i>try-cancel</i></tt> on `*this` 
-happened before this invocation of <tt><i>complete</i></tt></ins> then there is a receiver, `rcvr`, registered 
+this invocation of <tt><i>complete</i></tt> then there is a receiver, `rcvr`, registered 
 and that receiver is <ins>deregistered and</ins> completed as if by <tt><i>consume</i>(rcvr)</tt>;</p></li>
 <li><p>(9.3) &mdash; otherwise, <tt><i>destroy</i></tt> is invoked.</p></li>
 </ul>
@@ -475,7 +480,7 @@ void <i>consume</i>(receiver auto&amp; rcvr) noexcept;
 </p>
 <ul style="list-style-type: none">
 <li><p>(10.1) &mdash; If this invocation of <tt><i>consume</i></tt> happens before an invocation of 
-<tt><i>complete</i></tt> on `*this` <ins>and no invocation of <tt><i>try-cancel</i></tt> on `*this` 
+<tt><i>complete</i></tt> on `*this` <ins>and no invocation of <tt><i>try-request-cancel</i></tt> on `*this` 
 happened before this invocation of <tt><i>consume</i></tt></ins> then `rcvr` is registered to be 
 completed when <tt><i>complete</i></tt> is subsequently invoked on `*this`;</p></li>
 <li><p><ins>(10.?) &mdash; otherwise, if this invocation of <tt><i>consume</i></tt> happens after an 
@@ -486,34 +491,28 @@ invocation of <tt><i>try-cancel</i></tt> on `*this` and no invocation of <tt><i>
 </ul>
 </blockquote>
 <pre>
+<ins>void <i>try-request-stop()</i> noexcept;</ins>
+</pre>
+<blockquote>
+<p>
+<ins>-?- <i>Returns</i>: <tt>false</code> if this invocation of <tt><i>try-request-stop</i></tt>
+happens after an invocation of <tt><i>complete</i></tt> or <tt><i>try-request-stop</i></tt> on
+`*this`; and <tt>true</tt> otherwise.</ins>
+</p>
+</blockquote>
+<pre>
 <ins>void <i>try-cancel()</i> noexcept;</ins>
 </pre>
 <blockquote>
 <p>
-<ins>-?- <i>Effects</i>:</ins>
+<ins>-?- <i>Effects</i>: Equivalent to:</ins>
 </p>
-<ul style="list-style-type: none">
-<li><p><ins>(?.1) &mdash; No effects if this invocation of <tt><i>try-cancel</i></tt> happens after 
-an invocation of <tt><i>complete</i></tt> on `*this`;</ins></p></li>
-<li><p><ins>(?.2) &mdash; otherwise, if this invocation of <tt><i>try-cancel</i></tt> happens before 
-an invocation of <tt><i>consume</i></tt> on `*this` then invokes <tt><i>ssource</i>.request_stop()</tt>;</ins></p></li>
-<li><p><ins>(?.3) &mdash; otherwise,</ins></p>
-<ul style="list-style-type: none">
-<li><p><ins>(?.3.1) &mdash; invokes <tt><i>ssource</i>.request_stop()</tt>, and</ins></p></li>
-<li><p><ins>(?.3.2) &mdash; if there is a receiver, `rcvr`, still registered then that receiver is 
-deregistered and completed as if by `set_stopped(std::move(rcvr))`.</ins></p>
-<p>
-<ins>[<i>Note</i>: an invocation of <tt><i>complete</i></tt> on `*this` may have happened after the 
-just-described invocation of <tt><i>ssource</i>.request_stop()</tt> and happened before the check to see 
-if there is a receiver still registered; if so, it would have deregistered and completed the 
-previously-registered receiver. Only one of <tt><i>try-cancel</i></tt> or <tt><i>complete</i></tt> 
-completes the registered receiver and no data races are introduced between the two invocations. &mdash; 
-<i>end note</i>]</ins>
-</p>
-</li>
-</ul>
-</li>
-</ul>
+<pre><ins>
+if (<i>try-request-stop</i>()) {
+  <i>ssource</i>.request_stop();
+  <i>complete</i>();
+}
+</ins></pre>
 </blockquote>
 <pre>
 void <i>abandon</i>() noexcept;
