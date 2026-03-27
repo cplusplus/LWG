@@ -441,7 +441,11 @@ namespace std::execution {
     void <i>complete</i>() noexcept override;          // <i>exposition only</i>
     void <i>consume</i>(receiver auto&amp; rcvr) noexcept; // <i>exposition only</i>
     void <i>abandon</i>() noexcept;                    // <i>exposition only</i>
-    <ins>void <i>try-cancel</i>() noexcept override;        // <i>exposition only</i></ins>
+    <ins>void <i>try-cancel</i>() noexcept override {       // <i>exposition only</i></ins>
+      <ins><i>ssource</i>.request_stop();</ins>
+      <ins><i>try-set-stopped</i>();</ins>
+    }
+    <ins>void <i>try-set-stopped</i>() noexcept; // <i>exposition only</i></ins>
     [&hellip;]
   };
   [&hellip;]
@@ -449,7 +453,7 @@ namespace std::execution {
 </pre></blockquote>
 <p>
 -8- For purposes of determining the existence of a data race, <tt><i>complete</i></tt>, <tt><i>consume</i></tt>, 
-<ins><tt><i>try-cancel</i></tt>,</ins> and <tt><i>abandon</i></tt> behave as atomic operations 
+<ins><tt><i>try-set-stopped</i></tt>,</ins> and <tt><i>abandon</i></tt> behave as atomic operations 
 (<sref ref="[intro.multithread]"/>). These operations on a single object of a type that is a specialization of
 <tt><i>spawn-future-state</i></tt> appear to occur in a single total order.
 </p>
@@ -462,9 +466,9 @@ void <i>complete</i>() noexcept;
 </p>
 <ul style="list-style-type: none">
 <li><p>(9.1) &mdash; No effects if this invocation of <tt><i>complete</i></tt> happens before an invocation of 
-<tt><i>consume</i></tt><ins>, <tt><i>try-cancel</i></tt>,</ins> or <tt><i>abandon</i></tt> on `*this`;</p></li>
+<tt><i>consume</i></tt><ins>, <tt><i>try-set-stopped</i></tt>,</ins> or <tt><i>abandon</i></tt> on `*this`;</p></li>
 <li><p>(9.2) &mdash; otherwise, if an invocation of <tt><i>consume</i></tt> on `*this` happens before 
-this invocation of <tt><i>complete</i></tt> <ins>and no invocation of <tt><i>try-cancel</i></tt> on `*this` 
+this invocation of <tt><i>complete</i></tt> <ins>and no invocation of <tt><i>try-set-stopped</i></tt> on `*this` 
 happened before this invocation of <tt><i>complete</i></tt></ins> then there is a receiver, `rcvr`, registered 
 and that receiver is <ins>deregistered and</ins> completed as if by <tt><i>consume</i>(rcvr)</tt>;</p></li>
 <li><p>(9.3) &mdash; otherwise, <tt><i>destroy</i></tt> is invoked.</p></li>
@@ -513,7 +517,7 @@ std::move(this-&gt;result).visit(
 <li><p><ins>(?.1) &mdash; If an invocation of <tt><i>consume</i></tt> on `*this` happens before 
 this invocation of <tt><i>try-set-stopped</i></tt> and no invocation of <tt><i>complete</i></tt> on `*this` 
 happened before this invocation of <tt><i>try-set-stopped</i></tt> then there is a receiver, `rcvr`, registered 
-and that receiver is deregistered and completed as if by <tt><i>consume</i>(rcvr)</tt>;</ins></p></li>
+and that receiver is deregistered and completed as if by <tt>set_stopped(std::move(rcvr)), <i>destroy</i>()</tt>;</ins></p></li>
 <li><p><ins>(?.2) &mdash; otherwise, no effects.</ins></p></li>
 
 </ul>
@@ -594,7 +598,7 @@ namespace std::execution {
 
 
     <i>future-operation</i>(StatePtr state, Rcvr rcvr) noexcept // <i>exposition only</i>
-      : <i>rcvr</i>(std::move(rcvr)), <i>state</i>(std::move(state)), <i>inner</i>(nullptr)
+      : <i>rcvr</i>(std::move(rcvr)), <i>state</i>(std::move(state)), <i>inner</i>(this)
     {}
 
     <i>future-operation</i>(<i>future-operation</i>&amp;&amp;) = delete;
@@ -612,9 +616,7 @@ namespace std::execution {
         }
       }
 
-      auto* state = <i>state</i>.release();
-      <i>inner</i>.<i>op</i> = this;
-      state-&gt;consume(<i>inner</i>);
+      <i>state</i>.release()-&gt;<i>consume</i>(<i>inner</i>);
     }
 
     template&lt;class CPO, class... T&gt;
