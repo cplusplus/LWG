@@ -1,9 +1,9 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
-<!DOCTYPE issue SYSTEM "lwg-issue.dtd" [ 
+<!DOCTYPE issue SYSTEM "lwg-issue.dtd" [
   <!ENTITY nbsp "&#160;">
 ] >
 
-<issue num="2302" status="Pending NAD">
+<issue num="2302" status="Resolved">
 <title>Passing null pointer to placement new</title>
 <section><sref ref="[new.delete.placement]"/></section>
 <submitter>Marc Glisse</submitter>
@@ -12,10 +12,10 @@
 
 <discussion>
 <p>
-Based on <a href="http://stackoverflow.com/questions/17571103/passing-null-pointer-to-placement-new">this discussion</a> 
+Based on <a href="http://stackoverflow.com/questions/17571103/passing-null-pointer-to-placement-new">this discussion</a>
 and as discussed in <a href="http://listarchives.isocpp.org/cgi-bin/wg21/message?wg=core&amp;msg=23998">c++std-core-23998</a> and
-<a href="http://listarchives.isocpp.org/cgi-bin/wg21/message?wg=lib&amp;msg=34442">c++std-lib-34442</a>, calling placement new currently forces the 
-compiler to check if the pointer is null before initializing the object (a non-negligible cost). It seems many people were not 
+<a href="http://listarchives.isocpp.org/cgi-bin/wg21/message?wg=lib&amp;msg=34442">c++std-lib-34442</a>, calling placement new currently forces the
+compiler to check if the pointer is null before initializing the object (a non-negligible cost). It seems many people were not
 aware of this and they consider it a user error to pass a null pointer to it.
 <p/>
 Proposed resolution: for <tt>operator new</tt> and <tt>operator new[]</tt>, add:
@@ -28,7 +28,7 @@ Proposed resolution: for <tt>operator new</tt> and <tt>operator new[]</tt>, add:
 <p>
 AJM to supply the rationale...
 </p>
-
+<note>2026-04-09; This was resolved by <a href="https://wg21.link/cwg1748">CWG 1748</a>.</note>
 </discussion>
 
 <resolution>

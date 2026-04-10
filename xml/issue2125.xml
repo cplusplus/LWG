@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="2125" status="Pending NAD Editorial">
+<issue num="2125" status="NAD Editorial">
 <title><tt>TimedMutex</tt> specification problem</title>
 <section><sref ref="[thread.timedmutex.requirements]"/><sref ref="[thread.timedmutex.class]"/></section>
 <submitter>Vicente J. Botet Escriba</submitter>
@@ -13,7 +13,7 @@
 <sref ref="[thread.timedmutex.class]"/> says:
 </p>
 <blockquote><p>
-The class <tt>timed_mutex</tt> shall satisfy all of the <tt>TimedMutex</tt> requirements (<sref ref="[thread.timedmutex.requirements]"/>). 
+The class <tt>timed_mutex</tt> shall satisfy all of the <tt>TimedMutex</tt> requirements (<sref ref="[thread.timedmutex.requirements]"/>).
 It shall be a standardlayout class (Clause <sref ref="[class]"/>).
 </p></blockquote>
 <p>

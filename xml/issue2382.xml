@@ -1,9 +1,9 @@
 <?xml version='1.0' encoding='UTF-8' standalone='no'?>
-<!DOCTYPE issue SYSTEM "lwg-issue.dtd" [ 
+<!DOCTYPE issue SYSTEM "lwg-issue.dtd" [
   <!ENTITY nbsp "&#160;">
 ] >
 
-<issue num="2382" status="Pending NAD">
+<issue num="2382" status="Resolved">
 <title>Unclear order of container update versus object destruction on removing an object</title>
 <section><sref ref="[reentrancy]"/></section>
 <submitter>Peter Kasting</submitter>
@@ -12,8 +12,8 @@
 
 <discussion>
 <p>
-The standard does not seem to discuss reentrant access to a container during removal of an element, 
-leaving it unclear whether a removed object is destroyed before or after it is removed from the container.  
+The standard does not seem to discuss reentrant access to a container during removal of an element,
+leaving it unclear whether a removed object is destroyed before or after it is removed from the container.
 For example, the behavior of the following code seems to be unspecified:
 </p>
 <blockquote><pre>
@@ -59,9 +59,9 @@ Object 1 is removed from the map before being destroyed
 Object 0 is destroyed before being removed from the map
 </pre></blockquote>
 <p>
-The core issue here is whether an object removed from a container should be destroyed before or after 
-it is removed from the container. The current standard seems to be silent on this issue. 
-The above output demonstrates that the behavior is actually inconsistent. (It's difficult to fully 
+The core issue here is whether an object removed from a container should be destroyed before or after
+it is removed from the container. The current standard seems to be silent on this issue.
+The above output demonstrates that the behavior is actually inconsistent. (It's difficult to fully
 describe Visual Studio's behavior; for example, changing <tt>main()</tt> in the above example to the following:)
 </p>
 <blockquote><pre>
@@ -86,7 +86,7 @@ Object 1 is destroyed before being removed from the map
 Object 0 is removed from the map before being destroyed
 </pre></blockquote>
 <p>
-In my opinion, the standard should explicitly describe when objects are destroyed as part of removal from a container. 
+In my opinion, the standard should explicitly describe when objects are destroyed as part of removal from a container.
 To me, it makes the most sense to say that objects should be removed from the container before they are destroyed.
 </p>
 <note>2014-05-07, Jeffrey Yasskin comments</note>
@@ -115,8 +115,9 @@ STL: We need more wording about how container methods can be reentrency.
 <p/>
 Jeffrey: The title for this issue is confusing, what we really want is "reentrancy for objects".
 <p/>
-Alisdair: Should we then close 2382 as NAD with a link to the new issue? 
+Alisdair: Should we then close 2382 as NAD with a link to the new issue?
 </p>
+<note>2026-04-09; This was resolved by LWG <iref ref="2414"/>.</note>
 </discussion>
 
 <resolution>
