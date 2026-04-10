@@ -58,6 +58,7 @@ auto lwg::filename_for_status(std::string_view stat) -> std::string_view {
         : (stat == "LEWG")          ? LWG_ACTIVE
         : (stat == "Core")          ? LWG_ACTIVE
         : (stat == "SG1")           ? LWG_ACTIVE
+        : (stat == "SG6")           ? LWG_ACTIVE
         : (stat == "SG9")           ? LWG_ACTIVE
         : (stat == "SG16")          ? LWG_ACTIVE
         : (stat == "Deferred")      ? LWG_ACTIVE
@@ -85,7 +86,7 @@ auto lwg::is_tentative(std::string_view stat) -> bool {
 }
 
 auto lwg::is_assigned_to_another_group(std::string_view stat) -> bool {
-   for (auto s : {"Core", "EWG", "LEWG", "SG1", "SG9", "SG16" }) {
+   for (auto s : {"Core", "EWG", "LEWG", "SG1", "SG6", "SG9", "SG16" }) {
      if (s == stat) return true;
    }
    return false;
@@ -146,6 +147,7 @@ auto lwg::get_status_priority(std::string_view stat) noexcept -> std::ptrdiff_t 
       "EWG",
       "Core",
       "SG1",
+      "SG6",
       "SG9",
       "SG16",
       "Deferred",

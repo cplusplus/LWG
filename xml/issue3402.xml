@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="3402" status="New">
+<issue num="3402" status="SG6">
 <title>Wording for <tt>negative_binomial_distribution</tt> is unclear as a consequence of LWG 2406 resolution</title>
 <section><sref ref="[rand.dist.bern.negbin]"/></section>
 <submitter>Ahti Lepp&auml;nen</submitter>
@@ -10,7 +10,7 @@
 
 <discussion>
 <p>
-This issue has been created because a corresponding 
+This issue has been created because a corresponding
 <a href="https://github.com/cplusplus/draft/issues/3606">editorial change request</a> had been rejected.
 <p/>
 The resolution of LWG <iref ref="2406"/> added a note to the definition of <tt>negative_binomial_distribution</tt>:
@@ -18,38 +18,38 @@ The resolution of LWG <iref ref="2406"/> added a note to the definition of <tt>n
 <blockquote style="border-left: 3px solid #ccc;padding-left: 15px;">
 <p>
 [<i>Note</i>: This implies that <math xmlns="http://www.w3.org/1998/Math/MathML">
-<mi>P</mi><mrow><mo>(</mo><mi>i</mi><mo>|</mo><mi>k</mi><mo>,</mo><mi>p</mi><mo>)</mo></mrow> 
+<mi>P</mi><mrow><mo>(</mo><mi>i</mi><mo>|</mo><mi>k</mi><mo>,</mo><mi>p</mi><mo>)</mo></mrow>
 </math> is undefined when <tt>p == 1</tt>. &mdash; <i>end note</i>]
 </p>
 </blockquote>
 <p>
-This issue argues that the note is invalid as are the premises on which LWG 2406 was based 
-on. It's also argued that current normative standard text allowing <tt>p == 1</tt> is valid 
+This issue argues that the note is invalid as are the premises on which LWG 2406 was based
+on. It's also argued that current normative standard text allowing <tt>p == 1</tt> is valid
 both conceptually and mathematically, and that it follows existing conventions in other software.
 <p/>
 Problems with the added note:
 </p>
 <ul>
 <li><p>Why does <tt>p == 1</tt> imply that <math xmlns="http://www.w3.org/1998/Math/MathML">
-<mi>P</mi><mrow><mo>(</mo><mi>i</mi><mo>|</mo><mi>k</mi><mo>,</mo><mi>p</mi><mo>)</mo></mrow> 
-</math> is undefined? The only questionable factor in the definition of 
+<mi>P</mi><mrow><mo>(</mo><mi>i</mi><mo>|</mo><mi>k</mi><mo>,</mo><mi>p</mi><mo>)</mo></mrow>
+</math> is undefined? The only questionable factor in the definition of
 <math xmlns="http://www.w3.org/1998/Math/MathML"><mi>P</mi><mrow><mo>(</mo><mi>i</mi><mo>|</mo>
-<mi>k</mi><mo>,</mo><mi>p</mi><mo>)</mo></mrow></math> seems to be that in case of 
-<tt>p == 1</tt>, the factor <tt>(1 - p)<sup>i</sup></tt> leads to <tt>0<sup>0</sup></tt> 
-when <tt>i == 0</tt>. While it is true that there's 
-<a href="https://en.wikipedia.org/wiki/Zero_to_the_power_of_zero">no generally accepted convention</a> 
-what this means, <tt>std::binomial_distribution</tt> already uses the common convention 
-<tt>0<sup>0</sup> == 1</tt> (e.g. with <tt>p == 1 &amp;&amp; t == i</tt>, 
+<mi>k</mi><mo>,</mo><mi>p</mi><mo>)</mo></mrow></math> seems to be that in case of
+<tt>p == 1</tt>, the factor <tt>(1 - p)<sup>i</sup></tt> leads to <tt>0<sup>0</sup></tt>
+when <tt>i == 0</tt>. While it is true that there's
+<a href="https://en.wikipedia.org/wiki/Zero_to_the_power_of_zero">no generally accepted convention</a>
+what this means, <tt>std::binomial_distribution</tt> already uses the common convention
+<tt>0<sup>0</sup> == 1</tt> (e.g. with <tt>p == 1 &amp;&amp; t == i</tt>,
 <math xmlns="http://www.w3.org/1998/Math/MathML">
-<mi>P</mi><mrow><mo>(</mo><mi>i</mi><mo>|</mo><mi>k</mi><mo>,</mo><mi>p</mi><mo>)</mo></mrow> 
+<mi>P</mi><mrow><mo>(</mo><mi>i</mi><mo>|</mo><mi>k</mi><mo>,</mo><mi>p</mi><mo>)</mo></mrow>
 </math> leads to <tt>0<sup>0</sup></tt>)</p></li>
 <li><p>Even if the term was undefined mathematically, does a non-normative note of
 mathematical term being undefined mean that the behaviour of the program is
 undefined (instead of e.g. resulting to NaN) even when no preconditions are violated?</p></li>
 <li><p>The note has lead to unclear situation of being able to construct a
 distribution object, but calling <tt>operator()</tt> might lead to undefined behaviour
-even though no preconditions are violated: for example the 
-<a href="https://en.cppreference.com/mwiki/index.php?title=cpp/numeric/random/negative_binomial_distribution/negative_binomial_distribution&amp;oldid=102755">cppreference.com notes</a> that 
+even though no preconditions are violated: for example the
+<a href="https://en.cppreference.com/mwiki/index.php?title=cpp/numeric/random/negative_binomial_distribution/negative_binomial_distribution&amp;oldid=102755">cppreference.com notes</a> that
 </p>
 <blockquote style="border-left: 3px solid #ccc;padding-left: 15px;">
 <p>
@@ -66,17 +66,17 @@ Invalidity of premises of LWG 2406:
 <li>
 <blockquote style="border-left: 3px solid #ccc;padding-left: 15px;">
 <p>
-For <tt>p == 1</tt>, this is "<tt>* 1^k * 0^i</tt>", so every integer 
-<tt>i &gt;= 0</tt> is produced with zero probability. (Let's avoid thinking about 
+For <tt>p == 1</tt>, this is "<tt>* 1^k * 0^i</tt>", so every integer
+<tt>i &gt;= 0</tt> is produced with zero probability. (Let's avoid thinking about
 <tt>0^0</tt>.)
 </p>
 </blockquote>
 <ul>
-<li><p>This is contradictory: first assuming that <tt>0^i == 0</tt> for all 
-<tt>i &gt;= 0</tt> (implying that <tt>0^0 == 0</tt>), but then comments not to 
-think about <tt>0^0</tt>. The very essence of the issue is interpretation of 
-<tt>0^0</tt> and given the definition of <tt>binomial_distribution</tt>, 
-where <tt>0^0 == 1</tt>, the claim "so every integer <tt>i &gt;= 0</tt> is 
+<li><p>This is contradictory: first assuming that <tt>0^i == 0</tt> for all
+<tt>i &gt;= 0</tt> (implying that <tt>0^0 == 0</tt>), but then comments not to
+think about <tt>0^0</tt>. The very essence of the issue is interpretation of
+<tt>0^0</tt> and given the definition of <tt>binomial_distribution</tt>,
+where <tt>0^0 == 1</tt>, the claim "so every integer <tt>i &gt;= 0</tt> is
 produced with zero probability" can be considered faulty.
 </p></li>
 </ul>
@@ -89,16 +89,16 @@ Wikipedia states that <tt>p</tt> must be within <tt>(0, 1)</tt>, exclusive on bo
 </blockquote>
 <ul>
 <li><p>
-I cannot find any mention of this in the 
+I cannot find any mention of this in the
 <a href="https://en.wikipedia.org/w/index.php?title=Negative_binomial_distribution&amp;oldid=611204120">Wikipedia's
-version as of 2014-06-02</a> (i.e. around the time when LWG 2406 was opened). Note that 
-the Wikipedia's version is not the same as in C++ standard; in Wikipedia, <tt>p</tt> 
-parameter is the same &mdash; i.e. the probability of success &mdash; but the integer parameter 
-(<tt>&gt; 0</tt>) is <em>number of failures</em>, while in C++ it is the <em>number of successes</em>. 
-In the failure formulation <tt>p == 1</tt> is indeed invalid for essentially the same reason why 
-<tt>p == 0</tt> is invalid for the C++ definition (i.e. leads to 
+version as of 2014-06-02</a> (i.e. around the time when LWG 2406 was opened). Note that
+the Wikipedia's version is not the same as in C++ standard; in Wikipedia, <tt>p</tt>
+parameter is the same &mdash; i.e. the probability of success &mdash; but the integer parameter
+(<tt>&gt; 0</tt>) is <em>number of failures</em>, while in C++ it is the <em>number of successes</em>.
+In the failure formulation <tt>p == 1</tt> is indeed invalid for essentially the same reason why
+<tt>p == 0</tt> is invalid for the C++ definition (i.e. leads to
 <math xmlns="http://www.w3.org/1998/Math/MathML">
-<mi>P</mi><mrow><mo>(</mo><mi>i</mi><mo>|</mo><mi>k</mi><mo>,</mo><mi>p</mi><mo>)</mo></mrow> 
+<mi>P</mi><mrow><mo>(</mo><mi>i</mi><mo>|</mo><mi>k</mi><mo>,</mo><mi>p</mi><mo>)</mo></mrow>
 </math><tt> == 0</tt> for all <tt>i</tt>).
 </p></li>
 </ul>
@@ -116,35 +116,35 @@ success probability <tt>p</tt> before <tt>n</tt> successes occur.
 </blockquote>
 <p>
 (from <a href="https://reference.wolfram.com/language/ref/NegativeBinomialDistribution.html">
-Wolfram documentation</a>). When <tt>p == 1</tt>, this means that trial always succeeds, 
-so it's obvious that the probability to get 0 failures is 1, and the probability for 
+Wolfram documentation</a>). When <tt>p == 1</tt>, this means that trial always succeeds,
+so it's obvious that the probability to get 0 failures is 1, and the probability for
 <tt>i &gt; 0</tt> failures is 0. This is exactly what the mathematical definition in
-<sref ref="[rand.dist.bern.negbin]"/> gives with convention <tt>0<sup>0</sup> = 1</tt> 
+<sref ref="[rand.dist.bern.negbin]"/> gives with convention <tt>0<sup>0</sup> = 1</tt>
 when <tt>p == 1</tt>.
 </p>
 </li>
 <li><p>
-Software such as 
+Software such as
 <a href="https://reference.wolfram.com/language/ref/NegativeBinomialDistribution.html">Mathematica</a>,
 <a href="https://mathworks.com/help/stats/prob.negativebinomialdistribution.html">Matlab</a>
 and <a href="http://search.r-project.org/R/library/stats/html/NegBinomial.html">R</a> all
-accept <tt>p == 1</tt> for negative binomial distribution and they use the integer parameter 
+accept <tt>p == 1</tt> for negative binomial distribution and they use the integer parameter
 as number of successes like the C++ standard.
 </p></li>
 </ul>
 <p>
 What comes to the reasons why <tt>p == 1</tt> could have been considered invalid, it
-seems that major implementations &mdash; namely 
+seems that major implementations &mdash; namely
 <a href="https://github.com/gcc-mirror/gcc/blob/07c86323a199ca15177d99ad6c488b8f5fb5c729/libstdc%2B%2B-v3/include/bits/random.h#L4240">libstd++</a>,
-<a href="https://github.com/llvm/llvm-project/blob/d081962dead08ef0982081e78d679dd609947ca5/libcxx/include/random#L5233">libc++</a> and 
+<a href="https://github.com/llvm/llvm-project/blob/d081962dead08ef0982081e78d679dd609947ca5/libcxx/include/random#L5233">libc++</a> and
 <a href="https://github.com/microsoft/STL/blob/0e336ac7379c5b4d80280fa828b1a3bccc351d27/stl/inc/random#L4350">MSVC
-standard library</a> &mdash; are using <tt>std::gamma_distribution</tt> in 
+standard library</a> &mdash; are using <tt>std::gamma_distribution</tt> in
 <tt>std::negative_binomial_distribution</tt> and passing <tt>(1 - p)/p</tt> as the second argument
 of <tt>std::gamma_distribution</tt>. Case <tt>p == 1</tt> is not checked leading to violation of
 precondition of <tt>std::gamma_distribution</tt>, which requires argument to be <tt>&gt; 0</tt>.
 <p/>
-For these reasons the note added by resolution of LWG 2406 seems invalid and could be considered for 
-removal. However given the current status and history regarding handling of case <tt>p == 1</tt>, 
+For these reasons the note added by resolution of LWG 2406 seems invalid and could be considered for
+removal. However given the current status and history regarding handling of case <tt>p == 1</tt>,
 removing the note might not be the only option to consider.
 </p>
 
