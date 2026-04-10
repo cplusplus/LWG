@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="936" status="LEWG">
+<issue num="936" status="Resolved">
 <title>Mutex type overspecified</title>
 <section><sref ref="[thread.mutex.requirements]"/></section>
 <submitter>Pete Becker</submitter>
@@ -106,6 +106,9 @@ SG1: Agreement that we need a paper.
 </p>
 
 <note>2025-10-21; Priority set to 4 based on age of issue and lack of activity.</note>
+<note>2026-04-10 The suggested changes appear to have been applied since C++11.
+<paper num="P2160R1"/> further makes clear that the referenced requirements
+are only for standard-provided types. Status changed: LEWG &rarr; Resolved.</note>
 </discussion>
 
 <resolution>

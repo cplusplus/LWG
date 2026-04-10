@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="961" status="LEWG">
+<issue num="961" status="Resolved">
 <title>Various threading bugs #11</title>
 <section><sref ref="[thread.mutex.requirements]"/></section>
 <submitter>Pete Becker</submitter>
@@ -45,6 +45,8 @@ SG1: Agreement that we need a paper.
 </p>
 
 <note>2025-10-21; Priority set to 4 based on age of issue and lack of activity.</note>
+<note>2026-04-10 <paper num="P2160R1"/>, adopted at the February 2021 plenary, makes clear that the referenced requirements
+are only for standard-provided types. Status changed: LEWG &rarr; Resolved.</note>
 </discussion>
 
 <resolution>
