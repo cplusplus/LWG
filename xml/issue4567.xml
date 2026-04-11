@@ -29,7 +29,7 @@ I propose to assign the following `__cpp_lib_apply` macro values to account to a
 `202506L` for <paper num="P1317R2"/> also in <tt>&lt;tuple&gt;</tt>, <tt>&lt;type_traits&gt;</tt>
 </p></li>
 <li><p>
-`202603L` for the corresponding parts of <paper num="P3795R2"/> also in <tt>&lt;reflection&gt;</tt>
+`202603L` for the corresponding parts of <paper num="P3795R2"/> also in <tt>&lt;meta&gt;</tt>
 </p></li>
 </ul>
 <p>
@@ -48,7 +48,7 @@ This wording is relative to <paper num="N5032"/>.
 
 <blockquote>
 <pre>
-#define __cpp_lib_apply <del>202506L</del><ins>202603L</ins> // <i>freestanding, also in &lt;tuple&gt;, &lt;type_traits&gt;<ins>, &lt;reflection&gt;</ins></i>
+#define __cpp_lib_apply <del>202506L</del><ins>202603L</ins> // <i>freestanding, also in &lt;tuple&gt;, &lt;type_traits&gt;<ins>, &lt;meta&gt;</ins></i>
 </pre>
 </blockquote>
 </li>
