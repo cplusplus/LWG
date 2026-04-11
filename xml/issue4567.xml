@@ -1,0 +1,59 @@
+<?xml version='1.0' encoding='utf-8' standalone='no'?>
+<!DOCTYPE issue SYSTEM "lwg-issue.dtd">
+
+<issue num="4567" status="New">
+<title>Feature test macro for `apply_result`, `is_applicable`</title>
+<section>
+<sref ref="[version.syn]"/>
+</section>
+<submitter>Tomasz Kamiński</submitter>
+<date>08 Apr 2026</date>
+<priority>99</priority>
+
+<discussion>
+<p>
+The paper <paper num="P1317R2"/> "Remove return type deduction in `std::apply`", which changed 
+the definition of `std::apply` and introduced the new traits `is_applicable`, 
+`is_nothrow_applicable, and `apply_result`, was accepted in Sofia.
+<p/>
+In Croydon we moved the <paper num="P3795R2"/> "Miscellaneous Reflection Cleanup", that adds the 
+reflection equivalents of above, under `__cpp_lib_reflection`.
+<p/>
+This leads to situation, when an implementation that does not yet implement <paper num="P1317R2"/>, 
+and thus does not define the corresponding meta functions, should not define `__cpp_lib_reflection`.
+<p/>
+I propose to assign the following `__cpp_lib_apply` macro values to account to above papers:
+</p>
+<ul>
+<li><p>
+`202506L` for <paper num="P1317R2"/> also in <tt>&lt;tuple&gt;</tt>, <tt>&lt;type_traits&gt;</tt>
+</p></li>
+<li><p>
+`202603L` for the corresponding parts of <paper num="P3795R2"/> also in <tt>&lt;reflection&gt;</tt>
+</p></li>
+</ul>
+<p>
+The proposed resolution for the standard working paper represents only the effective end state.
+</p>
+</discussion>
+
+<resolution>
+<p>
+This wording is relative to <paper num="N5032"/>.
+</p>
+
+<ol>
+<li>
+<p>Modify <sref ref="[version.syn]"/> as indicated:</p>
+
+<blockquote>
+<pre>
+#define __cpp_lib_apply <del>202506L</del><ins>202603L</ins> // <i>freestanding, also in &lt;tuple&gt;, &lt;type_traits&gt;<ins>, &lt;reflection&gt;</ins></i>
+</pre>
+</blockquote>
+</li>
+
+</ol>
+</resolution>
+
+</issue>
