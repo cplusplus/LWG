@@ -1,0 +1,95 @@
+<?xml version='1.0' encoding='utf-8' standalone='no'?>
+<!DOCTYPE issue SYSTEM "lwg-issue.dtd">
+
+<issue num="4568" status="New">
+<title>`std::execution::spawn_future` is mishandling dependent senders</title>
+<section>
+<sref ref="[exec.spawn.future]"/>
+</section>
+<submitter>Eric Niebler</submitter>
+<date>11 Apr 2026</date>
+<priority>99</priority>
+
+<discussion>
+<p>
+In <sref ref="[exec.spawn.future]"/> p7, we see this:
+</p>
+<blockquote style="border-left: 3px solid #ccc;padding-left: 15px;">
+<p>
+-7- Let <tt><i>spawn-future-state</i></tt> be the exposition-only class template:
+</p>
+<blockquote>
+<pre>
+namespace std::execution {
+  template&lt;class Alloc, scope_token Token, sender Sender, class Env&gt;
+  struct <i>spawn-future-state</i>                   // <i>exposition only</i>
+    : <i>spawn-future-state-base</i>&lt;completion_signatures_of_t&lt;<i>future-spawned-sender</i>&lt;Sender, Env&gt;&gt;&gt; {
+    using <i>sigs-t</i> =                            // <i>exposition only</i>
+      completion_signatures_of_t&lt;<i>future-spawned-sender</i>&lt;Sender, Env&gt;&gt;;
+    using <i>receiver-t</i> =                        // <i>exposition only</i>
+      <i>spawn-future-receiver</i>&lt;<i>sigs-t</i>&gt;;
+    using <i>op-t</i> =                              // <i>exposition only</i>
+      connect_result_t&lt;<i>future-spawned-sender</i>&lt;Sender, Env&gt;, <i>receiver-t</i>&gt;;
+  [&hellip;]
+  };
+[&hellip;]
+}
+</pre>
+</blockquote>
+</blockquote>
+<p>
+where <tt><i>spawn-future-sender</i>&lt;Sender, Env&gt;</tt> is the type of 
+<tt>write_env(<i>stop-when</i>(declval&lt;Sender&gt;(), declval&lt;stoken-t&gt;()), declval&lt;Env&gt;())</tt>.
+<p/>
+The problem happens in the definition of <tt><i>sigs-t</i></tt>. There is a difference between asking for 
+a sender's completion signatures with an empty environment, and asking with no environment.
+<p/>
+In <tt><i>sigs-t</i></tt>, we are asking for the completion signatures with no environment. That is 
+asking the sender for its non-dependent completions. But if `Sender` is a dependent sender, 
+then so is <tt><i>future-spawned-sender</i>&lt;Sender, Env&gt;</tt>, and so this line will not compile. 
+A dependent sender cannot provide non-dependent completion signatures.
+<p/>
+The `spawn_future` algorithm connects the <tt><i>future-spawned-sender</i></tt> with a receiver that 
+has an empty environment. Therefore, we should be using the empty environment when computing the 
+<tt><i>future-spawned-sender</i></tt>'s completion signatures.
+</p>
+</discussion>
+
+<resolution>
+<p>
+This wording is relative to <paper num="N5032"/>.
+</p>
+
+<ol>
+<li>
+<p>Modify <sref ref="[exec.spawn.future]"/> as indicated:</p>
+
+<blockquote>
+<p>
+-7- Let <tt><i>spawn-future-state</i></tt> be the exposition-only class template:
+</p>
+<blockquote>
+<pre>
+namespace std::execution {
+  template&lt;class Alloc, scope_token Token, sender Sender, class Env&gt;
+  struct <i>spawn-future-state</i>                   // <i>exposition only</i>
+    : <i>spawn-future-state-base</i>&lt;completion_signatures_of_t&lt;<i>future-spawned-sender</i>&lt;Sender, Env&gt;<ins>, env&lt;&gt;</ins>&gt;&gt; {
+    using <i>sigs-t</i> =                            // <i>exposition only</i>
+      completion_signatures_of_t&lt;<i>future-spawned-sender</i>&lt;Sender, Env&gt;<ins>, env&lt;&gt;</ins>&gt;;
+    using <i>receiver-t</i> =                        // <i>exposition only</i>
+      <i>spawn-future-receiver</i>&lt;<i>sigs-t</i>&gt;;
+    using <i>op-t</i> =                              // <i>exposition only</i>
+      connect_result_t&lt;<i>future-spawned-sender</i>&lt;Sender, Env&gt;, <i>receiver-t</i>&gt;;
+  [&hellip;]
+  };
+[&hellip;]
+}
+</pre>
+</blockquote>
+</blockquote>
+</li>
+
+</ol>
+</resolution>
+
+</issue>
