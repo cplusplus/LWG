@@ -106,9 +106,7 @@ SG1: Agreement that we need a paper.
 </p>
 
 <note>2025-10-21; Priority set to 4 based on age of issue and lack of activity.</note>
-<note>2026-04-10 The suggested changes appear to have been applied since C++11.
-<paper num="P2160R1"/> further makes clear that the referenced requirements
-are only for standard-provided types. Status changed: LEWG &rarr; Resolved.</note>
+<note>2026-04-10 Resolved by the adoption of <paper num="N3197"/> at the November 2010 plenary. Status changed: LEWG &rarr; Resolved.</note>
 </discussion>
 
 <resolution>
