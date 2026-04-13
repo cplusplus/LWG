@@ -1,14 +1,14 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="4541" status="New">
+<issue num="4541" status="SG16">
 <title>Unclear behavior for parsing locale-dependent format</title>
 <section>
 <sref ref="[locale.time.get.virtuals]"/><sref ref="[time.parse]"/>
 </section>
 <submitter>S. B. Tam</submitter>
 <date>14 Mar 2026</date>
-<priority>99</priority>
+<priority>3</priority>
 
 <discussion>
 <p>
@@ -30,6 +30,14 @@ I believe the standard should clarify what they mean.
 The proposed wording makes them implementation-defined,
 which matches `time_put::do_put` (<sref ref="[locale.time.put.virtuals]"/> p1)
 and also matches the proposed resolution of LWG <iref ref="4285"/>.
+</p>
+
+<note>2026-04-13; Reflector poll.</note>
+<p>
+Set priority to 3 after reflector poll. Set status to SG16.
+</p>
+<p>
+"Could potentially do something more sensible for `std::locale::classic()`."
 </p>
 </discussion>
 

@@ -8,11 +8,20 @@
 </section>
 <submitter>Hewill Kang</submitter>
 <date>10 Mar 2026</date>
-<priority>99</priority>
+<priority>3</priority>
 
 <discussion>
 <p>
 This member simply returns the result of integer calculations, which can be `noexcept`.
+</p>
+
+<note>2026-04-13; Reflector poll.</note>
+<p>
+Set priority to 3 after reflector poll.
+</p>
+<p>
+"The calculation can overflow `ptrdiff_t` which would be undefined,
+so there's an implicit narrow contract."
 </p>
 </discussion>
 

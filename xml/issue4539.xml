@@ -8,7 +8,7 @@
 </section>
 <submitter>Jan Schultke</submitter>
 <date>10 Mar 2026</date>
-<priority>99</priority>
+<priority>3</priority>
 
 <discussion>
 <p>
@@ -55,6 +55,15 @@ Authors' opinion: N/A<br/>
 Outcome: No objection to unanimous consent.
 </p>
 </blockquote>
+
+<note>2026-04-13; Reflector poll.</note>
+<p>
+Set priority to 3 after reflector poll.
+</p>
+<p>
+Concerns about requiring the compiler to understand the semantics of
+program-defined types.
+</p>
 </discussion>
 
 <resolution>

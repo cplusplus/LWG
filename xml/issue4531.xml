@@ -6,7 +6,7 @@
 <section><sref ref="[version.syn]"/></section>
 <submitter>Jiang An</submitter>
 <date>25 Feb 2026</date>
-<priority>99</priority>
+<priority>2</priority>
 
 <discussion>
 <p>
@@ -18,6 +18,11 @@ Given that <paper num="P3391R2"/> contained the constexpr additions in
 <paper num="P3438R0"/> which proposed to bump `__cpp_lib_to_string`, perhaps we should 
 bump that FTM. It might be also reasonable to bump `__cpp_lib_constexpr_string` for pure 
 constexpr additions.
+</p>
+
+<note>2026-04-13; Reflector poll.</note>
+<p>
+Set priority to 2 after reflector poll.
 </p>
 </discussion>
 

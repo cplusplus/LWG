@@ -8,7 +8,7 @@
 </section>
 <submitter>Matthias Kretz</submitter>
 <date>16 Mar 2026</date>
-<priority>99</priority>
+<priority>2</priority>
 
 <discussion>
 <p>
@@ -72,6 +72,11 @@ conversions but also reduces the error message to something understandable,
 additionally allowing a message from the developer via `= delete("wrong!")`.
 <p/>
 Proposed resolution: Adopt <a href="https://isocpp.org/files/papers/P4042R0.pdf">P4042R0</a>
+</p>
+
+<note>2026-04-13; Reflector poll.</note>
+<p>
+Set priority to 2 after reflector poll.
 </p>
 </discussion>
 
