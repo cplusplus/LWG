@@ -14,7 +14,7 @@
 <p>
 The paper <paper num="P1317R2"/> "Remove return type deduction in `std::apply`", which changed 
 the definition of `std::apply` and introduced the new traits `is_applicable`, 
-`is_nothrow_applicable, and `apply_result`, was accepted in Sofia.
+`is_nothrow_applicable`, and `apply_result`, was accepted in Sofia.
 <p/>
 In Croydon we moved the <paper num="P3795R2"/> "Miscellaneous Reflection Cleanup", that adds the 
 reflection equivalents of above, under `__cpp_lib_reflection`.
