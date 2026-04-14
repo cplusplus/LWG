@@ -19,7 +19,7 @@ Presumably, if a user wants to customize `on`, they would expect `on(sch, sndr)`
 of `sch` to find the customization. So there is a gap between what would be least surprising and 
 what is currently specified.
 <p/>
-In <paper num="P3927"/>, we added a <tt>get_completion_domain&lt;T&gt;</tt> query where `T` could 
+In <paper num="p3826r5"/>, we added a <tt>get_completion_domain&lt;T&gt;</tt> query where `T` could 
 be either a completion tag (`set_value_t`, et. al) or `void` (and defaults to `void`), where 
 <tt>get_completion_domain&lt;void&gt;</tt> defaults to <tt>get_completion_domain&lt;set_value_t&gt;</tt>.
 <p/>
