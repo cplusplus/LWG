@@ -1,0 +1,107 @@
+<?xml version='1.0' encoding='utf-8' standalone='no'?>
+<!DOCTYPE issue SYSTEM "lwg-issue.dtd">
+
+<issue num="4569" status="New">
+<title><code>mdspan</code> should <i>Mandates</i> the relationship between <code>element_type</code> and
+      <code>reference</code></title>
+<section>
+<sref ref="[mdspan.mdspan.overview]"/>
+</section>
+<submitter>Hewill Kang</submitter>
+<date>12 Apr 2026</date>
+<priority>99</priority>
+
+<discussion>
+<p>
+For <code>mdspan</code>, user-defined accessor <code>A</code> must meet the requirements of
+<a href="https://wg21.link/mdspan.accessor.reqmts">[mdspan.accessor.reqmts]</a>. Particularly, proxy references
+should model <code>common_reference_with&lt;A::reference&amp;&amp;, A::element_type&amp;&gt;</code> to ensure that 
+there is a relationship between these two types rather than arbitrary types.
+<p/>
+Although <code>mspan</code> already requires that the template parameter <code>AccessorPolicy</code> shall 
+meet the accessor policy requirements, compared to various details, such a sensible relationship between 
+<code>element_type</code> and <code>reference</code> should be directly reflected in <code>mdspan</code>'s
+<i>Mandates</i> to prevent users from using <a href="https://godbolt.org/z/8ePTYWxhY">non-compliant</a> 
+accessors:
+</p>
+<blockquote><pre>
+struct BadAccessor {
+  using offset_policy = BadAccessor;
+  using element_type = int;
+  using reference    = <span style="color:#C80000;font-weight:bold">void</span>;
+  using data_handle_type = element_type*;
+  reference access(data_handle_type, size_t) const;
+};
+
+mdspan&lt;int, dims&lt;2&gt;, layout_right, BadAccessor&gt; m;
+m[0, 1]; // <span style="color:#C80000;font-weight:bold">not rejected in libstdc++, libc++ and MSVC-STL</span>
+</pre></blockquote>
+</discussion>
+
+<resolution>
+<p>
+This wording is relative to <paper num="N5032"/>.
+</p>
+
+<ol>
+<li>
+<p>Modify <sref ref="[mdspan.mdspan.overview]"/> as indicated:</p>
+
+<blockquote>
+<blockquote><pre>
+namespace std {
+  template&lt;class ElementType, class Extents, class LayoutPolicy = layout_right,
+  class AccessorPolicy = default_accessor&lt;ElementType&gt;&gt;
+  class mdspan {
+  public:
+    using extents_type = Extents;
+    using layout_type = LayoutPolicy;
+    using accessor_type = AccessorPolicy;
+    using mapping_type = layout_type::template mapping&lt;extents_type&gt;;
+    using element_type = ElementType;
+    using value_type = remove_cv_t&lt;element_type&gt;;
+    using index_type = extents_type::index_type;
+    using size_type = extents_type::size_type;
+    using rank_type = extents_type::rank_type;
+    using data_handle_type = accessor_type::data_handle_type;
+    using reference = accessor_type::reference;
+    [&hellip;]
+  };
+  [&hellip;]
+}
+</pre></blockquote>
+<p>
+-2- <i>Mandates</i>:
+</p>
+<ol style="list-style-type: none">
+<li>
+<p>
+(2.1) &mdash; <code>ElementType</code> is a complete object type that is neither an abstract class type 
+nor an array type,
+</p>
+</li>
+<li>
+<p>
+(2.2) &mdash; <code>Extents</code> is a specialization of <code>extents</code>, <del>and</del>
+</p>
+</li>
+<li>
+<p>
+(2.3) &mdash; <code>is_same_v&lt;ElementType, typename AccessorPolicy::element_type&gt;</code> is
+  <code>true</code><ins>, and</ins><del>.</del>
+</p>
+</li>
+<li>
+<p>
+<ins>(2.?) &mdash; <code>common_reference_with&lt;reference&amp;&amp;, element_type&amp;&gt;</code> is
+         modeled.</ins>
+</p>
+</li>
+</ol>
+</blockquote>
+</li>
+
+</ol>
+</resolution>
+
+</issue>
