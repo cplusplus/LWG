@@ -1,0 +1,104 @@
+<?xml version='1.0' encoding='utf-8' standalone='no'?>
+<!DOCTYPE issue SYSTEM "lwg-issue.dtd">
+
+<issue num="4571" status="New">
+<title>Disallow specializing `std::atomic` and `std::atomic_ref`</title>
+<section>
+<sref ref="[atomics.ref.generic.general]"/>
+<sref ref="[atomics.types.generic.general]"/>
+</section>
+<submitter>Jiang An</submitter>
+<date>17 Apr 2026</date>
+<priority>99</priority>
+
+<discussion>
+<p>
+Currently, specializations of `std::atomic` and `std::atomic_ref` for non-`bool` integer types, 
+floating-point types, and pointer types are specified as if they're full specializations. However, 
+implementations generally merge these specializations in quite arbitrary ways.
+<p/>
+As for 2026-04:
+</p>
+<ul>
+<li><p>
+MSVC STL provides all atomic and atomic_ref specializations in primary templates.
+</p></li>
+<li><p>
+libc++ merges specializations for integer types with the atomic primary template, and provides atomic_ref specializations for arithmetic types in many partial specializations.
+</p></li>
+<li><p>
+libstdc++ provides all atomic_ref specializations in the primary template, while providing atomic full specializations like the standard wording.
+</p></li>
+</ul>
+<p>
+The divergence among implementations and standard wording is observable if it's allowed to specialize 
+`atomic` or `atomic_ref`. Also, it's already noted in <a href="https://github.com/cplusplus/draft/issues/7556">
+cplusplus/draft#7556</a> that it's unimplementable to provide full specializations for all 
+<tt>atomic_ref&lt;<i>pointer-type</i>&gt;</tt>.
+<p/>
+On the other hand, it's desired that `_Atomic(T)` behaves as consistently as possible in C and C++ (per 
+<sref ref="[stdatomic.h.syn]"/>/4). This is possible unachievable if <tt>atomic&lt;T&gt;</tt> is a 
+program-defined specialization.
+<p/>
+Given it's unclear whether program-defined specializations of `atomic` and `atomic_ref` make sense, and 
+there're some potential drawbacks allowing them, perhaps it would be better to disallow specializing 
+`atomic` and `atomic_ref`.
+</p>
+</discussion>
+
+<resolution>
+<p>
+This wording is relative to <paper num="N5032"/>.
+</p>
+
+<ol>
+<li>
+<p>Modify <sref ref="[atomics.general]"/> as indicated:</p>
+
+<blockquote>
+<p>
+-1- Subclause <sref ref="[atomics]"/> describes components for fine-grained atomic access. This access is 
+provided via operations on atomic objects.
+<p/>
+<ins>-?- [<i>Note ?</i>: Although some specializations of `atomic` and `atomic_ref` are specified as 
+explicit or partial specializations, the implementation can merge these specializations in an unspecified 
+way, because a program-defined specialization is invalid. &mdash; <i>end note</i>]</ins>
+</p>
+</blockquote>
+</li>
+
+<li>
+<p>Modify <sref ref="[atomics.ref.generic.general]"/> as indicated:</p>
+
+<blockquote>
+<p>
+-5- The program is ill-formed if `is_always_lock_free` is `false` and <tt>is_volatile_v&lt;T&gt;</tt> is `true`.
+<p/>
+<ins>-?- The program is ill-formed, no diagnostic required, if it declares an explicit or partial specialization 
+of `atomic_ref`.</ins>
+</p>
+</blockquote>
+</li>
+
+<li>
+<p>Modify <sref ref="[atomics.types.generic.general]"/> as indicated:</p>
+
+<blockquote>
+<p>
+-1- The template argument for `T` shall meet the <i>Cpp17CopyConstructible</i> and 
+<i>Cpp17CopyAssignable</i> requirements. The program is ill-formed if any of
+<p/> 
+[&hellip;]
+<p/>
+is `false`.
+<p/>
+<ins>-?- The program is ill-formed, no diagnostic required, if it declares an explicit or partial specialization 
+of `atomic`.</ins>
+</p>
+</blockquote>
+</li>
+
+</ol>
+</resolution>
+
+</issue>
