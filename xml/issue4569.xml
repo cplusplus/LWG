@@ -51,7 +51,7 @@ This wording is relative to <paper num="N5032"/>.
 <blockquote><pre>
 namespace std {
   template&lt;class ElementType, class Extents, class LayoutPolicy = layout_right,
-  class AccessorPolicy = default_accessor&lt;ElementType&gt;&gt;
+           class AccessorPolicy = default_accessor&lt;ElementType&gt;&gt;
   class mdspan {
   public:
     using extents_type = Extents;
