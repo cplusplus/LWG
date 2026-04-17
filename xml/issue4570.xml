@@ -1,0 +1,72 @@
+<?xml version='1.0' encoding='utf-8' standalone='no'?>
+<!DOCTYPE issue SYSTEM "lwg-issue.dtd">
+
+<issue num="4570" status="New">
+<title><tt><i>COMMON-DOMAIN</i></tt> should test for convertibility to `default_domain`</title>
+<section>
+<sref ref="[exec.snd.expos]"/>
+</section>
+<submitter>Eric Niebler</submitter>
+<date>13 Apr 2026</date>
+<priority>99</priority>
+
+<discussion>
+<p>
+<paper num="P3826R5"/> accepted at the Croydon meeting adds the following paragraph to 
+<sref ref="[exec.snd.expos]"/>:
+</p>
+<blockquote style="border-left: 3px solid #ccc;padding-left: 15px;">
+<p>
+For a pack of subexpressions `domains`, <tt><i>COMMON-DOMAIN</i>(domains...)</tt> is expression-equivalent 
+to <tt>common_type_t&lt;decltype(auto(domains))...&gt;()</tt> if that expression is well-formed, and 
+<tt>indeterminate_domain&lt;Ds...&gt;()</tt> otherwise, where `Ds` is the pack of types consisting of 
+`decltype(auto(domains))...` with duplicate types removed.
+</p></blockquote>
+<p>
+My intention with this paragraph was that two domains such as below would have a <tt><i>COMMON-DOMAIN</i></tt> 
+of `default_domain`:
+</p>
+<blockquote><pre>
+struct my_thread_pool_domain : std::execution::default_domain
+{};
+
+struct my_parallel_runtime_domain : std::execution::default_domain
+{};
+
+<i>using domain-t</i> = decltype(<i>COMMON-DOMAIN</i>(my_thread_pool_domain{}, my_parallel_runtime_domain{}));
+static_assert(std::same_as&lt;<i>domain-t</i>, default_domain>); // <span style="color:#C80000;font-weight:bold">FAILS</span>
+</pre></blockquote>
+<p>
+But that's not how `common_type_t` works. Even though both domains derive from `default_domain`, 
+they do not have a common type as determined by `common_type_t`.
+<p/>
+We can patch this up easily enough: if <tt>common_type_t&lt;Domains...&gt;</tt> is ill-formed, 
+we should check if <tt>common_type_t&lt;default_domain, Domains...&gt;</tt> is well-formed, this 
+will correctly handle the case when all the domains are convertible to `default_domain`.
+</p>
+</discussion>
+
+<resolution>
+<p>
+This wording is relative to <paper num="N5032"/> after application of the wording added by <paper num="P3826R5"/>.
+</p>
+
+<ol>
+<li>
+<p>Modify <sref ref="[exec.snd.expos]"/> as indicated:</p>
+
+<blockquote>
+<p>
+-6- For a pack of subexpressions `domains`, <tt><i>COMMON-DOMAIN</i>(domains...)</tt> is expression-equivalent to 
+<tt>common_type_t&lt;decltype(auto(domains))...&gt;()</tt> if that expression is 
+well-formed<del>,</del><ins>; otherwise, <tt>common_type_t&lt;default_domain(), decltype(auto(domains))...&gt;()</tt> 
+if that expression is well-formed;</ins> and <tt>indeterminate_domain&lt;Ds...&gt;()</tt> otherwise, where 
+`Ds` is the pack of types consisting of `decltype(auto(domains))...` with duplicate types removed.
+</p>
+</blockquote>
+</li>
+
+</ol>
+</resolution>
+
+</issue>
