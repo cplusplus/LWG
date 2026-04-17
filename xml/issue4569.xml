@@ -36,6 +36,9 @@ struct BadAccessor {
 mdspan&lt;int, dims&lt;2&gt;, layout_right, BadAccessor&gt; m;
 m[0, 1]; // <span style="color:#C80000;font-weight:bold">not rejected in libstdc++, libc++ and MSVC-STL</span>
 </pre></blockquote>
+<p>
+It should be emphasized that we provided very similar wording in <sref ref="[coro.generator.class]"/> p1.
+</p>
 </discussion>
 
 <resolution>
