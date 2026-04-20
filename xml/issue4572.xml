@@ -70,7 +70,7 @@ return s.upper_bound(std::cref(nan)) == s.end(); // returns true
 </pre></blockquote>
 <p>
 because `upper_bound` in (B) and (C) only requires that the passed key
-_partition_ the range where lookup happens, and ¬( · &lt; NaN) partitions
+<i>partition</i> the range where lookup happens, and ¬( · &lt; NaN) partitions
 the range `R` = [0.0, 1.0, 2.0, 3.0] into `R` and [] 
 (see <a href="https://wg21.link/upper.bound">upper.bound</a> and
 <sref ref="[associative.reqmts.general]"/>/167.
@@ -710,6 +710,17 @@ for constant <tt><del>a_tran</del><ins>b</ins></tt>.
 </li>
 
 <li>
+<p>Modify <sref ref="[associative.reqmts.except]"/> as indicated:</p>
+
+<blockquote>
+<p>
+-1- For associative containers, no `clear()` function throws an exception. <tt>erase(<del>k</del><ins>kx</ins>)</tt> 
+does not throw an exception unless that exception is thrown by the container's `Compare` object (if any).
+</p>
+</blockquote>
+</li>
+
+<li>
 <p>Modify <sref ref="[map.modifiers]"/> as indicated:</p>
 
 <blockquote>
@@ -872,7 +883,6 @@ equivalent to `k`.
 </blockquote>
 </blockquote>
 </li>
-
 
 <li>
 <p>Modify <sref ref="[set.modifiers]"/> as indicated:</p>
