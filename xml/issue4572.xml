@@ -1,0 +1,914 @@
+<?xml version='1.0' encoding='utf-8' standalone='no'?>
+<!DOCTYPE issue SYSTEM "lwg-issue.dtd">
+
+<issue num="4572" status="New">
+<title>Key ordering requirements of associative containers are poorly specified</title>
+<section>
+<sref ref="[associative.reqmts.general]"/>
+<sref ref="[map.modifiers]"/>
+<sref ref="[set.modifiers]"/>
+</section>
+<submitter>Joaquin M López Muñoz</submitter>
+<date>19 Apr 2026</date>
+<priority>99</priority>
+
+<discussion>
+<p>
+<sref ref="[associative.reqmts.general]"/> mandates that `Compare` induce a strict weak 
+ordering (SWO) on elements of `Key`. A strict reading of this requirement without further 
+qualifications implies, for instance, that using a container such as <tt>std::set&lt;double&gt;</tt> 
+is UB regardless of what elements go into it (because <tt>std::less&lt;double&gt;</tt> is
+<em>not</em> a SWO on all values of `double` due to NaN). Assuming that the intent of the
+standard is to allow for the use of <tt>std::set&lt;double&gt;</tt> and other containers 
+where `Compare` does not induce a full SWO on all possible values of `Key`, there are 
+(at least) two possible relaxations of the original requirement:
+</p>
+<ol>
+<li><p>
+Let `K` be the set of keys in an associative container `a` at a given point in time:
+`Compare` induces a SWO on `K` and also on {`k`} ∪ `K` for any `k` involved in an attempted
+insertion into `a` (either successful or not).
+</p></li>
+<li><p>
+`Compare` induces a SWO on `K` and also on {`k`} ∪ `K` for any `k` involved in an attempted
+insertion (either successful or not) <em>or</em> a lookup operation.
+</p></li>
+</ol>
+<p>
+Now, consider the following code:
+</p>
+<blockquote><pre>
+// (A)
+std::set&lt;double&gt; s = {0.0, 1.0, 2.0, 3.0};
+auto nan = std::numeric_limits&lt;double&gt;::quiet_NaN();
+return s.upper_bound(nan) == s.end();
+</pre></blockquote>
+<p>
+Under interpretation 1, (A) is correct and returns `true`, whereas under interpretation 2
+the code is UB because <tt>std::less&lt;double&gt;</tt> does not induce a SWO on 
+`{0.0, 1.0, 2.0, 3.0, NaN}`.
+<p/>
+Currently, libstdc++, Microsoft's C++ Standard Library, and libc++ v21 or lower behave as if
+interpretation 1 is in effect. Starting with version 22, libc++
+<a href="https://github.com/llvm/llvm-project/pull/161366">introduces optimizations</a> 
+that implicitly assume interpretation 2, and the code in fact returns `false`.
+See <a href="https://godbolt.org/z/789qr74es">this godbolt link</a>, where the different 
+behaviors are shown side by side.
+<p/>
+Note, however, that the following pieces of code are <em>not</em> UB:
+</p>
+<blockquote><pre>
+// (B) Global binary search functions
+std::vector&lt;double&gt; v = {0.0, 3.0, 2.0, 1.0};
+std::sort(v.begin(), v.end());
+return std::upper_bound(v.begin(), v.end(), nan) == v.end(); // returns true
+</pre></blockquote>
+<blockquote><pre>
+// (C) Heterogeneous lookup
+std::set&lt;double, std::less&lt;&gt;&gt; s = {0.0, 1.0, 2.0, 3.0};
+return s.upper_bound(std::cref(nan)) == s.end(); // returns true
+</pre></blockquote>
+<p>
+because `upper_bound` in (B) and (C) only requires that the passed key
+_partition_ the range where lookup happens, and ¬( · &lt; NaN) partitions
+the range `R` = [0.0, 1.0, 2.0, 3.0] into `R` and [] 
+(see <a href="https://wg21.link/upper.bound">upper.bound</a> and
+<sref ref="[associative.reqmts.general]"/>/167.
+The fact that (C) is well defined is an argument against interpretation 2, 
+given that (C) can be seen as a mere syntactic variation of (A).
+<p/>
+The status quo (`Compare` must induce a full SWO on all possible values of `Key`)
+is unacceptably strict and hardly the intent of the standard. As reasonable interpretation
+is left open, we're beginning to see observable divergences between C++ standard
+library implementations.
+<p/>
+<b>Arguments in favor of partition-based lookup semantics</b>
+<p/>
+We posit that interpretation 1, supplemented with partition-based requirements for
+non-heterogeneous lookup:
+<p/>
+<i>Let `K` be the set of keys in an associative container `a` at a given point in time:
+`Compare` induces a SWO on `K` and also on {`k`} ∪ `K` for any `k` involved in an attempted
+insertion into `a` (either successful or not). Non-heterogeneous lookup for `k` only requires
+that `k` partition the range [`a.begin()`, `a.end()`).</i>
+<p/>
+is the most useful and reasonable interpretation. Some arguments in favor of this thesis:
+</p>
+<ul>
+<li><p>
+Partition-based lookup semantics is maximally aligned and consistent with current
+requirements for global lookup algorithms and associative container heterogeneous lookup.
+In particular:
+</p>
+<ul>
+<li><p>
+It makes (A) and (C) equivalent, which is a reasonable assumption any
+non-expert user could make.
+</p></li>
+<li><p>
+It makes flat container adaptors truly equivalent to the manually-sorted vectors
+they are meant to replace:
+</p>
+<blockquote><pre>
+// (D)
+std::vector&lt;double&gt; v = {3.0, 1.0, 0.0, 2.0};
+std::sort(v.begin(), v.end());
+auto nan = std::numeric_limits&lt;double&gt;::quiet_NaN();
+return std::upper_bound(v.begin(), v.end(), nan) == v.end();
+</pre></blockquote>
+<blockquote><pre>
+// (E) only well defined and equivalent to (D) if partition-based lookup is adopted
+std::flat_set&lt;double&gt; s = {3.0, 1.0, 0.0, 2.0};
+auto nan = std::numeric_limits&lt;double&gt;::quiet_NaN();
+return s.upper_bound(nan) == s.end();
+</pre></blockquote>
+</li>
+</ul>
+</li>
+<li><p>
+In the <paper num="N1313"/> foundational paper where partition-based semantics
+was first introduced, David Abrahams states that <i>"[s]trict weak ordering is 
+a great concept for sorting, but maybe it's not appropriate for searching"</i>.
+<p/>
+N1313 informed the resolution of LWG <iref ref="270"/> ("Binary search requirements 
+overly strict"), whose rationale states that <i>"[t]he proposed resolution 
+reinterprets binary search. Instead of thinking about searching for a value in 
+a sorted range, we view that as an important special case of a more general
+algorithm: searching for the partition point in a partitioned range"</i>.
+</p></li>
+<li><p>
+In <paper num="N2882"/> and <paper num="N3465"/>, early versions of the
+paper upon which heterogeneous lookup for associative containers was defined
+(<paper num="N3657"/>), the wording for non-heterogeneous lookup was indeed
+partition-based in accordance with Abrahams's conceptual setup (though this 
+exact wording didn't make it into the standard as is, for reasons unknown to 
+the author).
+</p></li>
+<li><p>
+For a unique associative container `a`, if `Compare` induces a strict <i>partial</i> order
+on all its possible key values, then partition-based lookup is well defined everywhere.
+Formally, if `Compare` is a SPO and a set `K` of keys is totally ordered wrt `Compare`
+(i.e., `K` is a <a href="https://en.wikipedia.org/wiki/Total_order#Chains"><i>chain</i></a>, 
+which the range [`a.begin()`, `a.end()`) always satisfies), then `K` is partitioned by any
+arbitrary `k` (proof trivial).
+</p></li>
+<li><p>
+Beyond admittedly corner cases such as that of NaN, there are partial orders that
+directly benefit from partition-based semantics. For instance, if we have a set `s`
+of non-overlapping interval objects ordered by their natural
+<a href="https://en.wikipedia.org/wiki/Interval_order"><i>interval order</i></a> (such 
+as supported by <a href="https://www.boost.org/doc/libs/latest/libs/icl/doc/html/index.html">
+Boost.ICL</a>, then `s.equal_range(i)` simply returns the range of intervals in `s` 
+that are <i>contained</i> in `i`. Boost.ICL, in fact, implicitly relies on the interpretation 
+of lookup semantics we're proposing here.
+</p></li>
+</ul>
+<p>
+On a related note, it may be worth mentioning that the standard text has some general formulation
+problems regarding the extent of applicability of semantic requirements (both for C++20
+`concept`s and pre-C++20 well-defined expression tables, collectively called <i>named requirements</i>).
+<sref ref="[structure.requirements]"/>/8 tries to provide some leeway for the specific case 
+of `concept`s in a manner described by <paper num="P2027R0"/>, section "This is a special 
+case of a much bigger problem", as <i>"little more than handwaving"</i>.
+</p>
+</discussion>
+
+<resolution>
+<p>
+This wording is relative to <paper num="N5032"/>.
+</p>
+
+<ol>
+<li>
+<p>Modify <sref ref="[associative.reqmts.general]"/> as indicated:</p>
+
+<blockquote>
+<p>
+-2- Each associative container is parameterized on `Key` and an ordering relation 
+`Compare` that induces a strict weak ordering (<sref ref="[alg.sorting]"/>) on 
+<del>elements of `Key`</del><ins>the values of `Key` in the container at any point 
+in time</ins>. In addition, `map` and `multimap` associate an arbitrary mapped type
+`T` with the `Key`. The object of type `Compare` is called the <i>comparison object</i> 
+of a container.
+<p/>
+[&hellip;]
+<p/>
+-7- In this subclause,
+</p>
+<ol style="list-style-type: none">
+<li><p>
+(7.1) &mdash; `X` denotes an associative container class,
+</p></li>
+<li><p>
+[&hellip;]
+</p></li>
+<li><p>
+(7.7) &mdash; `a_eq` denotes a value of type `X` when `X` supports equivalent keys,
+</p></li>
+<li><p>
+<del>(7.8) &mdash; `a_tran` denotes a value of type `X` or `const X` when the 
+<i>qualified-id</i> `X::key_compare::is_transparent` is valid and denotes a type 
+(<sref ref="[temp.deduct]"/>),</del>
+</p></li>
+<li><p>
+(7.9) &mdash; `i` and `j` meet the <i>Cpp17InputIterator</i> requirements and refer to 
+elements implicitly convertible to `value_type`,
+</p></li>
+<li><p>
+[&hellip;]
+</p></li>
+<li><p>
+(7.17) &mdash; `t` denotes a value of type `X::value_type`, <ins>and</ins>
+</p></li>
+<li><p>
+<del>(7.18) &mdash; `k` denotes a value of type `X::key_type`, and</del>
+</p></li>
+<li><p>
+(7.19) &mdash; `c` denotes a value of type `X::key_compare` or `const X::key_compare`;
+</p></li>
+<li><p>
+[&hellip;]
+</p></li>
+<li><p>
+(7.23) &mdash; `kx` is a value such that
+</p>
+<ol style="list-style-type: none">
+<li><p>
+(7.23.1) &mdash; `a` is partitioned with respect to `c(x, kx)` and `!c(kx, x)`, with 
+`c(x, kx)` implying `!c(kx, x)` and with `x` the key value of `e` and `e` in `a`, and
+</p></li>
+<li><p>
+(7.23.2) — `kx` is not convertible to either `iterator` or `const_iterator`; <del>and</del>
+</p></li>
+<li><p>
+<ins>(7.23.?) &mdash; if <i>qualified-id</i> `X::key_compare::is_transparent` is not valid 
+or does not denote a type (<sref ref="[temp.deduct]"/>), then `kl`, `ku`, `ke` and `kx` 
+are of type `X::key_type`;</ins>
+</p></li>
+</ol>
+</li>
+<li><p>
+[&hellip;]
+</p></li>
+</ol>
+<p>
+[&hellip;]
+</p>
+[&hellip;]
+<pre>
+a_uniq.emplace(args)
+</pre>
+<blockquote>
+<p>
+-47- <i>Result</i>: <tt>pair&lt;iterator, bool&gt;</tt>
+<p/>
+-48- <i>Preconditions</i>: `value_type` is <i>Cpp17EmplaceConstructible</i> into `X` from `args`.
+<ins>If `t` is a `value_type` object constructed with <tt>std::forward&lt;Args&gt;(args)...</tt>,  
+`Compare` induces a strict weak ordering on the set of values comprising the key of `t` and 
+all the keys in `a_uniq`.</ins>
+<p/>
+-49- <i>Effects</i>: Inserts a `value_type` object `t` constructed with 
+<tt>std::forward&lt;Args&gt;(args)...</tt> if and only if there is no element in the container 
+with key equivalent to the key of `t`.
+<p/>
+-50- <i>Returns</i>: The `bool` component of the returned pair is `true` if and only if the 
+insertion takes place, and the iterator component of the pair points to the element with 
+key equivalent to the key of `t`.
+<p/>
+-51- <i>Complexity</i>: Logarithmic.
+</p>
+</blockquote>
+<pre>
+a_eq.emplace(args)
+</pre>
+<blockquote>
+<p>
+-52- <i>Result</i>: <tt>iterator</tt>
+<p/>
+-53- <i>Preconditions</i>: `value_type` is <i>Cpp17EmplaceConstructible</i> into `X` from `args`.
+<ins>If `t` is a `value_type` object constructed with <tt>std::forward&lt;Args&gt;(args)...</tt>,  
+`Compare` induces a strict weak ordering on the set of values comprising the key of `t` and 
+all the keys in `a_eq`.</ins>
+<p/>
+-54- <i>Effects</i>: Inserts a `value_type` object `t` constructed with 
+<tt>std::forward&lt;Args&gt;(args)...</tt>.If a range containing elements equivalent to `t` 
+exists in `a_eq`, `t` is inserted at the end of that range.
+<p/>
+-55- <i>Returns</i>: An iterator pointing to the newly inserted element.
+<p/>
+-56- <i>Complexity</i>: Logarithmic.
+</p>
+</blockquote>
+[&hellip;]
+<pre>
+a_uniq.insert(t)
+</pre>
+<blockquote>
+<p>
+-61- <i>Result</i>: <tt>pair&lt;iterator, bool&gt;</tt>
+<p/>
+-62- <i>Preconditions</i>: If `t` is a non-const rvalue, `value_type` is <i>Cpp17MoveInsertable</i> 
+into `X`; otherwise, `value_type` is <i>Cpp17CopyInsertable</i> into `X`.
+<ins>`Compare` induces a strict weak ordering on the set of values comprising the key of `t` and all the keys
+in `a_uniq`.</ins>
+<p/>
+-63- <i>Effects</i>: Inserts `t` if and only if there is no element in the container with key equivalent to 
+the key of `t`.
+<p/>
+-64- <i>Returns</i>: The `bool` component of the returned pair is `true` if and only if the insertion 
+takes place, and the iterator component of the pair points to the element with key equivalent to the key 
+of `t`.
+<p/>
+-65- <i>Complexity</i>: Logarithmic.
+</p>
+</blockquote>
+<pre>
+a_eq.insert(t)
+</pre>
+<blockquote>
+<p>
+-66- <i>Result</i>: <tt>iterator</tt>
+<p/>
+-67- <i>Preconditions</i>: If `t` is a non-const rvalue, `value_type` is <i>Cpp17MoveInsertable</i> 
+into `X`; otherwise, `value_type` is <i>Cpp17CopyInsertable</i> into `X`.
+<ins>`Compare` induces a strict weak ordering on the set of values comprising the key of `t` and all the keys
+in `a_eq`.</ins>
+<p/>
+-68- <i>Effects</i>: Inserts `t` and returns the iterator pointing to the newly inserted element. 
+If a range containing elements equivalent to `t` exists in `a_eq`, `t` is inserted at the end of that range.
+<p/>
+-69- <i>Complexity</i>: Logarithmic.
+</p>
+</blockquote>
+<pre>
+a.insert(p, t)
+</pre>
+<blockquote>
+<p>
+-70- <i>Result</i>: <tt>iterator</tt>
+<p/>
+-71- <i>Preconditions</i>: If `t` is a non-const rvalue, `value_type` is <i>Cpp17MoveInsertable</i> 
+into `X`; otherwise, `value_type` is <i>Cpp17CopyInsertable</i> into `X`.
+<ins>`Compare` induces a strict weak ordering on the set of values comprising the key of `t` and all the keys
+in `a`.</ins>
+<p/>
+-72- <i>Effects</i>: Inserts `t` if and only if there is no element with key equivalent to the key of `t` 
+in containers with unique keys; always inserts `t` in containers with equivalent keys. `t` is inserted 
+as close as possible to the position just prior to `p`.
+<p/>
+-73- <i>Returns</i>: An iterator pointing to the element with key equivalent to the key of `t`.
+<p/>
+-74- <i>Complexity</i>: Logarithmic in general, but amortized constant if `t` is inserted right before `p`.
+</p>
+</blockquote>
+<pre>
+a.insert(i, j)
+</pre>
+<blockquote>
+<p>
+-75- <i>Result</i>: <tt>void</tt>
+<p/>
+-76- <i>Preconditions</i>: `value_type` is <i>Cpp17EmplaceConstructible</i> into `X` from 
+`*i`. Neither `i` nor `j` are iterators into `a`.
+<ins>`Compare` induces a strict weak ordering on the set of values comprising all the keys in `[i, j)` 
+and all the keys in `a`.</ins>
+<p/>
+-77- <i>Effects</i>: Inserts each element from the range `[i, j)` if and only if there is no element 
+with key equivalent to the key of that element in containers with unique keys; always inserts that 
+element in containers with equivalent keys.
+<p/>
+-78- <i>Complexity</i>: <tt><i>N</i></tt> log(<tt>a.size() + <i>N</i></tt>), where <tt><i>N</i></tt> 
+has the value `distance(i, j)`.
+</p>
+</blockquote>
+<pre>
+a.insert_range(rg)
+</pre>
+<blockquote>
+<p>
+-79- <i>Result</i>: <tt>void</tt>
+<p/>
+-80- <i>Preconditions</i>: `value_type` is <i>Cpp17EmplaceConstructible</i> into `X` from 
+<tt>*ranges::begin(rg)</tt>. `rg` and `a` do not overlap.
+<ins>`Compare` induces a strict weak ordering on the set of values comprising all the keys in `rg` 
+and all the keys in `a`.</ins>
+<p/>
+-81- <i>Effects</i>: Inserts each element from `rg` if and only if there is no element with 
+key equivalent to the key of that element in containers with unique keys; always inserts that 
+element in containers with equivalent keys.
+<p/>
+-82- <i>Complexity</i>: <tt><i>N</i></tt> log(<tt>a.size() + <i>N</i></tt>), where <tt><i>N</i></tt> 
+has the value `ranges::distance(rg)`.
+</p>
+</blockquote>
+[&hellip;]
+<pre>
+a_uniq.insert(nh)
+</pre>
+<blockquote>
+<p>
+-84- <i>Result</i>: <tt>insert_return_type</tt>
+<p/>
+-85- <i>Preconditions</i>: `nh` is empty or `a_uniq.get_allocator() == nh.get_allocator()` is `true`.
+<ins>If `nh` is not empty, `Compare` induces a strict weak ordering on the set of values
+comprising the key of `nh` and all the keys in `a_uniq`.</ins>
+<p/>
+-86- <i>Effects</i>: If `nh` is empty, has no effect. Otherwise, inserts the element owned by `nh` 
+if and only if there is no element in the container with a key equivalent to `nh.key()`.
+<p/>
+-87- <i>Returns</i>: If `nh` is empty, inserted is `false`, `position` is `end()`, and 
+`node` is empty. Otherwise if the insertion took place, `inserted` is `true`, `position` 
+points to the inserted element, and `node` is empty; if the insertion failed, `inserted` is `false`, 
+`node` has the previous value of `nh`, and `position` points to an element with a key equivalent to 
+`nh.key()`.
+<p/>
+-88- <i>Complexity</i>: Logarithmic.
+</p>
+</blockquote>
+<pre>
+a_eq.insert(nh)
+</pre>
+<blockquote>
+<p>
+-89- <i>Result</i>: <tt>iterator</tt>
+<p/>
+-90- <i>Preconditions</i>: `nh` is empty or `a_eq.get_allocator() == nh.get_allocator()` is `true`.
+<ins>If `nh` is not empty, `Compare` induces a strict weak ordering on the set of values
+comprising the key of `nh` and all the keys in `a_eq`.</ins>
+<p/>
+-91- <i>Effects</i>: If `nh` is empty, has no effect and returns `a_eq.end()`. Otherwise, 
+inserts the element owned by `nh` and returns an iterator pointing to the newly inserted element. 
+If a range containing elements with keys equivalent to `nh.key()` exists in `a_eq`, the element 
+is inserted at the end of that range.
+<p/>
+-92- <i>Postconditions</i>: `nh` is empty.
+<p/>
+-93- <i>Complexity</i>: Logarithmic.
+</p>
+</blockquote>
+<pre>
+a.insert(p, nh)
+</pre>
+<blockquote>
+<p>
+-94- <i>Result</i>: <tt>iterator</tt>
+<p/>
+-95- <i>Preconditions</i>: `nh` is empty or `a.get_allocator() == nh.get_allocator()` is `true`.
+<ins>If `nh` is not empty, `Compare` induces a strict weak ordering on the set of values
+comprising the key of `nh` and all the keys in `a`.</ins>
+<p/>
+-96- <i>Effects</i>: If `nh` is empty, has no effect and returns `a.end()`. Otherwise, 
+inserts the element owned by `nh` if and only if there is no element with key equivalent to 
+`nh.key()` in containers with unique keys; always inserts the element owned by `nh` in containers 
+with equivalent keys. The element is inserted as close as possible to the position just prior to 
+`p`.
+<p/>
+-97- <i>Postconditions</i>: `nh` is empty if insertion succeeds, unchanged if insertion fails.
+<p/>
+-98- <i>Returns</i>: An iterator pointing to the element with key equivalent to `nh.key()`.
+<p/>
+-99- <i>Complexity</i>: Logarithmic.
+</p>
+</blockquote>
+[&hellip;]
+<pre>
+<del>a.extract(k)</del>
+</pre>
+<blockquote>
+<p>
+<del>-100- <i>Result</i>: `node_type`</del>
+<p/>
+<del>-101- <i>Effects</i>: Removes the first element in the container with key equivalent to `k`.</del>
+<p/>
+<del>-102- <i>Returns</i>: A `node_type` owning the element if found, otherwise an empty `node_type`.</del>
+<p/>
+<del>-103- <i>Complexity</i>: log(`a.size()`)</del>
+</p>
+</blockquote>
+<pre>
+<del>a_tran</del><ins>a</ins>.extract(kx)
+</pre>
+<blockquote>
+<p>
+-104- <i>Result</i>: `node_type`
+<p/>
+-105- <i>Effects</i>: Removes the first element in the container with key `r` such that <tt>!c(r, kx) &amp;&amp; !c(kx, r)</tt> is
+`true`.
+<p/>
+-106- <i>Returns</i>: A `node_type` owning the element if found, otherwise an empty `node_type`.
+<p/>
+-107- <i>Complexity</i>: log(<tt><del>a_tran</del><ins>a</ins>.size()</tt>)
+</p>
+</blockquote>
+[&hellip;]
+<pre>
+a.merge(a2)
+</pre>
+<blockquote>
+<p>
+-112- <i>Result</i>: `void`
+<p/>
+-113- <i>Preconditions</i>: `a.get_allocator() == a2.get_allocator()` is `true`.
+<ins>`Compare` induces a strict weak ordering on the set of values comprising all
+the keys in `a` and all the keys in `a2`.</ins>
+<p/>
+-114- <i>Effects</i>: Attempts to extract each element in `a2` and insert it into `a` 
+using the comparison object of `a`. In containers with unique keys, if there is an element 
+in a with key equivalent to the key of an element from `a2`, then that element is 
+not extracted from `a2`.
+<p/>
+-115- <i>Postconditions</i>: Pointers and references to the transferred elements of `a2` 
+refer to those same elements but as members of `a`. If `a.begin()` and `a2.begin()` have 
+the same type, iterators referring to the transferred elements will continue to refer to 
+their elements, but they now behave as iterators into `a`, not into `a2`.
+<p/>
+-116- <i>Throws</i>: Nothing unless the comparison object throws.
+<p/>
+-117- <i>Complexity</i>: <tt><i>N</i></tt> log(`a.size()` + <tt><i>N</i></tt>), where 
+<tt><i>N</i></tt> has the value `a2.size()`.
+</p>
+</blockquote>
+<pre>
+<del>a.erase(k)</del>
+</pre>
+<blockquote>
+<p>
+<del>-118- <i>Result</i>: `size_type`</del>
+<p/>
+<del>-119- <i>Effects</i>: Erases all elements in the container with key equivalent to `k`.</del>
+<p/>
+<del>-120- <i>Returns</i>: The number of erased elements.</del>
+<p/>
+<del>-121- <i>Complexity</i>: log(`a.size()`) + `a.count(k)`</del>
+</p>
+</blockquote>
+<pre>
+<del>a_tran</del><ins>a</ins>.erase(kx)
+</pre>
+<blockquote>
+<p>
+-122- <i>Result</i>: `size_type`
+<p/>
+-123- <i>Effects</i>: Erases all elements in the container with key `r` such that <tt>!c(r, kx) &amp;&amp; !c(kx, r)</tt> 
+is `true`.
+<p/>
+-124- <i>Returns</i>: The number of erased elements.
+<p/>
+-125- <i>Complexity</i>: log(<tt><del>a_tran</del><ins>a</ins>.size()</tt>) + <tt><del>a_tran</del><ins>a</ins>.count(kx)</tt>
+</p>
+</blockquote>
+[&hellip;]
+<pre>
+<del>b.find(k)</del>
+</pre>
+<blockquote>
+<p>
+<del>-141- <i>Result</i>: `iterator`; `const_iterator` for constant `b`.</del>
+<p/>
+<del>-142- <i>Returns</i>: An iterator pointing to an element with the key equivalent to `k`, or 
+`b.end()` if such an element is not found.</del>
+<p/>
+<del>-143- <i>Complexity</i>: Logarithmic.</del>
+</p>
+</blockquote>
+<pre>
+<del>a_tran</del><ins>b</ins>.find(ke)
+</pre>
+<blockquote>
+<p>
+-144- <i>Result</i>: `iterator`; `const_iterator` for constant <tt><del>a_tran</del><ins>b</ins></tt>.
+<p/>
+-145- <i>Returns</i>: An iterator pointing to an element with key `r` such that <tt>!c(r, ke) &amp;&amp; !c(ke, r)</tt> 
+is `true`, or <tt><del>a_tran</del><ins>b</ins>.end()</tt> if such an element is not found.
+<p/>
+-146- <i>Complexity</i>: Logarithmic.
+</p>
+</blockquote>
+<pre>
+<del>b.count(k)</del>
+</pre>
+<blockquote>
+<p>
+<del>-147- <i>Result</i>: `size_type`</del>
+<p/>
+<del>-148- <i>Returns</i>: The number of elements with key equivalent to `k`.</del>
+<p/>
+<del>-149- <i>Complexity</i>: log(`b.size()`) + `b.count(k)`</del>
+</p>
+</blockquote>
+<pre>
+<del>a_tran</del><ins>b</ins>.count(ke)
+</pre>
+<blockquote>
+<p>
+-150- <i>Result</i>: `size_type`
+<p/>
+-151- <i>Returns</i>: The number of elements with key `r` such that <tt>!c(r, ke) &amp;&amp; !c(ke, r)</tt>.
+<p/>
+-152- <i>Complexity</i>: log(<tt><del>a_tran</del><ins>b</ins>.size()</tt>) + <tt><del>a_tran</del><ins>b</ins>.count(ke)</tt>
+</p>
+</blockquote>
+<pre>
+<del>b.contains(k)</del>
+</pre>
+<blockquote>
+<p>
+<del>-153- <i>Result</i>: `bool`</del>
+<p/>
+<del>-154- <i>Effects</i>: Equivalent to: `return b.find(k) != b.end();`</del>
+</p>
+</blockquote>
+<pre>
+<del>a_tran</del><ins>b</ins>.contains(ke)
+</pre>
+<blockquote>
+<p>
+-155- <i>Result</i>: `bool`
+<p/>
+-156- <i>Effects</i>: Equivalent to: <tt>return <del>a_tran</del><ins>b</ins>.find(ke) != <del>a_tran</del><ins>b</ins>.end();</tt>
+</p>
+</blockquote>
+<pre>
+<del>b.lower_bound(k)</del>
+</pre>
+<blockquote>
+<p>
+<del>-157- <i>Result</i>: `iterator`; `const_iterator` for constant `b`.</del>
+<p/>
+<del>-158- <i>Returns</i>: An iterator pointing to the first element with key not less than `k`, 
+or `b.end()` if such an element is not found.</del>
+<p/>
+<del>-159- <i>Complexity</i>: Logarithmic.</del>
+</p>
+</blockquote>
+<pre>
+<del>a_tran</del><ins>b</ins>.lower_bound(kl)
+</pre>
+<blockquote>
+<p>
+-160- <i>Result</i>: `iterator`; `const_iterator` for constant <tt><del>a_tran</del><ins>b</ins></tt>.
+<p/>
+-161- <i>Returns</i>: An iterator pointing to the first element with key `r` such that !c(r, kl), 
+or <tt><del>a_tran</del><ins>b</ins>.end()</tt> if such an element is not found.
+<p/>
+-162- <i>Complexity</i>: Logarithmic.
+</p>
+</blockquote>
+<pre>
+<del>b.upper_bound(k)</del>
+</pre>
+<blockquote>
+<p>
+<del>-163- <i>Result</i>: `iterator`; `const_iterator` for constant `b`.</del>
+<p/>
+<del>-164- <i>Returns</i>: An iterator pointing to the first element with key greater than `k`, 
+or `b.end()` if such an element is not found.</del>
+<p/>
+<del>-165- <i>Complexity</i>: Logarithmic.</del>
+</p>
+</blockquote>
+<pre>
+<del>a_tran</del><ins>b</ins>.upper_bound(ku)
+</pre>
+<blockquote>
+<p>
+-166- <i>Result</i>: `iterator`; `const_iterator` for constant <tt><del>a_tran</del><ins>b</ins></tt>.
+<p/>
+-167- <i>Returns</i>: An iterator pointing to the first element with key `r` such that `c(ku, r)`, 
+or <tt><del>a_tran</del><ins>b</ins>.end()</tt> if such an element is not found.
+<p/>
+-168- <i>Complexity</i>: Logarithmic.
+</p>
+</blockquote>
+<pre>
+<del>b.equal_range(k)</del>
+</pre>
+<blockquote>
+<p>
+<del>-169- <i>Result</i>: <tt>pair&lt;iterator, iterator&gt;</tt>; <tt>pair&lt;const_iterator, const_iterator&gt;</tt> 
+for constant `b`.</del>
+<p/>
+<del>-170- <i>Effects</i>: Equivalent to: `return make_pair(b.lower_bound(k), b.upper_bound(k));`</del>
+<p/>
+<del>-171- <i>Complexity</i>: Logarithmic.</del>
+</p>
+</blockquote>
+<pre>
+<del>a_tran</del><ins>b</ins>.equal_range(ke)
+</pre>
+<blockquote>
+<p>
+-172- <i>Result</i>: <tt>pair&lt;iterator, iterator&gt;</tt>; <tt>pair&lt;const_iterator, const_iterator&gt;</tt> 
+for constant <tt><del>a_tran</del><ins>b</ins></tt>.
+<p/>
+-173- <i>Effects</i>: Equivalent to: <tt>return make_pair(<del>a_tran</del><ins>b</ins>.lower_bound(ke), <del>a_tran</del><ins>b</ins>.upper_bound(ke));</tt>
+<p/>
+-174- <i>Complexity</i>: Logarithmic.
+</p>
+</blockquote>
+</blockquote>
+</li>
+
+<li>
+<p>Modify <sref ref="[map.modifiers]"/> as indicated:</p>
+
+<blockquote>
+<pre>
+template&lt;class... Args&gt;
+  constexpr pair&lt;iterator, bool&gt; try_emplace(const key_type&amp; k, Args&amp;&amp;... args);
+template&lt;class... Args&gt;
+  constexpr iterator try_emplace(const_iterator hint, const key_type&amp; k, Args&amp;&amp;... args);
+</pre>
+<blockquote>
+<p>
+-3- <i>Preconditions</i>: `value_type` is <i>Cpp17EmplaceConstructible</i> into `map` from 
+`piecewise_construct`, `forward_as_tuple(k)`, <tt>forward_as_tuple(std::forward&lt;Args&gt;(args)...)</tt>.
+<ins>`Compare` induces a strict weak ordering on the set of values comprising `k` and all the keys 
+in `*this`.</ins>
+<p/>
+-4- <i>Effects</i>: If the map already contains an element whose key is equivalent to `k`, 
+there is no effect. Otherwise inserts an object of type `value_type` constructed with `piecewise_construct`, 
+`forward_as_tuple(k)`, <tt>forward_as_tuple(std::forward&lt;Args&gt;(args)...)</tt>.
+<p/>
+-5- <i>Returns</i>: In the first overload, the `bool` component of the returned pair is `true` if 
+and only if the insertion took place. The returned iterator points to the map element whose key is 
+equivalent to `k`.
+<p/>
+-6- <i>Complexity</i>: The same as `emplace` and `emplace_hint`, respectively.
+</p>
+</blockquote>
+<pre>
+template&lt;class... Args&gt;
+  constexpr pair&lt;iterator, bool&gt; try_emplace(key_type&amp;&amp; k, Args&amp;&amp;... args);
+template&lt;class... Args&gt;
+  constexpr iterator try_emplace(const_iterator hint, key_type&amp;&amp; k, Args&amp;&amp;... args);
+</pre>
+<blockquote>
+<p>
+-7- <i>Preconditions</i>: `value_type` is <i>Cpp17EmplaceConstructible</i> into `map` from 
+`piecewise_construct`, `forward_as_tuple(std::move(k))`, <tt>forward_as_tuple(std::forward&lt;Args&gt;(args)...)</tt>.
+<ins>`Compare` induces a strict weak ordering on the set of values comprising `k` and all the keys 
+in `*this`.</ins>
+<p/>
+-8- <i>Effects</i>: If the map already contains an element whose key is equivalent to `k`, 
+there is no effect. Otherwise inserts an object of type `value_type` constructed with `piecewise_construct`, 
+`forward_as_tuple(std::move(k))`, <tt>forward_as_tuple(std::forward&lt;Args&gt;(args)...)</tt>.
+<p/>
+-9- <i>Returns</i>: In the first overload, the `bool` component of the returned pair is `true` if 
+and only if the insertion took place. The returned iterator points to the map element whose key is 
+equivalent to `k`.
+<p/>
+-10- <i>Complexity</i>: The same as `emplace` and `emplace_hint`, respectively.
+</p>
+</blockquote>
+<pre>
+template&lt;class K, class... Args&gt;
+  constexpr pair&lt;iterator, bool&gt; try_emplace(K&amp;&amp; k, Args&amp;&amp;... args);
+template&lt;class K, class... Args&gt;
+  constexpr iterator try_emplace(const_iterator hint, K&amp;&amp; k, Args&amp;&amp;... args);
+</pre>
+<blockquote>
+<p>
+-11- <i>Constraints</i>: The <i>qualified-id</i> `Compare::is_transparent` is valid and denotes 
+a type. For the first overload, <tt>is_convertible_v&lt;K&amp;&amp;, const_iterator&gt;</tt> and 
+<tt>is_convertible_v&lt;K&amp;&amp;, iterator&gt;</tt> are both `false`.
+<p/>
+-12- <i>Preconditions</i>: `value_type` is <i>Cpp17EmplaceConstructible</i> into `map` from 
+`piecewise_construct`, <tt>forward_as_tuple(std::forward&lt;K&gt;(k))</tt>, 
+<tt>forward_as_tuple(std::forward&lt;Args&gt;(args)...)</tt>.
+<ins>`Compare` induces a strict weak ordering on the set of values comprising 
+<tt>key_type(std::forward&lt;K&gt;(k))</tt> and all the keys in `*this`.</ins>
+<p/>
+-13- <i>Effects</i>: If the map already contains an element whose key is equivalent to `k`, 
+there is no effect. Otherwise, let `r` be `equal_range(k)`. Constructs an object `u` of 
+type `value_type` with `piecewise_construct`, <tt>forward_as_tuple(std::forward&lt;K&gt;(k))</tt>, 
+<tt>forward_as_tuple(std::forward&lt;Args&gt;(args)...)</tt>.
+If `equal_range(u.first) == r` is `false`, the behavior is undefined. Inserts `u` into `*this`.
+<p/>
+-14- <i>Returns</i>: In the first overload, the `bool` component of the returned pair is `true` if 
+and only if the insertion took place. The returned iterator points to the map element whose key is 
+equivalent to `k`.
+<p/>
+-15- <i>Complexity</i>: The same as `emplace` and `emplace_hint`, respectively.
+</p>
+</blockquote>
+<pre>
+template&lt;class M&gt;
+  constexpr pair&lt;iterator, bool&gt; insert_or_assign(const key_type&amp; k, M&amp;&amp; obj);
+template&lt;class M&gt;
+  constexpr iterator insert_or_assign(const_iterator hint, const key_type&amp; k, M&amp;&amp; obj);
+</pre>
+<blockquote>
+<p>
+-16- <i>Mandates</i>: <tt>is_assignable_v&lt;mapped_type&amp;, M&amp;&amp;&gt;</tt> is `true`.
+<p/>
+-17- <i>Preconditions</i>: `value_type` is <i>Cpp17EmplaceConstructible</i> into `map` from 
+`k`, <tt>std::forward&lt;M&gt;(obj)</tt>.
+<ins>`Compare` induces a strict weak ordering on the set of values comprising `k`
+and all the keys in `*this`.</ins>
+<p/>
+-18- <i>Effects</i>: If the map already contains an element `e` whose key is equivalent to `k`, 
+assigns <tt>std::forward&lt;M&gt;(obj)</tt> to `e.second`. Otherwise inserts an object of type 
+`value_type` constructed with `k`, <tt>std::forward&lt;M&gt;(obj)</tt>.
+<p/>
+-19- <i>Returns</i>: In the first overload, the `bool` component of the returned pair is `true` if 
+and only if the insertion took place. The returned iterator points to the map element whose key is 
+equivalent to `k`.
+<p/>
+-20- <i>Complexity</i>: The same as `emplace` and `emplace_hint`, respectively.
+</p>
+</blockquote>
+<pre>
+template&lt;class M&gt;
+  constexpr pair&lt;iterator, bool&gt; insert_or_assign(key_type&amp;&amp; k, M&amp;&amp; obj);
+template&lt;class M&gt;
+  constexpr iterator insert_or_assign(const_iterator hint, key_type&amp;&amp; k, M&amp;&amp; obj);
+</pre>
+<blockquote>
+<p>
+-21- <i>Mandates</i>: <tt>is_assignable_v&lt;mapped_type&amp;, M&amp;&amp;&gt;</tt> is `true`.
+<p/>
+-22- <i>Preconditions</i>: `value_type` is <i>Cpp17EmplaceConstructible</i> into `map` from 
+`std::move(k)`, <tt>std::forward&lt;M&gt;(obj)</tt>.
+<ins>`Compare` induces a strict weak ordering on the set of values comprising `k`
+and all the keys in `*this`.</ins>
+<p/>
+-23- <i>Effects</i>: If the map already contains an element `e` whose key is equivalent to `k`, 
+assigns <tt>std::forward&lt;M&gt;(obj)</tt> to `e.second`. Otherwise inserts an object of type 
+`value_type` constructed with `std::move(k)`, <tt>std::forward&lt;M&gt;(obj)</tt>.
+<p/>
+-24- <i>Returns</i>: In the first overload, the `bool` component of the returned pair is `true` if 
+and only if the insertion took place. The returned iterator points to the map element whose key is 
+equivalent to `k`.
+<p/>
+-25- <i>Complexity</i>: The same as `emplace` and `emplace_hint`, respectively.
+</p>
+</blockquote>
+<pre>
+</pre>
+<blockquote>
+<p>
+-26- <i>Constraints</i>: <tt>is_assignable_v&lt;mapped_type&amp;, M&amp;&amp;&gt;</tt> is `true`.
+<p/>
+-27- <i>Mandates</i>: <tt>is_assignable_v&lt;mapped_type&amp;, M&amp;&amp;&gt;</tt> is `true`.
+<p/>
+-28- <i>Preconditions</i>: `value_type` is <i>Cpp17EmplaceConstructible</i> into `map` from 
+<tt>std::forward&lt;K&gt;(k)</tt>, <tt>std::forward&lt;M&gt;(obj)</tt>.
+<ins>`Compare` induces a strict weak ordering on the set of values comprising `k`
+and all the keys in `*this`.</ins>
+<p/>
+-29- <i>Effects</i>: If the map already contains an element `e` whose key is equivalent to `k`, 
+assigns <tt>std::forward&lt;M&gt;(obj)</tt> to `e.second`. Otherwise, let `r` be `equal_range(k)`. 
+Constructs an object `u` of type `value_type` with <tt>std::forward&lt;K&gt;(k)</tt>, 
+<tt>std::forward&lt;M&gt;(obj)</tt>. If `equal_range(u.first) == r` is `false`, the
+behavior is undefined. Inserts `u` into `*this`.
+<p/>
+-30- <i>Returns</i>: In the first overload, the `bool` component of the returned pair is `true` if 
+and only if the insertion took place. The returned iterator points to the map element whose key is 
+equivalent to `k`.
+<p/>
+-31- <i>Complexity</i>: The same as `emplace` and `emplace_hint`, respectively.
+</p>
+</blockquote>
+</blockquote>
+</li>
+
+
+<li>
+<p>Modify <sref ref="[set.modifiers]"/> as indicated:</p>
+
+<blockquote>
+<pre>
+template&lt;class K&gt; constexpr pair&lt;iterator, bool&gt; insert(K&amp;&amp; x);
+template&lt;class K&gt; constexpr iterator insert(const_iterator hint, K&amp;&amp; x);
+</pre>
+<blockquote>
+<p>
+-1- <i>Constraints</i>: The <i>qualified-id</i> `Compare::is_transparent` is valid and denotes 
+a type. For the second overload, <tt>is_convertible_v&lt;K&amp;&amp;, const_iterator&gt;</tt> and 
+<tt>is_convertible_v&lt;K&amp;&amp;, iterator&gt;</tt> are both `false`.
+<p/>
+-2- <i>Preconditions</i>: `value_type` is <i>Cpp17EmplaceConstructible</i> into `set` from 
+<tt>std::forward&lt;K&gt;(x)</tt>.
+<ins>`Compare` induces a strict weak ordering on the set of values comprising `k`
+and all the keys in `*this`.</ins>
+<p/>
+-3- <i>Effects</i>: If the set already contains an element that is equivalent to `x`, 
+there is no effect. Otherwise, let `r` be `equal_range(x)`. Constructs an object `u` of type 
+`value_type` with <tt>std::forward&lt;K&gt;(x)</tt>. If `equal_range(u) == r` is `false`, 
+the behavior is undefined. Inserts `u` into `*this`.
+<p/>
+-4- <i>Returns</i>: In the first overload, the `bool` component of the returned pair is `true` if 
+and only if the insertion took place. The returned iterator points to the set element that is 
+equivalent to `x`.
+<p/>
+-5- <i>Complexity</i>: Logarithmic.
+</p>
+</blockquote>
+</blockquote>
+</li>
+
+ </ol>
+</resolution>
+
+</issue>
