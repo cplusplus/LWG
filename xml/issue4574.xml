@@ -1,0 +1,59 @@
+<?xml version='1.0' encoding='utf-8' standalone='no'?>
+<!DOCTYPE issue SYSTEM "lwg-issue.dtd">
+
+<issue num="4574" status="New">
+<title><tt>constant_wrapper&lt;nullptr, int()&gt;</tt> bypasses `function_ref` class invariant</title>
+<section>
+<sref ref="[const.wrap.class]"/>
+<sref ref="[func.wrap.ref]"/>
+</section>
+<submitter>Zhihao Yuan</submitter>
+<date>27 Apr 2026</date>
+<priority>99</priority>
+
+<discussion>
+<p>
+The wording in neither <sref ref="[const.wrap.class]"/> nor <sref ref="[func.wrap.ref]"/>
+places a constraint on the 2nd template argument of `constant_wrapper`, so it can be 
+anything. An interpretation of the standard text based on that can cause
+</p>
+<blockquote><pre>
+function_ref fr(constant_wrapper&lt;nullptr, int()&gt;{});
+</pre></blockquote>
+<p>
+to initialize an object of `function_ref` with invalid state
+because `int()` isn't a pointer or member pointer.
+<p/>
+The example doesn't compile in libstdc++, but not due
+to the same reason of the following
+</p>
+<blockquote><pre>
+function_ref fr(cw&lt;(int (*)())0&gt;);
+</pre></blockquote>
+<p>
+From the error messages you can tell that the 1st
+example fails only at a cautious initialization placed
+by libstdc++, the 2nd example fails only at
+`static_assert`, and the following example
+</p>
+<blockquote><pre>
+function_ref fr(constant_wrapper&lt;nullptr, int (*)()&gt;{});
+</pre></blockquote>
+<p>
+fails at both sites, which means the 1st example
+bypassed the <i>Mandates</i> clause of the ctor.
+<p/>
+<a href="https://godbolt.org/z/hzh131TvY">Godbolt demo</a>
+<p/>
+The 2nd template argument of `constant_wrapper`
+is defaulted to `decltype(X)::type`, it may
+need to be <em>required</em> to be `decltype(X)::type` to
+reliably provide value.
+</p>
+</discussion>
+
+<resolution>
+
+</resolution>
+
+</issue>
