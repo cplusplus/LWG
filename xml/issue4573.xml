@@ -1,0 +1,60 @@
+<?xml version='1.0' encoding='utf-8' standalone='no'?>
+<!DOCTYPE issue SYSTEM "lwg-issue.dtd">
+
+<issue num="4573" status="New">
+<title>Improve `view_interface::cbegin`</title>
+<section>
+<sref ref="[view.interface]"/>
+</section>
+<submitter>Hewill Kang</submitter>
+<date>19 Apr 2026</date>
+<priority>99</priority>
+
+<discussion>
+<p>
+The `view_interface` can provide only a const `cbegin` member when the derived class is
+<code><i>simple-view</i></code>, which helps reduce template instantiation.
+</p>
+</discussion>
+
+<resolution>
+<p>
+This wording is relative to <paper num="N5032"/>.
+</p>
+
+<ol>
+<li>
+<p>Modify <sref ref="[view.interface]"/> as indicated:</p>
+
+<blockquote>
+<pre>
+namespace std::ranges {
+  template&lt;class D&gt;
+    requires is_class_v&lt;D&gt; &amp;&amp; same_as&lt;D, remove_cv_t&lt;D&gt;&gt;
+  class view_interface {
+    [&hellip;]
+  public:
+    [&hellip;]
+    constexpr auto cbegin() requires input_range&lt;D&gt; <ins>&amp;&amp; (!<i>simple-view</i>&lt;D&gt;)</ins> {
+      return ranges::cbegin(<i>derived</i>());
+    }
+    constexpr auto cbegin() const requires input_range&lt;const D&gt; {
+      return ranges::cbegin(<i>derived</i>());
+    }
+    constexpr auto cend() requires input_range&lt;D&gt; <ins>&amp;&amp; (!<i>simple-view</i>&lt;D&gt;)</ins> {
+      return ranges::cend(<i>derived</i>());
+    }
+    constexpr auto cend() const requires input_range&lt;const D&gt; {
+      return ranges::cend(<i>derived</i>());
+    }
+    [&hellip;]
+  };
+}
+</pre>
+</blockquote>
+</li>
+
+ </ol>
+</resolution>
+
+</issue>
