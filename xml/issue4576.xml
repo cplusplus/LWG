@@ -1,0 +1,53 @@
+<?xml version='1.0' encoding='utf-8' standalone='no'?>
+<!DOCTYPE issue SYSTEM "lwg-issue.dtd">
+
+<issue num="4576" status="New">
+<title>`{can_}substitute` specification is (still) ill-formed</title>
+<section>
+<sref ref="[meta.reflection.substitute]"/>
+</section>
+<submitter>S. B. Tam</submitter>
+<date>05 May 2026</date>
+<priority>99</priority>
+
+<discussion>
+<p>
+The use of `template [: x :]` (introduced in LWG <iref ref="4316"/>) is incorrect: `template [: x :]` 
+is a <i>splice-expression</i> (which can only designate a function template or variable template), 
+and an unparenthesized <i>splice-expression</i> is not allowed as a <i>template-argument</i> per 
+<sref ref="[temp.names]"/>/6.
+</p>
+</discussion>
+
+<resolution>
+<p>
+This wording is relative to <paper num="N5032"/>.
+</p>
+
+<ol>
+<li>
+<p>Modify <sref ref="[meta.reflection.substitute]"/> as indicated:</p>
+
+<blockquote>
+<p>
+-1- Let <tt><i>TARG-SPLICE</i>(x)</tt> be:
+</p>
+<ol style="list-style-type: none">
+<li><p>
+(1.1) &mdash; <del>`template [: x :]`</del><ins>a <i>template-argument</i> that denotes what 
+<tt>x</tt> represents</ins> if `is_template(x)` is `true`, otherwise
+</p></li>
+<li><p>
+(1.2) &mdash; `typename [: x :]` if `is_type(x)` is `true`, otherwise
+</p></li>
+<li><p>
+(1.3) &mdash; `([: x :])`.
+</p></li>
+</ol>
+</blockquote>
+</li>
+
+ </ol>
+</resolution>
+
+</issue>
