@@ -24,9 +24,8 @@ constexpr additions.
 <p>
 Set priority to 2 after reflector poll.
 </p>
-</discussion>
 
-<resolution>
+<superseded>
 <p>
 This wording is relative to <paper num="N5032"/>.
 </p>
@@ -62,6 +61,30 @@ This wording is relative to <paper num="N5032"/>.
 
 <ol>
 
+<li><p>Modify <sref ref="[version.syn]"/> as indicated:</p>
+
+<blockquote>
+<pre>
+[&hellip;]
+#define __cpp_lib_constexpr_string                  <del>201907L</del><ins>202511L</ins> // <i>also in &lt;string&gt;</i>
+[&hellip;]
+</pre>
+</blockquote>
+</li>
+</ol>
+</superseded>
+
+<note>2026-05-11; Select single resolution.</note>
+<p>Update wording to option B, that had slight preference in reflector discussion.</p>
+
+</discussion>
+
+<resolution>
+<p>
+This wording is relative to <paper num="N5032"/>.
+</p>
+
+<ol>
 <li><p>Modify <sref ref="[version.syn]"/> as indicated:</p>
 
 <blockquote>
