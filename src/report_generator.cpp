@@ -153,16 +153,6 @@ auto to_string(major_section_key sn) -> std::string {
    return out.str();
 }
 
-template<typename Container>
-void print_list(std::ostream & out, Container const & source, char const * separator) {
-   char const * sep{""};
-   for (auto const & x : source) {
-      out << sep << x;
-      sep = separator;
-   }
-}
-
-
 
 void print_file_header(std::ostream& out, std::string const & title, std::string url_filename = {}, std::string desc = {}) {
    out <<
@@ -308,7 +298,11 @@ R"(<table class="issues-index">
 
       // Duplicates
       out << "<td>";
-      print_list(out, i.duplicates, ", ");
+      char const* sep = "";
+      for (auto const& x : i.duplicates) {
+        out << sep << x.second;
+        sep = ", ";
+      }
       out << "</td>\n"
           << "</tr>\n";
    }
@@ -387,7 +381,11 @@ void print_issue(std::ostream & out, lwg::issue const & iss, lwg::section_map & 
          // duplicates
          if (!iss.duplicates.empty()) {
             out << "<p><b>Duplicate of:</b> ";
-            print_list(out, iss.duplicates, ", ");
+            char const* sep = "";
+            for (auto const& x : iss.duplicates) {
+              out << sep << x.second;
+              sep = ", ";
+            }
             out << "</p>\n";
          }
 
@@ -486,7 +484,7 @@ namespace lwg
 // A precondition for calling any of these functions is that the list of issues is sorted in numerical order, by issue number.
 // While nothing disastrous will happen if this precondition is violated, the published issues list will list items
 // in the wrong order.
-void report_generator::make_active(std::span<const issue> issues, fs::path const & path, std::string const & diff_report) {
+void report_generator::make_active(std::span<const issue> issues, fs::path const & path, std::string const & diff_report) const {
    assert(std::ranges::is_sorted(issues, {}, &issue::num));
 
    fs::path filename{path / "lwg-active.html"};
@@ -505,7 +503,7 @@ void report_generator::make_active(std::span<const issue> issues, fs::path const
 }
 
 
-void report_generator::make_defect(std::span<const issue> issues, fs::path const & path, std::string const & diff_report) {
+void report_generator::make_defect(std::span<const issue> issues, fs::path const & path, std::string const & diff_report) const {
    assert(std::ranges::is_sorted(issues, {}, &issue::num));
 
    fs::path filename{path / "lwg-defects.html"};
@@ -523,7 +521,7 @@ void report_generator::make_defect(std::span<const issue> issues, fs::path const
 }
 
 
-void report_generator::make_closed(std::span<const issue> issues, fs::path const & path, std::string const & diff_report) {
+void report_generator::make_closed(std::span<const issue> issues, fs::path const & path, std::string const & diff_report) const {
    assert(std::ranges::is_sorted(issues, {}, &issue::num));
 
    fs::path filename{path / "lwg-closed.html"};
@@ -542,7 +540,7 @@ void report_generator::make_closed(std::span<const issue> issues, fs::path const
 
 
 // Additional non-standard documents, useful for running LWG meetings
-void report_generator::make_tentative(std::span<const issue> issues, fs::path const & path) {
+void report_generator::make_tentative(std::span<const issue> issues, fs::path const & path) const {
    // publish a document listing all tentative issues that may be acted on during a meeting.
    assert(std::ranges::is_sorted(issues, {}, &issue::num));
 
@@ -562,7 +560,7 @@ void report_generator::make_tentative(std::span<const issue> issues, fs::path co
 }
 
 
-void report_generator::make_unresolved(std::span<const issue> issues, fs::path const & path) {
+void report_generator::make_unresolved(std::span<const issue> issues, fs::path const & path) const {
    // publish a document listing all non-tentative, non-ready issues that must be reviewed during a meeting.
    assert(std::ranges::is_sorted(issues, {}, &issue::num));
 
@@ -581,7 +579,7 @@ void report_generator::make_unresolved(std::span<const issue> issues, fs::path c
    print_file_trailer(out);
 }
 
-void report_generator::make_immediate(std::span<const issue> issues, fs::path const & path) {
+void report_generator::make_immediate(std::span<const issue> issues, fs::path const & path) const {
    // publish a document listing all non-tentative, non-ready issues that must be reviewed during a meeting.
    assert(std::ranges::is_sorted(issues, {}, &issue::num));
 
@@ -616,7 +614,7 @@ out << R"(<h1>C++ Standard Library Issues Resolved Directly In [INSERT CURRENT M
    print_file_trailer(out);
 }
 
-void report_generator::make_ready(std::span<const issue> issues, fs::path const & path) {
+void report_generator::make_ready(std::span<const issue> issues, fs::path const & path) const {
    // publish a document listing all ready issues for a formal vote
    assert(std::ranges::is_sorted(issues, {}, &issue::num));
 
@@ -651,7 +649,7 @@ out << R"(<h1>C++ Standard Library Issues to be moved in [INSERT CURRENT MEETING
    print_file_trailer(out);
 }
 
-void report_generator::make_editors_issues(std::span<const issue> issues, fs::path const & path) {
+void report_generator::make_editors_issues(std::span<const issue> issues, fs::path const & path) const {
    // publish a single document listing all 'Voting' and 'Immediate' resolutions (only).
    assert(std::ranges::is_sorted(issues, {}, &issue::num));
 
@@ -666,7 +664,7 @@ void report_generator::make_editors_issues(std::span<const issue> issues, fs::pa
    print_file_trailer(out);
 }
 
-void report_generator::make_sort_by_num(std::span<issue> issues, fs::path const & filename) {
+void report_generator::make_sort_by_num(std::span<issue> issues, fs::path const & filename) const {
    std::ranges::sort(issues, {}, &issue::num);
 
    std::ofstream out{filename};
@@ -756,7 +754,7 @@ sorted by priority.</p>
    print_file_trailer(out);
 }
 
-void report_generator::make_sort_by_status_impl(std::span<issue> issues, fs::path const & filename, std::string title) {
+void report_generator::make_sort_by_status_impl(std::span<issue> issues, fs::path const & filename, std::string title) const {
    std::ofstream out{filename};
    if (!out)
      throw std::runtime_error{"Failed to open " + filename.string()};
