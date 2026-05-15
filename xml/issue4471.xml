@@ -14,17 +14,17 @@
 </p>
 <blockquote>
 <ul style="list-style-type: none">
-<li>(3.2) &mdash; 
-the expression <tt>get_completion_scheduler&lt;set_value_t&gt;(get_env(sndr))</tt> has type 
+<li>(3.2) &mdash;
+the expression <tt>get_completion_scheduler&lt;set_value_t&gt;(get_env(sndr))</tt> has type
 `inline_scheduler` and is potentially-throwing if and only if `get_env(sndr)` is potentially-throwing.
 </li>
 </ul>
 </blockquote>
 <p>
-`get_env(sndr)` is never potentially-throwing because it mandates that `sndr.get_env()` cannot throw, 
+`get_env(sndr)` is never potentially-throwing because it mandates that `sndr.get_env()` cannot throw,
 see <sref ref="[exec.get.env]"/>.
 <p/>
-also, <tt>get_completion_scheduler&lt;set_*_t&gt;(attrs)</tt> mandates that 
+also, <tt>get_completion_scheduler&lt;set_*_t&gt;(attrs)</tt> mandates that
 <tt>attrs.query(get_completion_scheduler&lt;set_*_t&gt;)</tt> cannot throw.
 </p>
 
@@ -45,17 +45,17 @@ This wording is relative to <paper num="N5014"/>.
 
 <blockquote>
 <p>
--3- Let `sndr` be an expression of type <tt><i>inline-sender</i></tt>, let `rcvr` be an expression such that 
-<tt>receiver_of&lt;decltype((rcvr)), CS&gt;</tt> is `true` where `CS` is <tt>completion_signatures&lt;set_value_t()&gt;</tt>, 
+-3- Let `sndr` be an expression of type <tt><i>inline-sender</i></tt>, let `rcvr` be an expression such that
+<tt>receiver_of&lt;decltype((rcvr)), CS&gt;</tt> is `true` where `CS` is <tt>completion_signatures&lt;set_value_t()&gt;</tt>,
 then:
 </p>
 <ul style="list-style-type: none">
-<li>(3.1) &mdash; 
+<li>(3.1) &mdash;
 the expression `connect(sndr, rcvr)` has type <tt><i>inline-state</i>&lt;remove_cvref_t&lt;decltype((rcvr))&gt;&gt;</tt>
 and is potentially-throwing if and only if `((void)sndr, auto(rcvr))` is potentially-throwing, and
 </li>
-<li>(3.2) &mdash; 
-the expression <tt>get_completion_scheduler&lt;set_value_t&gt;(get_env(sndr))</tt> has type 
+<li>(3.2) &mdash;
+the expression <tt>get_completion_scheduler&lt;set_value_t&gt;(get_env(sndr))</tt> has type
 `inline_scheduler` <del>and is potentially-throwing if and only if `get_env(sndr)` is potentially-throwing</del>.
 </li>
 </ul>
@@ -77,9 +77,7 @@ If nothing except `sndr` in that expression is allowed to throw,
 then it's just stating the obvious.
 </p>
 
-</discussion>
-
-<resolution>
+<superseded>
 
 <p>
 This wording is relative to <paper num="N5032"/>.
@@ -90,8 +88,8 @@ This wording is relative to <paper num="N5032"/>.
 
 <blockquote>
 <p>
--3- Let `sndr` be an expression of type <tt><i>inline-sender</i></tt>, let `rcvr` be an expression such that 
-<tt>receiver_of&lt;decltype((rcvr)), CS&gt;</tt> is `true` where `CS` is <tt>completion_signatures&lt;set_value_t()&gt;</tt>, 
+-3- Let `sndr` be an expression of type <tt><i>inline-sender</i></tt>, let `rcvr` be an expression such that
+<tt>receiver_of&lt;decltype((rcvr)), CS&gt;</tt> is `true` where `CS` is <tt>completion_signatures&lt;set_value_t()&gt;</tt>,
 then:
 </p>
 <ul style="list-style-type: none">
@@ -100,7 +98,7 @@ the expression `connect(sndr, rcvr)` has type <tt><i>inline-state</i>&lt;remove_
 and is potentially-throwing if and only if `((void)sndr, auto(rcvr))` is potentially-throwing, and
 </li>
 <li>(3.2) &mdash;
-the expression <tt>get_completion_scheduler&lt;set_value_t&gt;(get_env(sndr))</tt> has type 
+the expression <tt>get_completion_scheduler&lt;set_value_t&gt;(get_env(sndr))</tt> has type
 `inline_scheduler` <del>and is potentially-throwing if and only if `get_env(sndr)` is potentially-throwing</del>.
 </li>
 </ul>
@@ -142,6 +140,53 @@ from which <i>`sndr`</i> was obtained.
 
 </ol>
 
+</superseded>
+
+<note>2026-05-15; Tim rebases wording to new working draft</note>
+<p>
+The `inline_scheduler` change is no longer needed.
+</p>
+</discussion>
+
+<resolution>
+<p>
+This wording is relative to <paper num="N5046"/>.
+</p>
+
+<ol>
+<li><p>Modify <sref ref="[exec.run.loop.types]"/> as indicated:</p>
+
+<blockquote>
+<p>-8-
+Let <i>`sndr`</i> be an expression of type <i>`run-loop-sender`</i>,
+let <i>`rcvr`</i> be an expression such that
+<code><i>receiver-of</i>&lt;decltype((<i>rcvr</i>)), CS&gt;</code> is `true`
+where `CS` is the `completion_signatures` specialization above.
+Let `C` be either `set_value_t` or `set_stopped_t`.
+Then:
+<ul style="list-style-type: none">
+<li>(8.1) &mdash;
+The expression <code>connect(<i>sndr</i>, <i>rcvr</i>)</code> has type
+<code><i>run-loop-opstate</i>&lt;decay_t&lt;decltype((<i>rcvr</i>))&gt;&gt;</code>
+and is potentially-throwing if and only if
+<code>(void(<i>sndr</i>), auto(<i>rcvr</i>))</code> is potentially-throwing.
+</li>
+<li>(8.2) &mdash;
+The expression
+<code>get_completion_scheduler&lt;C&gt;(get_env(<i>sndr</i>))</code>
+<del>
+is potentially-throwing if and only if <i>`sndr`</i> is potentially-throwing,
+</del>
+has type <i>`run-loop-scheduler`</i><del>,</del>
+and compares equal to the <i>`run-loop-scheduler`</i> instance
+from which <i>`sndr`</i> was obtained.
+</li>
+</ul>
+</p>
+</blockquote>
+</li>
+
+</ol>
 </resolution>
 
 </issue>
