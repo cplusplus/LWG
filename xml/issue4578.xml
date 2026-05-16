@@ -1,0 +1,70 @@
+<?xml version='1.0' encoding='utf-8' standalone='no'?>
+<!DOCTYPE issue SYSTEM "lwg-issue.dtd">
+
+<issue num="4578" status="New">
+<title>`std::start_lifetime(r)` should not be able to poke objects outside the current evaluation</title>
+<section>
+<sref ref="[obj.lifetime]"/>
+</section>
+<submitter>Tomasz Kamiński</submitter>
+<date>15 May 2026</date>
+<priority>99</priority>
+
+<discussion>
+<p>
+As currently specified, the following code is well-formed:
+</p>
+<blockquote><pre>
+union U { int x = 10; float f; };
+U u;
+
+consteval {
+  std::start_lifetime(u.f); // changes active member
+};
+
+void foo() {
+  U u;
+  constexpr int x = (std::start_lifetime(u.f), 10);
+}
+</pre></blockquote>
+<p>
+The `start_lifetime(r)` when evaluated at compile time, should require that `r` is a subobject 
+of the object created during the enclosing constant evaluation.
+</p>
+</discussion>
+
+<resolution>
+<p>
+This wording is relative to <paper num="N5046"/>.
+</p>
+
+<ol>
+<li>
+<p>Modify <sref ref="[obj.lifetime]"/> as indicated:</p>
+
+<blockquote>
+<pre>
+template&lt;class T&gt;
+  constexpr void start_lifetime(T&amp; r) noexcept;
+</pre>
+<blockquote>
+<p>
+-1- <i>Mandates</i>: `T` is a complete type and an implicit-lifetime (<sref ref="[basic.types]"/>) 
+aggregate (<sref ref="[dcl.init.aggr]"/>).
+<p/>
+<ins>-?- <i>Constant When</i>: `r` refers to a non-volatile object whose lifetime began within the 
+evaluation of core constant expression (<sref ref="[expr.const.core]"/>) which includes the 
+invocation of `start_lifetime`, or a sub-object of such an object.</ins> 
+<p/>
+-2- <i>Effects</i>: If the object referenced by `r` is already within its lifetime (<sref ref="[basic.life]"/>), 
+no effects. Otherwise, begins the lifetime of the object referenced by `r`.
+</p>
+</blockquote>
+</blockquote>
+
+</li>
+
+ </ol>
+</resolution>
+
+</issue>
