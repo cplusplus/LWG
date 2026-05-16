@@ -53,7 +53,7 @@ template&lt;class T&gt;
 aggregate (<sref ref="[dcl.init.aggr]"/>).
 <p/>
 <ins>-?- <i>Constant When</i>: `r` refers to a non-volatile object whose lifetime began within the 
-evaluation of core constant expression (<sref ref="[expr.const.core]"/>) which includes the 
+evaluation of a core constant expression (<sref ref="[expr.const.core]"/>) which includes the 
 invocation of `start_lifetime`, or a sub-object of such an object.</ins> 
 <p/>
 -2- <i>Effects</i>: If the object referenced by `r` is already within its lifetime (<sref ref="[basic.life]"/>), 
