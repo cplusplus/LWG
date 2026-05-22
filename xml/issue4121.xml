@@ -125,9 +125,7 @@ int main() {
 }
 </code></pre></blockquote>
 
-</discussion>
-
-<resolution>
+<superseded>
 <p>
 This wording is relative to <paper num="N5001"/>.
 </p>
@@ -175,6 +173,62 @@ constexpr auto <i>container-append</i>(Container&amp; c) {     <i>// exposition 
 </li>
 </ol>
 
+</superseded>
+
+<note>2026-05-22; Jonathan provides new wording</note>
+<p>
+Hewill noted that all the standard sequence containers that could use
+`c.emplace(c.end(), ref)` would already have used the `emplace_back` branch,
+so there's no point using `c.emplace`. Just change that branch to use
+`emplace_hint` for associative containers.
+</p>
+
+</discussion>
+
+<resolution>
+<p>
+This wording is relative to <paper num="N5046"/>.
+</p>
+
+<ol>
+<li><p>Modify <sref ref="[range.utility.conv.general]"/> as indicated:</p>
+
+<blockquote>
+<p>
+-4- Let <code><i>container-appendable</i></code> be defined as follows:
+</p>
+<blockquote><pre>
+template&lt;class Container, class Ref&gt;
+constexpr bool <i>container-appendable</i> =         <i>// exposition only</i>
+  requires(Container&amp; c, Ref&amp;&amp; ref) {
+           requires (requires { c.emplace_back(std::forward&lt;Ref&gt;(ref)); } ||
+                     requires { c.push_back(std::forward&lt;Ref&gt;(ref)); } ||
+                     requires { c.emplace<ins>_hint</ins>(c.end(), std::forward&lt;Ref&gt;(ref)); } ||
+                     requires { c.insert(c.end(), std::forward&lt;Ref&gt;(ref)); });
+};
+</pre></blockquote>
+<p>
+-5- Let <code><i>container-append</i></code> be defined as follows:
+</p>
+<blockquote><pre>
+template&lt;class Container&gt;
+constexpr auto <i>container-append</i>(Container&amp; c) {     <i>// exposition only</i>
+  return [&amp;c]&lt;class Ref&gt;(Ref&amp;&amp; ref) {
+    if constexpr (requires { c.emplace_back(declval&lt;Ref&gt;()); })
+      c.emplace_back(std::forward&lt;Ref&gt;(ref));
+    else if constexpr (requires { c.push_back(declval&lt;Ref&gt;()); })
+      c.push_back(std::forward&lt;Ref&gt;(ref));
+    else if constexpr (requires { c.emplace<ins>_hint</ins>(c.end(), declval&lt;Ref&gt;()); })
+      c.emplace<ins>_hint</ins>(c.end(), std::forward&lt;Ref&gt;(ref));
+    else
+      c.insert(c.end(), std::forward&lt;Ref&gt;(ref));
+  };
+};
+</pre></blockquote>
+</blockquote>
+
+</li>
+</ol>
 </resolution>
 
 </issue>
