@@ -22,7 +22,7 @@ it is reasonable to enable range access utilities when introducing <code>&lt;sim
 Set priority to 3 after reflector poll.
 </p>
 <p>
-"This will be the first time we add the free-function begn/end interface to support a type where `end` returns a sentinel.
+"This will be the first time we add the free-function begin/end interface to support a type where `end` returns a sentinel.
 I would not want to set precedent here without at least taking the time to think about it, and acknowledge a deliberate intent."
 </p>
 <p>
