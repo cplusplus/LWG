@@ -1,7 +1,7 @@
-<?xml version='1.0' encoding='utf-8' standalone='no'?>
+ot <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="4402" status="New">
+<issue num="4402" status="NAD">
 <title>List-initialization of iterators in [simd.mask.overview]</title>
 <section>
 <sref ref="[simd.mask.overview]"/>
@@ -76,6 +76,15 @@ This is NAD as user cannot rely on standard types not being constructible per
 <sref ref="[member.functions]"/> p2. The example would not be fixed by adding
 the <tt>explicit</tt> in a conforming implementation, and changes in <tt>return</tt>
 specification are editorial.
+</p>
+<note>2026-05-22 LWG telecon. Status changed: New &rarr; NAD.</note>
+<p>
+Due to Core rules about overload resolution for a braced-init-list,
+making the constructor `explicit` would not change the ambiguity.
+Even if it did, the implementation could add other unspecified constructors
+that would still make the call ambiguous. LWG does not feel that the example
+is something that we would feel needs to be supported. If you want to call
+that overloaded function, use a named type not a braced-init-list.
 </p>
 </discussion>
 
