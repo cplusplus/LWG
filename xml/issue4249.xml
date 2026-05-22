@@ -28,8 +28,8 @@ int main() {
 }
 </pre></blockquote>
 <p>
-The above leads to SIGSEGV in libstdc++, the reason is that we are iterating over the nested
-range as:
+The above leads to a hardened precondition failure in libstdc++,
+the reason is that we are iterating over the nested range as:
 </p>
 <blockquote><pre>
 for (auto&amp;&amp; inner : r) {
