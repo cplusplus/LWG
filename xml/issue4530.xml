@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="4530" status="New">
+<issue num="4530" status="LEWG">
 <title>Unclear specification for <tt>formatter&lt;charT[N], charT&gt;</tt></title>
 <section><sref ref="[format.formatter.spec]"/></section>
 <submitter>Ivan Lazaric</submitter>
@@ -65,6 +65,7 @@ while others format as `string_view(arr)`.
 <p>
 Set priority to 2 after reflector poll.
 </p>
+<note>2026-05-22 LWG telecon; Status changed: New &rarr; LEWG</note>
 </discussion>
 
 <resolution>
