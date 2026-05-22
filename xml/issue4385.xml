@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="4385" status="New">
+<issue num="4385" status="Ready">
 <title>Including <tt>&lt;simd&gt;</tt> doesn't provide `std::begin/end`
 </title>
 <section>
@@ -28,6 +28,7 @@ I would not want to set precedent here without at least taking the time to think
 <p>
 "The intent has been deliberate since <paper num="P0184R0"/>."
 </p>
+<note>2026-05-22 LWG telecon; Status changed: New &rarr; Ready</note>
 </discussion>
 
 <resolution>
