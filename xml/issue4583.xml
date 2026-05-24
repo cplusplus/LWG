@@ -1,0 +1,65 @@
+<?xml version='1.0' encoding='utf-8' standalone='no'?>
+<!DOCTYPE issue SYSTEM "lwg-issue.dtd">
+
+<issue num="4583" status="New">
+<title>`std::byteswap` can make sense for some types with padding bytes</title>
+<section>
+<sref ref="[bit.byteswap]"/>
+</section>
+<submitter>Jiang An</submitter>
+<date>21 May 2026</date>
+<priority>99</priority>
+
+<discussion>
+<p>
+Currently, `std::byteswap` doesn't accept types with padding bits. The prohibition might be a bit too strict. 
+E.g., if the implementation provides `__int48` such that `sizeof(__int48) == 8` and there're 2 padding bytes 
+in the object representation of `__int48`, `std::byteswap` can arguably make sense for `__int48` if we specify 
+its semantics as reversing byte order of the value representation instead of the object representation. Some 
+implementors (see <a href="https://github.com/llvm/llvm-project/pull/196512">llvm/llvm-project#196512</a>) 
+think that it's meaningful make `std::byteswap` support `__int48` and its friends.
+<p/>
+The issue was discovered when making `std::byteswap` support `_BitInt` in libc++. While `_BitInt` is being 
+standardized in C++ via <paper num="P3666R4"/>, libc++ is trying to recognize (`unsigned`) `_BitInt(N)` as 
+extended integer types and achieve full library support.
+</p>
+</discussion>
+
+<resolution>
+<p>
+This wording is relative to <paper num="N5046"/>.
+</p>
+
+<ol>
+<li>
+<p>Modify <sref ref="[bit.byteswap]"/> as indicated:</p>
+
+<blockquote>
+<pre>
+template&lt;class T&gt;
+  constexpr T byteswap(T value) noexcept;
+</pre>
+<blockquote>
+<p>
+-1- <i>Constraints</i>: `T` models `integral`.
+<p/>
+-2- <i>Mandates</i>: <del>`T` does not have padding bits (<sref ref="[basic.types.general]"/>)</del><ins>For 
+each byte in the object representation of `T`, bits in the byte are either all padding bits 
+(<sref ref="[basic.types.general]"/>) or all non-padding bits</ins>.
+<p/>
+-3- Let the sequence <tt><i>R</i></tt> comprise the bytes of the <del>object</del><ins>value</ins> 
+representation of value in reverse order.
+<p/>
+-4- <i>Returns</i>: An object `v` of type `T` such that each byte in the <del>object</del><ins>value</ins> 
+representation of `v` is equal to the byte in the corresponding position in <tt><i>R</i></tt>.
+</p>
+</blockquote>
+</blockquote>
+
+</li>
+
+ </ol>
+
+</resolution>
+
+</issue>
