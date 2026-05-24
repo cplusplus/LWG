@@ -2,7 +2,7 @@
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
 <issue num="4582" status="New">
-<title>Specializations of `layout_transpose` do not meet the layout mapping policy</title>
+<title>Specializations of `layout_transpose` do not meet the layout mapping policy requirements</title>
 <section>
 <sref ref="[linalg.transp.layout.transpose]"/>
 <sref ref="[mdspan.layout.policy.reqmts]"/>
