@@ -1,0 +1,68 @@
+<?xml version='1.0' encoding='utf-8' standalone='no'?>
+<!DOCTYPE issue SYSTEM "lwg-issue.dtd">
+
+<issue num="4582" status="New">
+<title>Specializations of `layout_transpose` do not meet the layout mapping policy</title>
+<section>
+<sref ref="[linalg.transp.layout.transpose]"/>
+<sref ref="[mdspan.layout.policy.reqmts]"/>
+</section>
+<submitter>Charles Hussong</submitter>
+<date>19 May 2026</date>
+<priority>99</priority>
+
+<discussion>
+<p>
+<sref ref="[linalg.transp.layout.transpose]"/> bullet (3.2) specifies a <i>Mandate</i> 
+that the rank of the extents used with this layout <em>must</em> equal 2. However, the 
+layout mapping policy requirements at <sref ref="[mdspan.layout.policy.reqmts]"/> are 
+worded in the following way:
+</p>
+<blockquote>
+<p>
+A type `MP` meets the layout mapping policy requirements if for a type `E` that is a 
+specialization of `extents`, <tt>MP::mapping&lt;E&gt;</tt> is valid and denotes a type 
+`X` that meets the layout mapping requirements (<sref ref="[mdspan.layout.reqmts]"/>), 
+[&hellip;]
+</p>
+</blockquote>
+<p>
+We interpret this to mean that in order for `MP` to be a layout mapping policy, it must 
+be possible to instantiate <tt>MP::mapping&lt;E&gt;</tt> for <em>any</em> extents `E`, 
+with no additional mandates. Since `layout_transpose` does not satisfy this, specializations
+of it do not meet the layout mapping policy, which contradicts <sref ref="[linalg.transp.intro]"/> p1, 
+and <sref ref="[linalg.transp.layout.transpose]"/> p1, and makes any `mdspan` using 
+`layout_transpose` (including the return type of `transposed`(<sref ref="[linalg.transp.transposed]"/>)) 
+ill-formed.
+<p/>
+I think the most straightforward solution to this would be to change the layout mapping policy 
+requirements:
+</p>
+<blockquote>
+<p>
+A type `MP` meets the layout mapping policy requirements if for <del>a</del><ins>at least one</ins> 
+type `E` that is a specialization of `extents`, <tt>MP::mapping&lt;E&gt;</tt> is valid and denotes 
+a type `X` that meets the layout mapping requirements [&hellip;]
+</p>
+</blockquote>
+<p>
+Unfortunately this is a much looser requirement, but I'm not sure how else to accommodate a sensible 
+definition of `layout_transpose` within the stricter version.
+<p/>
+<b>Considered alternatives:</b>
+<p/>
+`layout_transpose` could be redefined to either always transpose the first two or last two ranks. 
+I did not submit this because it could easily get confusing for users (was it the first two or 
+the last two, or maybe something else entirely?) and there's no sensible behavior for rank 1.
+<p/>
+Another option would be to replace the notion of "meet the layout mapping policy requirements" 
+with "meet the layout mapping policy requirements for extents `E`". My understanding is that this 
+goes against the spirit of the design where the layout mapping policy is not templated on the 
+specific extents, while the layout mapping is.
+</p>
+</discussion>
+
+<resolution>
+</resolution>
+
+</issue>
