@@ -1,0 +1,82 @@
+<?xml version='1.0' encoding='utf-8' standalone='no'?>
+<!DOCTYPE issue SYSTEM "lwg-issue.dtd">
+
+<issue num="4580" status="New">
+<title>`is_enumerable_type`: Definition of "enumerable type" looks strange</title>
+<section>
+<sref ref="[meta.reflection.queries]"/>
+</section>
+<submitter>S. B. Tam</submitter>
+<date>18 May 2026</date>
+<priority>99</priority>
+
+<discussion>
+<p>
+<sref ref="[meta.reflection.queries]"/> p30 says:
+</p>
+<blockquote>
+<p>
+-30- A type <tt><i>T</i></tt> is <i>enumerable</i> from a point <tt><i>P</i></tt> if either
+</p>
+<ol style="list-style-type: none">
+<li><p>
+(30.1) &mdash; <tt><i>T</i></tt> is a class type complete at point <tt><i>P</i></tt> or
+</p></li>
+<li><p>
+(30.2) &mdash; <tt><i>T</i></tt> is an enumeration type defined by a declaration 
+<tt><i>D</i></tt> such that <tt><i>D</i></tt> is reachable from <tt><i>P</i></tt> but 
+<tt><i>P</i></tt> does not occur within an <i>enum-specifier</i> of <tt><i>D</i></tt> 
+(<sref ref="[dcl.enum]"/>).
+</p></li>
+</ol>
+</blockquote>
+<p>
+The second bullet looks strange to a language lawyer: an enum type can only be declared by 
+<i>opaque-enum-declaration</i>s and <i>enum-specifier</i>s (<sref ref="[dcl.enum]"/>), and 
+only the latter are definitions (<sref ref="[basic.def]"/> p2). That is, <tt><i>D</i></tt> 
+must be an <i>enum-specifier</i>. What does it mean to say "an <i>enum-specifier</i> of an 
+<i>enum-specifier</i>"?
+<p/>
+I think, instead of saying "an <i>enum-specifier</i> of <tt><i>D</i></tt>", the second bullet 
+could simply refer to <tt><i>D</i></tt> as an <i>enum-specifier</i>.
+</p>
+</discussion>
+
+<resolution>
+<p>
+This wording is relative to <paper num="N5046"/>.
+</p>
+
+<ol>
+<li>
+<p>Modify <sref ref="[meta.reflection.queries]"/> as indicated:</p>
+
+<blockquote>
+<pre>
+consteval bool is_enumerable_type(info r);
+</pre>
+<blockquote>
+<p>
+-30- A type <tt><i>T</i></tt> is <i>enumerable</i> from a point <tt><i>P</i></tt> if either
+</p>
+<ol style="list-style-type: none">
+<li><p>
+(30.1) &mdash; <tt><i>T</i></tt> is a class type complete at point <tt><i>P</i></tt> or
+</p></li>
+<li><p>
+(30.2) &mdash; <tt><i>T</i></tt> is an enumeration type defined by <del>a declaration</del>
+<ins>an <i>enum-specifier</i></ins> <tt><i>D</i></tt> <ins>(<sref ref="[dcl.enum]"/>)</ins> 
+such that <tt><i>D</i></tt> is reachable from <tt><i>P</i></tt> <del>but 
+<tt><i>P</i></tt> does not occur within an <i>enum-specifier</i> of <tt><i>D</i></tt> 
+(<sref ref="[dcl.enum]"/>)</del>.
+</p></li>
+</ol>
+</blockquote>
+</blockquote>
+
+</li>
+
+ </ol>
+</resolution>
+
+</issue>
