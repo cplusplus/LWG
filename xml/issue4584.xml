@@ -1,0 +1,69 @@
+<?xml version='1.0' encoding='utf-8' standalone='no'?>
+<!DOCTYPE issue SYSTEM "lwg-issue.dtd">
+
+<issue num="4584" status="New">
+<title>`std::hive::sort` should add <i>Cpp17MoveConstructible</i> to its preconditions on `T`</title>
+<section>
+<sref ref="[hive.operations]"/>
+</section>
+<submitter>Joaquín M López Muñoz</submitter>
+<date>24 May 2026</date>
+<priority>99</priority>
+
+<discussion>
+<p>
+`std::hive::sort` (<sref ref="[hive.operations]"/>)
+requires that `T` be <i>Cpp17MoveInsertable</i> into `hive`, 
+<i>Cpp17MoveAssignable</i>, and <i>Cpp17Swappable</i>.
+It does not require `T` to be <i>Cpp17MoveConstructible</i>, which is a
+prerequisite for the internal use of `std::sort` by the implementation. 
+Note that, in general, <i>Cpp17MoveInsertable</i> into `hive` (or any 
+container) does not imply <i>Cpp17MoveConstructible</i>.
+Both the de facto reference implementation for `std::hive` (Matthew
+Bentley's <a href="https://github.com/mattreecebentley/plf_hive">plf::hive</a>) 
+and the ongoing <a href="https://github.com/NylteJ/STL/tree/hive">implementation 
+for VS</a> use `std::sort` directly on `T`.
+<p/>
+Strictly speaking, the lack of this precondition can be salvaged by
+invoking `std::sort` on a range of values of type `X`, where `X` is 
+an ad-hoc type wrapping a `T` value and an allocator object which implements 
+move construction in terms of <tt>std::allocator_traits&lt;A&gt;::construct</tt>. 
+So, even if this issue is resolved as NAD, that would be informative for 
+standard library implementors so that they can potentially fix their code.
+</p>
+</discussion>
+
+<resolution>
+<p>
+This wording is relative to <paper num="N5046"/>.
+</p>
+
+<ol>
+<li>
+<p>Modify <sref ref="[hive.operations]"/> as indicated:</p>
+
+<blockquote>
+<pre>
+template&lt;class Compare = less&lt;T&gt;&gt;
+  void sort(Compare comp = Compare());
+</pre>
+<blockquote>
+<p>
+-13- <i>Preconditions</i>: `T` is <i>Cpp17MoveInsertable</i> into `hive`, <ins><i>Cpp17MoveConstructible</i>,</ins> 
+<i>Cpp17MoveAssignable</i>, and <i>Cpp17Swappable</i>.
+<p/>
+-14- <i>Effects</i>: Sorts `*this` according to the `comp` function object. If an exception is thrown, 
+the order of the elements in `*this` is unspecified.
+<p/>
+[&hellip;]
+</p>
+</blockquote>
+</blockquote>
+
+</li>
+
+ </ol>
+
+</resolution>
+
+</issue>
