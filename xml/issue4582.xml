@@ -20,7 +20,7 @@ worded in the following way:
 </p>
 <blockquote>
 <p>
-A type `MP` meets the layout mapping policy requirements if for a type `E` that is a 
+A type `MP` meets the <i>layout mapping policy</i> requirements if for a type `E` that is a 
 specialization of `extents`, <tt>MP::mapping&lt;E&gt;</tt> is valid and denotes a type 
 `X` that meets the layout mapping requirements (<sref ref="[mdspan.layout.reqmts]"/>), 
 [&hellip;]
@@ -40,7 +40,7 @@ requirements:
 </p>
 <blockquote>
 <p>
-A type `MP` meets the layout mapping policy requirements if for <del>a</del><ins>at least one</ins> 
+A type `MP` meets the <i>layout mapping policy</i> requirements if for <del>a</del><ins>at least one</ins> 
 type `E` that is a specialization of `extents`, <tt>MP::mapping&lt;E&gt;</tt> is valid and denotes 
 a type `X` that meets the layout mapping requirements [&hellip;]
 </p>
@@ -63,6 +63,29 @@ specific extents, while the layout mapping is.
 </discussion>
 
 <resolution>
+<p>
+This wording is relative to <paper num="N5046"/>.
+</p>
+
+<ol>
+<li>
+<p>Modify <sref ref="[mdspan.layout.policy.reqmts]"/> as indicated:</p>
+
+<blockquote>
+<p>
+-1- A type `MP` meets the <i>layout mapping policy</i> requirements if for <del>a</del><ins>at least one</ins> 
+type `E` that is a specialization of `extents`, <tt>MP::mapping&lt;E&gt;</tt> is valid and denotes 
+a type `X` that meets the layout mapping requirements (<sref ref="[mdspan.layout.reqmts]"/>), and for
+which the <i>qualified-id</i> `X::layout_type` is valid and denotes the type `MP` and the 
+<i>qualified-id</i> `X::extents_type` denotes `E`.
+</p>
+</blockquote>
+
+</li>
+
+ </ol>
+
+
 </resolution>
 
 </issue>
