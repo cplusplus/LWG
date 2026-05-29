@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="4567" status="New">
+<issue num="4567" status="Tentatively Ready">
 <title>Feature test macro value for `apply_result`, `is_applicable`</title>
 <section>
 <sref ref="[version.syn]"/>
@@ -34,6 +34,11 @@ I propose to assign the following `__cpp_lib_apply` macro values to account to a
 </ul>
 <p>
 The proposed resolution for the standard working paper represents only the effective end state.
+</p>
+
+<note>2026-05-29; Reflector poll.</note>
+<p>
+Set status to Tentatively Ready after six votes in favour during reflector poll.
 </p>
 </discussion>
 
