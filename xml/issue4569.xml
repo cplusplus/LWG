@@ -45,8 +45,8 @@ It should be emphasized that we provided very similar wording in <sref ref="[cor
 Set priority to 4 after reflector poll.
 </p>
 <p>
-This seem to only affected contrived examples, that will
-be ill-formed as soon as you try to use result `mdspan`.
+This seems to only affected contrived examples, that will
+be ill-formed as soon as you try to use the resulting `mdspan`.
 </p>
 </discussion>
 

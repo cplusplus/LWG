@@ -31,7 +31,7 @@ Set priority to 3 after reflector poll.
 </p>
 <p>
 We spell explicit requirments on validity of `NestedAccessor::element_type` construction,
-and not include in in alias definition.
+and do not include it in the alias definition.
 </p>
 </discussion>
 

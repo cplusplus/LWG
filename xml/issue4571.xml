@@ -52,7 +52,7 @@ Set priority to 3 after reflector poll.
 <p>
 The meaning of "merging specializations" in the note is unclear.
 It is unclear if well-formed program can differentiate between
-atomic initiantiation produce from primary template or specializations
+atomic instantiations produced from the primary template or specializations
 (full or partial).
 </p>
 </discussion>
