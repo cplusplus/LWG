@@ -8,12 +8,26 @@
 </section>
 <submitter>Hewill Kang</submitter>
 <date>19 Apr 2026</date>
-<priority>99</priority>
+<priority>3</priority>
 
 <discussion>
 <p>
 The `view_interface` can provide only a const `cbegin` member when the derived class is
 <code><i>simple-view</i></code>, which helps reduce template instantiation.
+</p>
+
+<note>2026-05-29; Reflector poll.</note>
+<p>
+Set priority to 3 after reflector poll.
+</p>
+<p>
+This does not seem to eliminate class template instantiations, so
+may not be improvement. Would benefit from benchmarks.
+</p>
+<p>
+We could go even further and replace <tt>!simple_range&lt;R&gt;</tt>,
+with <tt>!input_range&lt;const R&gt;</tt>, due `ranges::cbegin` and
+`ranges::cend` using <tt><i>possibly-constant-range</i></tt>.
 </p>
 </discussion>
 
