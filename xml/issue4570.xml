@@ -8,7 +8,7 @@
 </section>
 <submitter>Eric Niebler</submitter>
 <date>13 Apr 2026</date>
-<priority>99</priority>
+<priority>3</priority>
 
 <discussion>
 <p>
@@ -43,6 +43,15 @@ they do not have a common type as determined by `common_type_t`.
 We can patch this up easily enough: if <tt>common_type_t&lt;Domains...&gt;</tt> is ill-formed, 
 we should check if <tt>common_type_t&lt;default_domain, Domains...&gt;</tt> is well-formed, this 
 will correctly handle the case when all the domains are convertible to `default_domain`.
+</p>
+
+<note>2026-05-29; Reflector poll.</note>
+<p>
+Set priority to 3 after reflector poll.
+</p>
+<p>
+The expected design regarding domain conversion is unclear, and
+concerns regarding special treatment of `default_domain` were raised.
 </p>
 </discussion>
 
