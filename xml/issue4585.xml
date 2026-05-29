@@ -1,0 +1,38 @@
+<?xml version='1.0' encoding='utf-8' standalone='no'?>
+<!DOCTYPE issue SYSTEM "lwg-issue.dtd">
+
+<issue num="4585" status="New">
+<title>Applying `std::meta::alignment_of` to a not-yet-defined variable</title>
+<section>
+<sref ref="[meta.reflection.layout]"/>
+</section>
+<submitter>S. B. Tam</submitter>
+<date>29 May 2026</date>
+<priority>99</priority>
+
+<discussion>
+<p>
+For a reflection value `r` that represents a variable, `std::meta::alignment_of(r)` 
+is specified to return the alignment requirement of the variable. If the variable's 
+definition has an `alignas` specifier, its non-defining declaration does not (as 
+permitted by <sref ref="[dcl.align]"/> p6), and only the latter is reachable in the 
+evaluation context, is the `std::meta::alignment_of` call valid? If yes, 
+what should it return?
+<p/>
+Example:
+</p>
+<blockquote><pre>
+#include &lt;meta&gt;
+
+extern char ch;
+constexpr auto x = std::meta::alignment_of(^^ch);
+
+alignas(64) char ch;
+constexpr auto x2 = x; // <span style="color:red;font-weight:bolder">x2 is 1 or 64?</span>
+</pre></blockquote>
+</discussion>
+
+<resolution>
+</resolution>
+
+</issue>
