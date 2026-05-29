@@ -181,6 +181,8 @@ Extensive reflector discussion. Strong opposition to the changes,
 being a pessimization for all unique-key lookups, implementation divergence,
 and recent changes in implementtion that silently broke user libraries.
 </p>
+
+<note>2026-05-29 LWG telecon; status: New &rarr; LEWG</note>
 </discussion>
 
 <resolution>

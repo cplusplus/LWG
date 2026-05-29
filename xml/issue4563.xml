@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="4563" status="New">
+<issue num="4563" status="LEWG">
 <title>Missing "round to nearest, ties away from zero" mode</title>
 <section>
 <sref ref="[round.style]"/>
@@ -26,6 +26,8 @@ The name should be inspired by C23 macros such as `FE_TONEARESTFROMZERO`.
 <p/>
 See also <a href="https://cigix.me/c23#5.2.5.3.3.p23">ISO/IEC 9899:2024 §5.2.5.3 paragraph 23</a>
 </p>
+
+<note>2026-05-29 LWG telecon; status: New &rarr; LEWG</note>
 </discussion>
 
 <resolution>
