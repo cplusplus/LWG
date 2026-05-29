@@ -8,7 +8,7 @@
 </section>
 <submitter>Hewill Kang</submitter>
 <date>03 Apr 2026</date>
-<priority>99</priority>
+<priority>3</priority>
 
 <discussion>
 <p>
@@ -35,6 +35,18 @@ ranges::subrange&lt;Derived*&gt; sd;
 ranges::subrange&lt;Base*&gt; sb = sd;                        // error
 ranges::subrange&lt;const Base*&gt; sb = views::as_const(sd); // <span style="color:#C80000;font-weight:bold">ok</span>
 </pre></blockquote>
+
+<note>2026-05-29; Reflector poll.</note>
+<p>
+Set priority to 3 after reflector poll.
+</p>
+
+<p>
+"It seems like we should apply this protection to all iterator adaptors.
+Derived-to-base conversions are not valid for pointers that are used as
+iterators."
+</p>
+
 </discussion>
 
 <resolution>
