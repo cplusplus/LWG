@@ -8,7 +8,7 @@
 </section>
 <submitter>Eric Niebler</submitter>
 <date>19 Mar 2026</date>
-<priority>99</priority>
+<priority>2</priority>
 
 <discussion>
 <p>
@@ -48,6 +48,14 @@ subexpression to an rvalue reference parameter.
 The intention was that the template parameter `Sndr` would be deduced preserving the <i>cv</i>- and 
 reference-qualification of the sender subexpression. In order to achieve that, we need to add a deduction 
 guide.
+</p>
+
+<note>2026-05-29; Reflector poll.</note>
+<p>
+Set priority to 2 after reflector poll.
+</p>
+<p>
+There were only 3 votes, but all in favor of P0.
 </p>
 </discussion>
 
