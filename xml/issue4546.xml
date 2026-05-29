@@ -8,7 +8,7 @@
 </section>
 <submitter>Hewill Kang</submitter>
 <date>19 Mar 2026</date>
-<priority>99</priority>
+<priority>3</priority>
 
 <discussion>
 <p>
@@ -18,6 +18,14 @@ cannot be used as a template parameter even if it is a constant expression. This
 <p/>
 Given that integer-class types should behave like regular integers, and those types in MSVC-STL and libstdc++ are 
 both implemented as structural types, it would be better to be clear about the wording.
+</p>
+
+<note>2026-05-29; Reflector poll.</note>
+<p>
+Set priority to 3 after reflector poll.
+</p>
+<p>
+Need additional statement clarifying when the types are template-argument-equivalent.
 </p>
 </discussion>
 
