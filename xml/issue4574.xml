@@ -9,7 +9,7 @@
 </section>
 <submitter>Zhihao Yuan</submitter>
 <date>27 Apr 2026</date>
-<priority>99</priority>
+<priority>2</priority>
 
 <discussion>
 <p>
@@ -49,6 +49,14 @@ The 2nd template argument of `constant_wrapper`
 is defaulted to `decltype(X)::type`, it may
 need to be <em>required</em> to be `decltype(X)::type` to
 reliably provide value.
+</p>
+
+<note>2026-05-29; Reflector poll.</note>
+<p>
+Set priority to 2 after reflector poll.
+</p>
+<p>
+This should be resolved by <paper num="P4206R0"/>.
 </p>
 </discussion>
 
