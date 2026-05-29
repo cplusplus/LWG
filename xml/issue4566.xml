@@ -10,7 +10,7 @@
 </section>
 <submitter>Hewill Kang</submitter>
 <date>08 Apr 2026</date>
-<priority>99</priority>
+<priority>3</priority>
 
 <discussion>
 <p>
@@ -23,6 +23,15 @@ returns <code>const ScalingFactor&amp;</code>.
 Furthermore, both <code>scaled_accessor</code> and <code>conjugated_accessor</code>'s
 <code>access</code> construct <code>NestedAccessor::element_type</code> via
 <code><i>nested-accessor</i>.access(p, i)</code>, but this may not be well-formed.
+</p>
+
+<note>2026-05-29; Reflector poll.</note>
+<p>
+Set priority to 3 after reflector poll.
+</p>
+<p>
+We spell explicit requirments on validity of `NestedAccessor::element_type` construction,
+and not include in in alias definition.
 </p>
 </discussion>
 
