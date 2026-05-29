@@ -9,7 +9,7 @@
 </section>
 <submitter>Jiang An</submitter>
 <date>17 Apr 2026</date>
-<priority>99</priority>
+<priority>3</priority>
 
 <discussion>
 <p>
@@ -43,6 +43,17 @@ program-defined specialization.
 Given it's unclear whether program-defined specializations of `atomic` and `atomic_ref` make sense, and 
 there're some potential drawbacks allowing them, perhaps it would be better to disallow specializing 
 `atomic` and `atomic_ref`.
+</p>
+
+<note>2026-05-29; Reflector poll.</note>
+<p>
+Set priority to 3 after reflector poll.
+</p>
+<p>
+The meaning of "merging specializations" in the note is unclear.
+It is unclear if well-formed program can differentiate between
+atomic initiantiation produce from primary template or specializations
+(full or partial).
 </p>
 </discussion>
 
