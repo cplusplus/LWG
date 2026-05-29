@@ -8,7 +8,7 @@
 </section>
 <submitter>Marek Polacek</submitter>
 <date>31 Mar 2026</date>
-<priority>99</priority>
+<priority>2</priority>
 
 <discussion>
 <p>
@@ -43,6 +43,16 @@ something like:
 <tt>[: <i>R</i> :]</tt> is a valid <i>splice-expression</i> <ins>that doesn't 
 designate a template</ins>.
 </p></blockquote>
+
+<note>2026-05-29; Reflector poll.</note>
+<p>
+Set priority to 2 after reflector poll.
+</p>
+<p>
+The `[:R:]` is not valid splice-expression for template. However,
+we need to handle direct base class relantionships and non-static
+data members. In this cases `reflect_constant(_array)` calls are ill-formed.
+</p>
 </discussion>
 
 <resolution>
