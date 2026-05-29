@@ -1,0 +1,197 @@
+<?xml version='1.0' encoding='utf-8' standalone='no'?>
+<!DOCTYPE issue SYSTEM "lwg-issue.dtd">
+
+<issue num="4586" status="New">
+<title>Partial specialization of `std::format_kind` for `std::optional` is not marked hosted</title>
+<section>
+<sref ref="[freestanding.item]"/>
+<sref ref="[optional.syn]"/>
+<sref ref="[format.syn]"/>
+</section>
+<submitter>Jiang An</submitter>
+<date>29 May 2026</date>
+<priority>99</priority>
+
+<discussion>
+<p>
+Currently, <tt>&lt;optional&gt;</tt> is a mostly freestanding header and provides a partial specialization of 
+`std::format_kind` which isn't mark `// hosted` in the synopsis (<sref ref="[optional.syn]"/>). The current 
+rules in <sref ref="[freestanding.item]"/> p4 seemingly requires the partial specialization to be a 
+freestanding item, while nothing seems to requires the primary template (provided by <tt>&lt;format&gt;</tt>) 
+to be freestanding.
+<p/>
+The status quo looks quite weird. Perhaps we should make the freestanding status same for the primary template 
+and the partial specialization.
+</p>
+</discussion>
+
+<resolution>
+<p>
+This wording is relative to <paper num="N5046"/>.
+</p>
+
+<blockquote class="note">
+<p>
+[<i>Drafting Note:</i> Three options are prepared, depicted below by <b>Option A</b>,
+<b>Option B</b>, and <b>Option C</b>, respectively, where option C is mutually exclusive 
+with option A and B.
+<p/>
+Note that libstdc++ effectively implemented option A recently (in commit <a 
+href="https://github.com/gcc-mirror/gcc/commit/23b9ac257cf508bc4fa479c82fcfc768c4abcd79">
+23b9ac257cf508bc4fa479c82fcfc768c4abcd79</a>).] 
+</p>
+</blockquote>
+
+<p>
+<b>Option A:</b> Just marking the partial specialization hosted
+</p>
+
+<ol>
+<li>
+<p>Modify <sref ref="[optional.syn]"/>, header <tt>&lt;optional&gt;</tt> synopsis, as indicated:</p>
+
+<blockquote>
+<pre>
+[&hellip;]
+template&lt;class T&gt;
+  constexpr bool ranges::enable_view&lt;optional&lt;T&gt;&gt; = true;
+template&lt;class T&gt;
+  constexpr auto format_kind&lt;optional&lt;T&gt;&gt; = range_format::disabled; <ins>// <i>hosted</i></ins>
+template&lt;class T&gt;
+  constexpr bool ranges::enable_borrowed_range&lt;optional&lt;T&amp;&gt;&gt; = true;
+[&hellip;]
+</pre>
+</blockquote>
+
+</li>
+ </ol>
+
+<p>
+<b>Option B:</b> Adding a general rule that infers hosted-ness of specializations
+</p>
+
+<ol>
+<li>
+<p>Modify <sref ref="[freestanding.item]"/> as indicated:</p>
+
+<blockquote>
+<p>
+-4- A declaration in a synopsis is a freestanding item if [&hellip;]
+<p/>
+-5- An entity or deduction guide is a freestanding item if its introducing declaration is not followed by a comment
+that includes <i>hosted</i>, and is: [&hellip;]
+<p/>
+-6- A macro is a freestanding item if it is defined in a header synopsis and [&hellip;]
+<p/>
+<ins>-?- A partial or full template specialization is not a freestanding item if its primary template 
+is not a freestanding item.</ins>
+</p>
+</blockquote>
+
+</li>
+ </ol>
+
+<p>
+<b>Option C:</b> Making `range_format` and `format_kind` freestanding
+</p>
+
+<ol>
+
+<li><p>Modify Table 27 [tab:headers.cpp.fs] as indicated:</p>
+
+<blockquote>
+<table border="1">
+<caption>Table 27: C++ headers for freestanding implementations [tab:headers.cpp.fs]</caption>
+<tr align="center">
+<th></th>
+<th>Subclause</th>
+<th>Header</th>
+</tr> 
+
+<tr>
+<td colspan="3" align="center">
+<tt>[&hellip;]</tt>
+</td>
+</tr>
+
+<tr>
+<td>
+<sref ref="[charconv]"/>
+</td>
+<td>
+Primitive numeric conversions
+</td>
+<td>
+<tt>&lt;charconv&gt;</tt>
+</td>
+</tr>
+
+<tr>
+<td>
+<ins><sref ref="[format]"/></ins>
+</td>
+<td>
+<ins>Formatting</ins>
+</td>
+<td>
+<ins><tt>&lt;format&gt;</tt></ins>
+</td>
+</tr>
+
+<tr>
+<td>
+<sref ref="[rand]"/>
+</td>
+<td>
+Random number generation
+</td>
+<td>
+<tt>&lt;random&gt;</tt>
+</td>
+</tr>
+
+<tr>
+<td colspan="3" align="center">
+<tt>[&hellip;]</tt>
+</td>
+</tr>
+
+</table>
+
+</blockquote>
+
+</li>
+
+<li>
+<p>Modify <sref ref="[format.syn]"/>, header <tt>&lt;format&gt;</tt> synopsis, as indicated:</p>
+
+<blockquote>
+<pre>
+[&hellip;]
+// <i><sref ref="[format.range]"/>, formatting of ranges</i>
+// <i><sref ref="[format.range.fmtkind]"/>, variable template</i> format_kind
+enum class range_format {
+  disabled,
+  map,
+  set,
+  sequence,
+  string,
+  debug_string
+};
+
+template&lt;class R&gt;
+  constexpr <i>unspecified</i> format_kind = <i>unspecified</i>;         <ins>// <i>freestanding</i></ins>
+
+template&lt;ranges::input_range R&gt;
+  requires same_as&lt;R, remove_cvref_t&lt;R&gt;&gt;
+  constexpr range_format format_kind&lt;R&gt; = <i>see below</i>;       <ins>// <i>freestanding</i></ins>
+[&hellip;]
+</pre>
+</blockquote>
+
+</li>
+ </ol>
+
+</resolution>
+
+</issue>
