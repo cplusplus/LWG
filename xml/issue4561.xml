@@ -8,7 +8,7 @@
 </section>
 <submitter>Hewill Kang</submitter>
 <date>27 Mar 2026</date>
-<priority>99</priority>
+<priority>3</priority>
 
 <discussion>
 <p>
@@ -22,6 +22,16 @@ we can just provide const <code>begin</code> to reduce the number of template in
 <p>
 And it is also reasonable to only provide <code>const</code> end in the case of 
 <code><i>simple-view</i></code> for the same reason.
+</p>
+
+<note>2026-05-29; Reflector poll.</note>
+<p>
+Set priority to 3 after reflector poll.
+</p>
+<p>
+The discussion concluded that this is not user-observable change,
+as we assume that if view `begin()` and `begin() const` return the same
+type, then their behavior is equivalent.
 </p>
 </discussion>
 
