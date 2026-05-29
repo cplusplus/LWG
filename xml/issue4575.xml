@@ -1,14 +1,14 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="4575" status="New">
+<issue num="4575" status="SG1">
 <title>No formal wording associates single total order of allocation/deallocation operations with the coherence rule</title>
 <section>
 <sref ref="[new.delete.dataraces]"/>
 </section>
 <submitter>jim x</submitter>
 <date>03 May 2026</date>
-<priority>99</priority>
+<priority>4</priority>
 
 <discussion>
 <p>
@@ -59,6 +59,11 @@ even if we associate the coherence rule with happens-before, the total order is
 <tt>#1 &lt; #3 &lt; #2</tt>(or, <tt>#3 &lt; #1 &lt; #2</tt>), it seems that the "next allocation" 
 is meaningless if it is relative to the deallocation. Furthermore, de-shall is meaningful here 
 because we impose a requirement on the implementations.
+</p>
+
+<note>2026-05-29; Reflector poll.</note>
+<p>
+Set priority to 4 and send to SG1 after reflector poll.
 </p>
 </discussion>
 
