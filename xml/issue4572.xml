@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="4572" status="New">
+<issue num="4572" status="LEWG">
 <title>Key ordering requirements of associative containers are poorly specified</title>
 <section>
 <sref ref="[associative.reqmts.general]"/>
@@ -10,7 +10,7 @@
 </section>
 <submitter>Joaquin M López Muñoz</submitter>
 <date>19 Apr 2026</date>
-<priority>99</priority>
+<priority>2</priority>
 
 <discussion>
 <p>
@@ -170,6 +170,16 @@ problems regarding the extent of applicability of semantic requirements (both fo
 <sref ref="[structure.requirements]"/>/8 tries to provide some leeway for the specific case 
 of `concept`s in a manner described by <paper num="P2027R0"/>, section "This is a special 
 case of a much bigger problem", as <i>"little more than handwaving"</i>.
+</p>
+
+<note>2026-05-29; Reflector poll.</note>
+<p>
+Set priority to 2 after reflector poll.
+</p>
+<p>
+Extensive regarding reflector discussion. Strong opoisition to the changes,
+being a pessimization for all unique-key lookups, implementation divergence,
+and recent changes in implementtion that silently broke user libraries.
 </p>
 </discussion>
 
