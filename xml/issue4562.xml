@@ -8,7 +8,7 @@
 </section>
 <submitter>S. B. Tam</submitter>
 <date>29 Mar 2026</date>
-<priority>99</priority>
+<priority>3</priority>
 
 <discussion>
 <p>
@@ -29,6 +29,12 @@ exhaustive in this case, but <sref ref="[mdspan.layout.stride.obs]"/>/6.2 requir
 <p/>
 Should `is_exhaustive` be made to return `true` in this case (which is more correct and also easier to implement)?
 </p>
+
+<note>2026-05-29; Reflector poll.</note>
+<p>
+Set priority to 3 after reflector poll.
+</p>
+
 </discussion>
 
 <resolution>
