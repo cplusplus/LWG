@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="3979" status="New">
+<issue num="3979" status="NAD">
 <title>Should we reject <tt>std::bind_front&lt;42&gt;()</tt> and its friends?</title>
 <section><sref ref="[func.not.fn]"/><sref ref="[func.bind.partial]"/></section>
 <submitter>Jiang An</submitter>
@@ -33,6 +33,12 @@ to catch a tiny amount of nonsense-but-not-dangerous code slightly earlier
 <code>bind_front(null_f)()</code> compiles but gives UB.
 Neither <code>bind_front(42)()</code> nor <code>bind_front&lt;42&gt;()</code>
 compiles."
+</p>
+
+<note>2026-05-29 Status changed: New &rarr; NAD.</note>
+<p>
+Not worth the compile-time overhead and maintenance burden to diagnose
+something that is either unused or ill-formed anyway.
 </p>
 
 </discussion>
