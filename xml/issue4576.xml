@@ -8,7 +8,7 @@
 </section>
 <submitter>S. B. Tam</submitter>
 <date>05 May 2026</date>
-<priority>99</priority>
+<priority>2</priority>
 
 <discussion>
 <p>
@@ -16,6 +16,14 @@ The use of `template [: x :]` (introduced in LWG <iref ref="4316"/>) is incorrec
 is a <i>splice-expression</i> (which can only designate a function template or variable template), 
 and an unparenthesized <i>splice-expression</i> is not allowed as a <i>template-argument</i> per 
 <sref ref="[temp.names]"/>/6.
+</p>
+
+<note>2026-05-29; Reflector poll.</note>
+<p>
+Set priority to 2 after reflector poll.
+</p>
+<p>
+We should merge 1.1 and 1.2.
 </p>
 </discussion>
 
