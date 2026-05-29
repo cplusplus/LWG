@@ -6,7 +6,7 @@
 <section><sref ref="[exec.on]"/></section>
 <submitter>Eric Niebler</submitter>
 <date>23 Mar 2026</date>
-<priority>99</priority>
+<priority>2</priority>
 
 <discussion>
 <p>
@@ -35,6 +35,12 @@ auto sndr2 = get_completion_domain&lt;&gt;(get_env(sndr), env)
 We can use this to query to make `transform_sender` use the domain of `sch` to find a customization 
 of `on(sch, sndr)`.
 </p>
+
+<note>2026-05-29; Reflector poll.</note>
+<p>
+Set priority to 2 after reflector poll.
+</p>
+
 </discussion>
 
 <resolution>
