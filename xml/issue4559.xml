@@ -10,7 +10,7 @@
 </section>
 <submitter>Hewill Kang</submitter>
 <date>27 Mar 2026</date>
-<priority>99</priority>
+<priority>3</priority>
 
 <discussion>
 <p>
@@ -24,6 +24,15 @@ it's not within reasonable ranges.
 Given that we provided <code>reserve_hint</code> for <code>concat_view</code> to resolve NB comment <a
    href="https://github.com/cplusplus/nbballot/issues/821">FR-025-246</a>, it seems that only these three views
 are available, but not provided; it's time to do so.</p>
+
+<note>2026-05-29; Reflector poll.</note>
+<p>
+Set priority to 3 after reflector poll.
+</p>
+<p>
+Concerns with `cartesian_product` as any overestimation will be amplified
+expoentially. P0 votes for `zip` only change.
+</p>
 </discussion>
 
 <resolution>
