@@ -9,7 +9,7 @@ missing a representability precondition for the padded stride</title>
 </section>
 <submitter>Xi Chen</submitter>
 <date>18 Mar 2026</date>
-<priority>99</priority>
+<priority>3</priority>
 
 <discussion>
 <p>
@@ -43,6 +43,16 @@ void test() {
   assert(dst.stride(1) == 0);
 }
 </pre></blockquote>
+
+<note>2026-05-29; Reflector poll.</note>
+<p>
+Set priority to 3 after reflector poll.
+</p>
+<p>
+There was split regarding P3 or P4. The `layout_stride` also require
+only `required_span_size` to be representable, allowing `strides` to
+overflow.
+</p>
 </discussion>
 
 <resolution>
