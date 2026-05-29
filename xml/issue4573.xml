@@ -22,11 +22,11 @@ Set priority to 3 after reflector poll.
 </p>
 <p>
 This does not seem to eliminate class template instantiations, so
-may not be improvement. Would benefit from benchmarks.
+may not be an improvement. Would benefit from benchmarks.
 </p>
 <p>
 We could go even further and replace <tt>!simple_range&lt;R&gt;</tt>,
-with <tt>!input_range&lt;const R&gt;</tt>, due `ranges::cbegin` and
+with <tt>!input_range&lt;const R&gt;</tt>, due to `ranges::cbegin` and
 `ranges::cend` using <tt><i>possibly-constant-range</i></tt>.
 </p>
 </discussion>
