@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="4568" status="New">
+<issue num="4568" status="Tentatively Ready">
 <title>`std::execution::spawn_future` is mishandling dependent senders</title>
 <section>
 <sref ref="[exec.spawn.future]"/>
@@ -52,6 +52,11 @@ A dependent sender cannot provide non-dependent completion signatures.
 The `spawn_future` algorithm connects the <tt><i>future-spawned-sender</i></tt> with a receiver that 
 has an empty environment. Therefore, we should be using the empty environment when computing the 
 <tt><i>future-spawned-sender</i></tt>'s completion signatures.
+</p>
+
+<note>2026-05-29; Reflector poll.</note>
+<p>
+Set status to Tentatively Ready after five votes in favour during reflector poll.
 </p>
 </discussion>
 
