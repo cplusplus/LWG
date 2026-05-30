@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="4125" status="New">
+<issue num="4125" status="Ready">
 <title><tt>move_iterator</tt>'s default constructor should be constrained</title>
 <section><sref ref="[move.iterator]"/><sref ref="[move.iter.cons]"/></section>
 <submitter>Hewill Kang</submitter>
@@ -43,6 +43,7 @@ requirements, but would not object to implementers using `is_constructible_v`
 for backported DRs.
 </p>
 
+<note>2026-05-29 LWG telecon; status: New &rarr; Ready</note>
 </discussion>
 
 <resolution>
