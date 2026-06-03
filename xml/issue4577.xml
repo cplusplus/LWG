@@ -18,9 +18,10 @@ and `string_view`'s `operator[]`.
 </p>
 
 <note>2026-05-29 LWG telecon; status: New &rarr; Ready</note>
-</discussion>
+<note>2026-06-03; status: Ready &rarr; Open</note>
+<p>Reopen to bump the feature test macro.</p>
 
-<resolution>
+<superseded>
 <p>
 This wording is relative to <paper num="N5046"/>.
 </p>
@@ -85,6 +86,86 @@ template&lt;random_access_range R = const D&gt;
 </li>
 
  </ol>
+</superseded>
+
+<note>2026-06-03; Jonathan provides new wording</note>
+
+</discussion>
+
+<resolution>
+<p>
+This wording is relative to <paper num="N5046"/>.
+</p>
+
+<ol>
+<li>
+<p>Modify <sref ref="[version.syn]"/>, Header <code>&lt;version&gt;</code>
+synopsis, as indicated:</p>
+<blockquote><pre>
+#define __cpp_lib_hardened_vector 202502L <i>// also in &lt;vector&gt;</i>
+#define __cpp_lib_hardened_view_interface <del>202506</del><ins>YYYYMM</ins>L <i>// also in &lt;ranges&gt;</i>
+</pre></blockquote>
+</li>
+<li>
+<p>Modify <sref ref="[view.interface]"/>, class template `view_interface` synopsis, as indicated:</p>
+
+<blockquote><pre>
+namespace std::ranges {
+  template&lt;class D&gt;
+    requires is_class_v&lt;D&gt; &amp;&amp; same_as&lt;D, remove_cv_t&lt;D&gt;&gt;
+  class view_interface {
+    [&hellip;]
+  public:
+    [&hellip;]
+    template&lt;random_access_range R = D&gt;
+      constexpr decltype(auto) operator[](range_difference_t&lt;R&gt; n)<del> {
+        return ranges::begin(<i>derived</i>())[n];
+      }</del><ins>;</ins>
+    template&lt;random_access_range R = const D&gt;
+      constexpr decltype(auto) operator[](range_difference_t&lt;R&gt; n) const<del> {
+        return ranges::begin(<i>derived</i>())[n];
+      }</del><ins>;</ins>
+  };
+}
+</pre></blockquote>
+</li>
+
+<li>
+<p>Modify <sref ref="[view.interface.members]"/> as indicated:</p>
+
+<blockquote>
+<pre>
+constexpr decltype(auto) back() requires bidirectional_range&lt;D&gt; &amp;&amp; common_range&lt;D&gt;;
+constexpr decltype(auto) back() const
+  requires bidirectional_range&lt;const D&gt; &amp;&amp; common_range&lt;const D&gt;;
+</pre>
+<blockquote>
+<p>
+-3- <i>Hardened preconditions</i>: `!empty()` is `true`.
+<p/>
+-4- <i>Effects</i>: Equivalent to: <code>return *ranges::prev(ranges::end(<i>derived</i>()));</code>
+</p>
+</blockquote>
+<pre><ins>
+template&lt;random_access_range R = D&gt;
+  constexpr decltype(auto) operator[](range_difference_t&lt;R&gt; n);
+template&lt;random_access_range R = const D&gt;
+  constexpr decltype(auto) operator[](range_difference_t&lt;R&gt; n) const;</ins>
+</pre>
+<blockquote>
+<p>
+<ins>-?- <i>Hardened preconditions</i>: If `D` models `sized_range`, then
+<code>n &gt;= 0 &amp;&amp; n &lt; ranges::distance(<i>derived</i>())</code> is `true`.</ins>
+<p/>
+<ins>-?- <i>Effects</i>: Equivalent to: <code>return ranges::begin(<i>derived</i>())[n];</code></ins>
+</p>
+</blockquote>
+</blockquote>
+
+</li>
+
+</ol>
+
 </resolution>
 
 </issue>
