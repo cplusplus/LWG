@@ -134,9 +134,7 @@ int main() {
 This is, because it violates <i>Mandates</i>. However, all three compilers accept it because 
 <code>Op&amp;</code> can take `float` and return `float`.
 </p>
-</discussion>
-
-<resolution>
+<superseded>
 <p>
 This wording is relative to <paper num="N5014"/>.
 </p>
@@ -250,6 +248,177 @@ template&lt;class UnaryOperation&gt;
 </blockquote>
 </li>
 </ol>
+
+</superseded>
+
+<note>2026-06-03; Jonathan provides new wording</note>
+
+</discussion>
+
+<resolution>
+<p>
+This wording is relative to <paper num="N5046"/>.
+</p>
+
+<ol>
+
+<li><p>Modify <sref ref="[rand.dist.samp.pconst]"/> as indicated:</p>
+
+<blockquote>
+<pre>
+template&lt;class InputIteratorB, class InputIteratorW&gt;
+  piecewise_constant_distribution(InputIteratorB firstB, InputIteratorB lastB,
+                                  InputIteratorW firstW);
+</pre>
+<blockquote>
+<p>
+-4- <i>Mandates</i>: Both of
+</p>
+<ol style="list-style-type: none">
+<li><p>
+(4.1) &mdash; <code>is_convertible_v&lt;iterator_traits&lt;InputIteratorB&gt;::value_type, <ins>result_type</ins><del>double</del>&gt;</code>
+</p></li>
+<li><p>
+(4.2) &mdash; <code>is_convertible_v&lt;iterator_traits&lt;InputIteratorW&gt;::value_type, <ins>result_type</ins><del>double</del>&gt;</code>
+</p></li>
+</ol>
+<p>
+are `true`.
+<p/>
+-5- <i>Preconditions</i>:
+`InputIteratorB` and `InputIteratorW` each meet the <i>Cpp17InputIterator</i>
+requirements (<sref ref="[input.iterators]"/>).
+<del>If <code>firstB == lastB</code> or <code>++firstB == lastB</code>,
+let <i>n</i> = 1, <i>ρ</i><sub>0</sub> = <i>ρ</i><sub>1</sub> = 1,
+<i>b</i><sub>0</sub> = 0, and <i>b</i><sub>1</sub> = 1.
+Otherwise, [<code>firstB</code>, <code>lastB</code>)
+forms a sequence <i>b</i> of length <i>n</i> + 1,
+the length of the sequence <i>w</i> starting
+from <code>firstW</code> is at least <i>n</i>,
+and any <i>w<sub>k</sub></i> for <i>k</i> ≥ <i>n</i>
+are ignored by the distribution.
+</del>
+<p/>
+-6- <i>Effects</i>:
+Constructs a `piecewise_constant_distribution` object
+with parameters <del>as specified above.</del>
+<ins>calculated from the following values:
+If <code>distance(firstB, lastB)</code> is less than 2,
+let <i>n</i> = 1, <i>ρ</i><sub>0</sub> = <i>ρ</i><sub>1</sub> = 1,
+<i>b</i><sub>0</sub> = 0, and <i>b</i><sub>1</sub> = 1.
+Otherwise, let <i>n</i> = <code>distance(firstB, lastB) - 1</code>,
+the range [<code>firstB</code>, <code>lastB</code>) forms a sequence <i>b</i>
+and
+the counted range <code>firstW</code>+[0, <i>n</i>) forms a sequence <i>w</i>.
+</ins>
+</p>
+</blockquote>
+<pre>
+template&lt;class UnaryOperation&gt;
+  piecewise_constant_distribution(initializer_list&lt;RealType&gt; bl, UnaryOperation fw);
+</pre>
+<blockquote>
+<p>
+-7- <i>Mandates</i>: <code>is_invocable_r_v&lt;<ins>result_type</ins><del>double</del>, UnaryOperation&amp;, 
+<ins>result_type</ins><del>double</del>&gt;</code> is `true`.
+<p/>
+[&hellip;]
+</p>
+</blockquote>
+<pre>
+template&lt;class UnaryOperation&gt;
+  piecewise_constant_distribution(size_t nw, RealType xmin, RealType xmax, UnaryOperation fw);
+</pre>
+<blockquote>
+<p>
+-10- <i>Mandates</i>: <code>is_invocable_r_v&lt;<ins>result_type</ins><del>double</del>, UnaryOperation&amp;, 
+<ins>result_type</ins><del>double</del>&gt;</code> is `true`.
+<p/>
+[&hellip;]
+</p>
+</blockquote>
+</blockquote>
+</li>
+
+
+<li><p>Modify <sref ref="[rand.dist.samp.plinear]"/> as indicated:</p>
+
+<blockquote>
+<pre>
+template&lt;class InputIteratorB, class InputIteratorW&gt;
+  piecewise_linear_distribution(InputIteratorB firstB, InputIteratorB lastB,
+                                InputIteratorW firstW);
+</pre>
+<blockquote>
+<p>
+-4- <i>Mandates</i>: Both of
+</p>
+<ol style="list-style-type: none">
+<li><p>
+(4.1) &mdash; <code>is_convertible_v&lt;iterator_traits&lt;InputIteratorB&gt;::value_type, <ins>result_type</ins><del>double</del>&gt;</code>
+</p></li>
+<li><p>
+(4.2) &mdash; <code>is_convertible_v&lt;iterator_traits&lt;InputIteratorW&gt;::value_type, <ins>result_type</ins><del>double</del>&gt;</code>
+</p></li>
+</ol>
+<p>
+are `true`.
+<p/>
+-5- <i>Preconditions</i>:
+`InputIteratorB` and `InputIteratorW` each meet the <i>Cpp17InputIterator</i>
+requirements (<sref ref="[input.iterators]"/>).
+<del>
+If `firstB == lastB` or `++firstB == lastB`, let <i>n</i> = 1,
+<i>ρ</i><sub>0</sub> = <i>ρ</i><sub>1</sub> = 1,
+<i>b</i><sub>0</sub> = 0, and <i>b</i><sub>1</sub> = 1.
+Otherwise, [`firstB`, `lastB`) forms a sequence <i>b</i> of length <i>n</i> + 1,
+the length of the sequence <i>w</i> starting from `firstW` is at least
+<i>n</i> + 1, and any <i>w</i><sub>k</sub> for <i>k</i> ≥ <i>n</i> + 1
+are ignored by the distribution.
+</del>
+<p/>
+-6- <i>Effects</i>:
+Constructs a `piecewise_linear_distribution` object with parameters
+<del>as specified above.</del>
+<ins>calculated from the following values:
+If <code>distance(firstB, lastB)</code> is less than 2,
+let <i>n</i> = 1, <i>ρ</i><sub>0</sub> = <i>ρ</i><sub>1</sub> = 1,
+<i>b</i><sub>0</sub> = 0, and <i>b</i><sub>1</sub> = 1.
+Otherwise, let <i>n</i> = <code>distance(firstB, lastB) - 1</code>,
+the range [<code>firstB</code>, <code>lastB</code>) forms a sequence <i>b</i>
+and
+the counted range <code>firstW</code>+[0, <i>n</i> + 1) forms a sequence <i>w</i>.
+</ins>
+</p>
+</blockquote>
+<pre>
+template&lt;class UnaryOperation&gt;
+  piecewise_linear_distribution(initializer_list&lt;RealType&gt; bl, UnaryOperation fw);
+</pre>
+<blockquote>
+<p>
+-7- <i>Mandates</i>: <code>is_invocable_r_v&lt;<ins>result_type</ins><del>double</del>, UnaryOperation&amp;, 
+<ins>result_type</ins><del>double</del>&gt;</code> is `true`.
+<p/>
+[&hellip;]
+</p>
+</blockquote>
+<pre>
+template&lt;class UnaryOperation&gt;
+  piecewise_linear_distribution(size_t nw, RealType xmin, RealType xmax, UnaryOperation fw);
+</pre>
+<blockquote>
+<p>
+-10- <i>Mandates</i>: <code>is_invocable_r_v&lt;<ins>result_type</ins><del>double</del>, UnaryOperation&amp;, 
+<ins>result_type</ins><del>double</del>&gt;</code> is `true`.
+<p/>
+[&hellip;]
+</p>
+</blockquote>
+</blockquote>
+</li>
+</ol>
+
 
 </resolution>
 
