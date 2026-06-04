@@ -192,8 +192,8 @@ R"(<!DOCTYPE html>
   details.superseded { border-left: solid grey 2px; }
   details.superseded > summary { font-weight: bold; cursor: pointer; padding: 0px 5px;}
   details.superseded > summary::after { font-weight: normal; color: grey; }
-  details.superseded[open] > summary::after { content: " <click to collapse>"; }
-  details.superseded:not([open]) > summary::after { content: " <click to expand>"; }
+  details.superseded[open] > summary::after { content: " <click to hide>"; }
+  details.superseded:not([open]) > summary::after { content: " <click to show>"; }
   blockquote.note, details.superseded[open]::details-content
   {
     background-color: #E0E0E0;
