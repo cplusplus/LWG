@@ -220,9 +220,9 @@ namespace
          { "duplicate", {} },
          { "note", { "<p><i>[", "]</i></p>\n"} },
          { "superseded",
-            { "<p><strong>Previous resolution [SUPERSEDED]:</strong></p>\n"
-               "<blockquote class=\"note\">\n",
-               "</blockquote>" } },
+            { "<details class='superseded'>"
+              "<summary>Previous resolution [SUPERSEDED]</summary>\n",
+              "</details>" } },
    };
 }
 
