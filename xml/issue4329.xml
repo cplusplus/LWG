@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="4329" status="LEWG">
+<issue num="4329" status="Resolved">
 <title>Customising affine_on for other algorithms</title>
 <section><sref ref="[exec.affine.on]"/></section>
 <submitter>Dietmar Kühl</submitter>
@@ -24,6 +24,7 @@ Set priority to 3 after reflector poll. Send to LEWG.
 <p>
 "Becomes moot if we remove customization entirely."
 </p>
+<note>2026-06-07 Resolved by the adoption of <paper num="P3941R4"/> at Croydon, 2026. Status changed: LEWG &rarr; Resolved.</note>
 </discussion>
 
 <resolution>
