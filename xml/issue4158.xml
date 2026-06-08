@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="4158" status="Ready">
+<issue num="4158" status="Voting">
 <title><code>packaged_task::operator=</code> should abandon its shared state</title>
 <section><sref ref="[futures.task.members]"/></section>
 <submitter>Jonathan Wakely</submitter>

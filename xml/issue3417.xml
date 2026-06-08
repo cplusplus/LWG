@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="3417" status="Ready">
+<issue num="3417" status="Voting">
 <title>Missing <tt>volatile</tt> atomic deprecations</title>
 <section><sref ref="[atomics.types.operations]"/></section>
 <submitter>Alisdair Meredith</submitter>

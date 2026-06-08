@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="4568" status="Tentatively Ready">
+<issue num="4568" status="Voting">
 <title>`std::execution::spawn_future` is mishandling dependent senders</title>
 <section>
 <sref ref="[exec.spawn.future]"/>
