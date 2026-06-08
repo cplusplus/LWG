@@ -13,7 +13,7 @@
 At the moment, <tt>inplace_merge</tt> requires exactly <tt><i>N</i> - 1</tt> comparisons, if enough additional memory is 
 available (and in practice enough additional memory is always available). However, this prohibits implementing the 
 merge operation using forms of binary search, as in Timsort's 
-<a href="https://hg.python.org/cpython/file/tip/Objects/listsort.txt#l451">'Galloping Mode'</a>, a useful optimization 
+<a href="https://en.wikipedia.org/wiki/Timsort#Galloping_mode_during_merge">'Galloping Mode'</a>, a useful optimization 
 for non-uniform input data. It's not really useful to prohibit standard libraries from trying a few extra speculative 
 compares like this, given that users must be prepared for the fallback "not enough memory" 
 &#x1d4aa;(<tt><i>N</i> lg <i>N</i></tt>) algorithm.
