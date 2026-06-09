@@ -34,7 +34,7 @@ so they now have no existence at all in C++. They're not inherited from
 the C version of `uchar.h` and they're not predefined by a C++ compiler.
 </p>
 <p>
-If we want to copy those macros from C, then should be in
+If we want to copy those macros from C, they should be in
 <sref ref="[cpp.predefined]"/>, so Core should decide on that.
 </p>
 </discussion>
