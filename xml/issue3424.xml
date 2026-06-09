@@ -19,8 +19,7 @@ The <tt>optional&lt;T&gt;::value_or</tt> overloads are specified to return <tt>T
 <note>2020-04-18 Issue Prioritization</note>
 <p>Priority to 3 after reflector discussion.</p>
 
-<p><strong>Previous resolution [SUPERSEDED]:</strong></p>
-<blockquote class="note">
+<superseded>
 <p>
 This wording is relative to <a href="https://wg21.link/n4861">N4861</a>.
 </p>
@@ -76,7 +75,7 @@ return bool(*this) ? std::move(**this) : static_cast&lt;<del>T</del><ins>R</ins>
 </blockquote>
 </li>
 </ol>
-</blockquote>
+</superseded>
 
 <note>2023-02-09 Casey improves wording and expands to cover <tt>expected::value_or</tt></note>
 <p>Since <tt>expected</tt> was modeled on <tt>optional</tt>, it has the same issue.</p>

@@ -51,7 +51,7 @@ That is what Howard's <tt>date::format</tt> and &lt;fmt&gt; both do.
 Set priority to 3. Proposed a hybrid resolution.
 </p>
 
-<p><strong>Previous resolution [SUPERSEDED]:</strong></p>
+<superseded>
 <blockquote class="note">
 <blockquote class="note">
 Two alternatives are presented,
@@ -98,6 +98,7 @@ the initial conversion specifier.
 </li>
 </ol>
 </blockquote>
+</superseded>
 
 </discussion>
 
