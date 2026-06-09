@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="2714" status="New">
+<issue num="2714" status="Ready">
 <title><tt>complex</tt> stream extraction underspecified</title>
 <section><sref ref="[complex.ops]"/></section>
 <submitter>Tim Song</submitter>
@@ -109,6 +109,9 @@ is specified to be the same for each of the simpler extractions. &mdash; <i>end 
 </ol>
 </superseded>
 <note>2017-12-13 Tim Song adjusts the P/R to avoid relying on <tt>putback</tt>.</note>
+
+<note>Brno 2026-06-09 Status changed: New &rarr; Ready.</note>
+<p>The relevant paragraphs are 9-13 now.</p>
 </discussion>
 
 <resolution>
