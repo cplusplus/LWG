@@ -470,10 +470,11 @@ throw bad_optional_access();</ins>
 template&lt;class U = remove_cv_t&lt;T&gt;&gt; constexpr remove_cv_t&lt;T&gt; value_or(U&amp;&amp; u) const;
 </pre>
 <blockquote>
+<p>-8- <i>Constraints</i>: `T` is a non-array type.</p>
 <p>
--8- Let <code>X</code> be <code>remove_cv_t&lt;T&gt;</code>.
+-9- Let <code>X</code> be <code>remove_cv_t&lt;T&gt;</code>.
 <p/>
--9- <i>Mandates</i>:
+-10- <i>Mandates</i>:
 <code>
 <del>is_constructible_v&lt;X, T&amp;&gt;</del> <ins>is_convertible_v&lt;T&amp;, X&gt;</ins>
 &amp;&amp;
@@ -481,7 +482,7 @@ is_convertible_v&lt;U, X&gt;
 </code>
 is `true`.
 <p/>
--10- <i>Effects</i>: Equivalent to:
+-11- <i>Effects</i>: Equivalent to:
 </p>
 <blockquote><pre>
 <del>return has_value() ? *<i>val</i> : static_cast&lt;X&gt;(std::forward&lt;U&gt;(u));</del>
@@ -489,6 +490,9 @@ is `true`.
   return *<i>val</i>;
 return std::forward&lt;U&gt;(u);</ins>
 </pre></blockquote>
+<p>-12- <i>Remarks</i>:
+The return type is unspecified if `T` is an array type or a non-object type.
+</p>
 </blockquote>
 </blockquote>
 </li>
