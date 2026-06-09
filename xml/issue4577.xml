@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="4577" status="Open">
+<issue num="4577" status="Ready">
 <title>Hardening `view_interface::operator[]`</title>
 <section>
 <sref ref="[view.interface]"/>
@@ -90,6 +90,8 @@ template&lt;random_access_range R = const D&gt;
 
 <note>2026-06-03; Jonathan provides new wording</note>
 
+
+<note>Brno 2026-06-08; Change status Open &rarr; Ready.</note>
 </discussion>
 
 <resolution>

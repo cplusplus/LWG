@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="4547" status="New">
+<issue num="4547" status="Ready">
 <title><tt><i>sender-awaitable</i></tt> needs a deduction guide</title>
 <section>
 <sref ref="[exec.as.awaitable]"/>
@@ -57,6 +57,8 @@ Set priority to 2 after reflector poll.
 <p>
 There were only 3 votes, but all in favor of P0.
 </p>
+
+<note>Brno 2026-06-08; Change status New &rarr; Ready.</note>
 </discussion>
 
 <resolution>
