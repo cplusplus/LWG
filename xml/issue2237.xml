@@ -3,7 +3,7 @@
   <!ENTITY nbsp "&#160;">
 ] >
 
-<issue num="2237" status="New">
+<issue num="2237" status="Core">
 <title><tt>&lt;cuchar&gt;</tt> macros</title>
 <section><sref ref="[c.strings]"/></section>
 <submitter>Jason Merrill</submitter>
@@ -17,6 +17,26 @@ defined in <tt>uchar.h</tt> (and reflected in C++ by Table 79) to be predefined 
 Do we want to do the same?
 </p>
 
+<note>Brno 2026-06-09; Change status New &rarr; Core</note>
+<p>
+In C++14 these macros were defined in a table showing them as macros
+in <code>&lt;cuchar&gt;</code>, but claiming that the meaning was the same
+as in the C header. But those macros were never in the C header.
+That header came from ISO/IEC TR 19769:2004, where the macros were defined
+in the header. But in the final C11 standard, the macros were predefined by
+the compiler not in the header. So C++14 was never correct to say they had
+the same meaning as in C, and their meaning was never defined in C++.
+</p>
+<p>
+An <a href="https://github.com/cplusplus/draft/commit/8e4ab9cdee4399b475735b0cb39d70d8e1040969">editorial change</a>
+for C++17 removed the table mentioning those macros,
+so they now have no existence at all in C++. They're not inherited from
+the C version of `uchar.h` and they're not predefined by a C++ compiler.
+</p>
+<p>
+If we want to copy those macros from C, then should be in
+<sref ref="[cpp.predefined]"/>, so Core should decide on that.
+</p>
 </discussion>
 
 <resolution>
