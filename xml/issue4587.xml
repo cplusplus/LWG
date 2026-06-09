@@ -1,0 +1,69 @@
+<?xml version='1.0' encoding='utf-8' standalone='no'?>
+<!DOCTYPE issue SYSTEM "lwg-issue.dtd">
+
+<issue num="4587" status="New">
+<title>Missing complexity for <code>unordered_map::at</code></title>
+<section><sref ref="[unord.map.elem]"/></section>
+<submitter>Pablo Halpern</submitter>
+<date>09 Jun 2026</date>
+<priority>99</priority>
+
+<discussion>
+<p>
+During review of <paper num="P3091R5"/> Pablo pointed out that there is
+no <i>Complexity</i>: element for `unordered_map::at`.
+</p>
+</discussion>
+
+<resolution>
+<p>
+This wording is relative to <paper num="N5046"/>.
+</p>
+
+<ol>
+
+<li><p>Modify <sref ref="[unord.map.elem]"/> as indicated:</p>
+
+<blockquote>
+<pre>
+constexpr mapped_type&amp; at(const key_type&amp; k);
+constexpr const mapped_type&amp; at(const key_type&amp; k) const;
+</pre>
+<p>-5- <i>Returns</i>:
+A reference to `x.second`,
+where `x is the (unique) element whose key is equivalent to `k`.
+</p>
+<p>-6- <i>Throws</i>:
+An exception object of type `out_of_range` if no such element is present.
+</p>
+<p><ins>-?- <i>Complexity</i>:
+Average case constant, worst case linear in `size()`.
+</ins>
+</p>
+<pre>
+template&lt;class K&gt; constexpr mapped_type&amp;       at(const K&amp; k);
+template&lt;class K&gt; constexpr const mapped_type&amp; at(const K&amp; k) const;
+</pre>
+<p>-7- <i>Constraints</i>:
+The qualified-ids `Hash::is_transparent` and `Pred::is_transparent`
+are valid and denote types.
+</p>
+<p>-8- <i>Preconditions</i>:
+The expression `find(k)` is well-formed and has well-defined behavior.
+</p>
+<p>-9- <i>Returns</i>: A reference to `find(k)->second`.</p>
+<p>-10- <i>Throws</i>:
+An exception object of type `out_of_range` if `find(k) == end()` is `true`.
+</p>
+<p><ins>-?- <i>Complexity</i>:
+Average case constant, worst case linear in `size()`.
+</ins>
+</p>
+</blockquote>
+
+</li>
+</ol>
+
+</resolution>
+
+</issue>
