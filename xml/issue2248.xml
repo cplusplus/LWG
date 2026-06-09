@@ -3,7 +3,7 @@
   <!ENTITY nbsp "&#160;">
 ] >
 
-<issue num="2248" status="New">
+<issue num="2248" status="NAD">
 <title><tt>numeric_limits::is_iec559</tt> misnamed</title>
 <section><sref ref="[numeric.limits]"/></section>
 <submitter>Pete Becker</submitter>
@@ -23,6 +23,12 @@ which C11 Annex F refers to as IEC 60559
 (although C still refers to it as IEC 559 in the <code>__STDC_IEC_559__</code> macro).
 </p>
   
+<note>Brno 2026-06-09; Status changed: New &rarr; NAD.</note>
+<p>
+It's far too late to rename this,
+we should encourage <paper num="P1841"/> instead.
+</p>
+
 </discussion>
 
 <resolution>
