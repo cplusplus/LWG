@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="2137" status="Open">
+<issue num="2137" status="Ready">
 <title>Misleadingly constrained post-condition in the presence of exceptions</title>
 <section><sref ref="[re.regex.assign]"/></section>
 <submitter>Jonathan Wakely</submitter>
@@ -47,6 +47,8 @@ like this in a <i>Postconditions</i>: element.
 "<i>Postconditions</i>: On return, the constraints of [...]"
 which is probably redundant (postconditions are always "on return").
 </p>
+
+<note>Brno 2026-06-09; Change status Open &rarr; Ready.</note>
 </discussion>
 
 <resolution>
