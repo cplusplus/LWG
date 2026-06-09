@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="2737" status="New">
+<issue num="2737" status="NAD">
 <title>Consider relaxing object size restrictions for single-object allocation functions</title>
 <section><sref ref="[new.delete.single]"/></section>
 <submitter>Clark Nelson</submitter>
@@ -33,6 +33,16 @@ to note the repetition count or element size of the array. Those operations are 
 argument to operator <tt>new[](std::size_t)</tt> to obtain space to store supplemental information.)
 </p>
 </blockquote>
+<note>Brno 2026-06-09 Status changed: New &rarr; NAD.</note>
+<p>
+<sref ref="[new.delete.single]"/> now only says "suitably aligned" and
+defers to <sref ref="[basic.stc.dynamic]"/> in Core wording,
+where <sref ref="[basic.stc.dynamic.allocation]"/> p3 has the equivalent
+rule. Changing this would break program-defined replacements of
+`operator new` which would now need to return memory with stricter alignment
+for `operator new(5)` which currently only has to return memory with 1-byte
+alignment because an type with size 5 cannot have alignment stricter than 1.
+</p>
 </discussion>
 
 <resolution>
