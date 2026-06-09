@@ -56,9 +56,19 @@ it doesn't actually change the normative state by itself.
 </p>
 
 <note>2024-10-03; Jonathan adds wording</note>
-</discussion>
 
-<resolution>
+<note>Brno 2026-06-09; LWG issue processing</note>
+<p>
+<sref ref="[flat.map.modifiers]"/> has a <i>Postconditions</i>: for `extract`
+which says "`*this` is emptied , even if the function exits via an exception".
+Similarly for `flat_set::extract` in <sref ref="[flat.set.modifiers]"/>
+and the `flat_multifoo::extract` functions.
+</p>
+<p>
+Christian suggests new wording with "unless otherwise specified" so that
+the flat adaptor cases are not invalidated.
+</p>
+<superseded>
 <p>This wording is relative to <paper num="n4988"/>.</p>
 
 <ol>
@@ -71,6 +81,28 @@ established by the function <ins>when a call to it returns normally</ins>.
 </blockquote>
 </li>
 </ol>
+</superseded>
+
+<note>2026-06-09; Christian provides new wording</note>
+
+</discussion>
+
+<resolution>
+<p>This wording is relative to <paper num="n5046"/>.</p>
+
+<ol>
+<li>
+<p>Change <sref ref="[structure.specifications]"/> as indicated:</p>
+<blockquote>
+(3.4) &mdash;
+<i>Postconditions</i>: the conditions (sometimes termed observable results)
+established by the function.
+<ins>Unless otherwise specified, postconditions only apply when the
+function returns normally.</ins>
+</blockquote>
+</li>
+</ol>
+
 </resolution>
 
 </issue>
