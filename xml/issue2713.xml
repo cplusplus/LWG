@@ -13,8 +13,7 @@
 The resolution of LWG <iref ref="2210"/> missed constructors accepting a range or initializer list and allocator.
 </p>
 
-<p><strong>Previous resolution [SUPERSEDED]:</strong></p>
-<blockquote class="note">
+<superseded>
 <p>This wording is relative to N4582.</p>
 <ol>
 <li><p>Add to the synopsis in <sref ref="[unord.map.overview]"/> p3:</p>
@@ -158,7 +157,7 @@ namespace std {
 </li>
 </ol>
 
-</blockquote>
+</superseded>
 
 <note>2016-06, Oulu &mdash; Daniel comments and provides new wording</note>
 <p>
@@ -172,8 +171,7 @@ constructor of <tt>unordered_map</tt>.
 <note>Oulu, 2016-06</note>
 <p>Alisdair to review wording.</p>
 
-<p><strong>Previous resolution [SUPERSEDED]:</strong></p>
-<blockquote class="note">
+<superseded>
 <p>This wording is relative to N4594.</p>
 <ol>
 <li><p>Add to the synopsis in <sref ref="[unord.map.overview]"/> p3:</p>
@@ -389,7 +387,7 @@ namespace std {
 </li>
 
 </ol>
-</blockquote>
+</superseded>
 
 <note>2017-08-04, Daniel and Alisdair finetune wording</note>
 <p>
@@ -415,8 +413,7 @@ It has been pointed out that this issue is related to LWG <iref ref="1199"/>, LW
 and LWG <iref ref="3506"/>. 
 </p>
 
-<p><strong>Previous resolution [SUPERSEDED]:</strong></p>
-<blockquote class="note">
+<superseded>
 <p>This resolution is relative to <a href="https://wg21.link/n4687">N4687</a>.</p>
 
 <ol>
@@ -633,7 +630,7 @@ namespace std {
 </li>
 
 </ol>
-</blockquote>
+</superseded>
 
 <note>2022-07-10; Daniel comments</note>
 <p>
@@ -653,8 +650,7 @@ Since this issue is adding these missing constructors it should also add the ass
 The proposed wording has been updated to this effect and also rebased to <paper num="N4910"/>.
 </p>
 
-<p><strong>Previous resolution [SUPERSEDED]:</strong></p>
-<blockquote class="note">
+<superseded>
 <p>This resolution is relative to <paper num="N4910"/>.</p>
 
 <ol>
@@ -915,7 +911,7 @@ namespace std {
 </li>
 
 </ol>
-</blockquote>
+</superseded>
 
 <note>2022-07-15; Casey comments</note>
 <p>
