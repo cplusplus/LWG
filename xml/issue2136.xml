@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="2136" status="Open">
+<issue num="2136" status="Ready">
 <title>Postconditions vs. exceptions</title>
 <section><sref ref="[structure]"/></section>
 <submitter>Jens Maurer</submitter>
@@ -83,7 +83,8 @@ established by the function <ins>when a call to it returns normally</ins>.
 </ol>
 </superseded>
 
-<note>2026-06-09; Christian provides new wording</note>
+<note>Brno 2026-06-09; Christian provides new wording</note>
+<note>Brno 2026-06-09; Change status Open &rarr; Ready</note>
 
 </discussion>
 
