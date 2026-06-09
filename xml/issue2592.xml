@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='UTF-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="2592" status="New">
+<issue num="2592" status="Ready">
 <title>Require that <tt>chrono::duration_cast</tt>s from smaller durations to larger durations do not overflow</title>
 <section><sref ref="[time.syn]"/></section>
 <submitter>Andy Giese</submitter>
@@ -78,6 +78,8 @@ If such a guarantee is to be provided, it needs to be spelled out directly. Note
 types on common systems, so such a requirement would effectively require those convenience typedefs to use the 
 same underlying integer type.
 </p>
+
+<note>Brno 2026-06-09; Change status New &rarr; Ready.</note>
 </discussion>
 
 <resolution>
