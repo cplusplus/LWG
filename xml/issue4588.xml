@@ -52,7 +52,7 @@ either `x` is equal to `dynamic_extent`; or
 <ol style="list-style:none">
 <li>
 <ins>
-(8.?) &mdash; `S` is `E::index_type` or `full_extent_t`, otherwise
+(8.?) &mdash; `S` is `E::index_type` or `full_extent_t`, or
 </ins>
 </li>
 <li>
