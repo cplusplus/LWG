@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="3952" status="New">
+<issue num="3952" status="NAD">
 <title><tt>iter_common_reference_t</tt> does not conform to the definition of <tt>indirectly_readable</tt></title>
 <section><sref ref="[iterator.synopsis]"/><sref ref="[const.iterators.alias]"/><sref ref="[const.iterators.iterator]"/></section>
 <submitter>Hewill Kang</submitter>
@@ -67,6 +67,12 @@ a language reference type. So binding to the common reference requires
 a temporary. That's not going to work if the type is used as a return type
 (as the const-cases are).
 As written I think it also causes significant damage to constant-iterator."
+</p>
+
+<note>2026-06-09 Status changed: New &rarr; NAD.</note>
+<p>
+The type in the example fails to satisfy `std::input_iterator`
+since <paper num="P2655R3"/>.
 </p>
 
 </discussion>

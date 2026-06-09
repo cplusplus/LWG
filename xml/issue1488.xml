@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="1488" status="LEWG">
+<issue num="1488" status="NAD">
 <title>Improve interoperability between the C++0x and C1x threads APIs</title>
 <section><sref ref="[thread.mutex]"/></section>
 <submitter>INCITS</submitter>
@@ -50,6 +50,8 @@ at this point, so there seems to be little demand to fix this particular problem
 </p>
 
 <note>2025-10-21; Priority set to 4 based on age of issue and lack of activity.</note>
+<note>Brno 2026-06-09 Status changed: LEWG &rarr; NAD.</note>
+<p>Closing based on SG1 and LEWG recommendation.</p>
 </discussion>
 
 <resolution>

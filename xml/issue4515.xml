@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="4515" status="LEWG">
+<issue num="4515" status="NAD">
 <title>`format`: `a` and `A` should insert the `0x` or `0X` prefix</title>
 <section><sref ref="[format.string.std]"/></section>
 <submitter>Tianying Chen</submitter>
@@ -49,6 +49,10 @@ at this stage.
 Set priority to 2 after reflector poll.
 </p>
 <note>2026-05-22 LWG telecon; Status changed: Open &rarr; LEWG</note>
+
+<note>Brno 2026-06-09; Status changed LEWG &rarr; NAD.</note>
+<p>LEWG had no consensus to change the existing behaviour.</p>
+
 </discussion>
 
 <resolution>

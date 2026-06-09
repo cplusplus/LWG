@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="2236" status="Open">
+<issue num="2236" status="NAD">
 <title><tt>kill_dependency</tt> unconditionally noexcept</title>
 <section><sref ref="[atomics.syn]"/> <sref ref="[atomics.order]"/></section>
 <submitter>Daniel Kr&uuml;gler</submitter>
@@ -143,6 +143,8 @@ Handed over to SG1.
 SG1 recommends to reject LWG2236 because `kill_dependency` is already deprecated
 and we don't want to change its behavior.
 </p>
+<note>Brno 2026-06-09 Status changed: Open &rarr; NAD.</note>
+<p>Closed based on SG1 recommendation.</p>
 </discussion>
 
 <resolution>
