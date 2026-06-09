@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='UTF-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="2595" status="New">
+<issue num="2595" status="Ready">
 <title><tt>reverse_iterator::operator[]</tt>'s return type revisited</title>
 <section><sref ref="[reverse.iterator]"/><sref ref="[reverse.iter.elem]"/></section>
 <submitter>Robert Haberlach</submitter>
@@ -20,6 +20,8 @@ use <tt>reference</tt> instead of <tt><i>unspecified</i></tt>.
 </p>
 
 <note>2021-06-06 Tim syncs wording to current working draft</note>
+
+<note>Brno 2026-06-09; Change status New &rarr; Ready.</note>
 </discussion>
 
 <resolution>
