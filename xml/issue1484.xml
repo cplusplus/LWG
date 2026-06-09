@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="1484" status="LEWG">
+<issue num="1484" status="NAD">
 <title>Need a way to join a thread with a timeout</title>
 <section><sref ref="[thread.thread.class]"/></section>
 <submitter>INCITS</submitter>
@@ -42,6 +42,9 @@ implementation issues on Posix. As always, this may be revisited if we have a pa
 </p>
 
 <note>2025-10-21; Priority set to 4 based on age of issue and lack of activity.</note>
+<note>Brno 2026-06-09; Status changed: LEWG &rarr; NAD.</note>
+<p>Close as NAD following SG1 recommendation.</p>
+
 </discussion>
 
 <resolution>

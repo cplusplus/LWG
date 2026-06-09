@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="1493" status="LEWG">
+<issue num="1493" status="NAD">
 <title>Add <tt>mutex</tt>, <tt>recursive_mutex</tt>, <tt>is_locked</tt> function</title>
 <section><sref ref="[thread.mutex.requirements]"/></section>
 <submitter>INCITS</submitter>
@@ -54,6 +54,10 @@ been part of the intent here.
 </p>
 
 <note>2025-10-21; Priority set to 4 based on age of issue and lack of activity.</note>
+
+<note>Brno 2026-06-09; Status changed: LEWG &rarr; NAD.</note>
+<p>Close as NAD following SG1 recommendation.</p>
+
 </discussion>
 
 <resolution>

@@ -3,7 +3,7 @@
   <!ENTITY nbsp "&#160;">
 ] >
 
-<issue num="2202" status="Deferred">
+<issue num="2202" status="NAD">
 <title>Missing allocator support by <tt>async</tt></title>
 <section><sref ref="[futures.async]"/></section>
 <submitter>Detlef Vollmann</submitter>
@@ -36,6 +36,9 @@ Alisdair: defer, active topic of research Deferred
 <p>
 We want whatever status approximates: "will not fix; we're working on a replacement facility and don't want to add features to a broken one"
 </p>
+
+<note>Brno 2026-06-09; Status changed: Deferred &rarr; NAD.</note>
+<p>Close as NAD following SG1 recommendation.</p>
 </discussion>
 
 <resolution>
