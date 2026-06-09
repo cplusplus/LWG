@@ -35,9 +35,7 @@ evaluation."
 so it seems wrong to assume that taling of function lifetimes makes no sense."
 </p>
 
-</discussion>
-
-<resolution>
+<superseded>
 <p>
 This wording is relative to <paper num="N4988"/>.
 </p>
@@ -72,6 +70,49 @@ consteval bool is_within_lifetime(const <ins>T</ins><del>auto</del>* p) noexcept
 <p/>
 -3- <i>Returns</i>: <tt>true</tt> if <tt>p</tt> is a pointer to an object that is 
 within its lifetime (<sref ref="[basic.life]"/>); otherwise, <tt>false</tt>.
+<p/>
+-4- <i>Remarks</i>: During the evaluation of an expression <tt>E</tt> as a core 
+constant expression, a call to this function is ill-formed unless <tt>p</tt> 
+points to an object that is usable in constant expressions or whose complete
+object's lifetime began within <tt>E</tt>.
+</p>
+</blockquote>
+</blockquote>
+
+</li>
+
+</ol>
+</superseded>
+
+<note>2026-06-09; Tim rebases and provides new wording</note>
+<p>
+Functions do not have lifetimes as far as the standard is concerned. However, there is no reason to ban `void`.
+</p>
+</discussion>
+
+<resolution>
+<p>
+This wording is relative to <paper num="N4988"/>.
+</p>
+
+<ol>
+
+<li><p>Modify <sref ref="[meta.const.eval]"/> as indicated:</p>
+
+<blockquote>
+<pre>
+template&lt;class U = void, class T&gt;
+  consteval bool is_within_lifetime(const T* p) noexcept;
+</pre>
+<blockquote>
+<p>
+-3- <i>Mandates</i>: <tt>static_cast&lt;const volatile U*&gt;(p) </tt> is well-formed. 
+<ins>`T` is an object type or <i>cv</i> `void`.</ins>
+<p/>
+-4- <i>Returns</i>: <tt>true</tt> if <tt>p</tt> is a pointer to an object that is 
+within its lifetime (<sref ref="[basic.life]"/>)
+and <tt>static_cast&lt;const volatile U*&gt;(p)</tt> is a constant subexpression;
+otherwise, <tt>false</tt>.
 <p/>
 -4- <i>Remarks</i>: During the evaluation of an expression <tt>E</tt> as a core 
 constant expression, a call to this function is ill-formed unless <tt>p</tt> 
