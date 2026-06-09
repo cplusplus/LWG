@@ -22,6 +22,10 @@ containers of floating-point types and tuples/pairs etc. of floating point types
 <p>Move to LEWG</p>
 <note>2025-10-16 Status changed: LEWG &rarr; NAD.</note>
 <p>No defect for LWG to address.</p>
+<note>Brno 2026-06-09; LEWG agreed with NAD.</note>
+<p>
+Status quo was reconfirmed for C++20 in spaceship changes to the library.
+</p>
 </discussion>
 
 <resolution>

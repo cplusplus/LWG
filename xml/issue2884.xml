@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="2884" status="LEWG">
+<issue num="2884" status="NAD">
 <title>Relational operators for containers should sfinae; if the underlying type is not comparable, neither should the container be</title>
 <section><sref ref="[containers]"/><sref ref="[utilities]"/></section>
 <submitter>Finland</submitter>
@@ -21,6 +21,11 @@ element types.</p>
 </note>
 
 <note>2025-10-21; Priority set to 4 based on age of issue and lack of activity.</note>
+<note>Brno 2026-06-09 Status changed: LEWG &rarr; NAD.</note>
+<p>
+LEWG recommended closing as NAD. This is difficult in general because
+of support for incomplete types in some containers.
+</p>
 </discussion>
 
 <resolution>
