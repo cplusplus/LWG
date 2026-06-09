@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="2220" status="Open">
+<issue num="2220" status="Ready">
 <title>Under-specification of <tt>operator==</tt> for <tt>regex_token_iterator</tt></title>
 <section><sref ref="[re.tokiter.comp]"/></section>
 <submitter>Pete Becker</submitter>
@@ -109,6 +109,7 @@ same underlying sequence.</ins>
 
 <note>2024-10-03; Jonathan rebases the wording on the latest WP</note>
 
+<note>Brno 2026-06-09; Change status Open &rarr; Ready.</note>
 </discussion>
 
 <resolution>
