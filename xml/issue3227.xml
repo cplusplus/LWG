@@ -64,10 +64,7 @@ by adding an overload for <tt>extract</tt> which accepts <tt>iterator</tt> as an
 <note>2019-07 Issue Prioritization</note>
 <p>Priority to 3 after discussion on the reflector.</p>
 
-<p>
-<strong>Previous resolution [SUPERSEDED]:</strong>
-</p>
-<blockquote class="note">
+<superseded>
 <p>This wording is relative to <paper num="N4820"/>.</p>
 
 <ol>
@@ -314,7 +311,7 @@ node_type extract(const key_type&amp; x);
 </blockquote>
 </li>
 </ol>
-</blockquote>
+</superseded>
 
 <note>2022-04-24; Daniel rebases wording on <paper num="N4910"/></note>
 </discussion>

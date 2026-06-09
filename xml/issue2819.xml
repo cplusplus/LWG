@@ -20,8 +20,7 @@ This was reported as editorial request <a href="https://github.com/cplusplus/dra
 
 <note>12-May-2020, Jonathan provides wording to correct the <b>13</b> occurrences.</note>
 
-<p><strong>Previous resolution [SUPERSEDED]:</strong></p>
-<blockquote class="note">
+<superseded>
 <p>This wording is relative to <a href="https://wg21.link/n4861">N4681</a>.</p>
 
 <ol>
@@ -231,7 +230,7 @@ and has the following semantics:
 </blockquote>
 </li>
 </ol>
-</blockquote>
+</superseded>
 
 <note>2022-11-06; Daniel comments and provides alternative wording</note>
 <p>
