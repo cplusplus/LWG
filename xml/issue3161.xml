@@ -36,8 +36,7 @@ template&lt;class... Args&gt;
 <p>Polls were: NAD - 5-1-3; "Option B" - 2-5-2 and "Probe the container" - 7-2-0</p>
 
 
-<strong>Previous resolution [SUPERSEDED]:</strong>
-<blockquote class="note">
+<superseded>
 <p>This wording is relative to <a href="https://wg21.link/n4762">N4762</a>.</p>
 
 <blockquote class="note">
@@ -75,7 +74,7 @@ template&lt;class... Args&gt;
 </pre></blockquote>
 </li>
 </ol>
-</blockquote>
+</superseded>
 
 <note>2020-05 Casey provides new wording</note>
 <p>
