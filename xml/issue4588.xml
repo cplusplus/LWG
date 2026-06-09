@@ -1,0 +1,69 @@
+<?xml version='1.0' encoding='utf-8' standalone='no'?>
+<!DOCTYPE issue SYSTEM "lwg-issue.dtd">
+
+<issue num="4588" status="New">
+<title><code>mdspan</code> issue due to rewording for canonicalize slice</title>
+<section><sref ref="[mdspan.sub.overview]"/></section>
+<submitter>Christian Trott</submitter>
+<date>09 Jun 2026</date>
+<priority>99</priority>
+
+<discussion>
+<p>
+There is an oversight in paragraph 8 of <sref ref="[mdspan.sub.overview]"/>
+`dynamic_extent`. This is plainly an oversight and can be corrected by
+introducing a new 8.1 paragraph:
+<blockquote>
+&mdash; `S` is `E::index_type` or `full_extent_t`, otherwise
+</blockquote>
+</p>
+<p>
+If `S` is `index_type` (i.e. a runtime value) no further condition on the
+validity of the type exists, and if it is `full_extent_t`,
+it is trivially a valid slice specifier type.
+</p>
+<p>
+Note that a constant integral argument (`constant_wrapper`)
+is handled at the end in current paragraph 8.2.
+</p>
+<p>
+Note furthermore that, `S` is already a slice specifier after canonicalization
+in this paragraph (or rather in the context where "valid slice specifier type"
+is used), hence we don't need to consider types convertible to things like
+`full_extent_t` or `index_type`.
+</p>
+</discussion>
+
+<resolution>
+<p>
+This wording is relative to <paper num="N5046"/>.
+</p>
+<ol>
+<li>
+<p>Modify <sref ref="[mdspan.sub.overview]"/> as indicated:</p>
+<blockquote>
+<p>-8-
+Given a type `E` that is a specialization of `extents`,
+a type `S` is a
+<i>valid submdspan slice type for the k<sup>th</sup> extent of `E`</i>
+if `S` is a canonical slice type for `E::index_type`,
+and for `x` equal to `E::static_extent(k)`,
+either `x` is equal to `dynamic_extent`; or
+<ol style="list-style:none">
+<li>
+<ins>
+(8.?) &mdash; `S` is `E::index_type` or `full_extent_t`, otherwise
+</ins>
+</li>
+<li>
+(8.1) &mdash; if `S` is a specialization of `extent_slice`, then [&hellip;]
+</li>
+</ol>
+</p>
+</blockquote>
+</li>
+</ol>
+
+</resolution>
+
+</issue>
