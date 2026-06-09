@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="3894" status="WP">
+<issue num="3894" status="C++26">
 <title><tt>generator::promise_type::yield_value(ranges::elements_of&lt;Rng, Alloc&gt;)</tt> should not be <tt>noexcept</tt></title>
 <section><sref ref="[coro.generator.promise]"/></section>
 <submitter>Tim Song</submitter>

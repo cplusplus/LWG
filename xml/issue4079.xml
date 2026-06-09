@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="4079" status="WP">
+<issue num="4079" status="C++26">
 <title>Missing <i>Preconditions</i> in <tt>concat_view::<i>iterator</i></tt>'s conversion constructor</title>
 <section><sref ref="[range.concat.iterator]"/></section>
 <submitter>Hewill Kang</submitter>

@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="4522" status="WP">
+<issue num="4522" status="C++26">
 <title>Clarify that `std::format` transcodes for `std::wformat_strings`</title>
 <section><sref ref="[format.string.std]"/></section>
 <submitter>Jan Schultke</submitter>

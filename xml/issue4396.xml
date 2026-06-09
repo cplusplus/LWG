@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="4396" status="WP">
+<issue num="4396" status="C++26">
 <title>Improve <code>inplace_vector(from_range_t, R&amp;&amp; rg)</code></title>
 <section><sref ref="[sequence.reqmts]"/><sref ref="[inplace.vector.cons]"/></section>
 <submitter>Hewill Kang</submitter>

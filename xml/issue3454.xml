@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="3454" status="WP">
+<issue num="3454" status="C++26">
 <title><tt>pointer_traits::pointer_to</tt> should be <tt>constexpr</tt></title>
 <section><sref ref="[pointer.traits]"/></section>
 <submitter>Alisdair Meredith</submitter>

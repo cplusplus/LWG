@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="3305" status="WP">
+<issue num="3305" status="C++26">
 <title><tt>any_cast&lt;void&gt;</tt></title>
 <section><sref ref="[any.nonmembers]"/></section>
 <submitter>John Shaw</submitter>

@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="4084" status="WP">
+<issue num="4084" status="C++26">
 <title><code>std::fixed</code> ignores <code>std::uppercase</code></title>
 <section><sref ref="[facet.num.put.virtuals]"/></section>
 <submitter>Jonathan Wakely</submitter>

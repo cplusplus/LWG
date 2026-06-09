@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="4203" status="WP">
+<issue num="4203" status="C++26">
 <title>Constraints on <i>`get-state`</i> functions are incorrect</title>
 <section><sref ref="[exec.schedule.from]"/></section>
 <submitter>Eric Niebler</submitter>

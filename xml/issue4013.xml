@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="4013" status="WP">
+<issue num="4013" status="C++26">
 <title><tt>lazy_split_view::<i>outer-iterator</i>::value_type</tt> should not provide default constructor</title>
 <section><sref ref="[range.lazy.split.outer.value]"/></section>
 <submitter>Hewill Kang</submitter>

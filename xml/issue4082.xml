@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="4082" status="WP">
+<issue num="4082" status="C++26">
 <title><tt>views::concat(r)</tt> is well-formed when <tt>r</tt> is an <tt>output_range</tt></title>
 <section><sref ref="[range.concat.overview]"/></section>
 <submitter>Hewill Kang</submitter>

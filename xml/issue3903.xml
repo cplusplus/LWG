@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="3903" status="WP">
+<issue num="3903" status="C++26">
 <title><tt>span</tt> destructor is redundantly <tt>noexcept</tt></title>
 <section><sref ref="[span.overview]"/></section>
 <submitter>Ben Craig</submitter>

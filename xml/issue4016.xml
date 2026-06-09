@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="4016" status="WP">
+<issue num="4016" status="C++26">
 <title><code><i>container-insertable</i></code> checks do not match what <code><i>container-inserter</i></code> does</title>
 <section><sref ref="[range.utility.conv]"/></section>
 <submitter>Jonathan Wakely</submitter>

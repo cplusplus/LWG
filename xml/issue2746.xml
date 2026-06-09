@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="2746" status="WP">
+<issue num="2746" status="C++26">
 <title>Inconsistency between requirements for <tt>emplace</tt> between <tt>optional</tt> and <tt>variant</tt></title>
 <section><sref ref="[optional.assign]"/><sref ref="[variant.mod]"/><sref ref="[any.modifiers]"/></section>
 <submitter>Richard Smith</submitter>

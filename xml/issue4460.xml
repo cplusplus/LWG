@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="4460" status="WP">
+<issue num="4460" status="C++26">
 <title>Missing <i>Throws</i>: for last `variant` constructor</title>
 <section><sref ref="[variant.ctor]"/></section>
 <submitter>Jonathan Wakely</submitter>

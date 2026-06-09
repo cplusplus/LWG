@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="4020" status="WP">
+<issue num="4020" status="C++26">
 <title><tt>extents::<i>index-cast</i></tt> weirdness</title>
 <section><sref ref="[mdspan.extents.expo]"/></section>
 <submitter>Casey Carter</submitter>

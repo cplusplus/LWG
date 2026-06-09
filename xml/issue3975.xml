@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="3975" status="WP">
+<issue num="3975" status="C++26">
 <title>Specializations of <tt>basic_format_context</tt> should not be permitted</title>
 <section><sref ref="[format.context]"/></section>
 <submitter>Brian Bi</submitter>

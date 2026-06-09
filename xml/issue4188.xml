@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="4188" status="WP">
+<issue num="4188" status="C++26">
 <title><code>ostream::sentry</code> destructor should handle exceptions</title>
 <section><sref ref="[ostream.sentry]"/></section>
 <submitter>Jonathan Wakely</submitter>

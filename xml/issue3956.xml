@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="3956" status="WP">
+<issue num="3956" status="C++26">
 <title><code>chrono::parse</code> uses <code>from_stream</code> as a customization point</title>
 <section><sref ref="[time.parse]"/></section>
 <submitter>Jonathan Wakely</submitter>

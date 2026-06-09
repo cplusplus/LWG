@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="4297" status="WP">
+<issue num="4297" status="C++26">
 <title>Missing `permutable` constraint for iterator overloads in Parallel Range Algorithms</title>
 <section><sref ref="[algorithm.syn]"/><sref ref="[alg.remove]"/><sref ref="[alg.partitions]"/></section>
 <submitter>Ruslan Arutyunyan</submitter>

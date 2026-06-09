@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="4324" status="WP">
+<issue num="4324" status="C++26">
 <title><code>unique_ptr&lt;void&gt;::operator*</code> is not SFINAE-friendly</title>
 <section>
 <sref ref="[unique.ptr.single.observers]"/>

@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="3904" status="WP">
+<issue num="3904" status="C++26">
 <title><tt>lazy_split_view::<i>outer-iterator</i></tt>'s <tt>const</tt>-converting constructor isn't setting <tt><i>trailing_empty_</i></tt></title>
 <section><sref ref="[range.lazy.split.outer]"/></section>
 <submitter>Patrick Palka</submitter>

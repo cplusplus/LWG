@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="3935" status="WP">
+<issue num="3935" status="C++26">
 <title><tt>template&lt;class X&gt; constexpr complex&amp; operator=(const complex&lt;X&gt;&amp;)</tt> has no specification</title>
 <section><sref ref="[complex]"/></section>
 <submitter>Daniel Kr&uuml;gler</submitter>

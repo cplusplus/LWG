@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="4351" status="WP">
+<issue num="4351" status="C++26">
 <title><code><i>integral-constant-like</i></code> needs more `remove_cvref_t`</title>
 <section><sref ref="[span.syn]"/></section>
 <submitter>Jonathan Wakely</submitter>

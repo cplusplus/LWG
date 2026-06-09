@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="4205" status="WP">
+<issue num="4205" status="C++26">
 <title>`let_[*].transform_env` is specified in terms of the `let_*` sender itself instead of its child</title>
 <section><sref ref="[exec.let]"/></section>
 <submitter>Eric Niebler</submitter>

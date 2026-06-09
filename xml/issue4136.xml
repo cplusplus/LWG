@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="4136" status="WP">
+<issue num="4136" status="C++26">
 <title>Specify behavior of [linalg] Hermitian algorithms on diagonal with nonzero imaginary part</title>
 <section><sref ref="[linalg.general]"/></section>
 <submitter>Mark Hoemmen</submitter>

@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="3947" status="WP">
+<issue num="3947" status="C++26">
 <title>Unexpected constraints on <tt>adjacent_transform_view::base()</tt></title>
 <section><sref ref="[range.adjacent.transform.view]"/></section>
 <submitter>Bo Persson</submitter>

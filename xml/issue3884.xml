@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="3884" status="WP">
+<issue num="3884" status="C++26">
 <title><tt>flat_<i>foo</i></tt> is missing allocator-extended copy/move constructors</title>
 <section><sref ref="[flat.map]"/><sref ref="[flat.multimap]"/>
 <sref ref="[flat.set]"/><sref ref="[flat.multiset]"/></section>

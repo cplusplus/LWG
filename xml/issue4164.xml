@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="4164" status="WP">
+<issue num="4164" status="C++26">
 <title>Missing guarantees for `forward_list` modifiers</title>
 <section><sref ref="[forward.list.modifiers]"/></section>
 <submitter>Jonathan Wakely</submitter>

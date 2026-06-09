@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="3938" status="WP">
+<issue num="3938" status="C++26">
 <title>Cannot use <code>std::expected</code> monadic ops with move-only <code>error_type</code></title>
 <section><sref ref="[expected.object.monadic]"/></section>
 <submitter>Jonathan Wakely</submitter>

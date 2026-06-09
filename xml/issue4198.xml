@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="4198" status="WP">
+<issue num="4198" status="C++26">
 <title>`schedule_from` isn't starting the schedule sender if decay-copying results throws</title>
 <section><sref ref="[exec.schedule.from]"/></section>
 <submitter>Eric Niebler</submitter>

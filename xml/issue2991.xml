@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="2991" status="WP">
+<issue num="2991" status="C++26">
 <title><tt>variant</tt> copy constructor missing <tt>noexcept(<i>see below</i>)</tt></title>
 <section><sref ref="[variant.ctor]"/></section>
 <submitter>Peter Dimov</submitter>

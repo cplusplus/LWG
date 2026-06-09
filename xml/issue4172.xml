@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="4172" status="WP">
+<issue num="4172" status="C++26">
 <title>unique_lock self-move-assignment is broken</title>
 <section><sref ref="[thread.lock.unique.cons]"/> <sref ref="[thread.lock.shared.cons]"/></section>
 <submitter>Casey Carter</submitter>

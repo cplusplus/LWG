@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="4483" status="WP">
+<issue num="4483" status="C++26">
 <title>Multidimensional arrays are not supported by <tt>meta::reflect_constant_array</tt> and related functions</title>
 <section>
 <sref ref="[meta.define.static]"/>

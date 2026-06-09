@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="4045" status="WP">
+<issue num="4045" status="C++26">
 <title><code>tuple</code> can create dangling references from <code><i>tuple-like</i></code></title>
 <section><sref ref="[tuple.cnstr]"/></section>
 <submitter>Jonathan Wakely</submitter>

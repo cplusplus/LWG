@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="4450" status="WP">
+<issue num="4450" status="C++26">
 <title><tt>std::atomic_ref&lt;T&gt;::store_<i>key</i></tt> should be disabled for const `T`</title>
 <section><sref ref="[atomics.ref.int]"/></section>
 <submitter>Jonathan Wakely</submitter>

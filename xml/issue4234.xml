@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="4234" status="WP">
+<issue num="4234" status="C++26">
 <title>Including <tt>&lt;hive&gt;</tt> doesn't provide <tt>std::begin/end</tt></title>
 <section>
 <sref ref="[iterator.range]"/>

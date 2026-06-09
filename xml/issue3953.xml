@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="3953" status="WP">
+<issue num="3953" status="C++26">
 <title><tt>iter_move</tt> for <tt>common_iterator</tt> and <tt>counted_iterator</tt> should return <tt>decltype(auto)</tt></title>
 <section><sref ref="[common.iter.cust]"/><sref ref="[counted.iter.cust]"/></section>
 <submitter>Hewill Kang</submitter>

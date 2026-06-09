@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="4451" status="WP">
+<issue num="4451" status="C++26">
 <title>`make_shared` should not refer to a type `U[N]` for runtime N</title>
 <section><sref ref="[util.smartptr.shared.create]"/></section>
 <submitter>Jonathan Wakely</submitter>

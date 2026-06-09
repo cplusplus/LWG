@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="3990" status="WP">
+<issue num="3990" status="C++26">
 <title>Program-defined specializations of <tt>std::tuple</tt> and <tt>std::variant</tt> can't be properly supported</title>
 <section><sref ref="[tuple.tuple]"/><sref ref="[variant.variant.general]"/></section>
 <submitter>Jiang An</submitter>

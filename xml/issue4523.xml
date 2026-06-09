@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="4523" status="WP">
+<issue num="4523" status="C++26">
 <title>`constant_wrapper` should assign to `value`</title>
 <section><sref ref="[const.wrap.class]"/></section>
 <submitter>Tomasz Kamiński</submitter>

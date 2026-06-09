@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="4305" status="WP">
+<issue num="4305" status="C++26">
 <title>Missing user requirements on `type_order` template</title>
 <section><sref ref="[compare.type]"/></section>
 <submitter>Daniel Krügler</submitter>

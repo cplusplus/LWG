@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='UTF-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="2414" status="WP">
+<issue num="2414" status="C++26">
 <title>Member function reentrancy should be implementation-defined</title>
 <section><sref ref="[reentrancy]"/></section>
 <submitter>Stephan T. Lavavej</submitter>

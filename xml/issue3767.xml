@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="3767" status="WP">
+<issue num="3767" status="C++26">
 <title><tt>codecvt&lt;char<i>N</i>_t, char8_t, mbstate_t&gt;</tt> incorrectly added to locale</title>
 <section><sref ref="[locale.category]"/><sref ref="[locale.codecvt.general]"/></section>
 <submitter>Victor Zverovich</submitter>

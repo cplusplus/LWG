@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="4469" status="WP">
+<issue num="4469" status="C++26">
 <title>Names of parameters of addressable function shall remain unspecified</title>
 <section><sref ref="[namespace.std]"/></section>
 <submitter>Tomasz Kamiński</submitter>

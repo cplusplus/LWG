@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="3946" status="WP">
+<issue num="3946" status="C++26">
 <title>The definition of <tt>const_iterator_t</tt> should be reworked</title>
 <section><sref ref="[ranges.syn]"/></section>
 <submitter>Christopher Di Bella</submitter>

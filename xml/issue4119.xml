@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="4119" status="WP">
+<issue num="4119" status="C++26">
 <title><code>generator::promise_type::yield_value(ranges::elements_of&lt;R, Alloc&gt;)</code>'s nested <code>generator</code> may be ill-formed</title>
 <section><sref ref="[coro.generator.promise]"/></section>
 <submitter>Hewill Kang</submitter>

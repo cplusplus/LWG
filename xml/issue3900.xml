@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="3900" status="WP">
+<issue num="3900" status="C++26">
 <title>The <tt>allocator_arg_t</tt> overloads of <tt>generator::promise_type::operator new</tt>
 should not be constrained</title>
 <section><sref ref="[coro.generator.promise]"/></section>

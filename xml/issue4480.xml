@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="4480" status="WP">
+<issue num="4480" status="C++26">
 <title><tt>&lt;stdatomic.h&gt;</tt> should provide `ATOMIC_CHAR8_T_LOCK_FREE`</title>
 <section><sref ref="[stdatomic.h.syn]"/></section>
 <submitter>Jiang An</submitter>

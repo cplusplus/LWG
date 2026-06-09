@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="2994" status="WP">
+<issue num="2994" status="C++26">
 <title>Needless UB for <tt>basic_string</tt> and <tt>basic_string_view</tt></title>
 <section><sref ref="[char.traits]"/><sref ref="[string.require]"/><sref ref="[string.view.template]"/></section>
 <submitter>Gennaro Prota</submitter>

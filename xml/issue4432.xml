@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="4432" status="WP">
+<issue num="4432" status="C++26">
 <title>Clarify element initialization for <tt>meta::reflect_constant_array</tt></title>
 <section>
 <sref ref="[meta.define.static]"/>

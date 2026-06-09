@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="3797" status="WP">
+<issue num="3797" status="C++26">
 <title><tt>elements_view</tt> insufficiently constrained</title>
 <section><sref ref="[range.elements.view]"/></section>
 <submitter>Hui Xie</submitter>

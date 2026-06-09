@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="3777" status="WP">
+<issue num="3777" status="C++26">
 <title>Common <tt>cartesian_product_view</tt> produces an invalid range if the first range is input and one of the ranges is empty</title>
 <section><sref ref="[range.cartesian.view]"/></section>
 <submitter>Tomasz Kami&nacute;ski</submitter>

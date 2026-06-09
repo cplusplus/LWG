@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='UTF-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="2392" status="WP">
+<issue num="2392" status="C++26">
 <title>"character type" is used but not defined</title>
 <section><sref ref="[defns.ntcts]"/> <sref ref="[locale.category]"/> <sref ref="[iostreams.limits.pos]"/> 
 <sref ref="[ostream.formatted.reqmts]"/> <sref ref="[ostream.inserters.character]"/></section>

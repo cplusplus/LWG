@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="4427" status="WP">
+<issue num="4427" status="C++26">
 <title>`meta::dealias` needs to work with things that aren't entities</title>
 <section><sref ref="[meta.reflection.queries]"/></section>
 <submitter>Jonathan Wakely</submitter>

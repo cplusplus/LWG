@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="4024" status="WP">
+<issue num="4024" status="C++26">
 <title>Underspecified destruction of objects created in <tt>std::make_shared_for_overwrite/std::allocate_shared_for_overwrite</tt></title>
 <section><sref ref="[util.smartptr.shared.create]"/></section>
 <submitter>Jiang An</submitter>

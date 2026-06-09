@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="4455" status="WP">
+<issue num="4455" status="C++26">
 <title>Add missing constraint to <tt><i>basic-sender</i>::get_completion_signatures</tt> definition</title>
 <section><sref ref="[exec.snd.expos]"/></section>
 <submitter>Jonathan Wakely</submitter>

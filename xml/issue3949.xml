@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="3949" status="WP">
+<issue num="3949" status="C++26">
 <title><tt>std::atomic&lt;bool&gt;</tt>'s trivial destructor dropped in C++17 spec wording</title>
 <section><sref ref="[atomics.types.generic.general]"/></section>
 <submitter>Jeremy Hurwitz</submitter>

@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="4030" status="WP">
+<issue num="4030" status="C++26">
 <title>Clarify whether arithmetic expressions in [numeric.sat.func] are mathematical or C++</title>
 <section><sref ref="[numeric.sat.func]"/></section>
 <submitter>Thomas K&ouml;ppe</submitter>

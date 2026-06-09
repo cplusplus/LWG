@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="4328" status="WP">
+<issue num="4328" status="C++26">
 <title>Remove note in &sect;[exec.sched] regarding waiting for completion of scheduled operations</title>
 <section>
 <sref ref="[exec.sched]"/>

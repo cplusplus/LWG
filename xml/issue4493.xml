@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="4493" status="WP">
+<issue num="4493" status="C++26">
 <title>Specification for some functions of bit reference types seems missing</title>
 <section><sref ref="[template.bitset.general]"/><sref ref="[vector.bool.pspc]"/></section>
 <submitter>Jiang An</submitter>

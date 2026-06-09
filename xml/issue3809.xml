@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="3809" status="WP">
+<issue num="3809" status="C++26">
 <title>Is <tt>std::subtract_with_carry_engine&lt;uint16_t&gt;</tt> supposed to work?</title>
 <section><sref ref="[rand.eng.sub]"/></section>
 <submitter>Jonathan Wakely</submitter>

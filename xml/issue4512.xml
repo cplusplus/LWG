@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="4512" status="WP">
+<issue num="4512" status="C++26">
 <title>The `system_encoded_string()` and `generic_system_encoded_string()` member functions 
 of `std::filesystem::path` are misnamed</title>
 <section><sref ref="[fs.class.path.general]"/><sref ref="[fs.path.type.cvt]"/>

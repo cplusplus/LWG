@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="3919" status="WP">
+<issue num="3919" status="C++26">
 <title><tt>enumerate_view</tt> may invoke UB for sized common non-forward underlying ranges</title>
 <section><sref ref="[range.enumerate]"/></section>
 <submitter>Patrick Palka</submitter>

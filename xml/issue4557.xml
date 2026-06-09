@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="4557" status="WP">
+<issue num="4557" status="C++26">
 <title>Remove <code>constexpr</code> from <code>owner_less</code> and <code>owner_before</code> </title>
 <section>
 <sref ref="[util.smartptr.shared.obs]"/>

@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="3927" status="WP">
+<issue num="3927" status="C++26">
 <title>Unclear preconditions for <tt>operator[]</tt> for sequence containers</title>
 <section><sref ref="[sequence.reqmts]"/></section>
 <submitter>Ville Voutilainen</submitter>

@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="4472" status="WP">
+<issue num="4472" status="C++26">
 <title><tt>std::atomic_ref&lt;const T&gt;</tt> can be constructed from temporaries</title>
 <section><sref ref="[atomics.ref.generic]"/></section>
 <submitter>Jiang An</submitter>

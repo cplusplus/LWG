@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="4454" status="WP">
+<issue num="4454" status="C++26">
 <title>`assert` should forbid `co_await` and `co_yield`</title>
 <section><sref ref="[assertions.assert]"/></section>
 <submitter>Jonathan Wakely</submitter>

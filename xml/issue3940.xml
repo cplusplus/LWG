@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="3940" status="WP">
+<issue num="3940" status="C++26">
 <title><tt>std::expected&lt;void, E&gt;::value()</tt> also needs <tt>E</tt> to be copy constructible</title>
 <section><sref ref="[expected.void.obs]"/></section>
 <submitter>Jiang An</submitter>

@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="4235" status="WP">
+<issue num="4235" status="C++26">
 <title><code>cache_latest_view</code> and <code>to_input_view</code> miss <code>reserve_hint</code></title>
 <section>
 <sref ref="[range.cache.latest.view]"/><sref ref="[range.to.input.view]"/>

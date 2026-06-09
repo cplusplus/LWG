@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="4112" status="WP">
+<issue num="4112" status="C++26">
 <title><tt><i>has-arrow</i></tt> should required <tt>operator-&gt;()</tt> to be <tt>const</tt>-qualified</title>
 <section><sref ref="[range.utility.helpers]"/></section>
 <submitter>Hewill Kang</submitter>

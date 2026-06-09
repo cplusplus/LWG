@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="4236" status="WP">
+<issue num="4236" status="C++26">
 <title><tt>chunk_view::<i>outer-iterator</i>::value_type</tt> should provide <tt>reserve_hint</tt></title>
 <section>
 <sref ref="[range.chunk.outer.value]"/>

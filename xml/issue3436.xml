@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="3436" status="WP">
+<issue num="3436" status="C++26">
 <title><tt>std::construct_at</tt> should support arrays</title>
 <section><sref ref="[specialized.construct]"/></section>
 <submitter>Jonathan Wakely</submitter>

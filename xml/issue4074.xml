@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="4074" status="WP">
+<issue num="4074" status="C++26">
 <title><tt><i>compatible-joinable-ranges</i></tt> is underconstrained</title>
 <section><sref ref="[range.join.with.view]"/></section>
 <submitter>Hewill Kang</submitter>

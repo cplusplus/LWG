@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="4304" status="WP">
+<issue num="4304" status="C++26">
 <title><tt>std::optional&lt;<i>NonReturnable</i>&amp;&gt;</tt> is ill-formed due to `value_or`</title>
 <section><sref ref="[optional.ref.observe]"/></section>
 <submitter>Jiang An</submitter>

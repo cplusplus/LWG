@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="3891" status="WP">
+<issue num="3891" status="C++26">
 <title>LWG 3870 breaks <tt>std::expected&lt;<i>cv</i> T, E&gt;</tt></title>
 <section><sref ref="[expected.object.general]"/></section>
 <submitter>Jiang An</submitter>

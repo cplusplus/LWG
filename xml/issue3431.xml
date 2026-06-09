@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="3431" status="WP">
+<issue num="3431" status="C++26">
 <title><tt>&lt;=&gt;</tt> for containers should require <tt>three_way_comparable&lt;T&gt;</tt> instead of <tt>&lt;=&gt;</tt></title>
 <section><sref ref="[container.opt.reqmts]"/></section>
 <submitter>Jonathan Wakely</submitter>

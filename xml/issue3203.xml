@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="3203" status="WP">
+<issue num="3203" status="C++26">
 <title><tt>span</tt> element access invalidation</title>
 <section><sref ref="[span.overview]"/></section>
 <submitter>Johel Ernesto Guerrero Pe&ntilde;a</submitter>

@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="4148" status="WP">
+<issue num="4148" status="C++26">
 <title><code>unique_ptr::operator*</code> should not allow dangling references</title>
 <section><sref ref="[unique.ptr.single.observers]"/></section>
 <submitter>Jonathan Wakely</submitter>

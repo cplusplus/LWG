@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="4012" status="WP">
+<issue num="4012" status="C++26">
 <title><tt>common_view::begin/end</tt> are missing the <tt><i>simple-view</i></tt> check</title>
 <section><sref ref="[range.common.view]"/></section>
 <submitter>Hewill Kang</submitter>

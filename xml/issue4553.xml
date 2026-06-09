@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="4553" status="WP">
+<issue num="4553" status="C++26">
 <title>Wording for FR-025-246 25.7.18.2 Add a `reserve_hint` function to `concat_view`</title>
 <section><sref ref="[range.concat.view]"/></section>
 <submitter>Hui Xie</submitter>

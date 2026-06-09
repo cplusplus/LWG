@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="4170" status="WP">
+<issue num="4170" status="C++26">
 <title>`contiguous_iterator` should require `to_address(I{})`</title>
 <section><sref ref="[iterator.concept.contiguous]"/></section>
 <submitter>Casey Carter</submitter>

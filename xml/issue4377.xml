@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="4377" status="WP">
+<issue num="4377" status="C++26">
 <title>Misleading note about lock-free property of `std::atomic_ref`</title>
 <section>
 <sref ref="[atomics.ref.ops]"/>

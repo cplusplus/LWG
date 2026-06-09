@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="4429" status="WP">
+<issue num="4429" status="C++26">
 <title><code>meta::alignment_of</code> should exclude data member description of bit-field</title>
 <section>
 <sref ref="[meta.reflection.layout]"/>

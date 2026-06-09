@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="4037" status="WP">
+<issue num="4037" status="C++26">
 <title>Static data members of <tt>ctype_base</tt> are not yet required to be usable in constant expressions</title>
 <section><sref ref="[category.ctype.general]"/></section>
 <submitter>Jiang An</submitter>
