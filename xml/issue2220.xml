@@ -43,8 +43,7 @@ for the suffix iterator, equality means that the matched sequences compare equal
 Marshall notes that iterator comparisons typically require the iterators to
 denote elements of the same sequence.
 
-<p><strong>Previous resolution [SUPERSEDED]:</strong></p>
-<blockquote class="note">
+<superseded>
 <p>This wording is relative to <a href="https://wg21.link/n4762">N4762</a>.</p>
 
 <ul>
@@ -72,7 +71,7 @@ end-of-sequence iterators or both have the same underlying sequence.</ins>
 </blockquote>
 </li>
 </ul>
-</blockquote>
+</superseded>
 
 <note>2018-08-23 Casey revises the P/R in response to LWG feedback</note>
 
