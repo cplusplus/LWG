@@ -112,9 +112,7 @@ Solution: Clarify that <tt>init</tt> must be called once and only once. Move the
 The requirement that "<tt>init</tt> must be called once and only once" conflicts
 with the disposition of LWG <iref ref="135"/>.
 </p>
-</discussion>
-
-<resolution>
+<superseded>
 <p>This wording is relative to N3485.</p>
 
 <ol>
@@ -139,6 +137,57 @@ void init(basic_streambuf&lt;charT,traits&gt;* sb);
 <p/>
 <ins>-?- <i>Remarks</i>: The function can be called multiple times during the object lifetime. Each subsequent
 call reinitializes the object to the described in postconditions initial state.</ins>
+</p>
+</blockquote>
+</blockquote>
+</li>
+</ol>
+
+</superseded>
+
+<note>Brno 2026-06-09; LWG issue processing</note>
+<p>Review history. Would like to accept this.
+MSVC still requires exactly one call to `init`.
+Tim to contact implementers to see if changing this would be acceptable.
+</p>
+<p>
+Jonathan would like to make the default constructor set `badbit` and not
+leave it so that touching the stream is undefined. That would make it safe
+to attempt I/O operations (they'd just fail) but e.g. `getloc()` could
+not succeed for MSVC which doesn't allocate a locale until `init` is called.
+Changing that would need a paper.
+</p>
+
+<note>Brno 2026-06-09; Jonathan provides new wording</note>
+<p> Fix grammar.</p>
+
+</discussion>
+
+<resolution>
+<p>This wording is relative to <paper num="N5046"/>.</p>
+
+<ol>
+<li><p>Edit <sref ref="[basic.ios.cons]"/> as indicated:</p>
+<blockquote><pre>
+basic_ios();
+</pre>
+<blockquote>
+<p>
+-2- <i>Effects</i>: Constructs an object of class <tt>basic_ios</tt> (<sref ref="[ios.base.cons]"/>)
+<del>leaving its member objects uninitialized</del><ins>initializing its member objects to unspecified state,
+only suitable for <tt>basic_ios</tt> destruction</ins>. The object shall be initialized by calling
+<tt>basic_ios::init</tt> before its first use <del>or before it is destroyed, whichever comes first</del>;
+otherwise the behavior is undefined.
+</p>
+</blockquote>
+<pre>
+void init(basic_streambuf&lt;charT,traits&gt;* sb);
+</pre><blockquote>
+<p>
+<i>Postconditions</i>: The postconditions of this function are indicated in Table 142.
+<p/>
+<ins>-?- <i>Remarks</i>: The function can be called multiple times during the object lifetime.
+Each subsequent call reinitializes the object to the state described in Table 142.</ins>
 </p>
 </blockquote>
 </blockquote>
