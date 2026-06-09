@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='UTF-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="2472" status="New">
+<issue num="2472" status="NAD">
 <title>Heterogeneous comparisons in the standard library can result in ambiguities</title>
 <section><sref ref="[tuple.rel]"/><sref ref="[allocator.globals]"/><sref ref="[unique.ptr.special]"/>
          <sref ref="[util.smartptr.shared.cmp]"/><sref ref="[time.duration.comparisons]"/>
@@ -53,6 +53,12 @@ This is then unambiguously chosen over the other options in the preceding case. 
 <a href="https://gcc.gnu.org/onlinedocs/gcc-4.6.4/libstdc++/api/a01065_source.html#l00788">in some cases</a>.
 </p>
 </blockquote>
+<note>Brno 2026-06-09 Status changed: New &rarr; NAD.</note>
+<p>
+The problematic and poorly-designed overloads in namespace `rel_ops`
+are deprecated and expected to be removed for C++29.
+If you do this to your type, you only have yourself to blame.
+</p>
 </discussion>
 
 <resolution>
