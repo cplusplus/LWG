@@ -45,8 +45,7 @@ It is completely unclear:
 <li>what is left in the stream on failure. (For example, with <tt>"(0, 0]"</tt>, libstdc++ extracts the <tt>]</tt> 
 while libc++ leaves it in the stream.)</li>
 </ul>
-<p><strong>Previous resolution [SUPERSEDED]:</strong></p>
-<blockquote class="note">
+<superseded>
 <blockquote class="note">
 <i>Drafting note:</i> the following wording is based on:
 <ul>
@@ -108,7 +107,7 @@ is specified to be the same for each of the simpler extractions. &mdash; <i>end 
 </blockquote>
 </li>
 </ol>
-</blockquote>
+</superseded>
 <note>2017-12-13 Tim Song adjusts the P/R to avoid relying on <tt>putback</tt>.</note>
 </discussion>
 
