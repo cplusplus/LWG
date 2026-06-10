@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="4406" status="New">
+<issue num="4406" status="Ready">
 <title>`optional::value_or` return statement is inconsistent with <i>Mandates</i></title>
 <section>
 <sref ref="[optional.observe]"/>
@@ -371,6 +371,8 @@ return std::forward&lt;U&gt;(v);</ins>
 <p>
 Fix two `T` that should be `X` and fix incorrect deleted context in [optional.ref.observe].
 </p>
+
+<note>Brno 2026-06-10 Status changed: New &rarr; Ready.</note>
 
 </discussion>
 
