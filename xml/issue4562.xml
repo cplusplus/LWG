@@ -35,9 +35,43 @@ Should `is_exhaustive` be made to return `true` in this case (which is more corr
 Set priority to 3 after reflector poll.
 </p>
 
+<note>2026-06-10; Tomasz provides new wording</note>
+<p>
+Reflect implementation in the wording.
+</p>
+
 </discussion>
 
 <resolution>
+<p>
+This wording is relative to <paper num="N5008"/>.
+</p>
+<ol>
+<li><p>Modify <sref ref="[mdspan.layout.stride.obs]"/> as indicated:</p>
+
+<blockquote>
+<pre>
+constexpr bool is_exhaustive() const noexcept;
+</pre>
+<blockquote>
+<p>
+-5- <i>Returns</i>: <ins><tt>required_span_size() == extents().<i>fwd-prod-of-extents</i>(<i>rank_</i>)</tt>.</ins>
+</p>
+<ol style="list-style-type: none">
+<li><p><del>(5.1) &mdash; `true` if <tt><i>rank_</i></tt> or the size of the multidimensional 
+index space `m.extents()` is `0`.</del></p></li>
+<li><p><del>(5.2) &mdash; Otherwise, <tt>true</tt> if there is a permutation <tt><i>P</i></tt> of the integers
+in the range <tt>[0, <i>rank_</i>)</tt> such that <tt>stride(<i>p<sub>0</sub></i>)</tt> equals <tt>1</tt>,
+and <tt>stride(<i>p<sub>i</sub></i>)</tt> equals <tt>stride(<i>p<sub>i−1</sub></i>) * extents().extent(<i>p<sub>i−1</sub></i>)</tt>
+for <i>i</i> in the range <tt>[1, <i>rank_</i>)</tt>, where <tt><i>p<sub>i</sub></i></tt> is the 
+<i>i<sup>th</sup></i> element of <tt><i>P</i></tt>.</del></p></li>
+<li><p><del>(5.3) &mdash; Otherwise, <tt>false</tt>.</del></p></li>
+</ol>
+</blockquote>
+</blockquote>
+
+</li>
+</ol>
 </resolution>
 
 </issue>
