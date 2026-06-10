@@ -20,18 +20,24 @@ Do we want to do the same?
 <note>Brno 2026-06-09; Change status New &rarr; Core</note>
 <p>
 In C++14 these macros were defined in a table showing them as macros
-in <code>&lt;cuchar&gt;</code>, but claiming that the meaning was the same
-as in the C header. But those macros were never in the C header.
-That header came from ISO/IEC TR 19769:2004, where the macros were defined
-in the header. But in the final C11 standard, the macros were predefined by
-the compiler not in the header. So C++14 was never correct to say they had
+in <code>&lt;cuchar&gt;</code>, and referring to the C Unicode TR,
+ISO/IEC TR 19769:2004, where the macros were defined in the header.
+But in the final C11 standard, the macros were predefined by the compiler
+not in the header. So when C++17 rebased on C11 and referred to the `uchar.h`
+from the C standard, C++14 was never correct to say they had
 the same meaning as in C, and their meaning was never defined in C++.
 </p>
 <p>
 An <a href="https://github.com/cplusplus/draft/commit/8e4ab9cdee4399b475735b0cb39d70d8e1040969">editorial change</a>
 for C++17 removed the table mentioning those macros,
-so they now have no existence at all in C++. They're not inherited from
-the C version of `uchar.h` and they're not predefined by a C++ compiler.
+following an arguably incorrect
+<a href="https://github.com/cplusplus/draft/commit/e6f109e4979ef255068eee5ed6ba99779bf8b50d">editorial change</a>
+to "remove an outdated reference to the C Unicode TR".
+Although `uchar.h` is in C11, we lost any mention of the macros by
+saying that our `uchar.h` is the same as C `uchar.h`.
+So those macros now have no existence at all in C++.
+They're not inherited from the C version of `uchar.h`
+and they're not predefined by a C++ compiler.
 </p>
 <p>
 If we want to copy those macros from C, they should be in
