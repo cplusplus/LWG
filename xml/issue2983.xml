@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="2983" status="New">
+<issue num="2983" status="Ready">
 <title><tt>money_put::do_put</tt> underspecified</title>
 <section>
 <sref ref="[locale.money.put.virtuals]"/>
@@ -29,6 +29,8 @@ If we want the leading zero, we should say so.
 I suggest that we require a leading zero. The wording below is similar
 to how C specifies the <tt>%f</tt> format specifier for <tt>fprintf</tt>.
 </p>
+
+<note>Brno 2026-06-10; Change status: New &rarr; Ready.</note>
 </discussion>
 
 <resolution>
