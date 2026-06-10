@@ -25,9 +25,7 @@ header <tt>&lt;math.h&gt;</tt>, [&hellip;]".
 
 <note>2018-12-21 Reflector prioritization</note>
 <p>Set Priority to 3</p>
-</discussion>
-
-<resolution>
+<superseded>
 <p>This wording is relative to <a href="https://wg21.link/n4778">N4778</a>.</p>
 
 <blockquote class="note">
@@ -79,6 +77,47 @@ NaN.</ins></p></li>
 <li><p>Add a note that clarifies that the behavior of the 3-arg <tt>hypot</tt> function
 differs from the C specification. I.e. that no special guarantees wrt. over-/underflow or 
 special values are given.</p>
+</li>
+</ol>
+</superseded>
+
+<note>2026-06-10; Tim provides new wording</note>
+<p>LWG in Brno is in favor of the direction of Option A. However, <tt>__STDC_IEC_559__</tt> is not defined in C++.</p>
+</discussion>
+
+<resolution>
+<p>This wording is relative to <paper num="N5060"/>.</p>
+<ol>
+<li><p>Modify <sref ref="[c.math.hypot3]"/> as indicated:</p>
+
+<blockquote>
+<blockquote>
+<pre>
+constexpr <i>floating-point-type</i> hypot(<i>floating-point-type</i> x, <i>floating-point-type</i> y,
+                                    <i>floating-point-type</i> z);
+</pre>
+<blockquote>
+<p>
+<ins>-?- <i>Effects:</i> Compute the square root of the sum of the
+squares of <tt>x</tt>, <tt>y</tt>, and <tt>z</tt>, without undue overflow or underflow. A range error
+may occur.</ins>
+<p/>
+-1- <i>Returns:</i> <math xmlns="http://www.w3.org/1998/Math/MathML"><msqrt><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo>
+<msup><mi>y</mi><mn>2</mn></msup><mo>+</mo><msup><mi>z</mi><mn>2</mn></msup></msqrt></math>.
+<p/>
+<ins>-?- <i>Remarks:</i> If <tt>numeric_limits&lt;<i>floating-point-type</i>&gt;::is_iec559</tt> is <tt>true</tt>, 
+the following guarantees hold:</ins>
+</p>
+<ul>
+<li><p><ins><tt>hypot(x, y, z)</tt>, <tt>hypot(x, z, y)</tt>, <tt>hypot(z, y, x)</tt>, and <tt>hypot(x, y, -z)</tt> 
+are equivalent.</ins></p></li>
+<li><p><ins>if <tt>y</tt> and <tt>z</tt> are zero, <tt>hypot(x, y, z)</tt> is equivalent to <tt>fabs(x)</tt>.</ins></p></li>
+<li><p><ins>if <tt>x</tt> is positive or negative infinity, <tt>hypot(x, y, z)</tt> returns positive infinity,
+even if <tt>y</tt> and/or <tt>z</tt> is a NaN.</ins></p></li>
+</ul>
+</blockquote>
+</blockquote>
+</blockquote>
 </li>
 </ol>
 </resolution>
