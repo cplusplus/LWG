@@ -24,8 +24,7 @@ in <code>&lt;cuchar&gt;</code>, and referring to the C Unicode TR,
 ISO/IEC TR 19769:2004, where the macros were defined in the header.
 But in the final C11 standard, the macros were predefined by the compiler
 not in the header. So when C++17 rebased on C11 and referred to the `uchar.h`
-from the C standard, C++14 was never correct to say they had
-the same meaning as in C, and their meaning was never defined in C++.
+from the C standard, we lost any reference to those macros.
 </p>
 <p>
 An <a href="https://github.com/cplusplus/draft/commit/8e4ab9cdee4399b475735b0cb39d70d8e1040969">editorial change</a>
