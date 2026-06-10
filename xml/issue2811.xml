@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="2811" status="New">
+<issue num="2811" status="Ready">
 <title>"Selected constructor" wording is incorrect for <tt>optional</tt>/<tt>variant</tt>/<tt>any</tt></title>
 <section><sref ref="[optional.ctor]"/><sref ref="[optional.assign]"/><sref ref="[variant.ctor]"/><sref ref="[any.cons]"/><sref ref="[any.modifiers]"/></section>
 <submitter>Tim Song</submitter>
@@ -296,6 +296,8 @@ of the contained value</ins>.
 
 <note>2026-06-10; Tim rebases and provides new wording</note>
 <p>The `variant` part has been fixed by LWG <iref ref="4460"/>.</p>
+
+<note>Brno 2026-06-10; Change status: New &rarr; Ready.</note>
 </discussion>
 
 <resolution>
