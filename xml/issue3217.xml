@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="3217" status="New">
+<issue num="3217" status="Resolved">
 <title><tt>&lt;memory&gt;</tt> and <tt>&lt;execution&gt;</tt> should define <tt>__cpp_lib_parallel_algorithm</tt></title>
 <section><sref ref="[support.limits.general]"/></section>
 <submitter>Jonathan Wakely</submitter>
@@ -17,6 +17,7 @@ define the macro too.
 
 <note>2019-07 Issue Prioritization</note>
 <p>Priority to 3 after discussion on the reflector.</p>
+<note>Brno 2026-06-10; Status changed: New &rarr; Resolved by <paper num="P3179R9"/>.</note>
 </discussion>
 
 <resolution>
