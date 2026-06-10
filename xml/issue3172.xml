@@ -82,7 +82,10 @@ special values are given.</p>
 </superseded>
 
 <note>2026-06-10; Tim provides new wording</note>
-<p>LWG in Brno is in favor of the direction of Option A. However, <tt>__STDC_IEC_559__</tt> is not defined in C++.</p>
+<p>LWG in Brno is in favor of the direction of Option A. However, <tt>__STDC_IEC_559__</tt> is not defined in C++.
+The wording has been updated following the current C WD, taking into account
+<a href="https://www.open-std.org/jtc1/sc22/wg14/www/docs/n2714.htm">WG14 N2714</a>.
+</p>
 </discussion>
 
 <resolution>
@@ -111,9 +114,11 @@ the following guarantees hold:</ins>
 <ul>
 <li><p><ins><tt>hypot(x, y, z)</tt>, <tt>hypot(x, z, y)</tt>, <tt>hypot(z, y, x)</tt>, and <tt>hypot(x, y, -z)</tt> 
 are equivalent.</ins></p></li>
-<li><p><ins>if <tt>y</tt> and <tt>z</tt> are zero, <tt>hypot(x, y, z)</tt> is equivalent to <tt>fabs(x)</tt>.</ins></p></li>
+<li><p><ins>if <tt>y</tt> and <tt>z</tt> are zero and <tt>x</tt> is not a NaN, <tt>hypot(x, y, z)</tt> returns the absolute value of <tt>x</tt>.</ins></p></li>
 <li><p><ins>if <tt>x</tt> is positive or negative infinity, <tt>hypot(x, y, z)</tt> returns positive infinity,
 even if <tt>y</tt> and/or <tt>z</tt> is a NaN.</ins></p></li>
+<li><p><ins>if <tt>x</tt> is a NaN and neither <tt>y</tt> nor <tt>z</tt> is positive or negative infinity,
+<tt>hypot(x, y, z)</tt> returns a NaN.</ins></p></li>
 </ul>
 </blockquote>
 </blockquote>
