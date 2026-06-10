@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="3353" status="New">
+<issue num="3353" status="Ready">
 <title><tt>locale</tt>'s copy assignment operator should return <tt>locale&amp;</tt></title>
 <section><sref ref="[locale]"/></section>
 <submitter>Stephan T. Lavavej</submitter>
@@ -28,6 +28,8 @@ them weren't rigorously followed.)
 <note>2019-12-21 Issue Prioritization</note>
 <p>Priority to 3 after reflector discussion based on the observation that we have implementation
 divergence.</p>
+
+<note>Brno 2026-06-10; Change status: New &rarr; Ready.</note>
 </discussion>
 
 <resolution>
