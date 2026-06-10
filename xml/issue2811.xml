@@ -43,9 +43,7 @@ The wording should probably be recast to refer to the entire initialization.
 This wording depends on the current resolution for LWG <iref ref="2833"/>, which covers the <tt>constexpr</tt> 
 portion of this issue.
 </p>
-</discussion>
-
-<resolution>
+<superseded>
 <p>This wording is relative to <a href="https://wg21.link/n4861">N4861</a>.</p>
 
 <ol>
@@ -193,6 +191,200 @@ template&lt;size_t I, class... Args&gt; constexpr explicit variant(in_place_inde
 initialization of the contained value</ins>.
 </p>
 </blockquote>
+</blockquote>
+</li>
+
+<li>
+<p>Modify <sref ref="[any.cons]"/> as indicated:</p>
+
+<blockquote>
+<pre>
+any(const any&amp; other);
+</pre>
+<blockquote>
+<p>
+-2- <i>Effects:</i> [&hellip;]
+<p/>
+-3- <i>Throws:</i> Any exceptions <del>arising from calling the selected constructor for</del><ins>thrown 
+by the initialization of</ins> the contained value.
+</p>
+</blockquote>
+[&hellip;]
+<pre>
+template&lt;class T&gt;
+  any(T&amp;&amp; value);
+</pre>
+<blockquote>
+<p>
+-5- [&hellip;]
+<p/>
+[&hellip;]
+<p/>
+-9- <i>Throws:</i> Any exception thrown by the <del>selected constructor of <tt>VT</tt></del><ins>initialization 
+of the contained value</ins>.
+</p>
+</blockquote>
+<pre>
+template&lt;class T, class... Args&gt;
+  explicit any(in_place_type_t&lt;T&gt;, Args&amp;&amp;... args);
+</pre>
+<blockquote>
+<p>
+-10- [&hellip;]
+<p/>
+[&hellip;]
+<p/>
+-15- <i>Throws:</i> Any exception thrown by the <del>selected constructor of <tt>VT</tt></del><ins>initialization 
+of the contained value</ins>.
+</p>
+</blockquote>
+<pre>
+template&lt;class T, class U, class... Args&gt;
+  explicit any(in_place_type_t&lt;T&gt;, initializer_list&lt;U&gt; il, Args&amp;&amp;... args);
+</pre>
+<blockquote>
+<p>
+-16- [&hellip;]
+<p/>
+[&hellip;]
+<p/>
+-21- <i>Throws:</i> Any exception thrown by the <del>selected constructor of <tt>VT</tt></del><ins>initialization 
+of the contained value</ins>.
+</p>
+</blockquote>
+</blockquote>
+</li>
+
+<li>
+<p>Modify <sref ref="[any.modifiers]"/> as indicated:</p>
+
+<blockquote>
+<pre>
+template&lt;class T, class... Args&gt;
+  decay_t&lt;T&gt;&amp; emplace(Args&amp;&amp;... args);
+</pre>
+<blockquote>
+<p>
+-1- [&hellip;]
+<p/>
+[&hellip;]
+<p/>
+-7- <i>Throws:</i> Any exception thrown by the <del>selected constructor of <tt>VT</tt></del><ins>initialization 
+of the contained value</ins>.
+<p/>
+-8- [&hellip;]
+</p>
+</blockquote>
+<pre>
+template&lt;class T, class U, class... Args&gt;
+  decay_t&lt;T&gt;&amp; emplace(initializer_list&lt;U&gt; il, Args&amp;&amp;... args);
+</pre>
+<blockquote>
+<p>
+-9- [&hellip;]
+<p/>
+[&hellip;]
+<p/>
+-15- <i>Throws:</i> Any exception thrown by the <del>selected constructor of <tt>VT</tt></del><ins>initialization 
+of the contained value</ins>.
+</p>
+</blockquote>
+</blockquote>
+</li>
+</ol>
+</superseded>
+
+<note>2026-06-10; Tim rebases and provides new wording</note>
+<p>The `variant` part has been fixed by LWG <iref ref="4460"/>.</p>
+</discussion>
+
+<resolution>
+<p>This wording is relative to <paper num="N5060" />.</p>
+
+<ol>
+<li>
+<p>Modify <sref ref="[optional.ctor]"/> as indicated:</p>
+
+<blockquote>
+<pre>
+constexpr optional(const optional&amp; rhs);
+</pre>
+<blockquote>
+<p>
+[&hellip;]
+<p/>
+-6- <i>Throws:</i> Any exception thrown by the <del>selected constructor of <tt>T</tt></del><ins>initialization 
+of the contained value</ins>.
+</p>
+</blockquote>
+<pre>
+constexpr optional(optional&amp;&amp; rhs) noexcept(<i>see below</i>);
+</pre>
+<blockquote>
+<p>
+[&hellip;]
+<p/>
+-11- <i>Throws:</i> Any exception thrown by the <del>selected constructor of <tt>T</tt></del><ins>initialization 
+of the contained value</ins>.
+</p>
+</blockquote>
+<pre>
+template&lt;class... Args&gt; constexpr explicit optional(in_place_t, Args&amp;&amp;... args);
+</pre>
+<blockquote>
+<p>
+[&hellip;]
+<p/>
+-16- <i>Throws:</i> Any exception thrown by the <del>selected constructor of <tt>T</tt></del><ins>initialization 
+of the contained value</ins>.
+</p>
+</blockquote>
+<pre>
+template&lt;class U, class... Args&gt;
+  constexpr explicit optional(in_place_t, initializer_list&lt;U&gt; il, Args&amp;&amp;... args);
+</pre>
+<blockquote>
+<p>
+[&hellip;]
+<p/>
+-21- <i>Throws:</i> Any exception thrown by the <del>selected constructor of <tt>T</tt></del><ins>initialization 
+of the contained value</ins>.
+</p>
+</blockquote>
+<pre>
+template&lt;class U = T&gt; constexpr explicit(<i>see below</i>) optional(U&amp;&amp; v);
+</pre>
+<blockquote>
+<p>
+[&hellip;]
+<p/>
+-26- <i>Throws:</i> Any exception thrown by the <del>selected constructor of <tt>T</tt></del><ins>initialization 
+of the contained value</ins>.
+</p>
+</blockquote>
+<pre>
+template&lt;class U&gt; explicit(<i>see below</i>) optional(const optional&lt;U&gt;&amp; rhs);
+</pre>
+<blockquote>
+<p>
+[&hellip;]
+<p/>
+-31- <i>Throws:</i> Any exception thrown by the <del>selected constructor of <tt>T</tt></del><ins>initialization 
+of the contained value</ins>.
+</p>
+</blockquote>
+<pre>
+template&lt;class U&gt; explicit(<i>see below</i>) optional(optional&lt;U&gt;&amp;&amp; rhs);
+</pre>
+<blockquote>
+<p>
+[&hellip;]
+<p/>
+-36- <i>Throws:</i> Any exception thrown by the <del>selected constructor of <tt>T</tt></del><ins>initialization 
+of the contained value</ins>.
+</p>
+</blockquote>
+
 </blockquote>
 </li>
 
