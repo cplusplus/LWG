@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="3484" status="New">
+<issue num="3484" status="NAD">
 <title>Should <tt>&lt;stddef.h&gt;</tt> declare <tt>::nullptr_t</tt>?</title>
 <section><sref ref="[support.c.headers.other]"/></section>
 <submitter>Thomas K&ouml;ppe</submitter>
@@ -41,6 +41,12 @@ See also <iref ref="3782"/>, which points out that <tt>nullptr_t</tt> has become
 as of C23 (see <a href="https://www.open-std.org/jtc1/sc22/wg14/www/docs/n3042.htm">WG14-N3042</a> and 
 <a href="https://www.open-std.org/jtc1/sc22/wg14/www/docs/n3048.htm">WG14-N3048</a>).
 </p>
+<note>2026-06-10 Status changed: New &rarr; NAD.</note>
+<p>
+Now that C++26 refers to the C23 version of `stddef.h` we do want `::nullptr_t`
+to be declared in that header.
+</p>
+
 </discussion>
 
 <resolution>
