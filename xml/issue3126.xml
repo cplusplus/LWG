@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="3126" status="New">
+<issue num="3126" status="Ready">
 <title>There's no <tt>std::sub_match::compare(string_view)</tt> overload</title>
 <section><sref ref="[re.submatch]"/></section>
 <submitter>Jonathan Wakely</submitter>
@@ -450,6 +450,8 @@ Change `operator==` and <code>operator&lt;=&gt;</code> to take
 string view by value not by reference.
 </p>
 
+
+<note>Brno 2026-06-10; Change status: New &rarr; Ready.</note>
 </discussion>
 
 <resolution>
