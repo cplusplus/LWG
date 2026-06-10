@@ -313,7 +313,7 @@ constexpr optional(const optional&amp; rhs);
 <p>
 [&hellip;]
 <p/>
--6- <i>Throws:</i> Any exception thrown by the <del>selected constructor of <tt>T</tt></del><ins>initialization 
+-6- <i>Throws:</i> Any exception thrown by the <del>selected constructor of <tt>T</tt></del><ins>initialization
 of the contained value</ins>.
 </p>
 </blockquote>
@@ -324,7 +324,7 @@ constexpr optional(optional&amp;&amp; rhs) noexcept(<i>see below</i>);
 <p>
 [&hellip;]
 <p/>
--11- <i>Throws:</i> Any exception thrown by the <del>selected constructor of <tt>T</tt></del><ins>initialization 
+-11- <i>Throws:</i> Any exception thrown by the <del>selected constructor of <tt>T</tt></del><ins>initialization
 of the contained value</ins>.
 </p>
 </blockquote>
@@ -335,7 +335,7 @@ template&lt;class... Args&gt; constexpr explicit optional(in_place_t, Args&amp;&
 <p>
 [&hellip;]
 <p/>
--16- <i>Throws:</i> Any exception thrown by the <del>selected constructor of <tt>T</tt></del><ins>initialization 
+-16- <i>Throws:</i> Any exception thrown by the <del>selected constructor of <tt>T</tt></del><ins>initialization
 of the contained value</ins>.
 </p>
 </blockquote>
@@ -347,7 +347,7 @@ template&lt;class U, class... Args&gt;
 <p>
 [&hellip;]
 <p/>
--21- <i>Throws:</i> Any exception thrown by the <del>selected constructor of <tt>T</tt></del><ins>initialization 
+-21- <i>Throws:</i> Any exception thrown by the <del>selected constructor of <tt>T</tt></del><ins>initialization
 of the contained value</ins>.
 </p>
 </blockquote>
@@ -358,7 +358,7 @@ template&lt;class U = T&gt; constexpr explicit(<i>see below</i>) optional(U&amp;
 <p>
 [&hellip;]
 <p/>
--26- <i>Throws:</i> Any exception thrown by the <del>selected constructor of <tt>T</tt></del><ins>initialization 
+-26- <i>Throws:</i> Any exception thrown by the <del>selected constructor of <tt>T</tt></del><ins>initialization
 of the contained value</ins>.
 </p>
 </blockquote>
@@ -369,7 +369,7 @@ template&lt;class U&gt; explicit(<i>see below</i>) optional(const optional&lt;U&
 <p>
 [&hellip;]
 <p/>
--31- <i>Throws:</i> Any exception thrown by the <del>selected constructor of <tt>T</tt></del><ins>initialization 
+-31- <i>Throws:</i> Any exception thrown by the <del>selected constructor of <tt>T</tt></del><ins>initialization
 of the contained value</ins>.
 </p>
 </blockquote>
@@ -380,7 +380,7 @@ template&lt;class U&gt; explicit(<i>see below</i>) optional(optional&lt;U&gt;&am
 <p>
 [&hellip;]
 <p/>
--36- <i>Throws:</i> Any exception thrown by the <del>selected constructor of <tt>T</tt></del><ins>initialization 
+-36- <i>Throws:</i> Any exception thrown by the <del>selected constructor of <tt>T</tt></del><ins>initialization
 of the contained value</ins>.
 </p>
 </blockquote>
@@ -399,7 +399,7 @@ any(const any&amp; other);
 <p>
 -2- <i>Effects:</i> [&hellip;]
 <p/>
--3- <i>Throws:</i> Any exceptions <del>arising from calling the selected constructor for</del><ins>thrown 
+-3- <i>Throws:</i> Any exceptions <del>arising from calling the selected constructor for</del><ins>thrown
 by the initialization of</ins> the contained value.
 </p>
 </blockquote>
@@ -414,7 +414,7 @@ template&lt;class T&gt;
 <p/>
 [&hellip;]
 <p/>
--9- <i>Throws:</i> Any exception thrown by the <del>selected constructor of <tt>VT</tt></del><ins>initialization 
+-9- <i>Throws:</i> Any exception thrown by the <del>selected constructor of <tt>VT</tt></del><ins>initialization
 of the contained value</ins>.
 </p>
 </blockquote>
@@ -428,7 +428,7 @@ template&lt;class T, class... Args&gt;
 <p/>
 [&hellip;]
 <p/>
--15- <i>Throws:</i> Any exception thrown by the <del>selected constructor of <tt>VT</tt></del><ins>initialization 
+-15- <i>Throws:</i> Any exception thrown by the <del>selected constructor of <tt>VT</tt></del><ins>initialization
 of the contained value</ins>.
 </p>
 </blockquote>
@@ -442,7 +442,7 @@ template&lt;class T, class U, class... Args&gt;
 <p/>
 [&hellip;]
 <p/>
--21- <i>Throws:</i> Any exception thrown by the <del>selected constructor of <tt>VT</tt></del><ins>initialization 
+-21- <i>Throws:</i> Any exception thrown by the <del>selected constructor of <tt>VT</tt></del><ins>initialization
 of the contained value</ins>.
 </p>
 </blockquote>
@@ -463,7 +463,7 @@ template&lt;class T, class... Args&gt;
 <p/>
 [&hellip;]
 <p/>
--7- <i>Throws:</i> Any exception thrown by the <del>selected constructor of <tt>VT</tt></del><ins>initialization 
+-7- <i>Throws:</i> Any exception thrown by the <del>selected constructor of <tt>VT</tt></del><ins>initialization
 of the contained value</ins>.
 <p/>
 -8- [&hellip;]
@@ -479,7 +479,7 @@ template&lt;class T, class U, class... Args&gt;
 <p/>
 [&hellip;]
 <p/>
--15- <i>Throws:</i> Any exception thrown by the <del>selected constructor of <tt>VT</tt></del><ins>initialization 
+-15- <i>Throws:</i> Any exception thrown by the <del>selected constructor of <tt>VT</tt></del><ins>initialization
 of the contained value</ins>.
 </p>
 </blockquote>
