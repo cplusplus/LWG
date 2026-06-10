@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="4589" status="New">
+<issue num="4589" status="Ready">
 <title><code>std::format</code> should escape null as <code>\0</code></title>
 <section><sref ref="[format.string.escaped]"/></section>
 <submitter>Tomasz Kamiński</submitter>
@@ -10,15 +10,17 @@
 
 <discussion>
 <p>
-As current specified the debug output of the <tt>std::format</tt> for the
-string containing null terminator should escape it as <tt>\u{0}</tt> instead
-of more conventional <tt>\0</tt>.
+As currently specified the debug output of <tt>std::format</tt> for a
+string containing a null terminator should escape it as <tt>\u{0}</tt> instead
+of the more conventional <tt>\0</tt>.
 </p>
 
 <pre>
 std::string_view sv("a\0b", 3);
 std::print("{:?}", sv); // "a\u{0}b" not "a\0b"
 </pre>
+
+<note>Brno 2026-06-10 Status changed: New &rarr; Ready.</note>
 </discussion>
 
 <resolution>
