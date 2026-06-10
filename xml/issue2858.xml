@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="2858" status="New">
+<issue num="2858" status="NAD">
 <title>LWG 2472: actually an incompatibility with C++03</title>
 <section><sref ref="[reverse.iterators]"/></section>
 <submitter>Hubert Tong</submitter>
@@ -38,6 +38,9 @@ Reintroduce the homogeneous comparison operators from C++03 alongside the new on
 
 <note>2017-03-04, Kona</note>
 <p>Set priority to 4. STL to write a paper deprecating <tt>relops</tt> Alisdair to provide an example for Annex C.</p>
+<note>Brno 2026-06-10; Status changed: New &rarr; NAD.</note>
+<p>As with LWG <iref ref="2472"/>, `rel_ops` is deprecated and known to cause such problems.</p>
+
 </discussion>
 
 <resolution>
