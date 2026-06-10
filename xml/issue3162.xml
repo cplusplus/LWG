@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="3162" status="New">
+<issue num="3162" status="NAD">
 <title><tt>system_error::system_error(error_code ec)</tt> not explicit</title>
 <section><sref ref="[syserr.syserr.members]"/></section>
 <submitter>Peter Dimov</submitter>
@@ -17,6 +17,13 @@ think that this is an oversight and not intentional, and that we should make thi
 
 <note>2020-04-07 Issue Prioritization</note>
 <p>Priority to 3 after reflector discussion.</p>
+
+<note>2026-06-10 Status changed: New &rarr; NAD.</note>
+<p>
+Too late.  Submitter suggested NAD in 2023 and LWG agreed,
+but failed to close it at the time.
+</p>
+
 </discussion>
 
 <resolution>
