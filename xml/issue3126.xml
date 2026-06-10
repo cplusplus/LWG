@@ -244,9 +244,7 @@ case <tt><i>STR</i>(x)</tt> is <tt>basic_string_view&lt;S::value_type&gt;(x)</tt
 <note>2024-10-03; Jonathan rebases the wording on the latest WP</note>
 <p>The proposed resolution has been implemented and tested in libstdc++.</p>
 
-</discussion>
-
-<resolution>
+<superseded>
 <p>This wording is relative to <paper num="n4988"/>.</p>
 
 <ol>
@@ -430,6 +428,214 @@ and let
   auto operator&lt;=&gt;(
     const sub_match&lt;BiIter&gt;&amp; lhs,
     const basic_string_view&lt;typename iterator_traits&lt;BiIter&gt;::value_type, ST&gt;&amp; rhs);</ins></pre>
+<blockquote>
+<p>
+<ins>
+-?- <i>Returns:</i>
+<code>
+static_cast&lt;<i>SM-CAT</i>(BiIter)&gt;(lhs.compare(<i>SV</i>(BiIter)(rhs.data(), rhs.size())) &lt;=&gt; 0)
+</code>.
+</ins>
+</p>
+</blockquote>
+
+</blockquote>
+</li>
+</ol>
+</superseded>
+
+<note>2026-06-10; Jonathan provides new wording</note>
+<p>
+Change `operator==` and <code>operator&lt;=&gt;</code> to take
+string view by value not by reference.
+</p>
+
+</discussion>
+
+<resolution>
+<p>This wording is relative to <paper num="n5046"/>.</p>
+
+<ol>
+<li>
+<p>Change <sref ref="[re.syn]"/>, header <tt>&lt;regex&gt;</tt> synopsis, as indicated:</p>
+
+<blockquote>
+<pre>
+  using csub_match = sub_match&lt;const char*&gt;;
+  using wcsub_match = sub_match&lt;const wchar_t*&gt;;
+  using ssub_match = sub_match&lt;string::const_iterator&gt;;
+  using wssub_match = sub_match&lt;wstring::const_iterator&gt;;
+
+  <i>// <sref ref="[re.submatch.op]"/>, sub_match non-member operators</i>
+  template&lt;class BiIter&gt;
+    bool operator==(const sub_match&lt;BiIter&gt;&amp; lhs, const sub_match&lt;BiIter&gt;&amp; rhs);
+  template&lt;class BiIter&gt;
+    bool operator&lt;=&gt;(const sub_match&lt;BiIter&gt;&amp; lhs, const sub_match&lt;BiIter&gt;&amp; rhs);
+
+  template&lt;class BiIter, class ST, class SA&gt;
+    bool operator==(
+      const sub_match&lt;BiIter&gt;&amp; lhs,
+      const basic_string&lt;typename iterator_traits&lt;BiIter&gt;::value_type, ST, SA&gt;&amp; rhs);
+  template&lt;class BiIter, class ST, class SA&gt;
+    bool operator&lt;=&gt;(
+      const sub_match&lt;BiIter&gt;&amp; lhs,
+      const basic_string&lt;typename iterator_traits&lt;BiIter&gt;::value_type, ST, SA&gt;&amp; rhs);
+<ins>
+  template&lt;class BiIter, class ST&gt;
+    bool operator==(
+      const sub_match&lt;BiIter&gt;&amp; lhs,
+      basic_string_view&lt;typename iterator_traits&lt;BiIter&gt;::value_type, ST&gt; rhs);
+  template&lt;class BiIter, class ST&gt;
+    bool operator&lt;=&gt;(
+      const sub_match&lt;BiIter&gt;&amp; lhs,
+      basic_string_view&lt;typename iterator_traits&lt;BiIter&gt;::value_type, ST&gt; rhs);
+</ins>
+  template&lt;class BiIter&gt;
+    bool operator==(const sub_match&lt;BiIter&gt;&amp; lhs,
+                    const typename iterator_traits&lt;BiIter&gt;::value_type* rhs);
+  template&lt;class BiIter&gt;
+    bool operator&lt;=&gt;(const sub_match&lt;BiIter&gt;&amp; lhs,
+                     const typename iterator_traits&lt;BiIter&gt;::value_type* rhs);
+
+  template&lt;class BiIter&gt;
+    bool operator==(const sub_match&lt;BiIter&gt;&amp; lhs,
+                    const typename iterator_traits&lt;BiIter&gt;::value_type&amp; rhs);
+  template&lt;class BiIter&gt;
+    bool operator&lt;=&gt;(const sub_match&lt;BiIter&gt;&amp; lhs,
+                     const typename iterator_traits&lt;BiIter&gt;::value_type&amp; rhs);
+
+  template&lt;class charT, class ST, class BiIter&gt;
+    basic_ostream&lt;charT, ST&gt;&amp;
+      operator&lt;&lt;(basic_ostream&lt;charT, ST&gt;&amp; os, const sub_match&lt;BiIter&gt;&amp; m);
+</pre>
+</blockquote>
+</li>
+
+<li>
+<p>Change <sref ref="[re.submatch]"/>, class template <tt>sub_match</tt> synopsis, as indicated:</p>
+
+<blockquote>
+<pre>
+namespace std {
+  template&lt;class BidirectionalIterator&gt;
+  class sub_match : public pair&lt;BidirectionalIterator, BidirectionalIterator&gt; {
+  public:
+    using value_type =
+      typename iterator_traits&lt;BidirectionalIterator&gt;::value_type;
+    [&hellip;]
+    int compare(const sub_match&amp; s) const;
+    int compare(const string_type&amp; s) const;
+    int compare(const value_type* s) const;
+    <ins>int compare(basic_string_view&lt;value_type&gt; s) const;</ins>
+  };
+}
+</pre>
+</blockquote>
+</li>
+
+<li>
+<p>Change <sref ref="[re.submatch.members]"/> as indicated:</p>
+
+<blockquote>
+<pre>
+int compare(const value_type* s) const;
+</pre>
+<blockquote>
+<p>
+-7- <i>Returns:</i> <tt>str().compare(s)</tt>.
+</p>
+</blockquote>
+<pre>
+<ins>int compare(basic_string_view&lt;value_type&gt; s) const;</ins>
+</pre>
+<blockquote>
+<p>
+<ins>-?- <i>Returns:</i> <tt>str().compare(s)</tt>.</ins>
+</p>
+</blockquote>
+</blockquote>
+</li>
+
+<li>
+<p>Change sub-clause <sref ref="[re.submatch.op]"/> as indicated:</p>
+
+<blockquote>
+<p>
+<b>32.8.3 <tt>sub_match</tt> non-member operators [re.submatch.op]</b>
+</p>
+<p>-1-
+Let
+<ins>
+<code><i>SV</i>(I)</code> be
+<code>basic_string_view&lt;typename iterator_traits&lt;I&gt;::value_type&gt;</code>
+and let
+</ins>
+<code><i>SM-CAT</i>(I)</code> be
+<code>compare_three_way_result_t&lt;<del>basic_string&lt;typename iterator_traits&lt;I&gt;::value_type&gt;</del><ins><i>SV</i>(I)</ins>&gt;</code>
+</p>
+
+<pre>template&lt;class BiIter&gt;
+  bool operator==(const sub_match&lt;BiIter&gt;&amp; lhs, const sub_match&lt;BiIter&gt;&amp; rhs);</pre>
+<blockquote>
+<p>
+-2- <i>Returns:</i>
+<tt>lhs.compare(rhs) == 0</tt>.
+</p>
+</blockquote>
+
+<pre>template&lt;class BiIter&gt;
+  bool operator&lt;=&gt;(const sub_match&lt;BiIter&gt;&amp; lhs, const sub_match&lt;BiIter&gt;&amp; rhs);</pre>
+<blockquote>
+<p>
+-3- <i>Returns:</i>
+<code>static_cast&lt;<i>SM-CAT</i>(BiIter)&gt;(lhs.compare(rhs) &lt;=&gt; 0)</code>.
+</p>
+</blockquote>
+
+<pre>template&lt;class BiIter, class ST, class SA&gt;
+  bool operator==(
+    const sub_match&lt;BiIter&gt;&amp; lhs,
+    const basic_string&lt;typename iterator_traits&lt;BiIter&gt;::value_type, ST, SA&gt;&amp; rhs);</pre>
+<blockquote>
+<p>
+-4- <i>Returns:</i>
+<tt>lhs.compare(<del>typename sub_match&lt;BiIter&gt;::string_type</del><ins><i>SV</i>(BiIter)</ins>(rhs.data(), rhs.size())) == 0</tt>.
+</p>
+</blockquote>
+
+<pre>template&lt;class BiIter, class ST, class SA&gt;
+  auto operator&lt;=&gt;(
+    const sub_match&lt;BiIter&gt;&amp; lhs,
+    const basic_string&lt;typename iterator_traits&lt;BiIter&gt;::value_type, ST, SA&gt;&amp; rhs);</pre>
+<blockquote>
+<p>
+-5- <i>Returns:</i>
+<pre><code>static_cast&lt;<i>SM-CAT</i>(BiIter)&gt;(lhs.compare(
+    <del>typename sub_match&lt;BiIter&gt;::string_type</del><ins><i>SV</i>(BiIter)</ins>(rhs.data(), rhs.size()))
+      &lt;=&gt; 0
+    )
+</code></pre>
+</p>
+</blockquote>
+
+
+<pre><ins>template&lt;class BiIter, class ST&gt;
+  bool operator==(
+    const sub_match&lt;BiIter&gt;&amp; lhs,
+    basic_string_view&lt;typename iterator_traits&lt;BiIter&gt;::value_type, ST&gt; rhs);</ins></pre>
+<blockquote>
+<p>
+<ins>
+-?- <i>Returns:</i>
+<tt>lhs.compare(<i>SV</i>(BiIter)(rhs.data(), rhs.size())) == 0</tt>.
+</ins>
+</p>
+</blockquote>
+
+<pre><ins>template&lt;class BiIter, class ST&gt;
+  auto operator&lt;=&gt;(
+    const sub_match&lt;BiIter&gt;&amp; lhs,
+    basic_string_view&lt;typename iterator_traits&lt;BiIter&gt;::value_type, ST&gt; rhs);</ins></pre>
 <blockquote>
 <p>
 <ins>
