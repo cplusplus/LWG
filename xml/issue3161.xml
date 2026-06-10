@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="3161" status="Open">
+<issue num="3161" status="NAD">
 <title>Container adapters mandate use of <tt>emplace_back</tt> but don't require it</title>
 <section><sref ref="[stack]"/> <sref ref="[queue]"/></section>
 <submitter>Marshall Clow</submitter>
@@ -85,6 +85,18 @@ wanted to see wording for in Kona.
 <note>2020-05-09; Reflector prioritization</note>
 <p>
 Set priority to 3 after reflector discussions.
+</p>
+<note>Brno 2026-06-10; Status changed: Open &rarr; NAD.</note>
+<p>
+No need to add it to the class-wide requirements, because `emplace_back` isn't
+needed unless you actually call this `emplace` function.
+We can't add a <i>requires-clause</i> or <i>Constraints</i>: element because
+that would only tell you whether the underlying container has an `emplace_back`
+member, not whether calling it would actually work for a given set of arguments
+(because none of the standard sequence containers constraint their
+`emplace_back` members).
+We don't feel any change is needed, it works for `vector` and `deque` and
+if it doesn't work for some other underlying container, don't call it.
 </p>
 </discussion>
 
