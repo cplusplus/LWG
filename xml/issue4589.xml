@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="4589" status="Ready">
+<issue num="4589" status="LEWG">
 <title><code>std::format</code> should escape null as <code>\0</code></title>
 <section><sref ref="[format.string.escaped]"/></section>
 <submitter>Tomasz Kamiński</submitter>
@@ -20,7 +20,12 @@ std::string_view sv("a\0b", 3);
 std::print("{:?}", sv); // "a\u{0}b" not "a\0b"
 </pre>
 
-<note>Brno 2026-06-10 Status changed: New &rarr; Ready.</note>
+<note>Brno 2026-06-10 Status changed: New &rarr; LEWG.</note>
+<p>
+LWG initially approved this as Ready, but Davis pointed out that this would
+produce strings that resemble an octal literal, e.g. `"abc\0123"`.
+LEWG should see it.
+</p>
 </discussion>
 
 <resolution>
