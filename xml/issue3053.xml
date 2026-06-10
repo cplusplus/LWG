@@ -20,6 +20,8 @@ error_code ec{1, test_category{}}; // ec holds a pointer/reference to a temporar
 
 <note>2018-06-18 after reflector discussion</note>
 <p>Priority set to 3</p>
+
+<note>Brno 2026-06-10; LWG agreed this is an improvement, need to change `error_condition` too.</note>
 </discussion>
 
 <resolution>
