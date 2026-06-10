@@ -22,9 +22,7 @@ error_code ec{1, test_category{}}; // ec holds a pointer/reference to a temporar
 <p>Priority set to 3</p>
 
 <note>Brno 2026-06-10; LWG agreed this is an improvement, need to change `error_condition` too.</note>
-</discussion>
-
-<resolution>
+<superseded>
 <p>This wording is relative to <a href="https://wg21.link/n4713">N4713</a>.</p>
 
 <ol>
@@ -41,6 +39,60 @@ namespace std {
     <ins>error_code(int val, const error_category&amp;&amp; cat) = delete;</ins>
     [&hellip;]
     // <sref ref="[syserr.errcode.modifiers]"/>, modifiers
+    void assign(int val, const error_category&amp; cat) noexcept;
+    <ins>void assign(int val, const error_category&amp;&amp; cat) = delete;</ins>
+    [&hellip;]
+  };
+  [&hellip;]
+}
+</pre>
+</blockquote>
+</li>
+</ol>
+</superseded>
+
+<note>2026-06-10; Tim provides new wording</note>
+</discussion>
+
+<resolution>
+<p>This wording is relative to <paper num="N5060"/>.</p>
+
+<ol>
+<li><p>Modify <sref ref="[syserr.errcode.overview]"/> as indicated:</p>
+
+<blockquote>
+<pre>
+namespace std {
+  class error_code {
+  public:
+    <i>// <sref ref="[syserr.errcode.constructors]"/>, constructors</i>
+    [&hellip;]
+    error_code(int val, const error_category&amp; cat) noexcept;
+    <ins>error_code(int val, const error_category&amp;&amp; cat) = delete;</ins>
+    [&hellip;]
+    // <sref ref="[syserr.errcode.modifiers]"/>, modifiers
+    void assign(int val, const error_category&amp; cat) noexcept;
+    <ins>void assign(int val, const error_category&amp;&amp; cat) = delete;</ins>
+    [&hellip;]
+  };
+  [&hellip;]
+}
+</pre>
+</blockquote>
+</li>
+<li><p>Modify <sref ref="[syserr.errcondition.overview]"/> as indicated:</p>
+
+<blockquote>
+<pre>
+namespace std {
+  class error_condition {
+  public:
+    <i>// <sref ref="[syserr.errcondition.constructors]"/>, constructors</i>
+    [&hellip;]
+    error_condition(int val, const error_category&amp; cat) noexcept;
+    <ins>error_condition(int val, const error_category&amp;&amp; cat) = delete;</ins>
+    [&hellip;]
+    // <sref ref="[syserr.errcondition.modifiers]"/>, modifiers
     void assign(int val, const error_category&amp; cat) noexcept;
     <ins>void assign(int val, const error_category&amp;&amp; cat) = delete;</ins>
     [&hellip;]
