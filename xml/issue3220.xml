@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="3220" status="New">
+<issue num="3220" status="NAD">
 <title>P0558 broke conforming C++14 uses of atomic <tt>shared_ptr</tt></title>
 <section><sref ref="[atomics.syn]"/></section>
 <submitter>Casey Carter</submitter>
@@ -65,6 +65,8 @@ in the type of the second parameter is non-deduced.
 
 <note>2019-07 Issue Prioritization</note>
 <p>Priority to 3 after discussion on the reflector.</p>
+<note>Brno 2026-06-10; Status changed: New &rarr; NAD.</note>
+<p>These functions were removed by <paper num="P2869R4"/>.</p>
 </discussion>
 
 <resolution>
