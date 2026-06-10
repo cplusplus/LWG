@@ -20,7 +20,7 @@ std::string_view sv("a\0b", 3);
 std::print("{:?}", sv); // "a\u{0}b" not "a\0b"
 </pre>
 
-<note>Brno 2026-06-10 Status changed: New &rarr; LEWG.</note>
+<note>Brno 2026-06-10; Status changed: New &rarr; LEWG.</note>
 <p>
 LWG initially approved this as Ready, but Davis pointed out that this would
 produce strings that resemble an octal literal, e.g. `"abc\0123"`.

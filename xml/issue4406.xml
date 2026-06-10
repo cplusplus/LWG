@@ -372,7 +372,7 @@ return std::forward&lt;U&gt;(v);</ins>
 Fix two `T` that should be `X` and fix incorrect deleted context in [optional.ref.observe].
 </p>
 
-<note>Brno 2026-06-10 Status changed: New &rarr; Ready.</note>
+<note>Brno 2026-06-10; Status changed: New &rarr; Ready.</note>
 
 </discussion>
 
