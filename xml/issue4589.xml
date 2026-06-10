@@ -1,0 +1,51 @@
+<?xml version='1.0' encoding='utf-8' standalone='no'?>
+<!DOCTYPE issue SYSTEM "lwg-issue.dtd">
+
+<issue num="4589" status="New">
+<title><code>std::format</code> should escape null as <code>\0</code></title>
+<section><sref ref="[format.string.escaped]"/></section>
+<submitter>Tomasz Kamiński</submitter>
+<date>10 Jun 2026</date>
+<priority>99</priority>
+
+<discussion>
+<p>
+As current specified the debug output of the <tt>std::format</tt> for the
+string containing null terminator should escape it as <tt>\u{0}</tt> instead
+of more conventional <tt>\0</tt>.
+</p>
+
+<pre>
+std::string_view sv("a\0b", 3);
+std::print("{:?}", sv); // "a\u{0}b" not "a\0b"
+</pre>
+</discussion>
+
+<resolution>
+<p>
+This wording is relative to <paper num="N5046"/>.
+</p>
+
+<ol>
+<li><p>Modify <sref ref="[tab:format.escape.sequences]"/>, Table 114 &mdash; Mapping of characters to escape sequences:</p>
+
+<blockquote>
+<table border="1">
+<thead style="text-align: center">
+<tr><th>Character</th><th>Escape sequence</th></tr>
+</thead>
+<tbody style="vertical-align: top">
+<tr>
+<td><ins>U+0000 NULL</ins></td>
+<td><ins>\0</ins></td>
+</tr>
+<tr><td>&hellip;</td><td>&hellip;</td></tr>
+</tbody>
+</table>
+</blockquote>
+</li>
+</ol>
+
+</resolution>
+
+</issue>
