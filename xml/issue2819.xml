@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="2819" status="New">
+<issue num="2819" status="Ready">
 <title>Unspecified <i>Return type:</i> elements</title>
 <section><sref ref="[thread.req.lockable]"/><sref ref="[thread.mutex.requirements]"/></section>
 <submitter>Agust&iacute;n K-ballo Berg&eacute;</submitter>
@@ -237,6 +237,8 @@ and has the following semantics:
 Now that we have the new element <i>Result:</i> specified in <sref ref="[structure.specifications]"/>,
 we can simply replace all occurrences of the <i>Return type:</i> by this element.
 </p>
+
+<note>Brno 2026-06-10; Change status: New &rarr; Ready.</note>
 </discussion>
 
 <resolution>
