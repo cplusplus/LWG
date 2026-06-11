@@ -172,6 +172,8 @@ definition of the term "constant initializer" which got lost by
 <a href="https://wg21.link/cwg2366">CWG 2366</a> but is still referenced by <sref ref="[istream.iterator.cons]"/> p3.
 </p>
 
+
+<note>Brno 2026-06-11; needs to be rebased, especially if <paper num="P3367"/> is approved.</note>
 </discussion>
 
 <resolution>
