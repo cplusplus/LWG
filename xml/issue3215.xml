@@ -40,8 +40,7 @@ default constructor could be <tt>constexpr</tt> friendly <em>but</em> not marked
 <note>2019-07 Issue Prioritization</note>
 <p>Priority to 2 after discussion on the reflector.</p>
 
-<strong>Previous resolution from Daniel [SUPERSEDED]:</strong>
-<blockquote class="note">
+<superseded>
 <p>This wording is relative to <a href="https://wg21.link/n4810">N4810</a>.</p>
 
 <ol>
@@ -69,7 +68,7 @@ for a constexpr function</del>. [&hellip;]
 </blockquote>
 </li>
 </ol>
-</blockquote>
+</superseded>
 
 <note>2020-06-08 Nina Dinka Ranns comments</note>
 <p>
