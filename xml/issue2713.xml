@@ -925,9 +925,7 @@ constructors corresponding to each new iterator pair constructor.
 The new <tt>from_range_t</tt> constructors have been added for each added new iterator pair constructor.
 Note that the corresponding deduction guides already exist.
 </p>
-</discussion>
-
-<resolution>
+<superseded>
 <p>This resolution is relative to <paper num="N4910"/>.</p>
 
 <ol>
@@ -1229,6 +1227,324 @@ namespace std {
 </li>
 
 </ol>
+
+</superseded>
+
+<note>Brno 2026-06-11; Jonathan provides new wording</note>
+<p>Needs `constexpr` sprinkled everywhere, rebase on current working draft.</p>
+
+</discussion>
+
+<resolution>
+<p>This resolution is relative to <paper num="N5046"/>.</p>
+
+<ol>
+<li><p>Add to the synopsis in <sref ref="[unord.map.overview]"/> p3:</p>
+
+<blockquote>
+<pre>
+namespace std {
+  template&lt;class Key, 
+           class T,
+           class Hash = hash&lt;Key&gt;,
+           class Pred = equal_to&lt;Key&gt;,
+           class Allocator = allocator&lt;pair&lt;const Key, T&gt;&gt;&gt; {
+  class unordered_map {
+  public:
+    [&hellip;]
+    constexpr unordered_map(size_type n, const hasher&amp; hf, const allocator_type&amp; a)
+      : unordered_map(n, hf, key_equal(), a) { }
+    <ins>template&lt;class InputIterator&gt;
+      constexpr unordered_map(InputIterator f, InputIterator l, const allocator_type&amp; a);</ins>
+    template&lt;class InputIterator&gt;
+      constexpr unordered_map(InputIterator f, InputIterator l, size_type n,
+                              const allocator_type&amp; a)
+        : unordered_map(f, l, n, hasher(), key_equal(), a) { }
+    template&lt;class InputIterator&gt;
+      constexpr unordered_map(InputIterator f, InputIterator l, size_type n, const hasher&amp; hf,
+                              const allocator_type&amp; a)
+        : unordered_map(f, l, n, hf, key_equal(), a) { }
+    <ins>template&lt;<i>container-compatible-range</i>&lt;value_type&gt; R&gt;
+      constexpr unordered_map(from_range_t, R&amp;&amp; rg, const allocator_type&amp; a);</ins>
+    template&lt;<i>container-compatible-range</i>&lt;value_type&gt; R&gt;
+      constexpr unordered_map(from_range_t, R&amp;&amp; rg, size_type n, const allocator_type&amp; a)
+        : unordered_map(from_range, std::forward&lt;R&gt;(rg), n, hasher(), key_equal(), a) { }
+    template&lt;<i>container-compatible-range</i>&lt;value_type&gt; R&gt;
+      constexpr unordered_map(from_range_t, R&amp;&amp; rg, size_type n, const hasher&amp; hf,
+                              const allocator_type&amp; a)
+        : unordered_map(from_range, std::forward&lt;R&gt;(rg), n, hf, key_equal(), a) { }
+    <ins>constexpr unordered_map(initializer_list&lt;value_type&gt; il, const allocator_type&amp; a);</ins>
+    constexpr unordered_map(initializer_list&lt;value_type&gt; il, size_type n, const allocator_type&amp; a)
+      : unordered_map(il, n, hasher(), key_equal(), a) { }
+    [&hellip;]
+  };
+}
+</pre>
+</blockquote>
+</li>
+
+<li><p>Insert the following new prototype specification just after <sref ref="[unord.map.cnstr]"/> p2</p>
+
+<blockquote>
+<pre>
+<ins>template&lt;class InputIterator&gt;
+  constexpr unordered_map(InputIterator f, InputIterator l, const allocator_type&amp; a)
+    : unordered_map(f, l, size_type(<em>see below</em>), hasher(), key_equal(), a) { }</ins>
+
+<ins>template&lt;<i>container-compatible-range</i>&lt;value_type&gt; R&gt;
+  constexpr unordered_map(from_range_t, R&amp;&amp; rg, const allocator_type&amp; a)
+    : unordered_map(from_range, std::forward&lt;R&gt;(rg), size_type(<em>see below</em>), hasher(), key_equal(), a) { }</ins>
+      
+<ins>constexpr unordered_map(initializer_list&lt;value_type&gt; il, const allocator_type&amp; a)
+  : unordered_map(il, size_type(<em>see below</em>), hasher(), key_equal(), a) { }</ins>
+</pre>
+<blockquote>
+<p>
+<ins>-?- <i>Remarks:</i> The initial number of buckets supplied by the <tt>size_type</tt> argument is implementation-defined.</ins>
+</p>
+</blockquote>
+</blockquote>
+
+</li>
+
+<li><p>Add to the synopsis in <sref ref="[unord.multimap.overview]"/> p3:</p>
+
+<blockquote>
+<pre>
+namespace std {
+  template&lt;class Key, 
+           class T,
+           class Hash = hash&lt;Key&gt;,
+           class Pred = equal_to&lt;Key&gt;,
+           class Allocator = allocator&lt;pair&lt;const Key, T&gt;&gt;&gt; {
+  class unordered_multimap {
+  public:
+    [&hellip;]
+    constexpr unordered_multimap(size_type n, const hasher&amp; hf, const allocator_type&amp; a)
+      : unordered_multimap(n, hf, key_equal(), a) { }
+    <ins>template&lt;class InputIterator&gt;
+      constexpr unordered_multimap(InputIterator f, InputIterator l, const allocator_type&amp; a);</ins>
+    template&lt;class InputIterator&gt;
+      constexpr unordered_multimap(InputIterator f, InputIterator l, size_type n,
+                                   const allocator_type&amp; a)
+        : unordered_multimap(f, l, n, hasher(), key_equal(), a) { }
+    template&lt;class InputIterator&gt;
+      constexpr unordered_multimap(InputIterator f, InputIterator l, size_type n,
+                                   const hasher&amp; hf, const allocator_type&amp; a)
+        : unordered_multimap(f, l, n, hf, key_equal(), a) { }
+    <ins>template&lt;<i>container-compatible-range</i>&lt;value_type&gt; R&gt;
+      constexpr unordered_multimap(from_range_t, R&amp;&amp; rg, const allocator_type&amp; a);</ins>
+    template&lt;<i>container-compatible-range</i>&lt;value_type&gt; R&gt;
+      constexpr unordered_multimap(from_range_t, R&amp;&amp; rg, size_type n, const allocator_type&amp; a)
+        : unordered_multimap(from_range, std::forward&lt;R&gt;(rg),
+                             n, hasher(), key_equal(), a) { }
+    [&hellip;]
+    <ins>constexpr unordered_multimap(initializer_list&lt;value_type&gt; il, const allocator_type&amp; a);</ins>
+    constexpr unordered_multimap(initializer_list&lt;value_type&gt; il, size_type n, const allocator_type&amp; a)
+      : unordered_multimap(il, n, hasher(), key_equal(), a) { }
+    [&hellip;]
+  };
+}
+</pre>
+</blockquote>
+</li>
+
+<li><p>Insert the following new prototype specification just after <sref ref="[unord.multimap.cnstr]"/> p2</p>
+
+<blockquote>
+<pre>
+<ins>template&lt;class InputIterator&gt;
+  constexpr unordered_multimap(InputIterator f, InputIterator l, const allocator_type&amp; a)
+    : unordered_multimap(f, l, size_type(<em>see below</em>), hasher(), key_equal(), a) { }</ins>
+
+<ins>template&lt;<i>container-compatible-range</i>&lt;value_type&gt; R&gt;
+  constexpr unordered_multimap(from_range_t, R&amp;&amp; rg, const allocator_type&amp; a)
+    : unordered_multimap(from_range, std::forward&lt;R&gt;(rg), size_type(<em>see below</em>), hasher(), key_equal(), a) { }</ins>
+
+<ins>constexpr unordered_multimap(initializer_list&lt;value_type&gt; il, const allocator_type&amp; a)
+  : unordered_multimap(il, size_type(<em>see below</em>), hasher(), key_equal(), a) { }</ins>
+</pre>
+<blockquote>
+<p>
+<ins>-?- <i>Remarks:</i> The initial number of buckets supplied by the <tt>size_type</tt> argument is implementation-defined.</ins>
+</p>
+</blockquote>
+</blockquote>
+
+</li>
+
+<li><p>Add to the synopsis in <sref ref="[unord.set.overview]"/> p3:</p>
+
+<blockquote>
+<pre>
+namespace std {
+  template&lt;class Key,
+           class Hash = hash&lt;Key&gt;,
+           class Pred = equal_to&lt;Key&gt;,
+           class Allocator = allocator&lt;Key&gt;&gt; {
+  class unordered_set {
+  public:
+    [&hellip;]
+    constexpr unordered_set(size_type n, const hasher&amp; hf, const allocator_type&amp; a)
+      : unordered_set(n, hf, key_equal(), a) { }
+    <ins>template&lt;class InputIterator&gt;
+      constexpr unordered_set(InputIterator f, InputIterator l, const allocator_type&amp; a);</ins>
+    template&lt;class InputIterator&gt;
+      constexpr unordered_set(InputIterator f, InputIterator l, size_type n,
+                              const allocator_type&amp; a)
+        : unordered_set(f, l, n, hasher(), key_equal(), a) { }
+    template&lt;class InputIterator&gt;
+      constexpr unordered_set(InputIterator f, InputIterator l, size_type n, const hasher&amp; hf,
+                              const allocator_type&amp; a)
+        : unordered_set(f, l, n, hf, key_equal(), a) { }
+    <ins>constexpr unordered_set(initializer_list&lt;value_type&gt; il, const allocator_type&amp; a);</ins>
+    constexpr unordered_set(initializer_list&lt;value_type&gt; il, size_type n,
+                            const allocator_type&amp; a)
+      : unordered_set(il, n, hasher(), key_equal(), a) { }
+    <ins>template&lt;<i>container-compatible-range</i>&lt;value_type&gt; R&gt;
+      constexpr unordered_set(from_range_t, R&amp;&amp; rg, const allocator_type&amp; a);</ins>
+    template&lt;<i>container-compatible-range</i>&lt;value_type&gt; R&gt;
+      constexpr unordered_set(from_range_t, R&amp;&amp; rg, size_type n, const allocator_type&amp; a)
+        : unordered_set(from_range, std::forward&lt;R&gt;(rg), n, hasher(), key_equal(), a) { }
+    [&hellip;]
+  };
+  
+  [&hellip;]
+  template&lt;class T, class Allocator&gt;
+    unordered_set(initializer_list&lt;T&gt;, typename <i>see below</i>::size_type, Allocator)
+      -&gt; unordered_set&lt;T, hash&lt;T&gt;, equal_to&lt;T&gt;, Allocator&gt;;
+
+  template&lt;class T, class Hash, class Allocator&gt;
+    unordered_set(initializer_list&lt;T&gt;, typename <i>see below</i>::size_type, Hash, Allocator)
+      -&gt; unordered_set&lt;T, Hash, equal_to&lt;T&gt;, Allocator&gt;;
+      
+  <ins>template&lt;class InputIterator, class Allocator&gt;
+    unordered_set(InputIterator, InputIterator, Allocator)
+      -&gt; unordered_set&lt;<i>iter-value-type</i>&lt;InputIterator&gt;,
+                       hash&lt;<i>iter-value-type</i>&lt;InputIterator&gt;&gt;,
+                       equal_to&lt;<i>iter-value-type</i>&lt;InputIterator&gt;&gt;,                           
+                       Allocator&gt;;
+
+  template&lt;class T, class Allocator&gt;
+    unordered_set(initializer_list&lt;T&gt;, Allocator) 
+      -&gt; unordered_set&lt;T, hash&lt;T&gt;, equal_to&lt;T&gt;, Allocator&gt;;</ins>
+}
+</pre>
+</blockquote>
+</li>
+
+<li><p>Insert the following new prototype specification just after <sref ref="[unord.set.cnstr]"/> p2</p>
+
+<blockquote>
+<pre>
+<ins>template&lt;class InputIterator&gt;
+  constexpr unordered_set(InputIterator f, InputIterator l, const allocator_type&amp; a)
+    : unordered_set(f, l, size_type(<em>see below</em>), hasher(), key_equal(), a) { }</ins>
+
+<ins>template&lt;<i>container-compatible-range</i>&lt;value_type&gt; R&gt;
+  constexpr unordered_set(from_range_t, R&amp;&amp; rg, const allocator_type&amp; a)
+    : unordered_set(from_range, std::forward&lt;R&gt;(rg), size_type(<em>see below</em>), hasher(), key_equal(), a) { }</ins>
+
+<ins>constexpr unordered_set(initializer_list&lt;value_type&gt; il, const allocator_type&amp; a)
+  : unordered_set(il, size_type(<em>see below</em>), hasher(), key_equal(), a) { }</ins>
+</pre>
+<blockquote>
+<p>
+<ins>-?- <i>Remarks:</i> The initial number of buckets supplied by the <tt>size_type</tt> argument is implementation-defined.</ins>
+</p>
+</blockquote>
+</blockquote>
+
+</li>
+
+<li><p>Add to the synopsis in <sref ref="[unord.multiset.overview]"/> p3:</p>
+
+<blockquote>
+<pre>
+namespace std {
+  template&lt;class Key,
+           class Hash = hash&lt;Key&gt;,
+           class Pred = equal_to&lt;Key&gt;,
+           class Allocator = allocator&lt;Key&gt;&gt; {
+  class unordered_multiset {
+  public:
+    [&hellip;]
+    constexpr unordered_multiset(size_type n, const hasher&amp; hf, const allocator_type&amp; a)
+      : unordered_multiset(n, hf, key_equal(), a) { }
+    <ins>template&lt;class InputIterator&gt;
+      constexpr unordered_multiset(InputIterator f, InputIterator l, const allocator_type&amp; a);</ins>
+    template&lt;class InputIterator&gt;
+      constexpr unordered_multiset(InputIterator f, InputIterator l, size_type n,
+                                   const allocator_type&amp; a)
+      : unordered_multiset(f, l, n, hasher(), key_equal(), a) { }
+    template&lt;class InputIterator&gt;
+      constexpr unordered_multiset(InputIterator f, InputIterator l, size_type n,
+                                   const hasher&amp; hf, const allocator_type&amp; a)
+      : unordered_multiset(f, l, n, hf, key_equal(), a) { }
+    <ins>template&lt;<i>container-compatible-range</i>&lt;value_type&gt; R&gt;
+      constexpr unordered_multiset(from_range_t, R&amp;&amp; rg, const allocator_type&amp; a);</ins>
+    template&lt;<i>container-compatible-range</i>&lt;value_type&gt; R&gt;
+      constexpr unordered_multiset(from_range_t, R&amp;&amp; rg, size_type n, const allocator_type&amp; a)
+        : unordered_multiset(from_range, std::forward&lt;R&gt;(rg),
+                             n, hasher(), key_equal(), a) { }
+    [&hellip;]
+    <ins>constexpr unordered_multiset(initializer_list&lt;value_type&gt; il, const allocator_type&amp; a);</ins>
+    constexpr unordered_multiset(initializer_list&lt;value_type&gt; il, size_type n,
+                                 const allocator_type&amp; a)
+      : unordered_multiset(il, n, hasher(), key_equal(), a) { }
+    [&hellip;]
+  };
+  
+  [&hellip;]
+  template&lt;class T, class Allocator&gt;
+    unordered_multiset(initializer_list&lt;T&gt;, typename see below ::size_type, Allocator)
+      -&gt; unordered_multiset&lt;T, hash&lt;T&gt;, equal_to&lt;T&gt;, Allocator&gt;;
+
+  template&lt;class T, class Hash, class Allocator&gt;
+    unordered_multiset(initializer_list&lt;T&gt;, typename see below ::size_type, Hash, Allocator)
+      -&gt; unordered_multiset&lt;T, Hash, equal_to&lt;T&gt;, Allocator&gt;;
+      
+  <ins>template&lt;class InputIterator, class Allocator&gt;
+    unordered_multiset(InputIterator, InputIterator, Allocator)
+      -&gt; unordered_multiset&lt;<i>iter-value-type</i>&lt;InputIterator&gt;,
+                            hash&lt;<i>iter-value-type</i>&lt;InputIterator&gt;&gt;,
+                            equal_to&lt;<i>iter-value-type</i>&lt;InputIterator&gt;&gt;,                  
+                            Allocator&gt;;
+
+  template&lt;class T, class Allocator&gt;
+    unordered_multiset(initializer_list&lt;T&gt;, Allocator) 
+      -&gt; unordered_multiset&lt;T, hash&lt;T&gt;, equal_to&lt;T&gt;, Allocator&gt;;</ins>
+}
+</pre>
+</blockquote>
+</li>
+
+<li><p>Insert the following new prototype specification just after <sref ref="[unord.multiset.cnstr]"/> p2</p>
+
+<blockquote>
+<pre>
+<ins>template&lt;class InputIterator&gt;
+  constexpr unordered_multiset(InputIterator f, InputIterator l, const allocator_type&amp; a)
+    : unordered_multiset(f, l, size_type(<em>see below</em>), hasher(), key_equal(), a) { }</ins>
+
+<ins>template&lt;<i>container-compatible-range</i>&lt;value_type&gt; R&gt;
+  constexpr unordered_multiset(from_range_t, R&amp;&amp; rg, const allocator_type&amp; a))
+    : unordered_multiset(from_range, std::forward&lt;R&gt;(rg), size_type(<em>see below</em>), hasher(), key_equal(), a) { }</ins>
+
+<ins>constexpr unordered_multiset(initializer_list&lt;value_type&gt; il, const allocator_type&amp; a)
+  : unordered_multiset(il, size_type(<em>see below</em>), hasher(), key_equal(), a) { }</ins>
+</pre>
+<blockquote>
+<p>
+<ins>-?- <i>Remarks:</i> The initial number of buckets supplied by the <tt>size_type</tt> argument is implementation-defined.</ins>
+</p>
+</blockquote>
+</blockquote>
+
+</li>
+
+</ol>
+
 
 </resolution>
 
