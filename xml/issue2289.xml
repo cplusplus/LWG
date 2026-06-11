@@ -41,8 +41,7 @@ improved and should require valid uses in constant expressions and as constant i
 LWG <iref ref="2833"/> overlaps considerably and both should be resolved together.
 </p>
 
-<strong>Previous resolution from Daniel [SUPERSEDED]:</strong>
-<blockquote class="note">
+<superseded>
 <p>This wording is relative to N3691.</p>
 
 <ol>
@@ -93,7 +92,7 @@ for this subobject</ins>.
 </li>
 
 </ol>
-</blockquote>
+</superseded>
 
 <note>2020-06-08 Nina Dinka Ranns comments</note>
 <p>

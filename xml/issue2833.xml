@@ -56,8 +56,7 @@ to write this paper; he's willing to be a co-author.</p>
 <note>2018-08-23 Batavia Issues processing</note>
 <p>Michael Wong to investigate.</p>
 
-<strong>Previous resolution from Daniel [SUPERSEDED]:</strong>
-<blockquote class="note">
+<superseded>
 <p>
 This wording is relative to <a href="https://wg21.link/n4640">N4640</a>.
 </p>
@@ -84,15 +83,14 @@ corresponding definitions.
 </blockquote>
 </li>
 </ol>
-</blockquote>
+</superseded>
 
 <note>2020-06-08 Nina Dinka Ranns comments and provides alternative wording</note>
 <p>
 The revised wording draft also resolves LWG <iref ref="2289"/>, LWG <iref ref="2829"/>, and LWG <iref ref="3215"/>.
 </p>
 
-<strong>Previous resolution [SUPERSEDED]:</strong>
-<blockquote class="note">
+<superseded>
 <p>
 This wording is relative to <a href="https://wg21.link/n4861">N4861</a>.
 </p>
@@ -124,7 +122,7 @@ specified in the description of <tt>F</tt>'s semantics can be used in a constant
 </p>
 </li>
 </ol>
-</blockquote>
+</superseded>
 
 <note>2020-10-02 Jens Maurer improves wording</note>
 <p>
