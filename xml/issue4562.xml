@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="4562" status="New">
+<issue num="4562" status="Ready">
 <title>`layout_stride::is_exhaustive` specification is problematic when there's an extent equal to 1</title>
 <section>
 <sref ref="[mdspan.layout.stride.obs]"/>
@@ -40,6 +40,8 @@ Set priority to 3 after reflector poll.
 Reflect implementation in the wording.
 </p>
 
+
+<note>Brno 2026-06-11; Change status: New &rarr; Ready.</note>
 </discussion>
 
 <resolution>
