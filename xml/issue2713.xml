@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="2713" status="New">
+<issue num="2713" status="Ready">
 <title>More missing allocator-extended constructors for unordered containers</title>
 <section><sref ref="[unord]"/></section>
 <submitter>Billy Robert O'Neal III</submitter>
@@ -1233,6 +1233,8 @@ namespace std {
 <note>Brno 2026-06-11; Jonathan provides new wording</note>
 <p>Needs `constexpr` sprinkled everywhere, rebase on current working draft.</p>
 
+
+<note>Brno 2026-06-11; Change status: New &rarr; Ready.</note>
 </discussion>
 
 <resolution>
