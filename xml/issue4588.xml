@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="4588" status="New">
+<issue num="4588" status="Ready">
 <title><code>mdspan</code> issue due to rewording for canonicalize slice</title>
 <section><sref ref="[mdspan.sub.overview]"/></section>
 <submitter>Christian Trott</submitter>
@@ -32,6 +32,9 @@ in this paragraph (or rather in the context where "valid slice specifier type"
 is used), hence we don't need to consider types convertible to things like
 `full_extent_t` or `index_type`.
 </p>
+
+<note>Brno 2026-06-11; Change status: New &rarr; Ready.</note>
+
 </discussion>
 
 <resolution>
