@@ -1,0 +1,93 @@
+<?xml version='1.0' encoding='utf-8' standalone='no'?>
+<!DOCTYPE issue SYSTEM "lwg-issue.dtd">
+
+<issue num="4594" status="New">
+<title>`data_member_spec` should throw on anonymous union types</title>
+<section><sref ref="[meta.reflection.define.aggregate]"/></section>
+<submitter>Jakub Jelinek</submitter>
+<date>04 June 2026</date>
+<priority>99</priority>
+
+<discussion>
+<p>
+<a href="https://www.open-std.org/jtc1/sc22/wg21/docs/cwg_defects.html#3130">CWG 3130</a> added to <sref ref="[class.union.anon]"/>:
+</p>
+<blockquote><p>
+"Each object of such an unnamed type shall be such an unnamed object."
+</p></blockquote>
+<p>
+restriction. I think we should therefore throw from `data_member_spec`
+if one attempts to use it with an anonymous union type.
+</p>
+<blockquote><pre>
+#include &lt;meta&gt;
+
+struct S { union { int a; long b; };
+constexpr auto ctx = std::meta::access_context::unchecked ();
+using U = [: members_of (^^S, ctx)[0] :];
+constexpr auto m = data_member_spec (^^U, { .name = "_" });
+</pre></blockquote>
+<p>
+So, add after <sref ref="[meta.reflection.define.aggregate]"/> bullet (5.2):
+</p>
+<blockquote>
+<ol style="list-style-type: none">
+<li><p>
+<ins>&mdash; `dealias(type)` does not represent an anonymous union type,</ins>
+</p></li>
+</ol>
+</blockquote>
+<p>
+Though, maybe better:
+</p>
+<blockquote>
+<ol style="list-style-type: none">
+<li><p>
+<ins>&mdash; `remove_all_extents(dealias(type))` does not represent an anonymous union type,</ins>
+</p></li>
+</ol>
+</blockquote>
+</discussion>
+
+<resolution>
+<p>
+This wording is relative to <paper num="N5046"/>.
+</p>
+
+<ol>
+<li>
+<p>Modify <sref ref="[meta.reflection.define.aggregate]"/> as indicated:</p>
+
+<blockquote>
+<pre>
+consteval info data_member_spec(info type, data_member_options options);
+</pre>
+<blockquote>
+<p>
+-4- <i>Returns</i>: [&hellip;]
+<p/>
+-5- <i>Throws</i>: `meta::exception` unless the following conditions are met:
+</p>
+<ol style="list-style-type: none">
+<li><p>
+(5.1) &mdash; `dealias(type)` represents either an object type or a reference type;
+</p></li>
+<li><p>
+<ins>(5.?) &mdash; `remove_all_extents(dealias(type))` does not represent an anonymous union type,</ins>
+</p></li>
+<li><p>
+(5.2) &mdash; [&hellip;]
+</p></li>
+<li><p>
+[&hellip;]
+</p></li>
+</ol>
+</blockquote>
+</blockquote>
+
+</li>
+
+ </ol>
+</resolution>
+
+</issue>
