@@ -1,0 +1,38 @@
+<?xml version='1.0' encoding='utf-8' standalone='no'?>
+<!DOCTYPE issue SYSTEM "lwg-issue.dtd">
+
+<issue num="4591" status="New">
+<title>`std::meta::current_function` should probably work in a local class</title>
+<section><sref ref="[meta.reflection.scope]"/></section>
+<submitter>S. B. Tam</submitter>
+<date>31 May 2026</date>
+<priority>99</priority>
+
+<discussion>
+<p>
+`std::meta::current_function` is specified to throw if <tt><i>CURRENT-SCOPE</i>(<i>P</i>)</tt> 
+does not represent a function. It is implied that `current_function` throws if the call is 
+directly contained in a local class, in which case it's actually in a function body, but indirectly.
+<p/>
+This might be an oversight, as neither <paper num="P3795"/> (which introduced this function) nor 
+<a href="https://wg21.link/P3795/github">https://wg21.link/P3795/github</a> has any discussion 
+concerning local classes.
+<p/>
+Example:
+</p>
+<blockquote><pre>
+#include &lt;meta&gt;
+
+template&lt;auto V&gt; struct A { static constexpr auto value = V; };
+
+consteval std::meta::info test() {
+  struct Local { using T = A&lt;std::meta::current_function()&gt;; }; // valid or not?
+  return Local::T::value;
+}
+</pre></blockquote>
+</discussion>
+
+<resolution>
+</resolution>
+
+</issue>
