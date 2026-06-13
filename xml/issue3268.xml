@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="3268" status="New">
+<issue num="3268" status="NAD">
 <title><tt>memory_order::memory_order_foo</tt> broken in C++20</title>
 <section><sref ref="[atomics.order]"/></section>
 <submitter>Eric Fiselier</submitter>
@@ -23,6 +23,13 @@ In order to prevent unnecessary breakage, we should re-add the <tt>memory_order_
 to the enumeration.
 </p>
 <note>2019-10 Priority set to 4 after reflector discussion</note>
+<note>Brno 2026-06-12; Status changed: New &rarr; NAD.</note>
+<p>
+LWG noted that two major implementations have removed these enumerators.
+One of them reported that they have not received any reports relating 
+to this removal after 8 years. LWG does not believe that it is necessary
+to re-add these names to the standard.
+</p>
 </discussion>
 
 <resolution>
