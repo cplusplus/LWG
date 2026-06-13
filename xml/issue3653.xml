@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="3653" status="New">
+<issue num="3653" status="Resolved">
 <title><tt>&lt;coroutine&gt;</tt> is freestanding, but uses <tt>std::hash</tt> which is not</title>
 <section><sref ref="[coroutine.syn]"/></section>
 <submitter>Jonathan Wakely</submitter>
@@ -28,6 +28,11 @@ but it's still a defect in C++20.
 <p>
 This wording would resolve the defect for C++20,
 but the issue should be closed as Resolved in C++23.
+</p>
+<note>Brno 2026-06-12; Status changed: New &rarr; Resolved.</note>
+<p>
+Resolved by <paper num="P1642"/> for C++23 and later.
+LWG has no objection to the proposed wording for C++20.
 </p>
 </discussion>
 
