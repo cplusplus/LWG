@@ -1,0 +1,52 @@
+<?xml version='1.0' encoding='utf-8' standalone='no'?>
+<!DOCTYPE issue SYSTEM "lwg-issue.dtd">
+
+<issue num="4593" status="New">
+<title>The first template argument of `std::saturating_cast` must be specifiable</title>
+<section><sref ref="[numeric.sat.cast]"/></section>
+<submitter>Jiang An</submitter>
+<date>02 June 2026</date>
+<priority>99</priority>
+
+<discussion>
+<p>
+Currently, <sref ref="[algorithms.requirements]"/>/15 allows implementations to reject explicitly 
+specifying template arguments for algorithms. Unfortunately, `std::saturating_cast` is also an 
+algorithm as it is specifying in the "Algorithms library" chapter, and its first template argument 
+must be explicitly specified. Without being "explicitly stated otherwise", `std::saturating_cast` 
+is effectively unusable.
+</p>
+</discussion>
+
+<resolution>
+<p>
+This wording is relative to <paper num="N5046"/>.
+</p>
+
+<ol>
+<li>
+<p>Modify <sref ref="[numeric.sat.cast]"/> as indicated:</p>
+
+<blockquote>
+<pre>
+template&lt;class R, class T&gt;
+  constexpr R saturating_cast(T x) noexcept;
+</pre>
+<blockquote>
+<p>
+-1- <i>Constraints</i>: `R` and `T` are signed or unsigned integer types (<sref ref="[basic.fundamental]"/>).
+<p/>
+-2- <i>Returns</i>: If `x` is representable as a value of type `R`, `x`; otherwise, either the largest 
+or smallest representable value of type `R`, whichever is closer to the value of `x`.
+<p/>
+<ins>-?- <i>Remarks</i>: An invocation may explicitly specify an argument for the template parameter `R`.</ins>
+</p>
+</blockquote>
+</blockquote>
+
+</li>
+
+ </ol>
+</resolution>
+
+</issue>
