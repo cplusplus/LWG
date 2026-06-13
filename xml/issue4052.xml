@@ -252,7 +252,10 @@ template&lt;class UnaryOperation&gt;
 </superseded>
 
 <note>2026-06-03; Jonathan provides new wording</note>
-
+<note>Brno 2026-06-12; LWG review</note>
+<p>
+We need to restore the precondition that the iterators form valid ranges.
+</p>
 </discussion>
 
 <resolution>
