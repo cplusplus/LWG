@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="3840" status="Open">
+<issue num="3840" status="NAD">
 <title><tt>filesystem::u8path</tt> should be undeprecated</title>
 <section><sref ref="[depr.fs.path.factory]"/></section>
 <submitter>Daniel Krügler</submitter>
@@ -61,6 +61,10 @@ Set priority to 3 after reflector poll. Set status to LEWG.
 LEWG discussed this in January and had no consensus for undeprecation.
 </p>
 
+<note>Brno 2026-06-12; Status changed: Open &rarr; NAD.</note>
+<p>
+Moved to NAD given LEWG decision.
+</p>
 </discussion>
 
 <resolution>
