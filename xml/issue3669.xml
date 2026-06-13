@@ -20,6 +20,11 @@ Any resolution would need CWG review.
 Set priority to 3 after reflector poll.
 </p>
 
+<note>Brno 2026-06-12; LWG discussion</note>
+<p>
+Cross reference is now p8.2. Add a bullet with the words from 
+<sref ref="[fs.op.funcs.general]"/>.
+</p>
 </discussion>
 
 <resolution>
