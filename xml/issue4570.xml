@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="4570" status="New">
+<issue num="4570" status="SG1">
 <title><tt><i>COMMON-DOMAIN</i></tt> should test for convertibility to `default_domain`</title>
 <section>
 <sref ref="[exec.snd.expos]"/>
@@ -52,6 +52,10 @@ Set priority to 3 after reflector poll.
 <p>
 The expected design regarding domain conversion is unclear, and
 concerns regarding special treatment of `default_domain` were raised.
+</p>
+<note>Brno 2026-06-12; Status changed: New &rarr; SG1.</note>
+<p>
+LWG would like SG1 to clarify the intended design regarding domain conversion.
 </p>
 </discussion>
 
