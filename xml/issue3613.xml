@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="3613" status="New">
+<issue num="3613" status="Resolved">
 <title>Specify that <tt>nullopt_t</tt> is copyable</title>
 <section><sref ref="[optional.nullopt]"/></section>
 <submitter>Frank Birbacher</submitter>
@@ -51,6 +51,11 @@ We need to say that it models copyable and is trivially copyable
 "has a copy constructor" isn't enough - <code>T(T&amp;)</code> is a copy constructor.
 </p>
 
+<note>Brno 2026-06-12; Status changed: New &rarr; Resolved.</note>
+<p>
+LWG does not think it necessary to guarantee triviality in the standard.
+The remainder of the issue is covered by the resolution of LWG <iref ref="4497"/>.
+</p>
 </discussion>
 
 <resolution>
