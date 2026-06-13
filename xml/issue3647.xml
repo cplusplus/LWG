@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="3647" status="New">
+<issue num="3647" status="Ready">
 <title><tt><i>nothrow-input-iterator</i></tt> constraints should not mention copying</title>
 <section><sref ref="[special.mem.concepts]"/></section>
 <submitter>Konstantin Varlamov</submitter>
@@ -45,6 +45,7 @@ as an implementation applies these expression conditions, we are safe.
 Set priority to 3 after reflector poll.
 </p>
 
+<note>Brno 2026-06-12; Status changed: New &rarr; Ready.</note>
 </discussion>
 
 <resolution>

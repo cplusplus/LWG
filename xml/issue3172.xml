@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="3172" status="New">
+<issue num="3172" status="Ready">
 <title>3-arg <tt>std::hypot</tt> is underspecified compared to the 2-arg overload</title>
 <section><sref ref="[c.math.hypot3]"/></section>
 <submitter>Matthias Kretz</submitter>
@@ -86,6 +86,7 @@ special values are given.</p>
 The wording has been updated following the current C WD, taking into account
 <a href="https://www.open-std.org/jtc1/sc22/wg14/www/docs/n2714.htm">WG14 N2714</a>.
 </p>
+<note>Brno 2026-06-12; Status changed: New &rarr; Ready.</note>
 </discussion>
 
 <resolution>

@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="4022" status="New">
+<issue num="4022" status="Ready">
 <title>Ambiguity in the formatting of negative years with format specifier <tt>%C</tt></title>
 <section><sref ref="[time.format]"/></section>
 <submitter>Jiang An</submitter>
@@ -141,6 +141,7 @@ representation of the century.</td>
 
 <note>2025-10-17; Jonathan provides new wording based on Option B</note>
 
+<note>Brno 2026-06-12; Status changed: New &rarr; Ready.</note>
 </discussion>
 
 <resolution>

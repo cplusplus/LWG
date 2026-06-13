@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="4039" status="New">
+<issue num="4039" status="Ready">
 <title>&sect;[ostream.formatted.print]: Inappropriate usage of <tt>badbit</tt> in definition of 
 <tt>vprint_unicode</tt>/<tt>vprint_nonunicode</tt></title>
 <section><sref ref="[ostream.formatted.print]"/></section>
@@ -84,6 +84,7 @@ in the error state of <tt>os</tt>.</p></li>
 
 <note>2025-10-16; Daniel provides new wording</note>
 
+<note>Brno 2026-06-12; Status changed: New &rarr; Ready.</note>
 </discussion>
 
 <resolution>

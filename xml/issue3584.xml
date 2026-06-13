@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="3584" status="New">
+<issue num="3584" status="Ready">
 <title>Clarify common comparison category conversions</title>
 <section><sref ref="[cmp.common]"/></section>
 <submitter>Peter Brett</submitter>
@@ -87,6 +87,7 @@ of <tt>Ts...</tt>, the expanded parameter pack, or <tt>void</tt> if any element 
 
 </blockquote>
 
+<note>Brno 2026-06-12; Status changed: New &rarr; Ready.</note>
 </discussion>
 
 <resolution>
