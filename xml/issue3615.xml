@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="3615" status="New">
+<issue num="3615" status="NAD">
 <title>The last specialization of <tt>incrementable_traits</tt> has wrong operand types</title>
 <section><sref ref="[incrementable.traits]"/></section>
 <submitter>Hewill Kang</submitter>
@@ -23,6 +23,10 @@ Some suggested NAD:
 "Implicit expression variations ([concepts.equality]/6) apply here."
 </p>
 
+<note>Brno 2026-06-12; Status changed: New &rarr; NAD.</note>
+<p>
+The standard is correct as written.
+</p>
 </discussion>
 
 <resolution>
