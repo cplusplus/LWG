@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="3722" status="New">
+<issue num="3722" status="NAD">
 <title><tt>ranges::to</tt> <tt>reserve</tt>s the wrong size</title>
 <section><sref ref="[range.utility.conv.to]"/></section>
 <submitter>Hewill Kang</submitter>
@@ -57,6 +57,12 @@ was approved in Hagenberg.
 It also conflicts with LWG <iref ref="4066"/>.
 </p>
 
+<note>Brno 2026-06-12; Status changed: New &rarr; NAD.</note>
+<p>
+LWG does not think pessimizing intended uses to optimize 
+for unintended uses of `ranges::to` as an append is the
+right tradeoff.
+</p>
 </discussion>
 
 <resolution>
