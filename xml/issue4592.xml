@@ -1,0 +1,88 @@
+<?xml version='1.0' encoding='utf-8' standalone='no'?>
+<!DOCTYPE issue SYSTEM "lwg-issue.dtd">
+
+<issue num="4592" status="New">
+<title>Preconditions of some virtual functions `std::codecvt` on character ranges are in a possibly unintended form</title>
+<section><sref ref="[locale.codecvt.virtuals]"/></section>
+<submitter>Jiang An</submitter>
+<date>01 June 2026</date>
+<priority>99</priority>
+
+<discussion>
+<p>
+Currently, some preconditions in <sref ref="[locale.codecvt.virtuals]"/> require that 
+"<tt><i>first</i> &lt;= <i>last</i></tt> is well-defined and `true`", where <tt><i>first</i></tt> 
+and <tt><i>last</i></tt> are pointer parameters that are intended to denote a range. These 
+preconditions seem specified too relaxedly, and make some necessary preconditions implicitly specified 
+in <i>Effects</i>. Per <sref ref="[expr.rel]"/>, comparing pointers that are not associated with the 
+same storage instance still has well-defined behavior although the result is unspecified. And even 
+if the result is specified to be true, it's possible for <tt><i>first</i></tt> and <tt><i>last</i></tt> 
+to point to elements of different array subobjects in the same complete object, which renders 
+<tt><i>last</i></tt> not reachable from <tt><i>first</i></tt>.
+</p>
+</discussion>
+
+<resolution>
+<p>
+This wording is relative to <paper num="N5046"/>.
+</p>
+
+<ol>
+<li>
+<p>Modify <sref ref="[locale.codecvt.virtuals]"/> as indicated:</p>
+
+<blockquote>
+<pre>
+result do_out(
+  stateT&amp; state,
+  const internT* from, const internT* from_end, const internT*&amp; from_next,
+  externT* to, externT* to_end, externT*&amp; to_next) const;
+  
+result do_in(
+  stateT&amp; state,
+  const externT* from, const externT* from_end, const externT*&amp; from_next,
+  internT* to, internT* to_end, internT*&amp; to_next) const;
+</pre>
+<blockquote>
+<p>
+-1- <i>Preconditions</i>: <del><tt>(from &lt;= from_end &amp;&amp; to &lt;= to_end)</tt> 
+is well-defined and `true`</del><ins>`[from, from_end)` and `[to, to_end)` are both valid ranges</ins>; 
+`state` is initialized, if at the beginning of a sequence, or else is equal to the result of converting the 
+preceding characters in the sequence.
+<p/>
+[&hellip;]
+</p>
+</blockquote>
+<pre>
+result do_unshift(stateT&amp; state, externT* to, externT* to_end, externT*&amp; to_next) const;
+</pre>
+<blockquote>
+<p>
+-7- <i>Preconditions</i>: <del><tt>(to &lt;= to_end)</tt> is well-defined and `true`</del><ins>`[to, to_end)` 
+is a valid range</ins>; `state` is initialized, if at the beginning of a sequence, or else is equal to the 
+result of converting the preceding characters in the sequence.
+<p/>
+[&hellip;]
+</p>
+</blockquote>
+[&hellip;]
+<pre>
+int do_length(stateT&amp; state, const externT* from, const externT* from_end, size_t max) const;
+</pre>
+<blockquote>
+<p>
+-12- <i>Preconditions</i>: <del><tt>(from &lt;= from_end)</tt> is well-defined and `true`</del><ins>`[from, from_end)` 
+is a valid range</ins>; `state` is initialized, if at the beginning of a sequence, or else is equal to the 
+result of converting the preceding characters in the sequence.
+<p/>
+[&hellip;]
+</p>
+</blockquote>
+</blockquote>
+
+</li>
+
+ </ol>
+</resolution>
+
+</issue>
