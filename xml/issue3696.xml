@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="3696" status="New">
+<issue num="3696" status="Ready">
 <title>"Basic integral types" should not be used</title>
 <section><sref ref="[stream.types]"/></section>
 <submitter>Jiang An</submitter>
@@ -73,6 +73,7 @@ or `ssize_t` in POSIX.</sub>
 
 <note>2025-10-21; Jonathan provides improved wording</note>
 
+<note>Brno 2026-06-12; Status changed: New &rarr; Ready.</note>
 </discussion>
 
 <resolution>

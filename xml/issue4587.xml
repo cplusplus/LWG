@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="4587" status="New">
+<issue num="4587" status="Ready">
 <title>Missing complexity for <code>unordered_map::at</code></title>
 <section><sref ref="[unord.map.elem]"/></section>
 <submitter>Pablo Halpern</submitter>
@@ -13,6 +13,7 @@
 During review of <paper num="P3091R5"/> Pablo pointed out that there is
 no <i>Complexity</i>: element for `unordered_map::at`.
 </p>
+<note>Brno 2026-06-12; Status changed: New &rarr; Ready.</note>
 </discussion>
 
 <resolution>

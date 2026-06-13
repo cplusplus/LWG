@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="3053" status="New">
+<issue num="3053" status="Ready">
 <title>Prohibit <tt>error_code</tt> construction from rvalues of <tt>error_category</tt></title>
 <section><sref ref="[syserr.errcode.overview]"/></section>
 <submitter>Antony Polukhin</submitter>
@@ -52,6 +52,7 @@ namespace std {
 </superseded>
 
 <note>2026-06-10; Tim provides new wording</note>
+<note>Brno 2026-06-12; Status changed: New &rarr; Ready.</note>
 </discussion>
 
 <resolution>
