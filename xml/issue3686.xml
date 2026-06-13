@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="3686" status="New">
+<issue num="3686" status="NAD">
 <title>In <tt>lazy_split_view</tt>, comparing a default-constructed <tt><i>outer-iterator</i></tt> or 
 <tt><i>inner-iterator</i></tt> with <tt>std::default_sentinel</tt> results in null pointer dereference</title>
 <section><sref ref="[range.lazy.split.outer]"/><sref ref="[range.lazy.split.inner]"/></section>
@@ -58,6 +58,11 @@ iterator cannot be default-constructed.
 Set priority to 3 after reflector poll. Three votes for NAD.
 </p>
 
+<note>Brno 2026-06-12; Status changed: New &rarr; NAD.</note>
+<p>
+LWG does not believe that the mentioned expectation is a reasonable one
+and does not think this is something we want to support.
+</p>
 </discussion>
 
 <resolution>
