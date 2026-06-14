@@ -26,7 +26,7 @@ This wording is relative to <paper num="N5046"/>.
 <p>Modify <sref ref="[zombie.names]"/>, Table 39 &mdash; "Zombie object-like macros" [tab:zombie.names.objmacro] as indicated:</p>
 
 <blockquote>
-<table border="none" border-collapse="collapse">
+<table border="none">
 <tr>
 <td><tt>argument_type</tt></td>
 </tr>
