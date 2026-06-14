@@ -1,0 +1,72 @@
+<?xml version='1.0' encoding='utf-8' standalone='no'?>
+<!DOCTYPE issue SYSTEM "lwg-issue.dtd">
+
+<issue num="4595" status="New">
+<title>`byte_string` and `wide_string` are not yet zombie names</title>
+<section><sref ref="[zombie.names]"/></section>
+<submitter>Jiang An</submitter>
+<date>09 June 2026</date>
+<priority>99</priority>
+
+<discussion>
+<p>
+Currently, `byte_string` and `wide_string`, which were member typedef-names of removed `wstring_convert`, 
+are not listed in <sref ref="[zombie.names]"/>. In the same concerns as LWG <iref ref="3885"/>, perhaps 
+we should also make them zombie names.
+</p>
+</discussion>
+
+<resolution>
+<p>
+This wording is relative to <paper num="N5046"/>.
+</p>
+
+<ol>
+<li>
+<p>Modify <sref ref="[zombie.names]"/>, Table 39 &mdash; "Zombie object-like macros" [tab:zombie.names.objmacro] as indicated:</p>
+
+<blockquote>
+<table border="none" border-collapse="collapse">
+<tr>
+<td><tt>argument_type</tt></td>
+</tr>
+<tr>
+<td><ins><tt>byte_string</tt></ins></td>
+</tr>
+<tr>
+<td><tt>first_argument_type</tt></td>
+</tr>
+<tr>
+<td><tt>io_state</tt></td>
+</tr>
+<tr>
+<td><tt>op</tt></td>
+</tr>
+<tr>
+<td><tt>open_mode</tt></td>
+</tr>
+<tr>
+<td><tt>preferred</tt></td>
+</tr>
+<tr>
+<td><tt>second_argument_type</tt></td>
+</tr>
+<tr>
+<td><tt>seek_dir</tt></td>
+</tr>
+<tr>
+<td><tt>strict</tt></td>
+</tr>
+<tr>
+<td><ins><tt>wide_string</tt></ins></td>
+</tr>
+</table>
+</blockquote>  
+
+
+</li>
+
+ </ol>
+</resolution>
+
+</issue>
