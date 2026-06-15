@@ -25,11 +25,40 @@ Concerns with meaning of  `'a'..'z'` for EBCDIC.
 Suggestion to use `U+0061..U+007A` like in <sref ref="[tab:lex.charset.basic]"/>,
 as alternative.
 </p>
+
+<superseded>
+<p>
+This wording is relative to <paper num="N5014"/>.
+</p>
+
+<ol>
+
+<li><p>Modify <sref ref="[charconv.to.chars]"/> as indicated:</p>
+
+<blockquote>
+<pre>
+constexpr to_chars_result to_chars(char* first, char* last, <i>integer-type</i> value, int base = 10);
+</pre>
+<blockquote>
+<p>
+-4- <i>Preconditions</i>: `base` has a value between 2 and 36 (inclusive).
+<p/>
+-5- <i>Effects</i>: The value of `value` is converted to a string of digits in the given base (with no redundant
+leading zeroes) <ins>in the ordinary literal encoding (<sref ref="[lex.charset]"/>)</ins>. Digits in the range 
+10..35 (inclusive) are represented as lowercase characters <tt><ins>'</ins>a<ins>'</ins>..<ins>'</ins>z<ins>'</ins></tt>. If
+`value` is less than zero, the representation starts with `'-'`.
+</p>
+</blockquote>
+</blockquote>
+</li>
+</ol>
+
+</superseded>
 </discussion>
 
 <resolution>
 <p>
-This wording is relative to <paper num="N5014"/>.
+This wording is relative to <paper num="N5046"/>.
 </p>
 
 <ol>
