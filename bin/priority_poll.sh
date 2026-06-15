@@ -82,7 +82,7 @@ then
   die "No such issue: $issue"
 fi
 
-if [ "$(xpath -q -e '/issue/@status' $xml)" != ' status="New"' ]
+if [ "$(xpath -q -e 'string(/issue/@status)' $xml)" != New ]
 then
   die "Status is not \"New\": $issue"
 fi
