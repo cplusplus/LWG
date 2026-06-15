@@ -1,7 +1,7 @@
 #!/bin/sh
 
 # Script to change an active issue to Ready and commit the change.
-# Usage: make_ready.sh <ISSUE NUM> [MEETING NAME]
+# Usage: make_ready.sh <ISSUE-NUM> [MEETING NAME]
 
 die() {
   echo "$0: $*" >&2
