@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="4513" status="New">
+<issue num="4513" status="Resolved">
 <title>`meta::exception::what()` should be `consteval`</title>
 <section><sref ref="[meta.reflection.exception]"/></section>
 <submitter>Jonathan Wakely</submitter>
@@ -21,6 +21,8 @@ has been approved.
 Set priority to 2 after reflector poll.
 </p>
 <p>Discussion about whether this is really necessary, or redundant.</p>
+<note>2026-06-15 Status changed: New &rarr; Resolved.</note>
+<p>Resolved by <paper num="P4101R1"/>, approved in Brno.</p>
 </discussion>
 
 <resolution>
