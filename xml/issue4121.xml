@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="4121" status="Voting">
+<issue num="4121" status="WP">
 <title><code>ranges::to</code> constructs associative containers via <code>c.emplace(c.end(), *it)</code></title>
 <section><sref ref="[range.utility.conv.general]"/></section>
 <submitter>Hewill Kang</submitter>
@@ -188,6 +188,7 @@ so there's no point using `c.emplace`. Just change that branch to use
 Set status to Tentatively Ready after nine votes in favour during reflector poll.
 </p>
 
+<note>Brno 2026-06-13; Status changed: Voting &rarr; WP.</note>
 </discussion>
 
 <resolution>

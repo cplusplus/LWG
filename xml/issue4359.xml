@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="4359" status="Voting">
+<issue num="4359" status="WP">
 <title>`as_awaitable(expr, p)` does not define semantics of call if `p` is not an lvalue</title>
 <section>
 <sref ref="[exec.as.awaitable]"/>
@@ -51,6 +51,7 @@ except that the evaluations of `expr` and `p` are indeterminately sequenced:
 
 <note>2026-05-19; LWG telecon. Status changed: New &rarr; Ready.</note>
 
+<note>Brno 2026-06-13; Status changed: Voting &rarr; WP.</note>
 </discussion>
 
 <resolution>

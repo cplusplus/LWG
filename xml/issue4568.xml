@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="4568" status="Voting">
+<issue num="4568" status="WP">
 <title>`std::execution::spawn_future` is mishandling dependent senders</title>
 <section>
 <sref ref="[exec.spawn.future]"/>
@@ -58,6 +58,7 @@ has an empty environment. Therefore, we should be using the empty environment wh
 <p>
 Set status to Tentatively Ready after five votes in favour during reflector poll.
 </p>
+<note>Brno 2026-06-13; Status changed: Voting &rarr; WP.</note>
 </discussion>
 
 <resolution>

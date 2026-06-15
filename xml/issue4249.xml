@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="4249" status="Voting">
+<issue num="4249" status="WP">
 <title>The past end issue for `lazy_split_view`</title>
 <section>
 <sref ref="[range.lazy.split.outer]"/>
@@ -199,6 +199,7 @@ else</ins>
 <note>2025-10-21; Hewill Kang provides simpler wording</note>
 <note>2026-05-22 LWG telecon; Status changed: New &rarr; Ready</note>
 
+<note>Brno 2026-06-13; Status changed: Voting &rarr; WP.</note>
 </discussion>
 
 <resolution>

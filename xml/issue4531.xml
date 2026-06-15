@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="4531" status="Voting">
+<issue num="4531" status="WP">
 <title>Should there be a feature-test macro update for constexpr `std::to_(w)string`?</title>
 <section><sref ref="[version.syn]"/></section>
 <submitter>Jiang An</submitter>
@@ -82,6 +82,7 @@ This wording is relative to <paper num="N5032"/>.
 <p>
 Set status to Tentatively Ready after six votes in favour during reflector poll.
 </p>
+<note>Brno 2026-06-13; Status changed: Voting &rarr; WP.</note>
 </discussion>
 
 <resolution>

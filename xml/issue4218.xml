@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="4218" status="Voting">
+<issue num="4218" status="WP">
 <title>Constraint recursion in `basic_const_iterator`'s relational operators due to ADL + CWG 2369</title>
 <section>
 <sref ref="[const.iterators.ops]"/>
@@ -90,6 +90,7 @@ into a deduced one with a constraint that requries it to be the same type
 as it was anyway.
 In this particular case, <paper num="P2600"/> might have helped.
 </p>
+<note>Brno 2026-06-13; Status changed: Voting &rarr; WP.</note>
 </discussion>
 
 <resolution>

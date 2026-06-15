@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="4521" status="Voting">
+<issue num="4521" status="WP">
 <title>Improve [atomics.order] p10 to have a consistent way with [intro.races]</title>
 <section><sref ref="[atomics.order]"/></section>
 <submitter>jim x</submitter>
@@ -119,6 +119,7 @@ write associated with the read-modify-write operation</del>.
 
 <note>2026-05-19; LWG telecon. Status changed: New &rarr; Ready.</note>
 
+<note>Brno 2026-06-13; Status changed: Voting &rarr; WP.</note>
 </discussion>
 
 <resolution>
