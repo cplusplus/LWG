@@ -51,6 +51,7 @@ bin/self_test_%: src/%.cpp
 
 check: bin/self_test_html_utils
 	@x=0; for test in $^; do ./$$test || x=$$? ; done; exit $$x
+	bin/lint.sh
 .PHONY: check
 
 $(PGMS):
