@@ -52,6 +52,17 @@ not in terms of function calls to those operators.
 <paper num="P3931R0"/> proposes making these (and other literal operators)
 consteval, which would resolve this issue by making it implementable.
 </p>
+<p>
+Alternatively, we could permit the integral literal operators to be implemented
+as literal operator templates, i.e. <code>template&lt;char... Digits&gt;</code>,
+as this makes it possible to check for overflow. This is what libstdc++ has
+done since the duration literals were first implemented.
+</p>
+<p>
+Alternatively, we could just remove the rule saying that overflow is detected.
+Neither libc++ nor MSVC implements the overflow check, so if it was a problem
+that affects many users we'd have heard about it.
+</p>
 
 </discussion>
 
@@ -61,8 +72,9 @@ This wording is relative to <paper num="N5046"/>.
 </p>
 
 <blockquote class="note">
-Two options are presented, choose only one.
+Three options are presented, choose only one.
 </blockquote>
+
 <strong>Option A</strong>
 <ol>
 <li>
@@ -228,6 +240,34 @@ is ill-formed, no diagnostic required.
 <blockquote class="note">
 Option B should also do the "`duration` <del>literal</del> <ins>value</ins>"
 drive-by fix, and probably update Annex C as well.
+</blockquote>
+</li>
+</ol>
+
+<strong>Option C</strong>
+<ol>
+<li>
+<p>Modify <sref ref="[time.duration.literals]"/> as indicated:</p>
+<blockquote>
+<p>-1-
+This subclause describes literal suffixes for constructing duration literals.
+The suffixes `h`, `min`, `s`, `ms`, `us`, `ns` denote duration values of the
+corresponding types `hours`, `minutes`, `seconds`, `milliseconds`,
+`microseconds`, and `nanoseconds` respectively if they are applied to
+<i>integer-literals</i>.
+</p>
+<p>-2-
+If any of these suffixes <del>are</del> <ins>is</ins> applied to a
+<i>floating-point-literal</i> the result is a `chrono::duration` literal
+with an unspecified <i>floating-point</i> representation.
+</p>
+<p><del>-3-
+If any of these suffixes are applied to an
+<i>integer-literal</i> and
+the resulting `chrono::duration` value cannot be
+represented in the result type because of overflow,
+the program is ill-formed.</del>
+</p>
 </blockquote>
 </li>
 </ol>
