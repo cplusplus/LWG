@@ -39,7 +39,7 @@ such as `operator""s(123)`.
 There is never overflow, because converting `unsigned long long` to
 e.g. `signed long long` is always well-formed, it's just not value-preserving.
 Unless it is used as a constant subexpression, a user-defined-literal such as
-123s is not constant evaluated, so in general checking the value at
+`123s` is not constant evaluated, so in general checking the value at
 compile-time is unimplementable.
 </p>
 <p>
