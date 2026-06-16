@@ -223,6 +223,10 @@ is ill-formed, no diagnostic required.
 </ins>
 </p>
 </blockquote>
+<blockquote class="note">
+Option B should also do the s/literal/value/ drive-by,
+and probably update Annex C as well.
+</blockquote>
 </li>
 </ol>
 
