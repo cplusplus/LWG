@@ -26,7 +26,7 @@ it's a conversion specification with the conversion specifier character `p`).
 LWG <iref ref="23"/> changed the spec to no longer refer to `scanf`,
 so now the meaning of the conversion specifier is even more unclear,
 and the manner in which `void*` is extracted is completely undefined.
-We use one of `strtol`, `strtoll, `strtold` and
+We use one of `strtol`, `strtoll`, `strtold` and
 (since LWG <iref ref="1169"/>) `strtof`, and `strtod`.
 But none of those can be used for `void*`.
 </p>
