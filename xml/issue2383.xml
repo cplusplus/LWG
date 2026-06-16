@@ -34,16 +34,16 @@ or a run-time error, not ill-formed.
 <note>2026-06-16; Jonathan adds wording.</note>
 <p>
 The library has no way to distinguish the case where a suffix is
-"applied to an integer literal", as opposed to a call using function syntax
-such as `operator""s(123)`.
-There is never overflow, because converting `unsigned long long` to
-e.g. `signed long long` is always well-formed, it's just not value-preserving.
+"applied to an integer literal", as opposed to using function call notation
+like `operator""s(123)`.
+There is never overflow, because converting `unsigned long long` to a `rep`
+such as `signed long long` is always well-formed, just not value-preserving.
 Unless it is used as a constant subexpression, a user-defined-literal such as
 `123s` is not constant evaluated, so in general checking the value at
 compile-time is unimplementable.
 </p>
 <p>
-If we made these operators `consteval` then using them as suffixes of a
+If we made these operators `consteval` then using them as the suffix of a
 <i>user-defined-literal</i> would always be a constant expression.
 It would make it ill-formed to call `operator""s(some_variable)`
 but I consider that perfectly acceptable. Such uses are absurd,
