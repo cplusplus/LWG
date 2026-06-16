@@ -24,9 +24,7 @@ the same situation, because they do not internally need to cache the <code>begin
 iteration.
 </p>
 <note>2026-05-29 LWG reflector poll; status: New &rarr; LEWG</note>
-</discussion>
-
-<resolution>
+<superseded>
 <p>
 This wording is relative to <paper num="N5032"/>.
 </p>
@@ -135,6 +133,205 @@ for use on subsequent calls.
 
 </ol>
 
+</superseded>
+
+<note>2026-06-16; Hewill provides new wording</note>
+
+</discussion>
+
+<resolution>
+<p>
+This wording is relative to <paper num="N5032"/>.
+</p>
+
+<ol>
+<li>
+<p>Modify <sref ref="[ranges.syn]"/>, header <code>&lt;ranges&gt;</code> synopsis, as indicated:</p>
+
+<blockquote>
+<pre>
+// <i>mostly freestanding</i>
+#include &lt;compare&gt;              // <i>see <a href="https://wg21.link/compare.syn">[compare.syn]</a></i>
+#include &lt;initializer_list&gt;     // <i>see <a href="https://wg21.link/initializer.list.syn">[initializer.list.syn]</a></i>
+#include &lt;iterator&gt;             // <i>see <a href="https://wg21.link/iterator.synopsis">[iterator.synopsis]</a></i>
+
+namespace std::ranges {
+  [&hellip;]
+  template&lt;class T&gt;
+    concept <i>sized-random-access-range</i> = <i>see below</i>;              // <i>exposition only</i>
+
+  <ins>template&lt;class T&gt;
+    concept <i>single-pass-range</i> = <i>see below</i>;                      // <i>exposition only</i></ins>
+  [&hellip;]
+}
+</pre>
+</blockquote>
+</li>
+<li>
+<p>Modify<sref ref="[range.refinements]"/> as indicated:</p>
+<blockquote>
+<p>-8-
+The exposition-only concept <i>`sized-random-access-range`</i> specifies the requirements
+of a `range` type that is sized and allows random access to its elements.
+</p>
+<pre>
+template&lt;class T&gt;
+  concept <i>sized-random-access-range</i> =           // <i>exposition only</i>
+    random_access_range&lt;T&gt; &amp;&amp; sized_range&lt;T&gt;;
+</pre>
+<p>
+[<i>Note 1</i>:
+This concept constrains some parallel algorithm overloads; see [algorithms].
+&mdash; <i>end note</i>]
+</p>
+<p>
+<ins>-?- The exposition-only concept <i>`single-pass-range`</i> specifies the
+requirements of a `range` type that can only be
+traversed once and does not guarantee multi-pass safety.</ins>
+</p>
+<blockquote class="note">
+[<i>Drafting note:</i>
+The `input_range` is not required in <i>`single-pass-range`</i>
+because views like `drop_view` can also apply on `output_range`.]
+</blockquote>
+<pre>
+<ins>template&lt;class T&gt;
+  concept <i>single-pass-range</i> =                   // <i>exposition only</i>
+    range&lt;T&gt; &amp;&amp; !forward_range&lt;T&gt;;</ins>
+</pre>
+</blockquote>
+</li>
+<li>
+<p>Modify <sref ref="[range.filter.view]"/> as indicated:</p>
+<blockquote class="note">
+[<i>Drafting note:</i>
+This just reuse <i>`single-pass-range`</i> concept in `filter_view to reduce.]
+</blockquote>
+<blockquote>
+<pre>
+namespace std::ranges {
+  template&lt;input_range V, indirect_unary_predicate&lt;iterator_t&lt;V&gt;&gt; Pred&gt;
+    requires view&lt;V&gt; &amp;&amp; is_object_v&lt;Pred&gt;
+  class filter_view : public view_interface&lt;filter_view&lt;V, Pred&gt;&gt; {
+    [&hellip;]
+    constexpr <i>iterator</i>&lt;true&gt; begin() const
+      requires <ins><i>single-pass-range</i></ins><del>(input_range&lt;const V&gt; &amp;&amp; !forward_range</del>&lt;const V&gt; &amp;&amp;
+               indirect_unary_predicate&lt;const Pred, iterator_t&lt;const V&gt;&gt;<del>)</del>;
+    [&hellip;]
+    constexpr <i>sentinel</i>&lt;true&gt; end() const
+      requires <ins><i>single-pass-range</i></ins><del>(input_range&lt;const V&gt; &amp;&amp; !forward_range</del>&lt;const V&gt; &amp;&amp;
+               indirect_unary_predicate&lt;const Pred, iterator_t&lt;const V&gt;&gt;<del>)</del> {
+      return <i>sentinel</i>&lt;true&gt;{*this};
+    }
+    [&hellip;]
+  };
+  [&hellip;]
+}</pre>
+</blockquote>
+<blockquote>[&hellip;]
+<pre>constexpr <i>iterator</i>&lt;true&gt; begin() const
+   requires <ins><i>single-pass-range</i></ins><del>(input_range&lt;const V&gt; &amp;&amp; !forward_range</del>&lt;const V&gt; &amp;&amp;
+            indirect_unary_predicate&lt;const Pred, iterator_t&lt;const V&gt;&gt;<del>)</del>;
+</pre>
+<p>-6-<i>Preconditions</i>:
+<code><i>pred_</i>.has_value()</code> is <code>true</code>.
+</p>
+</blockquote>
+</li>
+<li>
+<p>Modify <sref ref="[range.drop.view]"/> as indicated:</p>
+<blockquote class="note">
+[<i>Drafting note:</i>
+This reuse exposition only <code><i>sized-random-access-range</i></code>,
+which is defined in the same place as <i>`single-pass-range`</i>, to reduce typing.]
+</blockquote>
+<blockquote>
+<pre>
+namespace std::ranges {
+  template&lt;view V&gt;
+  class drop_view : public view_interface&lt;drop_view&lt;V&gt;&gt; {
+  public:
+    [&hellip;]
+    constexpr auto begin()
+      requires (!(<i>simple-view</i>&lt;V&gt; &amp;&amp;
+                  <ins>(<i>sized-random-access-range</i></ins><del>random_access_range&lt;const V&gt; &amp;&amp; sized_range</del>&lt;const V&gt;<ins> ||
+                   <i>single-pass-range</i>&lt;const V&gt;)</ins>));
+    constexpr auto begin() const
+      requires <ins><i>sized-random-access-range</i></ins><del>random_access_range&lt;const V&gt; &amp;&amp; sized_range</del>&lt;const V&gt;<ins> ||
+               <i>single-pass-range</i>&lt;const V&gt;</ins>;
+    [&hellip;]
+  };
+  [&hellip;]
+}
+</pre>
+[&hellip;]
+<pre>constexpr auto begin()
+   requires (!(<i>simple-view</i>&lt;V&gt; &amp;&amp;
+               <ins>(<i>sized-random-access-range</i></ins><del>random_access_range&lt;const V&gt; &amp;&amp; sized_range</del>&lt;const V&gt;<ins> ||
+                <i>single-pass-range</i>&lt;const V&gt;)</ins>));
+constexpr auto begin() const
+  requires <ins><i>sized-random-access-range</i></ins><del>random_access_range&lt;const V&gt; &amp;&amp; sized_range</del>&lt;const V&gt;<ins> ||
+           <i>single-pass-range</i>&lt;const V&gt;</ins>;
+</pre>
+<p>-3-<i>Returns</i>:
+<code>ranges::next(ranges::begin(<i>base_</i>), <i>count_</i>, ranges::end(<i>base_</i>))</code>.
+</p>
+<p>-4-<i>Remarks</i>:
+In order to provide the amortized constant-time complexity required by the
+`range` concept when `drop_view` models `forward_range`,
+the first overload caches the result within the `drop_view` for use on
+subsequent calls.
+</p>
+</blockquote>
+</li>
+<li>
+<p>Modify <sref ref="[range.drop.while.view]"/> as indicated:</p>
+<blockquote>
+<pre>
+namespace std::ranges {
+  template&lt;view V, class Pred&gt;
+    requires input_range&lt;V&gt; &amp;&amp; is_object_v&lt;Pred&gt; &amp;&amp;
+             indirect_unary_predicate&lt;const Pred, iterator_t&lt;V&gt;&gt;
+  class drop_while_view : public view_interface&lt;drop_while_view&lt;V, Pred&gt;&gt; {
+  public:
+    [&hellip;]
+
+    constexpr auto begin()
+      <ins>requires (!(<i>simple-view</i>&lt;V&gt; &amp;&amp; <i>single-pass-range</i>&lt;const V&gt;))</ins>;
+    <ins>constexpr auto begin() const
+      requires <i>single-pass-range</i>&lt;const V&gt; &amp;&amp;
+               indirect_unary_predicate&lt;const Pred, iterator_t&lt;const V&gt;&gt;;</ins>
+
+    constexpr auto end() <ins>requires (!<i>simple-view</i>&lt;V&gt;)</ins> { return ranges::end(<i>base_</i>); }
+    <ins>constexpr auto end() const requires range&lt;const V&gt; { return ranges::end(<i>base_</i>); }</ins>
+
+    [&hellip;]
+  };
+  [&hellip;]
+}
+</pre>
+[&hellip;]
+<pre>constexpr auto begin()
+  <ins>requires (!(<i>simple-view</i>&lt;V&gt; &amp;&amp; <i>single-pass-range</i>&lt;const V&gt;))</ins>;
+<ins>constexpr auto begin() const
+  requires <i>single-pass-range</i>&lt;const V&gt; &amp;&amp;
+           indirect_unary_predicate&lt;const Pred, iterator_t&lt;const V&gt;&gt;;</ins>
+</pre>
+<p>-3-<i>Preconditions</i>:
+<code><i>pred_</i>.has_value()</code> is <code>true</code>.
+</p>
+<p>-4-<i>Returns</i>:
+<code>ranges::find_if_not(<i>base_</i>, cref(*<i>pred_</i>))</code>.
+</p>
+<p>-5-<i>Remarks</i>:
+In order to provide the amortized constant-time complexity required by
+the `range` concept when `drop_while_view` models `forward_range`,
+the first <ins>overload</ins> <del>call</del> caches the result
+within the `drop_while_view` for use on subsequent calls.
+</p>
+</blockquote>
+</li>
+</ol>
 </resolution>
 
 </issue>
