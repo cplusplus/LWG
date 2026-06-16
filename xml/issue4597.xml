@@ -1,0 +1,201 @@
+<?xml version='1.0' encoding='utf-8' standalone='no'?>
+<!DOCTYPE issue SYSTEM "lwg-issue.dtd">
+
+<issue num="4597" status="New">
+<title>Unnecessary constraint for <code>join_view</code>/<code>join_with_view</code> to be <code>common_range</code></title>
+<section>
+<sref ref="[range.join.view]"/>
+<sref ref="[range.join.with.view]"/>
+</section>
+<submitter>Hewill Kang</submitter>
+<date>16 Jun 2026</date>
+<priority>99</priority>
+
+<discussion>
+<p>
+Currently, `join_view` will only be `common_range`
+if the following five constraints are met:
+</p>
+<blockquote><pre>
+constexpr auto end() {
+  if constexpr (forward_range&lt;V&gt; &amp;&amp;
+                is_reference_v&lt;InnerRng&gt; &amp;&amp; forward_range&lt;InnerRng&gt; &amp;&amp;
+                common_range&lt;V&gt; &amp;&amp; common_range&lt;InnerRng&gt;)
+    return <i>iterator</i>&lt;<i>simple-view</i>&lt;V&gt;&gt;{*this, ranges::end(<i>base_</i>)};
+  else
+    return <i>sentinel</i>&lt;<i>simple-view</i>&lt;V&gt;&gt;{*this};
+ }
+</pre></blockquote>
+
+<p>
+The first three are reasonable, since those are necessary conditions for
+<code>join_view::<i>iterator</i></code> being a
+`forward_iterator`: the iterator of both base and inner range should be
+`forward_iterator`,
+and the inner range should
+be a reference type to guarantees the multi-pass during the iteration, so that
+<code>join_view::<i>iterator</i></code> can synthesize
+the
+following
+`operator==`:
+</p>
+   <pre>
+   friend constexpr bool operator==(const <i>iterator</i>&amp; x, const <i>iterator</i>&amp; y)
+     requires <i>ref-is-glvalue</i> &amp;&amp; forward_range&lt;Base&gt; &amp;&amp;
+              equality_comparable&lt;iterator_t&lt;range_reference_t&lt;Base&gt;&gt;&gt; {
+     return x.<i>outer_</i> == y.<i>outer_</i> &amp;&amp; x.<i>inner_</i> == y.<i>inner_</i>;
+   }</pre>
+<p>
+Where <i>`outer_`</i> is the iterator of base,
+and <i>`inner_`</i> is the iterator of inner range wrapped in `optional`.
+The constraints in the function signature match the corresponding first
+three constraints.</p>
+<p>
+The fourth, requiring the base range to be `common_range`,
+is also reasonable because we construct <code>join_view::<i>iterator</i></code>
+via <code>ranges::end(<i>base_</i>)</code>,
+which is stored in its <i>`outer_`</i> member,
+which need to be the same type as <code>ranges::begin(<i>base_</i>)</code>.
+</p>
+<p>
+However, the last one, requiring the inner range to be a `common range`,
+is not very meaningful.
+Because we don't store the end iterator of the inner range in
+<code>join_view::<i>iterator</i></code>,
+the <code><i>inner_</i></code> member is just an `optional` with no value.
+When we call <code><i>satisfy</i>()</code> in the constructor
+(to skip over empty inner ranges), such a constraint serves no purpose
+if we examine <code><i>satisfy</i>()</code> closely:
+</p>
+<blockquote><pre>
+constexpr void satisfy() {
+  auto update_inner = [this](const iterator_t&lt;<i>Base</i>&gt;&amp; x) -> auto&amp;&amp; {
+  if constexpr (<i>ref-is-glvalue</i>)     // <i>*x is a reference</i>
+    return *x;
+  else
+    return <i>parent_</i>-&gt;<i>inner_</i>.<i>emplace-deref</i>(x);
+  };
+
+  for (; <i>outer</i>() != ranges::end(<i>parent_</i>-&gt;<i>base_</i>); ++<i>outer</i>()) {
+    auto&amp;&amp; inner = update_inner(<i>outer</i>());
+    <i>inner_</i> = ranges::begin(inner);
+    if (*<i>inner_</i> != ranges::end(inner))
+      return;
+  }
+  if constexpr (<i>ref-is-glvalue</i>)
+    <i>inner_</i>.reset();
+  }</pre></blockquote>
+<p>
+The call of `ranges::end(inner)` is only used to compare whether
+<i>`inner_`</i> has reached the end of the inner range,
+which has nothing to do with whether the inner range is a `common_range`.
+The only place where this condition is need is in the function body of
+`operator--`,
+which already imposes a constraint of
+<code>common_range&lt;range_reference_t&lt;Base&gt;&gt;</code>.
+</p>
+<p>
+As a result, this unnecessary constraint prevents some reasonable cases where
+`join_view` can be a `common_range`, for example:
+</p>
+   <pre>
+   vector&lt;simd::vec&lt;int&gt;&gt; v;
+   auto j = v | views::join;</pre>
+<p>
+As above, `simd::vec` is `random_access_range`,
+but since it is not `common_range`,
+its role as the inner range makes the `join_view` no longer `common_range`.
+This means we cannot directly pass `j.begin()` and `j.end()`
+into the legacy algorithm which is unsatisfactory.
+</p>
+<p>
+Note that `join_with_view` has the similar issue for being a `common_range`.
+</p>
+</discussion>
+
+<resolution>
+<p>
+This wording is relative to <paper num="N5032"/>.
+</p>
+
+<ol>
+<li>
+<p>Modify <sref ref="[range.join.view]"/>, class template `join_view` synopsis,
+as indicated:
+</p>
+<blockquote>
+<pre>
+namespace std::ranges {
+  template&lt;input_range V&gt;
+    requires view&lt;V&gt; &amp;&amp; input_range&lt;range_reference_t&lt;V&gt;&gt;
+  class join_view : public view_interface&lt;join_view&lt;V&gt;&gt; {
+    [&hellip;]
+    constexpr auto end() {
+      if constexpr (forward_range&lt;V&gt; &amp;&amp;
+                    is_reference_v&lt;InnerRng&gt; &amp;&amp; forward_range&lt;InnerRng&gt; &amp;&amp;
+                    common_range&lt;V&gt; <del>&amp;&amp; common_range&lt;InnerRng&gt;</del>)
+        return <i>iterator</i>&lt;<i>simple-view</i>&lt;V&gt;&gt;{*this, ranges::end(<i>base_</i>)};
+      else
+        return sentinel&lt;<i>simple-view</i>&lt;V&gt;&gt;{*this};
+    }
+
+    constexpr auto end() const
+      requires forward_range&lt;const V&gt; &amp;&amp;
+               is_reference_v&lt;range_reference_t&lt;const V&gt;&gt; &amp;&amp;
+               input_range&lt;range_reference_t&lt;const V&gt;&gt; {
+      if constexpr (forward_range&lt;range_reference_t&lt;const V&gt;&gt; &amp;&amp;
+                    common_range&lt;const V&gt; <del>&amp;&amp;</del>
+                    <del>common_range&lt;range_reference_t&lt;const V&gt;&gt;</del>)
+        return <i>iterator</i>&lt;true&gt;{*this, ranges::end(<i>base_</i>)};
+      else
+        return <i>sentinel</i>&lt;true&gt;{*this};
+    }
+  };
+  [&hellip;]
+}
+</pre>
+</blockquote>
+
+</li>
+<li>
+<p>Modify <sref ref="[range.join.with.view]"/> as indicated:</p>
+<blockquote>
+<pre>
+namespace std::ranges {
+  [&hellip;]
+  template&lt;input_range V, forward_range Pattern&gt;
+    requires view&lt;V&gt; &amp;&amp; input_range&lt;range_reference_t&lt;V&gt;&gt;
+          &amp;&amp; view&lt;Pattern&gt;
+          &amp;&amp; <i>concatable</i>&lt;range_reference_t&lt;V&gt;, Pattern&gt;
+  class join_with_view : public view_interface&lt;join_with_view&lt;V, Pattern&gt;&gt; {
+    [&hellip;]
+    constexpr auto end() {
+      if constexpr (forward_range&lt;V&gt; &amp;&amp;
+                    is_reference_v&lt;InnerRng&gt; &amp;&amp; forward_range&lt;InnerRng&gt; &amp;&amp;
+                    common_range&lt;V&gt; <del>&amp;&amp; common_range&lt;InnerRng&gt;</del>)
+        return <i>iterator</i>&lt;<i>simple-view</i>&lt;V&gt; &amp;&amp; <i>simple-view</i>&lt;Pattern&gt;&gt;{*this, ranges::end(<i>base_</i>)};
+      else
+        return <i>sentinel</i>&lt;<i>simple-view</i>&lt;V&gt; &amp;&amp; <i>simple-view</i>&lt;Pattern&gt;&gt;{*this};
+    }
+    constexpr auto end() const
+      requires forward_range&lt;const V&gt; &amp;&amp; forward_range&lt;const Pattern&gt; &amp;&amp;
+               is_reference_v&lt;range_reference_t&lt;const V&gt;&gt; &amp;&amp;
+               input_range&lt;range_reference_t&lt;const V&gt;&gt; &amp;&amp;
+               <i>concatable</i>&lt;range_reference_t&lt;const V&gt;, const Pattern&gt; {
+      using InnerConstRng = range_reference_t&lt;const V&gt;;
+      if constexpr (forward_range&lt;InnerConstRng&gt; &amp;&amp;
+                    common_range&lt;const V&gt; <del>&amp;&amp; common_range&lt;InnerConstRng&gt;</del>)
+        return <i>iterator</i>&lt;true&gt;{*this, ranges::end(<i>base_</i>)};
+      else
+        return <i>sentinel</i>&lt;true&gt;{*this};
+    }
+  };
+  [&hellip;]
+}
+</pre>
+</blockquote>
+</li>
+</ol>
+</resolution>
+
+</issue>
