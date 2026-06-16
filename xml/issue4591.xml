@@ -30,9 +30,44 @@ consteval std::meta::info test() {
   return Local::T::value;
 }
 </pre></blockquote>
+
+<note>2026-06-16, Barry Revzin provides wording</note>
 </discussion>
 
 <resolution>
+<p>
+This wording is relative to <paper num="N5046"/>.
+</p>
+
+<ol>
+<li>
+<p>Modify <sref ref="[meta.reflection.scope]"/> as indicated:</p>
+
+<blockquote>
+<pre>
+consteval info current_function();
+</pre>
+<blockquote>
+<p>
+-6- An invocation of `current_function` that appears at a program point <tt><i>P</i></tt> 
+is value-dependent (<sref ref="[temp.dep.constexpr]"/>) if <tt><i>eval-point</i>(<i>P</i>)</tt> 
+is enclosed by a scope corresponding to a templated entity.
+<p/>
+-7- Let <tt><i>S</i></tt> be <tt><i>CURRENT-SCOPE</i>(<i>P</i>)</tt>, where <tt><i>P</i></tt> 
+is the point at which the invocation of `current_function` lexically appears.
+<p/>
+-8- <i>Returns</i>: <tt><i>S</i></tt> <ins>if <tt><i>S</i></tt> represents a function. Otherwise, 
+<tt>parent_of(<i>S</i>)</tt></ins>.
+<p/>
+-9- <i>Throws</i>: `meta::exception` unless <tt><i>S</i></tt> represents a function.
+</p>
+</blockquote>
+</blockquote>
+
+</li>
+
+ </ol>
+
 </resolution>
 
 </issue>
