@@ -49,6 +49,8 @@ It would make it ill-formed to call `operator""s(some_variable)`
 but I consider that perfectly acceptable. Such uses are absurd,
 and the existing wording is all specified in terms of suffixes anyway,
 not in terms of function calls to those operators.
+<paper num="P3931R0"/> proposes making these (and other literal operators)
+consteval, which would resolve this issue by making it implementable.
 </p>
 
 </discussion>
