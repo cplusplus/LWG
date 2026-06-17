@@ -16,6 +16,25 @@ if it includes an evaluation that is not signal-safe.
 Such an included evaluation (consistent with CWG's understanding; see 
 <a href="https://cplusplus.github.io/CWG/issues/3162.html">CWG 3162</a>) may occur within a manifestly 
 constant-evaluated context, in which case, the specified undefined behaviour is gratuitous.
+<p/>
+[Example from Jens Maurer:] The issue here is:
+</p>
+<blockquote><pre>
+constexpr int f()
+{
+  try { throw 0; } catch (...) {}  // not signal-safe <sref ref="[support.signal]"/> bullets 3.4 and 3.5
+  return 0;
+}
+
+void handler(int)  // signal handler
+{
+  constexpr int x = f();  // ok?
+}
+</pre></blockquote>
+<p>
+The evaluation of "handler" includes the evaluation of `f`, which is not signal-safe.
+But that's not really a good state of affairs, because the constant evaluation of
+`f` certainly has no runtime impact on the signal handler.
 </p>
 </discussion>
 
