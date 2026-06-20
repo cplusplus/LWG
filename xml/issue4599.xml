@@ -33,6 +33,8 @@ never actually intended for an alias template to exist as part of its design. Th
 template is intended to hint that the expansion of the `_Atomic` macro to `std::atomic` 
 does not require a inclusion of the <tt>&lt;atomic&gt;</tt> header.
 <p/>
+However, `std::atomic` still appears directly inside the <tt>&lt;stdatomic.h&gt;</tt> 
+synopsis, so it is unclear how <tt><i>std-atomic</i></tt> contributes to that goal.
 </p>
 </discussion>
 
