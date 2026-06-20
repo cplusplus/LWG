@@ -1,0 +1,66 @@
+<?xml version='1.0' encoding='utf-8' standalone='no'?>
+<!DOCTYPE issue SYSTEM "lwg-issue.dtd">
+
+<issue num="4598" status="New">
+<title>&sect;[res.on.exception.handling] should cover exceptions specified outside a <i>Throws</i>: paragraph</title>
+<section>
+<sref ref="[res.on.exception.handling]"/>
+</section>
+<submitter>Louis Dionne</submitter>
+<date>18 Jun 2026</date>
+<priority>99</priority>
+
+<discussion>
+<p>
+<sref ref="[res.on.exception.handling]"/> p1 permits a standard library function to throw a
+type derived from the one it is specified to throw:
+</p>
+<blockquote><p>
+Any of the functions defined in the C++ standard library can report a failure
+by throwing an exception of a type described in its <i>Throws</i>: paragraph, or of a
+type derived from a type named in the <i>Throws</i>: paragraph that would be caught by
+a handler for the base type.
+</p></blockquote>
+<p>
+This is worded purely in terms of the function's <i>Throws</i>: paragraph. However,
+many functions specify the exception they throw outside of a <i>Throws</i>: paragraph.
+For example, `std::get` on a variant specifies it in an <i>Effects</i>: clause, 
+<sref ref="[variant.get]"/> p7:
+</p>
+<blockquote><p>
+<i>Effects</i>: If `v.index()` is `I`, returns a reference to the object stored in the
+variant. Otherwise, throws an exception of type `bad_variant_access`.
+</p></blockquote>
+<p>
+Read literally, <sref ref="[res.on.exception.handling]"/> p1 does not grant 
+implementations the ability to throw a derived type, because the exception is described 
+in an <i>Effects</i>: paragraph. I believe this is unintended: the permission should 
+apply whenever the standard specifies that a function throws an exception of a given type, 
+regardless of which clause says so.
+</p>
+</discussion>
+
+<resolution>
+<p>
+This wording is relative to <paper num="N5032"/>.
+</p>
+
+<ol>
+<li>
+<p>Modify <sref ref="[res.on.exception.handling]"/> as indicated:</p>
+
+<blockquote>
+<p>
+-1- Any of the functions defined in the C++ standard library can report a failure by throwing 
+an exception of a type <del>described in its <i>Throws</i>: paragraph</del><ins>that the 
+function is specified to throw (whether in a <i>Throws</i>: paragraph or elsewhere in its 
+specification)</ins>, or of a type derived from <del>a type named in the <i>Throws</i>: 
+paragraph</del><ins>such a type</ins> that would be caught by a handler 
+(<sref ref="[except.handle]"/>) for the base type.
+</p>
+</blockquote>
+</li>
+</ol>
+</resolution>
+
+</issue>
