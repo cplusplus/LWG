@@ -60,9 +60,8 @@ with "meet the layout mapping policy requirements for extents `E`". My understan
 goes against the spirit of the design where the layout mapping policy is not templated on the 
 specific extents, while the layout mapping is.
 </p>
-</discussion>
 
-<resolution>
+<superseded>
 <p>
 This wording is relative to <paper num="N5046"/>.
 </p>
@@ -78,6 +77,45 @@ type `E` that is a specialization of `extents`, <tt>MP::mapping&lt;E&gt;</tt> is
 a type `X` that meets the layout mapping requirements (<sref ref="[mdspan.layout.reqmts]"/>), and for
 which the <i>qualified-id</i> `X::layout_type` is valid and denotes the type `MP` and the 
 <i>qualified-id</i> `X::extents_type` denotes `E`.
+</p>
+</blockquote>
+</li>
+ </ol>
+</superseded>
+
+<note>2026-06-16, Mark Hoemmen comments and provides improved wording</note>
+<p>
+I don't like this. A layout is supposed to be a "function" from
+extents type to layout mapping type. We messed up with accessors; we
+should have done the same thing to make an "accessor policy" that is a
+function from element type to accessor type. (That would have solved
+the "given an mdspan with nonconst element type, how do I get an
+mdspan viewing the same elements with const element type?" problem.)
+<p/>
+It might make sense to let layouts restrict the set of valid ranks.
+That would fix the issue without requiring a redesign of `transposed`.
+I suggest the following fix.
+</p>
+</discussion>
+
+<resolution>
+<p>
+This wording is relative to <paper num="N5046"/>.
+</p>
+
+<ol>
+<li>
+<p>Modify <sref ref="[mdspan.layout.policy.reqmts]"/> as indicated:</p>
+
+<blockquote>
+<p>
+-1- A type `MP` meets the <i>layout mapping policy</i> requirements if 
+<ins>there exists at least one rank index `r` such that,</ins>
+for a type `E` <ins>of rank `r`</ins> that is a specialization of `extents`, 
+<tt>MP::mapping&lt;E&gt;</tt> is valid and denotes a type `X` that meets the 
+layout mapping requirements (<sref ref="[mdspan.layout.reqmts]"/>), and for
+which the <i>qualified-id</i> `X::layout_type` is valid and denotes the type 
+`MP` and the <i>qualified-id</i> `X::extents_type` denotes `E`.
 </p>
 </blockquote>
 
