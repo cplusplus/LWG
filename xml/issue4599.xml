@@ -1,0 +1,60 @@
+<?xml version='1.0' encoding='utf-8' standalone='no'?>
+<!DOCTYPE issue SYSTEM "lwg-issue.dtd">
+
+<issue num="4599" status="New">
+<title>Pointless <tt><i>std-atomic</i></tt> alias template</title>
+<section>
+<sref ref="[stdatomic.h.syn]"/>
+</section>
+<submitter>Jan Schultke</submitter>
+<date>18 Jun 2026</date>
+<priority>99</priority>
+
+<discussion>
+<p>
+Consider the following example:
+</p>
+<blockquote><pre>
+#include &lt;stdatomic.h&gt;
+
+struct _Atomic(int) x; // MSVC rejects, GCC and Clang accept
+</pre></blockquote>
+<p>
+GCC and Clang incorrectly accept this example because they expand the `_Atomic` 
+macro directly to `std::atomic` instead of the exposition-only <tt><i>std-atomic</i></tt> 
+alias template (<sref ref="[stdatomic.h.syn]"/>), which allows the use of a preceding 
+`struct` keyword.
+<p/>
+While the wording is clear, the exposition-only <tt><i>std-atomic</i></tt> alias template 
+causes disagreement among implementers (see discussion at 
+<a href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=122738">here</a> and 
+<a href="https://github.com/llvm/llvm-project/pull/168679">here</a>). <paper num="P0943R6"/> 
+never actually intended for an alias template to exist as part of its design. The alias 
+template is intended to hint that the expansion of the `_Atomic` macro to `std::atomic` 
+does not require a inclusion of the <tt>&lt;atomic&gt;</tt> header.
+<p/>
+</p>
+</discussion>
+
+<resolution>
+<p>
+This wording is relative to <paper num="N5032"/>.
+</p>
+
+<ol>
+<li>
+<p>Modify <sref ref="[stdatomic.h.syn]"/>, header <tt>&lt;stdatomic.h&gt;</tt> synopsis, as indicated:</p>
+
+<blockquote>
+<pre>
+template&lt;class T&gt;
+  using <i>std-atomic</i> = std::atomic&lt;T&gt;; // <i>exposition only</i>
+
+#define _Atomic(T) <del><i>std-atomic</i>&lt;T&gt;</del><ins>std::atomic&lt;T&gt;</ins>;
+</pre>
+</blockquote>
+</li>
+</ol>
+</resolution>
+
+</issue>
