@@ -1,0 +1,113 @@
+<?xml version='1.0' encoding='utf-8' standalone='no'?>
+<!DOCTYPE issue SYSTEM "lwg-issue.dtd">
+
+<issue num="4600" status="New">
+<title>Remove precondition on `hive::get_iterator()`, introduce <i>Returns</i> value when pointer is not within `*this`</title>
+<section>
+<sref ref="[hive.operations]"/>
+</section>
+<submitter>Matt Bentley</submitter>
+<date>21 Jun 2026</date>
+<priority>99</priority>
+
+<discussion>
+<p>
+LEWG decided on the precondition for `hive::get_iterator` ("`p` points to an element in `*this`") on the basis that:
+</p>
+<ol style="list-style-type: none">
+<li><p>
+(a) `hive` may free blocks during erasure, when they become empty of elements, which means accessing pointers to erased 
+elements within that block is UB (see: <paper num="P1726R5"/>). The UB occurs before the `get_iterator` call (upon 
+accessing the pointer's value to supply to the function), but it was felt that the precondition served as a warning 
+to the user to the best of my recollection.
+</p></li>
+<li><p>
+(b) given that the above is the case, the same conditions should apply to `T*` pointers to elements within other container 
+instances, `hive` or otherwise
+</p></li>
+</ol>
+<p>
+I feel that this is a mistake because:
+</p>
+<ol>
+<li><p>
+It potentially leads to diverging implementation behaviours (and people may come to rely on that implementation behaviour, 
+even though they shouldn't)
+</p></li>
+<li><p>
+It's inconsistent with how we deal with this situation in other containers. In most implementations of `vector` the iterator 
+is a pointer and expanding the vector memory block invalidates it. But `erase()` doesn't require that the iterator point to 
+an element within `*this` in the preconditions, and returns `end()` if it doesn't, as per <sref ref="[sequence.reqmts]"/> p45. 
+Unlike `get::iterator`, the access of the pointer occurs within `erase()`, but there's no prevention of UB. Same stuff applies 
+for `erase()` in the other containers.
+</p></li>
+<li><p>
+The pointer-zap rule may get changed at some point to make accessing a pointer to a non-allocated address defined behaviour, 
+in which case that concern may not exist.
+</p></li>
+<li><p>
+It is easy in all the implementation styles I've seen to date or can imagine, for an implementation to detect whether or not 
+a given pointer points to a value within `*this`.
+</p></li>
+<li><p>
+The precondition obviates better and more productive <i>Returns</i> behaviour, namely: returning `end()` when `p` doesn't point 
+to an element in `*this`. This is more useful to developers in the context of bug-fixing a scenario where a pointer to an element 
+in another container instance is accidentally supplied to <tt>this-&gt;get_iterator</tt>. The developer can see clearly what 
+is at fault, rather than getting a random crash, termination or other behaviour. If the pointer-zap rule is relaxed, the latter 
+could also be used in multithreaded access to `hive` in terms of determining whether or not a given element is 'live'.
+</p></li>
+<li><p>
+It is inappropriate for a precondition to primarily be something which is protecting against behaviour occuring outside of that 
+function i.e. during the pointer access. This makes the standard less durable via blurred inter-thing responsibility.
+</p></li>
+</ol>
+<p>
+Points against removing the precondition that I can think of:
+</p>
+<ol>
+<li><p>
+Pointer-zap rule may never be relaxed, but this has no impact on the inconsistency with the standard nor the use-case when the 
+`T*` points into a different container.
+</p></li>
+<li><p>
+Forcing implementations to check whether or not the element pointed to by `p` is erased, could potentially obviate better 
+performance in some hypothetical scenario (I can't imagine a scenario, but even my imagination is not without limits :). 
+I say this because minor alterations to `erase`, range-`erase` and `splice` are required in the reference implementation, 
+for this to take place. Those changes do not result in a performance difference. 
+</p></li>
+</ol>
+<p>
+If there is no change, at the very least this gives an opportunity for a record of why we decided not to do so.
+</p>
+</discussion>
+
+<resolution>
+<p>
+This wording is relative to <paper num="N5046"/>.
+</p>
+
+<ol>
+<li>
+<p>Modify <sref ref="[hive.operations]"/> as indicated:</p>
+
+<blockquote>
+<pre>
+iterator get_iterator(const_pointer p) noexcept;
+const_iterator get_iterator(const_pointer p) const noexcept;
+</pre>
+<blockquote>
+<p>
+<del>-17- <i>Preconditions</i>: `p` points to an element in `*this`.</del>
+<p/>
+-18- <i>Returns</i>: An `iterator` or `const_iterator` pointing to the same element as `p`.
+<ins>If no such element exists, `end()` is returned.</ins>
+<p/>
+-19- <i>Complexity</i>: Linear in the number of active blocks in `*this`.
+</p>
+</blockquote>
+</blockquote>
+</li>
+</ol>
+</resolution>
+
+</issue>
