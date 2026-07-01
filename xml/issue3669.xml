@@ -25,9 +25,38 @@ Set priority to 3 after reflector poll.
 Cross reference is now p8.2. Add a bullet with the words from 
 <sref ref="[fs.op.funcs.general]"/>.
 </p>
+
+<note>2026-06-30; Tim adds wording</note>
 </discussion>
 
 <resolution>
+<p>This wording is relative to <paper num="N5050"/>.</p>
+
+<ol>
+<li>
+<p>Modify <sref ref="[intro.abstract]"/>p8 as indicated:</p>
+
+<blockquote>
+<p>
+-8- The following specify the <i>observable behavior</i> of the program:
+</p>
+<ol style="list-style-type:none">
+<li><p>(8.1) &mdash; Accesses through volatile glvalues are evaluated strictly
+ according to the rules of the abstract machine.</p></li>
+<li><p>(8.2) &mdash; Data is delivered to the host environment to be written into files 
+(See also: ISO/IEC 9899:2024, 7.23.3).
+<p/> [<i>Note 4:</i> Delivering such data is followed by an observable checkpoint 
+(<sref ref="[cstdio.syn]"/>). Not all host environments provide access to file contents
+ before program termination. &mdash; <i>end note</i>]</p></li>
+<li><p><ins>(8.?) &mdash; Files in external storage are modified (<sref ref="[fs.op.funcs.general]"/>).</ins></p></li>
+<li><p>(8.3) &mdash;The input and output dynamics of interactive devices shall take place
+in such a fashion that prompting output is actually delivered before a program waits for
+input. What constitutes an interactive device is implementation-defined.</p></li>
+</ol>
+</blockquote>
+</li>
+</ol>
+
 </resolution>
 
 </issue>
