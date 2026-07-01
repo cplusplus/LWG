@@ -56,7 +56,7 @@ namespace std {
 </discussion>
 
 <resolution>
-<p>This wording is relative to <paper num="N5060"/>.</p>
+<p>This wording is relative to <paper num="N5050"/>.</p>
 
 <ol>
 <li><p>Modify <sref ref="[syserr.errcode.overview]"/> as indicated:</p>
