@@ -55,9 +55,11 @@ auto parse_date(std::istream & temp) -> std::chrono::year_month_day {
    int y;
    if (temp >> d >> month >> y)
    {
-      auto it = std::ranges::lower_bound(months, month, {}, &month_idx::first);
+      auto it = std::ranges::find_if(months, 
+         [&](auto m) { return month.starts_with(m);},
+         &month_idx::first);
 
-      if (it != std::end(months) and it->first == month)
+      if (it != std::end(months))
       {
          int m = it->second;
          if (auto ymd = std::chrono::year{y}/m/d; ymd.ok())
@@ -250,7 +252,7 @@ auto lwg::parse_issue_from_file(std::string tx, std::string const & filename,
       is.date = parse_date(temp);
    }
    catch(std::exception const & ex) {
-      throw bad_issue_file{filename, "date format error"};
+      throw bad_issue_file{filename, ex.what()};
    }
 
    // Get modification date
