@@ -1,0 +1,50 @@
+<?xml version='1.0' encoding='utf-8' standalone='no'?>
+<!DOCTYPE issue SYSTEM "lwg-issue.dtd">
+
+<issue num="4601" status="New">
+<title>Unclear error handling for C++ math functions</title>
+<section>
+<sref ref="[c.math.lerp]"/>
+</section>
+<submitter>Jan Schultke</submitter>
+<date>01 Jul 2026</date>
+<priority>99</priority>
+
+<discussion>
+<p>
+Consider the following example, which (mathematically) attempts to compute 
+<math xmlns="http://www.w3.org/1998/Math/MathML">
+<mn>&infin;</mn><mo>+</mo><mn>0</mn><mo>(</mo><mn>&infin;</mn><mo>-</mo><mn>&infin;</mn><mo>)</mo>
+</math>.
+</p>
+<blockquote><pre>
+#include &lt;cmath&gt;
+#include &lt;limits&gt;
+
+constexpr float inf = std::numeric_limits&lt;float&gt;::infinity();
+constexpr float x = std::lerp(inf, inf, 0.f);
+</pre></blockquote>
+<p>
+MSVC accepts this, but GCC and Clang reject it due to floating-point arithmetic that produces a NaN, 
+within the implementation of `std::lerp`.
+<p/>
+<sref ref="[library.c]"/> states that "call to a C standard library function is a non-constant library call 
+if it raises a floating-point exception other than FE_INEXACT", but this does not apply to `std::lerp` because 
+it is not a C standard library function. Since this means there exists no specification of when `std::lerp` 
+raises which floating-point exceptions, all calls to `std::lerp` are constant expressions (?), which is 
+inconsistent with the other functions in <tt>&lt;cmath&gt;</tt>.
+<p/>
+Similarly, the three-dimensional hypotenuse function is missing a specification of when any errors would 
+occur, which is addressed only partially by LWG <iref ref="3172"/> by saying that a "range error may occur" 
+without any specification of when exactly that would happen or when a domain error occurs.
+<p/>
+A possible direction is to ensure that <a href="https://cstd.eisie.net/c23#7.12.1">C23 §7.21.1 Treatment of error conditions</a> 
+applies to three-dimension `std::hypot` and `std::lerp` as well, despite those not being C standard library 
+functions.
+</p>
+</discussion>
+
+<resolution>
+</resolution>
+
+</issue>
