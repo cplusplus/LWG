@@ -1,0 +1,98 @@
+<?xml version='1.0' encoding='utf-8' standalone='no'?>
+<!DOCTYPE issue SYSTEM "lwg-issue.dtd">
+
+<issue num="4602" status="New">
+<title>Incorrect lower bound for the default floating-point representation</title>
+<section>
+<sref ref="[charconv.to.chars]"/>
+</section>
+<submitter>Victor Zverovich</submitter>
+<date>04 Jul 2026</date>
+<priority>99</priority>
+
+<discussion>
+<p>
+<paper num="P3505R4"/> (See also <a href="https://isocpp.org/files/papers/P3505R4.html">isocpp.org/P3505R4</a>) 
+unintentionally changed the semantics of the thresholds used to select between `f` and `e` formatting 
+for the default floating-point representation.
+<p/>
+<paper num="P3505R3"/> specified the thresholds as the representable values nearest to the mathematical boundaries:
+</p>
+<blockquote><p>
+The conversion specifier is `f` if the absolute value of value is in the range `[m, n)`, 
+where `m` is the nearest representable as `T` value of <tt>10<sup>-4</sup></tt> and `n` is the 
+nearest representable as `T` value of 
+<tt>std::numeric_limits&lt;T&gt;::radix<sup>std::numeric_limits&lt;T&gt;::digits + 1</sup></tt> 
+rounded down to the nearest power of `10`, `e` otherwise
+</p></blockquote>
+<p>
+However, P3505R4, approved in Brno, changed this to:
+</p>
+<blockquote><p>
+The conversion specifier is `f` if the absolute value of value is in the range `[l, u)`, 
+where `l` is the smallest value larger or equal to <tt>10<sup>-4</sup></tt> that is 
+representable by `T` and `u` is the largest value smaller or equal to 
+<tt>std::numeric_limits&lt;T&gt;::radix<sup>std::numeric_limits&lt;T&gt;::digits + 1</sup></tt> 
+rounded down to the nearest power of `10` representable by `T`, otherwise `e`.
+</p></blockquote>
+<p>
+This changes observable behavior. For example, on IEEE-754 implementations, the nearest 
+representable float value to <tt>10<sup>-4</sup></tt> is slightly smaller than <tt>10<sup>-4</sup></tt>. 
+Under the wording in P3505R3 it is formatted using `f`, while under the wording 
+in P3505R4 it is formatted using `e`.
+<p/>
+For example:
+</p>
+<blockquote><pre>
+std::format("{}", 0.0001f);
+</pre></blockquote>
+<p>
+produces `"0.0001"` under the original wording, but `"1e-4"` under the current wording.
+<p/>
+This change was unintended. The wording should be restored to match the original design 
+approved by LEWG.
+<p/>
+The upper bound is unaffected but reverting the wording changes there as well improves 
+consistency.
+</p>
+</discussion>
+
+<resolution>
+<p>
+This wording is relative to <paper num="N5046"/> plus the wording changes applied by
+<paper num="P3505R4"/> (<a href="https://isocpp.org/files/papers/P3505R4.html">isocpp.org/P3505R4</a>) 
+approved at the 2026 Brno meeting.
+</p>
+
+<ol>
+<li>
+<p>Modify <sref ref="[charconv.to.chars]"/> as indicated:</p>
+
+<blockquote>
+<pre>
+to_chars_result to_chars(char* first, char* last, <i>floating-point-type</i> value);
+</pre>
+<blockquote>
+<p>
+-7- <i>Effects</i>: Let `T` be <tt><i>floating-point-type</i></tt>. `value` is converted 
+to a string in the style of `printf` in the "C" locale.
+<p/>
+The conversion specifier is `f` if the absolute value of value is in the range `[l, u)`, 
+where `l` is the <del>smallest value larger or equal to <tt>10<sup>-4</sup></tt> that is 
+representable by `T`</del><ins>nearest representable as `T` value of <tt>10<sup>-4</sup></tt></ins> 
+and `u` is the <del>largest value smaller or equal to 
+<tt>std::numeric_limits&lt;T&gt;::radix<sup>std::numeric_limits&lt;T&gt;::digits + 1</sup></tt> 
+rounded down to the nearest power of `10` representable by `T`</del><ins>nearest 
+representable as `T` value of 
+<tt>std::numeric_limits&lt;T&gt;::radix<sup>std::numeric_limits&lt;T&gt;::digits + 1</sup></tt> 
+rounded down to the nearest power of 10</ins>, otherwise `e`.
+<p/>
+-8- <i>Throws</i>: Nothing.
+</p>
+</blockquote>
+</blockquote>
+</li>
+</ol>
+</resolution>
+
+</issue>
