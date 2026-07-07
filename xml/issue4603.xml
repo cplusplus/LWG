@@ -1,0 +1,49 @@
+<?xml version='1.0' encoding='utf-8' standalone='no'?>
+<!DOCTYPE issue SYSTEM "lwg-issue.dtd">
+
+<issue num="4603" status="Ready">
+<title>`layout_stride` should accept zero strides for empty `extents`</title>
+<section>
+<sref ref="[mdspan.layout.stride.cons]"/>
+</section>
+<submitter>Tomasz Kamiński</submitter>
+<date>7 Jun 2026</date>
+<priority>99</priority>
+
+<discussion>
+<p>
+`layout_stride` constructor accepting `extents` and `strides` values,
+requires that stride values are always greater than zero, even if the `extents`
+represents empty multidimensional index space. As for such `extents` types
+`layout_left` and `layout_right` mappings will result in zero strides,
+leads to inconsistencies in behavior:
+</p>
+<pre>
+  std::dextents&lt;size_t, 3&gt; ext{1, 0, 4};
+  std::layout_left ll{ext};
+  std::layout_stride ls{std::layout_left{ext}}; // OK, no precondition on constructor
+
+  std::array&lt;size, 3&gt; strides{ll.stride(0), ll.stride(1), ll.stride(2)};
+  std::layout_stride lse{ext, strides}; // UB, ll.stride(2) is zero
+</pre>
+
+<p>
+As by definition any mapping over empty multidimensional index space
+is unique, we should weaken that precondition and require non-zero
+strides only for non-empty `extents`.
+</p>
+
+<p>
+Furthermore, the current wording "result of converting `s[i]` to
+`index_type` is greater than `0`", forces implementation to convert
+the inputs to (mostly unsigned) `index_type` before the check,
+preventing detection of negative values. We should use <tt><i>index-cast</i></tt>
+instead.
+</p>
+
+</discussion>
+
+<resolution>
+</resolution>
+
+</issue>
