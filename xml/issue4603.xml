@@ -44,6 +44,46 @@ instead.
 </discussion>
 
 <resolution>
+<p>
+This wording is relative to <paper num="N5046"/>.
+</p>
+
+<ol>
+
+<li><p>Modify <sref ref="[mdspan.layout.stride.cons]"/> as indicated:</p>
+
+<blockquote>
+<pre>
+template&lt;class OtherIndexType&gt;
+  constexpr mapping(const extents_type&amp; e, span&lt;OtherIndexType, rank_&gt; s) noexcept;
+template&lt;class OtherIndexType&gt;
+  constexpr mapping(const extents_type&amp; e, const array&lt;OtherIndexType, rank_&gt;&amp; s) noexcept;
+</pre>
+<blockquote>
+<p>-3- <i>Constraints</i>: [&hellip;]</p>
+<p>-4- <i>Preconditions</i>:</p>
+<ul style="list-style-type: none">
+<li><p>(4.1) &mdash;
+<del>The result of converting <tt>s[<i>i</i>]</tt> to <tt>index_type</tt> is greater than <tt>0</tt></del>
+<ins><tt>extents_type::<i>index-cast</i>(s[<i>i</i>])</tt> is non-negative and representable as a value of
+type <tt>index_type</tt> (<sref ref="[basic.fundamental]"/>)</ins> for all <tt><i>i</i></tt> in the range
+<tt>[0, <i>rank_</i>)</tt>.</p></li>
+<li><p>(4.2) &mdash; <tt><i>REQUIRED-SPAN-SIZE</i>(e, s)</tt> is representable as a value of type
+<code>index_type</code> <del>(<sref ref="[basic.fundamental]"/>)</del>.</p></li>
+<li><p>(4.3) &mdash; If <ins>both</ins> <tt><i>rank_</i></tt> <ins>and the size of
+the multidimensional index space <tt>extents()</tt> are</ins><del>is</del> greater than <tt>0</tt>,
+then there exists a permutation <tt><i>P</i></tt> of the integers in the range <tt>[0, <i>rank_</i>)</tt>,
+such that <ins><tt>s[<i>p<sub>0</sub></i>] > 0</tt> is <tt>true</tt> and</ins> <tt>s[<i>p<sub>i</sub></i>] >=
+s[<i>p<sub>i-1</sub></i>] * e.extent(<i>p<sub>i</sub></i>)</tt> is <tt>true</tt> for all <tt><i>i</i></tt>
+in the range <tt>[1, <i>rank_</i>)</tt>, where <tt><i>p<sub><del>i</del><ins>k</ins></sub></i></tt> is the
+<tt><i><del>i</del><ins>k</ins></i><sup>th</sup></tt> element of <tt><i>P</i></tt>.</p></li>
+</ul>
+<p>-5- <i>Effects</i>: [&hellip;]</p>
+</blockquote>
+</blockquote>
+
+</li>
+</ol>
 </resolution>
 
 </issue>
