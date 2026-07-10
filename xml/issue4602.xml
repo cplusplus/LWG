@@ -8,7 +8,7 @@
 </section>
 <submitter>Victor Zverovich</submitter>
 <date>04 Jul 2026</date>
-<priority>99</priority>
+<priority>1</priority>
 
 <discussion>
 <p>
@@ -54,6 +54,12 @@ approved by LEWG.
 <p/>
 The upper bound is unaffected but reverting the wording changes there as well improves 
 consistency.
+</p>
+
+<note>2026-07-10; LWG telecon.</note>
+<p>
+Set priority to 1.
+We don't like the grammar of "nearest representable as `T` value".
 </p>
 </discussion>
 
