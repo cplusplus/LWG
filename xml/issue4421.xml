@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="4421" status="New">
+<issue num="4421" status="Ready">
 <title>Clarify the output encoding of `to_chars` for integers</title>
 <section><sref ref="[charconv.to.chars]"/></section>
 <submitter>Jan Schultke</submitter>
@@ -54,6 +54,9 @@ leading zeroes) <ins>in the ordinary literal encoding (<sref ref="[lex.charset]"
 </ol>
 
 </superseded>
+
+<note>2026-07-10; LWG telecon. Change status New &rarr; Ready.</note>
+
 </discussion>
 
 <resolution>
