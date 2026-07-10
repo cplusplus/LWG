@@ -8,7 +8,7 @@
 </section>
 <submitter>Tomasz Kamiński</submitter>
 <date>7 Jun 2026</date>
-<priority>99</priority>
+<priority>3</priority>
 
 <discussion>
 <p>
@@ -41,6 +41,13 @@ preventing detection of negative values. We should use <tt><i>index-cast</i></tt
 instead.
 </p>
 
+
+<note>2026-07-10; LWG telecon.</note>
+<p>
+Set priority to 3 after telecon poll.
+Tomasz to revise proposed resolution to incorporate other change from
+<paper num="P3959R0"/>, which deals with this same issue.
+</p>
 </discussion>
 
 <resolution>
