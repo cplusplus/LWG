@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="3669" status="New">
+<issue num="3669" status="Core">
 <title><tt>std::filesystem</tt> operations should be observable behaviour</title>
 <section><sref ref="[intro.abstract]"/></section>
 <submitter>Jens Maurer</submitter>
@@ -27,6 +27,9 @@ Cross reference is now p8.2. Add a bullet with the words from
 </p>
 
 <note>2026-06-30; Tim adds wording</note>
+
+<note>2026-07-10; LWG telecon. Change status New &rarr; Core.</note>
+
 </discussion>
 
 <resolution>

@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="4168" status="New">
+<issue num="4168" status="Core">
 <title>`std::start_lifetime_as` inadvertently has undefined behavior due to use of `std::bit_cast`</title>
 <section><sref ref="[obj.lifetime]"/></section>
 <submitter>Jan Schultke</submitter>
@@ -49,6 +49,10 @@ Set priority to 3 after reflector poll.
 <p>
 Core should review any change here.
 </p>
+
+<note>2026-07-10; LWG telecon. Change status New &rarr; Core.</note>
+<p>LWG had inconclusive discussion about the handling of erroneous bits.</p>
+
 </discussion>
 
 <resolution>
