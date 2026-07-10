@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="4542" status="Tentatively NAD">
+<issue num="4542" status="NAD">
 <title>Resuming a coroutine on a different execution agent that is an instance of a `std::thread` is underspecified</title>
 <section>
 <sref ref="[coroutine.handle.resumption]"/>
@@ -99,6 +99,7 @@ The point of paragraph 1 is to say when paragraphs 2-5 don't apply
 (e.g. if you suspend on the main thread and resume on a fiber).
 If you don't do anything like that, then paragraphs 2-5 describe the effects.
 </p>
+<note>2026-07-10 Status changed: Tentatively NAD &rarr; NAD.</note>
 </discussion>
 
 <resolution>

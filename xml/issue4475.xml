@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="4475" status="Tentatively NAD">
+<issue num="4475" status="NAD">
 <title>The description to single total order in [thread.mutex.requirements.mutex.general] is hollow</title>
 <section><sref ref="[thread.mutex.requirements.mutex.general]"/></section>
 <submitter>jim x</submitter>
@@ -65,6 +65,7 @@ for this purpose, these operations are considered as `memory_order::seq_cst` ope
 For atomic objects, the modification order is already a single total order, `seq_cst` or not.
 This isn't a useful change.
 </p>
+<note>2026-07-10 Status changed: Tentatively NAD &rarr; NAD.</note>
 </discussion>
 
 <resolution>
