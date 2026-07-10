@@ -8,7 +8,7 @@
 </section>
 <submitter>Jan Schultke</submitter>
 <date>01 Jul 2026</date>
-<priority>99</priority>
+<priority>3</priority>
 
 <discussion>
 <p>
@@ -41,6 +41,15 @@ without any specification of when exactly that would happen or when a domain err
 A possible direction is to ensure that <a href="https://cstd.eisie.net/c23#7.12.1">C23 §7.21.1 Treatment of error conditions</a> 
 applies to three-dimension `std::hypot` and `std::lerp` as well, despite those not being C standard library 
 functions.
+</p>
+
+<note>2026-07-10; LWG telecon.</note>
+<p>
+Set priority to 3 after LWG telecon.
+LWG would like blanket wording that says that `lerp` and 3-arg `hypot`
+(and the extended floating-point type overloads in `cmath`)
+are also covered by the blanket wording on when C `math.h` functions
+raise errors and are constant expressions.
 </p>
 </discussion>
 
