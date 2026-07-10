@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="4138" status="New">
+<issue num="4138" status="Ready">
 <title><tt>is_within_lifetime</tt> should mandate <tt>is_object</tt></title>
 <section><sref ref="[meta.const.eval]"/></section>
 <submitter>Corentin</submitter>
@@ -32,7 +32,7 @@ evaluation."
 </p>
 <p>
 "NAD, a function could have its lifetime constrained by a dynamic loader,
-so it seems wrong to assume that taling of function lifetimes makes no sense."
+so it seems wrong to assume that talking of function lifetimes makes no sense."
 </p>
 
 <superseded>
@@ -88,6 +88,9 @@ object's lifetime began within <tt>E</tt>.
 <p>
 Functions do not have lifetimes as far as the standard is concerned. However, there is no reason to ban `void`.
 </p>
+
+<note>2026-07-10; LWG telecon. Change status New &rarr; Ready.</note>
+
 </discussion>
 
 <resolution>
