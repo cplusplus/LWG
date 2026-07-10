@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="4357" status="New">
+<issue num="4357" status="Ready">
 <title><tt><i>connect-awaitable</i></tt> should use `is_void_v` to check for result-type of 
 `co_await` expression instead of <tt>same_as&lt;void&gt;</tt></title>
 <section>
@@ -49,6 +49,9 @@ and you never get <i>cv</i> void from `decltype` (<sref ref="[expr.type]"/> p2).
 <p>
 "But using `is_void_v` more clearly expresses the intent."
 </p>
+
+<note>2026-07-10; LWG telecon. Change status New &rarr; Ready.</note>
+
 </discussion>
 
 <resolution>
