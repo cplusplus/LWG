@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="4117" status="New">
+<issue num="4117" status="Ready">
 <title><tt>generator::<i>iterator</i></tt> should provide <tt>iterator_concept</tt></title>
 <section><sref ref="[coro.generator.iterator]"/></section>
 <submitter>Hewill Kang</submitter>
@@ -20,6 +20,13 @@ does improve consistency given that other C++20 iterators have such a member typ
 Set priority to 4 after reflector poll.
 Six votes for P0 (tentatively ready) but one NAD vote saying that if this
 has no effect on the category then there's no reason to add it.
+</p>
+
+<note>2026-07-10; LWG telecon. Change status New &rarr; Ready.</note>
+<p>
+This is not intended to establish a policy that `iterator_concept`
+must be present to model the iterator concepts,
+we're just adding it in one place in a standard library type.
 </p>
 
 </discussion>
