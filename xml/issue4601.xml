@@ -14,7 +14,7 @@
 <p>
 Consider the following example, which (mathematically) attempts to compute 
 <math xmlns="http://www.w3.org/1998/Math/MathML">
-<mn>&infin;</mn><mo>+</mo><mn>0</mn><mo>(</mo><mn>&infin;</mn><mo>-</mo><mn>&infin;</mn><mo>)</mo>
+<mn>&infin;</mn><mo>+</mo><mn>0</mn><mo>(</mo><mn>&infin;</mn><mo>−</mo><mn>&infin;</mn><mo>)</mo>
 </math>.
 </p>
 <blockquote><pre>
@@ -54,6 +54,37 @@ raise errors and are constant expressions.
 </discussion>
 
 <resolution>
+<p>
+This wording is relative to <paper num="N5046"/>.
+</p>
+
+<ol>
+<li>
+<p>Modify <sref ref="[cmath.syn]"/> as indicated:</p>
+
+<blockquote>
+<p>
+-1- The contents and meaning of the header <tt>&lt;cmath&gt;</tt>
+are a subset of the C standard library header <tt>&lt;math.h&gt;</tt>
+and only the declarations shown in the synopsis above are present,
+with the addition of a three-dimensional hypotenuse function (<sref ref="[c.math.hypot3]"/>),
+a linear interpolation function (<sref ref="[c.math.lerp]"/>), and
+the mathematical special functions described in <sref ref="[sf.cmath]"/>.
+[<i>Note 1</i>: Several functions have additional overloads in this document,
+but they have the same behavior as in the C standard library. &mdash; <i>end note</i>]
+</p>
+<ins>
+<p>
+-2- The treatment of error conditions specified in ISO/IEC 9899:2024 7.21.1
+and the effect of those errors on constant expressions specified in
+<sref ref="[library.c]"/> applies to all functions described in <sref ref="[c.math]"/>
+except those in <sref ref="[sf.cmath]"/>,
+even if not defined in the C standard library.
+</p>
+</ins>
+</blockquote>
+</li>
+</ol>
 </resolution>
 
 </issue>
