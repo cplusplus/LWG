@@ -47,6 +47,27 @@ by defining them close to copy-and-swap.
 
 <note>2018-06-18 after reflector discussion</note>
 <p>Priority set to 3; Antony volunteered to write a paper for Rapperswil.</p>
+
+<note>2026-07-14; Jonathan comments.</note>
+<p>
+The example in the discussion does not corrupt anything, because
+<code>is_nothrow_copy_constructible_v&lt;std::string&gt;</code> is `false` and
+<code>is_nothrow_move_constructible_v&lt;std::string&gt;</code> is `true`,
+so `operator=` does
+<code>emplace&lt;<i>j</i>&gt;(T<sub><i>j</i></sub>(std::forward&lt;T&gt;(t)))</code>
+which makes a copy before destroying the subobject.
+To demonstrate the problem, replace `str_t` with:
+<pre><code>struct str_t : std::string {
+  str_t(std::string s) : std::string(s) { }
+  str_t(const str_t&amp; s) : std::string(s) { }
+};
+</code></pre>
+</p>
+<p>
+The proposed resolution changes the copy-assignment operator,
+but the example uses <code>operator=(T&amp;&amp;)</code>.
+The proposed change would need to be made there instead.
+</p>
 </discussion>
 
 <resolution>
