@@ -155,7 +155,7 @@ may occur.</ins>
 -1- <i>Returns:</i> <math xmlns="http://www.w3.org/1998/Math/MathML"><msqrt><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo>
 <msup><mi>y</mi><mn>2</mn></msup><mo>+</mo><msup><mi>z</mi><mn>2</mn></msup></msqrt></math>.
 <p/>
-<ins>-?- <i>Recommended practice:</i> An implementation whose binary overload of `hypot` conforms to ISO/IEC 9899:2024 Annex F should provide the following guarantees:</ins>
+<ins>-?- <i>Recommended practice:</i> An implementation whose two-parameter overload of `hypot` conforms to ISO/IEC 9899:2024 Annex F should provide the following guarantees:</ins>
 </p>
 <ul>
 <li><p><ins><tt>hypot(x, y, z)</tt>, <tt>hypot(x, z, y)</tt>, <tt>hypot(z, y, x)</tt>, and <tt>hypot(x, y, -z)</tt> 
