@@ -1,0 +1,39 @@
+<?xml version='1.0' encoding='utf-8' standalone='no'?>
+<!DOCTYPE issue SYSTEM "lwg-issue.dtd">
+
+<issue num="4605" status="New">
+<title>Feature test macro for `error_code` formatting</title>
+<section><sref ref="[version.syn]"/></section>
+<submitter>Jonathan Wakely</submitter>
+<date>17 Jul 2026</date>
+<priority>99</priority>
+
+<discussion>
+<p>
+<paper num="P3395R6"/> added a `std::formatter` specialization for
+`error_code`, but without a feature test macro.
+During the review of the pull request to apply the paper to the working draft
+there were requests for a feature test macro.
+</p>
+</discussion>
+
+<resolution>
+<p>
+This wording is relative to <paper num="N5050"/>.
+</p>
+
+<ol>
+<li>
+<p>Modify <sref ref="[version.syn]"/> as indicated:</p>
+
+<blockquote><pre>
+#define __cpp_lib_format             202603L <i>// also in</i> &lt;format&gt;
+<ins>#define __cpp_lib_format_error_code  202606L <i>// also in</i> &lt;system_error&gt;</ins>
+#define __cpp_lib_format_path        202506L <i>// also in</i> &lt;filesystem&gt;
+</pre></blockquote>
+</li>
+</ol>
+
+</resolution>
+
+</issue>
