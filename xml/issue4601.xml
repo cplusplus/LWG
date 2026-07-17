@@ -77,9 +77,16 @@ but they have the same behavior as in the C standard library. &mdash; <i>end not
 <ins>
 -2- The treatment of error conditions specified in ISO/IEC 9899:2024 7.12.1
 and the effect of those errors on constant expressions specified in
-<sref ref="[library.c]"/> applies to all functions described in <sref ref="[c.math]"/>
-except those in <sref ref="[sf.cmath]"/>,
-even if not defined in the C standard library.
+<sref ref="[library.c]"/> apply to all functions described in <sref ref="[c.math]"/>
+except those in <sref ref="[sf.cmath]"/>.
+</ins>
+</p>
+<p>
+<ins>
+[<i>Note ?</i>:
+This applies even to functions and overloads not defined in
+the C standard library.
+&mdash; <i>end note</i>]
 </ins>
 </p>
 </blockquote>
