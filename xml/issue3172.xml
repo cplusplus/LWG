@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="3172" status="Open">
+<issue num="3172" status="Ready">
 <title>3-arg <tt>std::hypot</tt> is underspecified compared to the 2-arg overload</title>
 <section><sref ref="[c.math.hypot3]"/></section>
 <submitter>Matthias Kretz</submitter>
@@ -133,6 +133,8 @@ Matthias Kretz pointed out that `is_iec559` is the wrong test as it only concern
 Until C++ gets its own floating point annex, this wording downgrades the <i>Remarks:</i> to a <i>Recommended practice:</i>
 and ties the condition to whether the binary version of `hypot` conforms to C's Annex F.
 </p>
+
+<note>2026-07-17 LWG telecon; Change status New &rarr; Ready.</note>
 </discussion>
 
 <resolution>
