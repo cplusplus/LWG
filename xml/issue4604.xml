@@ -3,7 +3,7 @@
 
 <issue num="4604" status="New">
 <title>Remove volatile atomic wait/notify functions</title>
-<section><sref ref="[section.ref.here]"/></section>
+<section><sref ref="[atomics.wait]"/></section>
 <submitter>Jonathan Wakely</submitter>
 <date>17 Jul 2026</date>
 <priority>99</priority>
