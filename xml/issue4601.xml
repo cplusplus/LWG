@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="4601" status="New">
+<issue num="4601" status="Ready">
 <title>Unclear error handling for C++ math functions</title>
 <section>
 <sref ref="[c.math.lerp]"/>
@@ -51,6 +51,8 @@ LWG would like blanket wording that says that `lerp` and 3-arg `hypot`
 are also covered by the blanket wording on when C `math.h` functions
 raise errors and are constant expressions.
 </p>
+
+<note>2026-07-17 LWG telecon; Change status New &rarr; Ready.</note>
 </discussion>
 
 <resolution>
