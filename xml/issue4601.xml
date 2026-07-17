@@ -73,15 +73,15 @@ the mathematical special functions described in <sref ref="[sf.cmath]"/>.
 [<i>Note 1</i>: Several functions have additional overloads in this document,
 but they have the same behavior as in the C standard library. &mdash; <i>end note</i>]
 </p>
-<ins>
 <p>
--2- The treatment of error conditions specified in ISO/IEC 9899:2024 7.21.1
+<ins>
+-2- The treatment of error conditions specified in ISO/IEC 9899:2024 7.12.1
 and the effect of those errors on constant expressions specified in
 <sref ref="[library.c]"/> applies to all functions described in <sref ref="[c.math]"/>
 except those in <sref ref="[sf.cmath]"/>,
 even if not defined in the C standard library.
-</p>
 </ins>
+</p>
 </blockquote>
 </li>
 </ol>
