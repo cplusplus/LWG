@@ -1,0 +1,110 @@
+<?xml version='1.0' encoding='utf-8' standalone='no'?>
+<!DOCTYPE issue SYSTEM "lwg-issue.dtd">
+
+<issue num="4606" status="New">
+<title>Bullet (4.3) preconditions are too strict to implement `submdspan`</title>
+<section><sref ref="[mdspan.layout.stride.cons]"/></section>
+<submitter>Mark Hoemmen</submitter>
+<date>15 Jul 2026</date>
+<priority>99</priority>
+
+<discussion>
+<p>
+For `layout_stride::mapping`'s constructor that takes an extents
+object and an array (or span) of strides, the preconditions on the
+strides are too strict.  This makes it impossible to implement
+`submdspan`.
+<p/>
+For an example see <a href="https://godbolt.org/z/G5hz8bd3W">here</a>. 
+Let `x` be an `mdspan` such that `x.mapping()` is `layout_right::mapping` 
+with extents (2, 5).
+</p>
+<blockquote><pre>
+// slice denotes indices {0,2,4} out of original {0,1,2,3,4}.
+std::extent_slice slice{.offset=0, .extent=3, .stride=2};
+auto x_sub = std::submdspan(x, std::full_extent, slice);
+assert(x_sub.extent(0) == 2);
+assert(x_sub.extent(1) == 3);
+assert(x_sub.stride(0) == 5);
+assert(x_sub.stride(1) == 2);
+</pre></blockquote>
+<p>
+x_sub's `layout_type` is `layout_stride`. However, the only way to
+construct `layout_stride::mapping` with these extents and strides
+would be to call the constructor that takes an extents object and an
+array (or span) of strides, and the above extents and strides would
+violate the preconditions.
+</p>
+<blockquote><pre>
+// Extents and strides violate precondition of layout_stride::mapping
+// constructor (<sref ref="[mdspan.layout.stride.cons]"/> 4.3).
+assert(! (x_sub.stride(1) >= x_sub.stride(0) * x_sub.extent(0)));
+assert(! (x_sub.stride(0) >= x_sub.stride(1) * x_sub.extent(1)));
+</pre></blockquote>
+<p>
+The fix is to relax the preconditions so that they test only the
+possibility of overlap.
+</p>
+<blockquote><pre>
+assert(! (x_sub.stride(1) >= 1 + (x_sub.extent(0) - 1) * x_sub.stride(0)));
+assert(   x_sub.stride(0) >= 1 + (x_sub.extent(1) - 1) * x_sub.stride(1));
+</pre></blockquote>
+</discussion>
+
+<resolution>
+<p>
+This wording is relative to <paper num="N5050"/>.
+</p>
+
+<ol>
+<li>
+<p>Modify <sref ref="[mdspan.layout.stride.cons]"/> as indicated:</p>
+
+<blockquote>
+<pre>
+template&lt;class OtherIndexType&gt;
+  constexpr mapping(const extents_type&amp; e, span&lt;OtherIndexType, rank_&gt; s) noexcept;
+template&lt;class OtherIndexType&gt;
+  constexpr mapping(const extents_type&amp; e, const array&lt;OtherIndexType, rank_&gt;&amp; s) noexcept;
+</pre>
+<blockquote>
+<p>
+-3- <i>Constraints</i>: [&hellip;]
+<p/>
+-4- <i>Preconditions</i>: 
+</p>
+<ol style="list-style-type: none">
+<li><p>
+(4.1) &mdash; The result of converting <tt>s[<i>i</i>]</tt> to `index_type` is greater than `0` for 
+all <tt><i>i</i></tt> in the range <tt>[0, <i>rank_</i>)</tt>.
+</p></li>
+<li><p>
+(4.2) &mdash; <tt><i>REQUIRED-SPAN-SIZE</i>(e, s)</tt> is representable as a value of type 
+`index_type` (<sref ref="[basic.fundamental]"/>).
+</p></li>
+<li><p>
+(4.3) &mdash; If <tt><i>rank_</i></tt> is greater than `0`, then there exists a permutation 
+<tt><i>P</i></tt> of the integers in the range <tt>[0, <i>rank_</i>)</tt>, such that 
+<del><tt>s[<i>p<sub>i</sub></i>] &gt;= s[<i>p</i><sub><i>i</i>-1</sub>] * e.extent(<i>p</i><sub><i>i</i>-1</sub>)</tt></del> 
+<ins><tt>s[<i>p<sub>i</sub></i>] &gt;= 1 + (e.extent(<i>p</i><sub><i>i</i>-1</sub>) - 1) * s[<i>p</i><sub><i>i</i>-1</sub>]</tt></ins> 
+is `true` for all <tt><i>i</i></tt> in the range <tt>[1, <i>rank_</i>)</tt>, where <tt><i>p<sub>i</sub></i></tt>
+is the <tt><i>i</i></tt><sup>th</sup> element of <tt><i>P</i></tt>.
+<p/>
+[<i>Note 1</i>: For `layout_stride`, this condition is necessary and sufficient for `is_unique()` to 
+be `true`. &mdash; <i>end note</i>]
+</p></li>
+</ol>
+<p>
+-5- <i>Effects</i>: Direct-non-list-initializes <tt><i>extents_</i></tt> with `e`, and for all 
+<tt><i>d</i></tt> in the range <tt>[0, <i>rank_</i>)</tt>, direct-non-list-initializes
+<tt><i>strides_</i>[<i>d</i>]</tt> with <tt>as_const(s[<i>d</i>])</tt>.
+</p>
+</blockquote>
+</blockquote>
+</li>
+</ol>
+
+
+</resolution>
+
+</issue>
