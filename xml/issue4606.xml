@@ -53,7 +53,7 @@ assert(   x_sub.stride(0) &gt;= 1 + (x_sub.extent(1) - 1) * x_sub.stride(1));
 
 <resolution>
 <p>
-This wording is relative to <paper num="N5050"/>.
+This wording is relative to <paper num="N5054"/>.
 </p>
 
 <ol>
