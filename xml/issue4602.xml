@@ -61,9 +61,8 @@ consistency.
 Set priority to 1.
 We don't like the grammar of "nearest representable as `T` value".
 </p>
-</discussion>
 
-<resolution>
+<superseded>
 <p>
 This wording is relative to <paper num="N5046"/> plus the wording changes applied by
 <paper num="P3505R4"/> (<a href="https://isocpp.org/files/papers/P3505R4.html">isocpp.org/P3505R4</a>) 
@@ -81,13 +80,52 @@ to_chars_result to_chars(char* first, char* last, <i>floating-point-type</i> val
 <blockquote>
 <p>
 -7- <i>Effects</i>: Let `T` be <tt><i>floating-point-type</i></tt>. `value` is converted 
-to a string in the style of `printf` in the "C" locale.
+to a string in the style of `printf` in the `"C"` locale.
 <p/>
 The conversion specifier is `f` if the absolute value of value is in the range `[l, u)`, 
 where `l` is the <del>smallest value larger or equal to <tt>10<sup>-4</sup></tt> that is 
 representable by `T`</del><ins>nearest representable as `T` value of <tt>10<sup>-4</sup></tt></ins> 
 and `u` is the <del>largest value smaller or equal to 
 <tt>std::numeric_limits&lt;T&gt;::radix<sup>std::numeric_limits&lt;T&gt;::digits + 1</sup></tt> 
+rounded down to the nearest power of `10` representable by `T`</del><ins>nearest 
+representable as `T` value of 
+<tt>std::numeric_limits&lt;T&gt;::radix<sup>std::numeric_limits&lt;T&gt;::digits + 1</sup></tt> 
+rounded down to the nearest power of 10</ins>, otherwise `e`.
+<p/>
+-8- <i>Throws</i>: Nothing.
+</p>
+</blockquote>
+</blockquote>
+</li>
+</ol>
+
+</superseded>
+
+<note>2026-07-18; Daniel rebases wording against N5054</note>
+</discussion>
+
+<resolution>
+<p>
+This wording is relative to <paper num="N5054"/>.
+</p>
+
+<ol>
+<li>
+<p>Modify <sref ref="[charconv.to.chars]"/> as indicated:</p>
+
+<blockquote>
+<pre>
+to_chars_result to_chars(char* first, char* last, <i>floating-point-type</i> value);
+</pre>
+<blockquote>
+<p>
+-7- <i>Effects</i>: Let `T` be <tt><i>floating-point-type</i></tt>. `value` is converted 
+to a string in the style of `printf` in the `"C"` locale. The conversion specifier is `f` 
+if the absolute value of `value` is in the range <tt>[<i>l</i>, <i>u</i>)</tt>, 
+where <tt><i>l</i></tt> is the <del>smallest value larger than or equal to <tt>10<sup>-4</sup></tt> 
+that is representable by `T`</del><ins>nearest representable as `T` value of 
+<tt>10<sup>-4</sup></tt></ins> and <tt><i>u</i></tt> is the <del>largest value smaller than 
+or equal to <tt>std::numeric_limits&lt;T&gt;::radix<sup>std::numeric_limits&lt;T&gt;::digits + 1</sup></tt> 
 rounded down to the nearest power of `10` representable by `T`</del><ins>nearest 
 representable as `T` value of 
 <tt>std::numeric_limits&lt;T&gt;::radix<sup>std::numeric_limits&lt;T&gt;::digits + 1</sup></tt> 
