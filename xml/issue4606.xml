@@ -38,16 +38,16 @@ violate the preconditions.
 <blockquote><pre>
 // Extents and strides violate precondition of layout_stride::mapping
 // constructor (<sref ref="[mdspan.layout.stride.cons]"/> 4.3).
-assert(! (x_sub.stride(1) >= x_sub.stride(0) * x_sub.extent(0)));
-assert(! (x_sub.stride(0) >= x_sub.stride(1) * x_sub.extent(1)));
+assert(! (x_sub.stride(1) &gt;= x_sub.stride(0) * x_sub.extent(0)));
+assert(! (x_sub.stride(0) &gt;= x_sub.stride(1) * x_sub.extent(1)));
 </pre></blockquote>
 <p>
 The fix is to relax the preconditions so that they test only the
 possibility of overlap.
 </p>
 <blockquote><pre>
-assert(! (x_sub.stride(1) >= 1 + (x_sub.extent(0) - 1) * x_sub.stride(0)));
-assert(   x_sub.stride(0) >= 1 + (x_sub.extent(1) - 1) * x_sub.stride(1));
+assert(! (x_sub.stride(1) &gt;= 1 + (x_sub.extent(0) - 1) * x_sub.stride(0)));
+assert(   x_sub.stride(0) &gt;= 1 + (x_sub.extent(1) - 1) * x_sub.stride(1));
 </pre></blockquote>
 </discussion>
 
