@@ -1,0 +1,81 @@
+<?xml version='1.0' encoding='utf-8' standalone='no'?>
+<!DOCTYPE issue SYSTEM "lwg-issue.dtd">
+
+<issue num="4607" status="New">
+<title>Meaning of <tt>numeric_limits&lt;T&gt;::is_exact</tt> is unclear</title>
+<section><sref ref="[numeric.limits.members]"/></section>
+<submitter>Jan Schultke</submitter>
+<date>17 Jul 2026</date>
+<priority>99</priority>
+
+<discussion>
+<p>
+The description of the `numeric_limits::is_exact member` in <sref ref="[numeric.limits.members]"/> 
+is as follows:
+</p>
+<blockquote><p>
+`true` if the type uses an exact representation. All integer types are exact, but not all exact types are
+integer. For example, rational and fixed-exponent representations are exact but not integer.
+</p></blockquote>
+<p>
+There is no explanation of what an "exact representation" is, and there is no widely established 
+definition in math. User confusion can be seen <a href="https://stackoverflow.com/q/14203654/5740428">on stackoverflow</a>.
+<p/>
+It is also extremely surprising that rational and fixed-point representations would be considered exact, 
+considering that unless those are infinite-precision representations (such as fixed-point representation 
+backed by a "big integer" type), sufficiently tiny values obviously cannot be represented. There is no 
+meaningful difference between fixed-point and floating-point types in this regard, other than the size 
+of the gaps between values in the representable subset of real numbers.
+<p/>
+However counter-intuitive the wording may be, the examples listed match existing practice:
+</p>
+<ul>
+<li><p>
+<a href="https://github.com/johnmcfarlane/cnl">John McFarlane's CNL library</a> 
+provides `is_exact = true` for its scaled integer types (fixed-point).
+</p></li>
+<li><p>
+<a href="https://www.ibm.com/docs/en/informix-servers/12.10.0?topic=types-exact-numeric-data">IBM's 
+documentation for Informix Servers</a> describes scaled integers as "exact numeric types" 
+and floating-point types as "approximate numeric data types".
+</p></li>
+</ul>
+</discussion>
+
+<resolution>
+<p>
+This wording is relative to <paper num="N5050"/>.
+</p>
+
+<ol>
+<li>
+<p>Modify <sref ref="[numeric.limits.members]"/> as indicated:</p>
+
+<blockquote>
+<pre>
+static constexpr bool is_exact;
+</pre>
+<blockquote>
+<p>
+-20- `true` if the type uses an exact representation<ins>; that is, if there exist no 
+unrepresentable values in the domain of the type that lie between representable values.</ins>
+<p/>
+<ins>[<i>Note</i>: Floating-point representations are not exact because their domain is the 
+(possibly extended) real numbers, and there are infinite values in the domain between any 
+two representable floating-point values</ins>. All integer types are exact, but not all 
+exact types are integer. For example, <del>rational and</del> fixed-exponent representations 
+are exact <del>but not integer</del> <ins>because their domain is the scaled integer domain</ins>.
+<ins>Rational number representations are exact only if the numerator and denominator are 
+unbounded. &mdash; <i>end note</i>]</ins>
+<p/>
+-21- Meaningful for all specializations.
+</p>
+</blockquote>
+</blockquote>
+</li>
+</ol>
+
+
+</resolution>
+
+</issue>
