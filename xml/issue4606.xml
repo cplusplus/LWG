@@ -56,6 +56,12 @@ assert(   x_sub.stride(0) &gt;= 1 + (x_sub.extent(1) - 1) * x_sub.stride(1));
 This wording is relative to <paper num="N5054"/>.
 </p>
 
+<blockquote class="note">
+<p>
+[<i>Drafting note</i>: The proposed wording currently misses to account for extents of zero or 1]
+</p>
+</blockquote>
+
 <ol>
 <li>
 <p>Modify <sref ref="[mdspan.layout.stride.cons]"/> as indicated:</p>
