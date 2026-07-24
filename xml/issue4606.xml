@@ -115,11 +115,23 @@ be `true`. &mdash; <i>end note</i>]
 <p>Patch implementing the PR can be found
 <a href="https://gcc.gnu.org/pipermail/libstdc++/2026-July/067334.html">here</a>.</p>
 
+<p>The note is adjusted as below condition is sufficient, but not necessary to guarantee uniqueness,
+consider strides <tt>(3, 5)</tt> and extents <tt>(5, 3)</tt>. They do not meet the requirements
+but produce unique mapping:</p>
+<pre>
+    0   1   2   3   4
+----------------------	
+0|  0   3   6   9  12
+1|  5   8  11  14  17
+2| 10  13  16  19  22
+</pre>
+
+
 </discussion>
 
 <resolution>
 <p>
-This wording is relative to <paper num="N5046"/> with modifcations from <iref ref="4603"/>.
+This wording is relative to <paper num="N5054"/> with modifcations from <iref ref="4603"/>.
 </p>
 
 <ol>
@@ -159,6 +171,8 @@ in the range <tt>[m+1, <i>rank_</i>)</tt>,</ins> <tt>s[<i>p<sub>i</sub></i>] <de
 <tt><i><del>i</del><ins>j</ins></i></tt> in the range <tt><del>[1, <i>rank_</i>)</del> <ins>[0, <i>i</i></ins>)</tt>,</p></li>
 </ul> where <tt><i>p<sub>k</sub></i></tt> is the <tt><i>k</i><sup>th</sup></tt> element of <tt><i>P</i></tt>.</p></li>
 </ul>
+<p>[<i>Note</i>: For <tt>layout_stride</tt>, this condition is <del>necessary and</del> sufficient for
+<tt>is_unique()</tt> to be <tt>true</tt>. — <i>end note</i>]</p>
 <p>-5- <i>Effects</i>: [&hellip;]</p>
 </blockquote>
 </blockquote>
