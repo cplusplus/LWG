@@ -1,0 +1,72 @@
+<?xml version='1.0' encoding='utf-8' standalone='no'?>
+<!DOCTYPE issue SYSTEM "lwg-issue.dtd">
+
+<issue num="4608" status="New">
+<title>`sleep_for` is not an observable behavior</title>
+<section><sref ref="[thread.thread.this]"/></section>
+<submitter>jim x</submitter>
+<date>24 Jul 2026</date>
+<priority>99</priority>
+
+<discussion>
+<p>
+Consider this example:
+</p>
+<blockquote><pre>
+#include &lt;iostream&gt;
+#include &lt;thread&gt;
+#include &lt;chrono&gt;
+
+int main() {
+  std::cout &lt;&lt; "start to sleep\n";
+  std::this_thread::sleep_for(std::chrono::milliseconds(50000)); 
+  std::cout &lt;&lt; "continue after 50000ms\n";
+  return 0;
+}
+</pre></blockquote>
+<p>
+According to <sref ref="[intro.abstract]"/> p8
+</p>
+<blockquote>
+<p>
+The following specify the observable behavior of the program: 
+</p>
+<ul>
+<li><p>
+Accesses through volatile glvalues are evaluated strictly according to the rules of the abstract machine.
+</p></li>
+<li><p>
+Data is delivered to the host environment to be written into files (See also: ISO/IEC 9899:2024, 7.23.3).
+</p></li>
+<li><p>
+The input and output dynamics of interactive devices shall take place in such a fashion that prompting output 
+is actually delivered before a program waits for input. What constitutes an interactive device is 
+implementation-defined.
+</p></li>
+</ul>
+</blockquote>
+<p>
+The specification of `sleep_for` says:
+</p>
+<blockquote>
+<p>
+<i>Effects</i>: Blocks the calling thread for the relative timeout (<sref ref="[thread.req.timing]"/>) specified 
+by `rel_time`.
+</p>
+</blockquote>
+<p>
+This description of its effect doesn't fall under any of the observable behavior bullets. Does it mean, according 
+to the "as-if" rule, that a conforming implementation can arbitrarily eliminate the call to `sleep_for`? However, 
+this doesn't align with the intent of providing this function in the standard library. 
+<p/>
+This issue resembles the need to promote "std::filesystem operations" to be observable behaviors, as appealed in LWG
+<iref ref="3669"/>. Guaranteed by implementations but not an observable behavior in the abstract machine can result 
+in a conforming implementation eliminating the effect of `sleep_for`, which would make the program terminate quite 
+early, merely holding the difference between two `steady_clock::now` as if `sleep_for` were not eliminated. 
+</p>
+</discussion>
+
+<resolution>
+</resolution>
+
+</issue>
