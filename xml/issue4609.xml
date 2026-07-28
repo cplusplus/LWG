@@ -1,0 +1,53 @@
+<?xml version='1.0' encoding='utf-8' standalone='no'?>
+<!DOCTYPE issue SYSTEM "lwg-issue.dtd">
+
+<issue num="4609" status="New">
+<title>Deduction guide for `std::thread::name_hint` from `std::basic_string` should ignore the allocator type</title>
+<section><sref ref="[thread.thread.class.general]"/></section>
+<submitter>Jiang An</submitter>
+<date>24 Jul 2026</date>
+<priority>99</priority>
+
+<discussion>
+<p>
+Currently, there is a deduction guide for `std::thread::name_hint` that only accepts 
+<tt>std::basic_string&lt;T&gt;</tt>. Given the corresponding constructor (see 
+<sref ref="[thread.attributes.hint]"/>) actually takes <tt>std::basic_string_view&lt;T&gt;</tt>, 
+presumably it's more reasonable to make the deduction guide accept `basic_string` 
+specializations with different allocator types (e.g. `std::pmr::string`).
+</p>
+</discussion>
+
+<resolution>
+<p>
+This wording is relative to <paper num="N5054"/>.
+</p>
+
+<ol>
+<li>
+<p>Modify <sref ref="[thread.thread.class.general]"/> as indicated:</p>
+
+<blockquote>
+<pre>
+namespace std {
+  class thread {
+  public:
+    [&hellip;]
+    // <i><sref ref="[thread.attributes]"/>, thread attributes</i>
+    template&lt;same_as&lt;char&gt; T&gt;
+      class name_hint;
+    template&lt;class T&gt;
+      name_hint(const T*) -&gt; name_hint&lt;T&gt;;
+    template&lt;class T<ins>, class Allocator</ins>&gt;
+      name_hint(basic_string&lt;T<ins>, char_traits&lt;T&gt;, Allocator</ins>&gt;) -&gt; name_hint&lt;T&gt;;
+    [&hellip;]
+  };
+}
+</pre>
+</blockquote>
+</li>
+</ol>
+
+</resolution>
+
+</issue>
