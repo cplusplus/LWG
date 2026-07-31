@@ -13,10 +13,10 @@
 <discussion>
 <p>
 Currently, integer-class types are not guaranteed to be structure types, so the range of <code>size</code> members
-that return integer-class types may not be able to model <code><i>tiny-range</i></code>, because its size value 
+that return integer-class types may not be able to model <code><i>tiny-range</i></code>, because its size value
 cannot be used as a template parameter even if it is a constant expression. This does not appear to be the intention.
 <p/>
-Given that integer-class types should behave like regular integers, and those types in MSVC-STL and libstdc++ are 
+Given that integer-class types should behave like regular integers, and those types in MSVC-STL and libstdc++ are
 both implemented as structural types, it would be better to be clear about the wording.
 </p>
 
@@ -27,9 +27,7 @@ Set priority to 3 after reflector poll.
 <p>
 Need additional statement clarifying when the types are template-argument-equivalent.
 </p>
-</discussion>
-
-<resolution>
+<superseded>
 <p>
 This wording is relative to <paper num="N5032"/>.
 </p>
@@ -40,13 +38,37 @@ This wording is relative to <paper num="N5032"/>.
 
 <blockquote>
 <p>
--9- All integer-class types <ins>are structural types (<sref ref="[temp.param]"/>) that</ins> model 
-`regular` (<sref ref="[concepts.object]"/>) and <tt>three_way_comparable&lt;strong_ordering&gt;</tt> 
+-9- All integer-class types <ins>are structural types (<sref ref="[temp.param]"/>) that</ins> model
+`regular` (<sref ref="[concepts.object]"/>) and <tt>three_way_comparable&lt;strong_ordering&gt;</tt>
 (<sref ref="[cmp.concept]"/>).
 </p>
 </blockquote>
 </li>
 
+</ol>
+</superseded>
+
+<note>2026-07-30; Tim provides new wording</note>
+
+</discussion>
+
+<resolution>
+<p>
+This wording is relative to <paper num="N5054"/>.
+</p>
+
+<ol>
+
+<li><p>Modify <sref ref="[iterator.concept.winc]"/> as indicated:</p>
+<blockquote>
+<p>
+-9- All integer-class types <ins>are structural types (<sref ref="[temp.param]"/>) that</ins> model
+`regular` (<sref ref="[concepts.object]"/>) and <tt>three_way_comparable&lt;strong_ordering&gt;</tt>
+(<sref ref="[cmp.concept]"/>). <ins>Two values of an integer-class type are template-argument-equivalent
+if and only if they are equal.</ins>
+</p>
+</blockquote>
+</li>
 </ol>
 </resolution>
 
