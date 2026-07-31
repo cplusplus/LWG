@@ -110,9 +110,7 @@ and <code>d(static_cast&lt;T*&gt;(p))</code> is a well-formed expression.
 
 <note>2026-07-31; Tim provides new wording</note>
 
-</discussion>
-
-<resolution>
+<superseded>
 
 <p>
 This wording is relative to <paper num="N5054"/>.
@@ -153,6 +151,57 @@ then `d(p)` is a well-formed expression.
 [<i>Note</i>: This implies that the validity of the expression is checked during
 the substitution of deduced template arguments into the function type
 (<sref ref="[temp.deduct.general]"/>). &mdash; <i>end note</i>]</ins>
+</p>
+</blockquote>
+</li>
+</ol>
+</superseded>
+
+<note>2026-07-31 LWG telecon; Jens requests new wording</note>
+
+</discussion>
+
+<resolution>
+
+<p>
+This wording is relative to <paper num="N5054"/>.
+</p>
+<ol>
+<li>
+Edit <sref ref="[util.smartptr.shared.const]"/>/9 as indicated:
+<blockquote>
+<pre><code>
+template&lt;class Y, class D&gt; constexpr shared_ptr(Y* p, D d);
+template&lt;class Y, class D, class A&gt; constexpr shared_ptr(Y* p, D d, A a);
+template&lt;class D&gt; constexpr shared_ptr(nullptr_t p, D d);
+template&lt;class D, class A&gt; constexpr shared_ptr(nullptr_t p, D d, A a);
+</code></pre>
+<p>-9-
+<i>Constraints</i>:
+<code>is_move_constructible_v&lt;D&gt;</code> is `true`,
+and `d(p)` is a well-formed expression.
+For the first two overloads:
+</p>
+<ol style="list-style-type:none">
+<li>
+(9.1) &mdash; If `T` is an array type, then either `T` is `U[N]` and `Y(*)[N]`
+is convertible to `T*`, or `T` is `U[]` and `Y(*)[]` is convertible to `T*`.
+</li>
+<li>
+(9.2) &mdash; If `T` is not an array type, then `Y*` is convertible to `T*`.
+</li>
+</ol>
+<p>
+<ins>For the third and fourth overloads,
+the validity of the expression `d(p)` is checked during
+the substitution of deduced template arguments into the function type
+(<sref ref="[temp.deduct.general]"/>).
+</ins>
+</p>
+<p>
+<ins>[<i>Example</i>:</ins>
+<pre><ins>shared_ptr&lt;int&gt; s(new int, [](auto p) {delete p;}); // <i>OK</i></ins></pre>
+<ins>&mdash; <i>end example</i>]</ins>
 </p>
 </blockquote>
 </li>
