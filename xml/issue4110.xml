@@ -59,9 +59,7 @@ shared_ptr s(new int, [](auto p) {delete p;});
 <p>
 "Ugh. We don't have to use it everywhere, only these two specific constructors."
 </p>
-</discussion>
-
-<resolution>
+<superseded>
 <p>
 This wording is relative to <paper num="N4981"/>.
 </p>
@@ -104,6 +102,57 @@ template&lt;class D, class A&gt; shared_ptr(nullptr_t p, D d, A a);</ins>
 <code>is_move_constructible_v&lt;D&gt;</code> is `true`,
 and <code>d(static_cast&lt;T*&gt;(p))</code> is a well-formed expression.
 </ins>
+</p>
+</blockquote>
+</li>
+</ol>
+</superseded>
+
+<note>2026-07-31; Tim provides new wording</note>
+
+</discussion>
+
+<resolution>
+
+<p>
+This wording is relative to <paper num="N5054"/>.
+</p>
+<ol>
+<li>
+Edit <sref ref="[util.smartptr.shared.const]"/>/9 as indicated:
+<blockquote>
+<pre><code>
+template&lt;class Y, class D&gt; constexpr shared_ptr(Y* p, D d);
+template&lt;class Y, class D, class A&gt; constexpr shared_ptr(Y* p, D d, A a);
+template&lt;class D&gt; constexpr shared_ptr(nullptr_t p, D d);
+template&lt;class D, class A&gt; constexpr shared_ptr(nullptr_t p, D d, A a);
+</code></pre>
+<p>-9-
+<i>Constraints</i>:
+<code>is_move_constructible_v&lt;D&gt;</code> is `true`<del>,
+and `d(p)` is a well-formed expression</del>.
+For the first two overloads:
+</p>
+<ol style="list-style-type:none">
+<li>
+<ins>(9.?) &mdash; `d(p)` is a well-formed expression.</ins>
+</li>
+<li>
+(9.1) &mdash; If `T` is an array type, then either `T` is `U[N]` and `Y(*)[N]`
+is convertible to `T*`, or `T` is `U[]` and `Y(*)[]` is convertible to `T*`.
+</li>
+<li>
+(9.2) &mdash; If `T` is not an array type, then `Y*` is convertible to `T*`.
+</li>
+</ol>
+<p>
+<ins>For the third and fourth overloads,
+if there exists an implicit conversion sequence (<sref ref="[over.best.ics]"/>)
+from the argument provided for the `p` parameter to `nullptr_t`,
+then `d(p)` is a well-formed expression.
+[<i>Note</i>: This implies that the validity of the expression is checked during
+the substitution of deduced template arguments into the function type
+(<sref ref="[temp.deduct.general]"/>). &mdash; <i>end note</i>]</ins>
 </p>
 </blockquote>
 </li>
