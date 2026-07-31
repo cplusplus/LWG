@@ -2,7 +2,7 @@
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
 <issue num="3047" status="New">
-<title><tt>atomic</tt> compound assignment operators can cause undefined behavior when corresponding 
+<title><tt>atomic</tt> compound assignment operators can cause undefined behavior when corresponding
 <tt>fetch_<i>meow</i></tt> members don't</title>
 <section><sref ref="[atomics.types.int]"/><sref ref="[atomics.types.pointer]"/><sref ref="[atomics.types.memop]"/></section>
 <submitter>Tim Song</submitter>
@@ -17,9 +17,9 @@ Given <tt>atomic&lt;int&gt; meow{INT_MAX};</tt>, <tt>meow.fetch_add(1)</tt> has 
 <i>Remarks:</i> For signed integer types, arithmetic is defined to use two's complement representation. There are no undefined results.
 </p>
 </blockquote>
-but <tt>meow += 1</tt> and <tt>++meow</tt> have undefined behavior, because these operator functions are defined (by, respectively, 
-<sref ref="[atomics.types.int]"/> p8 and <sref ref="[atomics.types.memop]"/>) to be equivalent to <tt>return fetch_add(1) + 1;</tt>, 
-and so the addition of 1 to the result of <tt>fetch_add</tt> &mdash; which causes an integer overflow in this case &mdash; occurs 
+but <tt>meow += 1</tt> and <tt>++meow</tt> have undefined behavior, because these operator functions are defined (by, respectively,
+<sref ref="[atomics.types.int]"/> p8 and <sref ref="[atomics.types.memop]"/>) to be equivalent to <tt>return fetch_add(1) + 1;</tt>,
+and so the addition of 1 to the result of <tt>fetch_add</tt> &mdash; which causes an integer overflow in this case &mdash; occurs
 outside the protection of <tt>fetch_add</tt> magic. Additionally, the return value might differ from what <tt>fetch_add</tt> actually
 wrote since that addition isn't required to use two's complement. This seems like a trap for the unwary. Is it intended?
 <p/>
@@ -29,13 +29,11 @@ A similar issue affects the <tt>atomic&lt;T*&gt;</tt> partial specialization for
 
 <note>2019-04-15; JF Bastien comments and provides wording</note>
 <p>
-As discussed by LWG during the <a href="http://wiki.edg.com/bin/view/Wg21sandiego2018/LWGD1236Review">San 
+As discussed by LWG during the <a href="http://wiki.edg.com/bin/view/Wg21sandiego2018/LWGD1236Review">San
 Diego 2018 meeting</a>, Jens removed LWG 3047 from <a href="https://wg21.link/p1236r1">"P1236R1: Alternative Wording for P
 0907R4 Signed Integers are Two's Complement"</a>.
 </p>
-</discussion>
-
-<resolution>
+<superseded>
 <p>This wording is relative to <a href="https://wg21.link/n4810">N4810</a>.</p>
 
 <ol>
@@ -47,8 +45,8 @@ Diego 2018 meeting</a>, Jens removed LWG 3047 from <a href="https://wg21.link/p1
 </pre>
 <blockquote>
 <p>
--7- <i>Effects:</i> Equivalent to: <tt>return 
-<ins>static_cast&lt;<i>integral</i>&gt;(static_cast&lt;make_unsigned_t&lt;<i>integral</i>&gt;&gt;(</ins>fetch_<i>key</i>(operand)<ins>)</ins> 
+-7- <i>Effects:</i> Equivalent to: <tt>return
+<ins>static_cast&lt;<i>integral</i>&gt;(static_cast&lt;make_unsigned_t&lt;<i>integral</i>&gt;&gt;(</ins>fetch_<i>key</i>(operand)<ins>)</ins>
 <i>op</i> <ins>static_cast&lt;make_unsigned_t&lt;<i>integral</i>&gt;&gt;(</ins>operand<ins>))</ins>;</tt>
 </p>
 </blockquote>
@@ -63,8 +61,8 @@ T* operator++() const noexcept;
 </pre>
 <blockquote>
 <p>
--3- <i>Effects:</i> Equivalent to: <tt>return 
-<ins>static_cast&lt;T&gt;(static_cast&lt;make_unsigned_t&lt;T&gt;&gt;(</ins>fetch_add(1)<ins>)</ins> + 
+-3- <i>Effects:</i> Equivalent to: <tt>return
+<ins>static_cast&lt;T&gt;(static_cast&lt;make_unsigned_t&lt;T&gt;&gt;(</ins>fetch_add(1)<ins>)</ins> +
 <ins>static_cast&lt;make_unsigned_t&lt;T&gt;&gt;(</ins>1<ins>))</ins>;</tt>
 </p>
 </blockquote>
@@ -73,8 +71,8 @@ T* operator--(<del>int</del>) const noexcept;
 </pre>
 <blockquote>
 <p>
--4- <i>Effects:</i> Equivalent to: <tt>return 
-<ins>static_cast&lt;T&gt;(static_cast&lt;make_unsigned_t&lt;T&gt;&gt;(</ins>fetch_sub(1)<ins>)</ins> - 
+-4- <i>Effects:</i> Equivalent to: <tt>return
+<ins>static_cast&lt;T&gt;(static_cast&lt;make_unsigned_t&lt;T&gt;&gt;(</ins>fetch_sub(1)<ins>)</ins> -
 <ins>static_cast&lt;make_unsigned_t&lt;T&gt;&gt;(</ins>1<ins>))</ins>;</tt>
 </p>
 </blockquote>
@@ -90,8 +88,8 @@ T operator <i>op</i>=(T operand) noexcept;
 </pre>
 <blockquote>
 <p>
--8- <i>Effects:</i> Equivalent to: <tt>return 
-<ins>static_cast&lt;T&gt;(static_cast&lt;make_unsigned_t&lt;T&gt;&gt;(</ins>fetch_<i>key</i>(operand)<ins>)</ins> 
+-8- <i>Effects:</i> Equivalent to: <tt>return
+<ins>static_cast&lt;T&gt;(static_cast&lt;make_unsigned_t&lt;T&gt;&gt;(</ins>fetch_<i>key</i>(operand)<ins>)</ins>
 <i>op</i> <ins>static_cast&lt;make_unsigned_t&lt;T&gt;&gt;(</ins>operand<ins>))</ins>;</tt>
 </p>
 </blockquote>
@@ -99,10 +97,10 @@ T operator <i>op</i>=(T operand) noexcept;
 
 <blockquote class="note">
 <p>
-[<i>Drafting note:</i> <tt>atomic&lt;<i>integral</i>&gt;</tt>'s working for <tt>operator++/operator--</tt> 
+[<i>Drafting note:</i> <tt>atomic&lt;<i>integral</i>&gt;</tt>'s working for <tt>operator++/operator--</tt>
 is shared with <tt>atomic&lt;T*&gt;</tt>. &mdash; <i>end drafting note</i>]
 <p/>
-[<i>Drafting note:</i> <tt>atomic&lt;<i>floating-point</i>&gt;</tt> seems to be correct, LWG should confirm 
+[<i>Drafting note:</i> <tt>atomic&lt;<i>floating-point</i>&gt;</tt> seems to be correct, LWG should confirm
 that it is. &mdash; <i>end drafting note</i>]
 </p>
 </blockquote>
@@ -117,8 +115,8 @@ T* operator <i>op</i>=(ptrdiff_t operand) noexcept;
 </pre>
 <blockquote>
 <p>
--8- <i>Effects:</i> Equivalent to: <tt>return 
-<ins>reinterpret_cast&lt;T*&gt;(reinterpret_cast&lt;ptrdiff_t&gt;(</ins>fetch_<i>key</i>(operand)<ins>)</ins> 
+-8- <i>Effects:</i> Equivalent to: <tt>return
+<ins>reinterpret_cast&lt;T*&gt;(reinterpret_cast&lt;ptrdiff_t&gt;(</ins>fetch_<i>key</i>(operand)<ins>)</ins>
 <i>op</i> operand<ins>)</ins>;</tt>
 <p/>
 <ins><i>Remarks:</i> The result may be an undefined address, but the operations otherwise have no undefined behavior.</ins>
@@ -136,8 +134,8 @@ T operator++() noexcept;
 </pre>
 <blockquote>
 <p>
--3- <i>Effects:</i> Equivalent to: <tt>return 
-<ins>static_cast&lt;T&gt;(static_cast&lt;make_unsigned_t&lt;T&gt;&gt;(</ins>fetch_add(1)<ins>)</ins> + 
+-3- <i>Effects:</i> Equivalent to: <tt>return
+<ins>static_cast&lt;T&gt;(static_cast&lt;make_unsigned_t&lt;T&gt;&gt;(</ins>fetch_add(1)<ins>)</ins> +
 <ins>static_cast&lt;make_unsigned_t&lt;T&gt;&gt;(</ins>1<ins>))</ins>;</tt>
 </p>
 </blockquote>
@@ -147,8 +145,8 @@ T operator--() noexcept;
 </pre>
 <blockquote>
 <p>
--4- <i>Effects:</i> Equivalent to: <tt>return 
-<ins>static_cast&lt;T&gt;(static_cast&lt;make_unsigned_t&lt;T&gt;&gt;(</ins>fetch_sub(1)<ins>)</ins> - 
+-4- <i>Effects:</i> Equivalent to: <tt>return
+<ins>static_cast&lt;T&gt;(static_cast&lt;make_unsigned_t&lt;T&gt;&gt;(</ins>fetch_sub(1)<ins>)</ins> -
 <ins>static_cast&lt;make_unsigned_t&lt;T&gt;&gt;(</ins>1<ins>))</ins>;</tt>
 </p>
 </blockquote>
@@ -156,9 +154,188 @@ T operator--() noexcept;
 
 <blockquote class="note">
 <p>
-[<i>Drafting note:</i> Alternatively, LWG may want to separate the integral overload of <tt>operator++/operator--</tt> 
+[<i>Drafting note:</i> Alternatively, LWG may want to separate the integral overload of <tt>operator++/operator--</tt>
 from that of <tt>atomic&lt;T*&gt;</tt>. <i>end drafting note</i>]
 </p>
+</blockquote>
+</li>
+</ol>
+</superseded>
+
+<note>2026-07-30; Tim provides new wording</note>
+
+</discussion>
+
+<resolution>
+<p>This wording is relative to <paper num="N5054"/>.</p>
+
+<ol>
+<li><p>Modify <sref ref="[atomics.ref.int]"/> as indicated:</p>
+
+<blockquote>
+<pre>
+constexpr value_type operator <i>op</i>=(value_type operand) const noexcept;
+</pre>
+<blockquote>
+<p>
+-14- <i>Constraints</i>: <tt>is_const_v&lt;<i>integral-type</i>&gt;</tt> is `false`.
+<p/>
+-15- <i>Effects</i>: Equivalent to: <tt><del>return </del>fetch_<i>key</i>(operand)<del> <i>op</i> operand</del>;</tt>
+<p/>
+<ins>-16- <i>Returns</i>: The value written by the call to <tt>fetch_<i>key</i></tt>.</ins>
+</p>
+</blockquote>
+</blockquote>
+</li>
+<li><p>Modify <sref ref="[atomics.ref.float]"/> as indicated:</p>
+
+<blockquote>
+<pre>
+constexpr value_type operator <i>op</i>=(value_type operand) const noexcept;
+</pre>
+<blockquote>
+<p>
+-17- <i>Constraints</i>: <tt>is_const_v&lt;<i>floating-point-type</i>&gt;</tt> is `false`.
+<p/>
+-18- <i>Effects</i>: Equivalent to: <tt>return fetch_<i>key</i>(operand) <i>op</i> operand;</tt>
+<p/>
+<ins>-19- <i>Remarks</i>:  If the result is not a representable value for its type (<sref ref="[expr.pre]"/>)
+the result is unspecified, but the operations otherwise have no undefined behavior. The floating-point environment (<sref ref="[cfenv]"/>)
+for atomic arithmetic operations on <i>`floating-point-type`</i> may be different than the calling thread's floating-point environment.</ins>
+</p>
+</blockquote>
+</blockquote>
+</li>
+<li><p>Modify <sref ref="[atomics.ref.pointer]"/> as indicated:</p>
+
+<blockquote>
+<pre>
+constexpr value_type operator <i>op</i>=(difference_type operand) const noexcept;
+</pre>
+<blockquote>
+<p>
+-14- <i>Constraints</i>: <tt>is_const_v&lt;<i>pointer-type</i>&gt;</tt> is `false`.
+<p/>
+-15- <i>Effects</i>: Equivalent to: <tt><del>return </del>fetch_<i>key</i>(operand)<del> <i>op</i> operand</del>;</tt>
+<p/>
+<ins>-16- <i>Returns</i>: The value written by the call to <tt>fetch_<i>key</i></tt>.</ins>
+</p>
+</blockquote>
+</blockquote>
+</li>
+<li><p>Modify <sref ref="[atomics.ref.memop]"/> as indicated:</p>
+
+<blockquote>
+<pre>
+constexpr value_type operator++() const noexcept;
+</pre>
+<blockquote>
+<p>
+-6- <i>Constraints</i>: <tt>is_const_v&lt;<i>referred-type</i>&gt;</tt> is `false`.
+<p/>
+-7- <i>Effects</i>: Equivalent to: <tt>return <del>fetch_add(1) + 1</del><ins>operator+=(1)</ins>;</tt>
+</p>
+</blockquote>
+<pre>
+constexpr value_type operator--() const noexcept;
+</pre>
+<blockquote>
+<p>
+-8- <i>Constraints</i>: <tt>is_const_v&lt;<i>referred-type</i>&gt;</tt> is `false`.
+<p/>
+-9- <i>Effects</i>: Equivalent to: <tt>return <del>fetch_sub(1) + 1</del><ins>operator-=(1)</ins>;</tt>
+</p>
+</blockquote>
+</blockquote>
+</li>
+
+<li><p>Modify <sref ref="[atomics.types.int]"/> as indicated:</p>
+
+<blockquote>
+<pre>
+<i>integral-type</i> operator <i>op</i>=(<i>integral-type</i> operand) volatile noexcept;
+constexpr <i>integral-type</i> operator <i>op</i>=(<i>integral-type</i> operand) noexcept;
+</pre>
+<blockquote>
+<p>
+-14- <i>Constraints</i>: For the `volatile` overload of this function, `is_always_lock_free` is `true`.
+<p/>
+-15- <i>Effects:</i> Equivalent to: <tt><del>return </del>fetch_<i>key</i>(operand)<del> <i>op</i> operand</del>;</tt>
+<p/>
+<ins>-16- <i>Returns</i>: The value written by the call to <tt>fetch_<i>key</i></tt>.</ins>
+</p>
+</blockquote>
+</blockquote>
+</li>
+
+<li><p>Modify <sref ref="[atomics.types.float]"/> as indicated:</p>
+
+<blockquote>
+<pre>
+<i>floating-point-type</i> operator <i>op</i>=(<i>floating-point-type</i> operand) volatile noexcept;
+constexpr <i>floating-point-type</i> operator <i>op</i>=(<i>floating-point-type</i> operand) noexcept;
+</pre>
+<blockquote>
+<p>
+-17- <i>Constraints</i>: For the `volatile` overload of this function, `is_always_lock_free` is `true`.
+<p/>
+-18- <i>Effects:</i> Equivalent to: <tt>return fetch_<i>key</i>(operand) <i>op</i> operand;</tt>
+<p/>
+-19- <i>Remarks</i>: Remarks: If the result is not a representable value for its type (<sref ref="[expr.pre]"/>)
+the result is unspecified, but the operations otherwise have no undefined behavior. <del>Atomic arithmetic operations
+on <i>`floating-point-type`</i> should conform to the <tt>std::numeric_limits&lt;<i>floating-point-type</i>&gt;</tt>
+traits associated with the floating-point type (<sref ref="[limits.syn]"/>).</del>
+The floating-point environment (<sref ref="[cfenv]"/>) for atomic arithmetic operations on
+<i>`floating-point-type`</i> may be different than the calling thread's floating-point environment.
+</p>
+</blockquote>
+</blockquote>
+</li>
+
+<li><p>Modify <sref ref="[atomics.types.pointer]"/> as indicated:</p>
+
+<blockquote>
+<pre>
+T* operator <i>op</i>=(ptrdiff_t operand) volatile noexcept;
+constexpr T* operator <i>op</i>=(ptrdiff_t operand) noexcept;
+</pre>
+<blockquote>
+<p>
+-15- <i>Constraints</i>: For the `volatile` overload of this function, `is_always_lock_free` is `true`.
+<p/>
+-16- <i>Effects:</i> Equivalent to: <tt><del>return </del>fetch_<i>key</i>(operand)<del> <i>op</i> operand</del>;</tt>
+<p/>
+<ins>-17- <i>Returns</i>: The value written by the call to <tt>fetch_<i>key</i></tt>.</ins>
+</p>
+</blockquote>
+</blockquote>
+</li>
+
+<li><p>Modify <sref ref="[atomics.types.memop]"/> as indicated:</p>
+
+<blockquote>
+<pre>
+value_type operator++() volatile noexcept;
+constexpr value_type operator++() noexcept;
+</pre>
+<blockquote>
+<p>
+-5- <i>Constraints</i>: For the `volatile` overload of this function, `is_always_lock_free` is `true`.
+<p/>
+-6- <i>Effects:</i> Equivalent to: <tt>return <del>fetch_add(1) + 1</del><ins>operator+=(1)</ins>;</tt>
+</p>
+</blockquote>
+<pre>
+T operator--() volatile noexcept;
+constexpr T operator--() noexcept;
+</pre>
+<blockquote>
+<p>
+-7- <i>Constraints</i>: For the `volatile` overload of this function, `is_always_lock_free` is `true`.
+<p/>
+-8- <i>Effects:</i> Equivalent to: <tt>return <del>fetch_sub(1) + 1</del><ins>operator-=(1)</ins>;</tt>
+</p>
+</blockquote>
 </blockquote>
 </li>
 </ol>
