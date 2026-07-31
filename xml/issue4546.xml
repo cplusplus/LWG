@@ -12,9 +12,9 @@
 
 <discussion>
 <p>
-Currently, integer-class types are not guaranteed to be structure types, so the range of <code>size</code> members
+Currently, integer-class types are not guaranteed to be structural types, so the range of <code>size</code> members
 that return integer-class types may not be able to model <code><i>tiny-range</i></code>, because its size value
-cannot be used as a template parameter even if it is a constant expression. This does not appear to be the intention.
+cannot be used as a template argument even if it is a constant expression. This does not appear to be the intention.
 <p/>
 Given that integer-class types should behave like regular integers, and those types in MSVC-STL and libstdc++ are
 both implemented as structural types, it would be better to be clear about the wording.
