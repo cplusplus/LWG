@@ -14,18 +14,16 @@
 
 <discussion>
 <p>
-Currently, <tt>&lt;optional&gt;</tt> is a mostly freestanding header and provides a partial specialization of 
-`std::format_kind` which isn't mark `// hosted` in the synopsis (<sref ref="[optional.syn]"/>). The current 
-rules in <sref ref="[freestanding.item]"/> p4 seemingly requires the partial specialization to be a 
-freestanding item, while nothing seems to requires the primary template (provided by <tt>&lt;format&gt;</tt>) 
+Currently, <tt>&lt;optional&gt;</tt> is a mostly freestanding header and provides a partial specialization of
+`std::format_kind` which isn't mark `// hosted` in the synopsis (<sref ref="[optional.syn]"/>). The current
+rules in <sref ref="[freestanding.item]"/> p4 seemingly requires the partial specialization to be a
+freestanding item, while nothing seems to requires the primary template (provided by <tt>&lt;format&gt;</tt>)
 to be freestanding.
 <p/>
-The status quo looks quite weird. Perhaps we should make the freestanding status same for the primary template 
+The status quo looks quite weird. Perhaps we should make the freestanding status same for the primary template
 and the partial specialization.
 </p>
-</discussion>
-
-<resolution>
+<superseded>
 <p>
 This wording is relative to <paper num="N5046"/>.
 </p>
@@ -33,12 +31,12 @@ This wording is relative to <paper num="N5046"/>.
 <blockquote class="note">
 <p>
 [<i>Drafting Note:</i> Three options are prepared, depicted below by <b>Option A</b>,
-<b>Option B</b>, and <b>Option C</b>, respectively, where option C is mutually exclusive 
+<b>Option B</b>, and <b>Option C</b>, respectively, where option C is mutually exclusive
 with option A and B.
 <p/>
-Note that libstdc++ effectively implemented option A recently (in commit <a 
+Note that libstdc++ effectively implemented option A recently (in commit <a
 href="https://github.com/gcc-mirror/gcc/commit/23b9ac257cf508bc4fa479c82fcfc768c4abcd79">
-23b9ac257cf508bc4fa479c82fcfc768c4abcd79</a>).] 
+23b9ac257cf508bc4fa479c82fcfc768c4abcd79</a>).]
 </p>
 </blockquote>
 
@@ -83,7 +81,7 @@ that includes <i>hosted</i>, and is: [&hellip;]
 <p/>
 -6- A macro is a freestanding item if it is defined in a header synopsis and [&hellip;]
 <p/>
-<ins>-?- A partial or full template specialization is not a freestanding item if its primary template 
+<ins>-?- A partial or full template specialization is not a freestanding item if its primary template
 is not a freestanding item.</ins>
 </p>
 </blockquote>
@@ -106,7 +104,7 @@ is not a freestanding item.</ins>
 <th></th>
 <th>Subclause</th>
 <th>Header</th>
-</tr> 
+</tr>
 
 <tr>
 <td colspan="3" align="center">
@@ -192,6 +190,33 @@ template&lt;ranges::input_range R&gt;
 </li>
  </ol>
 
+</superseded>
+
+<note>2026-07-30; use option A based on reflector discussion</note>
+
+</discussion>
+
+<resolution>
+<p>This wording is relative to <paper num="N5054"/>.</p>
+<ol>
+<li>
+<p>Modify <sref ref="[optional.syn]"/>, header <tt>&lt;optional&gt;</tt> synopsis, as indicated:</p>
+
+<blockquote>
+<pre>
+[&hellip;]
+template&lt;class T&gt;
+  constexpr bool ranges::enable_view&lt;optional&lt;T&gt;&gt; = true;
+template&lt;class T&gt;
+  constexpr auto format_kind&lt;optional&lt;T&gt;&gt; = range_format::disabled; <ins>// <i>hosted</i></ins>
+template&lt;class T&gt;
+  constexpr bool ranges::enable_borrowed_range&lt;optional&lt;T&amp;&gt;&gt; = true;
+[&hellip;]
+</pre>
+</blockquote>
+
+</li>
+</ol>
 </resolution>
 
 </issue>
