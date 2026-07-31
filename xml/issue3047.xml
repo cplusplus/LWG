@@ -281,7 +281,7 @@ constexpr <i>floating-point-type</i> operator <i>op</i>=(<i>floating-point-type<
 <p/>
 -18- <i>Effects:</i> Equivalent to: <tt>return fetch_<i>key</i>(operand) <i>op</i> operand;</tt>
 <p/>
--19- <i>Remarks</i>: Remarks: If the result is not a representable value for its type (<sref ref="[expr.pre]"/>)
+-19- <i>Remarks</i>: If the result is not a representable value for its type (<sref ref="[expr.pre]"/>)
 the result is unspecified, but the operations otherwise have no undefined behavior. <del>Atomic arithmetic operations
 on <i>`floating-point-type`</i> should conform to the <tt>std::numeric_limits&lt;<i>floating-point-type</i>&gt;</tt>
 traits associated with the floating-point type (<sref ref="[limits.syn]"/>).</del>
@@ -326,8 +326,8 @@ constexpr value_type operator++() noexcept;
 </p>
 </blockquote>
 <pre>
-T operator--() volatile noexcept;
-constexpr T operator--() noexcept;
+value_type operator--() volatile noexcept;
+constexpr value_type operator--() noexcept;
 </pre>
 <blockquote>
 <p>
