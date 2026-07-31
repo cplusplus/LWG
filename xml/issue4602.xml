@@ -12,7 +12,7 @@
 
 <discussion>
 <p>
-<paper num="P3505R4"/> (See also <a href="https://isocpp.org/files/papers/P3505R4.html">isocpp.org/P3505R4</a>)
+<paper num="P3505R4"/>
 unintentionally changed the semantics of the thresholds used to select between `f` and `e` formatting
 for the default floating-point representation.
 <p/>
@@ -65,7 +65,7 @@ We don't like the grammar of "nearest representable as `T` value".
 <superseded>
 <p>
 This wording is relative to <paper num="N5046"/> plus the wording changes applied by
-<paper num="P3505R4"/> (<a href="https://isocpp.org/files/papers/P3505R4.html">isocpp.org/P3505R4</a>)
+<paper num="P3505R4"/>
 approved at the 2026 Brno meeting.
 </p>
 
