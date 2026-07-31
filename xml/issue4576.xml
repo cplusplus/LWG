@@ -71,18 +71,18 @@ This wording is relative to <paper num="N5054"/>.
 
 <blockquote>
 <p>
--1- Let <tt><i>TARG-SPLICE</i>(x)</tt> be:
+-1- Let <tt><i>TARG-SPLICE</i>(x)</tt> be<del>:</del>
 </p>
 <ol style="list-style-type: none">
 <li><p>
-(1.1) &mdash; <del>`template [: x :]`</del><ins>a <i>template-argument</i> that denotes what
+<del>(1.1) &mdash;</del> <del>`template [: x :]`</del><ins>a <i>template-argument</i> that denotes what
 <tt>x</tt> represents</ins> if <tt>is_template(x)<ins> || is_type(x)</ins></tt> is `true`, otherwise
 </p></li>
 <li><p>
 <del>(1.2) &mdash; `typename [: x :]` if `is_type(x)` is `true`, otherwise</del>
 </p></li>
 <li><p>
-(1.3) &mdash; `([: x :])`.
+<del>(1.3) &mdash;</del> `([: x :])`.
 </p></li>
 </ol>
 </blockquote>
