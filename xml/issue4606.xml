@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="4606" status="New">
+<issue num="4606" status="Ready">
 <title>Bullet (4.3) preconditions are too strict to implement `submdspan`</title>
 <section><sref ref="[mdspan.layout.stride.cons]"/></section>
 <submitter>Mark Hoemmen</submitter>
@@ -126,7 +126,7 @@ but produce unique mapping:</p>
 2| 10  13  16  19  22
 </pre>
 
-
+<note>2026-07-31 LWG telecon; Status changed: New &rarr; Ready.</note>
 </discussion>
 
 <resolution>

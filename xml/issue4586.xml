@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="4586" status="New">
+<issue num="4586" status="Ready">
 <title>Partial specialization of `std::format_kind` for `std::optional` is not marked hosted</title>
 <section>
 <sref ref="[freestanding.item]"/>
@@ -194,6 +194,7 @@ template&lt;ranges::input_range R&gt;
 
 <note>2026-07-30; use option A based on reflector discussion</note>
 
+<note>2026-07-31 LWG telecon; Status changed: New &rarr; Ready.</note>
 </discussion>
 
 <resolution>

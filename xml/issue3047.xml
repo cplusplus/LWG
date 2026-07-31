@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="3047" status="New">
+<issue num="3047" status="Ready">
 <title><tt>atomic</tt> compound assignment operators can cause undefined behavior when corresponding
 <tt>fetch_<i>meow</i></tt> members don't</title>
 <section><sref ref="[atomics.types.int]"/><sref ref="[atomics.types.pointer]"/><sref ref="[atomics.types.memop]"/></section>
@@ -164,6 +164,7 @@ from that of <tt>atomic&lt;T*&gt;</tt>. <i>end drafting note</i>]
 
 <note>2026-07-30; Tim provides new wording</note>
 
+<note>2026-07-31 LWG telecon; Status changed: New &rarr; Ready.</note>
 </discussion>
 
 <resolution>

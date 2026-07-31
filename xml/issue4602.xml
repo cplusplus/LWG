@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="4602" status="New">
+<issue num="4602" status="Ready">
 <title>Incorrect lower bound for the default floating-point representation</title>
 <section>
 <sref ref="[charconv.to.chars]"/>
@@ -139,6 +139,7 @@ rounded down to the nearest power of 10</ins>, otherwise `e`.
 
 <note>2026-07-30; Tim provides new wording</note>
 
+<note>2026-07-31 LWG telecon; Status changed: New &rarr; Ready.</note>
 </discussion>
 
 <resolution>

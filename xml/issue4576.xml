@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="4576" status="New">
+<issue num="4576" status="Ready">
 <title>`{can_}substitute` specification is (still) ill-formed</title>
 <section>
 <sref ref="[meta.reflection.substitute]"/>
@@ -58,6 +58,7 @@ This wording is relative to <paper num="N5032"/>.
 
 <note>2026-07-30; Tim provides new wording</note>
 
+<note>2026-07-31 LWG telecon; Status changed: New &rarr; Ready.</note>
 </discussion>
 
 <resolution>
