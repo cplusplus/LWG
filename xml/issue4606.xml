@@ -159,16 +159,16 @@ type <tt>index_type</tt> (<sref ref="[basic.fundamental]"/>) for all <tt><i>i</i
 <tt>extents()</tt> are greater than <tt>0</tt>, then there exists a permutation
 <tt><i>P</i></tt> of the integers in the range <tt>[0, <i>rank_</i>)</tt> <ins>and value <tt><i>m</i></tt></ins>,
 such that<ul>
-<li><p><ins>(4.1) &mdash; <tt>e.extent(i) == 1</tt> is <tt>true</tt> for all <tt><i>i</i></tt>
+<li><p><ins>(4.3.1) &mdash; <tt>e.extent(i) == 1</tt> is <tt>true</tt> for all <tt><i>i</i></tt>
 in the range <tt>[0, <i>m</i>),</tt></ins></p></li>
-<li><p><ins>(4.3) &mdash; <tt>e.extent(i) > 1</tt> is <tt>true</tt> for all <tt><i>i</i></tt>
-in the range <tt>[m, <i>rank_</i>),</tt></ins></p></li>
-<li><p><ins>(4.3) &mdash; if <tt><i>m</i> &lt; <i>rank_</i></tt> is <tt>true</tt>, then</ins>
+<li><p><ins>(4.3.2) &mdash; <tt>e.extent(i) > 1</tt> is <tt>true</tt> for all <tt><i>i</i></tt>
+in the range <tt>[<i>m</i>, <i>rank_</i>),</tt></ins></p></li>
+<li><p><ins>(4.3.3) &mdash; if <tt><i>m</i> &lt; <i>rank_</i></tt> is <tt>true</tt>, then</ins>
 <tt>s[<i>p<sub><del>0</del><ins>m</ins></sub></i>] > 0</tt> is <tt>true</tt> and <ins>for all <tt><i>i</i></tt>
-in the range <tt>[m+1, <i>rank_</i>)</tt>,</ins> <tt>s[<i>p<sub>i</sub></i>] <del>&gt;=</del></tt>
+in the range <tt>[<i>m</i>+1, <i>rank_</i>)</tt>,</ins> <tt>s[<i>p<sub>i</sub></i>] <del>&gt;=</del></tt>
 <ins>is greater than sum of </ins> <tt>s[<i>p<sub><del>i-1</del><ins>j</ins></sub></i>] *
 <ins>(</ins>e.extent(<i>p<sub><del>i</del><ins>j</ins></sub></i>)<ins>-1)</ins></tt> <del>is <tt>true</tt></del> for all
-<tt><i><del>i</del><ins>j</ins></i></tt> in the range <tt><del>[1, <i>rank_</i>)</del> <ins>[m, <i>i</i></ins>)</tt>,</p></li>
+<tt><i><del>i</del><ins>j</ins></i></tt> in the range <tt><del>[1, <i>rank_</i>)</del> <ins>[<i>m</i>, <i>i</i></ins>)</tt>,</p></li>
 </ul> where <tt><i>p<sub>k</sub></i></tt> is the <tt><i>k</i><sup>th</sup></tt> element of <tt><i>P</i></tt>.</p></li>
 </ul>
 <p>[<i>Note</i>: For <tt>layout_stride</tt>, this condition is <del>necessary and</del> sufficient for
