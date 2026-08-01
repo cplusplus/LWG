@@ -1,0 +1,78 @@
+<?xml version='1.0' encoding='utf-8' standalone='no'?>
+<!DOCTYPE issue SYSTEM "lwg-issue.dtd">
+
+<issue num="4610" status="New">
+<title>`std::swap` should specially handle `std::locale`</title>
+<section><sref ref="[locale.syn]"/></section>
+<submitter>Jiang An</submitter>
+<date>31 Jul 2026</date>
+<priority>99</priority>
+
+<discussion>
+<p>
+Currently, `std::locale` lacks move functions, and `std::swap` uses copy constructor and copy assignment 
+operator to swap `locale` objects according to the default mechanism.
+<p/>
+The lack of move functions is possibly intended. Because in some implementations (at least for libc++ 
+and libstdc++), some precondition-free functions are assuming that a valid `locale` object is always 
+resource-holding, and it's possibly infeasible to establish a valid moved-from state for `locale`. 
+However, it's pessimized to use copy functions to swap `locale` objects since this requires increments 
+and decrements of reference counts in mainstream implementations. An optimized strategy might be just 
+swapping the internal pointers, which doesn't need to touch reference counts.
+<p/>
+It seems possible to optimize `std::swap` for `locale` without affecting overload resolution. So, this 
+seems able to be done without tweaking the standard wording. However, some implementors think it's simpler 
+to just add a new overload (see <a href="https://github.com/llvm/llvm-project/pull/209760">llvm/llvm-project#209760</a>). 
+This approach needs to tweak the standard wording because the effects of the new overload in overload 
+resolution are observable.
+</p>
+</discussion>
+
+<resolution>
+<p>
+This wording is relative to <paper num="N5054"/>.
+</p>
+
+<ol>
+<li>
+<p>Modify <sref ref="[locale.syn]"/> as indicated:</p>
+
+<blockquote>
+<pre>
+namespace std {
+  // <i><sref ref="[locale]"/>, locale</i>
+  class locale;
+  
+  <ins>void swap(locale&amp; lhs, locale&amp; rhs) noexcept;</ins>
+  
+  template&lt;class Facet&gt; const Facet&amp; use_facet(const locale&amp;);
+  template&lt;class Facet&gt; bool has_facet(const locale&amp;) noexcept;
+  [&hellip;]
+}
+</pre>
+</blockquote>
+</li>
+
+<li>
+<p>Add a new sub-clause <sref ref="[locale.nonmembers]"/> immediately after the existing 
+<sref ref="[locale.statics]"/> as indicated:</p>
+
+<p>
+<ins><b>28.3.3.1.? Non-member functions [locale.nonmembers]</b></ins>
+</p>
+<blockquote>
+<pre>
+<ins>void swap(locale&amp; lhs, locale&amp; rhs) noexcept;</ins>
+</pre>
+<blockquote>
+<p>
+<ins>-?- <i>Effects</i>: Exchanges the values of `lhs` and `rhs`.</ins>
+</p>
+</blockquote>
+</blockquote>
+</li>
+</ol>
+
+</resolution>
+
+</issue>
