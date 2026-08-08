@@ -1,0 +1,117 @@
+<?xml version='1.0' encoding='utf-8' standalone='no'?>
+<!DOCTYPE issue SYSTEM "lwg-issue.dtd">
+
+<issue num="4611" status="New">
+<title>`bit_size_of` overflow handling</title>
+<section><sref ref="[meta.reflection.layout]"/></section>
+<submitter>Jay Ghiron</submitter>
+<date>05 Aug 2026</date>
+<priority>99</priority>
+
+<discussion>
+<p>
+Consider the following program, assuming the `static_assert` succeeds:
+</p>
+<blockquote><pre>
+#include&lt;meta&gt;
+#include&lt;print&gt;
+#include&lt;climits&gt;
+#include&lt;cstdint&gt;
+
+static_assert(CHAR_BIT == 8 &amp;&amp; sizeof(long) == 8 &amp;&amp; SIZE_WIDTH == 64);
+
+int main()
+{
+  std::println("{}", bit_size_of(^^long[288230376151711744]));
+}
+</pre></blockquote>
+<p>
+If the implementation supports an array of this size then it appears
+that this should output zero, since the multiplication that
+`bit_size_of` is described as doing (<sref ref="[meta.reflection.layout]"/>) 
+will wrap around to zero. I do not think this is the intent, however.
+Additionally if the type of `0ZU + CHAR_BIT` is signed, then wraparound
+will not happen if the multiplication results in a value greater than
+<tt>std::numeric_limits&lt;decltype(0ZU + CHAR_BIT)&gt;::max()</tt>.
+<p/>
+The following proposed resolution is what GCC currently implements,
+Clang does not even allow constructing a type large enough to trigger
+this situation. In the extremely absurd situation <tt>CHAR_BIT &gt; SIZE_MAX</tt>
+this would forbid any uses with an object type. Perhaps there should
+be additional wording to ensure that calls which result in an
+exception being thrown are still considered constant.
+</p>
+</discussion>
+
+<resolution>
+<p>
+This wording is relative to <paper num="N5054"/>.
+</p>
+
+<ol>
+<li>
+<p>Modify <sref ref="[meta.reflection.layout]"/> as indicated:</p>
+
+<blockquote>
+<pre>
+consteval size_t bit_size_of(info r);
+</pre>
+<blockquote>
+<p>
+<ins>-?- <i>Constant When</i>:</ins>
+<ol style="list-style-type: none">
+<li><p>
+<ins>(?.1) &mdash; If `r` represents an unnamed bit-field or a non-static data member
+that is a bit-field with width <tt><i>W</i></tt>, when <tt><i>W</i></tt> is less than 
+or equal to `SIZE_MAX`.</ins>
+</p></li>
+<li><p>
+<ins>(?.2) &mdash; Otherwise, if `r` represents a data member description
+(<tt><i>T</i></tt>, <tt><i>N</i></tt>, <tt><i>A</i></tt>, <tt><i>W</i></tt>,
+<tt><i>NUA</i></tt>, <tt><i>ANN</i></tt>) (<sref ref="[class.mem.general]"/>) 
+and <tt><i>W</i></tt> is not ⊥, when <tt><i>W</i></tt> is less than or 
+equal to `SIZE_MAX`.</ins>
+</p></li>
+<li><p>
+<ins>(?.3) &mdash; Otherwise, when `size_of(r)` is less than or equal to `SIZE_MAX / CHAR_BIT`.</ins>
+</p></li>
+</ol>
+</p>
+<p>
+-9- <i>Returns</i>:
+</p>
+<ol style="list-style-type: none">
+<li><p>
+(9.1) &mdash; If `r` represents an unnamed bit-field or a non-static data member that is a bit-field with 
+width <tt><i>W</i></tt>, then <tt><i>W</i></tt>.
+</p></li>
+<li><p>
+(9.2) &mdash; Otherwise, if `r` represents a data member description (<tt><i>T</i></tt>, <tt><i>N</i></tt>,
+<tt><i>A</i></tt>, <tt><i>W</i></tt>, <tt><i>NUA</i></tt>, <tt><i>ANN</i></tt>) (<sref ref="[class.mem.general]"/>) 
+and <tt><i>W</i></tt> is not ⊥, then <tt><i>W</i></tt>.
+</p></li>
+<li><p>
+(9.3) &mdash; Otherwise, `CHAR_BIT * size_of(r)`.
+</p></li>
+</ol>
+<p>
+-10- <i>Throws</i>: `meta::exception` unless all of the following conditions are met:
+</p>
+<ol style="list-style-type: none">
+<li><p>
+(10.1) &mdash; `dealias(r)` is a reflection of a type, object, value, variable of non-reference type, 
+non-static data member, unnamed bit-field, direct base class relationship, or data member description.
+</p></li>
+<li><p>
+(10.2) &mdash; If `dealias(r)` represents a type, then `is_complete_type(r)` is `true`.
+</p></li>
+</ol>
+</blockquote>
+</blockquote>
+</li>
+
+</ol>
+
+</resolution>
+
+</issue>
