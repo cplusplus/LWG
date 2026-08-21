@@ -179,7 +179,7 @@ in the range <tt>[<i>m</i>+1, <i>rank_</i>)</tt>,</ins> <tt>s[<i>p<sub>i</sub></
 </ol>
 </superseded>
 
-<note>2026-08-21 Tim finds issue and updates P/R; Status changed: Ready &rarr; Opne.</note>
+<note>2026-08-21 Tim finds issue and updates P/R; Status changed: Ready &rarr; Open.</note>
 
 <p>
 (4.3.1) and (4.3.2) should say <tt>e.extent(<i>p<sub>i</sub></i>)</tt> instead of <tt>e.extent(i)</tt>.
