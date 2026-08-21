@@ -218,9 +218,9 @@ type <tt>index_type</tt> (<sref ref="[basic.fundamental]"/>) for all <tt><i>i</i
 <tt><i>P</i></tt> of the integers in the range <tt>[0, <i>rank_</i>)</tt> <ins>and value <tt><i>m</i></tt></ins>,
 such that<ul>
 <li><p><ins>(4.3.1) &mdash; <tt>e.extent(<i>p<sub>i</sub></i>) == 1</tt> is <tt>true</tt> for all <tt><i>i</i></tt>
-in the range <tt>[0, <i>m</i>),</tt></ins></p></li>
+in the range <tt>[0, <i>m</i>)</tt>,</ins></p></li>
 <li><p><ins>(4.3.2) &mdash; <tt>e.extent(<i>p<sub>i</sub></i>) > 1</tt> is <tt>true</tt> for all <tt><i>i</i></tt>
-in the range <tt>[<i>m</i>, <i>rank_</i>), and</tt></ins></p></li>
+in the range <tt>[<i>m</i>, <i>rank_</i>)</tt>, and</ins></p></li>
 <li><p><ins>(4.3.3) &mdash; if <tt><i>m</i> &lt; <i>rank_</i></tt> is <tt>true</tt>, then</ins>
 <tt>s[<i>p<sub><del>0</del><ins>m</ins></sub></i>] > 0</tt> is <tt>true</tt> and <ins>for all <tt><i>i</i></tt>
 in the range <tt>[<i>m</i>+1, <i>rank_</i>)</tt>,</ins> <tt>s[<i>p<sub>i</sub></i>] <del>&gt;=</del></tt>
