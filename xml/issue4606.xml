@@ -226,7 +226,7 @@ in the range <tt>[<i>m</i>, <i>rank_</i>)</tt>, and</ins></p></li>
 in the range <tt>[<i>m</i>+1, <i>rank_</i>)</tt>,</ins> <tt>s[<i>p<sub>i</sub></i>] <del>&gt;=</del></tt>
 <ins>is greater than the sum of </ins> <tt>s[<i>p<sub><del>i-1</del><ins>j</ins></sub></i>] *
 <ins>(</ins>e.extent(<i>p<sub><del>i</del><ins>j</ins></sub></i>)<ins>-1)</ins></tt> <del>is <tt>true</tt></del> for all
-<tt><i><del>i</del><ins>j</ins></i></tt> in the range <tt><del>[1, <i>rank_</i>)</del> <ins>[<i>m</i>, <i>i</i></ins>)</tt>,</p></li>
+<tt><i><del>i</del><ins>j</ins></i></tt> in the range <tt><del>[1, <i>rank_</i>)</del> <ins>[<i>m</i>, <i>i</i>)</ins></tt>,</p></li>
 </ul> where <tt><i>p<sub>k</sub></i></tt> is the <tt><i>k</i><sup>th</sup></tt> element of <tt><i>P</i></tt>.</p></li>
 </ul>
 <p>[<i>Note</i>: For <tt>layout_stride</tt>, this condition is <del>necessary and</del> sufficient for
