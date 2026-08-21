@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="3999" status="New">
+<issue num="3999" status="NAD">
 <title>P0439R0 changed the value category of memory order constants</title>
 <section><sref ref="[atomics.order]"/></section>
 <submitter>Jiang An</submitter>
@@ -23,6 +23,33 @@ these constants being prvalues.
 Set priority to 4 after reflector poll.
 </p>
 
+<note>2026-08-21 LWG telecon; Status changed New &rarr; NAD</note>
+<p>
+The proposed resolution would need to be rebased because `consume` has been
+deprecated now.
+</p>
+<p>
+Although LWG liked the first part of the change,
+making the old names enumerators again rather than global objects,
+we did not like the second part which adds new enumerators with the old names.
+The cure seems worse than the disease.
+Having the old names be objects that can have their address taken
+(and can have references bound directly to them without creating a temporary)
+is a little unpleasant, but it doesn't really do any harm.
+If you want to ensure that no inline variables get emitted into your object
+files when you refer to those memory orders, just use the new form,
+i.e. the `memory_order::seq_cst` names instead of `memory_order_seq_cst`.
+</p>
+<p>
+If we had a feature like `using memory_order::seq_cst as memory_order_seq_cst`
+which would allow giving a new name to the enumerator, it could be done without
+having to add the new enumerators to the enum.
+</p>
+<p>
+From an implementation perspective, `using enum` is a C++20 feature so would
+require compiler extensions to make it available in C++17 modes, or the defect
+would still be present in C++17 modes and only fixed for C++20 and later.
+</p>
 </discussion>
 
 <resolution>
