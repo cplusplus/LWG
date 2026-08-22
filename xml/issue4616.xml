@@ -1,0 +1,56 @@
+<?xml version='1.0' encoding='utf-8' standalone='no'?>
+<!DOCTYPE issue SYSTEM "lwg-issue.dtd">
+
+<issue num="4616" status="New">
+<title>&sect;[meta.reflection.extract] has a circular requirement when extracting a variable during its own initialization</title>
+<section><sref ref="[meta.reflection.extract]"/></section>
+<submitter>Murat Can Çağrı</submitter>
+<date>17 Aug 2026</date>
+<priority>99</priority>
+
+<discussion>
+<p>
+Consider:
+</p>
+<blockquote><pre>
+constexpr int const&amp; r = std::meta::extract&lt;int const&amp;&gt;(^^r);
+</pre></blockquote>
+<p>
+For the call to <tt><i>extract-ref</i></tt>, <sref ref="[meta.reflection.extract]"/>/5.3 
+requires that, if the reflection represents a variable, either:
+</p>
+<ul>
+<li><p>
+the variable is usable in constant expressions, or
+</p></li>
+<li><p>
+its lifetime began within the core constant expression currently under evaluation.
+</p></li>
+</ul>
+<p>
+The second does not apply, as <sref ref="[basic.life]"/> says the lifetime of the reference 
+begins after its initialization is complete.
+<p/>
+The first, is circular. Determining whether `r` is usable in constant expression requires 
+determining whether it is constant-initialized, which requires whether the full-expression 
+of the initializer is a constant expression. Determining whether that full-expression is 
+constant expression requires evaluating the call to extract, whose successful evaluation 
+depends on the same determination that `r` is usable in constant expressions.
+<p/>
+Also, <sref ref="[meta.reflection.extract]"/>/4 says the result is a reference to object 
+referred by the represented variable, which during the initialization of `r`, doesn't exist 
+yet.
+<p/>
+Apparent intent is presumably to make this ill-formed, but the current wording does not 
+provide a non-circular way of reaching that conclusion.
+<p/>
+Suggested resolution:
+<p/>
+Require that the lifetime of the object or reference declared by the represented variable has already begun.
+</p>
+</discussion>
+
+<resolution>
+</resolution>
+
+</issue>
