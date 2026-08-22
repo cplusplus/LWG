@@ -1,0 +1,63 @@
+<?xml version='1.0' encoding='utf-8' standalone='no'?>
+<!DOCTYPE issue SYSTEM "lwg-issue.dtd">
+
+<issue num="4614" status="New">
+<title>&sect;[numeric.ops.midpoint] No handling of non-finite floats</title>
+<section><sref ref="[numeric.ops.midpoint]"/></section>
+<submitter>Jan Schultke</submitter>
+<date>16 Aug 2026</date>
+<priority>99</priority>
+
+<discussion>
+<p>
+While `std::midpoint` accepts operands of floating-point type, it is unclear what the midpoint 
+is if any operand is an infinity, if both operands are differently signed infinities, if any 
+operand is a NaN, etc. The specification merely says:
+</p>
+<blockquote>
+<p>
+<i>Returns</i>: Half the sum of `a` and `b`. If `T` is an integer type and the sum is odd, 
+the result is rounded towards `a`.
+</p>
+</blockquote>
+<p>
+Not only is there no description of the result, there is also no description of error handling 
+because the blanket wording in <sref ref="[library.c]"/> does not apply to <tt>&lt;numeric&gt;</tt>, 
+only to <tt>&lt;cmath&gt;</tt> functions.
+</p>
+</discussion>
+
+<resolution>
+<p>
+This wording is relative to <paper num="N5054"/>.
+</p>
+
+<ol>
+<li>
+<p>Modify <sref ref="[numeric.ops.midpoint]"/> as indicated:</p>
+
+<blockquote>
+<pre>
+template&lt;class T&gt;
+  constexpr T midpoint(T a, T b) noexcept;
+</pre>
+<blockquote>
+<p>
+-1- <i>Constraints</i>: `T` is an arithmetic type other than <i>cv</i> `bool`.
+<p/>
+-2- <i><del>Returns</del><ins>Effects</ins></i>: <del>Half the sum of `a` and `b`. 
+If `T` is an integer type and the sum is odd, the result is rounded towards `a`</del><ins>If 
+`T` is a floating-point type, equivalent to `lerp(a, b, T(0.5))` (<sref ref="[c.math.lerp]"/>).
+Otherwise, returns half the sum of `a` and `b`; if the sum is odd, the result is rounded 
+towards `a`</ins>.
+<p/>
+-3- <i>Remarks</i>: No overflow occurs. If `T` is a floating-point type, at most one inexact operation occurs.
+</p>
+</blockquote>
+</blockquote>
+</li>
+
+</ol>
+</resolution>
+
+</issue>
