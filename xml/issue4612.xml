@@ -12,7 +12,7 @@
 <p>
 LWG <iref ref="4497"/> specified that `std::nullopt_t` is copyable and three-way comparable. 
 However, during implementing and testing its resolution in libc++, it was found that almost 
-no intended operation is specified to be have desired property - being `noexcept` or trivial, 
+no intended operation is specified to have desirable properties - being `noexcept` or trivial,
 or even `constexpr` for some special member functions. Maybe we should specify the details of 
 `std::nullopt_t` more precisely.
 </p>
@@ -45,14 +45,14 @@ struct nullopt_t{<del><i>see below</i></del><ins>
 inline constexpr nullopt_t nullopt(<i>unspecified</i>);
 </pre>
 <p>
--1- The struct `nullopt_t` is <del>an empty</del> class type used as a unique type to 
+-1- The struct `nullopt_t` is <del>an empty</del> <ins>a</ins> class type used as a unique type to
 indicate the state of not containing a value for optional objects. In particular, 
 <tt>optional&lt;T&gt;</tt> has a constructor with `nullopt_t` as a single
 argument; this indicates that an optional object not containing a value shall be constructed.
 <p/>
 -2- Type `nullopt_t` does not have <del>a default constructor or an initializer-list constructor, 
 and is not an aggregate. `nullopt_t` models `copyable` and 
-<tt>three_way_comparable&lt;strong_ordering&gt;</tt></del><ins>base class, non-static data member, 
+<tt>three_way_comparable&lt;strong_ordering&gt;</tt></del> <ins>any base class, non-static data member,
 default constructor, initializer-list constructor, or explicitly declared non-static member 
 function that is not a constructor. All special member functions of `nullopt_t` are implicitly 
 declared</ins>.
