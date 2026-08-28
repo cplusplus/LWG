@@ -10,14 +10,14 @@
 
 <discussion>
 <p>
-Most uninitialized memory algorithms (<sref ref="[specialized.algorithms]"/>) are specified by 
-plain "<i>Effects:</i> Equivalent to:". According to <sref ref="[structure.specifications]"/>/4, 
-such wording requires propagation of "<i>Constraints</i>" of selected constructors. The first two 
+Most uninitialized memory algorithms (<sref ref="[specialized.algorithms]"/>) are specified by
+plain "<i>Effects:</i> Equivalent to:". According to <sref ref="[structure.specifications]"/>/4,
+such wording requires propagation of "<i>Constraints</i>" of selected constructors. The first two
 overloads of <tt>std::reduce</tt> (<sref ref="[reduce]"/>) are specified similarly.
 <p/>
-I feel the wording for uninitialized memory algorithms is incorrect, because it means that the 
-constraints, especially for algorithms in the <tt>std</tt>, depend on "<tt>Constraints</tt>" in 
-the specifications of many standard library types (but not any user-defined type), which is 
+I feel the wording for uninitialized memory algorithms is incorrect, because it means that the
+constraints, especially for algorithms in the <tt>std</tt>, depend on "<tt>Constraints</tt>" in
+the specifications of many standard library types (but not any user-defined type), which is
 implementable but brings serious inconsistency.
 <p/>
 Perhaps we should add "<i>Mandates:</i>" to these algorithms (except for algorithms in <tt>std::ranges</tt>).
@@ -38,9 +38,44 @@ certainly doesn't really make a lot of sense to propagate <em>Constraints:</em>
 but not actual core-language constraints."
 </p>
 
+<note>2026-08-28; Tim provides wording</note>
+<p>I believe that a careful reading of the existing wording already shows that "Equivalent to:" has
+no effect of the sort claimed. But since that appears to be a common misinterpretation,
+this wording adds a note to put it to rest.</p>
 </discussion>
 
 <resolution>
+<p>
+This wording is relative to <paper num="N5054"/>.
+</p>
+<ol>
+<li>
+<p>Modify <sref ref="[structure.specifications]"/> as indicated:</p>
+
+<blockquote>
+<p>
+-4- Whenever the <i>Effects</i> element specifies that the semantics of some function `F` are
+<i>Equivalent to</i> some code sequence, then the various elements are interpreted as follows.
+If `F`'s semantics specifies any <i>Constraints</i> or <i>Mandates</i> elements,
+then those requirements are logically imposed prior to the equivalent-to semantics.
+Next, the semantics of the code sequence are determined by the <i>Constraints</i>, <i>Mandates</i>,
+<i>Constant When</i>, <i>Preconditions</i>, <i>Hardened preconditions</i>, <i>Effects</i>,
+<i>Synchronization</i>, <i>Postconditions</i>, <i>Returns</i>, <i>Throws</i>, <i>Complexity</i>,
+<i>Remarks</i>, and <i>Error conditions</i> specified for the function invocations contained
+in the code sequence. The value returned from `F` is specified by `F`'s <i>Returns</i> element,
+or if `F` has no <i>Returns</i> element, a non-void return from `F` is specified by the return
+statements (<sref ref="[stmt.return]"/>) in the code sequence. If `F`'s semantics contains
+a <i>Throws</i>, <i>Postconditions</i>, or <i>Complexity</i> element, then that supersedes
+any occurrences of that element in the code sequence. <ins>[<i>Note ?:</i> In particular,
+if a function call in the code sequence fails to find a viable candidate, whether by reason
+of a <i>Constraints</i> element on the called function or otherwise, that function call
+(and possibly the entire code sequence) is ill-formed. There is no requirement that `F` itself
+not participate in overload resolution in such cases.
+&mdash; end note]</ins>
+</p>
+</blockquote>
+</li>
+</ol>
 </resolution>
 
 </issue>
