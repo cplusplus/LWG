@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="4574" status="New">
+<issue num="4574" status="Resolved">
 <title><tt>constant_wrapper&lt;nullptr, int()&gt;</tt> bypasses `function_ref` class invariant</title>
 <section>
 <sref ref="[const.wrap.class]"/>
@@ -14,7 +14,7 @@
 <discussion>
 <p>
 The wording in neither <sref ref="[const.wrap.class]"/> nor <sref ref="[func.wrap.ref]"/>
-places a constraint on the 2nd template argument of `constant_wrapper`, so it can be 
+places a constraint on the 2nd template argument of `constant_wrapper`, so it can be
 anything. An interpretation of the standard text based on that can cause
 </p>
 <blockquote><pre>
@@ -58,6 +58,8 @@ Set priority to 2 after reflector poll.
 <p>
 This should be resolved by <paper num="P4206R0"/>.
 </p>
+
+<note>2026-08-27 <paper num="P4206R0"/> was approved in Brno. Status changed: New &rarr; Resolved.</note>
 </discussion>
 
 <resolution>
