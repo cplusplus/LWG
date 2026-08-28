@@ -18,7 +18,7 @@ Although the original paper <a
    href="https://www.open-std.org/jtc1/sc22/wg21/docs/papers/2025/p2846r6.pdf">P2846</a> gives a reason for not
 providing <code>reserve_hint</code> for these three views — namely, uncertainty
 about what the best approach is — it seems to me that providing them is indeed intuitively unambiguous. We
-don't need to consider the inconsistency between <code>const</code> and non-<code>const</code> overloads because 
+don't need to consider the inconsistency between <code>const</code> and non-<code>const</code> overloads because
 it's not within reasonable ranges.
 <p/>
 Given that we provided <code>reserve_hint</code> for <code>concat_view</code> to resolve NB comment <a
@@ -33,9 +33,7 @@ Set priority to 3 after reflector poll.
 Concerns with `cartesian_product` as any overestimation will be amplified
 exponentially. P0 votes for just the `zip` change.
 </p>
-</discussion>
-
-<resolution>
+<superseded>
 <p>
 This wording is relative to <paper num="N5032"/>.
 </p>
@@ -133,22 +131,6 @@ namespace std::ranges {
 </pre>
 </blockquote>
 [&hellip;]
-<pre>
-</pre>
-<blockquote>
-<p>
-</p>
-<blockquote><pre>
-</pre></blockquote>
-</blockquote>
-<pre>
-</pre>
-<blockquote>
-<p>
-</p>
-<blockquote><pre>
-</pre></blockquote>
-</blockquote>
 </blockquote>
 </li>
 
@@ -163,7 +145,7 @@ namespace std::ranges {
   template&lt;class... Vs&gt;
   concept <i>cartesian-product-is-sized</i> =                  // <i>exposition only</i>
     (sized_range&lt;Vs&gt; &amp;&amp; ...);
-  
+
   <ins>template&lt;class... Vs&gt;
   concept <i>cartesian-product-is-approximately-sized</i> =    // <i>exposition only</i>
     (approximately_sized_range&lt;Vs&gt; &amp;&amp; ...);</ins>
@@ -199,7 +181,7 @@ constexpr <i>see below</i> size() const
 -7- The return type is an implementation-defined unsigned-integer-like type.
 <p/>
 -8- <i>Recommended practice</i>: The return type should be the smallest unsigned-integer-like type that
-is sufficiently wide to store the product of the maximum sizes of all the underlying ranges, if such 
+is sufficiently wide to store the product of the maximum sizes of all the underlying ranges, if such
 a type exists.
 <p/>
 -9- Let <i>p</i> be the product of the sizes of all the ranges in <code><i>bases_</i></code>.
@@ -231,6 +213,124 @@ ranges, if such a type exists.</ins>
 <ins>-?- <i>Returns</i>: <i>p</i>.</ins>
 </p>
 </blockquote>
+</blockquote>
+</li>
+
+</ol>
+
+</superseded>
+
+<note>2026-08-27; Tim provides new wording</note>
+<p> Dropping the `cartesian_product` change per reflector discussion.
+<p/>
+It seems to me that, unlike the previous resolution, and as the original paper alluded to,
+we could provide `reserve_hint` for `zip` as long as at least one of the ranges
+is approximately sized.
+</p>
+
+</discussion>
+
+<resolution>
+<p>
+This wording is relative to <paper num="N5054"/>.
+</p>
+
+<ol>
+<li>
+<p>Modify <sref ref="[range.zip.view]"/> as indicated:</p>
+
+<blockquote>
+<blockquote>
+<pre>
+namespace std::ranges {
+  [&hellip;]
+  template&lt;input_range... Views&gt;
+    requires (view&lt;Views&gt; &amp;&amp; ...) &amp;&amp; (sizeof...(Views) &gt; 0)
+  class zip_view : public view_interface&lt;zip_view&lt;Views...&gt;&gt; {
+    [&hellip;]
+    constexpr auto size() requires (sized_range&lt;Views&gt; &amp;&amp; ...);
+    constexpr auto size() const requires (sized_range&lt;const Views&gt; &amp;&amp; ...);
+
+<ins>    constexpr auto reserve_hint() requires (approximately_sized_range&lt;Views&gt; || ...);</ins>
+<ins>    constexpr auto reserve_hint() const requires (approximately_sized_range&lt;const Views&gt; || ...);</ins>
+  };
+  [&hellip;]
+}
+</pre>
+</blockquote>
+[&hellip;]
+<pre>
+constexpr auto size() requires (sized_range&lt;Views&gt; &amp;&amp; ...);
+constexpr auto size() const requires (sized_range&lt;const Views&gt; &amp;&amp; ...);
+</pre>
+<blockquote>
+<p>
+-3- <i>Effects</i>: Equivalent to:
+</p>
+<blockquote><pre>
+return apply([](auto... sizes) {
+  using CT = <i>make-unsigned-like-t</i>&lt;common_type_t&lt;decltype(sizes)...&gt;&gt;;
+  return ranges::min({CT(sizes)...});
+}, <i>tuple-transform</i>(ranges::size, <i>views_</i>));
+</pre></blockquote>
+</blockquote>
+<pre>
+<ins>constexpr auto reserve_hint() requires (approximately_sized_range&lt;Views&gt; || ...);
+constexpr auto reserve_hint() const requires (approximately_sized_range&lt;const Views&gt; || ...);</ins>
+</pre>
+<blockquote>
+<p>
+<ins>-?- <i>Effects</i>: Let `Const` be `false` for the first overload and `true` for the second overload.
+Let <i>I</i> be the largest set of indices such that
+<tt>approximately_sized_range&lt;<i>maybe-const</i>&lt;Const, Views...[Is]&gt;&gt;</tt> is `true`,
+and let `Is` be a pack of `size_t` values consisting of the elements of
+<i>I</i> in ascending order. Equivalent to:</ins>
+</p>
+<blockquote><pre>
+<ins>
+using CT = <i>make-unsigned-like-t</i>&lt;common_type_t&lt;decltype(ranges::reserve_hint(get&lt;Is&gt;(<i>views_</i>)))...&gt;&gt;;
+return ranges::min({CT(ranges::reserve_hint(get&lt;Is&gt;(<i>views_</i>)))...});</ins>
+</pre></blockquote>
+</blockquote>
+</blockquote>
+</li>
+
+<li>
+<p>Modify <sref ref="[range.zip.transform.view]"/> as indicated:</p>
+
+<blockquote>
+<blockquote>
+<pre>
+namespace std::ranges {
+  [&hellip;]
+  namespace std::ranges {
+  template&lt;move_constructible F, input_range... Views&gt;
+    requires (view&lt;Views&gt; &amp;&amp; ...) &amp;&amp; (sizeof...(Views) &gt; 0) &amp;&amp; is_object_v&lt;F&gt; &amp;&amp;
+              regular_invocable&lt;F&amp;, range_reference_t&lt;Views&gt;...&gt; &amp;&amp;
+              <i>can-reference</i>&lt;invoke_result_t&lt;F&amp;, range_reference_t&lt;Views&gt;...&gt;&gt;
+  class zip_transform_view : public view_interface&lt;zip_transform_view&lt;F, Views...&gt;&gt; {
+    [&hellip;]
+    constexpr auto size() requires sized_range&lt;<i>InnerView</i>&gt; {
+      return <i>zip_</i>.size();
+    }
+
+    constexpr auto size() const requires sized_range&lt;const <i>InnerView</i>&gt; {
+      return <i>zip_</i>.size();
+    }
+
+<ins>    constexpr auto reserve_hint() requires approximately_sized_range&lt;<i>InnerView</i>&gt; {
+      return <i>zip_</i>.reserve_hint();
+    }
+
+    constexpr auto reserve_hint() const requires approximately_sized_range&lt;const <i>InnerView</i>&gt; {
+      return <i>zip_</i>.reserve_hint();
+    }</ins>
+  };
+  [&hellip;]
+}
+</pre>
+</blockquote>
+[&hellip;]
 </blockquote>
 </li>
 
