@@ -228,9 +228,7 @@ we could provide `reserve_hint` for `zip` as long as at least one of the ranges
 is approximately sized.
 </p>
 
-</discussion>
-
-<resolution>
+<superseded>
 <p>
 This wording is relative to <paper num="N5054"/>.
 </p>
@@ -291,6 +289,124 @@ and let `Is` be a pack of `size_t` values consisting of the elements of
 using CT = <i>make-unsigned-like-t</i>&lt;common_type_t&lt;decltype(ranges::reserve_hint(get&lt;Is&gt;(<i>views_</i>)))...&gt;&gt;;
 return ranges::min({CT(ranges::reserve_hint(get&lt;Is&gt;(<i>views_</i>)))...});</ins>
 </pre></blockquote>
+</blockquote>
+</blockquote>
+</li>
+
+<li>
+<p>Modify <sref ref="[range.zip.transform.view]"/> as indicated:</p>
+
+<blockquote>
+<blockquote>
+<pre>
+namespace std::ranges {
+  [&hellip;]
+  namespace std::ranges {
+  template&lt;move_constructible F, input_range... Views&gt;
+    requires (view&lt;Views&gt; &amp;&amp; ...) &amp;&amp; (sizeof...(Views) &gt; 0) &amp;&amp; is_object_v&lt;F&gt; &amp;&amp;
+              regular_invocable&lt;F&amp;, range_reference_t&lt;Views&gt;...&gt; &amp;&amp;
+              <i>can-reference</i>&lt;invoke_result_t&lt;F&amp;, range_reference_t&lt;Views&gt;...&gt;&gt;
+  class zip_transform_view : public view_interface&lt;zip_transform_view&lt;F, Views...&gt;&gt; {
+    [&hellip;]
+    constexpr auto size() requires sized_range&lt;<i>InnerView</i>&gt; {
+      return <i>zip_</i>.size();
+    }
+
+    constexpr auto size() const requires sized_range&lt;const <i>InnerView</i>&gt; {
+      return <i>zip_</i>.size();
+    }
+
+<ins>    constexpr auto reserve_hint() requires approximately_sized_range&lt;<i>InnerView</i>&gt; {
+      return <i>zip_</i>.reserve_hint();
+    }
+
+    constexpr auto reserve_hint() const requires approximately_sized_range&lt;const <i>InnerView</i>&gt; {
+      return <i>zip_</i>.reserve_hint();
+    }</ins>
+  };
+  [&hellip;]
+}
+</pre>
+</blockquote>
+[&hellip;]
+</blockquote>
+</li>
+
+</ol>
+
+</superseded>
+
+<note>2026-08-29; Tim updates wording following LWG telecon</note>
+<p>Tomasz pointed out that we could significantly simplify both the wording and the implementation by treating
+non-approximately-sized ranges as having a `reserve_hint` of the maximum value of their difference type.
+</p>
+</discussion>
+
+<resolution>
+<p>
+This wording is relative to <paper num="N5054"/>.
+</p>
+
+<ol>
+<li>
+<p>Modify <sref ref="[range.zip.view]"/> as indicated:</p>
+
+<blockquote>
+<blockquote>
+<pre>
+namespace std::ranges {
+  [&hellip;]
+  template&lt;input_range... Views&gt;
+    requires (view&lt;Views&gt; &amp;&amp; ...) &amp;&amp; (sizeof...(Views) &gt; 0)
+  class zip_view : public view_interface&lt;zip_view&lt;Views...&gt;&gt; {
+    [&hellip;]
+    constexpr auto size() requires (sized_range&lt;Views&gt; &amp;&amp; ...);
+    constexpr auto size() const requires (sized_range&lt;const Views&gt; &amp;&amp; ...);
+
+<ins>    constexpr auto reserve_hint() requires (approximately_sized_range&lt;Views&gt; || ...);</ins>
+<ins>    constexpr auto reserve_hint() const requires (approximately_sized_range&lt;const Views&gt; || ...);</ins>
+  };
+  [&hellip;]
+}
+</pre>
+</blockquote>
+[&hellip;]
+<pre>
+constexpr auto size() requires (sized_range&lt;Views&gt; &amp;&amp; ...);
+constexpr auto size() const requires (sized_range&lt;const Views&gt; &amp;&amp; ...);
+</pre>
+<blockquote>
+<p>
+-3- <i>Effects</i>: Equivalent to:
+</p>
+<blockquote><pre>
+return apply([](auto... sizes) {
+  using CT = <i>make-unsigned-like-t</i>&lt;common_type_t&lt;decltype(sizes)...&gt;&gt;;
+  return ranges::min({CT(sizes)...});
+}, <i>tuple-transform</i>(ranges::size, <i>views_</i>));
+</pre></blockquote>
+</blockquote>
+<pre>
+<ins>constexpr auto reserve_hint() requires (approximately_sized_range&lt;Views&gt; || ...);
+constexpr auto reserve_hint() const requires (approximately_sized_range&lt;const Views&gt; || ...);</ins>
+</pre>
+<blockquote>
+<p>
+<ins>-?- <i>Effects</i>: Equivalent to:</ins>
+</p>
+<blockquote><pre><ins>
+auto reserve_hint_fallback = []&lt;class R&gt;(R&amp; r) {
+  if constexpr (approximately_sized_range&lt;R&gt;) {
+    return ranges::reserve_hint(r);
+  } else {
+    return numeric_limits&lt;range_difference_t&lt;R&gt;&gt;::max();
+  }
+};
+return apply([](auto... hints) {
+  using CT = <i>make-unsigned-like-t</i>&lt;common_type_t&lt;decltype(hints)...&gt;&gt;;
+  return ranges::min({CT(hints)...});
+}, <i>tuple-transform</i>(reserve_hint_fallback, <i>views_</i>));
+</ins></pre></blockquote>
 </blockquote>
 </blockquote>
 </li>
