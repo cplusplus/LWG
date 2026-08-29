@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="4094" status="New">
+<issue num="4094" status="NAD">
 <title><tt>ranges::fold_<i>meow</i></tt> is overconstrained</title>
 <section><sref ref="[alg.fold]"/></section>
 <submitter>Hewill Kang</submitter>
@@ -10,14 +10,14 @@
 
 <discussion>
 <p>
-The two <tt>convertible_to</tt> constraints required by <tt>ranges::fold_<i>meow</i></tt> mainly 
-check whether the decayed result type of the binary operator can be constructed by both the invoke type 
+The two <tt>convertible_to</tt> constraints required by <tt>ranges::fold_<i>meow</i></tt> mainly
+check whether the decayed result type of the binary operator can be constructed by both the invoke type
 and the initial value type.
 <p/>
-However, using <tt>constructible_from</tt> seems more appropriate here because we don't need to care whether 
+However, using <tt>constructible_from</tt> seems more appropriate here because we don't need to care whether
 the two types can be converted implicitly and explicitly.
-Taking <tt>string</tt> and <tt>string_view</tt> as examples, the former can only be explicitly constructed by 
-the latter and can be assigned by the latter, which makes <tt>ranges::fold_<i>meow</i></tt> unable to fold 
+Taking <tt>string</tt> and <tt>string_view</tt> as examples, the former can only be explicitly constructed by
+the latter and can be assigned by the latter, which makes <tt>ranges::fold_<i>meow</i></tt> unable to fold
 ranges whose elements are of type <tt>string</tt> with an initial value of type <tt>string_view</tt>:
 </p>
 <blockquote><pre>
@@ -26,8 +26,8 @@ string_view init{"d"};
 auto result = ranges::fold_right(vs, init, plus{}); // <span style="color:red;font-weight:bolder">still ill-formed after <paper num="P2591R5"/> as the constraint is not satisfied</span>
 </pre></blockquote>
 <p>
-In addition, the two <tt>movable</tt> constraints in the function signature seem to be too strict as well since we 
-only need to check that the decayed result type and the initial type can be move-constructible (one for returned by 
+In addition, the two <tt>movable</tt> constraints in the function signature seem to be too strict as well since we
+only need to check that the decayed result type and the initial type can be move-constructible (one for returned by
 elidable move and one for move into other overloads) instead of whether they can be move-assignable.
 </p>
 
@@ -41,6 +41,8 @@ While the `string`/`string_view` case might look superficially appealing,
 it would also allow <code>vector&lt;string&gt;</code>/<code>int</code>,
 which is much less so."
 </p>
+
+<note>2026-08-28 LWG telecon; NAD for the reasons discussed above. Status changed: New &rarr; NAD.</note>
 
 </discussion>
 
@@ -135,7 +137,7 @@ return {std::move(first), std::move(accum)};
 </pre></blockquote>
 <p>
 -8- <i>Remarks</i>: The return type is <tt>fold_left_with_iter_result&lt;I, U&gt;</tt>
-for the first overload and <tt>fold_left_with_iter_result&lt;borrowed_iterator_t&lt;R&gt;, U&gt;</tt> 
+for the first overload and <tt>fold_left_with_iter_result&lt;borrowed_iterator_t&lt;R&gt;, U&gt;</tt>
 for the second overload.
 </p>
 </blockquote>
