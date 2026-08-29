@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="4559" status="New">
+<issue num="4559" status="LEWG">
 <title><code>zip_view</code>, <code>zip_transform_view</code>, and <code>cartesian_product_view</code> should provide <code>reserve_hint</code></title>
 <section>
 <sref ref="[range.zip.view]"/>
@@ -340,6 +340,9 @@ namespace std::ranges {
 <p>Tomasz pointed out that we could significantly simplify both the wording and the implementation by treating
 non-approximately-sized ranges as having a `reserve_hint` of the maximum value of their difference type.
 </p>
+
+<note>2026-08-28 LWG telecon; Status changed: New &rarr; LEWG.</note>
+<p> Send to LEWG for design confirmation.</p>
 </discussion>
 
 <resolution>
