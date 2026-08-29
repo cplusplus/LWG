@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="3832" status="New">
+<issue num="3832" status="Ready">
 <title>Missing change for <tt>element_view::<i>iterator</i></tt> in LWG 3798</title>
 <section><sref ref="[range.elements.iterator]"/></section>
 <submitter>Jiang An</submitter>
@@ -10,9 +10,9 @@
 
 <discussion>
 <p>
-In LWG <iref ref="3798"/> (voted into WP in November 2022), iterator types of several range adaptors may have 
-<tt>forward_iterator_tag</tt> or stronger iterator tag types as their <tt>iterator_category</tt> type when 
-their <tt>operator*</tt> returns rvalue references. However, the proposed resolution missed the similar change 
+In LWG <iref ref="3798"/> (voted into WP in November 2022), iterator types of several range adaptors may have
+<tt>forward_iterator_tag</tt> or stronger iterator tag types as their <tt>iterator_category</tt> type when
+their <tt>operator*</tt> returns rvalue references. However, the proposed resolution missed the similar change
 for <tt>element_view::<i>iterator</i></tt>.
 </p>
 
@@ -36,14 +36,14 @@ This wording is relative to <paper num="N4917"/>.
 
 <blockquote>
 <p>
--2- The member <i>typedef-name</i> <tt>iterator_category</tt> is defined if and only if <tt><i>Base</i></tt> 
-models <tt>forward_range</tt>. In that case, <tt>iterator_category</tt> is defined as follows: Let <tt>C</tt> 
+-2- The member <i>typedef-name</i> <tt>iterator_category</tt> is defined if and only if <tt><i>Base</i></tt>
+models <tt>forward_range</tt>. In that case, <tt>iterator_category</tt> is defined as follows: Let <tt>C</tt>
 denote the type <tt>iterator_traits&lt;iterator_t&lt;<i>Base</i>&gt;&gt;::iterator_category</tt>.
 </p>
 <ol style="list-style-type: none">
-<li><p>(2.1) &mdash; If <tt>std::get&lt;N&gt;(*<i>current_</i>)</tt> is a<del>n</del> <ins>p</ins>rvalue, 
+<li><p>(2.1) &mdash; If <tt>std::get&lt;N&gt;(*<i>current_</i>)</tt> is a<del>n</del> <ins>p</ins>rvalue,
 <tt>iterator_category</tt> denotes <tt>input_iterator_tag</tt>.</p></li>
-<li><p>(2.2) &mdash; Otherwise, if <tt>C</tt> models <tt>derived_from&lt;random_access_iterator_tag&gt;</tt>, 
+<li><p>(2.2) &mdash; Otherwise, if <tt>C</tt> models <tt>derived_from&lt;random_access_iterator_tag&gt;</tt>,
 <tt>iterator_category</tt> denotes <tt>random_access_iterator_tag</tt>.</p></li>
 <li><p>(2.3) &mdash; Otherwise, <tt>iterator_category</tt> denotes <tt>C</tt>.</p></li>
 </ol>
@@ -55,7 +55,7 @@ denote the type <tt>iterator_traits&lt;iterator_t&lt;<i>Base</i>&gt;&gt;::iterat
 
 <note>2023-01-22; Jiang An comments and provides improved wording</note>
 <p>
-The old proposed resolution was incorrect. I think the correct criteria could be that determined from the return type of 
+The old proposed resolution was incorrect. I think the correct criteria could be that determined from the return type of
 <tt><i>get-element</i></tt>.
 </p>
 
@@ -69,16 +69,16 @@ This wording is relative to <paper num="N4928"/>.
 
 <blockquote>
 <p>
--2- The member <i>typedef-name</i> <tt>iterator_category</tt> is defined if and only if <tt><i>Base</i></tt> 
-models <tt>forward_range</tt>. In that case, <tt>iterator_category</tt> is defined as follows: Let <tt>C</tt> 
+-2- The member <i>typedef-name</i> <tt>iterator_category</tt> is defined if and only if <tt><i>Base</i></tt>
+models <tt>forward_range</tt>. In that case, <tt>iterator_category</tt> is defined as follows: Let <tt>C</tt>
 denote the type <tt>iterator_traits&lt;iterator_t&lt;<i>Base</i>&gt;&gt;::iterator_category</tt>.
 </p>
 <ol style="list-style-type: none">
-<li><p>(2.1) &mdash; If <ins><tt>range_reference_t&lt;<i>Base</i>&gt;</tt> is a reference type and</ins> 
-<tt>std::get&lt;N&gt;(*<i>current_</i>)</tt> is a<del>n</del> <ins>p</ins>rvalue <ins>or neither 
-<tt>range_reference_t&lt;<i>Base</i>&gt;</tt> nor <tt>tuple_element_t&lt;N, range_reference_t&lt;<i>Base</i>&gt;</tt> 
+<li><p>(2.1) &mdash; If <ins><tt>range_reference_t&lt;<i>Base</i>&gt;</tt> is a reference type and</ins>
+<tt>std::get&lt;N&gt;(*<i>current_</i>)</tt> is a<del>n</del> <ins>p</ins>rvalue <ins>or neither
+<tt>range_reference_t&lt;<i>Base</i>&gt;</tt> nor <tt>tuple_element_t&lt;N, range_reference_t&lt;<i>Base</i>&gt;</tt>
 is a reference type</ins>, <tt>iterator_category</tt> denotes <tt>input_iterator_tag</tt>.</p></li>
-<li><p>(2.2) &mdash; Otherwise, if <tt>C</tt> models <tt>derived_from&lt;random_access_iterator_tag&gt;</tt>, 
+<li><p>(2.2) &mdash; Otherwise, if <tt>C</tt> models <tt>derived_from&lt;random_access_iterator_tag&gt;</tt>,
 <tt>iterator_category</tt> denotes <tt>random_access_iterator_tag</tt>.</p></li>
 <li><p>(2.3) &mdash; Otherwise, <tt>iterator_category</tt> denotes <tt>C</tt>.</p></li>
 </ol>
@@ -89,6 +89,9 @@ is a reference type</ins>, <tt>iterator_category</tt> denotes <tt>input_iterator
 </superseded>
 
 <note>2024-07-08; Hewill Kang provides improved wording</note>
+
+<note>2026-08-28 LWG telecon; Status changed: New &rarr; Ready.</note>
+
 </discussion>
 
 <resolution>
@@ -101,14 +104,14 @@ This wording is relative to <paper num="N4986"/>.
 
 <blockquote>
 <p>
--2- The member <i>typedef-name</i> <code>iterator_category</code> is defined if and only if <code><i>Base</i></code> 
-models <code>forward_range</code>. In that case, <code>iterator_category</code> is defined as follows: Let <code>C</code> 
+-2- The member <i>typedef-name</i> <code>iterator_category</code> is defined if and only if <code><i>Base</i></code>
+models <code>forward_range</code>. In that case, <code>iterator_category</code> is defined as follows: Let <code>C</code>
 denote the type <code>iterator_traits&lt;iterator_t&lt;<i>Base</i>&gt;&gt;::iterator_category</code>.
 </p>
 <ol style="list-style-type: none">
-<li><p>(2.1) &mdash; If <del><code>std::get&lt;N&gt;(*<i>current_</i>)</code></del><ins><tt>is_reference_v&lt;decltype(<i>get-element</i>(<i>current_</i>))&gt;</tt></ins> 
+<li><p>(2.1) &mdash; If <del><code>std::get&lt;N&gt;(*<i>current_</i>)</code></del><ins><tt>is_reference_v&lt;decltype(<i>get-element</i>(<i>current_</i>))&gt;</tt></ins>
 is <del>an rvalue</del><ins><tt>false</tt></ins>, <code>iterator_category</code> denotes <code>input_iterator_tag</code>.</p></li>
-<li><p>(2.2) &mdash; Otherwise, if <code>C</code> models <code>derived_from&lt;random_access_iterator_tag&gt;</code>, 
+<li><p>(2.2) &mdash; Otherwise, if <code>C</code> models <code>derived_from&lt;random_access_iterator_tag&gt;</code>,
 <code>iterator_category</code> denotes <code>random_access_iterator_tag</code>.</p></li>
 <li><p>(2.3) &mdash; Otherwise, <code>iterator_category</code> denotes <code>C</code>.</p></li>
 </ol>
