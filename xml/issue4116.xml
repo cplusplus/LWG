@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="4116" status="New">
+<issue num="4116" status="Ready">
 <title><tt>enumerate_view::<i>iterator</i></tt> and <tt>cartesian_product_view::<i>iterator</i></tt> should not
     always provide <tt>iterator_category</tt></title>
 <section><sref ref="[range.enumerate.iterator]"/><sref ref="[range.cartesian.iterator]"/></section>
@@ -22,6 +22,8 @@ Set priority to 3 after reflector poll.
 <p>
 Six votes for Tentatively Ready, but not unanimous.
 </p>
+
+<note>2026-08-28 LWG telecon; Status changed: New &rarr; Ready.</note>
 </discussion>
 
 <resolution>
