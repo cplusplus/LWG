@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="3889" status="New">
+<issue num="3889" status="Ready">
 <title><tt>std::(ranges::)destroy_at</tt> should destroy array elements in the decreasing index order</title>
 <section><sref ref="[specialized.destroy]"/></section>
 <submitter>Jiang An</submitter>
@@ -10,9 +10,9 @@
 
 <discussion>
 <p>
-Currently, <tt>std::(ranges::)destroy_at</tt> is specified to destroy array elements in the increasing index order 
-(<sref ref="[specialized.destroy]"/>/1.1), which is inconsistent with the decreasing order specified in the core language 
-(<sref ref="[class.dtor]"/>/13) and the order for arrays created by <tt>std::make_shared</tt> and 
+Currently, <tt>std::(ranges::)destroy_at</tt> is specified to destroy array elements in the increasing index order
+(<sref ref="[specialized.destroy]"/>/1.1), which is inconsistent with the decreasing order specified in the core language
+(<sref ref="[class.dtor]"/>/13) and the order for arrays created by <tt>std::make_shared</tt> and
 <tt>std::allocate_shared</tt> (mandated by LWG <iref ref="3005"/>).
 </p>
 
@@ -54,12 +54,12 @@ namespace ranges {
 <note>2023-02-26; Daniel comments and provides alternative wording</note>
 <p>
 The suggested fix indeed corrects an inconsistency, but also implies a silent behaviour change at runtime, since at least MSVC STL and
-libstdc++ implement the array destruction order as specified (others not tested). 
+libstdc++ implement the array destruction order as specified (others not tested).
 The below wording therefore suggests to introduce a specific feature macro for this, so that user code can potentially react on this,
-regardless of potential vendor API breakage hesitations. 
-The natural feature macro to increase would be that which introduced the specific array destruction behavior of <tt>destroy_at</tt>, 
-which was <paper num="P0896R4"/>, and which introduced <tt>__cpp_lib_ranges</tt>, on the other hand the specification change affects 
-both the <tt>std::ranges</tt> and the <tt>std</tt> forms of <tt>destroy_at</tt>, so it seems plausible to suggest a new, specific feature 
+regardless of potential vendor API breakage hesitations.
+The natural feature macro to increase would be that which introduced the specific array destruction behavior of <tt>destroy_at</tt>,
+which was <paper num="P0896R4"/>, and which introduced <tt>__cpp_lib_ranges</tt>, on the other hand the specification change affects
+both the <tt>std::ranges</tt> and the <tt>std</tt> forms of <tt>destroy_at</tt>, so it seems plausible to suggest a new, specific feature
 macro for both <tt>destroy_at</tt> function templates. This is what the proposed wording does.
 <p/>
 LWG should clarify whether an entry to <sref ref="[diff.cpp20]"/> should be added as well.
@@ -70,6 +70,8 @@ LWG should clarify whether an entry to <sref ref="[diff.cpp20]"/> should be adde
 Set priority to 3 after reflector poll.
 </p>
 
+<note>2026-08-28 LWG telecon; Status changed: New &rarr; Ready.</note>
+<p> The chairs will give LEWG a heads-up that we are making this change.</p>
 </discussion>
 
 <resolution>
