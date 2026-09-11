@@ -31,9 +31,6 @@ only to <tt>&lt;cmath&gt;</tt> functions.
 Set priority to P3 after reflector poll.
 </p>
 <p>
-"we need a return before `lerp` and a semicolon after the call."
-</p>
-<p>
 "`lerp` handles such corner cases, just call `lerp` to get it right."
 </p>
 </discussion>
@@ -58,7 +55,7 @@ template&lt;class T&gt;
 <p/>
 -2- <i><del>Returns</del><ins>Effects</ins></i>: <del>Half the sum of `a` and `b`. 
 If `T` is an integer type and the sum is odd, the result is rounded towards `a`</del><ins>If 
-`T` is a floating-point type, equivalent to `lerp(a, b, T(0.5))` (<sref ref="[c.math.lerp]"/>).
+`T` is a floating-point type, equivalent to `return lerp(a, b, T(0.5));` (<sref ref="[c.math.lerp]"/>).
 Otherwise, returns half the sum of `a` and `b`; if the sum is odd, the result is rounded 
 towards `a`</ins>.
 <p/>
