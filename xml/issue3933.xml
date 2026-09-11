@@ -86,9 +86,7 @@ Several votes for NAD, as this only affects <code>volatile</code> arguments,
 so this might even be an accidental improvement.
 </p>
 
-</discussion>
-
-<resolution>
+<superseded>
 <p>
 This wording is relative to <paper num="N4950"/>.
 </p>
@@ -204,6 +202,116 @@ stores the result in <tt>*this</tt>.
 </li>
 
 </ol>
+</superseded>
+
+<note>2026-09-11; Jonathan provides new wording</note>
+<p>
+If we take this direction then LWG <iref ref="3934"/> needs a new proposed
+resolution.
+</p>
+
+</discussion>
+
+<resolution>
+<p>
+This wording is relative to <paper num="N5050"/>.
+</p>
+
+<ol>
+<li>
+<p>Modify <sref ref="[complex]"/>, class template <tt>complex</tt> synopsis, as indicated:</p>
+
+<blockquote>
+<pre>
+namespace std {
+  template&lt;class T&gt; class complex {
+    <ins>using <i>arg-type</i> = conditional_t&lt;is_floating_point_v&lt;T&gt;, T, const T&amp;&gt;; <i>// exposition only</i></ins>
+
+  public:
+    using value_type = T;
+
+    constexpr complex(<del>const T&amp;</del> <ins><i>arg-type</i></ins> re = T(), <del>const T&amp;</del> <ins><i>arg-type</i></ins> im = T());
+    [&hellip;]
+    constexpr complex&amp; operator= (<del>const T&amp;</del> <ins><i>arg-type</i></ins>);
+    constexpr complex&amp; operator+=(<del>const T&amp;</del> <ins><i>arg-type</i></ins>);
+    constexpr complex&amp; operator-=(<del>const T&amp;</del> <ins><i>arg-type</i></ins>);
+    constexpr complex&amp; operator*=(<del>const T&amp;</del> <ins><i>arg-type</i></ins>);
+    constexpr complex&amp; operator/=(<del>const T&amp;</del> <ins><i>arg-type</i></ins>);
+    [&hellip;]
+  };
+}
+</pre>
+</blockquote>
+</li>
+
+<li>
+<p>Modify <sref ref="[complex.members]"/> as indicated:</p>
+
+<blockquote>
+<pre>
+  constexpr complex(<del>const T&amp;</del> <ins><i>arg-type</i></ins> re = T(), <del>const T&amp;</del> <ins><i>arg-type</i></ins> im = T());
+</pre>
+<blockquote>
+<p>
+-1- <i>Postconditions</i>: <tt>real() == re &amp;&amp; imag() == im</tt> is <tt>true</tt>.
+</p>
+</blockquote>
+</blockquote>
+</li>
+
+<li>
+<p>Modify <sref ref="[complex.member.ops]"/> as indicated:</p>
+
+<blockquote>
+<pre>
+  constexpr complex&amp; operator+=(<del>const T&amp;</del> <ins><i>arg-type</i></ins> rhs);
+</pre>
+<blockquote>
+<p>
+-1- <i>Effects</i>: Adds the scalar value <tt>rhs</tt> to the real part of the complex value <tt>*this</tt> and
+stores the result in the real part of <tt>*this</tt>, leaving the imaginary part unchanged.
+<p/>
+-2- <i>Returns</i>: <tt>*this</tt>.
+</p>
+</blockquote>
+<pre>
+  constexpr complex&amp; operator-=(<del>const T&amp;</del> <ins><i>arg-type</i></ins> rhs);
+</pre>
+<blockquote>
+<p>
+-3- <i>Effects</i>: Subtracts the scalar value <tt>rhs</tt> from the real part of the complex value <tt>*this</tt> and
+stores the result in the real part of <tt>*this</tt>, leaving the imaginary part unchanged.
+<p/>
+-4- <i>Returns</i>: <tt>*this</tt>.
+</p>
+</blockquote>
+<pre>
+  constexpr complex&amp; operator*=(<del>const T&amp;</del> <ins><i>arg-type</i></ins> rhs);
+</pre>
+<blockquote>
+<p>
+-5- <i>Effects</i>: Multiplies the scalar value <tt>rhs</tt> by the complex value <tt>*this</tt> and
+stores the result in <tt>*this</tt>.
+<p/>
+-6- <i>Returns</i>: <tt>*this</tt>.
+</p>
+</blockquote>
+<pre>
+  constexpr complex&amp; operator/=(<del>const T&amp;</del> <ins><i>arg-type</i></ins> rhs);
+</pre>
+<blockquote>
+<p>
+-7- <i>Effects</i>: Divides the scalar value <tt>rhs</tt> into the complex value <tt>*this</tt> and
+stores the result in <tt>*this</tt>.
+<p/>
+-8- <i>Returns</i>: <tt>*this</tt>.
+</p>
+</blockquote>
+</blockquote>
+</li>
+
+</ol>
+
 </resolution>
 
 </issue>
