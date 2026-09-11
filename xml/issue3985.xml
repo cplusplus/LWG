@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="3985" status="New">
+<issue num="3985" status="Ready">
 <title><tt>ranges::to</tt> should <i>Mandates</i> <tt>C</tt> not to be view</title>
 <section><sref ref="[range.utility.conv.to]"/><sref ref="[range.utility.conv.adaptors]"/></section>
 <submitter>Hewill Kang</submitter>
@@ -38,6 +38,8 @@ provide clearer and more readable diagnostics.
 Set priority to 3 after reflector poll.
 </p>
 
+
+<note>2026-09-11; LWG telecon. Status changed: New &rarr; Ready.</note>
 </discussion>
 
 <resolution>

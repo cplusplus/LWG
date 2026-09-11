@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="3898" status="New">
+<issue num="3898" status="Ready">
 <title>Possibly unintended preconditions for completion functions of <tt>std::barrier</tt></title>
 <section><sref ref="[thread.barrier.class]"/></section>
 <submitter>Jiang An</submitter>
@@ -142,6 +142,8 @@ is <code>false</code>.
 
 <note>2026-09-11; Tim provides new wording</note>
 <p> Needs an update to the gigantic "when do we call `std::terminate`?" note.</p>
+
+<note>2026-09-11; LWG telecon. Status changed: New &rarr; Ready.</note>
 </discussion>
 
 <resolution>
