@@ -10,12 +10,12 @@
 
 <discussion>
 <p>
-`std::meta::current_function` is specified to throw if <tt><i>CURRENT-SCOPE</i>(<i>P</i>)</tt> 
-does not represent a function. It is implied that `current_function` throws if the call is 
+`std::meta::current_function` is specified to throw if <tt><i>CURRENT-SCOPE</i>(<i>P</i>)</tt>
+does not represent a function. It is implied that `current_function` throws if the call is
 directly contained in a local class, in which case it's actually in a function body, but indirectly.
 <p/>
-This might be an oversight, as neither <paper num="P3795"/> (which introduced this function) nor 
-<a href="https://wg21.link/P3795/github">https://wg21.link/P3795/github</a> has any discussion 
+This might be an oversight, as neither <paper num="P3795"/> (which introduced this function) nor
+<a href="https://wg21.link/P3795/github">https://wg21.link/P3795/github</a> has any discussion
 concerning local classes.
 <p/>
 Example:
@@ -48,14 +48,14 @@ consteval info current_function();
 </pre>
 <blockquote>
 <p>
--6- An invocation of `current_function` that appears at a program point <tt><i>P</i></tt> 
-is value-dependent (<sref ref="[temp.dep.constexpr]"/>) if <tt><i>eval-point</i>(<i>P</i>)</tt> 
+-6- An invocation of `current_function` that appears at a program point <tt><i>P</i></tt>
+is value-dependent (<sref ref="[temp.dep.constexpr]"/>) if <tt><i>eval-point</i>(<i>P</i>)</tt>
 is enclosed by a scope corresponding to a templated entity.
 <p/>
--7- Let <tt><i>S</i></tt> be <tt><i>CURRENT-SCOPE</i>(<i>P</i>)</tt>, where <tt><i>P</i></tt> 
+-7- Let <tt><i>S</i></tt> be <tt><i>CURRENT-SCOPE</i>(<i>P</i>)</tt>, where <tt><i>P</i></tt>
 is the point at which the invocation of `current_function` lexically appears.
 <p/>
--8- <i>Returns</i>: <tt><i>S</i></tt> <ins>if <tt><i>S</i></tt> represents a function. Otherwise, 
+-8- <i>Returns</i>: <tt><i>S</i></tt> <ins>if <tt><i>S</i></tt> represents a function. Otherwise,
 <tt>parent_of(<i>S</i>)</tt></ins>.
 <p/>
 -9- <i>Throws</i>: `meta::exception` unless <tt><i>S</i></tt> represents a function.
@@ -77,6 +77,46 @@ Set priority to 2 after reflector poll.
 <p>
 "we should say this in words, similar to `current_namespace`."
 </p>
+<superseded>
+<p>
+This wording is relative to <paper num="N5046"/>.
+</p>
+
+<ol>
+<li>
+<p>Modify <sref ref="[meta.reflection.scope]"/> as indicated:</p>
+
+<blockquote>
+<pre>
+consteval info current_function();
+</pre>
+<blockquote>
+<p>
+-6- An invocation of `current_function` that appears at a program point <tt><i>P</i></tt>
+is value-dependent (<sref ref="[temp.dep.constexpr]"/>) if <tt><i>eval-point</i>(<i>P</i>)</tt>
+is enclosed by a scope corresponding to a templated entity.
+<p/>
+-7- Let <tt><i>S</i></tt> be <tt><i>CURRENT-SCOPE</i>(<i>P</i>)</tt>, where <tt><i>P</i></tt>
+is the point at which the invocation of `current_function` lexically appears.
+<p/>
+-8- <i>Returns</i>: <tt><i>S</i></tt> <ins>if <tt><i>S</i></tt> represents a function.
+Otherwise, a reflection representing the nearest enclosing
+function of the entity represented by <tt><i>S</i></tt></ins>.
+<p/>
+-9- <i>Throws</i>: `meta::exception` unless <del><tt><i>S</i></tt> represents a
+function</del><ins>an enclosing function is found</ins>.
+</p>
+</blockquote>
+</blockquote>
+
+</li>
+
+ </ol>
+</superseded>
+
+<note>2026-09-11; Tim provides new wording</note>
+<p>The invented lambdas from consteval-block-declarations need to be ignored.</p>
+
 </discussion>
 
 <resolution>
@@ -94,19 +134,19 @@ consteval info current_function();
 </pre>
 <blockquote>
 <p>
--6- An invocation of `current_function` that appears at a program point <tt><i>P</i></tt> 
-is value-dependent (<sref ref="[temp.dep.constexpr]"/>) if <tt><i>eval-point</i>(<i>P</i>)</tt> 
+-6- An invocation of `current_function` that appears at a program point <tt><i>P</i></tt>
+is value-dependent (<sref ref="[temp.dep.constexpr]"/>) if <tt><i>eval-point</i>(<i>P</i>)</tt>
 is enclosed by a scope corresponding to a templated entity.
 <p/>
--7- Let <tt><i>S</i></tt> be <tt><i>CURRENT-SCOPE</i>(<i>P</i>)</tt>, where <tt><i>P</i></tt> 
+-7- Let <tt><i>S</i></tt> be <tt><i>CURRENT-SCOPE</i>(<i>P</i>)</tt>, where <tt><i>P</i></tt>
 is the point at which the invocation of `current_function` lexically appears.
 <p/>
--8- <i>Returns</i>: <tt><i>S</i></tt> <ins>if <tt><i>S</i></tt> represents a function. 
+-8- <i>Returns</i>: <tt><i>S</i></tt> <ins>if <tt><i>S</i></tt> represents a function.
 Otherwise, a reflection representing the nearest enclosing
-function of the entity represented by <tt><i>S</i></tt></ins>.
+function of the entity represented by <tt><i>S</i></tt>, ignoring any function call operators of closure types introduced by <i>consteval-block-declaration</i>s (<sref ref="[dcl.pre]"/>)</ins>.
 <p/>
--9- <i>Throws</i>: `meta::exception` unless <del><tt><i>S</i></tt> represents a 
-function</del><ins>an enclosing function is found</ins>.
+-9- <i>Throws</i>: `meta::exception` <del>unless</del><ins>if</ins> <tt><i>S</i></tt> <ins>does not represent</ins><del>represents</del> a
+function <ins>and an enclosing function is not found</ins>.
 </p>
 </blockquote>
 </blockquote>
