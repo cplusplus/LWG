@@ -16,15 +16,15 @@
 [&hellip;] <tt>is_nothrow_invocable_v&lt;CompletionFunction&amp;&gt;</tt> shall be <tt>true</tt>.
 </blockquote>
 <p>
-This requirement introduces a kind of undefined behavior and permits implementation divergence. Currently 
+This requirement introduces a kind of undefined behavior and permits implementation divergence. Currently
 <a href="https://github.com/microsoft/STL/blob/16bb556afe5c56fe70a5508a6116842c226dd3be/stl/inc/barrier#L72-L77">MSVC STL</a>
-enforces the requirement, while 
-<a href="https://github.com/gcc-mirror/gcc/blob/4ea6bfedc8759cef739ae42eee162989112bd85a/libstdc%2B%2B-v3/include/std/barrier">libstdc++</a> 
-and 
-<a href="https://github.com/llvm/llvm-project/blob/9a77a6f80252288d536b3aa471f241786a54068b/libcxx/include/barrier">libc++</a> 
+enforces the requirement, while
+<a href="https://github.com/gcc-mirror/gcc/blob/4ea6bfedc8759cef739ae42eee162989112bd85a/libstdc%2B%2B-v3/include/std/barrier">libstdc++</a>
+and
+<a href="https://github.com/llvm/llvm-project/blob/9a77a6f80252288d536b3aa471f241786a54068b/libcxx/include/barrier">libc++</a>
 don't.
 <p/>
-If implementation divergence is not intended, I don't think it makes much sense to introduce UB in this way. 
+If implementation divergence is not intended, I don't think it makes much sense to introduce UB in this way.
 I guess we should either strengthen the requirement to require well-formedness affection or relax it.
 </p>
 
@@ -40,8 +40,8 @@ This wording is relative to <paper num="N4928"/>.
 
 <blockquote class="note">
 <p>
-[<i>Drafting Note:</i> Two mutually exclusive options are prepared, depicted below by <b>Option A</b> and 
-<b>Option B</b>, respectively.] 
+[<i>Drafting Note:</i> Two mutually exclusive options are prepared, depicted below by <b>Option A</b> and
+<b>Option B</b>, respectively.]
 </p>
 </blockquote>
 
@@ -56,8 +56,8 @@ This wording is relative to <paper num="N4928"/>.
 <blockquote>
 <p>
 -5- <tt>CompletionFunction</tt> shall meet the <i>Cpp17MoveConstructible</i> (Table 32) and <i>Cpp17Destructible</i> (Table 36)
-requirements. <ins>Instantiation of <tt>barrier&lt;CompletionFunction&gt;</tt> is ill-formed if 
-<tt>is_nothrow_invocable_v&lt;CompletionFunction&amp;&gt;</tt> is not 
+requirements. <ins>Instantiation of <tt>barrier&lt;CompletionFunction&gt;</tt> is ill-formed if
+<tt>is_nothrow_invocable_v&lt;CompletionFunction&amp;&gt;</tt> is not
 <tt>true</tt></ins><del><tt>is_nothrow_invocable_v&lt;CompletionFunction&amp;&gt;</tt> shall be <tt>true</tt></del>.
 </p>
 </blockquote>
@@ -79,7 +79,7 @@ requirements. <ins>Instantiation of <tt>barrier&lt;CompletionFunction&gt;</tt> i
 -3- The <i>phase completion step</i> that is executed at the end of each phase has the following effects:
 </p>
 <ol style="list-style-type: none">
-<li><p>(3.1) &mdash; Invokes the completion function, equivalent to <tt>completion()</tt>. <ins>If any invocation 
+<li><p>(3.1) &mdash; Invokes the completion function, equivalent to <tt>completion()</tt>. <ins>If any invocation
 to the completion function throws an exception, the behavior is undefined.</ins></p></li>
 <li><p>(3.2) &mdash; Unblocks all threads that are blocked on the phase synchronization point.</p></li>
 </ol>
@@ -98,13 +98,92 @@ requirements. <del><tt>is_nothrow_invocable_v&lt;CompletionFunction&amp;&gt;</tt
 
 <note>2023-03-22; Jonathan provides improved wording</note>
 
-</discussion>
-
-<resolution>
+<superseded>
 <p>This wording is relative to <paper num="N4928"/>.</p>
 
 <ol>
 
+<li><p>Modify <sref ref="[thread.barrier.class]"/> as indicated:</p>
+
+<blockquote>
+<p>
+-3- The <i>phase completion step</i> that is executed at the end of each phase has the following effects:
+</p>
+<ol style="list-style-type: none">
+<li><p>(3.1) &mdash; Invokes the completion function, equivalent to
+<code>completion()</code><ins>; if that invocation exits via an exception,
+the function <code>std::terminate</code> is invoked</ins>.
+</p></li>
+<li><p>(3.2) &mdash; Unblocks all threads that are blocked on the phase synchronization point.</p></li>
+</ol>
+<p>
+[&hellip;]
+</p>
+<p>
+-5- <tt>CompletionFunction</tt> shall meet the <i>Cpp17MoveConstructible</i> (Table 32) and <i>Cpp17Destructible</i> (Table 36)
+requirements.
+<del>
+<code>is_nothrow_invocable_v&lt;CompletionFunction&amp;&gt;</code>
+shall be <code>true</code>.
+</del>
+<ins>
+A program that instantiates <code>barrier&lt;CompletionFunction&gt;</code>
+is ill-formed if <code>is_invocable_v&lt;CompletionFunction&amp;&gt;</code>
+is <code>false</code>.
+</ins>
+</p>
+</blockquote>
+
+</li>
+
+</ol>
+
+</superseded>
+
+<note>2026-09-11; Tim provides new wording</note>
+<p> Needs an update to the gigantic "when do we call `std::terminate`?" note.</p>
+</discussion>
+
+<resolution>
+<p>This wording is relative to <paper num="N5054"/>.</p>
+
+<ol>
+
+<li><p>Modify <sref ref="[except.terminate]"/> as indicated:</p>
+<blockquote>
+<p>
+-1- Some errors in a program cannot be recovered from, such as when an exception is not handled or a `std::thread` object is destroyed
+while its thread function is still executing. In such cases, the function `std::terminate` (<sref ref="[exception.terminate]"/>) is invoked.
+</p>
+<p>[<i>Note 1:</i> These situations are:</p>
+<ol style="list-style-type: none">
+<li><p>(1.1) &mdash; [&hellip;]</p></li>
+<li><p>(1.2) &mdash; [&hellip;]</p></li>
+<li><p>(1.3) &mdash; [&hellip;]</p></li>
+<li><p>(1.4) &mdash; [&hellip;]</p></li>
+<li><p>(1.5) &mdash; [&hellip;]</p></li>
+<li><p>(1.6) &mdash; [&hellip;]</p></li>
+<li><p>(1.7) &mdash; [&hellip;]</p></li>
+<li><p>(1.8) &mdash; [&hellip;]</p></li>
+<li><p>(1.9) &mdash; [&hellip;]</p></li>
+<li><p>(1.10) &mdash; [&hellip;]</p></li>
+<li><p>(1.11) &mdash; [&hellip;]</p></li>
+<li><p>(1.12) &mdash; [&hellip;]</p></li>
+<li><p>(1.13) &mdash; [&hellip;]</p></li>
+<li><p>(1.14) &mdash; when a callback invocation exits via an exception when requesting stop on a `std::stop_source`
+or a `std::inplace_stop_source` (<sref ref="[stopsource.mem]"/>, <sref ref="[stopsource.inplace.mem]"/>),
+or in the constructor of `std::stop_callback` or `std::inplace_stop_callback` (<sref ref="[stopcallback.cons]"/>, <sref ref="[stopcallback.inplace.cons]"/>)
+when a callback invocation exits via an exception, or</p></li>
+<li><p><ins>(1.?) &mdash; when an invocation of the completion function of a `std::barrier` object (<sref ref="[thread.barrier.class]"/>) exits via an exception, or</ins></p></li>
+<li><p>(1.15) &mdash; when a `run_loop` object is destroyed that is still in the `running` state (<sref ref="[exec.run.loop]"/>), or</p></li>
+<li><p>(1.16) &mdash; [&hellip;]</p></li>
+<li><p>(1.17) &mdash; [&hellip;]</p></li>
+<li><p>(1.18) &mdash; [&hellip;]</p></li>
+<li><p>(1.19) &mdash; [&hellip;]</p></li>
+</ol>
+<p> &mdash; <i>end note</i> ]</p>
+</blockquote>
+</li>
 <li><p>Modify <sref ref="[thread.barrier.class]"/> as indicated:</p>
 
 <blockquote>
