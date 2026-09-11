@@ -81,7 +81,7 @@ namespace std::ranges {
 </pre>
 <blockquote>
 <p>
--1- <i>Mandates</i>: <tt>C</tt> is a cv-unqualified class type <ins>and does not satisfy <tt>view</tt></ins>.
+-1- <i>Mandates</i>: <tt>C</tt> is a cv-unqualified class type <ins>that does not satisfy <tt>view</tt></ins>.
 </p>
 [&hellip;]
 </blockquote>
@@ -99,7 +99,7 @@ template&lt;template&lt;class...&gt; class C, class... Args&gt;
 </pre>
 <blockquote>
 <p>
--1- <i>Mandates</i>: For the first overload, <tt>C</tt> is a cv-unqualified class type <ins>and does not satisfy <tt>view</tt></ins>.
+-1- <i>Mandates</i>: For the first overload, <tt>C</tt> is a cv-unqualified class type <ins>that does not satisfy <tt>view</tt></ins>.
 </p>
 [&hellip;]
 </blockquote>
