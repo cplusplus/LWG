@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="4159" status="New">
+<issue num="4159" status="Ready">
 <title>Uses-allocator construction mechanisms should be opted out for node handles</title>
 <section><sref ref="[container.node]"/><sref ref="[allocator.uses.trait]"/></section>
 <submitter>Jiang An</submitter>
@@ -69,7 +69,7 @@ is <tt>false_type</tt>.</ins>
 </superseded>
 
 <note>2024-10-09; Adjust wording as requested in reflector poll</note>
-
+<note>2026-09-11; LWG voted to move this to Ready during the 2024-10-09 telecon</note>
 
 </discussion>
 
