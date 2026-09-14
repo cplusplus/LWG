@@ -204,8 +204,15 @@ stores the result in <tt>*this</tt>.
 </ol>
 </superseded>
 
-<note>2026-09-11; Jonathan provides new wording</note>
+<note>2026-09-11; Jonathan provides new wording suggested during telecon</note>
 <p>
+Introduce an <i>`arg-type`</i> typedef which is just `T` for the floating-point
+types, matching the historical explicit specializations for `float`, `double`,
+and `long double`. Leave that type unspecified when the primary template is
+instantiated for non-floating-point types, which allows the implementation to
+choose between pass-by-reference and pass-by-value. An implementation could
+choose by-value for scalars or sufficiently-small class types, and by-reference
+otherwise, or just always use a reference.
 If we take this direction then LWG <iref ref="3934"/> needs a new proposed
 resolution.
 </p>
@@ -225,7 +232,7 @@ This wording is relative to <paper num="N5050"/>.
 <pre>
 namespace std {
   template&lt;class T&gt; class complex {
-    <ins>using <i>arg-type</i> = conditional_t&lt;is_floating_point_v&lt;T&gt;, T, const T&amp;&gt;; <i>// exposition only</i></ins>
+    <ins>using <i>arg-type</i> = conditional_t&lt;is_floating_point_v&lt;T&gt;, T, <i>see below</i>; <i>// exposition only</i></ins>
 
   public:
     using value_type = T;
@@ -239,8 +246,22 @@ namespace std {
     constexpr complex&amp; operator/=(<del>const T&amp;</del> <ins><i>arg-type</i></ins>);
     [&hellip;]
   };
+
+  <ins>template&lt;class T&gt;</ins>
+    <ins>complex(T) -> complex&lt;T&gt;;</ins>
+  <ins>template&lt;class T&gt;</ins>
+    <ins>complex(T, T) -> complex&lt;T&gt;;</ins>
 }
 </pre>
+<p>
+-1-
+The class `complex` describes an object that can store the Cartesian components,
+`real()` and `imag()`, of a complex number.
+</p>
+<p>
+<ins>When `T` is not a floating-point type, <i>`arg-type`</i> is either `T`
+or <code>const T&amp;</code>; it is unspecified which.</ins>
+</p>
 </blockquote>
 </li>
 
