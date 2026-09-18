@@ -9,7 +9,7 @@
 </section>
 <submitter>Hewill Kang</submitter>
 <date>16 Jun 2026</date>
-<priority>99</priority>
+<priority>3</priority>
 
 <discussion>
 <p>
@@ -110,6 +110,11 @@ into the legacy algorithm which is unsatisfactory.
 </p>
 <p>
 Note that `join_with_view` has the similar issue for being a `common_range`.
+</p>
+
+<note>2026-08-27; Reflector poll.</note>
+<p>
+Set priority to 3 after reflector poll.
 </p>
 </discussion>
 

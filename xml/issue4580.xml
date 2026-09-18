@@ -8,7 +8,7 @@
 </section>
 <submitter>S. B. Tam</submitter>
 <date>18 May 2026</date>
-<priority>99</priority>
+<priority>3</priority>
 
 <discussion>
 <p>
@@ -39,6 +39,14 @@ must be an <i>enum-specifier</i>. What does it mean to say "an <i>enum-specifier
 <p/>
 I think, instead of saying "an <i>enum-specifier</i> of <tt><i>D</i></tt>", the second bullet 
 could simply refer to <tt><i>D</i></tt> as an <i>enum-specifier</i>.
+</p>
+
+<note>2026-08-27; Reflector poll.</note>
+<p>
+Set priority to 3 after reflector poll.
+</p>
+<p>
+Unclear if enumerator-definition or enum-specifier should be used; consult with CWG.
 </p>
 </discussion>
 

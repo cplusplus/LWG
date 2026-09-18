@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="4605" status="New">
+<issue num="4605" status="Tentatively Ready">
 <title>Feature test macro for `error_code` formatting</title>
 <section><sref ref="[version.syn]"/></section>
 <submitter>Jonathan Wakely</submitter>
@@ -14,6 +14,11 @@
 `error_code`, but without a feature test macro.
 During the review of the pull request to apply the paper to the working draft
 there were requests for a feature test macro.
+</p>
+
+<note>2026-08-27; Reflector poll.</note>
+<p>
+Set status to Tentatively Ready after 9 votes in favour during reflector poll.
 </p>
 </discussion>
 

@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="3991" status="New">
+<issue num="3991" status="Ready">
 <title><tt>variant</tt>'s move assignment should not be guaranteed to produce a valueless by exception state</title>
 <section><sref ref="[variant.assign]"/></section>
 <submitter>Brian Bi</submitter>
@@ -24,6 +24,8 @@ Set priority to 3 after reflector poll.
 strike it."
 </p>
 
+
+<note>2026-09-11; LWG telecon. Status changed: New &rarr; Ready.</note>
 </discussion>
 
 <resolution>

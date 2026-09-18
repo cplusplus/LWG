@@ -1,12 +1,12 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="4614" status="New">
+<issue num="4614" status="Ready">
 <title>&sect;[numeric.ops.midpoint] No handling of non-finite floats</title>
 <section><sref ref="[numeric.ops.midpoint]"/></section>
 <submitter>Jan Schultke</submitter>
 <date>16 Aug 2026</date>
-<priority>99</priority>
+<priority>3</priority>
 
 <discussion>
 <p>
@@ -25,6 +25,16 @@ Not only is there no description of the result, there is also no description of 
 because the blanket wording in <sref ref="[library.c]"/> does not apply to <tt>&lt;numeric&gt;</tt>, 
 only to <tt>&lt;cmath&gt;</tt> functions.
 </p>
+
+<note>2026-08-27; Reflector poll.</note>
+<p>
+Set priority to P3 after reflector poll.
+</p>
+<p>
+"`lerp` handles such corner cases, just call `lerp` to get it right."
+</p>
+
+<note>2026-09-11; LWG telecon. Status changed: New &rarr; Ready.</note>
 </discussion>
 
 <resolution>
@@ -47,7 +57,7 @@ template&lt;class T&gt;
 <p/>
 -2- <i><del>Returns</del><ins>Effects</ins></i>: <del>Half the sum of `a` and `b`. 
 If `T` is an integer type and the sum is odd, the result is rounded towards `a`</del><ins>If 
-`T` is a floating-point type, equivalent to `lerp(a, b, T(0.5))` (<sref ref="[c.math.lerp]"/>).
+`T` is a floating-point type, equivalent to `return lerp(a, b, T(0.5));` (<sref ref="[c.math.lerp]"/>).
 Otherwise, returns half the sum of `a` and `b`; if the sum is odd, the result is rounded 
 towards `a`</ins>.
 <p/>

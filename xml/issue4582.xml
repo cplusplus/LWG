@@ -9,7 +9,7 @@
 </section>
 <submitter>Charles Hussong</submitter>
 <date>19 May 2026</date>
-<priority>99</priority>
+<priority>3</priority>
 
 <discussion>
 <p>
@@ -95,6 +95,11 @@ mdspan viewing the same elements with const element type?" problem.)
 It might make sense to let layouts restrict the set of valid ranks.
 That would fix the issue without requiring a redesign of `transposed`.
 I suggest the following fix.
+</p>
+
+<note>2026-08-27; Reflector poll.</note>
+<p>
+Set priority to 3 after reflector poll.
 </p>
 </discussion>
 

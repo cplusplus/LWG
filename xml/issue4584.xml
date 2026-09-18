@@ -8,7 +8,7 @@
 </section>
 <submitter>Joaquín M López Muñoz</submitter>
 <date>24 May 2026</date>
-<priority>99</priority>
+<priority>3</priority>
 
 <discussion>
 <p>
@@ -30,6 +30,11 @@ an ad-hoc type wrapping a `T` value and an allocator object which implements
 move construction in terms of <tt>std::allocator_traits&lt;A&gt;::construct</tt>. 
 So, even if this issue is resolved as NAD, that would be informative for 
 standard library implementors so that they can potentially fix their code.
+</p>
+
+<note>2026-08-27; Reflector poll.</note>
+<p>
+Set priority to 3 after reflector poll.
 </p>
 </discussion>
 

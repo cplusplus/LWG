@@ -8,7 +8,7 @@
 </section>
 <submitter>S. B. Tam</submitter>
 <date>29 May 2026</date>
-<priority>99</priority>
+<priority>3</priority>
 
 <discussion>
 <p>
@@ -30,6 +30,11 @@ constexpr auto x = std::meta::alignment_of(^^ch);
 alignas(64) char ch;
 constexpr auto x2 = x; // <span style="color:red;font-weight:bolder">x2 is 1 or 64?</span>
 </pre></blockquote>
+
+<note>2026-08-27; Reflector poll.</note>
+<p>
+Set priority to 3 after reflector poll.
+</p>
 </discussion>
 
 <resolution>

@@ -6,7 +6,7 @@
 <section><sref ref="[facet.num.get.virtuals]"/></section>
 <submitter>Jonathan Wakely</submitter>
 <date>10 Jun 2026</date>
-<priority>99</priority>
+<priority>3</priority>
 
 <discussion>
 <p>
@@ -38,6 +38,14 @@ which should be the same as the set of sequences that may be
 produced by the `%p` conversion of the `fprintf` function."
 And `fprintf` says "converted to a sequence of printing characters,
 in an implementation-defined manner."
+</p>
+
+<note>2026-08-27; Reflector poll.</note>
+<p>
+Set priority to 3 after reflector poll.
+</p>
+<p>
+SG16 may want to review this issue.
 </p>
 </discussion>
 

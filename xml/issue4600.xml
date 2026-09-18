@@ -8,7 +8,7 @@
 </section>
 <submitter>Matt Bentley</submitter>
 <date>21 Jun 2026</date>
-<priority>99</priority>
+<priority>3</priority>
 
 <discussion>
 <p>
@@ -78,6 +78,14 @@ for this to take place. Those changes do not result in a performance difference.
 </ol>
 <p>
 If there is no change, at the very least this gives an opportunity for a record of why we decided not to do so.
+</p>
+
+<note>2026-08-27; Reflector poll.</note>
+<p>
+Set priority to 3 after reflector poll.
+</p>
+<p>
+Many voted NAD, arguing the precondition is appropriate.
 </p>
 </discussion>
 

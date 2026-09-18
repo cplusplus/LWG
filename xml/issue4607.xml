@@ -1,12 +1,12 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="4607" status="New">
+<issue num="4607" status="SG6">
 <title>Meaning of <tt>numeric_limits&lt;T&gt;::is_exact</tt> is unclear</title>
 <section><sref ref="[numeric.limits.members]"/></section>
 <submitter>Jan Schultke</submitter>
 <date>17 Jul 2026</date>
-<priority>99</priority>
+<priority>4</priority>
 
 <discussion>
 <p>
@@ -40,6 +40,11 @@ documentation for Informix Servers</a> describes scaled integers as "exact numer
 and floating-point types as "approximate numeric data types".
 </p></li>
 </ul>
+
+<note>2026-08-27; Reflector poll. Status &rarr; SG6.</note>
+<p>
+Set priority to P4/SG6 after reflector poll.
+</p>
 </discussion>
 
 <resolution>

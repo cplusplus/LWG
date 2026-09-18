@@ -6,7 +6,7 @@
 <section><sref ref="[support.signal]"/></section>
 <submitter>Hubert Tong</submitter>
 <date>10 June 2026</date>
-<priority>99</priority>
+<priority>3</priority>
 
 <discussion>
 <p>
@@ -35,6 +35,11 @@ void handler(int)  // signal handler
 The evaluation of "handler" includes the evaluation of `f`, which is not signal-safe.
 But that's not really a good state of affairs, because the constant evaluation of
 `f` certainly has no runtime impact on the signal handler.
+</p>
+
+<note>2026-08-27; Reflector poll.</note>
+<p>
+Set priority to 3 after reflector poll.
 </p>
 </discussion>
 

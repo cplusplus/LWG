@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="4593" status="New">
+<issue num="4593" status="Tentatively Ready">
 <title>The first template argument of `std::saturating_cast` must be specifiable</title>
 <section><sref ref="[numeric.sat.cast]"/></section>
 <submitter>Jiang An</submitter>
@@ -15,6 +15,11 @@ specifying template arguments for algorithms. Unfortunately, `std::saturating_ca
 algorithm as it is specifying in the "Algorithms library" chapter, and its first template argument 
 must be explicitly specified. Without being "explicitly stated otherwise", `std::saturating_cast` 
 is effectively unusable.
+</p>
+
+<note>2026-08-27; Reflector poll.</note>
+<p>
+Set status to Tentatively Ready after 8 votes in favour during reflector poll.
 </p>
 </discussion>
 

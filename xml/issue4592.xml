@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="4592" status="New">
+<issue num="4592" status="Tentatively Ready">
 <title>Preconditions of some virtual functions `std::codecvt` on character ranges are in a possibly unintended form</title>
 <section><sref ref="[locale.codecvt.virtuals]"/></section>
 <submitter>Jiang An</submitter>
@@ -20,6 +20,12 @@ if the result is specified to be true, it's possible for <tt><i>first</i></tt> a
 to point to elements of different array subobjects in the same complete object, which renders 
 <tt><i>last</i></tt> not reachable from <tt><i>first</i></tt>.
 </p>
+
+<note>2026-08-27; Reflector poll.</note>
+<p>
+Set status to Tentatively Ready after 6 votes in favour during reflector poll.
+</p>
+<p>This change has no practical impact, because this was always the real precondition anyway.</p>
 </discussion>
 
 <resolution>

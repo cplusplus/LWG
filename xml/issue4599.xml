@@ -8,7 +8,7 @@
 </section>
 <submitter>Jan Schultke</submitter>
 <date>18 Jun 2026</date>
-<priority>99</priority>
+<priority>4</priority>
 
 <discussion>
 <p>
@@ -35,6 +35,24 @@ does not require an inclusion of the <tt>&lt;atomic&gt;</tt> header.
 <p/>
 However, `std::atomic` still appears directly inside the <tt>&lt;stdatomic.h&gt;</tt> 
 synopsis, so it is unclear how <tt><i>std-atomic</i></tt> contributes to that goal.
+</p>
+
+<note>2026-08-27; Reflector poll.</note>
+<p>
+Set priority to 4 after reflector poll.
+</p>
+<p>
+Many voted NAD, arguing the alias template serves a purpose (prevents lookup problems
+in nested namespaces and communicates that std::atomic need not be visible from &lt;stdatomic.h&gt;).
+</p>
+<p>
+Possible improvement would be to use:
+<pre>
+template&lt;class T&gt;
+  using <i>std-atomic</i> = <i>see below</i>;
+</pre>
+and then say that it's an unspecified type alias that denotes the same
+type as <tt>std::atomic&lt;T&gt;</tt>.
 </p>
 </discussion>
 

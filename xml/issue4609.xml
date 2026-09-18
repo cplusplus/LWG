@@ -6,7 +6,7 @@
 <section><sref ref="[thread.thread.class.general]"/></section>
 <submitter>Jiang An</submitter>
 <date>24 Jul 2026</date>
-<priority>99</priority>
+<priority>3</priority>
 
 <discussion>
 <p>
@@ -15,6 +15,15 @@ Currently, there is a deduction guide for `std::thread::name_hint` that only acc
 <sref ref="[thread.attributes.hint]"/>) actually takes <tt>std::basic_string_view&lt;T&gt;</tt>, 
 presumably it's more reasonable to make the deduction guide accept `basic_string` 
 specializations with different allocator types (e.g. `std::pmr::string`).
+</p>
+
+<note>2026-08-27; Reflector poll.</note>
+<p>
+Set priority to 3 after reflector poll.
+</p>
+<p>
+The deduction guide might be better taking `basic_string_view` instead of `basic_string`,
+matching the constructor parameter type. Or provide non-template guide taking `string_view`.
 </p>
 </discussion>
 
