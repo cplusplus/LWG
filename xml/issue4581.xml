@@ -12,9 +12,9 @@
 
 <discussion>
 <p>
-After <a href="https://cplusplus.github.io/CWG/issues/3111.html">CWG 3111</a>, `constant_of` uses 
-`reflect_constant_array` and `reflect_function` for arrays and functions respectively. But since 
-it inspects `type_of(r)` and not `remove_reference(type_of(r))`, variables of reference types will 
+After <a href="https://cplusplus.github.io/CWG/issues/3111.html">CWG 3111</a>, `constant_of` uses
+`reflect_constant_array` and `reflect_function` for arrays and functions respectively. But since
+it inspects `type_of(r)` and not `remove_reference(type_of(r))`, variables of reference types will
 still decay to pointers. It's unclear to me whether this is intended.
 </p>
 
@@ -26,9 +26,57 @@ Set priority to 2 after reflector poll.
 May not be possible to avoid decay for array/function references in constant_of,
 since copies of non-constant arrays can't be constants.
 </p>
+
+<note>2026-09-18; Tomasz provides proposed resolution.</note>
+<p>
+Clarifying behavior of `constant_of` and `reflect_constant_array` for objects
+which values cannot be accessed at compile is left to be handled in separate
+issues.
+</p>
 </discussion>
 
 <resolution>
+<p>
+This wording is relative to <paper num="N5054"/>.
+</p>
+
+<ol>
+<li>
+<p>Modify <sref ref="[meta.reflection.queries]"/> as indicated:</p>
+
+<blockquote>
+<pre>
+consteval info constant_of(info r);
+</pre>
+<blockquote>
+<p>
+-7- Let <tt><i>R</i></tt> be a constant expression of type `info` such that
+<tt><i>R</i> == r</tt> is `true`. If `r` represents an annotation, then let
+<tt><i>C</i></tt> be its underlying constant.
+<p/>
+-8- <i>Effects</i>: Equivalent to:
+</p>
+<blockquote><pre>
+if constexpr (is_annotation(R)) {
+  return <i>C</i>;
+} else if constexpr (is_array_type(<ins>remove_reference(</ins>type_of(<i>R</i>))<ins>)</ins>) {
+  return reflect_constant_array([: <i>R</i> :]);
+} else if constexpr (is_function_type(<ins>remove_reference(</ins>type_of(<i>R</i>))<ins>)</ins>) {
+  return reflect_function([: <i>R</i> :]);
+} else {
+  return reflect_constant([: <i>R</i> :]);
+}
+</pre></blockquote>
+<p>
+-9- <i>Throws</i>: `meta::exception` unless either `r` represents an annotation or
+<tt>[: <i>R</i> :]</tt> is a valid <i>splice-expression</i> (<sref ref="[expr.prim.splice]"/>).
+</p>
+</blockquote>
+</blockquote>
+</li>
+
+</ol>
 </resolution>
+
 
 </issue>
