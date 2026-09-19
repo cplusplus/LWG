@@ -35,7 +35,7 @@ The intent might be that the computation merely follows the same restrictions as
 also raises the question whether the computation results of `fminimum` and `fetch_fminimum` have to be bitwise 
 identical (as implied by "as if by", and applying only if `fminimum` actually exists) or merely follow the 
 same rules for determining the result, while yielding potentially different NaN payloads and handling excess 
-precision differently..
+precision differently.
 <p/>
 Possible directions:
 </p>
