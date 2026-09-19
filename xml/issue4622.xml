@@ -1,0 +1,28 @@
+<?xml version='1.0' encoding='utf-8' standalone='no'?>
+<!DOCTYPE issue SYSTEM "lwg-issue.dtd">
+
+<issue num="4622" status="New">
+<title>Is `NULL` allowed to be expanded to an extension?</title>
+<section><sref ref="[support.types.nullptr]"/></section>
+<submitter>Jiang An</submitter>
+<date>14 Sep 2026</date>
+<priority>99</priority>
+
+<discussion>
+<p>
+In some current implementations (e.g., in GCC and Clang's own <tt>&lt;stddef.h&gt;</tt> header), the `NULL` 
+macro may be expanded to the `__null` extension (<a href="https://godbolt.org/z/PfWG81dcP">demo</a>). 
+Although `__null` can be used interchangeably with zero-value integer literals of the same type in most 
+contexts, its exact spelling is observable.
+<p/>
+LWG <iref ref="4182"/> requires `NULL` to be expanded to a literal, and a pedantic reading may suggest 
+that only standard literals are permitted. In other words, if a program requires `NULL` to be expanded 
+as a standard literal (in either compile time or runtime), LWG <iref ref="4182"/> seemingly requires 
+implementations to support it, which in turns renders the existing use of the `__null` extension non-conforming.
+</p>
+</discussion>
+
+<resolution>
+</resolution>
+
+</issue>
