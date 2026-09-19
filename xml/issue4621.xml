@@ -1,0 +1,81 @@
+<?xml version='1.0' encoding='utf-8' standalone='no'?>
+<!DOCTYPE issue SYSTEM "lwg-issue.dtd">
+
+<issue num="4621" status="New">
+<title>Floating-point `std::midpoint` should not be freestanding</title>
+<section><sref ref="[numeric.ops.midpoint]"/></section>
+<submitter>Jan Schultke</submitter>
+<date>11 Sep 2026</date>
+<priority>99</priority>
+
+<discussion>
+<p>
+The standard library typically does not provide freestanding floating-point numerics, but floating-point 
+`std::midpoint` is freestanding, presumably by accident. LWG <iref ref="4614"/> makes this pre-existing 
+issue readily apparent by making floating-point `std::midpoint` (freestanding) equivalent to 
+`std::lerp(a, b, T(0.5))` (not freestanding).
+</p>
+</discussion>
+
+<resolution>
+<p>
+This wording is relative to <paper num="N5054"/> on top of LWG <iref ref="4614"/>.
+</p>
+
+<ol>
+<li>
+<p>Modify <sref ref="[numeric.ops.overview]"/> as indicated:</p>
+
+<blockquote>
+<pre>
+[&hellip;]
+// <i><sref ref="[numeric.ops.midpoint]"/>, midpoint</i>
+template&lt;<del>class</del><ins>integral</ins> T&gt;
+  constexpr T midpoint(T a, T b) noexcept;
+<ins>template&lt;floating_point T&gt;
+  constexpr T midpoint(T a, T b) noexcept; // <i>freestanding-deleted</i></ins>
+template&lt;class T&gt;
+  constexpr T* midpoint(T* a, T* b);
+[&hellip;]
+</pre>
+</blockquote>
+</li>
+
+<li>
+<p>Modify <sref ref="[numeric.ops.midpoint]"/> as indicated:</p>
+
+<blockquote>
+<pre>
+template&lt;<del>class</del><ins>integral</ins> T&gt;
+  constexpr T midpoint(T a, T b) noexcept;
+</pre>
+<blockquote>
+<p>
+-1- <i>Constraints</i>: `T` is <del>an arithmetic type other than</del><ins>not</ins> <i>cv</i> `bool`.
+<p/>
+-2- <del><i>Effects</i>: If `T` is a floating-point type, equivalent to `return lerp(a, b, T(0.5));` 
+(<sref ref="[c.math.lerp]"/>). Otherwise, returns half</del><br/> 
+<ins><i>Returns</i>: Half</ins> the sum of `a` and `b`; if the sum is odd, the result is rounded 
+towards `a`.
+<p/>
+-3- <i>Remarks</i>: No overflow occurs. <del>If `T` is a floating-point type, at most one inexact operation occurs.</del>
+</p>
+</blockquote>
+<pre>
+<ins>template&lt;floating_point T&gt;
+  constexpr T midpoint(T a, T b) noexcept;</ins>
+</pre>
+<blockquote>
+<p>
+<ins>-?- <i>Effects</i>: Equivalent to: `return lerp(a, b, T(0.5));` (<sref ref="[c.math.lerp]"/>)</ins>
+<p/>
+<ins>-?- <i>Remarks</i>: At most one inexact operation occurs.</ins>
+</p>
+</blockquote>
+</blockquote>
+</li>
+
+</ol>
+</resolution>
+
+</issue>
