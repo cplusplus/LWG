@@ -1,0 +1,33 @@
+<?xml version='1.0' encoding='utf-8' standalone='no'?>
+<!DOCTYPE issue SYSTEM "lwg-issue.dtd">
+
+<issue num="4620" status="New">
+<title>Clarify whether there is any requirement for "the behavior is unspecified (possibly ill-formed)"</title>
+<section><sref ref="[namespace.std]"/></section>
+<submitter>Jiang An</submitter>
+<date>09 Sep 2026</date>
+<priority>99</priority>
+
+<discussion>
+<p>
+Since C++20/<paper num="P0551R3"/>, in <sref ref="[namespace.std]"/>, we say some constructs (taking address 
+of a non-addressable function etc.) may cause the behavior of a program unspecified and possibly ill-formed. 
+This sounds very similar to "ill-formed, no diagnostic required", but it is unclear whether there are still 
+some imposed requirements so we should not say IFNDR.
+<p/>
+Perhaps it is better to either
+</p>
+<ul>
+<li><p>
+clarify that there are still some requirements imposed for these cases so it is unsuitable to say IFNDR, or
+</p></li>
+<li><p>
+rephrase these restrictions to say IFNDR.
+</p></li>
+</ul>
+</discussion>
+
+<resolution>
+</resolution>
+
+</issue>
