@@ -2,7 +2,7 @@
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
 <issue num="4624" status="New">
-<title>Incosistient preconditions in <tt>repeat_view::<i>iterator</i></tt></title>
+<title>Inconsistent preconditions in <tt>repeat_view::<i>iterator</i></tt></title>
 <section><sref ref="[range.repeat.iterator]"/></section>
 <submitter>Tomasz Kamiński</submitter>
 <date>21 Sep 2026</date>
