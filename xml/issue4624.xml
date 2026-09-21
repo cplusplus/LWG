@@ -10,7 +10,7 @@
 
 <discussion>
 <p>
-As currently specified in the precondition requiring <i>current_</i> to be
+As currently specified, the preconditions requiring <i>current_</i> to be
 non-negative (<sref ref="[range.repeat.iterator]"/> p2, p6, p8, p10) are applied
 only if "If <tt>Bound</tt> is not <tt>unreachable_sentinel_t</tt>". In consequence,
 decrementing iterator before begin is UB only if `views::repeat` specifies bound:
