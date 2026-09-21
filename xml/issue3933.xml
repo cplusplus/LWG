@@ -232,7 +232,7 @@ This wording is relative to <paper num="N5050"/>.
 <pre>
 namespace std {
   template&lt;class T&gt; class complex {
-    <ins>using <i>arg-type</i> = conditional_t&lt;is_floating_point_v&lt;T&gt;, T, <i>see below</i>; <i>// exposition only</i></ins>
+    <ins>using <i>arg-type</i> = <i>see below</i>; <i>// exposition only</i></ins>
 
   public:
     using value_type = T;
@@ -259,8 +259,10 @@ The class `complex` describes an object that can store the Cartesian components,
 `real()` and `imag()`, of a complex number.
 </p>
 <p>
-<ins>When `T` is not a floating-point type, <i>`arg-type`</i> is either `T`
-or <code>const T&amp;</code>; it is unspecified which.</ins>
+<ins>
+If `T` is a floating-point type, <i>`arg-type`</i> denotes `T`.
+Otherwise, it is unspecified whether it denotes `T` or <code>const T&amp;</code>.
+</ins>
 </p>
 </blockquote>
 </li>
