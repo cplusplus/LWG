@@ -1,0 +1,97 @@
+<?xml version='1.0' encoding='utf-8' standalone='no'?>
+<!DOCTYPE issue SYSTEM "lwg-issue.dtd">
+
+<issue num="4624" status="New">
+<title>Inconsistent preconditions in <tt>repeat_view::<i>iterator</i></tt></title>
+<section><sref ref="[range.repeat.iterator]"/></section>
+<submitter>Tomasz Kamiński</submitter>
+<date>21 Sep 2026</date>
+<priority>99</priority>
+
+<discussion>
+<p>
+As currently specified, the preconditions requiring <i>current_</i> to be
+non-negative (<sref ref="[range.repeat.iterator]"/> p2, p6, p8, p10) are applied
+only if "If <tt>Bound</tt> is not <tt>unreachable_sentinel_t</tt>". In consequence,
+decrementing iterator before begin is UB only if `views::repeat` specifies bound:
+<pre>
+auto rv1 = views::repeat(1, 10);
+auto it1 = std::prev(rv1.begin()); // UB
+auto rv2 = views::repeat(1);
+auto it2 = std::prev(rv2.begin()); // OK
+</pre>
+In contrast to the precondition on `bound` in `repeat_view` constructor,
+the <tt>current_</tt> is of `ptrdiff_t` type in such case, and the check
+can always be performed.
+</p>
+
+<p>
+On the LWG reflector Michał Dominiak (the author of the paper) confirmed, that
+this is unintentional copy-paste error in the wording, and the precondition
+should always be applied.
+</p>
+
+</discussion>
+
+<resolution>
+<p>
+This wording is relative to <paper num="N5054"/>.
+</p>
+
+<p>
+The proposed resolution completely removes the precondition on private constructor
+<tt>iterator(const T* value, <i>index-type</i> b = <i>index-type()</i>)</tt>,
+as it is private and can only be invoked by the library internally.
+</p>
+
+<ol>
+<li>
+<p>Modify <sref ref="[range.repeat.iterator]"/> as indicated:</p>
+
+<blockquote>
+<pre>
+constexpr explicit <i>iterator</i>(const T* value, <i>index-type</i> b = <i>index-type</i>());
+</pre>
+<blockquote>
+<p><del>-1- <i>Preconditions</i>: If `Bound` is not `unreachable_sentinel_t`, `b` ≥ 0</del>.</p>
+<p>-2- <i>Effects</i>: [&hellip;]</p>
+</blockquote>
+</blockquote>
+
+[&hellip;]
+
+<blockquote>
+<pre>
+constexpr explicit <i>iterator</i>&amp; operator--();
+</pre>
+<blockquote>
+<p>-6- <i>Preconditions</i>: <del>If `Bound` is not `unreachable_sentinel_t`,</del> <tt><i>current_</i></tt> ≥ 0.</p>
+<p>-7- <i>Effects</i>: [&hellip;]</p>
+</blockquote>
+</blockquote>
+
+<blockquote>
+<pre>
+constexpr explicit <i>iterator</i>&amp; operator+=(difference_type n);
+</pre>
+<blockquote>
+<p>-8- <i>Preconditions</i>: <del>If `Bound` is not `unreachable_sentinel_t`,</del> <tt><i>current_</i></tt> + `n` ≥ 0.</p>
+<p>-9- <i>Effects</i>: [&hellip;]</p>
+</blockquote>
+</blockquote>
+
+<blockquote>
+<pre>
+constexpr explicit <i>iterator</i>&amp; operator-=(difference_type n);
+</pre>
+<blockquote>
+<p>-10- <i>Preconditions</i>: <del>If `Bound` is not `unreachable_sentinel_t`,</del> <tt><i>current_</i></tt> - `n` ≥ 0.</p>
+<p>-11- <i>Effects</i>: [&hellip;]</p>
+</blockquote>
+</blockquote>
+
+</li>
+</ol>
+</resolution>
+
+</issue>
