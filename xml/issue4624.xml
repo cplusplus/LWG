@@ -39,7 +39,7 @@ This wording is relative to <paper num="N5054"/>.
 </p>
 
 <p>
-The proposed resolution completly removes the precondition on private constructor
+The proposed resolution completely removes the precondition on private constructor
 <tt>iterator(const T* value, <i>index-type</i> b = <i>index-type()</i>)</tt>,
 as it is private and can only be invoked by the library internally.
 </p>
