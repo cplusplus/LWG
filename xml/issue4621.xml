@@ -44,6 +44,28 @@ template&lt;class T&gt;
 <li>
 <p>Modify <sref ref="[numeric.ops.midpoint]"/> as indicated:</p>
 
+<blockquote class="note">
+<p>
+[<i>Drafting note</i>: The seemingly loss of "No overflow occurs." for floating-point is still implied as
+part of the specification interms of `lerp`. For the floating-point part, "no overflow" presumably means 
+that it won't return infinity given finite inputs, and `lerp` is specified as returning a mathematical value:
+</p>
+<blockquote>
+<p>
+<i>Returns</i>: <math><mi>a</mi> <mo>+</mo> <mi>t</mi><mo>(</mo><mi>b</mi><mo>-</mo><mi>a</mi><mo>)</mo></math>.
+</p>
+</blockquote>
+<p>
+The <i>Remarks</i> element constrains it further to be finite, so I would say that <aref ref="[c.math.lerp]"/> 
+says multiple times that no "overflow" can occur already in the sense of finiteness.
+<p/>
+One might also interpret "no overflow" as not spuriously raising `FE_OVERFLOW`. Even that interpretation is 
+covered: <a href="https://cstd.eisie.net/c23#7.12.1p1">https://cstd.eisie.net/c23#7.12.1p1</a> bans all 
+<tt>&lt;math.h&gt;</tt> function from spuriously raising overflow exceptions, and we recently made that 
+wording apply to everything in <tt>&lt;cmath&gt;</tt> including `std::lerp`.]
+</p>
+</blockquote>
+
 <blockquote>
 <pre>
 template&lt;<del>class</del><ins>integral</ins> T&gt;
