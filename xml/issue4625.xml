@@ -10,8 +10,8 @@
 
 <discussion>
 <p>
-<sref ref="[atomics.types.operations]"/> specifies that <tt>std::atomic&lt;T&gt;::wait</tt> is constexpr a
-nd that it blocks the thread if the given value is equal to the current value of the object. Other atomic 
+<sref ref="[atomics.types.operations]"/> specifies that <tt>std::atomic&lt;T&gt;::wait</tt> is constexpr 
+and that it blocks the thread if the given value is equal to the current value of the object. Other atomic 
 waiting operations (<sref ref="[atomics.wait]"/>) can also block, such as `std::atomic_flag::wait`.
 <p/>
 <paper num="P3309R3"/> argues that blocking the thread is not a constant expression because it exceeds 
