@@ -1,0 +1,64 @@
+<?xml version='1.0' encoding='utf-8' standalone='no'?>
+<!DOCTYPE issue SYSTEM "lwg-issue.dtd">
+
+<issue num="4625" status="New">
+<title>Blocking the thread of execution should be a non-constant library call</title>
+<section><sref ref="[atomics.wait]"/></section>
+<submitter>Jan Schultke</submitter>
+<date>21 Sep 2026</date>
+<priority>99</priority>
+
+<discussion>
+<p>
+<sref ref="[atomics.types.operations]"/> specifies that <tt>std::atomic&lt;T&gt;::wait</tt> is constexpr a
+nd that it blocks the thread if the given value is equal to the current value of the object. Other atomic 
+waiting operations (<sref ref="[atomics.wait]"/>) can also block, such as `std::atomic_flag::wait`.
+<p/>
+<paper num="P3309R3"/> argues that blocking the thread is not a constant expression because it exceeds 
+implementation limits, but it is unclear which (if any) implementation limits are exceeded by blocking. 
+One might also argue that blocking the thread violates the forward progress guarantee 
+(<sref ref="[intro.progress]"/>), which is undefined behavior and thus not a core constant expression, 
+but this explanation is contrived.
+<p/>
+See prior discussion at
+</p>
+<ul>
+<li><p>
+<a href="https://github.com/cplusplus/CWG/issues/1002">https://github.com/cplusplus/CWG/issues/1002</a>
+</p></li>
+<li><p>
+<a href="https://github.com/cplusplus/draft/issues/9298">https://github.com/cplusplus/draft/issues/9298</a>
+</p></li>
+<li><p>
+<a href="https://stackoverflow.com/q/80000170/5740428">https://stackoverflow.com/q/80000170/5740428</a>
+</p></li>
+</ul>
+</discussion>
+
+<resolution>
+<p>
+This wording is relative to <paper num="N5054"/>.
+</p>
+
+<ol>
+<li>
+<p>Modify <sref ref="[atomics.wait]"/> as indicated:</p>
+
+<blockquote>
+<p>
+-1- <i>Atomic waiting operations</i> and <i>atomic notifying operations</i> provide a mechanism to wait 
+for the value of an atomic object to change more efficiently than can be achieved with polling. An atomic 
+waiting operation may block until it is unblocked by an atomic notifying operation, according to each 
+function's effects. <ins>An atomic waiting operation that blocks is a non-constant library call 
+(<sref ref="[defns.nonconst.libcall]"/>).</ins>
+<p/>
+[<i>Note 1</i>: Programs are not guaranteed to observe transient atomic values, an issue known as the 
+A-B-A problem, resulting in continued blocking if a condition is only temporarily met. &mdash; <i>end note</i>]
+</p>
+</blockquote>
+
+</li>
+</ol>
+</resolution>
+
+</issue>
