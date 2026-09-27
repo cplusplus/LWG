@@ -1,0 +1,125 @@
+<?xml version='1.0' encoding='utf-8' standalone='no'?>
+<!DOCTYPE issue SYSTEM "lwg-issue.dtd">
+
+<issue num="4627" status="New">
+<title>Encoding of `duration` unit suffixes is incorrect for wide streams</title>
+<section><sref ref="[time.duration.io]"/></section>
+<submitter>Victor Zverovich</submitter>
+<date>27 Sep 2026</date>
+<priority>99</priority>
+
+<discussion>
+<p>
+<sref ref="[time.duration.io]"/> specifies <tt>operator&lt;&lt;</tt> for `duration` as if by:
+</p>
+<blockquote><pre>
+basic_ostringstream&lt;charT, traits&gt; s;
+s.flags(os.flags());
+s.imbue(os.getloc());
+s.precision(os.precision());
+s &lt;&lt; d.count() &lt;&lt; <i>units-suffix</i>;
+return os &lt;&lt; s.str();
+</pre></blockquote>
+<p>
+For `Period::type` equal to `micro`, <tt><i>units-suffix</i></tt> is implementation-defined to be either 
+`"μs"` (`"\u00b5\u0073"`) or `"us"`.
+<p/>
+The type and encoding of <tt><i>units-suffix</i></tt> are not specified in terms of `charT`. In particular, 
+if `"μs"` denotes an ordinary string literal, then for a wide stream the expression above inserts a 
+`const char*` into a <tt>basic_ostream&lt;wchar_t&gt;</tt>. <sref ref="[ostream.inserters.character]"/> 
+specifies this operation by applying `out.widen()` to each individual `char`.
+<p/>
+This does not perform transcoding. For example, when the ordinary literal encoding is UTF-8, the micro sign 
+is represented by multiple char code units. Widening those code units individually does not produce the 
+corresponding micro sign in the wide literal encoding.
+<p/>
+For example:
+</p>
+<blockquote><pre>
+std::wostringstream os;
+os &lt;&lt; std::chrono::microseconds{1};
+</pre></blockquote>
+<p>
+should be able to produce:
+</p>
+<blockquote><pre>
+1μs
+</pre></blockquote>
+<p>
+when the implementation chooses the `μs` representation, but the current specification does not provide 
+semantics that produce that result.
+<p/>
+The same problem affects `%q` in <sref ref="[time.format]"/>, whose replacement is specified as "the duration's 
+unit suffix as specified in <sref ref="[time.duration.io]"/>".
+<p/>
+This is similar to LWG <iref ref="4522"/>, which clarified that formatting to `wchar_t` requires transcoding 
+rather than widening narrow code units.
+<p/>
+The unit suffix should therefore be specified directly as a sequence of `charT`, using the literal encoding 
+associated with `charT`.
+</p>
+</discussion>
+
+<resolution>
+<p>
+This wording is relative to <paper num="N5054"/>.
+</p>
+
+<ol>
+<li>
+<p>Modify <sref ref="[time.duration.io]"/> as indicated:</p>
+
+<blockquote>
+<pre>
+template&lt;class charT, class traits, class Rep, class Period&gt;
+  basic_ostream&lt;charT, traits&gt;&amp;
+    operator&lt;&lt;(basic_ostream&lt;charT, traits&gt;&amp; os, const duration&lt;Rep, Period&gt;&amp; d);
+</pre>
+<blockquote>
+<p>
+-1- <i>Effects</i>: Inserts the duration `d` onto the stream `os` as if it were implemented as follows:
+</p>
+<blockquote><pre>
+basic_ostringstream&lt;charT, traits&gt; s;
+s.flags(os.flags());
+s.imbue(os.getloc());
+s.precision(os.precision());
+s &lt;&lt; d.count() &lt;&lt; <i>units-suffix</i>;
+return os &lt;&lt; s.str();
+</pre></blockquote>
+<p>
+where <tt><i>units-suffix</i></tt> <del>depends on</del><ins>is a character sequence of `charT` 
+determined by</ins> the type `Period::type` as follows<ins>. In the following list, each quoted character 
+sequence denotes the corresponding <tt><i>STATICALLY-WIDEN</i>&lt;charT&gt;</tt> character sequence</ins>: 
+[&hellip;]
+</p>
+</blockquote>
+
+<blockquote class="note">
+<p>
+[<i>Drafting note</i>: 
+<p/>
+(1) The existing list is unchanged, including:
+</p>
+<blockquote style="border-left: 3px solid #ccc;padding-left: 15px;">
+<p>
+Otherwise, if `Period::type` is `micro`, it is implementation-defined whether <tt><i>units-suffix</i></tt> is 
+`"μs"` (`"\u00b5\u0073"`) or `"us"`.
+</p>
+</blockquote>
+<p>
+(2) Since `%q` in <sref ref="[time.format]"/> refers to the duration's unit suffix as specified in 
+<sref ref="[time.duration.io]"/>, this change also specifies the appropriate `charT` representation 
+for `%q`.
+]
+</p>
+</blockquote>
+
+</blockquote>
+
+
+</li>
+</ol>
+</resolution>
+
+</issue>
