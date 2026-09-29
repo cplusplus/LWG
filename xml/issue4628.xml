@@ -1,0 +1,77 @@
+<?xml version='1.0' encoding='utf-8' standalone='no'?>
+<!DOCTYPE issue SYSTEM "lwg-issue.dtd">
+
+<issue num="4628" status="New">
+<title>Unspecified exception should not be confused with `dependent_sender_error`</title>
+<section><sref ref="[exec.getcomplsigs]"/></section>
+<submitter>Robert Leahy</submitter>
+<date>29 Sep 2026</date>
+<priority>99</priority>
+
+<discussion>
+<p>
+<sref ref="[exec.getcomplsigs]"/>
+specifies that when completion signatures are not valid an exception of
+&quot;unspecified class type <i>Except</i>&quot;
+is thrown.
+However, this does not prevent <i>Except</i> from being
+<code>dependent_sender_error</code>, or from being publicly and unambiguously
+derived from <code>dependent_sender_error</code>.
+In either case, the handler in <sref ref="[exec.snd.concepts]"/> would interpret
+the exception as indicating that the sender is dependent, rather than that its
+completion signatures are invalid for the given cv- and/or ref-qualification
+and/or environment.
+</p>
+<p>
+Tim Song has pointed out that wording technology already exists to solve this
+(<sref ref="[exec.snd.general]"/>):
+<i><code>unspecified-exception</code></i>.
+</p>
+</discussion>
+
+<resolution>
+<p>
+This wording is relative to <paper num="N5054"/>.
+</p>
+
+<p>Modify <sref ref="[exec.getcomplsigs]"/> as indicated:</p>
+
+<blockquote>
+<p>
+<del>Let
+<i>except</i>
+be an rvalue subexpression of an unspecified class type
+<i>Except</i>
+such that
+<code>move_constructible&lt;</code><i>Except</i><code>&gt; &amp;&amp; derived_from&lt;</code><i>Except</i><code>, exception&gt;</code>
+is
+<code>true</code>.</del>
+Let
+<i><code>CHECKED-COMPLSIGS(</code>e<code>)</code></i>
+be <i>e</i> if <i>e</i> is a core constant expression whose type satisfies
+<i><code>valid-completion-signatures</code></i>;
+otherwise, it is the following expression:
+</p>
+<p>
+<code>(</code><i>e</i><code>, throw
+</code><del><i>except</i></del>
+<code>
+<ins>
+<i>unspecified-exception()</i></ins>, completion_signatures())</code>
+</p>
+<p>[...]</p>
+<p>
+<ul>
+<li>
+Otherwise,
+<code>(throw </code><del><i>except</i></del>
+<code>
+<ins>
+<i>unspecified-exception()</i></ins>, completion_signatures())</code>
+</li>
+</ul>
+</p>
+</blockquote>
+</resolution>
+
+</issue>
