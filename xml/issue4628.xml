@@ -1,0 +1,83 @@
+<?xml version='1.0' encoding='utf-8' standalone='no'?>
+<!DOCTYPE issue SYSTEM "lwg-issue.dtd">
+
+<issue num="4628" status="New">
+<title>`std::invoke` forwarding xvalues of incomplete type</title>
+<section><sref ref="[meta.trans.other]"/></section>
+<submitter>Jay Ghiron</submitter>
+<date>05 Oct 2026</date>
+<priority>99</priority>
+
+<discussion>
+<p>
+Consider the following program:
+</p>
+<blockquote><pre>
+#include &lt;utility&gt;
+#include &lt;functional&gt;
+
+extern struct S s;
+
+void f(S&amp;&amp;){}
+
+int main() {
+  f(std::move(s));
+  std::invoke(f, std::move(s));
+}
+</pre></blockquote>
+<p>
+Assume that `s` is defined in another translation unit. The first call
+to `f` is clearly defined, and all compilers accept that. However, there
+is disagreement among implementations about whether or not the second
+call to `f` is valid when using `invoke`. libstdc++ rejects it, while
+libc++ and MSVC's STL accept it. This appears to be due to `invoke`
+referencing `invoke_result` which specifies preconditions that make this
+undefined. <sref ref="[func.invoke]"/> defines `invoke` as
+</p>
+<blockquote><pre>
+template&lt;class F, class... Args&gt;
+  constexpr invoke_result_t&lt;F, Args...&gt; invoke(F&amp;&amp; f, Args&amp;&amp;... args)
+    noexcept(is_nothrow_invocable_v&lt;F, Args...&gt;);
+</pre></blockquote>
+<p>
+<sref ref="[meta.trans.other]"/> has the following precondition on `invoke_result`:
+</p>
+<blockquote>
+<p>
+<i>Preconditions</i>: `Fn` and all types in the template parameter pack
+`ArgTypes` are complete types, <i>cv</i> `void`, or arrays of unknown bound.
+</p>
+</blockquote>
+<p>
+`Fn` and `ArgTypes` are `F` and `Args` respectively. In this call to `invoke`
+`Args` is deduced to have one type which is the incomplete type `S`.
+Therefore it does not satisfy the precondition. Was it really intended
+to make this usage of invoke undefined? Note that the following is
+defined and accepted by all compilers:
+</p>
+<blockquote><pre>
+#include &lt;utility&gt;
+#include &lt;functional&gt;
+
+using T = struct U[];
+
+extern T t;
+
+void g(T&amp;&amp;){}
+
+int main() {
+  g(std::move(t));
+  std::invoke(g, std::move(t));
+}
+</pre></blockquote>
+<p>
+Assume that `t` is defined in another translation unit. Giving the array
+type a length causes the implementation disagreement and undefined
+behavior again.
+</p>
+</discussion>
+
+<resolution>
+</resolution>
+
+</issue>
