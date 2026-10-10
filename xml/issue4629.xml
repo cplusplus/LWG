@@ -1,0 +1,150 @@
+<?xml version='1.0' encoding='utf-8' standalone='no'?>
+<!DOCTYPE issue SYSTEM "lwg-issue.dtd">
+
+<issue num="4629" status="New">
+<title>`inplace_vector` insertion functions do not specify iterator invalidation</title>
+<section><sref ref="[inplace.vector.modifiers]"/></section>
+<submitter>Karolis Špukas</submitter>
+<date>06 Oct 2026</date>
+<priority>99</priority>
+
+<discussion>
+<p>
+<sref ref="[inplace.vector.modifiers]"/> does not specify iterator and reference invalidation for 
+insertion functions.
+<p/>
+According to <sref ref="[container.reqmts]"/> p67, the current wording of 
+<sref ref="[inplace.vector.modifiers]"/> implies that `inplace_vector` insertions do not invalidate 
+iterators and references or change the values of objects in the container:
+</p>
+<blockquote>
+<p>
+Unless otherwise specified (either explicitly or by defining a function in terms of other functions), 
+invoking a container member function or passing a container as an argument to a library function shall 
+not invalidate iterators to, or change the values of, objects within that container.
+</p>
+</blockquote>
+<p>
+<paper num="P0843R8"/> specified reference invalidation for `insert` and `emplace`, for example:
+</p>
+<blockquote>
+<pre>
+constexpr iterator insert(const_iterator position, value_type&amp;&amp; x);
+</pre>
+<blockquote>
+<p>
+<i>Effects</i>: Inserts `x` at position and invalidates all references to elements after position.
+</p>
+</blockquote>
+</blockquote>
+<p>
+This wording was removed in <paper num="P0843R9"/> with no corresponding changelog entry.
+<p/>
+On the other hand, <sref ref="[inplace.vector.modifiers]"/> p19 still specifies invalidation for erasure:
+</p>
+<blockquote>
+<p>
+<i>Effects</i>: Invalidates iterators and references at or after the point of the erase.
+</p>
+</blockquote>
+<p>
+For comparison, <sref ref="[vector.modifiers]"/>/2 specifies invalidation for insertion without reallocation:
+</p>
+<blockquote>
+<p>
+If no reallocation happens, then references, pointers, and iterators before the insertion point remain 
+valid but those at or after the insertion point, including the past-the-end iterator, are invalidated.
+</p>
+</blockquote>
+<p>
+I took a quick look at libstdc++ implementation. I believe an insertion to `inplace_vector` can shift elements, 
+therefore it is inconsistent with <sref ref="[container.reqmts]"/> p67.
+</p>
+</discussion>
+
+<resolution>
+<p>
+This wording is relative to <paper num="N5054"/>.
+</p>
+
+<ol>
+<li>
+<p>Modify <sref ref="[inplace.vector.modifiers]"/> as indicated:</p>
+
+<blockquote>
+<pre>
+constexpr iterator insert(const_iterator position, const T&amp; x);
+constexpr iterator insert(const_iterator position, T&amp;&amp; x);
+[&hellip;]
+template&lt;class... Args&gt;
+  constexpr iterator emplace(const_iterator position, Args&amp;&amp;... args);
+template&lt;container-compatible-range &lt;T&gt; R&gt;
+  constexpr void append_range(R&amp;&amp; rg);
+</pre>
+<blockquote>
+<p>
+-1- Let `n` be the value of `size()` before this call for the `append_range` overload, and `distance(begin,
+position)` otherwise.
+<p/>
+-2- <i>Complexity</i>: Linear in the number of elements inserted plus the distance to the end of the vector.
+<p/>
+-3- <i>Remarks</i>: <ins>References, pointers, and iterators before the insertion point remain valid, but 
+those at or after the insertion point, including the past-the-end iterator, are invalidated.</ins> If an 
+exception is thrown other than by the copy constructor, move constructor, assignment operator, or move 
+assignment operator of `T` or by any `InputIterator` operation, there are no effects.
+Otherwise, if an exception is thrown, then <tt>size() ≥ n</tt> and elements in the range `begin() + [0, n)` 
+are not modified.
+</p>
+</blockquote>
+<pre>
+constexpr reference push_back(const T&amp; x);
+constexpr reference push_back(T&amp;&amp; x);
+template&lt;class... Args&gt;
+  constexpr reference emplace_back(Args&amp;&amp;... args);
+</pre>
+<blockquote>
+<p>
+-4- <i>Returns</i>: `back()`.
+<p/>
+-5- <i>Throws</i>: `bad_alloc` or any exception thrown by the initialization of the inserted element.
+<p/>
+-6- <i>Complexity</i>: Constant.
+<p/>
+-7- <i>Remarks</i>: <ins>If an element is appended, invalidates the past-the-end iterator.</ins> 
+If an exception is thrown, there are no effects on `*this`.
+</p>
+</blockquote>
+<pre>
+template&lt;class... Args&gt;
+  constexpr optional&lt;reference&gt; try_emplace_back(Args&amp;&amp;... args);
+constexpr optional&lt;reference&gt; try_push_back(const T&amp; x);
+constexpr optional&lt;reference&gt; try_push_back(T&amp;&amp; x);
+</pre>
+<blockquote>
+<p>
+-8- Let `vals` denote a pack: [&hellip;]
+<p/>
+-9- <i>Preconditions</i>: [&hellip;]
+<p/>
+-10- <i>Effects</i>: If <tt>size() &lt; capacity()</tt> is `true`, appends an object of type 
+`T` direct-non-list-initialized with `vals...`. Otherwise, there are no effects.
+<p/>
+-11- <i>Returns</i>: `nullopt` if `size() == capacity()` is `true`, otherwise 
+<tt>optional&lt;reference&gt;(in_place, back())</tt>.
+<p/>
+-12- <i>Throws</i>: Nothing unless an exception is thrown by the initialization of the inserted element.
+<p/>
+-13- <i>Complexity</i>: Constant.
+<p/>
+-14- <i>Remarks</i>: <ins>If an element is appended, invalidates the past-the-end iterator.</ins> 
+If an exception is thrown, there are no effects on `*this`.
+</p>
+</blockquote>
+</blockquote>
+
+
+</li>
+</ol>
+</resolution>
+
+</issue>
