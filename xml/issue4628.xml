@@ -75,6 +75,11 @@ Assume that `t` is defined in another translation unit. Giving the array
 type a length causes the implementation disagreement and undefined
 behavior again.
 </p>
+
+<p>
+See also LWG <iref ref="2939"/> and others.
+</p>
+
 </discussion>
 
 <resolution>
