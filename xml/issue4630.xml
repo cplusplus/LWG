@@ -1,0 +1,72 @@
+<?xml version='1.0' encoding='utf-8' standalone='no'?>
+<!DOCTYPE issue SYSTEM "lwg-issue.dtd">
+
+<issue num="4630" status="New">
+  <title>Off-by-one error in <tt>string.replace</tt> <tt>length_error</tt> condition</title>
+<section><sref ref="[string.replace]"/></section>
+<submitter>Hubert Tong</submitter>
+<date>26 Oct 2026</date>
+<priority>99</priority>
+
+<discussion>
+<p>
+<sref ref="[string.replace]"/>#8 and <sref ref="[string.replace]"/>#12
+both specify that `size() - xlen >= max_size() - n2` throws `length_error`.
+For example, a no-op `replace` operation on a string whose `size()` is already
+`max_size()` is specified to throw.
+Neither libstdc++ nor libc++ throws for such a case,
+and the requirement is suspect.
+</p>
+<p>
+Code (making use of `tiny_size_allocator` from the libc++ test support headers);
+<a href="https://godbolt.org/z/vKj7xabGo">(Compiler Explorer)</a>:
+</p>
+<pre><code>
+#include &lt;assert.h&gt;
+#include &lt;string&gt;
+
+template &lt;std::size_t MaxSize, class T&gt; struct tiny_size_allocator {
+  using value_type = T;
+  using size_type = unsigned;
+
+  template &lt;class U&gt; struct rebind {
+    using other = tiny_size_allocator&lt;MaxSize, U&gt;;
+  };
+
+  tiny_size_allocator() = default;
+
+  template &lt;class U&gt; tiny_size_allocator(tiny_size_allocator&lt;MaxSize, U&gt;) {}
+
+  T *allocate(std::size_t n) {
+    assert(n &lt;= MaxSize);
+    return std::allocator&lt;T&gt;().allocate(n);
+  }
+
+  void deallocate(T *ptr, std::size_t n) {
+    std::allocator&lt;T&gt;().deallocate(ptr, n);
+  }
+
+  size_type max_size() const { return MaxSize; }
+
+  friend bool operator==(tiny_size_allocator, tiny_size_allocator) {
+    return true;
+  }
+};
+
+int main(void) {
+  using string_type = std::basic_string&lt;char, std::char_traits&lt;char&gt;,
+                                        tiny_size_allocator&lt;17, char&gt;&gt;;
+  string_type s;
+  s.resize(s.max_size(), 'a');
+  assert(s.size() == s.max_size());
+  s.replace(0, 0, "", 0);  <i>// specified to throw</i> length_error
+}
+</code></pre>
+</discussion>
+
+<resolution>
+<p>
+</p>
+</resolution>
+
+</issue>
