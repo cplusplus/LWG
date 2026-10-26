@@ -53,7 +53,7 @@ template &lt;std::size_t MaxSize, class T&gt; struct tiny_size_allocator {
   }
 };
 
-int main(void) {
+int main() {
   using string_type = std::basic_string&lt;char, std::char_traits&lt;char&gt;,
                                         tiny_size_allocator&lt;17, char&gt;&gt;;
   string_type s;
