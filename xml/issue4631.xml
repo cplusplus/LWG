@@ -1,0 +1,142 @@
+<?xml version='1.0' encoding='utf-8' standalone='no'?>
+<!DOCTYPE issue SYSTEM "lwg-issue.dtd">
+
+<issue num="4631" status="New">
+<title>Post-increment/decrement operators of `reverse_iterator` and <i>`simd-iterator`</i> should be defaulted</title>
+<section><sref ref="[reverse.iterator]"/><sref ref="[simd.iterator]"/></section>
+<submitter>Jiang An</submitter>
+<date>26 Oct 2026</date>
+<priority>99</priority>
+
+<discussion>
+<p>
+Due to <paper num="P3668R4"/>, postfix forms of `operator++` and `operator--` can be defaulted since C++29.
+And <paper num="P3785R1"/> made most of such default-able operators defaulted.
+</p>
+<p>
+However, there're currently still a few default-able operators that are not defaulted,
+namely those of `reverse_iterator` and <i>`simd-iterator`</i>.
+</p>
+</discussion>
+
+<resolution>
+<p>
+This wording is relative to <paper num="N5054"/>.
+</p>
+<ol>
+<li>
+<p>Modify <sref ref="[reverse.iterator]"/> as indicated:</p>
+
+<blockquote>
+<pre>
+[&hellip;]
+    constexpr reverse_iterator&amp; operator++();
+    constexpr reverse_iterator  operator++(int) <ins>= default</ins>;
+    constexpr reverse_iterator&amp; operator--();
+    constexpr reverse_iterator  operator--(int) <ins>= default</ins>;
+[&hellip;]
+</pre>
+</blockquote>
+</li>
+<li>
+<p>Modify <sref ref="[reverse.iter.nav]"/> as indicated:</p>
+
+<p>[&hellip;]</p>
+
+<pre>
+<del>constexpr reverse_iterator operator++(int);</del>
+</pre>
+<blockquote>
+<p>
+<del>-5- <i>Effects:</i> As if by:
+<blockquote>
+<pre>
+reverse_iterator tmp = *this;
+--current;
+return tmp;
+</pre>
+</blockquote>
+</del>
+</p>
+</blockquote>
+
+<p>[&hellip;]</p>
+
+<pre>
+<del>constexpr reverse_iterator operator--(int);</del>
+</pre>
+<blockquote>
+<p>
+<del>-8- <i>Effects:</i> As if by:
+<blockquote>
+<pre>
+reverse_iterator tmp = *this;
+++current;
+return tmp;
+</pre>
+</blockquote>
+</del>
+</p>
+</blockquote>
+
+<p>[&hellip;]</p>
+</li>
+<li>
+<p>Modify <sref ref="[simd.iterator]"/> as indicated:</p>
+
+<blockquote>
+<pre>
+[&hellip;]
+    constexpr <i>simd-iterator</i>&amp; operator++();
+    constexpr <i>simd-iterator</i> operator++(int) <ins>= default</ins>;
+    constexpr <i>simd-iterator</i>&amp; operator--();
+    constexpr <i>simd-iterator</i> operator--(int) <ins>= default</ins>;
+    constexpr reverse_iterator&amp; operator++();
+[&hellip;]
+</pre>
+</blockquote>
+
+<p>[&hellip;]</p>
+
+<pre>
+<del>constexpr <i>simd-iterator</i> operator++(int);</del>
+</pre>
+<blockquote>
+<p>
+<del>-5- <i>Effects:</i> Equivalent to:
+<blockquote>
+<pre>
+<i>simd-iterator</i> tmp = *this;
+*this += 1;
+return tmp;
+</pre>
+</blockquote>
+</del>
+</p>
+</blockquote>
+
+<p>[&hellip;]</p>
+
+<pre>
+<del>constexpr <i>simd-iterator</i> operator--(int);</del>
+</pre>
+<blockquote>
+<p>
+<del>-7- <i>Effects:</i> Equivalent to:
+<blockquote>
+<pre>
+<i>simd-iterator</i> tmp = *this;
+*this -= 1;
+return tmp;
+</pre>
+</blockquote>
+</del>
+</p>
+</blockquote>
+
+<p>[&hellip;]</p>
+</li>
+</ol>
+</resolution>
+
+</issue>
