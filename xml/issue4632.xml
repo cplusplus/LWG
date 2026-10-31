@@ -1,0 +1,183 @@
+<?xml version='1.0' encoding='utf-8' standalone='no'?>
+<!DOCTYPE issue SYSTEM "lwg-issue.dtd">
+
+<issue num="4632" status="New">
+<title>`submdspan_mapping` of rank-one padded layouts ignores the stride of an `extent_slice`, 
+and the sliceable postcondition does not mention strides</title>
+<section>
+<sref ref="[mdspan.sub.map.leftpad]"/>
+<sref ref="[mdspan.sub.map.rightpad]"/>
+<sref ref="[mdspan.sub.map.sliceable]"/>
+</section>
+<submitter>Andrii Chornyi</submitter>
+<date>17 Oct 2026</date>
+<priority>99</priority>
+
+<discussion>
+<p>
+<sref ref="[mdspan.sub.map.leftpad]"/> (and its mirror <sref ref="[mdspan.sub.map.rightpad]"/>) 
+specify the result of <tt>layout_left_padded::mapping&lt;Extents&gt;::<i>submdspan-mapping-impl</i>(slices...)</tt>. 
+Bullet (1.2) of the <i>Returns</i> element reads:
+</p>
+<blockquote><p>
+otherwise, `submdspan_mapping_result{layout_left::mapping(sub_ext), offset}`, if <tt><i>rank_</i>== 1</tt> is `true` 
+or `SubExtents::rank() == 0` is `true`;
+</p></blockquote>
+<p>
+The first part of the condition applies to every slice of a rank-one mapping, including a strided one. 
+For <tt><i>rank_</i> == 1</tt> and the slice <tt>extent_slice{0, cw&lt;4&gt;, cw&lt;2&gt;}</tt> the result has 
+`SubExtents::rank() == 1` with extent 2, and `layout_left::mapping(sub_ext)` has stride 1. The returned 
+mapping therefore addresses the first two elements `0, 1` (plus `offset`) instead of elements `0, 2`.
+<p/>
+The general rule of <sref ref="[mdspan.sub.map.common]"/> gives the intended meaning: for a slice `s` that 
+is an `extent_slice` with `s.extent > 1`, the stride of the corresponding sub-dimension is `stride(k) * s.stride` 
+(the list that defines `sub_strides`), so the strided slice yields a `layout_stride` mapping with stride 2. 
+The `layout_left`, `layout_right` and `layout_stride` specializations (<sref ref="[mdspan.sub.map.left]"/>, 
+<sref ref="[mdspan.sub.map.right]"/>, <sref ref="[mdspan.sub.map.stride]"/>) are unaffected; only the padded 
+specializations contain the <tt><i>rank_</i> == 1</tt> shortcut. Unit-stride slices are unaffected.
+<p/>
+The generic requirement that is meant to catch this does not do so: <sref ref="[mdspan.sub.map.sliceable]"/> 
+<i>Returns</i> (5.2) requires
+</p>
+<blockquote><p>
+`smr.mapping(i...) + smr.offset == m(j)`, where `j...[ρ]` is equal to the sum of the lower bound of the 
+`submdspan` slice range ... and zero if the type of `valid_slices...[ρ]` is a collapsing slice type, 
+`i...[MAP_RANK(valid_slices,ρ)]` otherwise.
+</p></blockquote>
+<p>
+The index `i` is added to the lower bound without being multiplied by the slice stride. Read literally, 
+the (stride-1) `layout_left::mapping` above satisfies this postcondition, while a correct `layout_stride` 
+result for the same slice (the result that <sref ref="[mdspan.sub.map.common]"/> itself prescribes for the 
+default mappings) does not. The two defects hide each other: the postcondition can neither detect the wrong 
+rank-one result nor accept the right one.
+<p/>
+Reproducer: <tt>layout_left_padded&lt;dynamic_extent&gt;::mapping&lt;extents&lt;int, 8&gt;&gt;</tt> with 
+<tt>submdspan_mapping(m, extent_slice{0, cw&lt;4&gt;, cw&lt;2&gt;})</tt>: `smr.mapping(1) + smr.offset` is `1`, 
+`m(2)` is the element the slice selects as its second element.
+</p>
+</discussion>
+
+<resolution>
+<p>
+This wording is relative to <paper num="N5054"/>.
+</p>
+<ol>
+<li>
+<p>Modify <sref ref="[mdspan.sub.map.leftpad]"/> as indicated:</p>
+
+<blockquote  class="note">
+<p>
+[<i>Drafting note</i>: The case <tt><i>rank_</i> == 1</tt> with a unit-stride slice and `SubExtents::rank() == 1` is 
+covered by the third bullet (`SubExtents::rank() == 1` and `SliceSpecifiers...[0]` is a unit-stride slice type, 
+same result); a strided slice falls to the last bullet and yields the `layout_stride` mapping.]
+</p>
+</blockquote>
+
+<blockquote>
+<pre>
+template&lt;class Extents&gt;
+template&lt;class... SliceSpecifiers&gt;
+constexpr auto layout_left_padded::mapping&lt;Extents&gt;::<i>submdspan-mapping-impl</i>(
+SliceSpecifiers... slices) const -&gt; <i>see below</i>;
+</pre>
+<blockquote>
+<p>
+-1- <i>Returns</i>:
+</p>
+<ol style="list-style-type: none">
+<li><p>
+(1.1) &mdash; `submdspan_mapping_result{*this, 0}`, if `Extents::rank() == 0` is `true`;
+</p></li>
+<li><p>
+(1.2) &mdash; otherwise, `submdspan_mapping_result{layout_left::mapping(sub_ext), offset}`, 
+if <del><tt><i>rank_</i> == 1</tt> is `true` or</del> `SubExtents::rank() == 0` is `true`;
+</p></li>
+</ol>
+</blockquote>
+</blockquote>
+</li>
+
+<li>
+<p>Modify <sref ref="[mdspan.sub.map.rightpad]"/> as indicated:</p>
+
+<blockquote>
+<pre>
+template&lt;class Extents&gt;
+template&lt;class... SliceSpecifiers&gt;
+constexpr auto layout_right_padded::mapping&lt;Extents&gt;::<i>submdspan-mapping-impl</i>(
+  SliceSpecifiers... slices) const -&gt; <i>see below</i>;
+</pre>
+<blockquote>
+<p>
+-1- <i>Returns</i>:
+</p>
+<ol style="list-style-type: none">
+<li><p>
+(1.1) &mdash; `submdspan_mapping_result{*this, 0}`, if <tt><i>rank_</i> == 0</tt> is `true`;
+</p></li>
+<li><p>
+(1.2) &mdash; otherwise, `submdspan_mapping_result{layout_right::mapping(sub_ext), offset}`, 
+if <del><tt><i>rank_</i> == 1</tt> is `true` or</del> `SubExtents::rank() == 0` is `true`;
+</p></li>
+</ol>
+</blockquote>
+</blockquote>
+</li>
+
+<li>
+<p>Modify <sref ref="[mdspan.sub.map.sliceable]"/> as indicated:</p>
+
+<blockquote>
+<p>
+-3- A type `M` meets the <i>sliceable layout mapping requirements</i> if
+<p/>
+[&hellip;]
+<p/>
+-4- <i>Result</i>: A type `SMR` that is a specialization of type 
+<tt>submdspan_mapping_result&lt;SM&gt;</tt> for some type `SM`
+such that
+<p/>
+[&hellip;]
+<p/>
+-5- <i>Returns</i>: An object `smr` of type `SMR` such that
+</p>
+<ol style="list-style-type: none">
+<li><p>
+(5.1) &mdash; `smr.mapping.extents() == subextents(m.extents(), valid_slices...)` is `true`;
+and
+</p></li>
+<li><p>
+(5.2) &mdash; for each integer pack `i` which is a multidimensional index in `smr.mapping.extents()`,
+`smr.mapping(i...) + smr.offset == m(j)` is `true`, where `j` is an integer pack such that
+</p>
+<ol style="list-style-type: none">
+<li><p>
+(5.2.1) &mdash; `sizeof...(j)` is equal to `M_rank`; and
+</p></li>
+<li><p>
+(5.2.2) &mdash; for each rank index ρ of `m.extents()`, `j...[ρ]` is equal to the sum of
+</p>
+<ol style="list-style-type: none">
+<li><p>
+(5.2.2.1) &mdash; the lower bound of the `submdspan` slice range of `valid_slices...[ρ]` for extent 
+ρ of `m.extents()`, and
+</p></li>
+<li><p>
+(5.2.2.2) &mdash; zero if the type of `valid_slices...[ρ]` is a collapsing slice type, 
+<del>`i...[MAP_RANK(valid_slices,ρ)]`</del> otherwise<ins>, the product of `i...[MAP_RANK(valid_slices,ρ)]` 
+and `s.stride` if the type of `valid_slices...[ρ]` is a specialization of `extent_slice` and 
+<tt>s.extent &gt; 1</tt> is `true`, where `s` is `valid_slices...[ρ]`, and `i...[MAP_RANK(valid_slices,ρ)]` otherwise</ins>.
+</p></li>
+</ol>
+</li>
+</ol>
+
+</li>
+</ol>
+</blockquote>
+</li>
+
+</ol>
+</resolution>
+
+</issue>
