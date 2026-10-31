@@ -1,0 +1,61 @@
+<?xml version='1.0' encoding='utf-8' standalone='no'?>
+<!DOCTYPE issue SYSTEM "lwg-issue.dtd">
+
+<issue num="4633" status="New">
+<title>Lack of wording to specify that the destruction of an atomic object is not an atomic operation</title>
+<section>
+<sref ref="[atomics.types.operations]"/>
+</section>
+<submitter>jim x</submitter>
+<date>21 Oct 2026</date>
+<priority>99</priority>
+
+<discussion>
+<p>
+Consider the following example:
+</p>
+<blockquote><pre>
+#include &lt;atomic&gt;
+#include &lt;thread&gt;
+
+int main() 
+{
+  auto ptr = new std::atomic&lt;int&gt;{0};
+  auto t1 = std::jthread([&amp;]() {
+    (*ptr).load();  // #1 
+  });
+  auto t2 = std::jthread([&amp;]() {
+    using Atomic = std::atomic&lt;int&gt;;
+    (*ptr).~Atomic();  // #2 
+  });
+}
+</pre></blockquote>
+<p>
+Since neither `#1` happens-before nor happens-after `#2`, and `#1` is an atomic operation, 
+whether this program contains a data race depends on whether `#2` is a non-atomic operation 
+due to <sref ref="[intro.race]"/> p17:
+</p>
+<blockquote style="border-left: 3px solid #ccc;padding-left: 15px;">
+<p> 
+at least one of which is not an atomic operation
+</p>
+</blockquote>
+<p>
+<sref ref="[atomics.types.operations]"/> says:
+</p>
+<blockquote style="border-left: 3px solid #ccc;padding-left: 15px;">
+<p>
+<i>Effects</i>: Initializes the atomic object with the value of `T()`. Initialization is not 
+an atomic operation (<sref ref="[intro.multithread]"/>).
+</p>
+</blockquote>
+<p>
+However, it lacks the wording to explicitly state that the destruction of an atomic object 
+is not an atomic operation. 
+</p>
+</discussion>
+
+<resolution>
+</resolution>
+
+</issue>
