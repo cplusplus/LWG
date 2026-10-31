@@ -1,0 +1,72 @@
+<?xml version='1.0' encoding='utf-8' standalone='no'?>
+<!DOCTYPE issue SYSTEM "lwg-issue.dtd">
+
+<issue num="4636" status="New">
+<title>`bit_cast` from `volatile` behaviour unclear</title>
+<section>
+<sref ref="[bit.cast]"/>
+</section>
+<submitter>Hubert Tong</submitter>
+<date>28 Oct 2026</date>
+<priority>99</priority>
+
+<discussion>
+<p>
+From <sref ref="[bit.cast]"/>, it is unclear how `std::bit_cast` interacts with various 
+expectations around "volatile access". For example, the `std::bit_cast` wording does not 
+identify what access operation is being performed to inspect the object representation 
+of `from`. Therefore, it is firstly unclear whether there is any volatile access at all, 
+and secondly unclear whether there may be multiple volatile accesses (e.g., one per 
+byte of the object representation).
+<p/>
+This interacts with the undefined behaviour specified by <sref ref="[dcl.type.cv]"/> p5 
+to occur when an attempt is made to access an object defined with a volatile-qualified 
+type through the use of a non-volatile glvalue. Such undefined behaviour is backed by 
+implementation concerns such as the possible need to use corresponding load instructions 
+in the case of certain memory-mapped registers, where even using another load instruction 
+for the same width may trigger a hardware exception. Therefore, approaches that try to 
+access `from` in a non-volatile manner or byte-wise are problematic.
+<p/>
+This also interacts with the undefined behaviour specified by <sref ref="[conv.lval]"/> 
+bullet (3.3) for when lvalue-to-rvalue conversion occurs for an object whose value 
+representation is not valid for its type. This raises a problem for approaches that try to 
+access `from` as a glvalue of its declared type. Such an approach has the additional 
+problem that the load instructions involved for such a volatile access may not preserve 
+the value representation, which may be observable by a program if the object was not 
+actually volatile.
+</p>
+</discussion>
+
+<resolution>
+<p>
+This wording is relative to <paper num="N5054"/>.
+</p>
+<ol>
+<li>
+<p>Modify <sref ref="[bit.cast]"/> as indicated:</p>
+
+<blockquote>
+<pre>
+template&lt;class To, class From&gt;
+  constexpr To bit_cast(const From&amp; from) noexcept;
+</pre>
+<blockquote>
+<p>
+-1- <i>Constraints</i>: 
+<p/>
+[&hellip;]
+<p/>
+<ins>-?- <i>Mandates</i>: <tt>is_volatile_v&lt;From&gt;</tt> is `false`.</ins>
+<p/>
+-2- <i>Constant When</i>: Neither `To` nor `From` has constexpr-unknown representation 
+(<sref ref="[expr.const.core]"/>).
+</p>
+</blockquote>
+</blockquote>
+
+</li>
+
+</ol>
+</resolution>
+
+</issue>
