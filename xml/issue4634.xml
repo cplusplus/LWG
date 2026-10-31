@@ -41,8 +41,8 @@ This wording is relative to <paper num="N5054"/>.
 
 <tr>
 <td>
-<ins><tt>template &lt;class T&gt;<br/>
-struct make_signed;</tt></ins>
+<tt>template &lt;class T&gt;<br/>
+struct make_signed;</tt>
 </td>
 <td>
 If `T` is a (possibly cv-qualified) signed integer type (<sref ref="[basic.fundamental]"/>) then the<br/>
@@ -52,15 +52,15 @@ corresponding signed integer type, with the same cv-qualifiers as `T`;<br/>
 otherwise, type denotes the signed integer type with smallest<br/>
 rank (<sref ref="[conv.rank]"/>) for which `sizeof(T) == sizeof(type)`, with the same<br/>
 cv-qualifiers as `T`.<br/>
-<i>Mandates</i>: `T` is an integral <del>or enumeration</del> type other than <i>cv</i> `bool`<br/>
-<ins>or enumeration type whose underlying type is not `bool`</ins>.
+<i>Mandates</i>: `T` is <ins>either</ins> an integral <del>or enumeration</del> type other than <i>cv</i> `bool`<br/>
+<ins>or an enumeration type whose underlying type is not `bool`</ins>.
 </td>
 </tr>
 
 <tr>
 <td>
-<ins><tt>template &lt;class T&gt;<br/>
-struct make_unsigned;</tt></ins>
+<tt>template &lt;class T&gt;<br/>
+struct make_unsigned;</tt>
 </td>
 <td>
 If `T` is a (possibly cv-qualified) unsigned integer type (<sref ref="[basic.fundamental]"/>) then the<br/>
@@ -70,8 +70,8 @@ unsigned integer type, with the same cv-qualifiers as `T`; otherwise,<br/>
 type denotes the unsigned integer type with smallest rank (<sref ref="[conv.rank]"/>) for<br/>
 which `sizeof(T) == sizeof(type)`, with the same cv-qualifiers as<br/>
 `T`.<br/>
-<i>Mandates</i>: `T` is an integral <del>or enumeration</del> type other than <i>cv</i> `bool`<br/>
-<ins>or enumeration type whose underlying type is not `bool`</ins>.
+<i>Mandates</i>: `T` is <ins>either</ins> an integral <del>or enumeration</del> type other than <i>cv</i> `bool`<br/>
+<ins>or an enumeration type whose underlying type is not `bool`</ins>.
 </td>
 </tr>
 </table>
