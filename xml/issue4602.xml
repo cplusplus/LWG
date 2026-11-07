@@ -102,6 +102,11 @@ rounded down to the nearest power of 10</ins>, otherwise `e`.
 </superseded>
 
 <note>2026-07-18; Daniel rebases wording against N5054</note>
+
+<note>2026-11-07; Daniel comments</note>
+<p>
+This issue has considerable wording overlap with LWG <iref ref="4637"/>.
+</p>
 <superseded>
 <p>
 This wording is relative to <paper num="N5054"/>.
