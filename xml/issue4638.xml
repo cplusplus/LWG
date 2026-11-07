@@ -1,0 +1,58 @@
+<?xml version='1.0' encoding='utf-8' standalone='no'?>
+<!DOCTYPE issue SYSTEM "lwg-issue.dtd">
+
+<issue num="4638" status="New">
+<title>`std::abs(float)` is underspecified</title>
+<section>
+<sref ref="[c.math.abs]"/>
+</section>
+<submitter>Jan Schultke</submitter>
+<date>06 Nov 2026</date>
+<priority>99</priority>
+
+<discussion>
+<p>
+<sref ref="[c.math.abs]"/> states that <tt>std::abs(<i>floating-point-type</i> x)</tt>:
+</p>
+<blockquote style="border-left: 3px solid #ccc;padding-left: 15px;">
+<p>
+<i>Returns</i>: The absolute value of `x`.
+</p>
+</blockquote>
+<p>
+What is the absolute value of NaN? What happens when passing signaling NaN? What about infinity? 
+Does it produce positive zero when given negative zero? What about floating-point exceptions? 
+When is it a constant expression? Nobody knows.
+<p/>
+In practice, all major standard libraries forward to `std::fabs`.
+</p>
+</discussion>
+
+<resolution>
+<p>
+This wording is relative to <paper num="N5054"/>.
+</p>
+<ol>
+<li>
+<p>Modify <sref ref="[c.math.abs]"/> as indicated:</p>
+
+<blockquote>
+<pre>
+constexpr floating-point-type abs(<i>floating-point-type</i> x);
+</pre>
+<blockquote>
+<p>
+-4- <i><del>Returns</del><ins>Effects</ins></i>: <del>The absolute value of `x`</del><ins> Equivalent to: `return fabs(x);`</ins>.
+</p>
+</blockquote>
+<p>
+<span style="font-variant: small-caps">See also:</span> ISO/IEC 9899:2024, 7.12.8.3, 7.24.7.1
+</p>
+</blockquote>
+
+</li>
+
+</ol>
+</resolution>
+
+</issue>
