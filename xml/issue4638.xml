@@ -42,7 +42,7 @@ constexpr floating-point-type abs(<i>floating-point-type</i> x);
 </pre>
 <blockquote>
 <p>
--4- <i><del>Returns</del><ins>Effects</ins></i>: <del>The absolute value of `x`</del><ins> Equivalent to: `return fabs(x);`</ins>.
+-4- <i><del>Returns</del><ins>Effects</ins></i>: <del>The absolute value of `x`</del><ins> Equivalent to: `return fabs(x);`</ins><del>.</del>
 </p>
 </blockquote>
 <p>
