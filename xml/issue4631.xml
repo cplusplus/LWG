@@ -48,15 +48,14 @@ This wording is relative to <paper num="N5054"/>.
 </pre>
 <blockquote>
 <p>
-<del>-5- <i>Effects:</i> As if by:
+<del>-5- <i>Effects:</i> As if by:</del>
 <blockquote>
 <pre>
-reverse_iterator tmp = *this;
+<del>reverse_iterator tmp = *this;
 --current;
-return tmp;
+return tmp;</del>
 </pre>
 </blockquote>
-</del>
 </p>
 </blockquote>
 
@@ -67,15 +66,14 @@ return tmp;
 </pre>
 <blockquote>
 <p>
-<del>-8- <i>Effects:</i> As if by:
+<del>-8- <i>Effects:</i> As if by:</del>
 <blockquote>
-<pre>
+<pre><del>
 reverse_iterator tmp = *this;
 ++current;
 return tmp;
-</pre>
+</del></pre>
 </blockquote>
-</del>
 </p>
 </blockquote>
 
@@ -103,15 +101,14 @@ return tmp;
 </pre>
 <blockquote>
 <p>
-<del>-5- <i>Effects:</i> Equivalent to:
+<del>-5- <i>Effects:</i> Equivalent to:</del>
 <blockquote>
-<pre>
+<pre><del>
 <i>simd-iterator</i> tmp = *this;
 *this += 1;
 return tmp;
-</pre>
+</del></pre>
 </blockquote>
-</del>
 </p>
 </blockquote>
 
@@ -122,15 +119,14 @@ return tmp;
 </pre>
 <blockquote>
 <p>
-<del>-7- <i>Effects:</i> Equivalent to:
+<del>-7- <i>Effects:</i> Equivalent to:</del>
 <blockquote>
-<pre>
+<pre><del>
 <i>simd-iterator</i> tmp = *this;
 *this -= 1;
 return tmp;
-</pre>
+</del></pre>
 </blockquote>
-</del>
 </p>
 </blockquote>
 
