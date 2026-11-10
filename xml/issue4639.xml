@@ -1,0 +1,60 @@
+<?xml version='1.0' encoding='utf-8' standalone='no'?>
+<!DOCTYPE issue SYSTEM "lwg-issue.dtd">
+
+<issue num="4639" status="New">
+<title>`std::simd::abs` cannot simply use `std::abs`</title>
+<section>
+<sref ref="[simd.math]"/>
+</section>
+<submitter>Jan Schultke</submitter>
+<date>10 Nov 2026</date>
+<priority>99</priority>
+
+<discussion>
+<p>
+`std::simd::abs` accepts a <tt>basic_vec&lt;T, Abi&gt;</tt>
+where `T` models `signed_integral`.
+However, the result is defined in terms of `std::abs`,
+which accepts only standard signed integer types and
+types that promote to `int`.
+Restricting `std::simd::abs` to the types supported by `std::abs`
+would be a breaking design change,
+so perhaps `std::abs` could be bypassed.
+Also, `std::abs` may not return the same type as its arguments,
+so maybe the wording should contain an explicit cast.
+</p>
+</discussion>
+
+<resolution>
+<p>
+This wording is relative to <paper num="N5054"/>.
+</p>
+<ol>
+
+<li>
+<p>Modify <sref ref="[simd.math]"/> as indicated:</p>
+
+<blockquote>
+<pre>
+template&lt;signed_integral T, class Abi&gt;
+  constexpr basic_vec&lt;T, Abi&gt; abs(const basic_vec&lt;T, Abi&gt;&amp; j);
+</pre>
+<blockquote>
+<p>
+-7- <i>Preconditions</i>: <tt>all_of(j &gt;= -numeric_limits&lt;T&gt;::max())</tt> is `true`.
+</p>
+<p>
+-8- <i>Returns</i>: An object where the <tt><i>i</i></tt><sup>th</sup> element
+is initialized to the result of
+<del><tt>std::abs(j[<i>i</i>])</tt></del>
+<ins><tt>static_cast&lt;T&gt;(j[<i>i</i>] &lt; 0 ? -j[<i>i</i>] : j[<i>i</i>])</tt></ins>
+for all <tt><i>i</i></tt> in the range  `[0, size())`.
+</p>
+</blockquote>
+</blockquote>
+</li>
+
+</ol>
+</resolution>
+
+</issue>
