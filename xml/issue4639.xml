@@ -19,7 +19,7 @@ does not satisfy the `view` concept.
 </p>
 
 <p>Generally, overstating support in opt-in is accepted and unharmful, however the `view` concept
-decides whether an view adapter will store independent copy of the range, or reference to it.
+decides whether a view adapter will store independent copy of the range, or a reference to it.
 In particular lvalue of before mentioned <tt>optional&lt;M&gt;</tt> satisfies `viewable_range`,
 and is wrapped in `ref_view` when adapted:</p>
 
@@ -39,7 +39,7 @@ constexpr auto process_lvalue()
 </pre>
 
 <p>
-This behavior is non-unique to `optional`, and can occur for user defined "view" that
+This behavior is not unique to `optional`, and can occur for a user defined "view" that
 fails to satisfy `movable` since C++20. The C++26 changes to `optional` make it more
 prominent.
 </p>
