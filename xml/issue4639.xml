@@ -1,0 +1,52 @@
+<?xml version='1.0' encoding='utf-8' standalone='no'?>
+<!DOCTYPE issue SYSTEM "lwg-issue.dtd">
+
+<issue num="4639" status="New">
+<title>Lvalue `optional&lt;NonMovable&gt;` does not satisify `view`, but is `viewable_range`</title>
+<section>
+<sref ref="[optional]"/>
+<sref ref="[ranges]"/>
+</section>
+<submitter>Tomasz Kamiński</submitter>
+<date>12 Nov 2026</date>
+<priority>99</priority>
+
+<discussion>
+<p>
+The C++26 <paper num="P3168R2"/> marked all specializations of `optional` as the view
+(`enable_view` is `true`), however, for type `M` that is not `movable`, <tt>optional&lt;M&gt;</tt>
+does not satisfy the `view` concept.
+</p>
+
+<p>Generally, overstating support in opt-in is accepted and unharmful, however the `view` concept
+decides whether an view adapter will store independent copy of the range, or reference to it.
+In particular lvalue of before mentioned <tt>optional&lt;M&gt;</tt> satisfies `viewable_range`,
+and is wrapped in `ref_view` when adapted:</p>
+
+<pre>
+constexpr auto process_rvalue()
+{
+  std::pair&lt;const std::string, int&gt; p("test", 20);
+  return std::optional(p) | std::views::keys; // ill-formed
+}
+
+constexpr auto process_lvalue()
+{
+  std::pair&lt;const std::string, int&gt; p("test", 20);
+  std::optional opt(p);
+  return opt | std::views::keys; // references opt and dangles
+}
+</pre>
+
+<p>
+This behavior is non-unique to `optional`, and can occur for user defined "view" that
+fails to satisfy `movable` since C++20. The C++26 changes to `optional` make it more
+prominent.
+</p>
+
+</discussion>
+
+<resolution>
+</resolution>
+
+</issue>
