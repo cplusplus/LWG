@@ -1,0 +1,380 @@
+<?xml version='1.0' encoding='utf-8' standalone='no'?>
+<!DOCTYPE issue SYSTEM "lwg-issue.dtd">
+
+<issue num="4642" status="New">
+<title>Monadic operations of `optional` and `expected` drop the cv-qualification of `T`</title>
+<section>
+<sref ref="[optional.monadic]"/>
+<sref ref="[expected.object.monadic]"/>
+</section>
+<submitter>Tianjiao Yin</submitter>
+<date>10 Nov 2026</date>
+<priority>99</priority>
+
+<discussion>
+<p>
+The resolution of LWG <iref ref="3973"/> (adopted in Kona) changed all occurrences
+of `value()` in <sref ref="[optional.monadic]"/> to <tt>*<i>val</i></tt>, and of 
+`**this` in <sref ref="[expected.object.monadic]"/> to <tt><i>val</i></tt>. The 
+intention was not to change the meaning, just avoid the non-freestanding `value()` 
+function, and avoid ADL that would be caused by using `**this`.
+<p/>
+LWG <iref ref="4015"/> then changed the exposition-only member of `optional` to
+</p>
+<blockquote><pre>
+union { remove_cv_t&lt;T&gt; <i>val</i>; };
+</pre></blockquote>
+<p>
+following LWG <iref ref="3891"/> for `expected`, and changed <tt>*<i>val</i></tt> 
+to <tt><i>val</i></tt>.
+<p/>
+However, because <tt><i>val</i></tt> drops the cv-qualifiers of `T`, in the non-const
+overloads such as <tt>and_then(F&amp;&amp;) &amp;</tt> the type of <tt><i>val</i></tt> 
+is <tt>remove_cv_t&lt;T&gt;&amp;</tt>, whereas the type of `value()` was <tt>T&amp;</tt>. 
+This means the callable can modify a const contained value:
+</p>
+<blockquote><pre>
+std::optional&lt;const int&gt; o(1);
+o.and_then([](int&amp; r) { r = 2; return std::optional&lt;int&gt;(r); }); // *o is now 2
+
+std::expected&lt;const int, int&gt; e(1);
+e.transform([](int&amp; r) { return r = 2; }); // *e is now 2
+</pre></blockquote>
+<p>
+This was ill-formed in C++23. The rvalue overloads have the same problem 
+(<tt>std::move(<i>val</i>)</tt> is <tt>remove_cv_t&lt;T&gt;&amp;&amp;</tt> rather than 
+<tt>T&amp;&amp;</tt>), as does <tt>volatile T</tt>.
+<p/>
+Using `operator*()` instead of <tt><i>val</i></tt> restores the type that `value()` had,
+is freestanding, and does not perform ADL.
+</p>
+</discussion>
+
+<resolution>
+<p>
+This wording is relative to <paper num="N5054"/>.
+</p>
+
+<ol>
+<li>
+<p>Modify <sref ref="[optional.monadic]"/> as indicated:</p>
+
+<blockquote>
+<pre>
+template&lt;class F&gt; constexpr auto and_then(F&amp;&amp; f) &amp;;
+template&lt;class F&gt; constexpr auto and_then(F&amp;&amp; f) const &amp;;
+</pre>
+<blockquote>
+<p>
+-1- Let `U` be <tt>invoke_result_t&lt;F, decltype(<del>(<i>val</i>)</del><ins>operator*()</ins>)&gt;</tt>.
+<p/>
+-2- <i>Mandates</i>: <tt>remove_cvref_t&lt;U&gt;</tt> is a specialization of `optional`.
+<p/>
+-3- <i>Effects</i>: Equivalent to:
+</p>
+<blockquote><pre>
+if (*this) {
+  return invoke(std::forward&lt;F&gt;(f), <del><i>val</i></del><ins>operator*()</ins>);
+} else {
+  return remove_cvref_t&lt;U&gt;();
+}
+</pre></blockquote>
+</blockquote>
+<pre>
+template&lt;class F&gt; constexpr auto and_then(F&amp;&amp; f) &amp;&amp;;
+template&lt;class F&gt; constexpr auto and_then(F&amp;&amp; f) const &amp;&amp;;
+</pre>
+<blockquote>
+<p>
+-4- Let `U` be <tt>invoke_result_t&lt;F, decltype(std::move(<del><i>val</i></del><ins>operator*()</ins>))&gt;</tt>.
+<p/>
+-5- <i>Mandates</i>: <tt>remove_cvref_t&lt;U&gt;</tt> is a specialization of `optional`.
+<p/>
+-6- <i>Effects</i>: Equivalent to:
+</p>
+<blockquote><pre>
+if (*this) {
+  return invoke(std::forward&lt;F&gt;(f), std::move(<del><i>val</i></del><ins>operator*()</ins>));
+} else {
+  return remove_cvref_t&lt;U&gt;();
+}
+</pre></blockquote>
+</blockquote>
+<pre>
+template&lt;class F&gt; constexpr auto transform(F&amp;&amp; f) &amp;;
+template&lt;class F&gt; constexpr auto transform(F&amp;&amp; f) const &amp;;
+</pre>
+<blockquote>
+<p>
+-7- Let `U` be <tt>remove_cv_t&lt;invoke_result_t&lt;F, decltype(<del>(<i>val</i>)</del><ins>operator*()</ins>)&gt;&gt;</tt>.
+<p/>
+-8- <i>Mandates</i>: `U` is a valid contained type for `optional`. The declaration
+</p>
+<blockquote><pre>
+U u(invoke(std::forward&lt;F&gt;(f), <del><i>val</i></del><ins>operator*()</ins>));
+</pre></blockquote>
+<p>
+is well-formed for some invented variable `u`.
+<p/>
+[<i>Note 1</i>: There is no requirement that `U` is movable (<sref ref="[dcl.init.general]"/>). &mdash; <i>end note</i>]
+<p/>
+-9- <i>Returns</i>: If `*this` contains a value, an <tt>optional&lt;U&gt;</tt> object whose 
+contained value is direct-non-list-initialized with 
+<tt>invoke(std::forward&lt;F&gt;(f), <del><i>val</i></del><ins>operator*()</ins>)</tt>; 
+otherwise, <tt>optional&lt;U&gt;()</tt>.
+</p>
+</blockquote>
+<pre>
+template&lt;class F&gt; constexpr auto transform(F&amp;&amp; f) &amp;&amp;;
+template&lt;class F&gt; constexpr auto transform(F&amp;&amp; f) const &amp;&amp;;
+</pre>
+<blockquote>
+<p>
+-10- Let `U` be <tt>remove_cv_t&lt;invoke_result_t&lt;F, decltype(std::move(<del><i>val</i></del><ins>operator*()</ins>))&gt;&gt;</tt>.
+<p/>
+-11- Mandates: `U` is a valid contained type for `optional`. The declaration
+</p>
+<blockquote><pre>
+U u(invoke(std::forward&lt;F&gt;(f), std::move(<del><i>val</i></del><ins>operator*()</ins>)));
+</pre></blockquote>
+<p>
+is well-formed for some invented variable `u`.
+<p/>
+[<i>Note 2</i>: There is no requirement that U is movable (<sref ref="[dcl.init.general]"/>). &mdash; <i>end note</i>]
+<p/>
+-12- <i>Returns</i>: If `*this` contains a value, an <tt>optional&lt;U&gt;</tt> object whose 
+contained value is direct-non-list- initialized with 
+<tt>invoke(std::forward&lt;F&gt;(f), std::move(<del><i>val</i></del><ins>operator*()</ins>))</tt>; 
+otherwise, <tt>optional&lt;U&gt;()</tt>.
+</p>
+</blockquote>
+</blockquote>
+</li>
+
+<li>
+<p>Modify <sref ref="[expected.object.monadic]"/> as indicated:</p>
+
+<blockquote>
+<pre>
+template&lt;class F&gt; constexpr auto and_then(F&amp;&amp; f) &amp;;
+template&lt;class F&gt; constexpr auto and_then(F&amp;&amp; f) const &amp;;
+</pre>
+<blockquote>
+<p>
+-1- Let `U` be <tt>remove_cvref_t&lt;invoke_result_t&lt;F, decltype(<del>(<i>val</i>)</del><ins>operator*()</ins>)&gt;&gt;</tt>.
+<p/>
+-2- <i>Constraints</i>: <tt>is_constructible_v&lt;E, decltype(error())&gt;</tt> is `true`.
+<p/>
+-3- <i>Mandates</i>: `U` is a specialization of `expected` and 
+<tt>is_same_v&lt;typename U::error_type, E&gt;</tt> is `true`.
+<p/>
+-4- <i>Effects</i>: Equivalent to:
+</p>
+<blockquote><pre>
+if (has_value())
+  return invoke(std::forward&lt;F&gt;(f), <del><i>val</i></del><ins>operator*()</ins>);
+else
+  return U(unexpect, error());
+</pre></blockquote>
+</blockquote>
+<pre>
+template&lt;class F&gt; constexpr auto and_then(F&amp;&amp; f) &amp;&amp;;
+template&lt;class F&gt; constexpr auto and_then(F&amp;&amp; f) const &amp;&amp;;
+</pre>
+<blockquote>
+<p>
+-5- Let `U` be <tt>remove_cvref_t&lt;invoke_result_t&lt;F, decltype(std::move(<del><i>val</i></del><ins>operator*()</ins>))&gt;&gt;</tt>.
+<p/>
+-6- <i>Constraints</i>: <tt>is_constructible_v&lt;E, decltype(std::move(error()))&gt;</tt> is `true`.
+<p/>
+-7- <i>Mandates</i>: `U` is a specialization of `expected` and 
+<tt>is_same_v&lt;typename U::error_type, E&gt;</tt> is `true`.
+<p/>
+-8- <i>Effects</i>: Equivalent to:
+</p>
+<blockquote><pre>
+if (has_value())
+  return invoke(std::forward&lt;F&gt;(f), std::move(<del><i>val</i></del><ins>operator*()</ins>));
+else
+  return U(unexpect, std::move(error()));
+</pre></blockquote>
+</blockquote>
+<pre>
+template&lt;class F&gt; constexpr auto or_else(F&amp;&amp; f) &amp;;
+template&lt;class F&gt; constexpr auto or_else(F&amp;&amp; f) const &amp;;
+</pre>
+<blockquote>
+<p>
+-9- Let `G` be <tt>remove_cvref_t&lt;invoke_result_t&lt;F, decltype(error())&gt;&gt;</tt>.
+<p/>
+-10- <i>Constraints</i>: <tt>is_constructible_v&lt;T, decltype(<del>(<i>val</i>)</del><ins>operator*()</ins>)&gt;</tt> is `true`.
+<p/>
+-11- <i>Mandates</i>: `G` is a specialization of `expected` and 
+<tt>is_same_v&lt;typename G::value_type, T&gt;</tt> is `true`.
+<p/>
+-12- <i>Effects</i>: Equivalent to:
+</p>
+<blockquote><pre>
+if (has_value())
+  return G(in_place, <del><i>val</i></del><ins>operator*()</ins>);
+else
+  return invoke(std::forward&lt;F&gt;(f), error());
+</pre></blockquote>
+</blockquote>
+<pre>
+template&lt;class F&gt; constexpr auto or_else(F&amp;&amp; f) &amp;&amp;;
+template&lt;class F&gt; constexpr auto or_else(F&amp;&amp; f) const &amp;&amp;;
+</pre>
+<blockquote>
+<p>
+-13- Let `G` be <tt>remove_cvref_t&lt;invoke_result_t&lt;F, decltype(std::move(error()))&gt;&gt;</tt>.
+<p/>
+-14- <i>Constraints</i>: <tt>is_constructible_v&lt;T, decltype(std::move(<del><i>val</i></del><ins>operator*()</ins>))&gt;</tt> is `true`.
+<p/>
+-15- <i>Mandates</i>: `G` is a specialization of `expected` and 
+<tt>is_same_v&lt;typename G::value_type, T&gt;</tt> is `true`.
+<p/>
+-16- <i>Effects</i>: Equivalent to:
+</p>
+<blockquote><pre>
+if (has_value())
+  return G(in_place, std::move(<del><i>val</i></del><ins>operator*()</ins>));
+else
+  return invoke(std::forward&lt;F&gt;(f), std::move(error()));
+</pre></blockquote>
+</blockquote>
+<pre>
+template&lt;class F&gt; constexpr auto transform(F&amp;&amp; f) &amp;;
+template&lt;class F&gt; constexpr auto transform(F&amp;&amp; f) const &amp;;
+</pre>
+<blockquote>
+<p>
+-17- Let `U` be <tt>remove_cv_t&lt;invoke_result_t&lt;F, decltype(<del>(<i>val</i>)</del><ins>operator*()</ins>)&gt;&gt;</tt>.
+<p/>
+-18- <i>Constraints</i>: <tt>is_constructible_v&lt;E, decltype(error())&gt;</tt> is `true`.
+<p/>
+-19- <i>Mandates</i>: `U` is a valid value type for `expected`. If 
+<tt>is_void_v&lt;U&gt;</tt> is `false`, the declaration
+</p>
+<blockquote><pre>
+U u(invoke(std::forward&lt;F&gt;(f), <del><i>val</i></del><ins>operator*()</ins>));
+</pre></blockquote>
+<p>
+is well-formed.
+<p/>
+-20- <i>Effects</i>:
+</p>
+<ol style="list-style-type: none">
+<li><p>
+(20.1) &mdash; If `has_value()` is `false`, returns <tt>expected&lt;U, E&gt;(unexpect, error())</tt>.
+</p></li>
+<li><p>
+(20.2) &mdash; Otherwise, if <tt>is_void_v&lt;U&gt;</tt> is `false`, returns an 
+<tt>expected&lt;U, E&gt;</tt> object whose <tt><i>has_val</i></tt> member is `true` and 
+<tt><i>val</i></tt> member is direct-non-list-initialized with 
+<tt>invoke(std::forward&lt;F&gt;(f), <del><i>val</i></del><ins>operator*()</ins>)</tt>.
+</p></li>
+<li><p>
+(20.3) &mdash; Otherwise, evaluates <tt>invoke(std::forward&lt;F&gt;(f), <del><i>val</i></del><ins>operator*()</ins>)</tt> 
+and then returns <tt>expected&lt;U, E&gt;()</tt>.
+</p></li>
+</ol>
+</blockquote>
+<pre>
+template&lt;class F&gt; constexpr auto transform(F&amp;&amp; f) &amp;&amp;;
+template&lt;class F&gt; constexpr auto transform(F&amp;&amp; f) const &amp;&amp;;
+</pre>
+<blockquote>
+<p>
+-21- Let `U` be <tt>remove_cv_t&lt;invoke_result_t&lt;F, decltype(std::move(<del><i>val</i></del><ins>operator*()</ins>))&gt;&gt;</tt>.
+<p/>
+-22- <i>Constraints</i>: <tt>is_constructible_v&lt;E, decltype(std::move(error()))&gt;</tt> is `true`.
+<p/>
+-23- <i>Mandates</i>: `U` is a valid value type for `expected`. If <tt>is_void_v&lt;U&gt;</tt> 
+is `false`, the declaration
+</p>
+<blockquote><pre>
+U u(invoke(std::forward&lt;F&gt;(f), std::move(<del><i>val</i></del><ins>operator*()</ins>)));
+</pre></blockquote>
+<p>
+is well-formed.
+<p/>
+-24- <i>Effects</i>:
+</p>
+<ol style="list-style-type: none">
+<li><p>
+(24.1) &mdash; If `has_value()` is `false`, returns <tt>expected&lt;U, E&gt;(unexpect, std::move(error()))</tt>.
+</p></li>
+<li><p>
+(24.2) &mdash; Otherwise, if <tt>is_void_v&lt;U&gt;</tt> is `false`, returns an 
+<tt>expected&lt;U, E&gt;</tt> object whose <tt><i>has_val</i></tt> member is `true` and 
+<tt><i>val</i></tt> member is direct-non-list-initialized with 
+<tt>invoke(std::forward&lt;F&gt;(f), std::move(<del><i>val</i></del><ins>operator*()</ins>))</tt>.
+</p></li>
+<li><p>
+(24.3) &mdash; Otherwise, evaluates <tt>invoke(std::forward&lt;F&gt;(f), std::move(<del><i>val</i></del><ins>operator*()</ins>))</tt> 
+and then returns <tt>expected&lt;U, E&gt;()</tt>.
+</p></li>
+</ol>
+</blockquote>
+<pre>
+template&lt;class F&gt; constexpr auto transform_error(F&amp;&amp; f) &amp;;
+template&lt;class F&gt; constexpr auto transform_error(F&amp;&amp; f) const &amp;;
+</pre>
+<blockquote>
+<p>
+-25- Let `G` be <tt>remove_cv_t&lt;invoke_result_t&lt;F, decltype(error())&gt;&gt;</tt>.
+<p/>
+-26- <i>Constraints</i>: <tt>is_constructible_v&lt;T, decltype(<del>(<i>val</i>)</del><ins>operator*()</ins>)&gt;</tt> is `true`.
+<p/>
+-27- <i>Mandates</i>: `G` is a valid template argument for `unexpected` (<sref ref="[expected.un.general]"/>) 
+and the declaration
+</p>
+<blockquote><pre>
+G g(invoke(std::forward&lt;F&gt;(f), error()));
+</pre></blockquote>
+<p>
+is well-formed.
+<p/>
+-28- <i>Returns</i>: If `has_value()` is `true`, 
+<tt>expected&lt;T, G&gt;(in_place, <del><i>val</i></del><ins>operator*()</ins>)</tt>; 
+otherwise, an <tt>expected&lt;T, G&gt;</tt> object whose <tt><i>has_val</i></tt> member is `false` and 
+<tt><i>unex</i></tt> member is direct-non-list-initialized with
+<tt>invoke(std::forward&lt;F&gt;(f), error())</tt>.
+</p>
+</blockquote>
+<pre>
+template&lt;class F&gt; constexpr auto transform_error(F&amp;&amp; f) &amp;&amp;;
+template&lt;class F&gt; constexpr auto transform_error(F&amp;&amp; f) const &amp;&amp;;
+</pre>
+<blockquote>
+<p>
+-29- Let `G` be <tt>remove_cv_t&lt;invoke_result_t&lt;F, decltype(std::move(error()))&gt;&gt;</tt>.
+<p/>
+-30- <i>Constraints</i>: <tt>is_constructible_v&lt;T, decltype(std::move(<del><i>val</i></del><ins>operator*()</ins>))&gt;</tt> is `true`.
+<p/>
+-31- <i>Mandates</i>: `G` is a valid template argument for `unexpected` (<sref ref="[expected.un.general]"/>) 
+and the declaration
+</p>
+<blockquote><pre>
+G g(invoke(std::forward&lt;F&gt;(f), std::move(error())));
+</pre></blockquote>
+<p>
+is well-formed.
+<p/>
+-32- <i>Returns</i>: If `has_value()` is `true`, 
+<tt>expected&lt;T, G&gt;(in_place, std::move(<del><i>val</i></del><ins>operator*()</ins>))</tt>; otherwise, an
+<tt>expected&lt;T, G&gt;</tt> object whose <tt><i>has_val</i></tt> member is `false` and 
+<tt><i>unex</i></tt> member is direct-non-list-initialized with 
+<tt>invoke(std::forward&lt;F&gt;(f), std::move(error()))</tt>.
+</p>
+</blockquote>
+</blockquote>
+
+</li>
+
+</ol>
+
+</resolution>
+
+</issue>
