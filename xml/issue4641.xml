@@ -1,0 +1,62 @@
+<?xml version='1.0' encoding='utf-8' standalone='no'?>
+<!DOCTYPE issue SYSTEM "lwg-issue.dtd">
+
+<issue num="4641" status="New">
+<title>Role of NaN and infinity in &sect;[linalg] is unclear</title>
+<section><sref ref="[linalg]"/></section>
+<submitter>Jan Schultke</submitter>
+<date>09 Nov 2026</date>
+<priority>99</priority>
+
+<discussion>
+<p>
+The handling of NaN and infinity inputs and intermediate results throughout <sref ref="[linalg]"/> 
+is not clearly specified. To name some examples:
+</p>
+<ul>
+<li><p>
+<sref ref="[linalg.algs.blas1.scal]"/> states that `std::linalg::scale` computes an  "elementwise multiplication `αx`", 
+but it's unclear whether this must be exactly the `*` operator. If it is a multiplication in the mathematical sense, 
+how can this requirement be satisfied by `std::linalg::scale` if any NaN results or is input into a multiplication?
+</p></li>
+<li><p>
+<sref ref="[linalg.algs.blas1.iamax]"/> states that `std::linalg::vector_idx_abs_max` returns "the index of the first 
+element of of `v` having largest absolute value". It is unclear whether a NaN is disqualified in this comparison 
+(the `std::fmaximum_num` approach) or results in an unspecified index being returned. It is also unclear what element 
+has the largest absolute if every element is NaN, since there exists no element that compares greater or equal to any 
+other element. It is also unclear what the absolute value of NaN is. Is this "absolute value" the same as `std::fabs` 
+in this description, meaning that NaN is its own absolute value?
+</p></li>
+</ul>
+<p>
+The problem is not limited to just these two functions; there are fundamental questions such as:
+</p>
+<blockquote style="border-left: 3px solid #ccc;padding-left: 15px;">
+<p>
+When we describe results throughout <sref ref="[linalg]"/> mathematically, do we mean real number arithmetic 
+(no infinities), extended real number arithmetic (infinities but no NaNs), or a (sometimes unspecified) series 
+of expressions ([expr])?
+</p>
+</blockquote>
+<p>
+<b>Possible solutions</b>
+</p>
+<ul>
+<li><p>
+Clearly specify for every function in <sref ref="[linalg]"/> what happens when infinity or NaN is used as an input 
+or when an intermediate calculation produces infinity or NaN (paper needed).
+</p></li>
+<li><p>
+Make it undefined behavior to pass infinities and NaNs to <tt>&lt;linalg&gt;</tt> functions and state that any NaN 
+or infinity produced in an intermediate calculation results in undefined behavior.
+</p></li>
+<li><p>
+Something else.
+</p></li>
+</ul>
+</discussion>
+
+<resolution>
+</resolution>
+
+</issue>
