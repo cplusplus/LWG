@@ -2,7 +2,7 @@
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
 <issue num="4639" status="New">
-<title>Lvalue `optional&lt;NonMovable&gt;` does not satisify `view`, but is `viewable_range`</title>
+<title>Lvalue <tt>optional&lt;NonMovable&gt;</tt> does not satisify `view`, but is `viewable_range`</title>
 <section>
 <sref ref="[optional]"/>
 <sref ref="[ranges]"/>
@@ -17,13 +17,14 @@ The C++26 <paper num="P3168R2"/> marked all specializations of `optional` as the
 (`enable_view` is `true`), however, for type `M` that is not `movable`, <tt>optional&lt;M&gt;</tt>
 does not satisfy the `view` concept.
 </p>
-
-<p>Generally, overstating support in opt-in is accepted and unharmful, however the `view` concept
+<p>
+Generally, overstating support in opt-in is accepted and unharmful, however the `view` concept
 decides whether a view adapter will store independent copy of the range, or a reference to it.
 In particular lvalue of before mentioned <tt>optional&lt;M&gt;</tt> satisfies `viewable_range`,
-and is wrapped in `ref_view` when adapted:</p>
+and is wrapped in `ref_view` when adapted:
+</p>
 
-<pre>
+<blockquote><pre>
 constexpr auto process_rvalue()
 {
   std::pair&lt;const std::string, int&gt; p("test", 20);
@@ -36,14 +37,12 @@ constexpr auto process_lvalue()
   std::optional opt(p);
   return opt | std::views::keys; // references opt and dangles
 }
-</pre>
-
+</pre></blockquote>
 <p>
 This behavior is not unique to `optional`, and can occur for a user defined "view" that
 fails to satisfy `movable` since C++20. The C++26 changes to `optional` make it more
 prominent.
 </p>
-
 </discussion>
 
 <resolution>
