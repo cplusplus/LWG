@@ -1,0 +1,173 @@
+<?xml version='1.0' encoding='utf-8' standalone='no'?>
+<!DOCTYPE issue SYSTEM "lwg-issue.dtd">
+
+<issue num="4643" status="New">
+<title>&sect;[simd] math functions should not needlessly access `errno`</title>
+<section>
+<sref ref="[simd.math]"/>
+<sref ref="[simd.complex.math]"/>
+</section>
+<submitter>Jan Schultke</submitter>
+<date>10 Nov 2026</date>
+<priority>99</priority>
+
+<discussion>
+<p>
+Throughout subclause <sref ref="[simd]"/>, it is stated that access to `errno` is unspecified. 
+This allows otherwise non-compliant optimizations like `-fno-math-errno`. 
+<p/>
+Unfortunately, the wording inadvertently permits accessing `errno` for no good reason, 
+even when the underlying math function would have never done so. For example, 
+`std::sqrt(0)` does not access `errno`, but it is unspecified whether 
+<tt>std::simd::sqrt(std::simd::vec&lt;double&gt;(0))</tt> accesses `errno`.
+</p>
+</discussion>
+
+<resolution>
+<p>
+This wording is relative to <paper num="N5054"/>.
+</p>
+
+<ol>
+<li>
+<p>Modify <sref ref="[simd.math]"/> as indicated:</p>
+
+<blockquote>
+<pre>
+template&lt;<i>math-floating-point</i> V&gt;
+  constexpr rebind_t&lt;int, <i>deduced-vec-t</i>&lt;V&gt;&gt; ilogb(const V&amp; x);
+[&hellip;]
+template&lt;<i>math-floating-point</i> V&gt;
+  constexpr typename <i>deduced-vec-t</i>&lt;V&gt;::mask_type
+    isunordered(const V&amp; x, const <i>deduced-vec-t</i>&lt;V&gt;&amp; y);
+</pre>
+<blockquote>
+<p>
+-1- Let `Ret` denote the return type of the specialization of a function template [&hellip;]
+<p/>
+-2- <i>Returns</i>: A value `ret` of type `Ret`, that is element-wise equal to the result of 
+calling <tt><i>math-func-vec</i></tt> with the parameters of the above functions. If in an 
+invocation of a scalar overload of <tt><i>math-func</i></tt> for index `i` in 
+<tt><i>math-func-vec</i></tt> a domain, pole, or range error would occur, the value of 
+`ret[i]` is unspecified.
+<p/>
+-3 <i>Remarks</i>: It is unspecified whether `errno` (<sref ref="[errno]"/>) is 
+accessed <ins>if a domain, pole, or range error would occur</ins>.
+</p>
+</blockquote>
+<pre>
+template&lt;<i>math-floating-point</i> V&gt;
+  constexpr <i>deduced-vec-t</i>&lt;V&gt; ldexp(const V&amp; x, const rebind_t&lt;int, <i>deduced-vec-t</i>&lt;V&gt;&gt;&amp; exp);
+[&hellip;]
+template&lt;<i>math-floating-point</i> V&gt;
+  constexpr <i>deduced-vec-t</i>&lt;V&gt;
+    scalbln(const V&amp; x, const rebind_t&lt;long int, <i>deduced-vec-t</i>&lt;V&gt;&gt;&amp; n);
+</pre>
+<blockquote>
+<p>
+-4- Let `Ret` be <tt><i>deduced-vec-t</i>&lt;V&gt;</tt>. Let <tt><i>math-func</i></tt> denote the 
+name of the function template. Let <tt><i>math-func-vec</i></tt> denote: [&hellip;]
+<p/>
+-5- <i>Returns</i>: A value `ret` of type `Ret`, that is element-wise equal to the result of 
+calling <tt><i>math-func-vec</i></tt> with the parameters of the above functions. If in an 
+invocation of a scalar overload of <tt><i>math-func</i></tt> for index `i` in 
+<tt><i>math-func-vec</i></tt> a domain, pole, or range error would occur, the value of 
+`ret[i]` is unspecified.
+<p/>
+-6- <i>Remarks</i>: It is unspecified whether `errno` (<sref ref="[errno]"/>) is 
+accessed <ins>if a domain, pole, or range error would occur</ins>.
+</p>
+</blockquote>
+[&hellip;]
+<pre>
+template&lt;<i>math-floating-point</i> V&gt; constexpr <i>deduced-vec-t</i>&lt;V&gt; acos(const V&amp; x);
+[&hellip;]
+template&lt;<i>math-floating-point</i> V&gt; <i>deduced-vec-t</i>&lt;V&gt; riemann_zeta(const V&amp; x);
+</pre>
+<blockquote>
+<p>
+-9- Let `Ret` denote the return type of the specialization of a function template with the name 
+<tt><i>math-func</i></tt>. Let <tt><i>math-func-vec</i></tt> denote: [&hellip;]
+<p/>
+-10- <i>Returns</i>: A value `ret` of type `Ret`, that is element-wise approximately equal to the 
+result of calling <tt><i>math-func-vec</i></tt> with the parameters of the above functions. If in 
+an invocation of a scalar overload of <tt><i>math-func</i></tt> for index `i` in 
+<tt><i>math-func-vec</i></tt> a domain, pole, or range error would occur, the value of
+`ret[i]` is unspecified.
+<p/>
+-11- <i>Remarks</i>: It is unspecified whether `errno` (<sref ref="[errno]"/>) is 
+accessed <ins>if a domain, pole, or range error would occur</ins>.
+</p>
+</blockquote>
+[&hellip;]
+<pre>
+template&lt;<i>math-floating-point</i> V&gt;
+  constexpr <i>deduced-vec-t</i>&lt;V&gt; remquo(const V&amp; x, const V&amp; y,
+    rebind_t&lt;int, <i>deduced-vec-t</i>&lt;V&gt;&gt;* quo);
+[&hellip;]
+template&lt;<i>math-floating-point</i> V&gt;
+  constexpr <i>deduced-vec-t</i>&lt;V&gt;
+    remquo(const V&amp; x, const <i>deduced-vec-t</i>&lt;V&gt;&amp; y, rebind_t&lt;int, <i>deduced-vec-t</i>&lt;V&gt;&gt;* quo);
+</pre>
+<blockquote>
+<p>
+-19- Let `V0` be <tt><i>deduced-vec-t</i>&lt;V&gt;</tt>. Let <tt><i>remquo-vec</i></tt> denote: [&hellip;]
+If in an invocation of a scalar overload of `remquo` for index `i` in <tt><i>remquo-vec</i></tt> 
+a domain, pole, or range error would occur, the value of `ret[i]` is unspecified.
+<p/>
+-20- <i>Effects</i>: Sets `*quo` to `ret.second`.
+<p/>
+-21- <i>Returns</i>: `ret.first`.
+<p/>
+-22- <i>Remarks</i>: It is unspecified whether `errno` (<sref ref="[errno]"/>) is 
+accessed <ins>if a domain, pole, or range error would occur</ins>.
+</p>
+</blockquote>
+</blockquote>
+</li>
+
+<li>
+<p>Modify <sref ref="[simd.complex.math]"/> as indicated:</p>
+
+<blockquote>
+<pre>
+template&lt;<i>simd-complex</i> V&gt;
+  constexpr rebind_t&lt;<i>simd-complex-value-type</i>&lt;V&gt; , V&gt; real(const V&amp;) noexcept;
+[&hellip;]
+template&lt;<i>simd-complex</i> V&gt; constexpr V atanh(const V&amp; v);
+</pre>
+<blockquote>
+<p>
+-1- <i>Returns</i>: A `basic_vec` object `ret` where [&hellip;]. If in an invocation of 
+<tt><i>cmplx-func</i></tt> for index <tt><i>i</i></tt> a domain, pole, or range error would occur, the 
+value of <tt>ret[<i>i</i>]</tt> is unspecified.
+<p/>
+-2- <i>Remarks</i>: It is unspecified whether `errno` (<sref ref="[errno]"/>) is 
+accessed <ins>if a domain, pole, or range error would occur</ins>.
+</p>
+</blockquote>
+<pre>
+template&lt;simd-floating-point V&gt;
+  rebind_t&lt;complex&lt;typename V::value_type&gt;, V&gt; polar(const V&amp; x, const V&amp; y = {});
+
+template&lt;simd-complex V&gt; constexpr V pow(const V&amp; x, const V&amp; y);
+</pre>
+<blockquote>
+<p>
+-3- <i>Returns</i>: A `basic_vec` object `ret` where [&hellip;]. If in an invocation of 
+<tt><i>cmplx-func</i></tt> for index <tt><i>i</i></tt> a domain, pole, or range error would occur, the 
+value of <tt>ret[<i>i</i>]</tt> is unspecified.
+<p/>
+-4- <i>Remarks</i>: It is unspecified whether `errno` (<sref ref="[errno]"/>) is 
+accessed <ins>if a domain, pole, or range error would occur</ins>.
+</p>
+</blockquote>
+</blockquote>
+
+</li>
+
+</ol>
+
+</resolution>
+
+</issue>
