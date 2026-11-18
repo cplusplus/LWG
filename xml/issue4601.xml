@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="4601" status="Ready">
+<issue num="4601" status="Voting">
 <title>Unclear error handling for C++ math functions</title>
 <section>
 <sref ref="[c.math.lerp]"/>

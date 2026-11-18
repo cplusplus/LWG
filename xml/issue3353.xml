@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="3353" status="Ready">
+<issue num="3353" status="Voting">
 <title><tt>locale</tt>'s copy assignment operator should return <tt>locale&amp;</tt></title>
 <section><sref ref="[locale]"/></section>
 <submitter>Stephan T. Lavavej</submitter>

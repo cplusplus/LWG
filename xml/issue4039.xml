@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="4039" status="Ready">
+<issue num="4039" status="Voting">
 <title>&sect;[ostream.formatted.print]: Inappropriate usage of <tt>badbit</tt> in definition of 
 <tt>vprint_unicode</tt>/<tt>vprint_nonunicode</tt></title>
 <section><sref ref="[ostream.formatted.print]"/></section>

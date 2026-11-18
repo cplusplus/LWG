@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="3889" status="Ready">
+<issue num="3889" status="Voting">
 <title><tt>std::(ranges::)destroy_at</tt> should destroy array elements in the decreasing index order</title>
 <section><sref ref="[specialized.destroy]"/></section>
 <submitter>Jiang An</submitter>

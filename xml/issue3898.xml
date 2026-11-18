@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="3898" status="Ready">
+<issue num="3898" status="Voting">
 <title>Possibly unintended preconditions for completion functions of <tt>std::barrier</tt></title>
 <section><sref ref="[thread.barrier.class]"/></section>
 <submitter>Jiang An</submitter>

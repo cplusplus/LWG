@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="2137" status="Ready">
+<issue num="2137" status="Voting">
 <title>Misleadingly constrained post-condition in the presence of exceptions</title>
 <section><sref ref="[re.regex.assign]"/></section>
 <submitter>Jonathan Wakely</submitter>

@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="4586" status="Ready">
+<issue num="4586" status="Voting">
 <title>Partial specialization of `std::format_kind` for `std::optional` is not marked hosted</title>
 <section>
 <sref ref="[freestanding.item]"/>

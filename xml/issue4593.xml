@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="4593" status="Tentatively Ready">
+<issue num="4593" status="Voting">
 <title>The first template argument of `std::saturating_cast` must be specifiable</title>
 <section><sref ref="[numeric.sat.cast]"/></section>
 <submitter>Jiang An</submitter>

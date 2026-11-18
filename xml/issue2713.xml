@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="2713" status="Ready">
+<issue num="2713" status="Voting">
 <title>More missing allocator-extended constructors for unordered containers</title>
 <section><sref ref="[unord]"/></section>
 <submitter>Billy Robert O'Neal III</submitter>

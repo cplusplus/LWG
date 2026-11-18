@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="2220" status="Ready">
+<issue num="2220" status="Voting">
 <title>Under-specification of <tt>operator==</tt> for <tt>regex_token_iterator</tt></title>
 <section><sref ref="[re.tokiter.comp]"/></section>
 <submitter>Pete Becker</submitter>

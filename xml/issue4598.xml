@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="4598" status="Tentatively Ready">
+<issue num="4598" status="Voting">
 <title>&sect;[res.on.exception.handling] should cover exceptions specified outside a <i>Throws</i>: paragraph</title>
 <section>
 <sref ref="[res.on.exception.handling]"/>

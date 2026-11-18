@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="2811" status="Ready">
+<issue num="2811" status="Voting">
 <title>"Selected constructor" wording is incorrect for <tt>optional</tt>/<tt>variant</tt>/<tt>any</tt></title>
 <section><sref ref="[optional.ctor]"/><sref ref="[optional.assign]"/><sref ref="[variant.ctor]"/><sref ref="[any.cons]"/><sref ref="[any.modifiers]"/></section>
 <submitter>Tim Song</submitter>

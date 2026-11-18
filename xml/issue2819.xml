@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="2819" status="Ready">
+<issue num="2819" status="Voting">
 <title>Unspecified <i>Return type:</i> elements</title>
 <section><sref ref="[thread.req.lockable]"/><sref ref="[thread.mutex.requirements]"/></section>
 <submitter>Agust&iacute;n K-ballo Berg&eacute;</submitter>

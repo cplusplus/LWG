@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="4159" status="Ready">
+<issue num="4159" status="Voting">
 <title>Uses-allocator construction mechanisms should be opted out for node handles</title>
 <section><sref ref="[container.node]"/><sref ref="[allocator.uses.trait]"/></section>
 <submitter>Jiang An</submitter>

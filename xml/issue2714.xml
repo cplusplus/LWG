@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="2714" status="Ready">
+<issue num="2714" status="Voting">
 <title><tt>complex</tt> stream extraction underspecified</title>
 <section><sref ref="[complex.ops]"/></section>
 <submitter>Tim Song</submitter>

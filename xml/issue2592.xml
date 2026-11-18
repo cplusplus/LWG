@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='UTF-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="2592" status="Ready">
+<issue num="2592" status="Voting">
 <title>Require that <tt>chrono::duration_cast</tt>s from smaller durations to larger durations do not overflow</title>
 <section><sref ref="[time.syn]"/></section>
 <submitter>Andy Giese</submitter>

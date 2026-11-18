@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="3832" status="Ready">
+<issue num="3832" status="Voting">
 <title>Missing change for <tt>element_view::<i>iterator</i></tt> in LWG 3798</title>
 <section><sref ref="[range.elements.iterator]"/></section>
 <submitter>Jiang An</submitter>

@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="4406" status="Ready">
+<issue num="4406" status="Voting">
 <title>`optional::value_or` return statement is inconsistent with <i>Mandates</i></title>
 <section>
 <sref ref="[optional.observe]"/>
