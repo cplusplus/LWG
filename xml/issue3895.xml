@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="3895" status="New">
+<issue num="3895" status="NAD">
 <title>Various relation concepts are missing default values of the second template parameters</title>
 <section><sref ref="[concepts.syn]"/><sref ref="[iterator.synopsis]"/></section>
 <submitter>blacktea hamburger</submitter>
@@ -50,6 +50,11 @@ Set priority to 3 after reflector poll.
 "NAD, default argument would make typos compile. Explicit is good."
 </p>
 
+<note>Buzios 2026-11-19 Status changed: New &rarr; NAD.</note>
+<p>
+This is a design change not a defect and would require a paper
+that goes through design review.
+</p>
 </discussion>
 
 <resolution>
