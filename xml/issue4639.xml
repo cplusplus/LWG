@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="4639" status="New">
+<issue num="4639" status="LEWG">
 <title>Lvalue <tt>optional&lt;NonMovable&gt;</tt> does not satisify `view`, but is `viewable_range`</title>
 <section>
 <sref ref="[optional]"/>
@@ -9,7 +9,7 @@
 </section>
 <submitter>Tomasz Kamiński</submitter>
 <date>12 Nov 2026</date>
-<priority>99</priority>
+<priority>2</priority>
 
 <discussion>
 <p>
@@ -42,6 +42,12 @@ constexpr auto process_lvalue()
 This behavior is not unique to `optional`, and can occur for a user defined "view" that
 fails to satisfy `movable` since C++20. The C++26 changes to `optional` make it more
 prominent.
+</p>
+
+<note>Buzios 2026-11-19; Status New &rarr; LEWG.</note>
+<p>
+Set priority to 2 after reflector poll and send to LEWG.
+Would be resolved by Tomasz's <paper num="P4463R0"/>.
 </p>
 </discussion>
 
