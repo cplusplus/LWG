@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="3934" status="New">
+<issue num="3934" status="Ready">
 <title><tt>std::complex&lt;T&gt;::operator=(const T&amp;)</tt> has no specification</title>
 <section><sref ref="[complex]"/></section>
 <submitter>Daniel Kr&uuml;gler</submitter>
