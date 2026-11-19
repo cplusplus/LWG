@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="4214" status="New">
+<issue num="4214" status="Ready">
 <title>Missing <i>Preconditions</i> for <code>take</code>/<code>drop</code> adaptor</title>
 <section>
 <sref ref="[range.take.overview]"/><sref ref="[range.drop.overview]"/>
@@ -98,9 +98,7 @@ Set priority to 3 after reflector poll.
 Some discomfort with adding the element as a bullet point inside a list,
 no better suggestions though.
 </p>
-</discussion>
-
-<resolution>
+<superseded>
 <p>
 This wording is relative to <paper num="N5001"/> plus additions from <paper num="P3471R4"/>.
 </p>
@@ -143,6 +141,67 @@ is expression-equivalent to:
 </p>
 <ol style="list-style-type: none">
 <li><p>(2.?) <ins>&mdash; <i>Hardened preconditions</i>: <code>static_cast&lt;D&gt;(F) &gt;= 0</code> is <code>true</code>.</ins>
+</p></li>
+<li><p>(2.1) &mdash; if <code>T</code> is a specialization of <code>empty_view</code> (<sref ref="[range.empty.view]"/>),
+then <code>((void)F, <i>decay-copy</i>(E))</code>, except that the evaluations of <code>E</code>
+and <code>F</code> are indeterminately sequenced.
+</p></li>
+</ol>
+</blockquote>
+</li>
+
+</ol>
+
+</superseded>
+
+<note>Buzios 2026-11-19; restore original proposed resolution</note>
+<note>Buzios 2026-11-19; New &rarr; Ready</note>
+
+</discussion>
+
+<resolution>
+<p>
+This wording is relative to <paper num="N5001"/>.
+</p>
+
+<ol>
+<li><p>Modify <sref ref="[range.take.overview]"/> as indicated:</p>
+
+<blockquote>
+<p>
+-2- The name <code>views::take</code> denotes a range adaptor object (<sref ref="[range.adaptor.object]"/>).
+Let <code>E</code> and <code>F</code> be expressions, let <code>T</code> be
+<code>remove_cvref_t&lt;decltype((E))&gt;</code>, and let <code>D</code> be
+<code>range_difference_t&lt;decltype((E))&gt;</code>.
+If <code>decltype((F))</code> does not model <code>convertible_to&lt;D&gt;</code>,
+<code>views::take(E, F)</code> is ill-formed. Otherwise, the expression <code>views::take(E, F)</code>
+is expression-equivalent to:
+</p>
+<ol style="list-style-type: none">
+<li><p>(2.?) <ins>&mdash; <i>Preconditions</i>: <code>static_cast&lt;D&gt;(F) &gt;= 0</code> is <code>true</code>.</ins>
+</p></li>
+<li><p>(2.1) &mdash; if <code>T</code> is a specialization of <code>empty_view</code> (<sref ref="[range.empty.view]"/>),
+then <code>((void)F, <i>decay-copy</i>(E))</code>, except that the evaluations of <code>E</code>
+and <code>F</code> are indeterminately sequenced.
+</p></li>
+</ol>
+</blockquote>
+</li>
+
+<li><p>Modify <sref ref="[range.drop.overview]"/> as indicated:</p>
+
+<blockquote>
+<p>
+-2- The name <code>views::drop</code> denotes a range adaptor object (<sref ref="[range.adaptor.object]"/>).
+Let <code>E</code> and <code>F</code> be expressions, let <code>T</code> be
+<code>remove_cvref_t&lt;decltype((E))&gt;</code>, and let <code>D</code> be
+<code>range_difference_t&lt;decltype((E))&gt;</code>.
+If <code>decltype((F))</code> does not model <code>convertible_to&lt;D&gt;</code>,
+<code>views::drop(E, F)</code> is ill-formed. Otherwise, the expression <code>views::drop(E, F)</code>
+is expression-equivalent to:
+</p>
+<ol style="list-style-type: none">
+<li><p>(2.?) <ins>&mdash; <i>Preconditions</i>: <code>static_cast&lt;D&gt;(F) &gt;= 0</code> is <code>true</code>.</ins>
 </p></li>
 <li><p>(2.1) &mdash; if <code>T</code> is a specialization of <code>empty_view</code> (<sref ref="[range.empty.view]"/>),
 then <code>((void)F, <i>decay-copy</i>(E))</code>, except that the evaluations of <code>E</code>
