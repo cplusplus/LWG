@@ -142,6 +142,8 @@ constexpr complex&amp; operator+=(const T&amp;) requires (!floating_point&lt;T&g
 <note>Buzios 2026-11-19; Jonathan updates wording</note>
 <p>Use Option A, rebased on accepted wording of issue <iref ref="3933"/>.</p>
 
+<note>Buzios 2026-11-19; Status New &rarr; Ready</note>
+
 </discussion>
 
 <resolution>
