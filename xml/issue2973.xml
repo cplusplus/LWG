@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="2973" status="LEWG">
+<issue num="2973" status="Open">
 <title><tt>inplace_merge</tt> exact comparison count complexity prohibits useful real-world optimizations</title>
 <section><sref ref="[alg.merge]"/></section>
 <submitter>Billy Robert O'Neal III</submitter>
@@ -23,6 +23,9 @@ compares like this, given that users must be prepared for the fallback "not enou
 <p>Status to LEWG</p>
 
 <note>2025-10-21; Priority set to 4 based on age of issue and lack of activity.</note>
+
+<note>Buzios 2026-11-19; Status LEWG &rarr; Open.</note>
+<p>LEWG approved the direction so back with LWG. Wording needs rebasing.</p>
 
 </discussion>
 
