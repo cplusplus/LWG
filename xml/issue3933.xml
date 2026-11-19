@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="3933" status="New">
+<issue num="3933" status="Ready">
 <title>P1467R9 accidentally changed the signatures of certain constructors of <tt>std::complex</tt></title>
 <section><sref ref="[complex]"/></section>
 <submitter>Jiang An</submitter>
@@ -216,6 +216,8 @@ otherwise, or just always use a reference.
 If we take this direction then LWG <iref ref="3934"/> needs a new proposed
 resolution.
 </p>
+
+<note>Buzios 2026-11-19; Status changed: New &rarr; Ready.</note>
 
 </discussion>
 
