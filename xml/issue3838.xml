@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="3838" status="New">
+<issue num="3838" status="Ready">
 <title>The last specialization of  <tt>incrementable_traits</tt> is under-constrained</title>
 <section><sref ref="[incrementable.traits]"/>
 </section>
@@ -46,6 +46,7 @@ Set priority to 3 after reflector poll.
 instead of introducing <i><tt>nonbool-integral</tt></i>."
 </p>
 
+<note>Buzios 2026-11-19 Status changed: New &rarr; Ready.</note>
 </discussion>
 
 <resolution>
