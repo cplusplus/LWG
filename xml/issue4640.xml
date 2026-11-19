@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' standalone='no'?>
 <!DOCTYPE issue SYSTEM "lwg-issue.dtd">
 
-<issue num="4640" status="New">
+<issue num="4640" status="Ready">
 <title>Unspecified exception should not be confused with `dependent_sender_error`</title>
 <section><sref ref="[exec.getcomplsigs]"/></section>
 <submitter>Robert Leahy</submitter>
@@ -27,6 +27,9 @@ Tim Song has pointed out that wording technology already exists to solve this
 (<sref ref="[exec.snd.general]"/>):
 <i><code>unspecified-exception</code></i>.
 </p>
+
+<note>Buzios 2026-11-19; Status New &rarr; Ready</note>
+
 </discussion>
 
 <resolution>
