@@ -44,9 +44,7 @@ The lack of this member specification was observed while a proposed wording for 
 Set priority to 3 after reflector poll.
 </p>
 
-</discussion>
-
-<resolution>
+<superseded>
 <p>
 This wording is relative to <paper num="N4950"/>.
 </p>
@@ -139,6 +137,49 @@ constexpr complex&amp; operator+=(const T&amp;) requires (!floating_point&lt;T&g
 </li>
 
 </ol>
+</superseded>
+
+<note>Buzios 2026-11-19; Jonathan updates wording</note>
+<p>Use Option A, rebased on accepted wording of issue <iref ref="3933"/>.</p>
+
+</discussion>
+
+<resolution>
+<p>
+This wording is relative to <paper num="N5054"/> with issue <iref ref="3933"/>
+resolution applied.
+</p>
+
+<ol>
+
+<li>
+<p>Add a new prototype specification at the very beginning of <sref ref="[complex.member.ops]"/> as indicated:</p>
+
+<blockquote>
+<pre>
+<ins>constexpr complex&amp; operator=(<i>arg-type</i> rhs);</ins>
+</pre>
+<blockquote>
+<p>
+<ins>-?- <i>Effects</i>: Assigns the value <tt>rhs</tt> to the real part and the value <tt>T()</tt>
+to the imaginary part of the complex value <tt>*this</tt>.</ins>
+<p/>
+<ins>-?- <i>Returns</i>: <tt>*this</tt>.</ins>
+</p>
+</blockquote>
+<pre>
+constexpr complex&amp; operator+=(<i>arg-type</i> rhs);
+</pre>
+<blockquote>
+<p>
+[&hellip;]
+</p>
+</blockquote>
+</blockquote>
+</li>
+
+</ol>
+
 </resolution>
 
 </issue>
