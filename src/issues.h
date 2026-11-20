@@ -25,7 +25,7 @@ struct issue {
    std::string                submitter;      // original submitter of the issue
    chrono::year_month_day     date;           // date the issue was filed
    chrono::year_month_day     mod_date;       // date the issue was last changed
-   std::set<std::string>      duplicates;     // sorted list of duplicate issues, stored as html anchor references.
+   std::map<int, std::string> duplicates;     // duplicate issues, as number and formatted html anchor
    std::string                text;           // text representing the issue
    int                        priority = 99;  // severity, 1 = critical, 4 = minor concern, 0 = trivial to resolve, 99 = not yet prioritised
    std::string                owner;          // person identified as taking ownership of drafting/progressing the issue
